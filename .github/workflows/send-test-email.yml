@@ -44,4 +44,20 @@ jobs:
           fi
           git add site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/data/state.json site/data/email_alert_state.json
           git commit -m "chore: refresh status data and test email state"
-          git push
+          max_attempts=3
+          attempt=1
+          while [ $attempt -le $max_attempts ]; do
+            if git push; then
+              echo "Push succeeded on attempt $attempt."
+              exit 0
+            fi
+            echo "Push failed on attempt $attempt. Rebasing and retrying..."
+            git pull --rebase origin main || {
+              echo "Rebase failed, aborting."
+              git rebase --abort || true
+              exit 1
+            }
+            attempt=$((attempt + 1))
+          done
+          echo "Push failed after $max_attempts attempts."
+          exit 1
