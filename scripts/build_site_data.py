@@ -313,6 +313,7 @@ def _build_alerts(previous_state: dict, payload: dict, changes: dict) -> dict:
 def _build_point(payload: dict, point_time: dt.datetime) -> dict:
     analytics = payload.get("analytics") or {}
     regions = payload.get("regions") or {}
+    sources = payload.get("sources") or []
     reports_24h = int((payload.get("outage") or {}).get("reports_24h") or 0)
 
     region_snapshot: dict[str, dict] = {
@@ -335,6 +336,20 @@ def _build_point(payload: dict, point_time: dt.datetime) -> dict:
             "report_weight": round(weight, 3),
         }
 
+    source_states: dict[str, dict] = {}
+    for source in sources:
+        if not isinstance(source, dict):
+            continue
+        name = str(source.get("name") or "").strip()
+        if not name:
+            continue
+        source_states[name] = {
+            "ok": bool(source.get("ok")),
+            "freshness": str(source.get("freshness") or "unknown"),
+            "item_count": int(source.get("item_count") or 0),
+            "kind": str(source.get("kind") or "unknown"),
+        }
+
     return {
         "t": _iso_utc(point_time),
         "health": payload.get("health", "error"),
@@ -344,6 +359,7 @@ def _build_point(payload: dict, point_time: dt.datetime) -> dict:
         "source_ok": int(analytics.get("source_ok_count", 0)),
         "source_total": int(analytics.get("source_total_count", 0)),
         "regions": region_snapshot,
+        "source_states": source_states,
     }
 
 
@@ -386,6 +402,21 @@ def _normalize_history_point(point: dict) -> dict | None:
             "report_weight": 1.0,
         }
 
+    raw_source_states = point.get("source_states") if isinstance(point.get("source_states"), dict) else {}
+    source_states: dict[str, dict] = {}
+    for source_name, source_state in raw_source_states.items():
+        if not isinstance(source_name, str) or not isinstance(source_state, dict):
+            continue
+        freshness = str(source_state.get("freshness") or "unknown")
+        if freshness not in {"fresh", "warm", "stale", "unknown"}:
+            freshness = "unknown"
+        source_states[source_name] = {
+            "ok": bool(source_state.get("ok")),
+            "freshness": freshness,
+            "item_count": max(int(source_state.get("item_count") or 0), 0),
+            "kind": str(source_state.get("kind") or "unknown"),
+        }
+
     return {
         "t": _iso_utc(parsed),
         "health": str(point.get("health") or "error"),
@@ -395,6 +426,7 @@ def _normalize_history_point(point: dict) -> dict | None:
         "source_ok": max(source_ok, 0),
         "source_total": max(source_total, 0),
         "regions": regions,
+        "source_states": source_states,
     }
 
 

@@ -17,6 +17,8 @@
         outage: "Outage Snapshot",
         sourceConfidence: "Source Confidence",
         kpi: "Service KPIs",
+        regionSnapshot: "Regional Snapshot",
+        sourceReliability: "Source Reliability (7d)",
         known: "Known Resources",
         timeline: "Incident Timeline",
         reports: "Status Reports",
@@ -39,6 +41,19 @@
         topSystemHintOk: "No subsystem is showing elevated disruption risk right now.",
         topSystemHintWarn: "{system} is showing intermittent risk signals.",
         topSystemHintBad: "{system} is currently showing the strongest disruption signals.",
+      },
+      regionSnapshot: {
+        hint: "Comparing the latest 24h report density across regions.",
+        reports: "24h reports",
+        deltaUp: "{n} vs 24h ago",
+        deltaDown: "{n} vs 24h ago",
+        deltaFlat: "No change vs 24h ago",
+      },
+      sourceReliability: {
+        hint: "Reliability is estimated from historical source availability and freshness.",
+        score: "Reliability: {pct}",
+        sample: "{ok}/{total} healthy polls",
+        unavailable: "Not enough source history yet.",
       },
       impactQuick: {
         stable: "Playable conditions look normal for most players.",
@@ -109,6 +124,7 @@
         chart24: "No 24h chart data available yet.",
         chart7: "No 7d trend data available yet.",
         history: "Not enough history points yet.",
+        regionSnapshot: "Regional history is not available yet.",
       },
       csv: {
         noIncidents: "No incidents available to export yet.",
@@ -300,6 +316,8 @@
         outage: "Störungsübersicht",
         sourceConfidence: "Quellenvertrauen",
         kpi: "Service-Kennzahlen",
+        regionSnapshot: "Regionenvergleich",
+        sourceReliability: "Quellenzuverlässigkeit (7 Tage)",
         known: "Bekannte Ressourcen",
         timeline: "Vorfall-Zeitleiste",
         reports: "Statusberichte",
@@ -322,6 +340,19 @@
         topSystemHintOk: "Aktuell zeigt kein Subsystem ein erhöhtes Störungsrisiko.",
         topSystemHintWarn: "{system} zeigt zeitweise Risikosignale.",
         topSystemHintBad: "{system} zeigt derzeit die stärksten Störungssignale.",
+      },
+      regionSnapshot: {
+        hint: "Vergleich der aktuellen 24h-Meldungsdichte über alle Regionen.",
+        reports: "Meldungen (24h)",
+        deltaUp: "{n} ggü. vor 24h",
+        deltaDown: "{n} ggü. vor 24h",
+        deltaFlat: "Keine Änderung ggü. vor 24h",
+      },
+      sourceReliability: {
+        hint: "Die Zuverlässigkeit wird aus historischer Quellenverfügbarkeit und Frische geschätzt.",
+        score: "Zuverlässigkeit: {pct}",
+        sample: "{ok}/{total} erfolgreiche Abfragen",
+        unavailable: "Noch nicht genug Quellenverlauf vorhanden.",
       },
       impactQuick: {
         stable: "Für die meisten Spieler wirkt der Dienst derzeit normal spielbar.",
@@ -392,6 +423,7 @@
         chart24: "Noch keine 24h-Chartdaten verfügbar.",
         chart7: "Noch keine 7d-Trenddaten verfügbar.",
         history: "Noch nicht genug Verlaufsdaten vorhanden.",
+        regionSnapshot: "Noch keine Regionsverlaufdaten verfügbar.",
       },
       csv: {
         noIncidents: "Noch keine Vorfälle für den Export verfügbar.",
@@ -617,6 +649,12 @@ const els = {
   kpiTopSystemLabel: document.getElementById("kpiTopSystemLabel"),
   kpiTopSystemValue: document.getElementById("kpiTopSystemValue"),
   kpiTopSystemHint: document.getElementById("kpiTopSystemHint"),
+  regionSnapshotTitle: document.getElementById("regionSnapshotTitle"),
+  regionSnapshotHint: document.getElementById("regionSnapshotHint"),
+  regionSnapshotGrid: document.getElementById("regionSnapshotGrid"),
+  sourceReliabilityTitle: document.getElementById("sourceReliabilityTitle"),
+  sourceReliabilityHint: document.getElementById("sourceReliabilityHint"),
+  sourceReliabilityList: document.getElementById("sourceReliabilityList"),
   knownTitle: document.getElementById("knownTitle"),
   knownList: document.getElementById("knownList"),
   changeSummary: document.getElementById("changeSummary"),
@@ -1103,6 +1141,18 @@ function applyStaticTexts() {
   els.kpiUptime24Label.textContent = t("ui.kpi.uptime24");
   els.kpiUptime7Label.textContent = t("ui.kpi.uptime7");
   els.kpiTopSystemLabel.textContent = t("ui.kpi.topSystem");
+  if (els.regionSnapshotTitle) {
+    els.regionSnapshotTitle.textContent = t("ui.sections.regionSnapshot");
+  }
+  if (els.regionSnapshotHint) {
+    els.regionSnapshotHint.textContent = t("ui.regionSnapshot.hint");
+  }
+  if (els.sourceReliabilityTitle) {
+    els.sourceReliabilityTitle.textContent = t("ui.sections.sourceReliability");
+  }
+  if (els.sourceReliabilityHint) {
+    els.sourceReliabilityHint.textContent = t("ui.sourceReliability.hint");
+  }
   els.knownTitle.textContent = t("ui.sections.known");
   els.sortLabel.textContent = t("ui.sort.label");
   if (els.exportIncidentsBtn) {
@@ -1162,6 +1212,8 @@ function applyStaticTexts() {
     if (els.impactQuickText) {
       els.impactQuickText.textContent = t("ui.loadingImpact");
     }
+    renderRegionSnapshot(null);
+    renderSourceReliability(null, null);
   }
 
   updateKpis(latestHistory, []);
@@ -1591,6 +1643,133 @@ function updateKpis(history, systems) {
   }
 }
 
+function renderRegionSnapshot(history) {
+  if (!els.regionSnapshotGrid) {
+    return;
+  }
+  const points = history?.points || [];
+  if (!points.length) {
+    els.regionSnapshotGrid.innerHTML = `<p class="empty">${escapeHtml(t("ui.empty.regionSnapshot"))}</p>`;
+    return;
+  }
+
+  const latestPoint = points[points.length - 1];
+  const baselineIndex = points.length > 48 ? points.length - 49 : 0;
+  const baselinePoint = points[baselineIndex] || latestPoint;
+
+  const tiles = VALID_REGIONS.map((region) => {
+    const latest = mapHistoryPointForRegion(latestPoint, region);
+    const baseline = mapHistoryPointForRegion(baselinePoint, region);
+    const delta = latest.reports_24h - baseline.reports_24h;
+    let deltaText = t("ui.regionSnapshot.deltaFlat");
+    if (delta > 0) {
+      deltaText = t("ui.regionSnapshot.deltaUp", { n: `+${formatNumber(delta)}` });
+    } else if (delta < 0) {
+      deltaText = t("ui.regionSnapshot.deltaDown", { n: formatNumber(delta) });
+    }
+    const regionLabel = t(`ui.analytics.regions.${region}`);
+    const severityLabel = t(`ui.severity.${latest.severity_key}`);
+    return `
+      <article class="region-tile">
+        <div class="region-head">
+          <span class="region-name">${escapeHtml(regionLabel)}</span>
+          <span class="badge sev-${escapeHtml(latest.severity_key)}">${escapeHtml(severityLabel)}</span>
+        </div>
+        <div class="region-reports">${escapeHtml(formatNumber(latest.reports_24h))}</div>
+        <div class="row-meta">${escapeHtml(t("ui.regionSnapshot.reports"))}</div>
+        <div class="region-trend">${escapeHtml(deltaText)}</div>
+      </article>
+    `;
+  });
+
+  els.regionSnapshotGrid.innerHTML = tiles.join("");
+}
+
+function computeSourceReliabilityRows(history, payload) {
+  const points = (history?.points || []).slice(-336);
+  const aggregates = new Map();
+
+  for (const point of points) {
+    const sourceStates = point?.source_states || {};
+    for (const [name, state] of Object.entries(sourceStates)) {
+      if (!aggregates.has(name)) {
+        aggregates.set(name, { ok: 0, total: 0, stale: 0, warm: 0 });
+      }
+      const agg = aggregates.get(name);
+      agg.total += 1;
+      if (state?.ok) {
+        agg.ok += 1;
+      }
+      if (state?.freshness === "stale") {
+        agg.stale += 1;
+      } else if (state?.freshness === "warm") {
+        agg.warm += 1;
+      }
+    }
+  }
+
+  if (!aggregates.size && Array.isArray(payload?.sources)) {
+    for (const source of payload.sources) {
+      const name = normalizeText(source?.name || "");
+      if (!name) {
+        continue;
+      }
+      aggregates.set(name, { ok: source?.ok ? 1 : 0, total: 1, stale: 0, warm: 0 });
+    }
+  }
+
+  const rows = [...aggregates.entries()].map(([name, agg]) => {
+    if (!agg.total) {
+      return null;
+    }
+    const okRatio = agg.ok / agg.total;
+    const stalePenalty = (agg.stale / agg.total) * 8;
+    const warmPenalty = (agg.warm / agg.total) * 3;
+    const score = Math.max(Math.min((okRatio * 100) - stalePenalty - warmPenalty, 100), 0);
+    const tone = score >= 85 ? "high" : score >= 65 ? "medium" : "low";
+    return {
+      name,
+      ok: agg.ok,
+      total: agg.total,
+      score,
+      tone,
+    };
+  }).filter(Boolean);
+
+  rows.sort((left, right) => right.score - left.score || right.total - left.total || left.name.localeCompare(right.name));
+  return rows;
+}
+
+function renderSourceReliability(history, payload) {
+  if (!els.sourceReliabilityList) {
+    return;
+  }
+  const rows = computeSourceReliabilityRows(history, payload);
+  if (!rows.length) {
+    els.sourceReliabilityList.innerHTML = `<li class="empty">${escapeHtml(t("ui.sourceReliability.unavailable"))}</li>`;
+    return;
+  }
+  els.sourceReliabilityList.innerHTML = rows
+    .slice(0, 6)
+    .map((row) => {
+      const scoreText = t("ui.sourceReliability.score", { pct: formatPercent(row.score) });
+      const sampleText = t("ui.sourceReliability.sample", {
+        ok: formatNumber(row.ok),
+        total: formatNumber(row.total),
+      });
+      return `
+        <li class="source-reliability-item">
+          <div class="row-main">
+            <span class="source-name">${escapeHtml(row.name)}</span>
+            <span class="score score-${escapeHtml(row.tone)}">${escapeHtml(scoreText)}</span>
+          </div>
+          <div class="row-meta">${escapeHtml(sampleText)}</div>
+        </li>
+      `;
+    })
+    .join("");
+}
+
 function csvCell(value) {
   const text = String(value ?? "");
   if (/[",\n]/.test(text)) {
@@ -1683,6 +1862,8 @@ function render(data) {
   renderImpactList(ta(`ui.impacts.${severity.key}`));
   renderSystems(systems);
   updateKpis(latestHistory, systems);
+  renderRegionSnapshot(latestHistory);
+  renderSourceReliability(latestHistory, data);
   applyDetailDefaults(severity.key, confidence.key);
 
   els.generatedAt.textContent = t("ui.meta.lastUpdate", { time: formatDateTime(data?.generated_at) });
@@ -1741,6 +1922,8 @@ function renderLoadingState() {
   renderSources([]);
   updateSourceMethod(null);
   updateKpis(null, []);
+  renderRegionSnapshot(null);
+  renderSourceReliability(null, null);
   renderChangeSummary(null);
   els.chart24Empty.hidden = false;
   els.chart7Empty.hidden = false;
@@ -1761,6 +1944,20 @@ function normalizeHistoryPayload(history) {
     const severityKey = VALID_SEVERITY.includes(point?.severity_key) ? point.severity_key : "unknown";
     const sourceTotal = clampNumber(point?.source_total, 0, 999, 0);
     const sourceOk = clampNumber(point?.source_ok, 0, sourceTotal || 999, 0);
+    const sourceStates = {};
+    const rawSourceStates = point?.source_states && typeof point.source_states === "object" ? point.source_states : {};
+    for (const [sourceName, state] of Object.entries(rawSourceStates)) {
+      if (!sourceName || !state || typeof state !== "object") {
+        continue;
+      }
+      const freshness = ["fresh", "warm", "stale", "unknown"].includes(state?.freshness) ? state.freshness : "unknown";
+      sourceStates[sourceName] = {
+        ok: !!state?.ok,
+        freshness,
+        item_count: clampNumber(state?.item_count, 0, 9999, 0),
+        kind: normalizeText(state?.kind || "unknown"),
+      };
+    }
     const regions = {};
     const rawRegions = point?.regions && typeof point.regions === "object" ? point.regions : {};
     for (const [regionKey, regionValue] of Object.entries(rawRegions)) {
@@ -1791,6 +1988,7 @@ function normalizeHistoryPayload(history) {
       source_ok: sourceOk,
       source_total: sourceTotal,
       regions,
+      source_states: sourceStates,
     });
   }
   const points = [...byTimestamp.values()].sort((left, right) => {
@@ -2295,6 +2493,8 @@ async function loadDashboardData() {
     els.outageSummary.textContent = t("ui.errors.loadJson");
     updateTrendBadge(latestHistory);
     updateKpis(latestHistory, []);
+    renderRegionSnapshot(latestHistory);
+    renderSourceReliability(latestHistory, null);
     renderChangeSummary(null);
     updateAlertButtonLabel();
   } finally {
