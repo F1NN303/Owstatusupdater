@@ -19,6 +19,7 @@
         <div id="statusMarker" class="status-marker marker-unknown" role="status" aria-live="polite">
           <span class="marker-dot" aria-hidden="true"></span>
           <span id="statusMarkerText">Status: Checking live telemetry...</span>
+          <span id="statusInlineConfidence" class="marker-confidence">Confidence: --</span>
         </div>
       </div>
       <div class="hero-side">
@@ -56,9 +57,13 @@
       <section class="overview-grid">
         <article class="card reveal">
           <h2 id="impactTitle">What This Means Right Now</h2>
-          <ul id="impactList" class="impact-list">
-            <li>Waiting for live status data...</li>
-          </ul>
+          <p id="impactQuickText" class="summary">Waiting for live status data...</p>
+          <details id="impactDetailsToggle" class="detail-toggle">
+            <summary id="impactDetailsSummary">Show recommendations</summary>
+            <ul id="impactList" class="impact-list">
+              <li>Waiting for live status data...</li>
+            </ul>
+          </details>
         </article>
 
         <article class="card reveal">
@@ -83,7 +88,10 @@
           <p id="sourceConfidenceText" class="summary">Evaluating source reliability...</p>
           <div id="sourceChips" class="chips"></div>
           <p id="sourceMethodText" class="feed-meta">Scoring safeguards are active to reduce false outage spikes.</p>
-          <ul id="sourceDetailsList" class="source-detail-list"></ul>
+          <details id="sourceDetailsToggle" class="detail-toggle">
+            <summary id="sourceDetailsSummary">Show source diagnostics</summary>
+            <ul id="sourceDetailsList" class="source-detail-list"></ul>
+          </details>
         </article>
 
         <article class="card reveal">
@@ -188,14 +196,17 @@
 
     <section class="card reveal">
       <h2 id="howToTitle">How To Read This Page</h2>
-      <ul class="guidance-list">
-        <li id="guideLine1">The top status line explains expected player impact in plain language.</li>
-        <li id="guideLine2">Severity combines outage volume, incident wording, and source availability.</li>
-        <li id="guideLine3">Confidence increases when independent sources agree.</li>
-      </ul>
-      <p id="footnoteText" class="footnote">
-        External platforms can throttle automated access. This dashboard favors stable public sources and exposes source health so reliability remains visible.
-      </p>
+      <details id="howToDetails" class="detail-toggle">
+        <summary id="howToSummary">Show guidance</summary>
+        <ul class="guidance-list">
+          <li id="guideLine1">The top status line explains expected player impact in plain language.</li>
+          <li id="guideLine2">Severity combines outage volume, incident wording, and source availability.</li>
+          <li id="guideLine3">Confidence increases when independent sources agree.</li>
+        </ul>
+        <p id="footnoteText" class="footnote">
+          External platforms can throttle automated access. This dashboard favors stable public sources and exposes source health so reliability remains visible.
+        </p>
+      </details>
     </section>
   </main>
 

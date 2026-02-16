@@ -40,6 +40,18 @@
         topSystemHintWarn: "{system} is showing intermittent risk signals.",
         topSystemHintBad: "{system} is currently showing the strongest disruption signals.",
       },
+      impactQuick: {
+        stable: "Playable conditions look normal for most players.",
+        minor: "Short disruptions are possible for some players.",
+        degraded: "Noticeable service issues are likely right now.",
+        major: "Widespread disruption is likely across core services.",
+        unknown: "Live status confidence is limited at the moment.",
+      },
+      details: {
+        impactSummary: "Show recommendations",
+        sourceSummary: "Show source diagnostics",
+        howToSummary: "Show guidance",
+      },
       sort: {
         label: "Sort by",
         recent: "Most recent",
@@ -47,6 +59,13 @@
       },
       incidents: {
         exportCsv: "Export incidents CSV",
+        tags: {
+          login: "Login",
+          matchmaking: "Queue",
+          stability: "Stability",
+          store: "Store",
+          general: "General",
+        },
       },
       alertRules: {
         label: "Minimum alert severity",
@@ -116,6 +135,13 @@
         medium: "Confidence Medium",
         low: "Confidence Low",
         neutral: "Confidence --",
+        inline: "Confidence: {level}",
+        short: {
+          high: "High",
+          medium: "Medium",
+          low: "Low",
+          neutral: "--",
+        },
         explanation:
           "Source agreement is {ratio}. Higher agreement means higher confidence in the severity estimate.",
       },
@@ -297,6 +323,18 @@
         topSystemHintWarn: "{system} zeigt zeitweise Risikosignale.",
         topSystemHintBad: "{system} zeigt derzeit die stärksten Störungssignale.",
       },
+      impactQuick: {
+        stable: "Für die meisten Spieler wirkt der Dienst derzeit normal spielbar.",
+        minor: "Kurzzeitige Störungen sind für einzelne Spieler möglich.",
+        degraded: "Spürbare Serviceprobleme sind aktuell wahrscheinlich.",
+        major: "In zentralen Diensten sind derzeit größere Störungen wahrscheinlich.",
+        unknown: "Die Live-Einschätzung ist aktuell nur eingeschränkt belastbar.",
+      },
+      details: {
+        impactSummary: "Empfehlungen anzeigen",
+        sourceSummary: "Quelldiagnose anzeigen",
+        howToSummary: "Hinweise anzeigen",
+      },
       sort: {
         label: "Sortieren nach",
         recent: "Neueste zuerst",
@@ -304,6 +342,13 @@
       },
       incidents: {
         exportCsv: "Vorfälle als CSV exportieren",
+        tags: {
+          login: "Login",
+          matchmaking: "Warteschlange",
+          stability: "Stabilität",
+          store: "Shop",
+          general: "Allgemein",
+        },
       },
       alertRules: {
         label: "Mindestschwere für Alarme",
@@ -373,6 +418,13 @@
         medium: "Vertrauen mittel",
         low: "Vertrauen niedrig",
         neutral: "Vertrauen --",
+        inline: "Vertrauen: {level}",
+        short: {
+          high: "Hoch",
+          medium: "Mittel",
+          low: "Niedrig",
+          neutral: "--",
+        },
         explanation:
           "Quellen-Übereinstimmung: {ratio}. Höhere Übereinstimmung bedeutet höheres Vertrauen in die Einschätzung.",
       },
@@ -526,6 +578,7 @@ const els = {
   headlineText: document.getElementById("headlineText"),
   statusMarker: document.getElementById("statusMarker"),
   statusMarkerText: document.getElementById("statusMarkerText"),
+  statusInlineConfidence: document.getElementById("statusInlineConfidence"),
   generatedAt: document.getElementById("generatedAt"),
   nextRefresh: document.getElementById("nextRefresh"),
   refreshBtn: document.getElementById("refreshBtn"),
@@ -537,6 +590,9 @@ const els = {
   tabIncidentsBtn: document.getElementById("tabIncidentsBtn"),
   tabAnalyticsBtn: document.getElementById("tabAnalyticsBtn"),
   impactTitle: document.getElementById("impactTitle"),
+  impactQuickText: document.getElementById("impactQuickText"),
+  impactDetailsToggle: document.getElementById("impactDetailsToggle"),
+  impactDetailsSummary: document.getElementById("impactDetailsSummary"),
   impactList: document.getElementById("impactList"),
   systemsTitle: document.getElementById("systemsTitle"),
   systemGrid: document.getElementById("systemGrid"),
@@ -549,6 +605,8 @@ const els = {
   sourceConfidenceText: document.getElementById("sourceConfidenceText"),
   sourceChips: document.getElementById("sourceChips"),
   sourceMethodText: document.getElementById("sourceMethodText"),
+  sourceDetailsToggle: document.getElementById("sourceDetailsToggle"),
+  sourceDetailsSummary: document.getElementById("sourceDetailsSummary"),
   sourceDetailsList: document.getElementById("sourceDetailsList"),
   kpiTitle: document.getElementById("kpiTitle"),
   kpiRegionHint: document.getElementById("kpiRegionHint"),
@@ -588,6 +646,8 @@ const els = {
   chart24Empty: document.getElementById("chart24Empty"),
   chart7Empty: document.getElementById("chart7Empty"),
   howToTitle: document.getElementById("howToTitle"),
+  howToDetails: document.getElementById("howToDetails"),
+  howToSummary: document.getElementById("howToSummary"),
   guideLine1: document.getElementById("guideLine1"),
   guideLine2: document.getElementById("guideLine2"),
   guideLine3: document.getElementById("guideLine3"),
@@ -1026,12 +1086,18 @@ function applyStaticTexts() {
   els.tabAnalyticsBtn.textContent = t("ui.tabs.analytics");
 
   els.impactTitle.textContent = t("ui.sections.impact");
+  if (els.impactDetailsSummary) {
+    els.impactDetailsSummary.textContent = t("ui.details.impactSummary");
+  }
   els.systemsTitle.textContent = t("ui.sections.systems");
   els.outageTitle.textContent = t("ui.sections.outage");
   els.reports24hLabel.textContent = t("ui.labels.reports24h");
   els.sourceConfidenceTitle.textContent = t("ui.sections.sourceConfidence");
   if (els.sourceMethodText) {
     els.sourceMethodText.textContent = t("ui.sourceMethod");
+  }
+  if (els.sourceDetailsSummary) {
+    els.sourceDetailsSummary.textContent = t("ui.details.sourceSummary");
   }
   els.kpiTitle.textContent = t("ui.sections.kpi");
   els.kpiUptime24Label.textContent = t("ui.kpi.uptime24");
@@ -1065,6 +1131,9 @@ function applyStaticTexts() {
   els.chart24Empty.textContent = t("ui.empty.chart24");
   els.chart7Empty.textContent = t("ui.empty.chart7");
   els.howToTitle.textContent = t("ui.sections.howTo");
+  if (els.howToSummary) {
+    els.howToSummary.textContent = t("ui.details.howToSummary");
+  }
   const recentOption = els.sortSelect.querySelector('option[value="recent"]');
   const impactOption = els.sortSelect.querySelector('option[value="impact"]');
   if (recentOption) {
@@ -1090,6 +1159,9 @@ function applyStaticTexts() {
   els.footnoteText.textContent = t("ui.footnote");
   if (!latestPayload) {
     renderChangeSummary(null);
+    if (els.impactQuickText) {
+      els.impactQuickText.textContent = t("ui.loadingImpact");
+    }
   }
 
   updateKpis(latestHistory, []);
@@ -1122,6 +1194,23 @@ function renderFeedList(target, items, emptyLabel) {
     .join("");
 }
 
+function classifyIncidentTag(title) {
+  const text = normalizeText(title || "").toLowerCase();
+  if (/(login|auth|sign in|cannot connect|unable to connect)/.test(text)) {
+    return "login";
+  }
+  if (/(queue|matchmaking|finding game|game mode)/.test(text)) {
+    return "matchmaking";
+  }
+  if (/(lag|latency|disconnect|server|stability|rubberband)/.test(text)) {
+    return "stability";
+  }
+  if (/(store|shop|reward|battlepass|prism|purchase)/.test(text)) {
+    return "store";
+  }
+  return "general";
+}
+
 function renderIncidents(incidents) {
   if (!incidents || incidents.length === 0) {
     els.incidentList.innerHTML = `<li class="empty">${escapeHtml(t("ui.empty.incidents"))}</li>`;
@@ -1134,9 +1223,14 @@ function renderIncidents(incidents) {
       const startedAt = formatDateTime(incident.started_at);
       const duration = escapeHtml(incident.duration || "n/a");
       const ack = incident.acknowledgement ? ` | ${escapeHtml(incident.acknowledgement)}` : "";
+      const tagKey = classifyIncidentTag(incident.title || "");
+      const tagLabel = t(`ui.incidents.tags.${tagKey}`);
       return `
         <li class="feed-item">
-          <div class="feed-item-title">${title}</div>
+          <div class="incident-head">
+            <div class="feed-item-title">${title}</div>
+            <span class="incident-tag">${escapeHtml(tagLabel)}</span>
+          </div>
           <p class="feed-meta">${escapeHtml(startedAt)} | ${duration}${ack}</p>
         </li>
       `;
@@ -1397,6 +1491,19 @@ function renderImpactList(impacts) {
   els.impactList.innerHTML = impacts.map((line) => `<li>${escapeHtml(line)}</li>`).join("");
 }
 
+function setDetailOpenState(element, open) {
+  if (!element || element.dataset.userInteracted === "1") {
+    return;
+  }
+  element.open = !!open;
+}
+
+function applyDetailDefaults(severityKey, confidenceKey) {
+  setDetailOpenState(els.impactDetailsToggle, severityKey === "major" || severityKey === "degraded" || severityKey === "unknown");
+  setDetailOpenState(els.sourceDetailsToggle, confidenceKey === "low");
+  setDetailOpenState(els.howToDetails, false);
+}
+
 function renderSystems(systems) {
   if (!systems.length) {
     els.systemGrid.innerHTML = `<p class="empty">${escapeHtml(t("ui.empty.systems"))}</p>`;
@@ -1564,11 +1671,19 @@ function render(data) {
 
   els.statusMarker.className = `status-marker marker-${severity.key}`;
   els.statusMarkerText.textContent = t(`ui.marker.${severity.key}`);
+  if (els.statusInlineConfidence) {
+    const confidenceShort = t(`ui.confidence.short.${confidence.key}`);
+    els.statusInlineConfidence.textContent = t("ui.confidence.inline", { level: confidenceShort });
+  }
   els.headlineText.textContent = t(`ui.headlines.${severity.key}`);
+  if (els.impactQuickText) {
+    els.impactQuickText.textContent = t(`ui.impactQuick.${severity.key}`);
+  }
 
   renderImpactList(ta(`ui.impacts.${severity.key}`));
   renderSystems(systems);
   updateKpis(latestHistory, systems);
+  applyDetailDefaults(severity.key, confidence.key);
 
   els.generatedAt.textContent = t("ui.meta.lastUpdate", { time: formatDateTime(data?.generated_at) });
 
@@ -1605,7 +1720,14 @@ function renderLoadingState() {
   els.confidenceBadge.className = "badge conf-neutral";
   els.statusMarker.className = "status-marker marker-unknown";
   els.statusMarkerText.textContent = t("ui.loadingMarker");
+  if (els.statusInlineConfidence) {
+    const confidenceShort = t("ui.confidence.short.neutral");
+    els.statusInlineConfidence.textContent = t("ui.confidence.inline", { level: confidenceShort });
+  }
   els.headlineText.textContent = t("ui.loadingHeadline");
+  if (els.impactQuickText) {
+    els.impactQuickText.textContent = t("ui.loadingImpact");
+  }
   renderImpactList([t("ui.loadingImpact")]);
   els.generatedAt.textContent = t("ui.meta.lastUpdate", { time: "--" });
   els.nextRefresh.textContent = t("ui.meta.nextRefreshUnknown");
@@ -2159,7 +2281,14 @@ async function loadDashboardData() {
     els.confidenceBadge.className = "badge conf-low";
     els.statusMarker.className = "status-marker marker-unknown";
     els.statusMarkerText.textContent = t("ui.marker.unknown");
+    if (els.statusInlineConfidence) {
+      const confidenceShort = t("ui.confidence.short.low");
+      els.statusInlineConfidence.textContent = t("ui.confidence.inline", { level: confidenceShort });
+    }
     els.headlineText.textContent = t("ui.headlines.unknown");
+    if (els.impactQuickText) {
+      els.impactQuickText.textContent = t("ui.impactQuick.unknown");
+    }
     renderImpactList(ta("ui.impacts.unknown"));
     els.generatedAt.textContent = t("ui.meta.fetchFailed");
     els.nextRefresh.textContent = t("ui.meta.nextRefreshError");
@@ -2190,6 +2319,14 @@ function toggleLanguage() {
 document.addEventListener("DOMContentLoaded", () => {
   applyStaticTexts();
   setupTabs();
+  for (const toggle of [els.impactDetailsToggle, els.sourceDetailsToggle, els.howToDetails]) {
+    if (!toggle) {
+      continue;
+    }
+    toggle.addEventListener("toggle", () => {
+      toggle.dataset.userInteracted = "1";
+    });
+  }
   if (els.sortSelect) {
     els.sortSelect.value = sortMode;
     els.sortSelect.addEventListener("change", (event) => {
