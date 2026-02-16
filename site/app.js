@@ -23,6 +23,7 @@
         systems: "Potentially Affected Systems",
         outage: "Outage Snapshot",
         sourceConfidence: "Source Confidence",
+        subscribe: "Email Outage Alerts",
         kpi: "Service KPIs",
         regionSnapshot: "Regional Snapshot",
         sourceReliability: "Source Reliability (7d)",
@@ -61,6 +62,20 @@
         score: "Reliability: {pct}",
         sample: "{ok}/{total} healthy polls",
         unavailable: "Not enough source history yet.",
+      },
+      subscribe: {
+        hint: "Get outage updates by email via a secure Brevo form with captcha and double opt-in.",
+        loading: "Loading secure signup form...",
+        ready: "Secure signup form loaded ({provider}).",
+        missing: "Signup form is not configured yet. Open the setup guide to connect Brevo.",
+        invalid: "Configured signup form URL is invalid. Open the setup guide.",
+        openGuide: "Open setup guide",
+        openExternal: "Open secure signup in new tab",
+        frameTitle: "Outage email signup form",
+        providers: {
+          brevo: "Brevo",
+          generic: "secure provider",
+        },
       },
       impactQuick: {
         stable: "Playable conditions look normal for most players.",
@@ -313,6 +328,7 @@
         systems: "Möglicherweise betroffene Systeme",
         outage: "Störungsübersicht",
         sourceConfidence: "Quellenvertrauen",
+        subscribe: "E-Mail-Störungsalarme",
         kpi: "Service-Kennzahlen",
         regionSnapshot: "Regionenvergleich",
         sourceReliability: "Quellenzuverlässigkeit (7 Tage)",
@@ -351,6 +367,20 @@
         score: "Zuverlässigkeit: {pct}",
         sample: "{ok}/{total} erfolgreiche Abfragen",
         unavailable: "Noch nicht genug Quellenverlauf vorhanden.",
+      },
+      subscribe: {
+        hint: "Erhalte Störungsupdates per E-Mail über ein sicheres Brevo-Formular mit Captcha und Double-Opt-In.",
+        loading: "Sicheres Anmeldeformular wird geladen...",
+        ready: "Sicheres Anmeldeformular geladen ({provider}).",
+        missing: "Anmeldeformular ist noch nicht konfiguriert. Öffne die Setup-Anleitung für Brevo.",
+        invalid: "Die konfigurierte Formular-URL ist ungültig. Öffne die Setup-Anleitung.",
+        openGuide: "Setup-Anleitung öffnen",
+        openExternal: "Sichere Anmeldung in neuem Tab öffnen",
+        frameTitle: "Anmeldeformular für Störungs-E-Mails",
+        providers: {
+          brevo: "Brevo",
+          generic: "sicherer Anbieter",
+        },
       },
       impactQuick: {
         stable: "Für die meisten Spieler wirkt der Dienst derzeit normal spielbar.",
@@ -584,6 +614,7 @@
 const els = {
   tabButtons: Array.from(document.querySelectorAll("[data-tab-target]")),
   tabPanels: Array.from(document.querySelectorAll("[data-tab-panel]")),
+  menuDropdown: document.querySelector(".menu-dropdown"),
   menuButtonText: document.getElementById("menuButtonText"),
   menuHomeLink: document.getElementById("menuHomeLink"),
   menuEmailAlertsLink: document.getElementById("menuEmailAlertsLink"),
@@ -624,6 +655,12 @@ const els = {
   sourceDetailsToggle: document.getElementById("sourceDetailsToggle"),
   sourceDetailsSummary: document.getElementById("sourceDetailsSummary"),
   sourceDetailsList: document.getElementById("sourceDetailsList"),
+  subscribeTitle: document.getElementById("subscribeTitle"),
+  subscribeHint: document.getElementById("subscribeHint"),
+  subscribeWidget: document.getElementById("subscribeWidget"),
+  subscribeWidgetText: document.getElementById("subscribeWidgetText"),
+  subscribeStateText: document.getElementById("subscribeStateText"),
+  subscribeActionLink: document.getElementById("subscribeActionLink"),
   kpiTitle: document.getElementById("kpiTitle"),
   kpiRegionHint: document.getElementById("kpiRegionHint"),
   kpiUptime24Label: document.getElementById("kpiUptime24Label"),
@@ -680,6 +717,7 @@ const REFRESH_INTERVAL_MS = 60_000;
 const DATA_URLS = {
   status: "./data/status.json",
   history: "./data/history.json",
+  subscription: "./data/subscription.json",
 };
 const STORAGE_KEYS = {
   lang: "ow_radar_lang",
@@ -702,6 +740,8 @@ const SEVERITY_COLORS = {
 let nextRefreshAt = 0;
 let latestPayload = null;
 let latestHistory = null;
+let latestSubscriptionConfig = null;
+let subscriptionConfigLoaded = false;
 let currentLang = detectInitialLanguage();
 let currentTab = detectInitialTab();
 let sortMode = detectInitialSortMode();
@@ -965,6 +1005,131 @@ function updateLanguageButtonLabel() {
   els.languageBtn.setAttribute("aria-label", t("ui.languageAria"));
 }
 
+function setupMenuDropdown() {
+  if (!els.menuDropdown) {
+    return;
+  }
+  const menuSummary = els.menuDropdown.querySelector("summary");
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) {
+      return;
+    }
+    if (!els.menuDropdown.contains(target)) {
+      els.menuDropdown.removeAttribute("open");
+    }
+  });
+  els.menuDropdown.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") {
+      return;
+    }
+    els.menuDropdown.removeAttribute("open");
+    if (menuSummary) {
+      menuSummary.focus();
+    }
+  });
+}
+
+function parseHttpsUrl(value) {
+  try {
+    const parsed = new URL(String(value || "").trim());
+    if (parsed.protocol !== "https:") {
+      return null;
+    }
+    return parsed;
+  } catch (error) {
+    return null;
+  }
+}
+
+function providerLabel(providerKey) {
+  const normalized = String(providerKey || "").trim().toLowerCase();
+  if (normalized === "brevo") {
+    return t("ui.subscribe.providers.brevo");
+  }
+  return t("ui.subscribe.providers.generic");
+}
+
+function renderSubscribeWidget(config = latestSubscriptionConfig) {
+  if (!els.subscribeWidget || !els.subscribeStateText || !els.subscribeActionLink) {
+    return;
+  }
+  if (els.subscribeTitle) {
+    els.subscribeTitle.textContent = t("ui.sections.subscribe");
+  }
+  if (els.subscribeHint) {
+    els.subscribeHint.textContent = t("ui.subscribe.hint");
+  }
+  const guideHref = "./email-alerts.html";
+  const rawUrl = String(config?.form_url || "").trim();
+  const providerKey = String(config?.provider || "brevo").trim().toLowerCase();
+  const provider = providerLabel(providerKey);
+
+  els.subscribeWidget.innerHTML = "";
+  if (!subscriptionConfigLoaded) {
+    if (els.subscribeWidgetText) {
+      els.subscribeWidget.appendChild(els.subscribeWidgetText);
+      els.subscribeWidgetText.textContent = t("ui.subscribe.loading");
+    }
+    els.subscribeStateText.textContent = t("ui.subscribe.loading");
+    els.subscribeActionLink.href = guideHref;
+    els.subscribeActionLink.target = "_self";
+    els.subscribeActionLink.rel = "";
+    els.subscribeActionLink.textContent = t("ui.subscribe.openGuide");
+    return;
+  }
+
+  const parsedUrl = parseHttpsUrl(rawUrl);
+  if (!rawUrl) {
+    els.subscribeStateText.textContent = t("ui.subscribe.missing");
+    els.subscribeActionLink.href = guideHref;
+    els.subscribeActionLink.target = "_self";
+    els.subscribeActionLink.rel = "";
+    els.subscribeActionLink.textContent = t("ui.subscribe.openGuide");
+    return;
+  }
+  if (!parsedUrl) {
+    els.subscribeStateText.textContent = t("ui.subscribe.invalid");
+    els.subscribeActionLink.href = guideHref;
+    els.subscribeActionLink.target = "_self";
+    els.subscribeActionLink.rel = "";
+    els.subscribeActionLink.textContent = t("ui.subscribe.openGuide");
+    return;
+  }
+
+  const frame = document.createElement("iframe");
+  frame.src = parsedUrl.toString();
+  frame.loading = "lazy";
+  frame.referrerPolicy = "no-referrer";
+  frame.title = t("ui.subscribe.frameTitle");
+  els.subscribeWidget.appendChild(frame);
+
+  els.subscribeStateText.textContent = t("ui.subscribe.ready", { provider });
+  els.subscribeActionLink.href = parsedUrl.toString();
+  els.subscribeActionLink.target = "_blank";
+  els.subscribeActionLink.rel = "noreferrer";
+  els.subscribeActionLink.textContent = t("ui.subscribe.openExternal");
+}
+
+async function loadSubscriptionConfig() {
+  if (!els.subscribeWidget) {
+    return;
+  }
+  try {
+    const response = await fetch(`${DATA_URLS.subscription}?t=${Date.now()}`, { cache: "no-store" });
+    if (response.ok) {
+      latestSubscriptionConfig = await response.json();
+    } else {
+      latestSubscriptionConfig = null;
+    }
+  } catch (error) {
+    latestSubscriptionConfig = null;
+  } finally {
+    subscriptionConfigLoaded = true;
+    renderSubscribeWidget(latestSubscriptionConfig);
+  }
+}
+
 function renderChangeSummary(changes) {
   if (!els.changeSummary) {
     return;
@@ -1097,6 +1262,7 @@ function applyStaticTexts() {
     renderRegionSnapshot(null);
     renderSourceReliability(null, null);
   }
+  renderSubscribeWidget(latestSubscriptionConfig);
 
   updateKpis(latestHistory, []);
   updateTrendBadge(latestHistory);
@@ -2376,7 +2542,9 @@ function toggleLanguage() {
 
 document.addEventListener("DOMContentLoaded", () => {
   applyStaticTexts();
+  setupMenuDropdown();
   setupTabs();
+  loadSubscriptionConfig();
   for (const toggle of [els.impactDetailsToggle, els.sourceDetailsToggle, els.howToDetails]) {
     if (!toggle) {
       continue;

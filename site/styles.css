@@ -41,6 +41,8 @@ body {
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
+  z-index: 80;
 }
 
 .top-link,
@@ -67,6 +69,7 @@ body {
 
 .menu-dropdown {
   position: relative;
+  z-index: 90;
 }
 
 .menu-button {
@@ -88,9 +91,13 @@ body {
   background: linear-gradient(160deg, rgba(18, 25, 34, 0.98), rgba(16, 23, 35, 0.98));
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.42);
   padding: 0.35rem;
-  display: grid;
+  display: none;
   gap: 0.2rem;
-  z-index: 20;
+  z-index: 120;
+}
+
+.menu-dropdown[open] .menu-panel {
+  display: grid;
 }
 
 .menu-panel a {
@@ -127,6 +134,8 @@ body {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 1rem;
+  position: relative;
+  z-index: 10;
 }
 
 .hero-main {
@@ -680,6 +689,48 @@ h2 {
   color: #ffb2b2;
 }
 
+.subscribe-widget {
+  margin-top: 0.62rem;
+  border: 1px solid #27364a;
+  border-radius: 0.76rem;
+  background: rgba(16, 24, 39, 0.5);
+  min-height: 13rem;
+  overflow: hidden;
+  display: grid;
+}
+
+.subscribe-widget iframe {
+  width: 100%;
+  height: 21rem;
+  border: 0;
+  background: #0f1725;
+}
+
+.subscribe-widget > .feed-meta {
+  padding: 0.64rem;
+}
+
+.subscribe-action-link {
+  margin-top: 0.55rem;
+  display: inline-flex;
+  width: fit-content;
+  color: #8edcff;
+  text-decoration: none;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+  border-radius: 0.62rem;
+  padding: 0.34rem 0.58rem;
+}
+
+.subscribe-action-link:hover,
+.subscribe-action-link:focus-visible {
+  border-color: rgba(56, 189, 248, 0.58);
+  background: rgba(56, 189, 248, 0.16);
+  outline: none;
+}
+
 .impact-list,
 .guidance-list {
   margin: 0.2rem 0 0;
@@ -1080,6 +1131,10 @@ h2 {
     min-width: 9.8rem;
   }
 
+  .subscribe-widget iframe {
+    height: 23rem;
+  }
+
   .card {
     padding: 0.92rem;
     border-radius: 0.92rem;
@@ -1176,6 +1231,10 @@ h2 {
 
   .menu-panel {
     min-width: 9.2rem;
+  }
+
+  .subscribe-widget iframe {
+    height: 25rem;
   }
 
   .hero {

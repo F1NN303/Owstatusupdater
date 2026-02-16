@@ -42,6 +42,11 @@ In `Repository -> Settings -> Secrets and variables -> Actions`, add:
 - Run workflow `Send Test Email Alert` from the Actions tab.
 - It force-sends a test message without waiting for a real major outage.
 
+### 5. Enable public signup widget with captcha
+- Create a Brevo hosted signup form (captcha + double opt-in).
+- Edit `site/data/subscription.json` and set `form_url` to the Brevo form URL.
+- The dashboard will embed that secure form in the Overview tab.
+
 ## Local preview
 ```bash
 python -m http.server 8000 --directory site
