@@ -82,22 +82,6 @@
           general: "General",
         },
       },
-      alertRules: {
-        label: "Minimum alert severity",
-        options: {
-          stable: "Alert: stable+",
-          minor: "Alert: minor+",
-          degraded: "Alert: degraded+",
-          major: "Alert: major only",
-        },
-      },
-      alerts: {
-        off: "Alerts off",
-        on: "Alerts on",
-        blocked: "Alerts blocked",
-        unsupported: "Alerts n/a",
-        aria: "Toggle browser alerts",
-      },
       changes: {
         none: "No incident changes in the latest refresh.",
         summary: "Changes: +{newInc} new, ~{updInc} updated, -{resInc} resolved, +{newRep} new reports",
@@ -381,22 +365,6 @@
           general: "Allgemein",
         },
       },
-      alertRules: {
-        label: "Mindestschwere für Alarme",
-        options: {
-          stable: "Alarm ab: stabil",
-          minor: "Alarm ab: leicht",
-          degraded: "Alarm ab: beeinträchtigt",
-          major: "Alarm ab: groß",
-        },
-      },
-      alerts: {
-        off: "Alarme aus",
-        on: "Alarme an",
-        blocked: "Alarme blockiert",
-        unsupported: "Alarme n. v.",
-        aria: "Browser-Alarme umschalten",
-      },
       changes: {
         none: "Keine Änderungen seit der letzten Aktualisierung.",
         summary: "Änderungen: +{newInc} neu, ~{updInc} aktualisiert, -{resInc} behoben, +{newRep} neue Meldungen",
@@ -614,9 +582,6 @@ const els = {
   generatedAt: document.getElementById("generatedAt"),
   nextRefresh: document.getElementById("nextRefresh"),
   refreshBtn: document.getElementById("refreshBtn"),
-  alertBtn: document.getElementById("alertBtn"),
-  alertSeverityLabel: document.getElementById("alertSeverityLabel"),
-  alertSeveritySelect: document.getElementById("alertSeveritySelect"),
   languageBtn: document.getElementById("languageBtn"),
   tabOverviewBtn: document.getElementById("tabOverviewBtn"),
   tabIncidentsBtn: document.getElementById("tabIncidentsBtn"),
@@ -696,22 +661,17 @@ const REFRESH_INTERVAL_MS = 60_000;
 const DATA_URLS = {
   status: "./data/status.json",
   history: "./data/history.json",
-  alerts: "./data/alerts.json",
 };
 const STORAGE_KEYS = {
   lang: "ow_radar_lang",
   tab: "ow_radar_tab",
   sort: "ow_radar_sort",
   analyticsRegion: "ow_radar_analytics_region",
-  alertMinSeverity: "ow_radar_alert_min_severity",
-  alertsEnabled: "ow_radar_alerts_enabled",
-  lastAlertId: "ow_radar_last_alert_id",
 };
 const VALID_TABS = ["overview", "incidents", "analytics"];
 const VALID_SORT_MODES = ["recent", "impact"];
 const VALID_REGIONS = ["global", "eu", "na", "apac"];
 const VALID_SEVERITY = ["stable", "minor", "degraded", "major", "unknown"];
-const VALID_ALERT_THRESHOLDS = ["stable", "minor", "degraded", "major"];
 const SEVERITY_COLORS = {
   stable: "#22c55e",
   minor: "#f59e0b",
@@ -723,13 +683,10 @@ const SEVERITY_COLORS = {
 let nextRefreshAt = 0;
 let latestPayload = null;
 let latestHistory = null;
-let latestAlerts = null;
 let currentLang = detectInitialLanguage();
 let currentTab = detectInitialTab();
 let sortMode = detectInitialSortMode();
 let analyticsRegion = detectInitialAnalyticsRegion();
-let alertMinSeverity = detectInitialAlertMinSeverity();
-let alertsEnabled = detectInitialAlertPreference();
 let isLoading = false;
 let chart24 = null;
 let chart7 = null;
@@ -756,16 +713,6 @@ function detectInitialSortMode() {
 function detectInitialAnalyticsRegion() {
   const stored = safeGetLocalStorage(STORAGE_KEYS.analyticsRegion);
   return VALID_REGIONS.includes(stored) ? stored : "global";
-}
-
-function detectInitialAlertMinSeverity() {
-  const stored = safeGetLocalStorage(STORAGE_KEYS.alertMinSeverity);
-  return VALID_ALERT_THRESHOLDS.includes(stored) ? stored : "minor";
-}
-
-function detectInitialAlertPreference() {
-  const stored = safeGetLocalStorage(STORAGE_KEYS.alertsEnabled);
-  return stored === "1";
 }
 
 function safeGetLocalStorage(key) {
@@ -999,31 +946,6 @@ function updateLanguageButtonLabel() {
   els.languageBtn.setAttribute("aria-label", t("ui.languageAria"));
 }
 
-function supportsBrowserNotifications() {
-  return typeof window !== "undefined" && "Notification" in window;
-}
-
-function updateAlertButtonLabel() {
-  if (!els.alertBtn) {
-    return;
-  }
-  if (!supportsBrowserNotifications()) {
-    els.alertBtn.textContent = t("ui.alerts.unsupported");
-    els.alertBtn.disabled = true;
-    return;
-  }
-
-  els.alertBtn.disabled = false;
-  els.alertBtn.setAttribute("aria-label", t("ui.alerts.aria"));
-  if (Notification.permission === "denied") {
-    els.alertBtn.textContent = t("ui.alerts.blocked");
-  } else if (alertsEnabled && Notification.permission === "granted") {
-    els.alertBtn.textContent = t("ui.alerts.on");
-  } else {
-    els.alertBtn.textContent = t("ui.alerts.off");
-  }
-}
-
 function renderChangeSummary(changes) {
   if (!els.changeSummary) {
     return;
@@ -1044,72 +966,6 @@ function renderChangeSummary(changes) {
     resInc,
     newRep,
   });
-}
-
-function maybeNotifyBrowserAlerts(alertsPayload) {
-  if (!alertsEnabled || !supportsBrowserNotifications() || Notification.permission !== "granted") {
-    return;
-  }
-  const events = Array.isArray(alertsPayload?.events) ? alertsPayload.events : [];
-  if (!events.length) {
-    return;
-  }
-
-  const latestId = String(events[0]?.id || "");
-  const lastSeenId = safeGetLocalStorage(STORAGE_KEYS.lastAlertId);
-  if (!lastSeenId) {
-    safeSetLocalStorage(STORAGE_KEYS.lastAlertId, latestId);
-    return;
-  }
-
-  const seenIndex = events.findIndex((event) => String(event?.id || "") === lastSeenId);
-  const freshEvents = seenIndex >= 0 ? events.slice(0, seenIndex).reverse() : events.slice(0, 1).reverse();
-  const thresholdRank = alertSeverityRank(alertMinSeverity);
-  for (const event of freshEvents) {
-    const eventRank = alertSeverityRank(String(event?.severity_key || "unknown"));
-    if (eventRank < thresholdRank) {
-      continue;
-    }
-    const title = String(event?.title || "Overwatch Service Alert");
-    const message = String(event?.message || "A new status alert is available.");
-    try {
-      // Browser notification is only sent when the user explicitly enabled alerts.
-      new Notification(title, { body: message, tag: String(event?.id || title) });
-    } catch (error) {
-      // ignore notification failures
-    }
-  }
-  safeSetLocalStorage(STORAGE_KEYS.lastAlertId, latestId);
-}
-
-async function toggleAlerts() {
-  if (!supportsBrowserNotifications()) {
-    updateAlertButtonLabel();
-    return;
-  }
-  if (Notification.permission === "denied") {
-    alertsEnabled = false;
-    safeSetLocalStorage(STORAGE_KEYS.alertsEnabled, "0");
-    updateAlertButtonLabel();
-    return;
-  }
-
-  if (Notification.permission === "default") {
-    const result = await Notification.requestPermission();
-    if (result !== "granted") {
-      alertsEnabled = false;
-      safeSetLocalStorage(STORAGE_KEYS.alertsEnabled, "0");
-      updateAlertButtonLabel();
-      return;
-    }
-  }
-
-  alertsEnabled = !alertsEnabled;
-  safeSetLocalStorage(STORAGE_KEYS.alertsEnabled, alertsEnabled ? "1" : "0");
-  updateAlertButtonLabel();
-  if (alertsEnabled) {
-    maybeNotifyBrowserAlerts(latestAlerts);
-  }
 }
 
 function applyStaticTexts() {
@@ -1192,15 +1048,6 @@ function applyStaticTexts() {
   if (impactOption) {
     impactOption.textContent = t("ui.sort.impact");
   }
-  if (els.alertSeverityLabel) {
-    els.alertSeverityLabel.textContent = t("ui.alertRules.label");
-  }
-  if (els.alertSeveritySelect) {
-    for (const option of Array.from(els.alertSeveritySelect.options)) {
-      option.textContent = t(`ui.alertRules.options.${option.value}`);
-    }
-    els.alertSeveritySelect.value = alertMinSeverity;
-  }
 
   const guidance = ta("ui.guidance");
   els.guideLine1.textContent = guidance[0] || "";
@@ -1219,7 +1066,6 @@ function applyStaticTexts() {
   updateKpis(latestHistory, []);
   updateTrendBadge(latestHistory);
   updateLanguageButtonLabel();
-  updateAlertButtonLabel();
 }
 
 function renderFeedList(target, items, emptyLabel) {
@@ -1781,7 +1627,9 @@ function csvCell(value) {
 function exportIncidentsCsv() {
   const incidents = sortByDate(latestPayload?.outage?.incidents || [], "started_at");
   if (!incidents.length) {
-    window.alert(t("ui.csv.noIncidents"));
+    if (els.changeSummary) {
+      els.changeSummary.textContent = t("ui.csv.noIncidents");
+    }
     return;
   }
   const severityKey = computeSeverity(latestPayload).key;
@@ -2025,22 +1873,6 @@ function severityRank(key) {
     return 0;
   }
   return 1.5;
-}
-
-function alertSeverityRank(key) {
-  if (key === "stable") {
-    return 0;
-  }
-  if (key === "minor") {
-    return 1;
-  }
-  if (key === "degraded") {
-    return 2;
-  }
-  if (key === "major") {
-    return 3;
-  }
-  return 2;
 }
 
 function getRegionSnapshot(point, region) {
@@ -2442,10 +2274,9 @@ async function loadDashboardData() {
   isLoading = true;
   els.refreshBtn.disabled = true;
   try {
-    const [statusResult, historyResult, alertsResult] = await Promise.allSettled([
+    const [statusResult, historyResult] = await Promise.allSettled([
       fetch(`${DATA_URLS.status}?t=${Date.now()}`, { cache: "no-store" }),
       fetch(`${DATA_URLS.history}?t=${Date.now()}`, { cache: "no-store" }),
-      fetch(`${DATA_URLS.alerts}?t=${Date.now()}`, { cache: "no-store" }),
     ]);
     if (statusResult.status !== "fulfilled" || !statusResult.value.ok) {
       throw new Error("status fetch failed");
@@ -2458,19 +2289,12 @@ async function loadDashboardData() {
     } else if (!latestHistory) {
       latestHistory = null;
     }
-    if (alertsResult.status === "fulfilled" && alertsResult.value.ok) {
-      latestAlerts = await alertsResult.value.json();
-    } else if (!latestAlerts) {
-      latestAlerts = null;
-    }
 
     render(latestPayload);
     updateTrendBadge(latestHistory);
     nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
     updateRefreshEta();
     initChartsIfNeeded();
-    updateAlertButtonLabel();
-    maybeNotifyBrowserAlerts(latestAlerts);
   } catch (error) {
     latestPayload = null;
     els.severityBadge.textContent = t("ui.severity.unknown");
@@ -2496,7 +2320,6 @@ async function loadDashboardData() {
     renderRegionSnapshot(latestHistory);
     renderSourceReliability(latestHistory, null);
     renderChangeSummary(null);
-    updateAlertButtonLabel();
   } finally {
     isLoading = false;
     els.refreshBtn.disabled = false;
@@ -2557,14 +2380,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-  if (els.alertSeveritySelect) {
-    els.alertSeveritySelect.value = alertMinSeverity;
-    els.alertSeveritySelect.addEventListener("change", (event) => {
-      const selected = String(event.target.value || "").toLowerCase();
-      alertMinSeverity = VALID_ALERT_THRESHOLDS.includes(selected) ? selected : "minor";
-      safeSetLocalStorage(STORAGE_KEYS.alertMinSeverity, alertMinSeverity);
-    });
-  }
   if (els.exportIncidentsBtn) {
     els.exportIncidentsBtn.addEventListener("click", exportIncidentsCsv);
   }
@@ -2574,11 +2389,6 @@ document.addEventListener("DOMContentLoaded", () => {
   updateRefreshEta();
 
   els.refreshBtn.addEventListener("click", () => loadDashboardData());
-  if (els.alertBtn) {
-    els.alertBtn.addEventListener("click", () => {
-      toggleAlerts();
-    });
-  }
   if (els.languageBtn) {
     els.languageBtn.addEventListener("click", toggleLanguage);
   }
