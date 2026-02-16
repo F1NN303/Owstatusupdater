@@ -11,18 +11,40 @@
 </head>
 <body>
   <main class="page">
-    <header class="card hero reveal">
-      <p class="eyebrow">Live Overwatch Monitor</p>
-      <h1>Service Radar</h1>
-      <p class="muted">Outage checks, status reports, and fresh news from multiple public sources.</p>
-      <div class="hero-row">
-        <span id="healthPill" class="pill neutral">Loading</span>
-        <button id="refreshBtn" class="refresh-btn" type="button">Refresh now</button>
+    <header class="hero reveal">
+      <div class="hero-main">
+        <p class="eyebrow">Live Overwatch Monitor</p>
+        <h1>Service Radar</h1>
+        <p id="headlineText" class="headline">Collecting live service signals...</p>
       </div>
-      <p id="generatedAt" class="generated">Last update: --</p>
+      <div class="hero-side">
+        <div class="hero-badges">
+          <span id="severityBadge" class="badge sev-unknown">Analyzing</span>
+          <span id="confidenceBadge" class="badge conf-neutral">Confidence --</span>
+        </div>
+        <div class="hero-actions">
+          <button id="refreshBtn" class="refresh-btn" type="button">Refresh now</button>
+        </div>
+      </div>
+      <div class="hero-meta">
+        <p id="generatedAt" class="generated">Last update: --</p>
+        <p id="nextRefresh" class="generated">Next refresh: --</p>
+      </div>
     </header>
 
-    <section class="grid">
+    <section class="overview-grid">
+      <article class="card reveal">
+        <h2>What This Means Right Now</h2>
+        <ul id="impactList" class="impact-list">
+          <li>Waiting for live status data...</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <h2>Potentially Affected Systems</h2>
+        <div id="systemGrid" class="system-grid"></div>
+      </article>
+
       <article class="card reveal">
         <h2>Outage Snapshot</h2>
         <p id="outageSummary" class="summary">Loading outage summary...</p>
@@ -33,6 +55,18 @@
           </div>
           <a id="outageSourceLink" target="_blank" rel="noreferrer">Open source</a>
         </div>
+      </article>
+
+      <article class="card reveal">
+        <h2>Source Confidence</h2>
+        <p id="sourceConfidenceText" class="summary">Evaluating source reliability...</p>
+        <div id="sourceChips" class="chips"></div>
+      </article>
+    </section>
+
+    <section class="feed-grid">
+      <article class="card reveal">
+        <h2>Incident Timeline</h2>
         <ul id="incidentList" class="feed-list compact"></ul>
       </article>
 
@@ -53,10 +87,14 @@
     </section>
 
     <section class="card reveal">
-      <h2>Source Health</h2>
-      <div id="sourceChips" class="chips"></div>
+      <h2>How To Read This Page</h2>
+      <ul class="guidance-list">
+        <li>The top sentence tells you expected player impact in plain language.</li>
+        <li>Severity combines outage volume, incident wording, and source availability.</li>
+        <li>Confidence rises when more independent sources agree.</li>
+      </ul>
       <p class="footnote">
-        Note: Downdetector and direct X scraping are commonly blocked by anti-bot systems, so this dashboard uses reachable public endpoints and flags partial failures.
+        External platforms can throttle automated access. This dashboard favors stable public sources and exposes source health so reliability is visible.
       </p>
     </section>
   </main>
