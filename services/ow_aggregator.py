@@ -43,6 +43,11 @@ SEVERITY_SCORE_THRESHOLDS = {
     "degraded_max": 8.0,
 }
 SEVERITY_INCIDENT_SCORE_CAP = 5.5
+REGION_KEYWORDS = {
+    "eu": ("eu", "europe", "emea", "germany", "france", "uk", "netherlands", "poland", "sweden"),
+    "na": ("na", "north america", "usa", "us", "canada", "mexico", "west coast", "east coast"),
+    "apac": ("apac", "asia", "oceania", "australia", "japan", "korea", "singapore", "hong kong"),
+}
 
 _CACHE_LOCK = threading.Lock()
 _CACHE_TS = 0.0
@@ -129,6 +134,27 @@ def _dedupe_by_url(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
             seen.add(key)
         out.append(item)
     return out
+
+
+def _score_to_severity(score: float, source_total_count: int = 1) -> str:
+    if source_total_count <= 0:
+        return "unknown"
+    if score < SEVERITY_SCORE_THRESHOLDS["stable_max"]:
+        return "stable"
+    if score < SEVERITY_SCORE_THRESHOLDS["minor_max"]:
+        return "minor"
+    if score < SEVERITY_SCORE_THRESHOLDS["degraded_max"]:
+        return "degraded"
+    return "major"
+
+
+def _count_keyword_hits(text: str, keywords: tuple[str, ...]) -> int:
+    hits = 0
+    for keyword in keywords:
+        pattern = rf"\b{re.escape(keyword)}\b"
+        if re.search(pattern, text):
+            hits += 1
+    return hits
 
 
 def fetch_statusgator_outages() -> dict[str, Any]:
@@ -423,22 +449,92 @@ def _calculate_severity(outage: dict[str, Any], sources: list[dict[str, Any]], h
 
     score = max(score, 0.0)
 
-    if source_total_count == 0:
-        severity_key = "unknown"
-    elif score < SEVERITY_SCORE_THRESHOLDS["stable_max"]:
-        severity_key = "stable"
-    elif score < SEVERITY_SCORE_THRESHOLDS["minor_max"]:
-        severity_key = "minor"
-    elif score < SEVERITY_SCORE_THRESHOLDS["degraded_max"]:
-        severity_key = "degraded"
-    else:
-        severity_key = "major"
+    severity_key = _score_to_severity(score, source_total_count)
 
     return {
         "severity_key": severity_key,
         "severity_score": int(round(score)),
         "source_ok_count": source_ok_count,
         "source_total_count": source_total_count,
+    }
+
+
+def _build_region_signals(
+    analytics: dict[str, Any],
+    outage: dict[str, Any],
+    reports: list[dict[str, Any]],
+    news: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    snippets: list[str] = []
+    snippets.append(_clean(outage.get("summary")))
+    for incident in outage.get("incidents") or []:
+        snippets.append(_clean(incident.get("title")))
+    for report in reports:
+        snippets.append(_clean(report.get("title")))
+    for item in news:
+        snippets.append(_clean(item.get("title")))
+
+    corpus = " ".join(snippets).lower()
+    base_score = float(analytics.get("severity_score") or 0)
+    region_hits = {region: _count_keyword_hits(corpus, keywords) for region, keywords in REGION_KEYWORDS.items()}
+    total_hits = sum(region_hits.values())
+
+    regions: dict[str, dict[str, Any]] = {}
+    for region, hits in region_hits.items():
+        if total_hits <= 0:
+            weight = 1.0 / max(len(REGION_KEYWORDS), 1)
+            region_score = base_score
+        else:
+            weight = hits / total_hits
+            # Blend global severity with region-specific evidence without over-amplifying sparse hits.
+            region_score = (base_score * 0.65) + (base_score * 1.15 * weight)
+        region_score = max(min(region_score, 12.0), 0.0)
+        regions[region] = {
+            "severity_key": _score_to_severity(region_score, 1),
+            "severity_score": int(round(region_score)),
+            "report_weight": round(weight, 3),
+        }
+    return regions
+
+
+def _build_official_block(known_resources: list[dict[str, Any]], news: list[dict[str, Any]]) -> dict[str, Any]:
+    updates: list[dict[str, Any]] = []
+    seen_urls: set[str] = set()
+
+    for item in _sort_by_datetime(news, field="published_at"):
+        url = str(item.get("url") or "")
+        if not url or url in seen_urls:
+            continue
+        seen_urls.add(url)
+        updates.append(
+            {
+                "title": _clean(item.get("title")),
+                "url": url,
+                "published_at": item.get("published_at"),
+                "source": "Overwatch News",
+                "channel": "official-news",
+            }
+        )
+
+    for item in _sort_by_datetime(known_resources, field="published_at"):
+        url = str(item.get("url") or "")
+        if not url or url in seen_urls:
+            continue
+        seen_urls.add(url)
+        updates.append(
+            {
+                "title": _clean(item.get("title")),
+                "url": url,
+                "published_at": item.get("published_at"),
+                "source": str(item.get("source") or "Blizzard Forums"),
+                "channel": "official-forum",
+            }
+        )
+
+    updates = _sort_by_datetime(updates, field="published_at")[:10]
+    return {
+        "updates": updates,
+        "last_statement_at": updates[0].get("published_at") if updates else None,
     }
 
 
@@ -497,15 +593,20 @@ def _collect_payload() -> dict[str, Any]:
     analytics = _calculate_severity(outage, sources, health)
     sorted_reports = _sort_by_datetime(_dedupe_by_url(reports), field="published_at")[:10]
     sorted_known_resources = _sort_by_datetime(_dedupe_by_url(known_resources), field="published_at")[:5]
+    sorted_news = _sort_by_datetime(news, field="published_at")[:10]
+    official = _build_official_block(sorted_known_resources, sorted_news)
+    regions = _build_region_signals(analytics, outage, sorted_reports, sorted_news)
 
     return {
         "generated_at": _utc_now_iso(),
         "health": health,
         "analytics": analytics,
+        "regions": regions,
+        "official": official,
         "outage": outage,
         "reports": sorted_reports,
         "known_resources": sorted_known_resources,
-        "news": _sort_by_datetime(news, field="published_at")[:10],
+        "news": sorted_news,
         "social": social[:6],
         "sources": sources,
     }
