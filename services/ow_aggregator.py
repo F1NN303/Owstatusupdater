@@ -43,6 +43,9 @@ SEVERITY_SCORE_THRESHOLDS = {
     "degraded_max": 8.0,
 }
 SEVERITY_INCIDENT_SCORE_CAP = 5.5
+SEVERITY_MODEL_VERSION = "2.4"
+SOURCE_FRESH_MINUTES_FRESH = 120
+SOURCE_FRESH_MINUTES_WARM = 24 * 60
 REGION_KEYWORDS = {
     "eu": ("eu", "europe", "emea", "germany", "france", "uk", "netherlands", "poland", "sweden"),
     "na": ("na", "north america", "usa", "us", "canada", "mexico", "west coast", "east coast"),
@@ -155,6 +158,106 @@ def _count_keyword_hits(text: str, keywords: tuple[str, ...]) -> int:
         if re.search(pattern, text):
             hits += 1
     return hits
+
+
+def _extract_posts_count(meta: str | None) -> int:
+    if not meta:
+        return 0
+    match = re.search(r"(\d+)\s+posts?", str(meta), flags=re.IGNORECASE)
+    if not match:
+        return 0
+    return int(match.group(1))
+
+
+def _keyword_signal_weight(text: str) -> float:
+    lowered = _clean(text).lower()
+    critical = _count_keyword_hits(lowered, SEVERITY_CRITICAL_KEYWORDS)
+    warning = _count_keyword_hits(lowered, SEVERITY_WARNING_KEYWORDS)
+    return (critical * 1.15) + (warning * 0.45)
+
+
+def _collect_cross_source_signal(
+    reports: list[dict[str, Any]],
+    news: list[dict[str, Any]],
+    social: list[dict[str, Any]],
+) -> dict[str, float]:
+    report_score = 0.0
+    report_hits_24h = 0
+    for item in reports:
+        age_h = _hours_since(item.get("published_at"))
+        if age_h is None or age_h > 72:
+            continue
+        signal = _keyword_signal_weight(f"{item.get('title') or ''} {item.get('meta') or ''}")
+        if signal <= 0:
+            continue
+        if age_h <= 6:
+            recency = 1.0
+            report_hits_24h += 1
+        elif age_h <= 24:
+            recency = 0.68
+            report_hits_24h += 1
+        else:
+            recency = 0.32
+        crowd = min(_extract_posts_count(item.get("meta")) / 60.0, 1.0) * 0.35
+        report_score += (signal * recency * 0.52) + crowd
+
+    news_score = 0.0
+    for item in news:
+        age_h = _hours_since(item.get("published_at"))
+        if age_h is None or age_h > 7 * 24:
+            continue
+        signal = _keyword_signal_weight(item.get("title") or "")
+        if signal <= 0:
+            continue
+        recency = 1.0 if age_h <= 24 else 0.45
+        news_score += signal * recency * 0.4
+
+    social_score = 0.0
+    for item in social:
+        signal = _keyword_signal_weight(item.get("title") or "")
+        if signal <= 0:
+            continue
+        social_score += signal * 0.25
+
+    return {
+        "report_score": round(report_score, 3),
+        "news_score": round(news_score, 3),
+        "social_score": round(social_score, 3),
+        "combined_score": round(report_score + news_score + social_score, 3),
+        "report_hits_24h": report_hits_24h,
+    }
+
+
+def _latest_timestamp(items: list[dict[str, Any]], *fields: str) -> str | None:
+    latest: dt.datetime | None = None
+    latest_raw: str | None = None
+    for item in items:
+        for field in fields:
+            raw = item.get(field)
+            parsed = _parse_iso8601(raw)
+            if not parsed:
+                continue
+            if latest is None or parsed > latest:
+                latest = parsed
+                latest_raw = raw
+    return latest_raw
+
+
+def _source_freshness(last_item_at: str | None) -> tuple[str, int | None]:
+    age_h = _hours_since(last_item_at)
+    if age_h is None:
+        return "unknown", None
+    age_minutes = int(max(age_h * 60.0, 0.0))
+    if age_minutes <= SOURCE_FRESH_MINUTES_FRESH:
+        return "fresh", age_minutes
+    if age_minutes <= SOURCE_FRESH_MINUTES_WARM:
+        return "warm", age_minutes
+    return "stale", age_minutes
+
+
+def _safe_error_message(exc: Exception) -> str:
+    msg = str(exc).strip().splitlines()[0] if exc else "unknown error"
+    return _clean(msg)[:220]
 
 
 def fetch_statusgator_outages() -> dict[str, Any]:
@@ -381,74 +484,148 @@ def fetch_x_updates(limit: int = 4) -> list[dict[str, Any]]:
     return items
 
 
-def _calculate_severity(outage: dict[str, Any], sources: list[dict[str, Any]], health: str) -> dict[str, Any]:
+def _calculate_severity(
+    outage: dict[str, Any],
+    sources: list[dict[str, Any]],
+    health: str,
+    reports: list[dict[str, Any]],
+    news: list[dict[str, Any]],
+    social: list[dict[str, Any]],
+) -> dict[str, Any]:
     score = 0.0
     reports_24h = int(outage.get("reports_24h") or 0)
     incidents = outage.get("incidents") or []
     incident_score = 0.0
+    recent_incidents_6h = 0
     recent_incidents_24h = 0
 
-    if reports_24h >= 1500:
-        score += 3.0
-    elif reports_24h >= 900:
-        score += 2.0
-    elif reports_24h >= 450:
-        score += 1.0
+    report_contribution = 0.0
+    if reports_24h >= 1800:
+        report_contribution = 2.8
+    elif reports_24h >= 1200:
+        report_contribution = 2.0
+    elif reports_24h >= 700:
+        report_contribution = 1.2
+    elif reports_24h >= 350:
+        report_contribution = 0.6
+    score += report_contribution
 
     for incident in incidents:
         title = str(incident.get("title") or "").lower()
         age_h = _hours_since(incident.get("started_at"))
+        if age_h is not None and age_h <= 6:
+            recent_incidents_6h += 1
         if age_h is not None and age_h <= 24:
             recent_incidents_24h += 1
 
         if age_h is None:
             age_weight = 0.3
+        elif age_h <= 3:
+            age_weight = 2.2
         elif age_h <= 6:
-            age_weight = 2.0
+            age_weight = 1.8
         elif age_h <= 24:
-            age_weight = 1.2
+            age_weight = 1.0
         elif age_h <= 72:
-            age_weight = 0.5
+            age_weight = 0.35
         else:
-            age_weight = 0.2
+            age_weight = 0.1
 
         keyword_weight = 0.0
         if any(keyword in title for keyword in SEVERITY_CRITICAL_KEYWORDS):
-            keyword_weight = 1.2
+            keyword_weight = 1.1
         elif any(keyword in title for keyword in SEVERITY_WARNING_KEYWORDS):
-            keyword_weight = 0.6
+            keyword_weight = 0.45
 
         if age_h is None or age_h <= 24:
             keyword_factor = 1.0
         elif age_h <= 72:
-            keyword_factor = 0.35
+            keyword_factor = 0.3
         else:
-            keyword_factor = 0.12
+            keyword_factor = 0.1
 
         incident_score += age_weight + (keyword_weight * keyword_factor)
 
-    score += min(incident_score, SEVERITY_INCIDENT_SCORE_CAP)
+    incident_cap = SEVERITY_INCIDENT_SCORE_CAP
+    if reports_24h < 900 and recent_incidents_24h <= 1:
+        incident_cap = min(incident_cap, 3.8)
+    incident_contribution = min(incident_score, incident_cap)
+    score += incident_contribution
 
+    health_contribution = 0.0
     if health == "degraded":
-        score += 1.0
+        health_contribution = 0.35
     elif health == "error":
-        score += 2.0
-
-    current_status_text = str(outage.get("current_status") or "").lower()
-    if "operational" in current_status_text:
-        score -= 1.8
-        if recent_incidents_24h <= 1 and reports_24h < 900:
-            score -= 0.8
+        health_contribution = 0.8
+    score += health_contribution
 
     source_total_count = len(sources)
     source_ok_count = sum(1 for source in sources if source.get("ok"))
+    source_ratio = (source_ok_count / source_total_count) if source_total_count else 0.0
+
+    guard_operational = False
+    current_status_text = str(outage.get("current_status") or "").lower()
+    if "operational" in current_status_text:
+        guard_operational = True
+        score -= 1.8
+        if recent_incidents_24h <= 1:
+            score -= 0.7
+        if reports_24h < 900:
+            score -= 0.5
+
+    support = _collect_cross_source_signal(reports, news, social)
+    support_score = float(support.get("combined_score") or 0.0)
+    corroboration_bonus = 0.0
+    cross_source_guard = False
+    if support_score >= 2.2:
+        corroboration_bonus = 0.9
+    elif support_score >= 1.1:
+        corroboration_bonus = 0.4
+    else:
+        if "operational" in current_status_text and reports_24h < 1200 and recent_incidents_24h <= 2:
+            score -= 1.2
+            cross_source_guard = True
+    if support_score < 0.5 and recent_incidents_6h == 0:
+        score -= 0.5
+        cross_source_guard = True
+    score += corroboration_bonus
+
+    low_volume_guard = False
     if reports_24h < 150 and len(incidents) <= 1 and source_ok_count >= max(source_total_count - 1, 1):
-        score -= 0.6
+        score -= 0.5
+        low_volume_guard = True
     if reports_24h < 250 and recent_incidents_24h == 0:
-        score -= 0.6
+        score -= 0.7
+        low_volume_guard = True
+    if source_ratio >= 0.8 and support_score < 0.8 and reports_24h < 1000:
+        score -= 0.5
+        cross_source_guard = True
 
     score = max(score, 0.0)
+    severity_key = _score_to_severity(score, source_total_count)
 
+    major_cap_applied = False
+    false_positive_cap_applied = False
+    if (
+        severity_key == "major"
+        and "operational" in current_status_text
+        and support_score < 1.2
+        and recent_incidents_6h <= 1
+        and reports_24h < 1700
+    ):
+        score = min(score, SEVERITY_SCORE_THRESHOLDS["degraded_max"] - 0.05)
+        major_cap_applied = True
+    if (
+        _score_to_severity(score, source_total_count) in ("degraded", "major")
+        and "operational" in current_status_text
+        and support_score < 0.8
+        and recent_incidents_6h == 0
+        and reports_24h < 700
+    ):
+        score = min(score, SEVERITY_SCORE_THRESHOLDS["minor_max"] - 0.05)
+        false_positive_cap_applied = True
+
+    score = max(score, 0.0)
     severity_key = _score_to_severity(score, source_total_count)
 
     return {
@@ -456,6 +633,28 @@ def _calculate_severity(outage: dict[str, Any], sources: list[dict[str, Any]], h
         "severity_score": int(round(score)),
         "source_ok_count": source_ok_count,
         "source_total_count": source_total_count,
+        "model_version": SEVERITY_MODEL_VERSION,
+        "score_breakdown": {
+            "reports": round(report_contribution, 3),
+            "incidents": round(incident_contribution, 3),
+            "source_health": round(health_contribution, 3),
+            "corroboration_bonus": round(corroboration_bonus, 3),
+            "support_score": round(support_score, 3),
+        },
+        "signal_metrics": {
+            "reports_24h": reports_24h,
+            "recent_incidents_6h": recent_incidents_6h,
+            "recent_incidents_24h": recent_incidents_24h,
+            "cross_source": support,
+        },
+        "safeguards": {
+            "operational_dampening": guard_operational,
+            "cross_source_guard": cross_source_guard,
+            "low_volume_guard": low_volume_guard,
+            "major_cap_applied": major_cap_applied,
+            "false_positive_cap_applied": false_positive_cap_applied,
+            "recency_decay": True,
+        },
     }
 
 
@@ -545,9 +744,26 @@ def _collect_payload() -> dict[str, Any]:
     news: list[dict[str, Any]] = []
     social: list[dict[str, Any]] = []
 
+    started = time.perf_counter()
     try:
         outage = fetch_statusgator_outages()
-        sources.append({"name": "StatusGator", "ok": True, "error": None})
+        last_item_at = _latest_timestamp(outage.get("incidents") or [], "started_at")
+        freshness, age_minutes = _source_freshness(last_item_at)
+        sources.append(
+            {
+                "name": "StatusGator",
+                "kind": "outage-index",
+                "url": STATUSGATOR_URL,
+                "ok": True,
+                "error": None,
+                "item_count": len(outage.get("incidents") or []),
+                "last_item_at": last_item_at,
+                "freshness": freshness,
+                "age_minutes": age_minutes,
+                "duration_ms": int((time.perf_counter() - started) * 1000),
+                "fetched_at": _utc_now_iso(),
+            }
+        )
     except Exception as exc:  # pragma: no cover
         outage = {
             "source": "StatusGator",
@@ -558,29 +774,136 @@ def _collect_payload() -> dict[str, Any]:
             "reports_24h": None,
             "incidents": [],
         }
-        sources.append({"name": "StatusGator", "ok": False, "error": str(exc)})
+        sources.append(
+            {
+                "name": "StatusGator",
+                "kind": "outage-index",
+                "url": STATUSGATOR_URL,
+                "ok": False,
+                "error": _safe_error_message(exc),
+                "item_count": 0,
+                "last_item_at": None,
+                "freshness": "unknown",
+                "age_minutes": None,
+                "duration_ms": int((time.perf_counter() - started) * 1000),
+                "fetched_at": _utc_now_iso(),
+            }
+        )
 
     for slug, category_id, label in FORUM_CATEGORIES:
         source_name = f"Blizzard Forums - {label}"
+        started = time.perf_counter()
         try:
             category_items, category_known = fetch_forum_topics(slug, category_id, label)
             reports.extend(category_items)
             known_resources.extend(category_known)
-            sources.append({"name": source_name, "ok": True, "error": None})
+            last_item_at = _latest_timestamp(category_items, "published_at")
+            freshness, age_minutes = _source_freshness(last_item_at)
+            sources.append(
+                {
+                    "name": source_name,
+                    "kind": "community-forum",
+                    "url": f"{FORUM_BASE_URL}/c/{slug}/{category_id}",
+                    "ok": True,
+                    "error": None,
+                    "item_count": len(category_items),
+                    "last_item_at": last_item_at,
+                    "freshness": freshness,
+                    "age_minutes": age_minutes,
+                    "duration_ms": int((time.perf_counter() - started) * 1000),
+                    "fetched_at": _utc_now_iso(),
+                }
+            )
         except Exception as exc:  # pragma: no cover
-            sources.append({"name": source_name, "ok": False, "error": str(exc)})
+            sources.append(
+                {
+                    "name": source_name,
+                    "kind": "community-forum",
+                    "url": f"{FORUM_BASE_URL}/c/{slug}/{category_id}",
+                    "ok": False,
+                    "error": _safe_error_message(exc),
+                    "item_count": 0,
+                    "last_item_at": None,
+                    "freshness": "unknown",
+                    "age_minutes": None,
+                    "duration_ms": int((time.perf_counter() - started) * 1000),
+                    "fetched_at": _utc_now_iso(),
+                }
+            )
 
+    started = time.perf_counter()
     try:
         news = fetch_overwatch_news()
-        sources.append({"name": "Overwatch News", "ok": True, "error": None})
+        last_item_at = _latest_timestamp(news, "published_at")
+        freshness, age_minutes = _source_freshness(last_item_at)
+        sources.append(
+            {
+                "name": "Overwatch News",
+                "kind": "official-news",
+                "url": OVERWATCH_NEWS_URL,
+                "ok": True,
+                "error": None,
+                "item_count": len(news),
+                "last_item_at": last_item_at,
+                "freshness": freshness,
+                "age_minutes": age_minutes,
+                "duration_ms": int((time.perf_counter() - started) * 1000),
+                "fetched_at": _utc_now_iso(),
+            }
+        )
     except Exception as exc:  # pragma: no cover
-        sources.append({"name": "Overwatch News", "ok": False, "error": str(exc)})
+        sources.append(
+            {
+                "name": "Overwatch News",
+                "kind": "official-news",
+                "url": OVERWATCH_NEWS_URL,
+                "ok": False,
+                "error": _safe_error_message(exc),
+                "item_count": 0,
+                "last_item_at": None,
+                "freshness": "unknown",
+                "age_minutes": None,
+                "duration_ms": int((time.perf_counter() - started) * 1000),
+                "fetched_at": _utc_now_iso(),
+            }
+        )
 
+    started = time.perf_counter()
     try:
         social = fetch_x_updates()
-        sources.append({"name": "X mirror feed", "ok": True, "error": None})
+        last_item_at = _latest_timestamp(social, "published_at")
+        freshness, age_minutes = _source_freshness(last_item_at)
+        sources.append(
+            {
+                "name": "X mirror feed",
+                "kind": "social-mirror",
+                "url": X_MIRROR_URL,
+                "ok": True,
+                "error": None,
+                "item_count": len(social),
+                "last_item_at": last_item_at,
+                "freshness": freshness,
+                "age_minutes": age_minutes,
+                "duration_ms": int((time.perf_counter() - started) * 1000),
+                "fetched_at": _utc_now_iso(),
+            }
+        )
     except Exception as exc:  # pragma: no cover
-        sources.append({"name": "X mirror feed", "ok": False, "error": str(exc)})
+        sources.append(
+            {
+                "name": "X mirror feed",
+                "kind": "social-mirror",
+                "url": X_MIRROR_URL,
+                "ok": False,
+                "error": _safe_error_message(exc),
+                "item_count": 0,
+                "last_item_at": None,
+                "freshness": "unknown",
+                "age_minutes": None,
+                "duration_ms": int((time.perf_counter() - started) * 1000),
+                "fetched_at": _utc_now_iso(),
+            }
+        )
 
     successful_sources = sum(1 for source in sources if source["ok"])
     if successful_sources == 0:
@@ -590,10 +913,10 @@ def _collect_payload() -> dict[str, Any]:
     else:
         health = "ok"
 
-    analytics = _calculate_severity(outage, sources, health)
     sorted_reports = _sort_by_datetime(_dedupe_by_url(reports), field="published_at")[:10]
     sorted_known_resources = _sort_by_datetime(_dedupe_by_url(known_resources), field="published_at")[:5]
     sorted_news = _sort_by_datetime(news, field="published_at")[:10]
+    analytics = _calculate_severity(outage, sources, health, sorted_reports, sorted_news, social[:6])
     official = _build_official_block(sorted_known_resources, sorted_news)
     regions = _build_region_signals(analytics, outage, sorted_reports, sorted_news)
 

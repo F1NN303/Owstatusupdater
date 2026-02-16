@@ -193,6 +193,29 @@
         ok: "OK",
         failed: "FAILED",
       },
+      sourceMethod:
+        "False-positive guards active: recency decay, operational dampening, and cross-source corroboration.",
+      safeguards: {
+        prefix: "Safeguards: {list}",
+        operational_dampening: "operational dampening",
+        cross_source_guard: "cross-source guard",
+        low_volume_guard: "low-volume filter",
+        major_cap_applied: "major-state cap",
+        false_positive_cap_applied: "false-positive cap",
+        recency_decay: "recency decay",
+      },
+      sourceDetails: {
+        noSources: "No source diagnostics available.",
+        items: "{n} items",
+        latency: "{n} ms",
+        fetched: "fetched {age}",
+        freshness: {
+          fresh: "fresh",
+          warm: "aging",
+          stale: "stale",
+          unknown: "unknown",
+        },
+      },
       relative: {
         now: "just now",
         minute: "{n}m ago",
@@ -427,6 +450,29 @@
         ok: "OK",
         failed: "FEHLER",
       },
+      sourceMethod:
+        "Schutz gegen Fehlalarme aktiv: zeitbasierte Abwertung, Operational-Dämpfung und Quellenabgleich.",
+      safeguards: {
+        prefix: "Schutzmechanismen: {list}",
+        operational_dampening: "Operational-Dämpfung",
+        cross_source_guard: "Quellenabgleich-Filter",
+        low_volume_guard: "Niedrigvolumen-Filter",
+        major_cap_applied: "Großstörung-Kappung",
+        false_positive_cap_applied: "Fehlalarm-Kappung",
+        recency_decay: "zeitbasierte Abwertung",
+      },
+      sourceDetails: {
+        noSources: "Keine Quelldiagnosen verfügbar.",
+        items: "{n} Einträge",
+        latency: "{n} ms",
+        fetched: "abgerufen {age}",
+        freshness: {
+          fresh: "frisch",
+          warm: "alternd",
+          stale: "veraltet",
+          unknown: "unklar",
+        },
+      },
       relative: {
         now: "gerade eben",
         minute: "vor {n} Min",
@@ -502,6 +548,8 @@ const els = {
   sourceConfidenceTitle: document.getElementById("sourceConfidenceTitle"),
   sourceConfidenceText: document.getElementById("sourceConfidenceText"),
   sourceChips: document.getElementById("sourceChips"),
+  sourceMethodText: document.getElementById("sourceMethodText"),
+  sourceDetailsList: document.getElementById("sourceDetailsList"),
   kpiTitle: document.getElementById("kpiTitle"),
   kpiRegionHint: document.getElementById("kpiRegionHint"),
   kpiUptime24Label: document.getElementById("kpiUptime24Label"),
@@ -982,6 +1030,9 @@ function applyStaticTexts() {
   els.outageTitle.textContent = t("ui.sections.outage");
   els.reports24hLabel.textContent = t("ui.labels.reports24h");
   els.sourceConfidenceTitle.textContent = t("ui.sections.sourceConfidence");
+  if (els.sourceMethodText) {
+    els.sourceMethodText.textContent = t("ui.sourceMethod");
+  }
   els.kpiTitle.textContent = t("ui.sections.kpi");
   els.kpiUptime24Label.textContent = t("ui.kpi.uptime24");
   els.kpiUptime7Label.textContent = t("ui.kpi.uptime7");
@@ -1118,6 +1169,9 @@ function renderKnownResources(resources) {
 function renderSources(sources) {
   if (!sources || sources.length === 0) {
     els.sourceChips.innerHTML = `<span class="chip bad">${escapeHtml(t("ui.empty.sourceState"))}</span>`;
+    if (els.sourceDetailsList) {
+      els.sourceDetailsList.innerHTML = `<li class="empty">${escapeHtml(t("ui.sourceDetails.noSources"))}</li>`;
+    }
     return;
   }
   els.sourceChips.innerHTML = sources
@@ -1128,6 +1182,62 @@ function renderSources(sources) {
       return `<span class="chip ${cls}"${title}>${escapeHtml(source.name)}: ${label}</span>`;
     })
     .join("");
+
+  if (!els.sourceDetailsList) {
+    return;
+  }
+
+  els.sourceDetailsList.innerHTML = sources
+    .map((source) => {
+      const ok = !!source?.ok;
+      const pillClass = ok ? "ok" : "bad";
+      const pillLabel = ok ? t("ui.sourceChip.ok") : t("ui.sourceChip.failed");
+      const name = escapeHtml(normalizeText(source?.name || "Source"));
+      const freshnessKey = ["fresh", "warm", "stale", "unknown"].includes(source?.freshness) ? source.freshness : "unknown";
+      const freshness = t(`ui.sourceDetails.freshness.${freshnessKey}`);
+      const itemCount = clampNumber(source?.item_count, 0, 9999, 0);
+      const durationMs = clampNumber(source?.duration_ms, 0, 999_999, 0);
+      const fetchedAge = relativeFromNow(source?.fetched_at);
+      const ageText = fetchedAge || t("ui.meta.noTimestamp");
+      const bits = [
+        t("ui.sourceDetails.items", { n: formatNumber(itemCount) }),
+        freshness,
+        t("ui.sourceDetails.latency", { n: formatNumber(durationMs) }),
+        t("ui.sourceDetails.fetched", { age: ageText }),
+      ];
+      const errorText = source?.error ? `<div class="row-meta error">${escapeHtml(normalizeText(source.error))}</div>` : "";
+      return `
+        <li class="source-detail-item">
+          <div class="row-top">
+            <strong>${name}</strong>
+            <span class="source-pill ${pillClass}">${escapeHtml(pillLabel)}</span>
+          </div>
+          <div class="row-meta">${escapeHtml(bits.join(" | "))}</div>
+          ${errorText}
+        </li>
+      `;
+    })
+    .join("");
+}
+
+function updateSourceMethod(analytics) {
+  if (!els.sourceMethodText) {
+    return;
+  }
+  const safeguards = analytics?.safeguards && typeof analytics.safeguards === "object" ? analytics.safeguards : null;
+  if (!safeguards) {
+    els.sourceMethodText.textContent = t("ui.sourceMethod");
+    return;
+  }
+  const active = Object.entries(safeguards)
+    .filter((entry) => entry[1])
+    .map((entry) => t(`ui.safeguards.${entry[0]}`))
+    .filter((label) => !label.startsWith("ui.safeguards."));
+  if (!active.length) {
+    els.sourceMethodText.textContent = t("ui.sourceMethod");
+    return;
+  }
+  els.sourceMethodText.textContent = t("ui.safeguards.prefix", { list: active.join(", ") });
 }
 
 function getSignalCorpus(data) {
@@ -1477,6 +1587,7 @@ function render(data) {
   renderFeedList(els.socialList, sortCollection(data?.social || [], "published_at"), t("ui.empty.social"));
   renderKnownResources(sortCollection(data?.known_resources || [], "published_at"));
   renderSources(data?.sources || []);
+  updateSourceMethod(data?.analytics || null);
   renderChangeSummary(data?.changes);
 
   const ratioText = confidence.total ? `${confidence.ok}/${confidence.total}` : "--";
@@ -1506,6 +1617,7 @@ function renderLoadingState() {
   renderFeedList(els.newsList, [], t("ui.empty.news"));
   renderFeedList(els.socialList, [], t("ui.empty.social"));
   renderSources([]);
+  updateSourceMethod(null);
   updateKpis(null, []);
   renderChangeSummary(null);
   els.chart24Empty.hidden = false;
