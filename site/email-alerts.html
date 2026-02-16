@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overwatch Radar | Email Alerts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="page">
+    <nav class="top-nav reveal" aria-label="Site menu">
+      <a class="top-link" href="./index.html">Back to dashboard</a>
+      <a class="top-link" href="./data/rss.xml" target="_blank" rel="noreferrer">RSS feed</a>
+    </nav>
+
+    <section class="hero reveal">
+      <div class="hero-main">
+        <p class="eyebrow">Alert Delivery Setup</p>
+        <h1>Email Alerts (Brevo)</h1>
+        <p class="headline">This page explains how automatic email notifications are sent when Overwatch enters a major outage state.</p>
+        <div class="status-marker marker-minor" role="status" aria-live="polite">
+          <span class="marker-dot" aria-hidden="true"></span>
+          <span>Major outage emails are sent by GitHub Actions, not by browser code.</span>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="hero-badges">
+          <span class="badge conf-high">Brevo</span>
+          <span class="badge trend-stable">Actions automation</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="overview-grid">
+      <article class="card reveal">
+        <h2>How It Works</h2>
+        <ul class="guidance-list">
+          <li>The refresh workflow updates `site/data/status.json` every 30 minutes.</li>
+          <li>A secure Python step checks if severity is `major` and decides if an email should be sent.</li>
+          <li>Cooldown and state tracking prevent duplicate sends on every run.</li>
+          <li>Brevo API keys stay in GitHub Secrets and never appear in public frontend files.</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <h2>Required GitHub Secrets</h2>
+        <ul class="guidance-list">
+          <li>`BREVO_API_KEY`</li>
+          <li>`ALERT_EMAIL_FROM` (verified Brevo sender address)</li>
+          <li>`ALERT_EMAIL_TO` (comma-separated recipients)</li>
+        </ul>
+        <p class="footnote">Optional: set `ALERT_EMAIL_SENDER_NAME`, `ALERT_MAJOR_COOLDOWN_MINUTES`, and `ALERT_SITE_URL` in the workflow env block.</p>
+      </article>
+
+      <article class="card reveal">
+        <h2>Brevo Setup Checklist</h2>
+        <ol class="guidance-list">
+          <li>Create a Brevo account and open SMTP & API settings.</li>
+          <li>Create a new API key for transactional emails.</li>
+          <li>Add and verify your sender identity in Brevo (single sender or domain).</li>
+          <li>Add the required secrets in your GitHub repository settings.</li>
+          <li>Run `Update Site Data` manually once to validate delivery.</li>
+        </ol>
+      </article>
+
+      <article class="card reveal">
+        <h2>Safety Notes</h2>
+        <ul class="guidance-list">
+          <li>Never commit API keys to the repository.</li>
+          <li>Do not store recipient email addresses in frontend JS files.</li>
+          <li>Use separate API keys for production and testing.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

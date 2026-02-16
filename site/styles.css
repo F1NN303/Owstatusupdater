@@ -36,6 +36,80 @@ body {
   gap: 1rem;
 }
 
+.top-nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.top-link,
+.menu-button {
+  border: 1px solid rgba(123, 142, 168, 0.45);
+  background: rgba(18, 25, 34, 0.62);
+  color: #d8ebff;
+  border-radius: 0.62rem;
+  padding: 0.38rem 0.62rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  text-decoration: none;
+  line-height: 1.1;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.top-link:hover,
+.menu-button:hover {
+  border-color: rgba(56, 189, 248, 0.62);
+  box-shadow: 0 10px 22px rgba(56, 189, 248, 0.14);
+}
+
+.menu-dropdown {
+  position: relative;
+}
+
+.menu-button {
+  list-style: none;
+  cursor: pointer;
+}
+
+.menu-button::-webkit-details-marker {
+  display: none;
+}
+
+.menu-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.45rem);
+  min-width: 11rem;
+  border: 1px solid #27364a;
+  border-radius: 0.76rem;
+  background: linear-gradient(160deg, rgba(18, 25, 34, 0.98), rgba(16, 23, 35, 0.98));
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.42);
+  padding: 0.35rem;
+  display: grid;
+  gap: 0.2rem;
+  z-index: 20;
+}
+
+.menu-panel a {
+  border: 1px solid transparent;
+  border-radius: 0.55rem;
+  color: #d8e6f6;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-family: "IBM Plex Mono", monospace;
+  padding: 0.42rem 0.48rem;
+}
+
+.menu-panel a:hover,
+.menu-panel a:focus-visible {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(56, 189, 248, 0.12);
+  outline: none;
+}
+
 .card {
   background: linear-gradient(165deg, rgba(18, 25, 34, 0.95), rgba(18, 25, 34, 0.84));
   border: 1px solid var(--border);
@@ -377,6 +451,12 @@ h2 {
 .lang-btn:focus-visible,
 .sort-wrap select:focus-visible,
 .secondary-btn:focus-visible {
+  outline: 2px solid rgba(56, 189, 248, 0.75);
+  outline-offset: 2px;
+}
+
+.top-link:focus-visible,
+.menu-button:focus-visible {
   outline: 2px solid rgba(56, 189, 248, 0.75);
   outline-offset: 2px;
 }
@@ -986,6 +1066,20 @@ h2 {
     gap: 0.82rem;
   }
 
+  .top-nav {
+    justify-content: space-between;
+  }
+
+  .top-link,
+  .menu-button {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.54rem;
+  }
+
+  .menu-panel {
+    min-width: 9.8rem;
+  }
+
   .card {
     padding: 0.92rem;
     border-radius: 0.92rem;
@@ -1078,6 +1172,10 @@ h2 {
 @media (max-width: 420px) {
   .page {
     padding: 0.95rem 0.58rem 1.6rem;
+  }
+
+  .menu-panel {
+    min-width: 9.2rem;
   }
 
   .hero {

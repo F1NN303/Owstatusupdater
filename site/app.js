@@ -6,6 +6,13 @@
       title: "Service Radar",
       refresh: "Refresh now",
       languageAria: "Switch language",
+      menu: {
+        button: "Menu",
+        home: "Dashboard",
+        emailAlerts: "Email alerts",
+        rss: "RSS feed",
+        github: "GitHub",
+      },
       tabs: {
         overview: "Overview",
         incidents: "Incidents",
@@ -289,6 +296,13 @@
       title: "Service-Radar",
       refresh: "Jetzt aktualisieren",
       languageAria: "Sprache wechseln",
+      menu: {
+        button: "Menü",
+        home: "Dashboard",
+        emailAlerts: "E-Mail-Alarme",
+        rss: "RSS-Feed",
+        github: "GitHub",
+      },
       tabs: {
         overview: "Übersicht",
         incidents: "Vorfälle",
@@ -570,6 +584,11 @@
 const els = {
   tabButtons: Array.from(document.querySelectorAll("[data-tab-target]")),
   tabPanels: Array.from(document.querySelectorAll("[data-tab-panel]")),
+  menuButtonText: document.getElementById("menuButtonText"),
+  menuHomeLink: document.getElementById("menuHomeLink"),
+  menuEmailAlertsLink: document.getElementById("menuEmailAlertsLink"),
+  menuRssLink: document.getElementById("menuRssLink"),
+  menuGithubLink: document.getElementById("menuGithubLink"),
   eyebrowText: document.getElementById("eyebrowText"),
   titleText: document.getElementById("titleText"),
   severityBadge: document.getElementById("severityBadge"),
@@ -971,6 +990,22 @@ function renderChangeSummary(changes) {
 function applyStaticTexts() {
   document.documentElement.lang = currentLang;
   document.title = t("pageTitle");
+
+  if (els.menuButtonText) {
+    els.menuButtonText.textContent = t("ui.menu.button");
+  }
+  if (els.menuHomeLink) {
+    els.menuHomeLink.textContent = t("ui.menu.home");
+  }
+  if (els.menuEmailAlertsLink) {
+    els.menuEmailAlertsLink.textContent = t("ui.menu.emailAlerts");
+  }
+  if (els.menuRssLink) {
+    els.menuRssLink.textContent = t("ui.menu.rss");
+  }
+  if (els.menuGithubLink) {
+    els.menuGithubLink.textContent = t("ui.menu.github");
+  }
 
   els.eyebrowText.textContent = t("ui.eyebrow");
   els.titleText.textContent = t("ui.title");

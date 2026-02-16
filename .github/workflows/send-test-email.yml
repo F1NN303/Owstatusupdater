@@ -1,15 +1,13 @@
-name: Update Site Data
+name: Send Test Email Alert
 
 on:
-  schedule:
-    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  refresh-data:
+  send-test-email:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,27 +21,27 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.site.txt
 
-      - name: Build status JSON
+      - name: Refresh latest status data
         run: python scripts/build_site_data.py
 
-      - name: Send major outage email via Brevo
+      - name: Send forced test email via Brevo
         env:
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
           ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
-          ALERT_EMAIL_SENDER_NAME: Overwatch Service Radar
-          ALERT_MAJOR_COOLDOWN_MINUTES: "360"
+          ALERT_EMAIL_SENDER_NAME: Overwatch Service Radar Test
           ALERT_SITE_URL: https://f1nn303.github.io/Owstatusupdater/
+          ALERT_FORCE_SEND: "1"
         run: python scripts/send_brevo_major_alert.py
 
-      - name: Commit and push if changed
+      - name: Commit and push data/state updates if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if git diff --quiet -- site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/data/state.json site/data/email_alert_state.json; then
-            echo "No status data changes."
+            echo "No data changes."
             exit 0
           fi
           git add site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/data/state.json site/data/email_alert_state.json
-          git commit -m "chore: refresh status data"
+          git commit -m "chore: refresh status data and test email state"
           git push
