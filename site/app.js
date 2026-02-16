@@ -178,8 +178,8 @@
       refresh: "Jetzt aktualisieren",
       languageAria: "Sprache wechseln",
       tabs: {
-        overview: "Uebersicht",
-        incidents: "Vorfaelle",
+        overview: "Übersicht",
+        incidents: "Vorfälle",
         analytics: "Analytik",
       },
       sections: {
@@ -203,7 +203,7 @@
       sort: {
         label: "Sortieren nach",
         recent: "Neueste zuerst",
-        impact: "Hoechster Einfluss",
+        impact: "Höchster Einfluss",
       },
       guidance: [
         "Die obere Statuszeile erklärt die erwartete Spieler-Auswirkung in klarer Sprache.",
@@ -252,8 +252,8 @@
       },
       marker: {
         stable: "Status: Keine Probleme erkannt.",
-        minor: "Status: Leichte Stoerung erkannt.",
-        degraded: "Status: Servicequalitaet reduziert.",
+        minor: "Status: Leichte Störung erkannt.",
+        degraded: "Status: Servicequalität reduziert.",
         major: "Status: Deutliche Ausfallbedingungen erkannt.",
         unknown: "Status: Aktueller Servicezustand unklar.",
       },
@@ -322,10 +322,10 @@
         dataAge: "Datenalter: {age} ({points} Punkte)",
         dataAgeUnknown: "Datenalter: unbekannt",
         legend: {
-          stable: "Service verfuegbar",
-          minor: "Moegliche Stoerung",
-          degraded: "Wahrscheinliche Stoerung",
-          major: "Groessere Stoerung",
+          stable: "Service verfügbar",
+          minor: "Mögliche Störung",
+          degraded: "Wahrscheinliche Störung",
+          major: "Größere Störung",
         },
         reportsSeries: "Meldungen (24h)",
         trendSeries: "Meldungstrend",
@@ -333,7 +333,7 @@
         tooltip: {
           reports: "Meldungen (24h)",
           severity: "Schweregrad",
-          sources: "Quellen-Uebereinstimmung",
+          sources: "Quellen-Übereinstimmung",
         },
       },
       errors: {
