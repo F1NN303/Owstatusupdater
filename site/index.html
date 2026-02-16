@@ -37,73 +37,127 @@
       </div>
     </header>
 
-    <section class="overview-grid">
-      <article class="card reveal">
-        <h2 id="impactTitle">What This Means Right Now</h2>
-        <ul id="impactList" class="impact-list">
-          <li>Waiting for live status data...</li>
-        </ul>
-      </article>
+    <nav id="tabNav" class="tab-nav reveal" role="tablist" aria-label="Dashboard sections">
+      <button id="tabOverviewBtn" class="tab-btn active" role="tab" aria-selected="true" aria-controls="panelOverview" data-tab-target="overview">Overview</button>
+      <button id="tabIncidentsBtn" class="tab-btn" role="tab" aria-selected="false" aria-controls="panelIncidents" data-tab-target="incidents">Incidents</button>
+      <button id="tabAnalyticsBtn" class="tab-btn" role="tab" aria-selected="false" aria-controls="panelAnalytics" data-tab-target="analytics">Analytics</button>
+    </nav>
 
-      <article class="card reveal">
-        <h2 id="systemsTitle">Potentially Affected Systems</h2>
-        <div id="systemGrid" class="system-grid"></div>
-      </article>
+    <section id="panelOverview" class="tab-panel active" role="tabpanel" aria-labelledby="tabOverviewBtn" data-tab-panel="overview">
+      <section class="overview-grid">
+        <article class="card reveal">
+          <h2 id="impactTitle">What This Means Right Now</h2>
+          <ul id="impactList" class="impact-list">
+            <li>Waiting for live status data...</li>
+          </ul>
+        </article>
 
-      <article class="card reveal">
-        <h2 id="outageTitle">Outage Snapshot</h2>
-        <p id="outageSummary" class="summary">Loading outage summary...</p>
-        <div class="stats">
-          <div class="stat">
-            <span id="reports24hLabel">24h reports</span>
-            <strong id="reports24h">--</strong>
+        <article class="card reveal">
+          <h2 id="systemsTitle">Potentially Affected Systems</h2>
+          <div id="systemGrid" class="system-grid"></div>
+        </article>
+
+        <article class="card reveal">
+          <h2 id="outageTitle">Outage Snapshot</h2>
+          <p id="outageSummary" class="summary">Loading outage summary...</p>
+          <div class="stats">
+            <div class="stat">
+              <span id="reports24hLabel">24h reports</span>
+              <strong id="reports24h">--</strong>
+            </div>
+            <a id="outageSourceLink" target="_blank" rel="noreferrer">Open source</a>
           </div>
-          <a id="outageSourceLink" target="_blank" rel="noreferrer">Open source</a>
-        </div>
-      </article>
+        </article>
 
-      <article class="card reveal">
-        <h2 id="sourceConfidenceTitle">Source Confidence</h2>
-        <p id="sourceConfidenceText" class="summary">Evaluating source reliability...</p>
-        <div id="sourceChips" class="chips"></div>
-      </article>
+        <article class="card reveal">
+          <h2 id="sourceConfidenceTitle">Source Confidence</h2>
+          <p id="sourceConfidenceText" class="summary">Evaluating source reliability...</p>
+          <div id="sourceChips" class="chips"></div>
+        </article>
+
+        <article class="card reveal">
+          <h2 id="knownTitle">Known Resources</h2>
+          <ul id="knownList" class="feed-list compact"></ul>
+        </article>
+      </section>
     </section>
 
-    <section class="feed-grid">
-      <article class="card reveal">
-        <h2 id="timelineTitle">Incident Timeline</h2>
-        <ul id="incidentList" class="feed-list compact"></ul>
-      </article>
+    <section id="panelIncidents" class="tab-panel" role="tabpanel" aria-labelledby="tabIncidentsBtn" data-tab-panel="incidents" hidden>
+      <section class="incidents-header card reveal">
+        <div class="sort-wrap">
+          <label id="sortLabel" for="sortSelect">Sort by</label>
+          <select id="sortSelect">
+            <option value="recent">Most recent</option>
+            <option value="impact">Highest impact</option>
+          </select>
+        </div>
+      </section>
 
-      <article class="card reveal">
-        <h2 id="reportsTitle">Status Reports</h2>
-        <ul id="reportList" class="feed-list"></ul>
-      </article>
+      <section class="feed-grid">
+        <article class="card reveal">
+          <h2 id="timelineTitle">Incident Timeline</h2>
+          <ul id="incidentList" class="feed-list compact"></ul>
+        </article>
 
-      <article class="card reveal">
-        <h2 id="newsTitle">Official News</h2>
-        <ul id="newsList" class="feed-list"></ul>
-      </article>
+        <article class="card reveal">
+          <h2 id="reportsTitle">Status Reports</h2>
+          <ul id="reportList" class="feed-list"></ul>
+        </article>
 
-      <article class="card reveal">
-        <h2 id="socialTitle">Social Feed</h2>
-        <ul id="socialList" class="feed-list"></ul>
-      </article>
+        <article class="card reveal">
+          <h2 id="newsTitle">Official News</h2>
+          <ul id="newsList" class="feed-list"></ul>
+        </article>
+
+        <article class="card reveal">
+          <h2 id="socialTitle">Social Feed</h2>
+          <ul id="socialList" class="feed-list"></ul>
+        </article>
+      </section>
+    </section>
+
+    <section id="panelAnalytics" class="tab-panel" role="tabpanel" aria-labelledby="tabAnalyticsBtn" data-tab-panel="analytics" hidden>
+      <section class="analytics-grid">
+        <article class="card reveal">
+          <h2 id="analytics24Title">24h Service Health Bars</h2>
+          <p id="analyticsDataAge" class="summary">Waiting for history data...</p>
+          <div class="chart-wrap">
+            <canvas id="chart24h" height="160"></canvas>
+          </div>
+          <p id="chart24Empty" class="empty" hidden>No 24h chart data available yet.</p>
+          <div class="chart-legend">
+            <span><i class="legend-dot legend-stable"></i><span id="legendStable">Service up</span></span>
+            <span><i class="legend-dot legend-minor"></i><span id="legendMinor">Possible outage</span></span>
+            <span><i class="legend-dot legend-degraded"></i><span id="legendDegraded">Likely outage</span></span>
+            <span><i class="legend-dot legend-major"></i><span id="legendMajor">Major outage</span></span>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <h2 id="analytics7Title">7d Trend Line</h2>
+          <p id="analytics7Subtitle" class="summary">Rolling trend from 30-minute points.</p>
+          <div class="chart-wrap">
+            <canvas id="chart7d" height="160"></canvas>
+          </div>
+          <p id="chart7Empty" class="empty" hidden>No 7d trend data available yet.</p>
+        </article>
+      </section>
     </section>
 
     <section class="card reveal">
       <h2 id="howToTitle">How To Read This Page</h2>
       <ul class="guidance-list">
-        <li id="guideLine1">The top sentence tells you expected player impact in plain language.</li>
+        <li id="guideLine1">The top status line explains expected player impact in plain language.</li>
         <li id="guideLine2">Severity combines outage volume, incident wording, and source availability.</li>
-        <li id="guideLine3">Confidence rises when more independent sources agree.</li>
+        <li id="guideLine3">Confidence increases when independent sources agree.</li>
       </ul>
       <p id="footnoteText" class="footnote">
-        External platforms can throttle automated access. This dashboard favors stable public sources and exposes source health so reliability is visible.
+        External platforms can throttle automated access. This dashboard favors stable public sources and exposes source health so reliability remains visible.
       </p>
     </section>
   </main>
 
+  <script src="./vendor/chart.umd.min.js" defer></script>
   <script src="./app.js" defer></script>
 </body>
 </html>
