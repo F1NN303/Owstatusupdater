@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overwatch Service Radar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="page">
+    <header class="card hero reveal">
+      <p class="eyebrow">Live Overwatch Monitor</p>
+      <h1>Service Radar</h1>
+      <p class="muted">Outage checks, status reports, and fresh news from multiple public sources.</p>
+      <div class="hero-row">
+        <span id="healthPill" class="pill neutral">Loading</span>
+        <button id="refreshBtn" class="refresh-btn" type="button">Refresh now</button>
+      </div>
+      <p id="generatedAt" class="generated">Last update: --</p>
+    </header>
+
+    <section class="grid">
+      <article class="card reveal">
+        <h2>Outage Snapshot</h2>
+        <p id="outageSummary" class="summary">Loading outage summary...</p>
+        <div class="stats">
+          <div class="stat">
+            <span>24h reports</span>
+            <strong id="reports24h">--</strong>
+          </div>
+          <a id="outageSourceLink" target="_blank" rel="noreferrer">Open source</a>
+        </div>
+        <ul id="incidentList" class="feed-list compact"></ul>
+      </article>
+
+      <article class="card reveal">
+        <h2>Status Reports</h2>
+        <ul id="reportList" class="feed-list"></ul>
+      </article>
+
+      <article class="card reveal">
+        <h2>Official News</h2>
+        <ul id="newsList" class="feed-list"></ul>
+      </article>
+
+      <article class="card reveal">
+        <h2>Social Feed</h2>
+        <ul id="socialList" class="feed-list"></ul>
+      </article>
+    </section>
+
+    <section class="card reveal">
+      <h2>Source Health</h2>
+      <div id="sourceChips" class="chips"></div>
+      <p class="footnote">
+        Note: Downdetector and direct X scraping are commonly blocked by anti-bot systems, so this dashboard uses reachable public endpoints and flags partial failures.
+      </p>
+    </section>
+  </main>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>

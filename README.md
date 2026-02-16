@@ -1,12 +1,35 @@
 # Overwatch Status Radar
 
-Flask website that aggregates:
+Website that shows:
 - Overwatch outage signals (StatusGator, Downdetector-like)
 - Blizzard forum status reports (Technical Support + Bug Report)
 - Official Overwatch news
 - Best-effort social updates
 
-## Local run
+## GitHub Pages mode
+
+This repo includes a static site in `site/` for GitHub Pages:
+- `site/index.html`
+- `site/styles.css`
+- `site/app.js`
+- `site/data/status.json`
+
+`site/data/status.json` is refreshed by GitHub Actions every 30 minutes using:
+- `.github/workflows/update-site-data.yml`
+
+Pages deploy is handled by:
+- `.github/workflows/deploy-pages.yml`
+
+### Required GitHub settings
+
+1. Go to `Settings` -> `Pages`.
+2. Set **Source** to **GitHub Actions**.
+3. Ensure Actions are allowed in repo settings.
+
+Then your URL will be:
+- `https://<username>.github.io/<repo>/`
+
+## Local run (Flask backend, optional)
 
 ```bash
 pip install -r requirements.txt
@@ -15,18 +38,7 @@ python app.py
 
 Open `http://127.0.0.1:5000`.
 
-## Deploy (Render)
+## Notes
 
-This repo includes `render.yaml`, so Render can auto-detect settings.
-
-1. Push this project to your GitHub repo.
-2. In Render: `New +` -> `Blueprint`.
-3. Select your GitHub repo.
-4. Render creates and deploys `overwatch-status-radar`.
-5. You get a permanent HTTPS URL.
-
-## API
-
-- `GET /` -> dashboard UI
-- `GET /api/status` -> aggregated JSON payload
-- `GET /api/status?refresh=1` -> force fresh source fetch
+- GitHub Pages is static only, so live external fetching runs in GitHub Actions and writes JSON into the repo.
+- If your repository stays private, GitHub Pages availability depends on your GitHub plan.
