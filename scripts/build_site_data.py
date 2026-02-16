@@ -16,6 +16,7 @@ CADENCE_MINUTES = 30
 RETENTION_DAYS = 30
 RSS_ITEM_LIMIT = 20
 ALERT_EVENT_LIMIT = 25
+VALID_SEVERITY_KEYS = {"stable", "minor", "degraded", "major", "unknown"}
 
 
 def _parse_iso8601(value: str | None) -> dt.datetime | None:
@@ -311,25 +312,102 @@ def _build_alerts(previous_state: dict, payload: dict, changes: dict) -> dict:
 
 def _build_point(payload: dict, point_time: dt.datetime) -> dict:
     analytics = payload.get("analytics") or {}
+    regions = payload.get("regions") or {}
+    reports_24h = int((payload.get("outage") or {}).get("reports_24h") or 0)
+
+    region_snapshot: dict[str, dict] = {
+        "global": {
+            "reports_24h": reports_24h,
+            "severity_key": analytics.get("severity_key", "unknown"),
+            "severity_score": int(analytics.get("severity_score", 0) or 0),
+            "report_weight": 1.0,
+        }
+    }
+    for region_key, region_data in regions.items():
+        if not isinstance(region_data, dict):
+            continue
+        weight = float(region_data.get("report_weight") or 0.0)
+        estimated_reports = int(round(reports_24h * max(min(weight, 1.0), 0.0)))
+        region_snapshot[region_key] = {
+            "reports_24h": estimated_reports,
+            "severity_key": region_data.get("severity_key", "unknown"),
+            "severity_score": int(region_data.get("severity_score", 0) or 0),
+            "report_weight": round(weight, 3),
+        }
+
     return {
         "t": _iso_utc(point_time),
         "health": payload.get("health", "error"),
-        "reports_24h": int((payload.get("outage") or {}).get("reports_24h") or 0),
+        "reports_24h": reports_24h,
         "severity_key": analytics.get("severity_key", "unknown"),
         "severity_score": int(analytics.get("severity_score", 0)),
         "source_ok": int(analytics.get("source_ok_count", 0)),
         "source_total": int(analytics.get("source_total_count", 0)),
+        "regions": region_snapshot,
+    }
+
+
+def _normalize_history_point(point: dict) -> dict | None:
+    parsed = _parse_iso8601(point.get("t"))
+    if not parsed:
+        return None
+
+    severity_key = str(point.get("severity_key") or "unknown")
+    if severity_key not in VALID_SEVERITY_KEYS:
+        severity_key = "unknown"
+
+    reports_24h = int(point.get("reports_24h") or 0)
+    severity_score = int(point.get("severity_score") or 0)
+    source_ok = int(point.get("source_ok") or 0)
+    source_total = int(point.get("source_total") or 0)
+
+    raw_regions = point.get("regions") if isinstance(point.get("regions"), dict) else {}
+    regions: dict[str, dict] = {}
+    for region_key, region_value in raw_regions.items():
+        if not isinstance(region_key, str) or not isinstance(region_value, dict):
+            continue
+        region_severity = str(region_value.get("severity_key") or severity_key)
+        if region_severity not in VALID_SEVERITY_KEYS:
+            region_severity = severity_key
+        report_weight = round(float(region_value.get("report_weight") or 0.0), 3)
+        report_weight = max(min(report_weight, 1.0), 0.0)
+        regions[region_key] = {
+            "reports_24h": int(region_value.get("reports_24h") or 0),
+            "severity_key": region_severity,
+            "severity_score": int(region_value.get("severity_score") or severity_score),
+            "report_weight": report_weight,
+        }
+
+    if "global" not in regions:
+        regions["global"] = {
+            "reports_24h": reports_24h,
+            "severity_key": severity_key,
+            "severity_score": severity_score,
+            "report_weight": 1.0,
+        }
+
+    return {
+        "t": _iso_utc(parsed),
+        "health": str(point.get("health") or "error"),
+        "reports_24h": reports_24h,
+        "severity_key": severity_key,
+        "severity_score": severity_score,
+        "source_ok": max(source_ok, 0),
+        "source_total": max(source_total, 0),
+        "regions": regions,
     }
 
 
 def _dedupe_and_merge_points(points: list[dict], point: dict) -> list[dict]:
     by_time: dict[str, dict] = {}
     for existing in points:
-        t_value = existing.get("t")
-        if not t_value:
+        normalized = _normalize_history_point(existing)
+        if not normalized:
             continue
-        by_time[t_value] = existing
-    by_time[point["t"]] = point
+        by_time[normalized["t"]] = normalized
+    normalized_point = _normalize_history_point(point)
+    if normalized_point:
+        by_time[normalized_point["t"]] = normalized_point
     merged = list(by_time.values())
     merged.sort(key=lambda item: _parse_iso8601(item.get("t")) or dt.datetime.min.replace(tzinfo=dt.UTC))
     return merged

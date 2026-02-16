@@ -97,6 +97,12 @@
         major: "Status: Significant outage detected.",
         unknown: "Status: Service status currently unclear.",
       },
+      trend: {
+        improving: "Trend improving",
+        stable: "Trend stable",
+        worsening: "Trend worsening",
+        unknown: "Trend unavailable",
+      },
       headlines: {
         stable: "Live signals indicate Overwatch services are broadly stable right now.",
         minor: "Intermittent service friction is possible for some players.",
@@ -159,6 +165,13 @@
       },
       analytics: {
         subtitle7: "Rolling trend from 30-minute points.",
+        regionLabel: "Region",
+        regions: {
+          global: "Global",
+          eu: "EU",
+          na: "NA",
+          apac: "APAC",
+        },
         dataAge: "Data age: {age} ({points} points)",
         dataAgeUnknown: "Data age: unknown",
         legend: {
@@ -170,10 +183,13 @@
         reportsSeries: "24h reports",
         trendSeries: "Reports trend",
         avgSeries: "Rolling average",
+        baselineSeries: "Baseline",
+        anomalyBand: "Expected range",
         tooltip: {
           reports: "Reports (24h)",
           severity: "Severity",
           sources: "Source agreement",
+          region: "Region",
         },
       },
       errors: {
@@ -279,6 +295,12 @@
         major: "Status: Deutliche Ausfallbedingungen erkannt.",
         unknown: "Status: Aktueller Servicezustand unklar.",
       },
+      trend: {
+        improving: "Trend verbessert sich",
+        stable: "Trend stabil",
+        worsening: "Trend verschlechtert sich",
+        unknown: "Trend derzeit unklar",
+      },
       headlines: {
         stable: "Live-Signale zeigen aktuell einen weitgehend stabilen Overwatch-Service.",
         minor: "Für einige Spieler sind zeitweise Reibungen möglich.",
@@ -341,6 +363,13 @@
       },
       analytics: {
         subtitle7: "Rollender Trend aus 30-Minuten-Punkten.",
+        regionLabel: "Region",
+        regions: {
+          global: "Global",
+          eu: "EU",
+          na: "NA",
+          apac: "APAC",
+        },
         dataAge: "Datenalter: {age} ({points} Punkte)",
         dataAgeUnknown: "Datenalter: unbekannt",
         legend: {
@@ -352,10 +381,13 @@
         reportsSeries: "Meldungen (24h)",
         trendSeries: "Meldungstrend",
         avgSeries: "Gleitender Durchschnitt",
+        baselineSeries: "Basislinie",
+        anomalyBand: "Erwarteter Bereich",
         tooltip: {
           reports: "Meldungen (24h)",
           severity: "Schweregrad",
           sources: "Quellen-Übereinstimmung",
+          region: "Region",
         },
       },
       errors: {
@@ -371,6 +403,7 @@ const els = {
   eyebrowText: document.getElementById("eyebrowText"),
   titleText: document.getElementById("titleText"),
   severityBadge: document.getElementById("severityBadge"),
+  trendBadge: document.getElementById("trendBadge"),
   confidenceBadge: document.getElementById("confidenceBadge"),
   headlineText: document.getElementById("headlineText"),
   statusMarker: document.getElementById("statusMarker"),
@@ -411,6 +444,8 @@ const els = {
   analytics24Title: document.getElementById("analytics24Title"),
   analytics7Title: document.getElementById("analytics7Title"),
   analytics7Subtitle: document.getElementById("analytics7Subtitle"),
+  analyticsRegionLabel: document.getElementById("analyticsRegionLabel"),
+  analyticsRegionSelect: document.getElementById("analyticsRegionSelect"),
   analyticsDataAge: document.getElementById("analyticsDataAge"),
   legendStable: document.getElementById("legendStable"),
   legendMinor: document.getElementById("legendMinor"),
@@ -437,11 +472,13 @@ const STORAGE_KEYS = {
   lang: "ow_radar_lang",
   tab: "ow_radar_tab",
   sort: "ow_radar_sort",
+  analyticsRegion: "ow_radar_analytics_region",
   alertsEnabled: "ow_radar_alerts_enabled",
   lastAlertId: "ow_radar_last_alert_id",
 };
 const VALID_TABS = ["overview", "incidents", "analytics"];
 const VALID_SORT_MODES = ["recent", "impact"];
+const VALID_REGIONS = ["global", "eu", "na", "apac"];
 const VALID_SEVERITY = ["stable", "minor", "degraded", "major", "unknown"];
 const SEVERITY_COLORS = {
   stable: "#22c55e",
@@ -458,6 +495,7 @@ let latestAlerts = null;
 let currentLang = detectInitialLanguage();
 let currentTab = detectInitialTab();
 let sortMode = detectInitialSortMode();
+let analyticsRegion = detectInitialAnalyticsRegion();
 let alertsEnabled = detectInitialAlertPreference();
 let isLoading = false;
 let chart24 = null;
@@ -480,6 +518,11 @@ function detectInitialTab() {
 function detectInitialSortMode() {
   const stored = safeGetLocalStorage(STORAGE_KEYS.sort);
   return VALID_SORT_MODES.includes(stored) ? stored : "recent";
+}
+
+function detectInitialAnalyticsRegion() {
+  const stored = safeGetLocalStorage(STORAGE_KEYS.analyticsRegion);
+  return VALID_REGIONS.includes(stored) ? stored : "global";
 }
 
 function detectInitialAlertPreference() {
@@ -546,6 +589,24 @@ function parseIso(value) {
 
 function normalizeText(value) {
   let text = String(value || "");
+  const fixes = {
+    "Ã¤": "ä",
+    "Ã¶": "ö",
+    "Ã¼": "ü",
+    "Ã„": "Ä",
+    "Ã–": "Ö",
+    "Ãœ": "Ü",
+    "ÃŸ": "ß",
+    "â€“": "-",
+    "â€”": "-",
+    "â€™": "'",
+    "â€œ": '"',
+    "â€": '"',
+    "Â ": " ",
+  };
+  for (const [broken, repaired] of Object.entries(fixes)) {
+    text = text.split(broken).join(repaired);
+  }
   text = text.replace(/!\[[^\]]*]\([^)]*\)/g, "");
   text = text.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1");
   text = text.replace(/\s+/g, " ").trim();
@@ -833,6 +894,15 @@ function applyStaticTexts() {
   els.analytics24Title.textContent = t("ui.sections.analytics24");
   els.analytics7Title.textContent = t("ui.sections.analytics7");
   els.analytics7Subtitle.textContent = t("ui.analytics.subtitle7");
+  if (els.analyticsRegionLabel) {
+    els.analyticsRegionLabel.textContent = t("ui.analytics.regionLabel");
+  }
+  if (els.analyticsRegionSelect) {
+    for (const option of Array.from(els.analyticsRegionSelect.options)) {
+      option.textContent = t(`ui.analytics.regions.${option.value}`);
+    }
+    els.analyticsRegionSelect.value = analyticsRegion;
+  }
   els.legendStable.textContent = t("ui.analytics.legend.stable");
   els.legendMinor.textContent = t("ui.analytics.legend.minor");
   els.legendDegraded.textContent = t("ui.analytics.legend.degraded");
@@ -858,6 +928,7 @@ function applyStaticTexts() {
     renderChangeSummary(null);
   }
 
+  updateTrendBadge(latestHistory);
   updateLanguageButtonLabel();
   updateAlertButtonLabel();
 }
@@ -1180,6 +1251,10 @@ function render(data) {
 function renderLoadingState() {
   els.severityBadge.textContent = t("ui.severity.unknown");
   els.severityBadge.className = "badge sev-unknown";
+  if (els.trendBadge) {
+    els.trendBadge.textContent = t("ui.trend.unknown");
+    els.trendBadge.className = "badge trend-neutral";
+  }
   els.confidenceBadge.textContent = t("ui.confidence.neutral");
   els.confidenceBadge.className = "badge conf-neutral";
   els.statusMarker.className = "status-marker marker-unknown";
@@ -1216,12 +1291,36 @@ function normalizeHistoryPayload(history) {
     const severityKey = VALID_SEVERITY.includes(point?.severity_key) ? point.severity_key : "unknown";
     const sourceTotal = clampNumber(point?.source_total, 0, 999, 0);
     const sourceOk = clampNumber(point?.source_ok, 0, sourceTotal || 999, 0);
+    const regions = {};
+    const rawRegions = point?.regions && typeof point.regions === "object" ? point.regions : {};
+    for (const [regionKey, regionValue] of Object.entries(rawRegions)) {
+      if (!VALID_REGIONS.includes(regionKey) || !regionValue || typeof regionValue !== "object") {
+        continue;
+      }
+      const regionSeverity = VALID_SEVERITY.includes(regionValue?.severity_key) ? regionValue.severity_key : severityKey;
+      regions[regionKey] = {
+        reports_24h: clampNumber(regionValue?.reports_24h, 0, 999_999, 0),
+        severity_key: regionSeverity,
+        severity_score: clampNumber(regionValue?.severity_score, 0, 999, 0),
+        report_weight: clampNumber(regionValue?.report_weight, 0, 1, 0),
+      };
+    }
+    if (!regions.global) {
+      regions.global = {
+        reports_24h: clampNumber(point?.reports_24h, 0, 999_999, 0),
+        severity_key: severityKey,
+        severity_score: clampNumber(point?.severity_score, 0, 999, 0),
+        report_weight: 1,
+      };
+    }
     byTimestamp.set(tIso, {
       t: tIso,
       reports_24h: clampNumber(point?.reports_24h, 0, 999_999, 0),
       severity_key: severityKey,
+      severity_score: clampNumber(point?.severity_score, 0, 999, 0),
       source_ok: sourceOk,
       source_total: sourceTotal,
+      regions,
     });
   }
   const points = [...byTimestamp.values()].sort((left, right) => {
@@ -1242,6 +1341,122 @@ function movingAverage(values, windowSize) {
     const total = sample.reduce((sum, item) => sum + item, 0);
     return sample.length ? total / sample.length : 0;
   });
+}
+
+function severityRank(key) {
+  if (key === "major") {
+    return 3;
+  }
+  if (key === "degraded") {
+    return 2;
+  }
+  if (key === "minor") {
+    return 1;
+  }
+  if (key === "stable") {
+    return 0;
+  }
+  return 1.5;
+}
+
+function getRegionSnapshot(point, region) {
+  const globalSnapshot = point?.regions?.global || {
+    reports_24h: clampNumber(point?.reports_24h, 0, 999_999, 0),
+    severity_key: VALID_SEVERITY.includes(point?.severity_key) ? point.severity_key : "unknown",
+    severity_score: clampNumber(point?.severity_score, 0, 999, 0),
+    report_weight: 1,
+  };
+  if (region === "global") {
+    return globalSnapshot;
+  }
+  const regionSnapshot = point?.regions?.[region];
+  if (!regionSnapshot || typeof regionSnapshot !== "object") {
+    return globalSnapshot;
+  }
+  return {
+    reports_24h: clampNumber(regionSnapshot.reports_24h, 0, 999_999, globalSnapshot.reports_24h),
+    severity_key: VALID_SEVERITY.includes(regionSnapshot.severity_key) ? regionSnapshot.severity_key : globalSnapshot.severity_key,
+    severity_score: clampNumber(regionSnapshot.severity_score, 0, 999, globalSnapshot.severity_score),
+    report_weight: clampNumber(regionSnapshot.report_weight, 0, 1, globalSnapshot.report_weight),
+  };
+}
+
+function mapHistoryPointForRegion(point, region) {
+  const snapshot = getRegionSnapshot(point, region);
+  return {
+    t: point?.t,
+    region,
+    reports_24h: snapshot.reports_24h,
+    severity_key: snapshot.severity_key,
+    severity_score: snapshot.severity_score,
+    source_ok: clampNumber(point?.source_ok, 0, 999, 0),
+    source_total: clampNumber(point?.source_total, 0, 999, 0),
+  };
+}
+
+function selectRegionPoints(points, region) {
+  if (!Array.isArray(points)) {
+    return [];
+  }
+  return points.map((point) => mapHistoryPointForRegion(point, region));
+}
+
+function average(values) {
+  if (!values.length) {
+    return 0;
+  }
+  const total = values.reduce((sum, value) => sum + value, 0);
+  return total / values.length;
+}
+
+function computeTrendState(points, region) {
+  const regionPoints = selectRegionPoints(points, region).filter((point) => point && Number.isFinite(point.reports_24h));
+  if (regionPoints.length < 12) {
+    return "unknown";
+  }
+  const recent = regionPoints.slice(-12);
+  const prior = regionPoints.slice(-24, -12);
+  if (!prior.length) {
+    return "unknown";
+  }
+  const recentAvg = average(recent.map((point) => point.reports_24h));
+  const priorAvg = average(prior.map((point) => point.reports_24h));
+  const recentSeverity = average(recent.map((point) => severityRank(point.severity_key)));
+  const priorSeverity = average(prior.map((point) => severityRank(point.severity_key)));
+  const reportRatio = (recentAvg - priorAvg) / Math.max(priorAvg, 100);
+  const severityDelta = recentSeverity - priorSeverity;
+
+  if (reportRatio >= 0.22 || severityDelta >= 0.42) {
+    return "worsening";
+  }
+  if (reportRatio <= -0.22 || severityDelta <= -0.42) {
+    return "improving";
+  }
+  return "stable";
+}
+
+function updateTrendBadge(history) {
+  if (!els.trendBadge) {
+    return;
+  }
+  const trendState = computeTrendState(history?.points || [], analyticsRegion);
+  const classMap = {
+    improving: "trend-improving",
+    stable: "trend-stable",
+    worsening: "trend-worsening",
+    unknown: "trend-neutral",
+  };
+  els.trendBadge.className = `badge ${classMap[trendState] || "trend-neutral"}`;
+  els.trendBadge.textContent = t(`ui.trend.${trendState}`);
+}
+
+function buildAnomalyBand(values, baselineWindow = 24, spreadWindow = 24) {
+  const baseline = movingAverage(values, baselineWindow);
+  const residual = values.map((value, index) => Math.abs(value - baseline[index]));
+  const spread = movingAverage(residual, spreadWindow).map((value) => Math.max(value, 12));
+  const lower = baseline.map((value, index) => Math.max(value - spread[index], 0));
+  const upper = baseline.map((value, index) => value + spread[index]);
+  return { baseline, lower, upper };
 }
 
 function chartScales() {
@@ -1290,7 +1505,12 @@ function tooltipCallbacks(metaAccessor) {
         return "";
       }
       const ratio = point.source_total ? `${point.source_ok}/${point.source_total}` : "--";
-      return [`${t("ui.analytics.tooltip.severity")}: ${t(`ui.severity.${point.severity_key}`)}`, `${t("ui.analytics.tooltip.sources")}: ${ratio}`];
+      const regionLabel = t(`ui.analytics.regions.${point.region || "global"}`);
+      return [
+        `${t("ui.analytics.tooltip.severity")}: ${t(`ui.severity.${point.severity_key}`)}`,
+        `${t("ui.analytics.tooltip.sources")}: ${ratio}`,
+        `${t("ui.analytics.tooltip.region")}: ${regionLabel}`,
+      ];
     },
   };
 }
@@ -1310,16 +1530,21 @@ function initChartsIfNeeded() {
     return;
   }
   updateAnalyticsDataAge(latestHistory);
+  if (els.analyticsRegionSelect && els.analyticsRegionSelect.value !== analyticsRegion) {
+    els.analyticsRegionSelect.value = analyticsRegion;
+  }
   if (typeof window.Chart === "undefined" || !latestHistory?.points?.length) {
     destroyCharts();
     els.chart24Empty.hidden = false;
     els.chart7Empty.hidden = false;
-    console.info("[ow-radar] history points:", latestHistory?.points?.length || 0, "chart init status:", "empty");
+    console.info("[ow-radar] history points:", latestHistory?.points?.length || 0, "region:", analyticsRegion, "chart init status:", "empty");
     return;
   }
 
-  const points24 = latestHistory.points.slice(-48);
-  const points7 = latestHistory.points.slice(-336);
+  const raw24 = latestHistory.points.slice(-48);
+  const raw7 = latestHistory.points.slice(-336);
+  const points24 = selectRegionPoints(raw24, analyticsRegion);
+  const points7 = selectRegionPoints(raw7, analyticsRegion);
   destroyCharts();
 
   if (points24.length) {
@@ -1344,7 +1569,9 @@ function initChartsIfNeeded() {
         scales: chartScales(),
         plugins: {
           legend: { display: false },
-          tooltip: tooltipCallbacks((chart, index) => chart.$meta?.[index]),
+          tooltip: {
+            callbacks: tooltipCallbacks((chart, index) => chart.$meta?.[index]),
+          },
         },
       },
     });
@@ -1356,6 +1583,8 @@ function initChartsIfNeeded() {
 
   if (points7.length > 1) {
     const values = points7.map((point) => point.reports_24h);
+    const rolling = movingAverage(values, 8);
+    const { baseline, lower, upper } = buildAnomalyBand(values, 24, 24);
     chart7 = new window.Chart(els.chart7d.getContext("2d"), {
       type: "line",
       data: {
@@ -1376,13 +1605,46 @@ function initChartsIfNeeded() {
           },
           {
             label: t("ui.analytics.avgSeries"),
-            data: movingAverage(values, 8),
+            data: rolling,
             borderColor: "#facc15",
             fill: false,
             tension: 0.2,
             borderDash: [5, 4],
             pointRadius: 0,
             borderWidth: 1.6,
+          },
+          {
+            label: t("ui.analytics.baselineSeries"),
+            data: baseline,
+            borderColor: "#67e8f9",
+            fill: false,
+            tension: 0.18,
+            borderDash: [3, 4],
+            pointRadius: 0,
+            borderWidth: 1.4,
+          },
+          {
+            label: "_lowerBand",
+            data: lower,
+            borderColor: "rgba(0, 0, 0, 0)",
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            fill: false,
+            tension: 0.2,
+            pointRadius: 0,
+            borderWidth: 0,
+            skipLegend: true,
+            skipTooltip: true,
+          },
+          {
+            label: t("ui.analytics.anomalyBand"),
+            data: upper,
+            borderColor: "rgba(0, 0, 0, 0)",
+            backgroundColor: rgba("#38bdf8", 0.1),
+            fill: "-1",
+            tension: 0.2,
+            pointRadius: 0,
+            borderWidth: 0,
+            skipTooltip: true,
           },
         ],
       },
@@ -1392,9 +1654,23 @@ function initChartsIfNeeded() {
         scales: chartScales(),
         plugins: {
           legend: {
-            labels: { color: "#9caec5", boxWidth: 12, boxHeight: 12 },
+            labels: {
+              color: "#9caec5",
+              boxWidth: 12,
+              boxHeight: 12,
+              filter(item, data) {
+                const dataset = data?.datasets?.[item.datasetIndex];
+                return !dataset?.skipLegend;
+              },
+            },
           },
-          tooltip: tooltipCallbacks((chart, index) => chart.$meta?.[index]),
+          tooltip: {
+            filter(context) {
+              const dataset = context?.dataset || {};
+              return !dataset.skipTooltip && context.datasetIndex === 0;
+            },
+            callbacks: tooltipCallbacks((chart, index) => chart.$meta?.[index]),
+          },
         },
       },
     });
@@ -1405,7 +1681,16 @@ function initChartsIfNeeded() {
   }
 
   const lastPoint = latestHistory.points[latestHistory.points.length - 1];
-  console.info("[ow-radar] history points:", latestHistory.points.length, "last update age:", lastPoint ? relativeFromNow(lastPoint.t) : "unknown", "chart init status:", chart24 || chart7 ? "ready" : "partial");
+  console.info(
+    "[ow-radar] history points:",
+    latestHistory.points.length,
+    "region:",
+    analyticsRegion,
+    "last update age:",
+    lastPoint ? relativeFromNow(lastPoint.t) : "unknown",
+    "chart init status:",
+    chart24 || chart7 ? "ready" : "partial"
+  );
 }
 
 function setActiveTab(tab, persist = true, focus = false) {
@@ -1496,6 +1781,7 @@ async function loadDashboardData() {
     }
 
     render(latestPayload);
+    updateTrendBadge(latestHistory);
     nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
     updateRefreshEta();
     initChartsIfNeeded();
@@ -1514,6 +1800,7 @@ async function loadDashboardData() {
     els.generatedAt.textContent = t("ui.meta.fetchFailed");
     els.nextRefresh.textContent = t("ui.meta.nextRefreshError");
     els.outageSummary.textContent = t("ui.errors.loadJson");
+    updateTrendBadge(latestHistory);
     renderChangeSummary(null);
     updateAlertButtonLabel();
   } finally {
@@ -1545,6 +1832,18 @@ document.addEventListener("DOMContentLoaded", () => {
       safeSetLocalStorage(STORAGE_KEYS.sort, sortMode);
       if (latestPayload) {
         render(latestPayload);
+        initChartsIfNeeded();
+      }
+    });
+  }
+  if (els.analyticsRegionSelect) {
+    els.analyticsRegionSelect.value = analyticsRegion;
+    els.analyticsRegionSelect.addEventListener("change", (event) => {
+      const selected = String(event.target.value || "").toLowerCase();
+      analyticsRegion = VALID_REGIONS.includes(selected) ? selected : "global";
+      safeSetLocalStorage(STORAGE_KEYS.analyticsRegion, analyticsRegion);
+      updateTrendBadge(latestHistory);
+      if (currentTab === "analytics") {
         initChartsIfNeeded();
       }
     });
