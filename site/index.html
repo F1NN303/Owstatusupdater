@@ -13,9 +13,13 @@
   <main class="page">
     <header class="hero reveal">
       <div class="hero-main">
-        <p class="eyebrow">Live Overwatch Monitor</p>
-        <h1>Service Radar</h1>
+        <p id="eyebrowText" class="eyebrow">Live Overwatch Monitor</p>
+        <h1 id="titleText">Service Radar</h1>
         <p id="headlineText" class="headline">Collecting live service signals...</p>
+        <div id="statusMarker" class="status-marker marker-unknown" role="status" aria-live="polite">
+          <span class="marker-dot" aria-hidden="true"></span>
+          <span id="statusMarkerText">Status: Checking live telemetry...</span>
+        </div>
       </div>
       <div class="hero-side">
         <div class="hero-badges">
@@ -24,6 +28,7 @@
         </div>
         <div class="hero-actions">
           <button id="refreshBtn" class="refresh-btn" type="button">Refresh now</button>
+          <button id="languageBtn" class="lang-btn" type="button" aria-label="Switch language">DE</button>
         </div>
       </div>
       <div class="hero-meta">
@@ -34,23 +39,23 @@
 
     <section class="overview-grid">
       <article class="card reveal">
-        <h2>What This Means Right Now</h2>
+        <h2 id="impactTitle">What This Means Right Now</h2>
         <ul id="impactList" class="impact-list">
           <li>Waiting for live status data...</li>
         </ul>
       </article>
 
       <article class="card reveal">
-        <h2>Potentially Affected Systems</h2>
+        <h2 id="systemsTitle">Potentially Affected Systems</h2>
         <div id="systemGrid" class="system-grid"></div>
       </article>
 
       <article class="card reveal">
-        <h2>Outage Snapshot</h2>
+        <h2 id="outageTitle">Outage Snapshot</h2>
         <p id="outageSummary" class="summary">Loading outage summary...</p>
         <div class="stats">
           <div class="stat">
-            <span>24h reports</span>
+            <span id="reports24hLabel">24h reports</span>
             <strong id="reports24h">--</strong>
           </div>
           <a id="outageSourceLink" target="_blank" rel="noreferrer">Open source</a>
@@ -58,7 +63,7 @@
       </article>
 
       <article class="card reveal">
-        <h2>Source Confidence</h2>
+        <h2 id="sourceConfidenceTitle">Source Confidence</h2>
         <p id="sourceConfidenceText" class="summary">Evaluating source reliability...</p>
         <div id="sourceChips" class="chips"></div>
       </article>
@@ -66,34 +71,34 @@
 
     <section class="feed-grid">
       <article class="card reveal">
-        <h2>Incident Timeline</h2>
+        <h2 id="timelineTitle">Incident Timeline</h2>
         <ul id="incidentList" class="feed-list compact"></ul>
       </article>
 
       <article class="card reveal">
-        <h2>Status Reports</h2>
+        <h2 id="reportsTitle">Status Reports</h2>
         <ul id="reportList" class="feed-list"></ul>
       </article>
 
       <article class="card reveal">
-        <h2>Official News</h2>
+        <h2 id="newsTitle">Official News</h2>
         <ul id="newsList" class="feed-list"></ul>
       </article>
 
       <article class="card reveal">
-        <h2>Social Feed</h2>
+        <h2 id="socialTitle">Social Feed</h2>
         <ul id="socialList" class="feed-list"></ul>
       </article>
     </section>
 
     <section class="card reveal">
-      <h2>How To Read This Page</h2>
+      <h2 id="howToTitle">How To Read This Page</h2>
       <ul class="guidance-list">
-        <li>The top sentence tells you expected player impact in plain language.</li>
-        <li>Severity combines outage volume, incident wording, and source availability.</li>
-        <li>Confidence rises when more independent sources agree.</li>
+        <li id="guideLine1">The top sentence tells you expected player impact in plain language.</li>
+        <li id="guideLine2">Severity combines outage volume, incident wording, and source availability.</li>
+        <li id="guideLine3">Confidence rises when more independent sources agree.</li>
       </ul>
-      <p class="footnote">
+      <p id="footnoteText" class="footnote">
         External platforms can throttle automated access. This dashboard favors stable public sources and exposes source health so reliability is visible.
       </p>
     </section>
