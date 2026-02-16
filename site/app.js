@@ -16,6 +16,7 @@
         systems: "Potentially Affected Systems",
         outage: "Outage Snapshot",
         sourceConfidence: "Source Confidence",
+        kpi: "Service KPIs",
         known: "Known Resources",
         timeline: "Incident Timeline",
         reports: "Status Reports",
@@ -29,10 +30,32 @@
         reports24h: "24h reports",
         source: "Source: {source}",
       },
+      kpi: {
+        regionHint: "Region scope: {region}",
+        uptime24: "Uptime signal (24h)",
+        uptime7: "Uptime signal (7d)",
+        topSystem: "Top affected system",
+        topSystemNone: "None",
+        topSystemHintOk: "No subsystem is showing elevated disruption risk right now.",
+        topSystemHintWarn: "{system} is showing intermittent risk signals.",
+        topSystemHintBad: "{system} is currently showing the strongest disruption signals.",
+      },
       sort: {
         label: "Sort by",
         recent: "Most recent",
         impact: "Highest impact",
+      },
+      incidents: {
+        exportCsv: "Export incidents CSV",
+      },
+      alertRules: {
+        label: "Minimum alert severity",
+        options: {
+          stable: "Alert: stable+",
+          minor: "Alert: minor+",
+          degraded: "Alert: degraded+",
+          major: "Alert: major only",
+        },
       },
       alerts: {
         off: "Alerts off",
@@ -66,6 +89,19 @@
         known: "No known-resource links available.",
         chart24: "No 24h chart data available yet.",
         chart7: "No 7d trend data available yet.",
+        history: "Not enough history points yet.",
+      },
+      csv: {
+        noIncidents: "No incidents available to export yet.",
+        filenamePrefix: "ow-incidents",
+        headers: {
+          startedAt: "started_at",
+          title: "title",
+          duration: "duration",
+          acknowledgement: "acknowledgement",
+          source: "source_url",
+          severity: "severity",
+        },
       },
       meta: {
         lastUpdate: "Last update: {time}",
@@ -214,6 +250,7 @@
         systems: "Möglicherweise Betroffene Systeme",
         outage: "Störungsübersicht",
         sourceConfidence: "Quellenvertrauen",
+        kpi: "Service-KPIs",
         known: "Bekannte Ressourcen",
         timeline: "Vorfall-Zeitleiste",
         reports: "Statusmeldungen",
@@ -227,10 +264,32 @@
         reports24h: "Meldungen (24h)",
         source: "Quelle: {source}",
       },
+      kpi: {
+        regionHint: "Regionssicht: {region}",
+        uptime24: "Uptime-Signal (24h)",
+        uptime7: "Uptime-Signal (7d)",
+        topSystem: "Stärkst betroffenes System",
+        topSystemNone: "Keines",
+        topSystemHintOk: "Aktuell zeigt kein Subsystem erhöhte Störungsrisiken.",
+        topSystemHintWarn: "{system} zeigt zeitweise Risikosignale.",
+        topSystemHintBad: "{system} zeigt derzeit die stärksten Störungssignale.",
+      },
       sort: {
         label: "Sortieren nach",
         recent: "Neueste zuerst",
         impact: "Höchster Einfluss",
+      },
+      incidents: {
+        exportCsv: "Vorfälle als CSV exportieren",
+      },
+      alertRules: {
+        label: "Minimale Alarm-Schwere",
+        options: {
+          stable: "Alarm: stabil+",
+          minor: "Alarm: leicht+",
+          degraded: "Alarm: eingeschränkt+",
+          major: "Alarm: nur groß",
+        },
       },
       alerts: {
         off: "Alarme aus",
@@ -264,6 +323,19 @@
         known: "Aktuell keine bekannten Ressourcen verfügbar.",
         chart24: "Noch keine 24h-Chartdaten verfügbar.",
         chart7: "Noch keine 7d-Trenddaten verfügbar.",
+        history: "Noch nicht genug Verlaufspunkte vorhanden.",
+      },
+      csv: {
+        noIncidents: "Noch keine Vorfälle für den Export verfügbar.",
+        filenamePrefix: "ow-vorfaelle",
+        headers: {
+          startedAt: "started_at",
+          title: "titel",
+          duration: "dauer",
+          acknowledgement: "bestätigung",
+          source: "quelle_url",
+          severity: "schweregrad",
+        },
       },
       meta: {
         lastUpdate: "Zuletzt aktualisiert: {time}",
@@ -412,6 +484,8 @@ const els = {
   nextRefresh: document.getElementById("nextRefresh"),
   refreshBtn: document.getElementById("refreshBtn"),
   alertBtn: document.getElementById("alertBtn"),
+  alertSeverityLabel: document.getElementById("alertSeverityLabel"),
+  alertSeveritySelect: document.getElementById("alertSeveritySelect"),
   languageBtn: document.getElementById("languageBtn"),
   tabOverviewBtn: document.getElementById("tabOverviewBtn"),
   tabIncidentsBtn: document.getElementById("tabIncidentsBtn"),
@@ -428,11 +502,21 @@ const els = {
   sourceConfidenceTitle: document.getElementById("sourceConfidenceTitle"),
   sourceConfidenceText: document.getElementById("sourceConfidenceText"),
   sourceChips: document.getElementById("sourceChips"),
+  kpiTitle: document.getElementById("kpiTitle"),
+  kpiRegionHint: document.getElementById("kpiRegionHint"),
+  kpiUptime24Label: document.getElementById("kpiUptime24Label"),
+  kpiUptime24Value: document.getElementById("kpiUptime24Value"),
+  kpiUptime7Label: document.getElementById("kpiUptime7Label"),
+  kpiUptime7Value: document.getElementById("kpiUptime7Value"),
+  kpiTopSystemLabel: document.getElementById("kpiTopSystemLabel"),
+  kpiTopSystemValue: document.getElementById("kpiTopSystemValue"),
+  kpiTopSystemHint: document.getElementById("kpiTopSystemHint"),
   knownTitle: document.getElementById("knownTitle"),
   knownList: document.getElementById("knownList"),
   changeSummary: document.getElementById("changeSummary"),
   sortLabel: document.getElementById("sortLabel"),
   sortSelect: document.getElementById("sortSelect"),
+  exportIncidentsBtn: document.getElementById("exportIncidentsBtn"),
   timelineTitle: document.getElementById("timelineTitle"),
   incidentList: document.getElementById("incidentList"),
   reportsTitle: document.getElementById("reportsTitle"),
@@ -473,6 +557,7 @@ const STORAGE_KEYS = {
   tab: "ow_radar_tab",
   sort: "ow_radar_sort",
   analyticsRegion: "ow_radar_analytics_region",
+  alertMinSeverity: "ow_radar_alert_min_severity",
   alertsEnabled: "ow_radar_alerts_enabled",
   lastAlertId: "ow_radar_last_alert_id",
 };
@@ -480,6 +565,7 @@ const VALID_TABS = ["overview", "incidents", "analytics"];
 const VALID_SORT_MODES = ["recent", "impact"];
 const VALID_REGIONS = ["global", "eu", "na", "apac"];
 const VALID_SEVERITY = ["stable", "minor", "degraded", "major", "unknown"];
+const VALID_ALERT_THRESHOLDS = ["stable", "minor", "degraded", "major"];
 const SEVERITY_COLORS = {
   stable: "#22c55e",
   minor: "#f59e0b",
@@ -496,6 +582,7 @@ let currentLang = detectInitialLanguage();
 let currentTab = detectInitialTab();
 let sortMode = detectInitialSortMode();
 let analyticsRegion = detectInitialAnalyticsRegion();
+let alertMinSeverity = detectInitialAlertMinSeverity();
 let alertsEnabled = detectInitialAlertPreference();
 let isLoading = false;
 let chart24 = null;
@@ -523,6 +610,11 @@ function detectInitialSortMode() {
 function detectInitialAnalyticsRegion() {
   const stored = safeGetLocalStorage(STORAGE_KEYS.analyticsRegion);
   return VALID_REGIONS.includes(stored) ? stored : "global";
+}
+
+function detectInitialAlertMinSeverity() {
+  const stored = safeGetLocalStorage(STORAGE_KEYS.alertMinSeverity);
+  return VALID_ALERT_THRESHOLDS.includes(stored) ? stored : "minor";
 }
 
 function detectInitialAlertPreference() {
@@ -826,7 +918,12 @@ function maybeNotifyBrowserAlerts(alertsPayload) {
 
   const seenIndex = events.findIndex((event) => String(event?.id || "") === lastSeenId);
   const freshEvents = seenIndex >= 0 ? events.slice(0, seenIndex).reverse() : events.slice(0, 1).reverse();
+  const thresholdRank = alertSeverityRank(alertMinSeverity);
   for (const event of freshEvents) {
+    const eventRank = alertSeverityRank(String(event?.severity_key || "unknown"));
+    if (eventRank < thresholdRank) {
+      continue;
+    }
     const title = String(event?.title || "Overwatch Service Alert");
     const message = String(event?.message || "A new status alert is available.");
     try {
@@ -885,8 +982,15 @@ function applyStaticTexts() {
   els.outageTitle.textContent = t("ui.sections.outage");
   els.reports24hLabel.textContent = t("ui.labels.reports24h");
   els.sourceConfidenceTitle.textContent = t("ui.sections.sourceConfidence");
+  els.kpiTitle.textContent = t("ui.sections.kpi");
+  els.kpiUptime24Label.textContent = t("ui.kpi.uptime24");
+  els.kpiUptime7Label.textContent = t("ui.kpi.uptime7");
+  els.kpiTopSystemLabel.textContent = t("ui.kpi.topSystem");
   els.knownTitle.textContent = t("ui.sections.known");
   els.sortLabel.textContent = t("ui.sort.label");
+  if (els.exportIncidentsBtn) {
+    els.exportIncidentsBtn.textContent = t("ui.incidents.exportCsv");
+  }
   els.timelineTitle.textContent = t("ui.sections.timeline");
   els.reportsTitle.textContent = t("ui.sections.reports");
   els.newsTitle.textContent = t("ui.sections.news");
@@ -918,6 +1022,15 @@ function applyStaticTexts() {
   if (impactOption) {
     impactOption.textContent = t("ui.sort.impact");
   }
+  if (els.alertSeverityLabel) {
+    els.alertSeverityLabel.textContent = t("ui.alertRules.label");
+  }
+  if (els.alertSeveritySelect) {
+    for (const option of Array.from(els.alertSeveritySelect.options)) {
+      option.textContent = t(`ui.alertRules.options.${option.value}`);
+    }
+    els.alertSeveritySelect.value = alertMinSeverity;
+  }
 
   const guidance = ta("ui.guidance");
   els.guideLine1.textContent = guidance[0] || "";
@@ -928,6 +1041,7 @@ function applyStaticTexts() {
     renderChangeSummary(null);
   }
 
+  updateKpis(latestHistory, []);
   updateTrendBadge(latestHistory);
   updateLanguageButtonLabel();
   updateAlertButtonLabel();
@@ -1194,6 +1308,126 @@ function renderSystems(systems) {
     .join("");
 }
 
+function formatPercent(value) {
+  if (!Number.isFinite(value)) {
+    return "--";
+  }
+  return `${value.toLocaleString(currentLang === "de" ? "de-DE" : "en-US", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  })}%`;
+}
+
+function computeUptimeMetrics(history, region) {
+  const points = selectRegionPoints(history?.points || [], region);
+  const evaluate = (sample) => {
+    if (!sample.length) {
+      return { value: null, count: 0 };
+    }
+    const healthy = sample.filter((point) => point.severity_key === "stable" || point.severity_key === "minor").length;
+    return { value: (healthy / sample.length) * 100, count: sample.length };
+  };
+  return {
+    last24h: evaluate(points.slice(-48)),
+    last7d: evaluate(points.slice(-336)),
+  };
+}
+
+function topSystemState(systems) {
+  if (!Array.isArray(systems) || !systems.length) {
+    return { key: null, state: "ok" };
+  }
+  const rank = { ok: 0, warn: 1, bad: 2 };
+  const sorted = [...systems].sort((left, right) => (rank[right.state] || 0) - (rank[left.state] || 0));
+  const top = sorted[0];
+  if (!top || top.state === "ok") {
+    return { key: null, state: "ok" };
+  }
+  return { key: top.key, state: top.state };
+}
+
+function updateKpis(history, systems) {
+  if (!els.kpiRegionHint) {
+    return;
+  }
+  const regionLabel = t(`ui.analytics.regions.${analyticsRegion}`);
+  els.kpiRegionHint.textContent = t("ui.kpi.regionHint", { region: regionLabel });
+
+  const metrics = computeUptimeMetrics(history, analyticsRegion);
+  els.kpiUptime24Value.textContent = formatPercent(metrics.last24h.value);
+  els.kpiUptime7Value.textContent = formatPercent(metrics.last7d.value);
+
+  const top = topSystemState(systems);
+  if (!top.key) {
+    els.kpiTopSystemValue.textContent = t("ui.kpi.topSystemNone");
+    els.kpiTopSystemHint.textContent =
+      metrics.last24h.count || metrics.last7d.count ? t("ui.kpi.topSystemHintOk") : t("ui.empty.history");
+    return;
+  }
+
+  const systemName = t(`ui.systems.${top.key}`);
+  els.kpiTopSystemValue.textContent = systemName;
+  if (top.state === "bad") {
+    els.kpiTopSystemHint.textContent = t("ui.kpi.topSystemHintBad", { system: systemName });
+  } else {
+    els.kpiTopSystemHint.textContent = t("ui.kpi.topSystemHintWarn", { system: systemName });
+  }
+}
+
+function csvCell(value) {
+  const text = String(value ?? "");
+  if (/[",\n]/.test(text)) {
+    return `"${text.replace(/"/g, '""')}"`;
+  }
+  return text;
+}
+
+function exportIncidentsCsv() {
+  const incidents = sortByDate(latestPayload?.outage?.incidents || [], "started_at");
+  if (!incidents.length) {
+    window.alert(t("ui.csv.noIncidents"));
+    return;
+  }
+  const severityKey = computeSeverity(latestPayload).key;
+  const sourceUrl = String(latestPayload?.outage?.url || "");
+  const rows = [];
+  rows.push(
+    [
+      t("ui.csv.headers.startedAt"),
+      t("ui.csv.headers.title"),
+      t("ui.csv.headers.duration"),
+      t("ui.csv.headers.acknowledgement"),
+      t("ui.csv.headers.source"),
+      t("ui.csv.headers.severity"),
+    ].join(",")
+  );
+  for (const incident of incidents) {
+    rows.push(
+      [
+        csvCell(incident.started_at || ""),
+        csvCell(normalizeText(incident.title || "")),
+        csvCell(normalizeText(incident.duration || "")),
+        csvCell(normalizeText(incident.acknowledgement || "")),
+        csvCell(sourceUrl),
+        csvCell(severityKey),
+      ].join(",")
+    );
+  }
+
+  const csv = `${rows.join("\n")}\n`;
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 13);
+  const fileName = `${t("ui.csv.filenamePrefix")}-${stamp}.csv`;
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = fileName;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
 function updateRefreshEta() {
   if (!nextRefreshAt) {
     els.nextRefresh.textContent = t("ui.meta.nextRefreshUnknown");
@@ -1224,6 +1458,7 @@ function render(data) {
 
   renderImpactList(ta(`ui.impacts.${severity.key}`));
   renderSystems(systems);
+  updateKpis(latestHistory, systems);
 
   els.generatedAt.textContent = t("ui.meta.lastUpdate", { time: formatDateTime(data?.generated_at) });
 
@@ -1271,6 +1506,7 @@ function renderLoadingState() {
   renderFeedList(els.newsList, [], t("ui.empty.news"));
   renderFeedList(els.socialList, [], t("ui.empty.social"));
   renderSources([]);
+  updateKpis(null, []);
   renderChangeSummary(null);
   els.chart24Empty.hidden = false;
   els.chart7Empty.hidden = false;
@@ -1357,6 +1593,22 @@ function severityRank(key) {
     return 0;
   }
   return 1.5;
+}
+
+function alertSeverityRank(key) {
+  if (key === "stable") {
+    return 0;
+  }
+  if (key === "minor") {
+    return 1;
+  }
+  if (key === "degraded") {
+    return 2;
+  }
+  if (key === "major") {
+    return 3;
+  }
+  return 2;
 }
 
 function getRegionSnapshot(point, region) {
@@ -1801,6 +2053,7 @@ async function loadDashboardData() {
     els.nextRefresh.textContent = t("ui.meta.nextRefreshError");
     els.outageSummary.textContent = t("ui.errors.loadJson");
     updateTrendBadge(latestHistory);
+    updateKpis(latestHistory, []);
     renderChangeSummary(null);
     updateAlertButtonLabel();
   } finally {
@@ -1843,10 +2096,28 @@ document.addEventListener("DOMContentLoaded", () => {
       analyticsRegion = VALID_REGIONS.includes(selected) ? selected : "global";
       safeSetLocalStorage(STORAGE_KEYS.analyticsRegion, analyticsRegion);
       updateTrendBadge(latestHistory);
+      if (latestPayload) {
+        const severity = computeSeverity(latestPayload);
+        const systems = detectSystems(latestPayload, severity.key);
+        updateKpis(latestHistory, systems);
+      } else {
+        updateKpis(latestHistory, []);
+      }
       if (currentTab === "analytics") {
         initChartsIfNeeded();
       }
     });
+  }
+  if (els.alertSeveritySelect) {
+    els.alertSeveritySelect.value = alertMinSeverity;
+    els.alertSeveritySelect.addEventListener("change", (event) => {
+      const selected = String(event.target.value || "").toLowerCase();
+      alertMinSeverity = VALID_ALERT_THRESHOLDS.includes(selected) ? selected : "minor";
+      safeSetLocalStorage(STORAGE_KEYS.alertMinSeverity, alertMinSeverity);
+    });
+  }
+  if (els.exportIncidentsBtn) {
+    els.exportIncidentsBtn.addEventListener("click", exportIncidentsCsv);
   }
   setActiveTab(currentTab, false);
   renderLoadingState();
