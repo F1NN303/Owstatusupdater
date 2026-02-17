@@ -1182,6 +1182,14 @@ function getMenuSheetCard() {
   return card instanceof HTMLElement ? card : null;
 }
 
+function getMenuSheetHead() {
+  if (!els.menuPanel) {
+    return null;
+  }
+  const head = els.menuPanel.querySelector(".menu-sheet-head");
+  return head instanceof HTMLElement ? head : null;
+}
+
 function resetMenuSheetScroll() {
   if (els.menuPanel) {
     els.menuPanel.scrollTop = 0;
@@ -1198,6 +1206,10 @@ function forceMenuSheetScrollTop() {
     resetMenuSheetScroll();
     window.requestAnimationFrame(() => {
       resetMenuSheetScroll();
+      const head = getMenuSheetHead();
+      if (head) {
+        head.scrollIntoView({ block: "start", inline: "nearest" });
+      }
     });
   });
 }
@@ -1565,6 +1577,16 @@ function openTopNavMenu() {
       forceMenuSheetScrollTop();
     }
   }, 120);
+  window.setTimeout(() => {
+    if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
+      const head = getMenuSheetHead();
+      if (head) {
+        head.scrollIntoView({ block: "start", inline: "nearest" });
+      } else {
+        forceMenuSheetScrollTop();
+      }
+    }
+  }, 260);
 }
 
 function setupTopNavMenu() {
