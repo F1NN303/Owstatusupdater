@@ -1160,7 +1160,9 @@ function updateLanguageButtonLabel() {
 }
 
 function isMobileMenuSheet() {
-  return window.matchMedia("(max-width: 600px)").matches;
+  const compactViewport = window.matchMedia("(max-width: 760px)").matches;
+  const touchViewport = window.matchMedia("(hover: none) and (pointer: coarse) and (max-width: 1024px)").matches;
+  return compactViewport || touchViewport;
 }
 
 function getTopMenuShell() {
@@ -1187,6 +1189,16 @@ function resetMenuSheetScroll() {
   if (card) {
     card.scrollTop = 0;
   }
+}
+
+function forceMenuSheetScrollTop() {
+  resetMenuSheetScroll();
+  window.requestAnimationFrame(() => {
+    resetMenuSheetScroll();
+    window.requestAnimationFrame(() => {
+      resetMenuSheetScroll();
+    });
+  });
 }
 
 function getMenuFocusableElements() {
@@ -1369,13 +1381,16 @@ function openTopNavMenu() {
   if (!els.menuTrigger || !els.menuPanel) {
     return;
   }
+  if (document.activeElement === els.menuSearchInput) {
+    els.menuSearchInput.blur();
+  }
   if (topMenuCloseTimer) {
     window.clearTimeout(topMenuCloseTimer);
     topMenuCloseTimer = null;
   }
   els.menuTrigger.setAttribute("aria-expanded", "true");
   els.menuPanel.hidden = false;
-  resetMenuSheetScroll();
+  forceMenuSheetScrollTop();
   setMenuOpenState(true);
   const shell = getTopMenuShell();
   if (shell) {
@@ -1392,6 +1407,11 @@ function openTopNavMenu() {
       }
     }
   });
+  window.setTimeout(() => {
+    if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
+      forceMenuSheetScrollTop();
+    }
+  }, 120);
 }
 
 function setupTopNavMenu() {
@@ -1471,7 +1491,22 @@ function setupTopNavMenu() {
   window.addEventListener("resize", () => {
     if (!isMobileMenuSheet()) {
       setMenuOpenState(false);
+      if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
+        closeTopNavMenu(false);
+      }
     }
+  });
+  window.addEventListener("scroll", () => {
+    if (els.menuTrigger?.getAttribute("aria-expanded") === "true" && !isMobileMenuSheet()) {
+      closeTopNavMenu(false);
+    }
+  }, { passive: true });
+  window.addEventListener("pageshow", () => {
+    closeTopNavMenu(false);
+    forceMenuSheetScrollTop();
+  });
+  window.addEventListener("pagehide", () => {
+    closeTopNavMenu(false);
   });
 }
 
