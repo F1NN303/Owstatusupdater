@@ -2,8 +2,8 @@
   en: {
     pageTitle: "{service} Status",
     ui: {
-      eyebrow: "Live {service} Status",
-      title: "Current Status",
+      eyebrow: "Live service monitor",
+      title: "{service} Status",
       refresh: "Refresh now",
       languageAria: "Switch language",
       menu: {
@@ -331,8 +331,8 @@
   de: {
     pageTitle: "{service}-Status",
     ui: {
-      eyebrow: "Live-{service}-Status",
-      title: "Aktueller Status",
+      eyebrow: "Live-Status-Monitor",
+      title: "{service}-Status",
       refresh: "Jetzt aktualisieren",
       languageAria: "Sprache wechseln",
       menu: {
@@ -671,6 +671,7 @@ const els = {
   menuSearchLabel: document.getElementById("menuSearchLabel"),
   menuSearchInput: document.getElementById("menuSearchInput"),
   menuSearchEmpty: document.getElementById("menuSearchEmpty"),
+  menuSearchResults: document.getElementById("menuSearchResults"),
   menuPrimaryLabel: document.getElementById("menuPrimaryLabel"),
   menuToolsLabel: document.getElementById("menuToolsLabel"),
   menuCurrentPageChip: document.getElementById("menuCurrentPageChip"),
@@ -1295,14 +1296,10 @@ function filterMenuItems(queryText) {
   }
   const normalizedQuery = normalizeMenuSearchText(queryText);
   const menuItems = Array.from(els.menuPanel.querySelectorAll("a[role='menuitem']"));
-  let visibleCount = 0;
   for (const item of menuItems) {
     const label = normalizeMenuSearchText(item.textContent || "");
     const matches = !normalizedQuery || label.includes(normalizedQuery);
     item.hidden = !matches;
-    if (matches) {
-      visibleCount += 1;
-    }
   }
   const serviceGrid = els.menuPanel.querySelector(".menu-service-grid");
   if (serviceGrid) {
@@ -1310,9 +1307,98 @@ function filterMenuItems(queryText) {
     serviceGrid.hidden = !visibleServices;
   }
   syncMenuGroupVisibility();
-  if (els.menuSearchEmpty) {
-    els.menuSearchEmpty.hidden = visibleCount > 0;
+}
+
+function getMenuSearchMatches(queryText, limit = 8) {
+  if (!els.menuPanel) {
+    return [];
   }
+  const query = normalizeMenuSearchText(queryText);
+  if (!query) {
+    return [];
+  }
+  const items = Array.from(els.menuPanel.querySelectorAll("a[role='menuitem']"));
+  const seen = new Set();
+  const matches = [];
+  for (const item of items) {
+    const label = String(item.textContent || "").replace(/\s+/g, " ").trim();
+    if (!label) {
+      continue;
+    }
+    const normalizedLabel = normalizeMenuSearchText(label);
+    if (!normalizedLabel.includes(query)) {
+      continue;
+    }
+    const href = item.getAttribute("href") || item.href || "";
+    const dedupeKey = `${label}::${href}`;
+    if (seen.has(dedupeKey)) {
+      continue;
+    }
+    seen.add(dedupeKey);
+    matches.push({
+      label,
+      href: item.href || href,
+      target: item.getAttribute("target") || "",
+      rel: item.getAttribute("rel") || "",
+    });
+    if (matches.length >= limit) {
+      break;
+    }
+  }
+  return matches;
+}
+
+function closeMenuSearchResults() {
+  if (els.menuSearchResults) {
+    els.menuSearchResults.hidden = true;
+    els.menuSearchResults.innerHTML = "";
+  }
+  if (els.menuSearchEmpty) {
+    els.menuSearchEmpty.hidden = true;
+  }
+}
+
+function renderMenuSearchResults(queryText) {
+  const query = String(queryText || "").trim();
+  if (!query || !els.menuSearchResults) {
+    closeMenuSearchResults();
+    return [];
+  }
+  const matches = getMenuSearchMatches(query);
+  els.menuSearchResults.innerHTML = "";
+
+  if (!matches.length) {
+    const empty = document.createElement("p");
+    empty.className = "top-search-result-empty";
+    empty.textContent = t("ui.menu.searchEmpty");
+    els.menuSearchResults.appendChild(empty);
+    els.menuSearchResults.hidden = false;
+    if (els.menuSearchEmpty) {
+      els.menuSearchEmpty.hidden = false;
+    }
+    return [];
+  }
+
+  if (els.menuSearchEmpty) {
+    els.menuSearchEmpty.hidden = true;
+  }
+
+  for (const match of matches) {
+    const link = document.createElement("a");
+    link.className = "top-search-result";
+    link.href = match.href;
+    link.textContent = match.label;
+    if (match.target) {
+      link.target = match.target;
+    }
+    if (match.rel) {
+      link.rel = match.rel;
+    }
+    els.menuSearchResults.appendChild(link);
+  }
+
+  els.menuSearchResults.hidden = false;
+  return matches;
 }
 
 function resetMenuSearch() {
@@ -1321,17 +1407,70 @@ function resetMenuSearch() {
   }
   els.menuSearchInput.value = "";
   filterMenuItems("");
+  closeMenuSearchResults();
 }
 
 function setupMenuSearch() {
   if (!els.menuSearchInput) {
     return;
   }
+  let blurCloseTimer = null;
+  const updateSearchState = () => {
+    const query = els.menuSearchInput?.value || "";
+    filterMenuItems(query);
+    renderMenuSearchResults(query);
+  };
+
   els.menuSearchInput.addEventListener("input", () => {
-    filterMenuItems(els.menuSearchInput?.value || "");
+    updateSearchState();
   });
+
+  els.menuSearchInput.addEventListener("focus", () => {
+    if (blurCloseTimer) {
+      window.clearTimeout(blurCloseTimer);
+      blurCloseTimer = null;
+    }
+    updateSearchState();
+  });
+
+  if (els.menuSearchResults) {
+    els.menuSearchResults.addEventListener("pointerdown", () => {
+      if (blurCloseTimer) {
+        window.clearTimeout(blurCloseTimer);
+        blurCloseTimer = null;
+      }
+    });
+  }
+
+  els.menuSearchInput.addEventListener("blur", () => {
+    blurCloseTimer = window.setTimeout(() => {
+      closeMenuSearchResults();
+    }, 130);
+  });
+
   els.menuSearchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMenuSearchResults();
+      return;
+    }
+
+    const results = getMenuSearchMatches(els.menuSearchInput?.value || "");
+    if (event.key === "ArrowDown" && els.menuSearchResults && !els.menuSearchResults.hidden) {
+      const firstResult = els.menuSearchResults.querySelector("a.top-search-result");
+      if (firstResult instanceof HTMLElement) {
+        event.preventDefault();
+        firstResult.focus();
+      }
+      return;
+    }
+
     if (event.key !== "Enter" || !els.menuPanel) {
+      return;
+    }
+    const firstResult = results[0];
+    if (firstResult?.href) {
+      event.preventDefault();
+      window.location.href = firstResult.href;
       return;
     }
     const firstVisible = Array.from(els.menuPanel.querySelectorAll("a[role='menuitem']")).find((item) => !item.hidden);
@@ -1340,6 +1479,21 @@ function setupMenuSearch() {
     }
     event.preventDefault();
     window.location.href = firstVisible.href;
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) {
+      return;
+    }
+    if (
+      els.menuSearchInput &&
+      target !== els.menuSearchInput &&
+      els.menuSearchResults &&
+      !els.menuSearchResults.contains(target)
+    ) {
+      closeMenuSearchResults();
+    }
   });
 }
 
@@ -1773,9 +1927,12 @@ function applyMenuTexts() {
     els.menuSearchEmpty.textContent = t("ui.menu.searchEmpty");
   }
   if (els.menuSearchInput?.value) {
-    filterMenuItems(els.menuSearchInput.value);
+    const query = els.menuSearchInput.value;
+    filterMenuItems(query);
+    renderMenuSearchResults(query);
   } else {
     filterMenuItems("");
+    closeMenuSearchResults();
   }
 }
 
@@ -3184,7 +3341,9 @@ async function loadDashboardData() {
     return;
   }
   isLoading = true;
-  els.refreshBtn.disabled = true;
+  if (els.refreshBtn) {
+    els.refreshBtn.disabled = true;
+  }
   try {
     const [statusResult, historyResult] = await Promise.allSettled([
       fetch(`${DATA_URLS.status}?t=${Date.now()}`, { cache: "no-store" }),
@@ -3235,7 +3394,9 @@ async function loadDashboardData() {
     renderChangeSummary(null);
   } finally {
     isLoading = false;
-    els.refreshBtn.disabled = false;
+    if (els.refreshBtn) {
+      els.refreshBtn.disabled = false;
+    }
   }
 }
 

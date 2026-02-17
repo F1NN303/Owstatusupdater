@@ -124,6 +124,7 @@ html.menu-open {
   max-width: 25rem;
   min-width: min(100%, 14rem);
   display: grid;
+  position: relative;
   gap: 0.24rem;
   margin-left: auto;
 }
@@ -163,6 +164,51 @@ html.menu-open {
   color: #ffbdab;
   font-size: 0.7rem;
   font-family: "IBM Plex Mono", monospace;
+}
+
+.top-search-results {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.28rem);
+  border: 1px solid #2a3d56;
+  border-radius: 0.78rem;
+  background: linear-gradient(165deg, rgba(12, 20, 31, 0.98), rgba(15, 24, 37, 0.98));
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.34);
+  padding: 0.34rem;
+  display: grid;
+  gap: 0.2rem;
+  max-height: min(46vh, 16rem);
+  overflow: auto;
+  z-index: 420;
+}
+
+.top-search-result {
+  border: 1px solid transparent;
+  border-radius: 0.62rem;
+  color: #dbebfd;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-family: "IBM Plex Mono", monospace;
+  padding: 0.46rem 0.58rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+}
+
+.top-search-result:hover,
+.top-search-result:focus-visible {
+  border-color: rgba(66, 197, 255, 0.45);
+  background: rgba(66, 197, 255, 0.12);
+  outline: none;
+}
+
+.top-search-result-empty {
+  margin: 0;
+  color: #ffbdab;
+  font-size: 0.72rem;
+  font-family: "IBM Plex Mono", monospace;
+  padding: 0.3rem 0.42rem;
 }
 
 .top-link,
@@ -1596,6 +1642,17 @@ h2 {
     font-size: 0.76rem;
   }
 
+  .top-search-results {
+    max-height: min(44vh, 13rem);
+    padding: 0.3rem;
+  }
+
+  .top-search-result {
+    min-height: 2.3rem;
+    font-size: 0.74rem;
+    padding: 0.42rem 0.5rem;
+  }
+
   .top-actions-dashboard {
     margin-left: 0;
     width: 100%;
@@ -1850,6 +1907,10 @@ h2 {
 
   .top-search-input {
     font-size: 0.73rem;
+  }
+
+  .top-search-result {
+    font-size: 0.71rem;
   }
 
   .brand-link {
