@@ -9,8 +9,11 @@
       menu: {
         brand: "Service Radar",
         button: "Menu",
+        services: "Services",
         primary: "Navigation",
         tools: "Tools",
+        updated: "Last update: {time}",
+        updatedUnknown: "Last update: --",
         home: "Dashboard",
         sony: "Sony radar",
         overwatch: "Overwatch radar",
@@ -331,8 +334,11 @@
       menu: {
         brand: "Service-Radar",
         button: "Menü",
+        services: "Services",
         primary: "Navigation",
         tools: "Tools",
+        updated: "Zuletzt aktualisiert: {time}",
+        updatedUnknown: "Zuletzt aktualisiert: --",
         home: "Dashboard",
         sony: "Sony-Radar",
         overwatch: "Overwatch-Radar",
@@ -652,8 +658,11 @@ const els = {
   menuTrigger: document.getElementById("menuTrigger"),
   menuPanel: document.getElementById("menuPanel"),
   menuButtonText: document.getElementById("menuButtonText"),
+  menuServicesLabel: document.getElementById("menuServicesLabel"),
   menuPrimaryLabel: document.getElementById("menuPrimaryLabel"),
   menuToolsLabel: document.getElementById("menuToolsLabel"),
+  menuCurrentPageChip: document.getElementById("menuCurrentPageChip"),
+  menuLastUpdated: document.getElementById("menuLastUpdated"),
   menuHomeLink: document.getElementById("menuHomeLink"),
   menuSonyLink: document.getElementById("menuSonyLink"),
   menuOverwatchLink: document.getElementById("menuOverwatchLink"),
@@ -874,6 +883,7 @@ let analyticsRegion = detectInitialAnalyticsRegion();
 let isLoading = false;
 let chart24 = null;
 let chart7 = null;
+let topMenuCloseTimer = null;
 
 function detectInitialLanguage() {
   const stored = safeGetLocalStorage(STORAGE_KEYS.lang);
@@ -1136,12 +1146,37 @@ function updateLanguageButtonLabel() {
   els.languageBtn.setAttribute("aria-label", t("ui.languageAria"));
 }
 
+function getTopMenuShell() {
+  if (!els.menuTrigger) {
+    return null;
+  }
+  const shell = els.menuTrigger.closest(".menu-shell");
+  return shell instanceof HTMLElement ? shell : null;
+}
+
 function closeTopNavMenu(focusTrigger = false) {
   if (!els.menuTrigger || !els.menuPanel) {
     return;
   }
+  if (topMenuCloseTimer) {
+    window.clearTimeout(topMenuCloseTimer);
+    topMenuCloseTimer = null;
+  }
   els.menuTrigger.setAttribute("aria-expanded", "false");
-  els.menuPanel.hidden = true;
+  els.menuPanel.classList.remove("is-open");
+  const shell = getTopMenuShell();
+  if (shell) {
+    shell.classList.remove("is-open");
+  }
+  topMenuCloseTimer = window.setTimeout(() => {
+    if (!els.menuTrigger || !els.menuPanel) {
+      return;
+    }
+    if (els.menuTrigger.getAttribute("aria-expanded") === "true") {
+      return;
+    }
+    els.menuPanel.hidden = true;
+  }, 120);
   if (focusTrigger) {
     els.menuTrigger.focus();
   }
@@ -1151,8 +1186,21 @@ function openTopNavMenu() {
   if (!els.menuTrigger || !els.menuPanel) {
     return;
   }
+  if (topMenuCloseTimer) {
+    window.clearTimeout(topMenuCloseTimer);
+    topMenuCloseTimer = null;
+  }
   els.menuTrigger.setAttribute("aria-expanded", "true");
   els.menuPanel.hidden = false;
+  const shell = getTopMenuShell();
+  if (shell) {
+    shell.classList.add("is-open");
+  }
+  window.requestAnimationFrame(() => {
+    if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
+      els.menuPanel?.classList.add("is-open");
+    }
+  });
 }
 
 function setupTopNavMenu() {
@@ -1410,6 +1458,9 @@ function applyMenuTexts() {
   if (els.menuButtonText) {
     els.menuButtonText.textContent = t("ui.menu.button");
   }
+  if (els.menuServicesLabel) {
+    els.menuServicesLabel.textContent = t("ui.menu.services");
+  }
   if (els.menuPrimaryLabel) {
     els.menuPrimaryLabel.textContent = t("ui.menu.primary");
   }
@@ -1434,6 +1485,23 @@ function applyMenuTexts() {
   if (els.menuGithubLink) {
     els.menuGithubLink.textContent = t("ui.menu.github");
   }
+}
+
+function updateMenuMeta(generatedAtIso = null) {
+  if (els.menuCurrentPageChip) {
+    els.menuCurrentPageChip.textContent = getServiceName(currentLang);
+  }
+  if (!els.menuLastUpdated) {
+    return;
+  }
+  const parsed = parseIso(generatedAtIso);
+  if (!parsed) {
+    els.menuLastUpdated.textContent = t("ui.menu.updatedUnknown");
+    return;
+  }
+  els.menuLastUpdated.textContent = t("ui.menu.updated", {
+    time: formatDateTime(parsed.toISOString()),
+  });
 }
 
 function applyHeroTexts() {
@@ -1540,6 +1608,7 @@ function applyStaticTexts() {
   document.title = t("pageTitle");
 
   applyMenuTexts();
+  updateMenuMeta(latestPayload?.generated_at || null);
   applyHeroTexts();
   applySectionTexts();
 
@@ -2263,6 +2332,7 @@ function render(data) {
   applyDetailDefaults(severity.key, confidence.key);
 
   els.generatedAt.textContent = t("ui.meta.lastUpdate", { time: formatDateTime(data?.generated_at) });
+  updateMenuMeta(data?.generated_at || null);
 
   const outage = data?.outage || {};
   els.outageSummary.textContent = normalizeText(outage.summary || t("ui.empty.incidents"));
@@ -2307,6 +2377,7 @@ function renderLoadingState() {
   }
   renderImpactList([t("ui.loadingImpact")]);
   els.generatedAt.textContent = t("ui.meta.lastUpdate", { time: "--" });
+  updateMenuMeta(null);
   els.nextRefresh.textContent = t("ui.meta.nextRefreshUnknown");
   els.outageSummary.textContent = t("ui.loadingImpact");
   els.reports24h.textContent = "--";
@@ -2862,6 +2933,7 @@ async function loadDashboardData() {
     }
     renderImpactList(ta("ui.impacts.unknown"));
     els.generatedAt.textContent = t("ui.meta.fetchFailed");
+    updateMenuMeta(null);
     els.nextRefresh.textContent = t("ui.meta.nextRefreshError");
     els.outageSummary.textContent = t("ui.errors.loadJson");
     updateTrendBadge(latestHistory);
@@ -2889,8 +2961,12 @@ function toggleLanguage() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  applyStaticTexts();
   setupTopNavMenu();
+  try {
+    applyStaticTexts();
+  } catch (error) {
+    console.error("[service-radar] static text binding failed", error);
+  }
   setupTabs();
   loadSubscriptionConfig();
   for (const toggle of [els.advancedDiagnosticsToggle, els.impactDetailsToggle, els.sourceDetailsToggle, els.howToDetails]) {
