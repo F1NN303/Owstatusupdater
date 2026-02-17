@@ -1171,6 +1171,24 @@ function getTopMenuShell() {
   return shell instanceof HTMLElement ? shell : null;
 }
 
+function getMenuSheetCard() {
+  if (!els.menuPanel) {
+    return null;
+  }
+  const card = els.menuPanel.querySelector(".menu-sheet-card");
+  return card instanceof HTMLElement ? card : null;
+}
+
+function resetMenuSheetScroll() {
+  if (els.menuPanel) {
+    els.menuPanel.scrollTop = 0;
+  }
+  const card = getMenuSheetCard();
+  if (card) {
+    card.scrollTop = 0;
+  }
+}
+
 function getMenuFocusableElements() {
   if (!els.menuPanel) {
     return [];
@@ -1300,6 +1318,17 @@ function setupMenuSearch() {
   els.menuSearchInput.addEventListener("input", () => {
     filterMenuItems(els.menuSearchInput?.value || "");
   });
+  els.menuSearchInput.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" || !els.menuPanel) {
+      return;
+    }
+    const firstVisible = Array.from(els.menuPanel.querySelectorAll("a[role='menuitem']")).find((item) => !item.hidden);
+    if (!firstVisible || !(firstVisible instanceof HTMLAnchorElement)) {
+      return;
+    }
+    event.preventDefault();
+    window.location.href = firstVisible.href;
+  });
 }
 
 function closeTopNavMenu(focusTrigger = false) {
@@ -1317,6 +1346,7 @@ function closeTopNavMenu(focusTrigger = false) {
     shell.classList.remove("is-open");
   }
   setMenuOpenState(false);
+  resetMenuSheetScroll();
   if (isMobileMenuSheet()) {
     els.menuPanel.hidden = true;
   } else {
@@ -1345,7 +1375,7 @@ function openTopNavMenu() {
   }
   els.menuTrigger.setAttribute("aria-expanded", "true");
   els.menuPanel.hidden = false;
-  resetMenuSearch();
+  resetMenuSheetScroll();
   setMenuOpenState(true);
   const shell = getTopMenuShell();
   if (shell) {
@@ -1355,13 +1385,9 @@ function openTopNavMenu() {
     if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
       els.menuPanel?.classList.add("is-open");
       if (isMobileMenuSheet()) {
-        if (els.menuSearchInput) {
-          els.menuSearchInput.focus();
-        } else {
-          const focusables = getMenuFocusableElements();
-          if (focusables.length) {
-            focusables[0].focus();
-          }
+        const focusables = getMenuFocusableElements();
+        if (focusables.length) {
+          focusables[0].focus();
         }
       }
     }
@@ -1651,6 +1677,18 @@ function renderChangeSummary(changes) {
   });
 }
 
+function setMenuServiceLabel(linkEl, text) {
+  if (!linkEl) {
+    return;
+  }
+  const labelNode = linkEl.querySelector("span");
+  if (labelNode) {
+    labelNode.textContent = text;
+    return;
+  }
+  linkEl.textContent = text;
+}
+
 function applyMenuTexts() {
   if (els.menuBrandText) {
     els.menuBrandText.textContent = t("ui.menu.brand");
@@ -1675,10 +1713,10 @@ function applyMenuTexts() {
     els.menuHomeLink.textContent = t("ui.menu.home");
   }
   if (els.menuSonyLink) {
-    els.menuSonyLink.textContent = t("ui.menu.sony");
+    setMenuServiceLabel(els.menuSonyLink, t("ui.menu.sony"));
   }
   if (els.menuOverwatchLink) {
-    els.menuOverwatchLink.textContent = t("ui.menu.overwatch");
+    setMenuServiceLabel(els.menuOverwatchLink, t("ui.menu.overwatch"));
   }
   if (els.menuEmailAlertsLink) {
     els.menuEmailAlertsLink.textContent = t("ui.menu.emailAlerts");
