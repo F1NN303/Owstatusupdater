@@ -239,6 +239,10 @@
         matchmaking: "Matchmaking and Queueing",
         stability: "In-Game Stability",
         store: "Store and Rewards",
+        sony_account: "Sign-In and Account",
+        sony_store: "PlayStation Store",
+        sony_gaming: "Gaming and Social",
+        sony_streaming: "Streaming and Media",
         state: {
           ok: "Monitoring",
           warn: "Watch closely",
@@ -557,6 +561,10 @@
         matchmaking: "Matchmaking und Warteschlange",
         stability: "Ingame-Stabilität",
         store: "Shop und Belohnungen",
+        sony_account: "Anmeldung und Konto",
+        sony_store: "PlayStation Store",
+        sony_gaming: "Gaming und Social",
+        sony_streaming: "Streaming und Medien",
         state: {
           ok: "Unauffällig",
           warn: "Beobachten",
@@ -806,6 +814,53 @@ const SEVERITY_COLORS = {
   major: "#ef4444",
   unknown: "#7b8ea8",
 };
+const SYSTEM_MODELS = {
+  overwatch: [
+    {
+      key: "login",
+      tests: ["login", "sign in", "unable to connect", "cannot connect", "authentication"],
+    },
+    {
+      key: "matchmaking",
+      tests: ["matchmaking", "queue", "game modes unavailable", "finding game"],
+    },
+    {
+      key: "stability",
+      tests: ["lag", "latency", "disconnect", "packet loss", "rubberband"],
+    },
+    {
+      key: "store",
+      tests: ["shop", "store", "reward", "battlepass", "mythic prism", "purchase"],
+    },
+  ],
+  sony: [
+    {
+      key: "sony_account",
+      tests: ["account", "sign in", "login", "authentication", "password", "profile"],
+    },
+    {
+      key: "sony_store",
+      tests: ["playstation store", "store", "purchase", "download", "cart", "checkout"],
+    },
+    {
+      key: "sony_gaming",
+      tests: ["gaming", "multiplayer", "friends", "party", "matchmaking", "network feature"],
+    },
+    {
+      key: "sony_streaming",
+      tests: ["streaming", "media", "video", "music", "remote play", "broadcast"],
+    },
+  ],
+};
+
+function numericConfigValue(key, fallback) {
+  const raw = Number(APP_CONFIG?.[key]);
+  return Number.isFinite(raw) ? raw : fallback;
+}
+
+const DISRUPTION_MIN_REPORTS = Math.max(Math.floor(numericConfigValue("minReportsForDisruption", 90)), 0);
+const DISRUPTION_MIN_BURST_DELTA = Math.max(Math.floor(numericConfigValue("minBurstDelta", 45)), 0);
+const DISRUPTION_RECENT_INCIDENT_HOURS = Math.max(numericConfigValue("recentIncidentHours", 6), 0);
 
 let nextRefreshAt = 0;
 let latestPayload = null;
@@ -1776,30 +1831,77 @@ function computeConfidence(sources, severity) {
   return { key: "low", css: "conf-low", ratio, ok: healthy, total };
 }
 
+function activeSystemModelKey() {
+  const raw = String(APP_CONFIG?.systemModel || "").trim().toLowerCase();
+  return raw === "sony" ? "sony" : "overwatch";
+}
+
+function latestReportsDelta() {
+  if (!latestHistory?.points?.length || latestHistory.points.length < 2) {
+    return 0;
+  }
+  const points = latestHistory.points;
+  const latest = mapHistoryPointForRegion(points[points.length - 1], "global");
+  const prior = mapHistoryPointForRegion(points[points.length - 2], "global");
+  return Math.max((latest?.reports_24h || 0) - (prior?.reports_24h || 0), 0);
+}
+
+function hasRecentIncident(data, maxAgeHours = DISRUPTION_RECENT_INCIDENT_HOURS) {
+  const incidents = Array.isArray(data?.outage?.incidents) ? data.outage.incidents : [];
+  return incidents.some((incident) => {
+    const age = _hoursFromNow(incident?.started_at);
+    return age !== null && age <= maxAgeHours;
+  });
+}
+
+function _hoursFromNow(value) {
+  const parsed = parseIso(value);
+  if (!parsed) {
+    return null;
+  }
+  return Math.max((Date.now() - parsed.getTime()) / 3_600_000, 0);
+}
+
+function disruptionSignalState(data) {
+  const reports24h = Number(data?.outage?.reports_24h || 0);
+  const burstDelta = latestReportsDelta();
+  const volumeGate = reports24h >= DISRUPTION_MIN_REPORTS;
+  const burstGate = burstDelta >= DISRUPTION_MIN_BURST_DELTA;
+  const recentIncident = hasRecentIncident(data);
+  const elevatedByReports = volumeGate && burstGate;
+  return {
+    reports24h,
+    burstDelta,
+    recentIncident,
+    elevatedByReports,
+    allowDisruptionMessaging: elevatedByReports || recentIncident,
+  };
+}
+
+function effectiveSeverityKey(data, rawSeverityKey) {
+  if (!["minor", "degraded", "major"].includes(rawSeverityKey)) {
+    return rawSeverityKey;
+  }
+  const signal = disruptionSignalState(data);
+  if (!signal.allowDisruptionMessaging) {
+    return "stable";
+  }
+  return rawSeverityKey;
+}
+
 function detectSystems(data, severityKey) {
   const text = getSignalCorpus(data);
-  const systems = [
-    {
-      key: "login",
-      state: "ok",
-      tests: ["login", "sign in", "unable to connect", "cannot connect", "authentication"],
-    },
-    {
-      key: "matchmaking",
-      state: "ok",
-      tests: ["matchmaking", "queue", "game modes unavailable", "finding game"],
-    },
-    {
-      key: "stability",
-      state: "ok",
-      tests: ["lag", "latency", "disconnect", "packet loss", "rubberband"],
-    },
-    {
-      key: "store",
-      state: "ok",
-      tests: ["shop", "store", "reward", "battlepass", "mythic prism", "purchase"],
-    },
-  ];
+  const model = SYSTEM_MODELS[activeSystemModelKey()] || SYSTEM_MODELS.overwatch;
+  const systems = model.map((entry) => ({
+    key: entry.key,
+    state: "ok",
+    tests: entry.tests,
+  }));
+
+  const signal = disruptionSignalState(data);
+  if (!signal.allowDisruptionMessaging) {
+    return systems;
+  }
 
   for (const system of systems) {
     const hitCount = system.tests.reduce((count, word) => (text.includes(word) ? count + 1 : count), 0);
@@ -2126,7 +2228,13 @@ function updateRefreshEta() {
 }
 
 function render(data) {
-  const severity = computeSeverity(data);
+  const rawSeverity = computeSeverity(data);
+  const severityKey = effectiveSeverityKey(data, rawSeverity.key);
+  const severity = {
+    ...rawSeverity,
+    key: severityKey,
+    css: `sev-${severityKey}`,
+  };
   const confidence = computeConfidence(data?.sources || [], severity);
   const systems = detectSystems(data, severity.key);
 
