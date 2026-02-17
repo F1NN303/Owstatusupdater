@@ -12,15 +12,34 @@
 <body>
   <main class="page">
     <nav class="top-nav reveal" aria-label="Site menu">
-      <a id="menuHomeLink" class="top-link" href="./index.html">Dashboard</a>
-      <details class="menu-dropdown">
-        <summary id="menuButtonText" class="menu-button">Menu</summary>
-        <div class="menu-panel" role="menu">
-          <a id="menuEmailAlertsLink" href="./email-alerts.html" role="menuitem">Email alerts</a>
-          <a id="menuRssLink" href="./data/rss.xml" target="_blank" rel="noreferrer" role="menuitem">RSS feed</a>
-          <a id="menuGithubLink" href="https://github.com/F1NN303/Owstatusupdater" target="_blank" rel="noreferrer" role="menuitem">GitHub</a>
+      <a class="brand-link" href="./index.html">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span id="menuBrandText">Service Radar</span>
+      </a>
+      <div class="top-actions">
+        <button id="refreshBtn" class="refresh-btn top-refresh-btn" type="button">Refresh now</button>
+        <button id="languageBtn" class="lang-btn top-lang-btn" type="button" aria-label="Switch language">DE</button>
+        <div class="menu-shell">
+          <button
+            id="menuTrigger"
+            class="menu-button"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="menuPanel"
+          >
+            <span id="menuButtonText">Menu</span>
+          </button>
+          <div id="menuPanel" class="menu-panel" role="menu" hidden>
+            <p id="menuPrimaryLabel" class="menu-group-label">Navigation</p>
+            <a id="menuHomeLink" href="./index.html" role="menuitem">Dashboard</a>
+            <a id="menuEmailAlertsLink" href="./email-alerts.html" role="menuitem">Email alerts</a>
+            <p id="menuToolsLabel" class="menu-group-label">Tools</p>
+            <a id="menuRssLink" href="./data/rss.xml" target="_blank" rel="noreferrer" role="menuitem">RSS feed</a>
+            <a id="menuGithubLink" href="https://github.com/F1NN303/Owstatusupdater" target="_blank" rel="noreferrer" role="menuitem">GitHub</a>
+          </div>
         </div>
-      </details>
+      </div>
     </nav>
 
     <header class="hero reveal">
@@ -40,10 +59,6 @@
           <span id="trendBadge" class="badge trend-neutral">Trend stable</span>
           <span id="confidenceBadge" class="badge conf-neutral">Confidence --</span>
         </div>
-        <div class="hero-actions">
-          <button id="refreshBtn" class="refresh-btn" type="button">Refresh now</button>
-          <button id="languageBtn" class="lang-btn" type="button" aria-label="Switch language">DE</button>
-        </div>
       </div>
       <div class="hero-meta">
         <p id="generatedAt" class="generated">Last update: --</p>
@@ -59,7 +74,7 @@
 
     <section id="panelOverview" class="tab-panel active" role="tabpanel" aria-labelledby="tabOverviewBtn" data-tab-panel="overview">
       <section class="overview-grid">
-        <article class="card reveal">
+        <article class="card card-impact reveal">
           <h2 id="impactTitle">What This Means Right Now</h2>
           <p id="impactQuickText" class="summary">Waiting for live status data...</p>
           <details id="impactDetailsToggle" class="detail-toggle">
@@ -70,12 +85,12 @@
           </details>
         </article>
 
-        <article class="card reveal">
+        <article class="card card-systems reveal">
           <h2 id="systemsTitle">Potentially Affected Systems</h2>
           <div id="systemGrid" class="system-grid"></div>
         </article>
 
-        <article class="card reveal">
+        <article class="card card-outage reveal">
           <h2 id="outageTitle">Outage Snapshot</h2>
           <p id="outageSummary" class="summary">Loading outage summary...</p>
           <div class="stats">
@@ -87,62 +102,70 @@
           </div>
         </article>
 
-        <article class="card reveal">
-          <h2 id="sourceConfidenceTitle">Source Confidence</h2>
-          <p id="sourceConfidenceText" class="summary">Evaluating source reliability...</p>
-          <div id="sourceChips" class="chips"></div>
-          <p id="sourceMethodText" class="feed-meta">Scoring safeguards are active to reduce false outage spikes.</p>
-          <details id="sourceDetailsToggle" class="detail-toggle">
-            <summary id="sourceDetailsSummary">Show source diagnostics</summary>
-            <ul id="sourceDetailsList" class="source-detail-list"></ul>
+        <article class="card card-advanced reveal">
+          <h2 id="advancedDiagnosticsTitle">Advanced diagnostics</h2>
+          <details id="advancedDiagnosticsToggle" class="detail-toggle">
+            <summary id="advancedDiagnosticsSummary">Show diagnostics</summary>
+            <div class="advanced-grid">
+              <section class="diagnostic-block">
+                <h3 id="sourceConfidenceTitle">Source Confidence</h3>
+                <p id="sourceConfidenceText" class="summary">Evaluating source reliability...</p>
+                <div id="sourceChips" class="chips"></div>
+                <p id="sourceMethodText" class="feed-meta">Scoring safeguards are active to reduce false outage spikes.</p>
+                <details id="sourceDetailsToggle" class="detail-toggle">
+                  <summary id="sourceDetailsSummary">Show source diagnostics</summary>
+                  <ul id="sourceDetailsList" class="source-detail-list"></ul>
+                </details>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="subscribeTitle">Email Outage Alerts</h3>
+                <p id="subscribeHint" class="summary">Sign up to receive outage updates via a secure Brevo form with human verification.</p>
+                <div id="subscribeWidget" class="subscribe-widget">
+                  <p id="subscribeWidgetText" class="feed-meta">Loading secure subscription form...</p>
+                </div>
+                <p id="subscribeStateText" class="feed-meta">Loading secure subscription form...</p>
+                <a id="subscribeActionLink" class="subscribe-action-link" href="./email-alerts.html">Open setup guide</a>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="kpiTitle">Service KPIs</h3>
+                <p id="kpiRegionHint" class="summary">Region: Global</p>
+                <div class="kpi-grid">
+                  <article class="kpi-tile">
+                    <span id="kpiUptime24Label">Uptime signal (24h)</span>
+                    <strong id="kpiUptime24Value">--</strong>
+                  </article>
+                  <article class="kpi-tile">
+                    <span id="kpiUptime7Label">Uptime signal (7d)</span>
+                    <strong id="kpiUptime7Value">--</strong>
+                  </article>
+                  <article class="kpi-tile">
+                    <span id="kpiTopSystemLabel">Top affected system</span>
+                    <strong id="kpiTopSystemValue">--</strong>
+                  </article>
+                </div>
+                <p id="kpiTopSystemHint" class="feed-meta">Waiting for live status data...</p>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="regionSnapshotTitle">Regional Snapshot</h3>
+                <p id="regionSnapshotHint" class="summary">Comparing latest signals across regions.</p>
+                <div id="regionSnapshotGrid" class="region-snapshot-grid"></div>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="sourceReliabilityTitle">Source Reliability (7d)</h3>
+                <p id="sourceReliabilityHint" class="summary">Reliability trends are based on source availability over recent history.</p>
+                <ul id="sourceReliabilityList" class="source-reliability-list"></ul>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="knownTitle">Known Resources</h3>
+                <ul id="knownList" class="feed-list compact"></ul>
+              </section>
+            </div>
           </details>
-        </article>
-
-        <article class="card reveal">
-          <h2 id="subscribeTitle">Email Outage Alerts</h2>
-          <p id="subscribeHint" class="summary">Sign up to receive outage updates via a secure Brevo form with human verification.</p>
-          <div id="subscribeWidget" class="subscribe-widget">
-            <p id="subscribeWidgetText" class="feed-meta">Loading secure subscription form...</p>
-          </div>
-          <p id="subscribeStateText" class="feed-meta">Loading secure subscription form...</p>
-          <a id="subscribeActionLink" class="subscribe-action-link" href="./email-alerts.html">Open setup guide</a>
-        </article>
-
-        <article class="card reveal">
-          <h2 id="kpiTitle">Service KPIs</h2>
-          <p id="kpiRegionHint" class="summary">Region: Global</p>
-          <div class="kpi-grid">
-            <article class="kpi-tile">
-              <span id="kpiUptime24Label">Uptime signal (24h)</span>
-              <strong id="kpiUptime24Value">--</strong>
-            </article>
-            <article class="kpi-tile">
-              <span id="kpiUptime7Label">Uptime signal (7d)</span>
-              <strong id="kpiUptime7Value">--</strong>
-            </article>
-            <article class="kpi-tile">
-              <span id="kpiTopSystemLabel">Top affected system</span>
-              <strong id="kpiTopSystemValue">--</strong>
-            </article>
-          </div>
-          <p id="kpiTopSystemHint" class="feed-meta">Waiting for live status data...</p>
-        </article>
-
-        <article class="card reveal">
-          <h2 id="regionSnapshotTitle">Regional Snapshot</h2>
-          <p id="regionSnapshotHint" class="summary">Comparing latest signals across regions.</p>
-          <div id="regionSnapshotGrid" class="region-snapshot-grid"></div>
-        </article>
-
-        <article class="card reveal">
-          <h2 id="sourceReliabilityTitle">Source Reliability (7d)</h2>
-          <p id="sourceReliabilityHint" class="summary">Reliability trends are based on source availability over recent history.</p>
-          <ul id="sourceReliabilityList" class="source-reliability-list"></ul>
-        </article>
-
-        <article class="card reveal">
-          <h2 id="knownTitle">Known Resources</h2>
-          <ul id="knownList" class="feed-list compact"></ul>
         </article>
       </section>
     </section>

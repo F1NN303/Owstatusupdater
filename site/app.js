@@ -7,7 +7,10 @@
       refresh: "Refresh now",
       languageAria: "Switch language",
       menu: {
+        brand: "Service Radar",
         button: "Menu",
+        primary: "Navigation",
+        tools: "Tools",
         home: "Dashboard",
         emailAlerts: "Email alerts",
         rss: "RSS feed",
@@ -28,6 +31,7 @@
         regionSnapshot: "Regional Snapshot",
         sourceReliability: "Source Reliability (7d)",
         known: "Known Resources",
+        advanced: "Advanced diagnostics",
         timeline: "Incident Timeline",
         reports: "Status Reports",
         news: "Official News",
@@ -91,6 +95,7 @@
         unknown: "Live status confidence is limited at the moment.",
       },
       details: {
+        advancedSummary: "Show diagnostics",
         impactSummary: "Show recommendations",
         sourceSummary: "Show source diagnostics",
         howToSummary: "Show guidance",
@@ -318,7 +323,10 @@
       refresh: "Jetzt aktualisieren",
       languageAria: "Sprache wechseln",
       menu: {
+        brand: "Service-Radar",
         button: "Menü",
+        primary: "Navigation",
+        tools: "Tools",
         home: "Dashboard",
         emailAlerts: "E-Mail-Alarme",
         rss: "RSS-Feed",
@@ -339,6 +347,7 @@
         regionSnapshot: "Regionenvergleich",
         sourceReliability: "Quellenzuverlässigkeit (7 Tage)",
         known: "Bekannte Ressourcen",
+        advanced: "Erweiterte Diagnosen",
         timeline: "Vorfall-Zeitleiste",
         reports: "Statusberichte",
         news: "Offizielle Neuigkeiten",
@@ -402,6 +411,7 @@
         unknown: "Die Live-Einschätzung ist aktuell nur eingeschränkt belastbar.",
       },
       details: {
+        advancedSummary: "Diagnose anzeigen",
         impactSummary: "Empfehlungen anzeigen",
         sourceSummary: "Quelldiagnose anzeigen",
         howToSummary: "Hinweise anzeigen",
@@ -626,8 +636,12 @@
 const els = {
   tabButtons: Array.from(document.querySelectorAll("[data-tab-target]")),
   tabPanels: Array.from(document.querySelectorAll("[data-tab-panel]")),
-  menuDropdown: document.querySelector(".menu-dropdown"),
+  menuBrandText: document.getElementById("menuBrandText"),
+  menuTrigger: document.getElementById("menuTrigger"),
+  menuPanel: document.getElementById("menuPanel"),
   menuButtonText: document.getElementById("menuButtonText"),
+  menuPrimaryLabel: document.getElementById("menuPrimaryLabel"),
+  menuToolsLabel: document.getElementById("menuToolsLabel"),
   menuHomeLink: document.getElementById("menuHomeLink"),
   menuEmailAlertsLink: document.getElementById("menuEmailAlertsLink"),
   menuRssLink: document.getElementById("menuRssLink"),
@@ -650,6 +664,9 @@ const els = {
   tabAnalyticsBtn: document.getElementById("tabAnalyticsBtn"),
   impactTitle: document.getElementById("impactTitle"),
   impactQuickText: document.getElementById("impactQuickText"),
+  advancedDiagnosticsTitle: document.getElementById("advancedDiagnosticsTitle"),
+  advancedDiagnosticsToggle: document.getElementById("advancedDiagnosticsToggle"),
+  advancedDiagnosticsSummary: document.getElementById("advancedDiagnosticsSummary"),
   impactDetailsToggle: document.getElementById("impactDetailsToggle"),
   impactDetailsSummary: document.getElementById("impactDetailsSummary"),
   impactList: document.getElementById("impactList"),
@@ -1017,29 +1034,69 @@ function updateLanguageButtonLabel() {
   els.languageBtn.setAttribute("aria-label", t("ui.languageAria"));
 }
 
-function setupMenuDropdown() {
-  if (!els.menuDropdown) {
+function closeTopNavMenu(focusTrigger = false) {
+  if (!els.menuTrigger || !els.menuPanel) {
     return;
   }
-  const menuSummary = els.menuDropdown.querySelector("summary");
+  els.menuTrigger.setAttribute("aria-expanded", "false");
+  els.menuPanel.hidden = true;
+  if (focusTrigger) {
+    els.menuTrigger.focus();
+  }
+}
+
+function openTopNavMenu() {
+  if (!els.menuTrigger || !els.menuPanel) {
+    return;
+  }
+  els.menuTrigger.setAttribute("aria-expanded", "true");
+  els.menuPanel.hidden = false;
+}
+
+function setupTopNavMenu() {
+  if (!els.menuTrigger || !els.menuPanel) {
+    return;
+  }
+  closeTopNavMenu(false);
+
+  els.menuTrigger.addEventListener("click", () => {
+    const isOpen = els.menuTrigger.getAttribute("aria-expanded") === "true";
+    if (isOpen) {
+      closeTopNavMenu(false);
+      return;
+    }
+    openTopNavMenu();
+  });
+
   document.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Node)) {
       return;
     }
-    if (!els.menuDropdown.contains(target)) {
-      els.menuDropdown.removeAttribute("open");
+    if (!els.menuPanel.hidden && !els.menuPanel.contains(target) && target !== els.menuTrigger) {
+      closeTopNavMenu(false);
     }
   });
-  els.menuDropdown.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") {
+
+  document.addEventListener("focusin", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) {
       return;
     }
-    els.menuDropdown.removeAttribute("open");
-    if (menuSummary) {
-      menuSummary.focus();
+    if (!els.menuPanel.hidden && !els.menuPanel.contains(target) && target !== els.menuTrigger) {
+      closeTopNavMenu(false);
     }
   });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeTopNavMenu(true);
+    }
+  });
+
+  for (const link of Array.from(els.menuPanel.querySelectorAll("a"))) {
+    link.addEventListener("click", () => closeTopNavMenu(false));
+  }
 }
 
 function parseHttpsUrl(value) {
@@ -1244,12 +1301,18 @@ function renderChangeSummary(changes) {
   });
 }
 
-function applyStaticTexts() {
-  document.documentElement.lang = currentLang;
-  document.title = t("pageTitle");
-
+function applyMenuTexts() {
+  if (els.menuBrandText) {
+    els.menuBrandText.textContent = t("ui.menu.brand");
+  }
   if (els.menuButtonText) {
     els.menuButtonText.textContent = t("ui.menu.button");
+  }
+  if (els.menuPrimaryLabel) {
+    els.menuPrimaryLabel.textContent = t("ui.menu.primary");
+  }
+  if (els.menuToolsLabel) {
+    els.menuToolsLabel.textContent = t("ui.menu.tools");
   }
   if (els.menuHomeLink) {
     els.menuHomeLink.textContent = t("ui.menu.home");
@@ -1263,15 +1326,37 @@ function applyStaticTexts() {
   if (els.menuGithubLink) {
     els.menuGithubLink.textContent = t("ui.menu.github");
   }
+}
 
-  els.eyebrowText.textContent = t("ui.eyebrow");
-  els.titleText.textContent = t("ui.title");
-  els.refreshBtn.textContent = t("ui.refresh");
-  els.tabOverviewBtn.textContent = t("ui.tabs.overview");
-  els.tabIncidentsBtn.textContent = t("ui.tabs.incidents");
-  els.tabAnalyticsBtn.textContent = t("ui.tabs.analytics");
+function applyHeroTexts() {
+  if (els.eyebrowText) {
+    els.eyebrowText.textContent = t("ui.eyebrow");
+  }
+  if (els.titleText) {
+    els.titleText.textContent = t("ui.title");
+  }
+  if (els.refreshBtn) {
+    els.refreshBtn.textContent = t("ui.refresh");
+  }
+  if (els.tabOverviewBtn) {
+    els.tabOverviewBtn.textContent = t("ui.tabs.overview");
+  }
+  if (els.tabIncidentsBtn) {
+    els.tabIncidentsBtn.textContent = t("ui.tabs.incidents");
+  }
+  if (els.tabAnalyticsBtn) {
+    els.tabAnalyticsBtn.textContent = t("ui.tabs.analytics");
+  }
+}
 
+function applySectionTexts() {
   els.impactTitle.textContent = t("ui.sections.impact");
+  if (els.advancedDiagnosticsTitle) {
+    els.advancedDiagnosticsTitle.textContent = t("ui.sections.advanced");
+  }
+  if (els.advancedDiagnosticsSummary) {
+    els.advancedDiagnosticsSummary.textContent = t("ui.details.advancedSummary");
+  }
   if (els.impactDetailsSummary) {
     els.impactDetailsSummary.textContent = t("ui.details.impactSummary");
   }
@@ -1340,6 +1425,15 @@ function applyStaticTexts() {
   if (impactOption) {
     impactOption.textContent = t("ui.sort.impact");
   }
+}
+
+function applyStaticTexts() {
+  document.documentElement.lang = currentLang;
+  document.title = t("pageTitle");
+
+  applyMenuTexts();
+  applyHeroTexts();
+  applySectionTexts();
 
   const guidance = ta("ui.guidance");
   els.guideLine1.textContent = guidance[0] || "";
@@ -2634,10 +2728,10 @@ function toggleLanguage() {
 
 document.addEventListener("DOMContentLoaded", () => {
   applyStaticTexts();
-  setupMenuDropdown();
+  setupTopNavMenu();
   setupTabs();
   loadSubscriptionConfig();
-  for (const toggle of [els.impactDetailsToggle, els.sourceDetailsToggle, els.howToDetails]) {
+  for (const toggle of [els.advancedDiagnosticsToggle, els.impactDetailsToggle, els.sourceDetailsToggle, els.howToDetails]) {
     if (!toggle) {
       continue;
     }
@@ -2683,7 +2777,9 @@ document.addEventListener("DOMContentLoaded", () => {
   loadDashboardData();
   updateRefreshEta();
 
-  els.refreshBtn.addEventListener("click", () => loadDashboardData());
+  if (els.refreshBtn) {
+    els.refreshBtn.addEventListener("click", () => loadDashboardData());
+  }
   if (els.languageBtn) {
     els.languageBtn.addEventListener("click", toggleLanguage);
   }

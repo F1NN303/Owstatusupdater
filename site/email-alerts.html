@@ -62,8 +62,33 @@
 <body>
   <main class="page">
     <nav class="top-nav reveal" aria-label="Site menu">
-      <a class="top-link" href="./index.html">Zur&uuml;ck zum Dashboard</a>
-      <a class="top-link" href="./data/rss.xml" target="_blank" rel="noreferrer">RSS</a>
+      <a class="brand-link" href="./index.html">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>Service Radar</span>
+      </a>
+      <div class="top-actions">
+        <a class="top-link" href="./index.html">Dashboard</a>
+        <div class="menu-shell">
+          <button
+            id="emailMenuTrigger"
+            class="menu-button"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="emailMenuPanel"
+          >
+            Men&uuml;
+          </button>
+          <div id="emailMenuPanel" class="menu-panel" role="menu" hidden>
+            <p class="menu-group-label">Navigation</p>
+            <a href="./index.html" role="menuitem">Dashboard</a>
+            <a href="./email-alerts.html" role="menuitem">E-Mail-Alerts</a>
+            <p class="menu-group-label">Tools</p>
+            <a href="./data/rss.xml" target="_blank" rel="noreferrer" role="menuitem">RSS</a>
+            <a href="https://github.com/F1NN303/Owstatusupdater" target="_blank" rel="noreferrer" role="menuitem">GitHub</a>
+          </div>
+        </div>
+      </div>
     </nav>
 
     <section class="hero reveal">
@@ -75,7 +100,7 @@
     </section>
 
     <section class="overview-grid">
-      <article class="card reveal">
+      <article class="card email-card reveal">
         <h2>Newsletter</h2>
         <p class="summary">Sichere Anmeldung mit Captcha und Double-Opt-in.</p>
 
@@ -99,7 +124,7 @@
               </div>
             </div>
 
-            <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:rgba(15,23,37,1); max-width:640px; border-radius:10px; border-width:1px; border-color:#2f3f56; border-style:solid; direction:ltr;">
+            <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:rgba(13,20,32,0.9); max-width:720px; border-radius:14px; border-width:1px; border-color:#2a3a4f; border-style:solid; direction:ltr;">
               <form id="sib-form" method="POST" action="https://56556b51.sibforms.com/serve/MUIFAD0pBqF56_47dfu27Jk84jYxtejT7q9mklvKnah4u8jGue6bH-0SrnLkl0M857JFCQ1yakKejd3WBPzLJXRPFMabu7j94b_dq9T3c-ItNYoiWJd8FHhiOC9FJOophwjdAhY1tgDYMoXFqR_NcxsYCvfghfg_eIHcnAvc5sZbIJng85RBgMAI3nY1FWZrasDL_P8dG2oIGY5b7Q==" data-type="subscription">
                 <div style="padding:8px 0;">
                   <div class="sib-form-block" style="font-size:30px; text-align:left; font-weight:700; font-family:Helvetica,sans-serif; color:#eaf2ff; background-color:transparent;">
@@ -167,6 +192,67 @@
       }
     };
     var AUTOHIDE = Boolean(0);
+  </script>
+  <script>
+    (() => {
+      const trigger = document.getElementById("emailMenuTrigger");
+      const panel = document.getElementById("emailMenuPanel");
+      if (!trigger || !panel) {
+        return;
+      }
+
+      const closeMenu = (focusTrigger) => {
+        trigger.setAttribute("aria-expanded", "false");
+        panel.hidden = true;
+        if (focusTrigger) {
+          trigger.focus();
+        }
+      };
+
+      const openMenu = () => {
+        trigger.setAttribute("aria-expanded", "true");
+        panel.hidden = false;
+      };
+
+      trigger.addEventListener("click", () => {
+        const isOpen = trigger.getAttribute("aria-expanded") === "true";
+        if (isOpen) {
+          closeMenu(false);
+          return;
+        }
+        openMenu();
+      });
+
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Node)) {
+          return;
+        }
+        if (!panel.hidden && !panel.contains(target) && target !== trigger) {
+          closeMenu(false);
+        }
+      });
+
+      document.addEventListener("focusin", (event) => {
+        const target = event.target;
+        if (!(target instanceof Node)) {
+          return;
+        }
+        if (!panel.hidden && !panel.contains(target) && target !== trigger) {
+          closeMenu(false);
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeMenu(true);
+        }
+      });
+
+      for (const link of Array.from(panel.querySelectorAll("a"))) {
+        link.addEventListener("click", () => closeMenu(false));
+      }
+    })();
   </script>
   <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
   <script src="https://www.google.com/recaptcha/api.js?hl=de"></script>
