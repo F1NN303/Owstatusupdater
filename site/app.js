@@ -11,13 +11,16 @@
         button: "Menu",
         close: "Close",
         services: "Services",
+        searchLabel: "Search",
+        searchPlaceholder: "Search services or links...",
+        searchEmpty: "No menu items match your search.",
         primary: "Navigation",
         tools: "Tools",
         updated: "Last update: {time}",
         updatedUnknown: "Last update: --",
         home: "Dashboard",
-        sony: "Sony radar",
-        overwatch: "Overwatch radar",
+        sony: "Sony PSN status",
+        overwatch: "Overwatch status",
         emailAlerts: "Email alerts",
         rss: "RSS feed",
         github: "GitHub",
@@ -337,13 +340,16 @@
         button: "Menü",
         close: "Schließen",
         services: "Dienste",
+        searchLabel: "Suche",
+        searchPlaceholder: "Dienste oder Links suchen...",
+        searchEmpty: "Keine Menüeinträge gefunden.",
         primary: "Navigation",
         tools: "Tools",
         updated: "Zuletzt aktualisiert: {time}",
         updatedUnknown: "Zuletzt aktualisiert: --",
         home: "Dashboard",
-        sony: "Sony-Radar",
-        overwatch: "Overwatch-Radar",
+        sony: "Sony-PSN-Status",
+        overwatch: "Overwatch-Status",
         emailAlerts: "E-Mail-Alarme",
         rss: "RSS-Feed",
         github: "GitHub",
@@ -662,6 +668,9 @@ const els = {
   menuCloseBtn: document.getElementById("menuCloseBtn"),
   menuButtonText: document.getElementById("menuButtonText"),
   menuServicesLabel: document.getElementById("menuServicesLabel"),
+  menuSearchLabel: document.getElementById("menuSearchLabel"),
+  menuSearchInput: document.getElementById("menuSearchInput"),
+  menuSearchEmpty: document.getElementById("menuSearchEmpty"),
   menuPrimaryLabel: document.getElementById("menuPrimaryLabel"),
   menuToolsLabel: document.getElementById("menuToolsLabel"),
   menuCurrentPageChip: document.getElementById("menuCurrentPageChip"),
@@ -887,6 +896,7 @@ let isLoading = false;
 let chart24 = null;
 let chart7 = null;
 let topMenuCloseTimer = null;
+let menuLockedScrollY = 0;
 
 function detectInitialLanguage() {
   const stored = safeGetLocalStorage(STORAGE_KEYS.lang);
@@ -1172,17 +1182,124 @@ function getMenuFocusableElements() {
   ).filter((element) => element instanceof HTMLElement && !element.hidden);
 }
 
+function normalizeMenuSearchText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+function lockPageScroll() {
+  if (!document.body || !document.documentElement) {
+    return;
+  }
+  if (document.body.classList.contains("menu-open")) {
+    return;
+  }
+  menuLockedScrollY = window.scrollY || window.pageYOffset || 0;
+  document.documentElement.classList.add("menu-open");
+  document.body.classList.add("menu-open");
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${menuLockedScrollY}px`;
+  document.body.style.left = "0";
+  document.body.style.right = "0";
+  document.body.style.width = "100%";
+}
+
+function unlockPageScroll() {
+  if (!document.body || !document.documentElement) {
+    return;
+  }
+  const wasLocked = document.body.classList.contains("menu-open");
+  document.documentElement.classList.remove("menu-open");
+  document.body.classList.remove("menu-open");
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.left = "";
+  document.body.style.right = "";
+  document.body.style.width = "";
+  if (wasLocked) {
+    window.scrollTo(0, menuLockedScrollY);
+  }
+}
+
 function setMenuOpenState(isOpen) {
   if (!document.body) {
     return;
   }
   if (isOpen && isMobileMenuSheet()) {
     document.body.dataset.menuOpen = "true";
-    document.body.classList.add("menu-open");
+    lockPageScroll();
     return;
   }
   document.body.dataset.menuOpen = "false";
-  document.body.classList.remove("menu-open");
+  unlockPageScroll();
+}
+
+function syncMenuGroupVisibility() {
+  if (!els.menuPanel) {
+    return;
+  }
+  const labels = Array.from(els.menuPanel.querySelectorAll(".menu-group-label"));
+  for (const label of labels) {
+    let node = label.nextElementSibling;
+    let hasVisibleItem = false;
+    while (node && !node.classList.contains("menu-group-label")) {
+      const nodeItems = node.matches("a[role='menuitem']")
+        ? [node]
+        : Array.from(node.querySelectorAll("a[role='menuitem']"));
+      if (nodeItems.some((item) => !item.hidden)) {
+        hasVisibleItem = true;
+        break;
+      }
+      node = node.nextElementSibling;
+    }
+    label.hidden = !hasVisibleItem;
+  }
+}
+
+function filterMenuItems(queryText) {
+  if (!els.menuPanel) {
+    return;
+  }
+  const normalizedQuery = normalizeMenuSearchText(queryText);
+  const menuItems = Array.from(els.menuPanel.querySelectorAll("a[role='menuitem']"));
+  let visibleCount = 0;
+  for (const item of menuItems) {
+    const label = normalizeMenuSearchText(item.textContent || "");
+    const matches = !normalizedQuery || label.includes(normalizedQuery);
+    item.hidden = !matches;
+    if (matches) {
+      visibleCount += 1;
+    }
+  }
+  const serviceGrid = els.menuPanel.querySelector(".menu-service-grid");
+  if (serviceGrid) {
+    const visibleServices = Array.from(serviceGrid.querySelectorAll("a[role='menuitem']")).some((item) => !item.hidden);
+    serviceGrid.hidden = !visibleServices;
+  }
+  syncMenuGroupVisibility();
+  if (els.menuSearchEmpty) {
+    els.menuSearchEmpty.hidden = visibleCount > 0;
+  }
+}
+
+function resetMenuSearch() {
+  if (!els.menuSearchInput) {
+    return;
+  }
+  els.menuSearchInput.value = "";
+  filterMenuItems("");
+}
+
+function setupMenuSearch() {
+  if (!els.menuSearchInput) {
+    return;
+  }
+  els.menuSearchInput.addEventListener("input", () => {
+    filterMenuItems(els.menuSearchInput?.value || "");
+  });
 }
 
 function closeTopNavMenu(focusTrigger = false) {
@@ -1200,15 +1317,19 @@ function closeTopNavMenu(focusTrigger = false) {
     shell.classList.remove("is-open");
   }
   setMenuOpenState(false);
-  topMenuCloseTimer = window.setTimeout(() => {
-    if (!els.menuTrigger || !els.menuPanel) {
-      return;
-    }
-    if (els.menuTrigger.getAttribute("aria-expanded") === "true") {
-      return;
-    }
+  if (isMobileMenuSheet()) {
     els.menuPanel.hidden = true;
-  }, 120);
+  } else {
+    topMenuCloseTimer = window.setTimeout(() => {
+      if (!els.menuTrigger || !els.menuPanel) {
+        return;
+      }
+      if (els.menuTrigger.getAttribute("aria-expanded") === "true") {
+        return;
+      }
+      els.menuPanel.hidden = true;
+    }, 120);
+  }
   if (focusTrigger) {
     els.menuTrigger.focus();
   }
@@ -1224,6 +1345,7 @@ function openTopNavMenu() {
   }
   els.menuTrigger.setAttribute("aria-expanded", "true");
   els.menuPanel.hidden = false;
+  resetMenuSearch();
   setMenuOpenState(true);
   const shell = getTopMenuShell();
   if (shell) {
@@ -1233,9 +1355,13 @@ function openTopNavMenu() {
     if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
       els.menuPanel?.classList.add("is-open");
       if (isMobileMenuSheet()) {
-        const focusables = getMenuFocusableElements();
-        if (focusables.length) {
-          focusables[0].focus();
+        if (els.menuSearchInput) {
+          els.menuSearchInput.focus();
+        } else {
+          const focusables = getMenuFocusableElements();
+          if (focusables.length) {
+            focusables[0].focus();
+          }
         }
       }
     }
@@ -1247,6 +1373,7 @@ function setupTopNavMenu() {
     return;
   }
   closeTopNavMenu(false);
+  setupMenuSearch();
 
   els.menuTrigger.addEventListener("click", () => {
     const isOpen = els.menuTrigger.getAttribute("aria-expanded") === "true";
@@ -1561,6 +1688,21 @@ function applyMenuTexts() {
   }
   if (els.menuGithubLink) {
     els.menuGithubLink.textContent = t("ui.menu.github");
+  }
+  if (els.menuSearchLabel) {
+    els.menuSearchLabel.textContent = t("ui.menu.searchLabel");
+  }
+  if (els.menuSearchInput) {
+    els.menuSearchInput.placeholder = t("ui.menu.searchPlaceholder");
+    els.menuSearchInput.setAttribute("aria-label", t("ui.menu.searchLabel"));
+  }
+  if (els.menuSearchEmpty) {
+    els.menuSearchEmpty.textContent = t("ui.menu.searchEmpty");
+  }
+  if (els.menuSearchInput?.value) {
+    filterMenuItems(els.menuSearchInput.value);
+  } else {
+    filterMenuItems("");
   }
 }
 

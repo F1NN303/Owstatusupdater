@@ -89,6 +89,11 @@
                 </div>
                 <button id="emailMenuCloseBtn" class="menu-close-btn" type="button" aria-label="Menü schließen">Schließen</button>
               </div>
+              <div class="menu-search-wrap">
+                <label class="menu-search-label" for="emailMenuSearchInput">Suche</label>
+                <input id="emailMenuSearchInput" class="menu-search-input" type="search" placeholder="Dienste oder Links suchen..." autocomplete="off">
+                <p id="emailMenuSearchEmpty" class="menu-search-empty" hidden>Keine Menüeinträge gefunden.</p>
+              </div>
               <p class="menu-group-label">Services</p>
               <div class="menu-service-grid">
                 <a class="menu-service-link" href="./index.html" role="menuitem">
@@ -219,27 +224,108 @@
       const trigger = document.getElementById("emailMenuTrigger");
       const panel = document.getElementById("emailMenuPanel");
       const closeBtn = document.getElementById("emailMenuCloseBtn");
+      const searchInput = document.getElementById("emailMenuSearchInput");
+      const searchEmpty = document.getElementById("emailMenuSearchEmpty");
       if (!trigger || !panel || !closeBtn) {
         return;
       }
       let closeTimer = null;
+      let lockedScrollY = 0;
 
       const isMobileSheet = () => window.matchMedia("(max-width: 600px)").matches;
+      const normalizeText = (value) =>
+        String(value || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .trim();
       const getFocusable = () =>
         Array.from(panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter(
           (item) => item instanceof HTMLElement && !item.hidden
         );
+      const lockScroll = () => {
+        if (document.body.classList.contains("menu-open")) {
+          return;
+        }
+        lockedScrollY = window.scrollY || window.pageYOffset || 0;
+        document.documentElement.classList.add("menu-open");
+        document.body.classList.add("menu-open");
+        document.body.style.position = "fixed";
+        document.body.style.top = `-${lockedScrollY}px`;
+        document.body.style.left = "0";
+        document.body.style.right = "0";
+        document.body.style.width = "100%";
+      };
+      const unlockScroll = () => {
+        const wasLocked = document.body.classList.contains("menu-open");
+        document.documentElement.classList.remove("menu-open");
+        document.body.classList.remove("menu-open");
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.width = "";
+        if (wasLocked) {
+          window.scrollTo(0, lockedScrollY);
+        }
+      };
+      const syncGroupVisibility = () => {
+        const labels = Array.from(panel.querySelectorAll(".menu-group-label"));
+        for (const label of labels) {
+          let node = label.nextElementSibling;
+          let hasVisibleItem = false;
+          while (node && !node.classList.contains("menu-group-label")) {
+            const items = node.matches("a[role='menuitem']")
+              ? [node]
+              : Array.from(node.querySelectorAll("a[role='menuitem']"));
+            if (items.some((item) => !item.hidden)) {
+              hasVisibleItem = true;
+              break;
+            }
+            node = node.nextElementSibling;
+          }
+          label.hidden = !hasVisibleItem;
+        }
+      };
+      const filterMenu = (value) => {
+        const query = normalizeText(value);
+        const items = Array.from(panel.querySelectorAll("a[role='menuitem']"));
+        let visibleCount = 0;
+        for (const item of items) {
+          const matches = !query || normalizeText(item.textContent || "").includes(query);
+          item.hidden = !matches;
+          if (matches) {
+            visibleCount += 1;
+          }
+        }
+        const serviceGrid = panel.querySelector(".menu-service-grid");
+        if (serviceGrid) {
+          serviceGrid.hidden = !Array.from(serviceGrid.querySelectorAll("a[role='menuitem']")).some((item) => !item.hidden);
+        }
+        syncGroupVisibility();
+        if (searchEmpty) {
+          searchEmpty.hidden = visibleCount > 0;
+        }
+      };
+      const resetSearch = () => {
+        if (!searchInput) {
+          return;
+        }
+        searchInput.value = "";
+        filterMenu("");
+      };
 
       const setMenuOpenState = (isOpen) => {
         if (isOpen && isMobileSheet()) {
           document.body.dataset.menuOpen = "true";
-          document.body.classList.add("menu-open");
+          lockScroll();
           return;
         }
         document.body.dataset.menuOpen = "false";
-        document.body.classList.remove("menu-open");
+        unlockScroll();
       };
       setMenuOpenState(false);
+      resetSearch();
 
       const closeMenu = (focusTrigger) => {
         if (closeTimer) {
@@ -253,12 +339,16 @@
         }
         trigger.setAttribute("aria-expanded", "false");
         setMenuOpenState(false);
-        closeTimer = window.setTimeout(() => {
-          if (trigger.getAttribute("aria-expanded") === "true") {
-            return;
-          }
+        if (isMobileSheet()) {
           panel.hidden = true;
-        }, 120);
+        } else {
+          closeTimer = window.setTimeout(() => {
+            if (trigger.getAttribute("aria-expanded") === "true") {
+              return;
+            }
+            panel.hidden = true;
+          }, 120);
+        }
         if (focusTrigger) {
           trigger.focus();
         }
@@ -271,6 +361,7 @@
         }
         trigger.setAttribute("aria-expanded", "true");
         panel.hidden = false;
+        resetSearch();
         setMenuOpenState(true);
         const shell = trigger.closest(".menu-shell");
         if (shell) {
@@ -280,9 +371,13 @@
           if (trigger.getAttribute("aria-expanded") === "true") {
             panel.classList.add("is-open");
             if (isMobileSheet()) {
-              const focusables = getFocusable();
-              if (focusables.length) {
-                focusables[0].focus();
+              if (searchInput) {
+                searchInput.focus();
+              } else {
+                const focusables = getFocusable();
+                if (focusables.length) {
+                  focusables[0].focus();
+                }
               }
             }
           }
@@ -352,6 +447,9 @@
 
       for (const link of Array.from(panel.querySelectorAll("a"))) {
         link.addEventListener("click", () => closeMenu(false));
+      }
+      if (searchInput) {
+        searchInput.addEventListener("input", () => filterMenu(searchInput.value || ""));
       }
       closeBtn.addEventListener("click", () => closeMenu(true));
       window.addEventListener("resize", () => {
