@@ -1,3 +1,4 @@
+import argparse
 import datetime as dt
 import hashlib
 import json
@@ -10,13 +11,44 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from services.ow_aggregator import build_dashboard_payload
+from services.ow_aggregator import build_dashboard_payload as build_overwatch_dashboard_payload
+from services.sony_aggregator import build_dashboard_payload as build_sony_dashboard_payload
 
 CADENCE_MINUTES = 30
 RETENTION_DAYS = 30
 RSS_ITEM_LIMIT = 20
 ALERT_EVENT_LIMIT = 25
 VALID_SEVERITY_KEYS = {"stable", "minor", "degraded", "major", "unknown"}
+
+SERVICE_CONFIGS = {
+    "overwatch": {
+        "label": "Overwatch",
+        "builder": build_overwatch_dashboard_payload,
+        "site_url": "https://f1nn303.github.io/Owstatusupdater/",
+        "data_dir": Path("site/data"),
+    },
+    "sony": {
+        "label": "Sony",
+        "builder": build_sony_dashboard_payload,
+        "site_url": "https://f1nn303.github.io/Owstatusupdater/sony/",
+        "data_dir": Path("site/sony/data"),
+    },
+}
+
+ACTIVE_SERVICE_KEY = "overwatch"
+SERVICE_LABEL = SERVICE_CONFIGS[ACTIVE_SERVICE_KEY]["label"]
+SERVICE_SITE_URL = SERVICE_CONFIGS[ACTIVE_SERVICE_KEY]["site_url"]
+
+
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Build static dashboard JSON data.")
+    parser.add_argument(
+        "--service",
+        choices=sorted(SERVICE_CONFIGS.keys()),
+        default="overwatch",
+        help="Service dataset to build (default: overwatch).",
+    )
+    return parser.parse_args()
 
 
 def _parse_iso8601(value: str | None) -> dt.datetime | None:
@@ -216,7 +248,7 @@ def _build_changes(previous_state: dict, payload: dict) -> tuple[dict, dict[str,
 
 def _build_alert_event(kind: str, generated_at: str, title: str, message: str, severity_key: str, links: list[str]) -> dict:
     event_id = _hash_id([kind, generated_at, title, message])
-    primary_link = links[0] if links else "https://f1nn303.github.io/Owstatusupdater/"
+    primary_link = links[0] if links else SERVICE_SITE_URL
     discord_message = f"**{title}**\n{message}\n{primary_link}"
     telegram_text = f"<b>{xml_escape(title)}</b>\n{xml_escape(message)}\n{xml_escape(primary_link)}"
     return {
@@ -256,7 +288,7 @@ def _build_alerts(previous_state: dict, payload: dict, changes: dict) -> dict:
                 "Service severity changed",
                 f"Severity moved from {previous_severity} to {current_severity}.",
                 current_severity,
-                [str((payload.get("outage") or {}).get("url") or "https://statusgator.com/services/overwatch-2")],
+                [str((payload.get("outage") or {}).get("url") or SERVICE_SITE_URL)],
             )
         )
 
@@ -385,12 +417,14 @@ def _normalize_history_point(point: dict) -> dict | None:
         region_severity = str(region_value.get("severity_key") or severity_key)
         if region_severity not in VALID_SEVERITY_KEYS:
             region_severity = severity_key
+        raw_region_score = region_value.get("severity_score")
+        region_score = severity_score if raw_region_score is None else int(raw_region_score)
         report_weight = round(float(region_value.get("report_weight") or 0.0), 3)
         report_weight = max(min(report_weight, 1.0), 0.0)
         regions[region_key] = {
             "reports_24h": int(region_value.get("reports_24h") or 0),
             "severity_key": region_severity,
-            "severity_score": int(region_value.get("severity_score") or severity_score),
+            "severity_score": region_score,
             "report_weight": report_weight,
         }
 
@@ -506,7 +540,7 @@ def _build_rss_items(payload: dict) -> list[dict]:
         items.append(
             {
                 "title": f"[Incident] {incident.get('title') or 'Service incident'}",
-                "link": outage.get("url") or "https://statusgator.com/services/overwatch-2",
+                "link": outage.get("url") or SERVICE_SITE_URL,
                 "published_at": started_at,
                 "description": f"Duration: {incident.get('duration') or 'n/a'}",
             }
@@ -558,9 +592,9 @@ def _build_rss(payload: dict) -> str:
     generated_at = payload.get("generated_at") or _iso_utc(dt.datetime.now(dt.UTC))
     items_xml: list[str] = []
     for item in _build_rss_items(payload):
-        title = xml_escape(str(item.get("title") or "Overwatch status update"))
-        link = xml_escape(str(item.get("link") or "https://f1nn303.github.io/Owstatusupdater/"))
-        description = xml_escape(str(item.get("description") or "Overwatch service status update"))
+        title = xml_escape(str(item.get("title") or f"{SERVICE_LABEL} status update"))
+        link = xml_escape(str(item.get("link") or SERVICE_SITE_URL))
+        description = xml_escape(str(item.get("description") or f"{SERVICE_LABEL} service status update"))
         pub_date = xml_escape(_to_rfc2822(item.get("published_at")))
         items_xml.append(
             "\n".join(
@@ -583,9 +617,9 @@ def _build_rss(payload: dict) -> str:
             '<?xml version="1.0" encoding="UTF-8"?>',
             "<rss version=\"2.0\">",
             "  <channel>",
-            "    <title>Overwatch Service Radar Updates</title>",
-            "    <link>https://f1nn303.github.io/Owstatusupdater/</link>",
-            "    <description>Latest Overwatch outage, official, and community status updates.</description>",
+            f"    <title>{xml_escape(SERVICE_LABEL)} Service Radar Updates</title>",
+            f"    <link>{xml_escape(SERVICE_SITE_URL)}</link>",
+            f"    <description>Latest {xml_escape(SERVICE_LABEL)} outage, official, and community status updates.</description>",
             f"    <lastBuildDate>{channel_pub_date}</lastBuildDate>",
             channel_items,
             "  </channel>",
@@ -595,11 +629,22 @@ def _build_rss(payload: dict) -> str:
     )
 
 
-def main() -> None:
-    now = dt.datetime.now(dt.UTC)
-    payload = build_dashboard_payload(force_refresh=True)
+def main(service_key: str = "overwatch") -> None:
+    config = SERVICE_CONFIGS.get(service_key)
+    if not config:
+        raise SystemExit(f"Unsupported service: {service_key}")
 
-    data_dir = Path("site/data")
+    global ACTIVE_SERVICE_KEY
+    global SERVICE_LABEL
+    global SERVICE_SITE_URL
+    ACTIVE_SERVICE_KEY = service_key
+    SERVICE_LABEL = str(config["label"])
+    SERVICE_SITE_URL = str(config["site_url"])
+
+    now = dt.datetime.now(dt.UTC)
+    payload = config["builder"](force_refresh=True)
+
+    data_dir = Path(config["data_dir"])
     data_dir.mkdir(parents=True, exist_ok=True)
     state_path = data_dir / "state.json"
     previous_state = _read_state(state_path)
@@ -640,13 +685,14 @@ def main() -> None:
     }
     state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"Wrote {status_path} with health={payload.get('health')}")
-    print(f"Wrote {history_path} with points={len(history['points'])}")
-    print(f"Wrote {summary_path}")
-    print(f"Wrote {rss_path}")
-    print(f"Wrote {alerts_path} with events={len(alerts.get('events', []))}")
-    print(f"Wrote {state_path}")
+    print(f"[{service_key}] wrote {status_path} with health={payload.get('health')}")
+    print(f"[{service_key}] wrote {history_path} with points={len(history['points'])}")
+    print(f"[{service_key}] wrote {summary_path}")
+    print(f"[{service_key}] wrote {rss_path}")
+    print(f"[{service_key}] wrote {alerts_path} with events={len(alerts.get('events', []))}")
+    print(f"[{service_key}] wrote {state_path}")
 
 
 if __name__ == "__main__":
-    main()
+    args = _parse_args()
+    main(args.service)

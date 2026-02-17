@@ -1,8 +1,8 @@
 ﻿const I18N = {
   en: {
-    pageTitle: "Overwatch Service Radar",
+    pageTitle: "{service} Service Radar",
     ui: {
-      eyebrow: "Live Overwatch Monitor",
+      eyebrow: "Live {service} Monitor",
       title: "Service Radar",
       refresh: "Refresh now",
       languageAria: "Switch language",
@@ -12,6 +12,8 @@
         primary: "Navigation",
         tools: "Tools",
         home: "Dashboard",
+        sony: "Sony radar",
+        overwatch: "Overwatch radar",
         emailAlerts: "Email alerts",
         rss: "RSS feed",
         github: "GitHub",
@@ -199,10 +201,10 @@
         unknown: "Trend unavailable",
       },
       headlines: {
-        stable: "Live signals indicate Overwatch services are broadly stable right now.",
+        stable: "Live signals indicate {service} services are broadly stable right now.",
         minor: "Intermittent service friction is possible for some players.",
         degraded: "Service reliability is under pressure and noticeable disruptions are likely.",
-        major: "Widespread instability indicators are active across core Overwatch services.",
+        major: "Widespread instability indicators are active across core {service} services.",
         unknown: "Live feed is temporarily unavailable; service state cannot be confirmed.",
       },
       impacts: {
@@ -316,9 +318,9 @@
     },
   },
   de: {
-    pageTitle: "Overwatch Service-Radar",
+    pageTitle: "{service} Service-Radar",
     ui: {
-      eyebrow: "Live-Overwatch-Monitor",
+      eyebrow: "Live-{service}-Monitor",
       title: "Service-Radar",
       refresh: "Jetzt aktualisieren",
       languageAria: "Sprache wechseln",
@@ -328,6 +330,8 @@
         primary: "Navigation",
         tools: "Tools",
         home: "Dashboard",
+        sony: "Sony-Radar",
+        overwatch: "Overwatch-Radar",
         emailAlerts: "E-Mail-Alarme",
         rss: "RSS-Feed",
         github: "GitHub",
@@ -515,10 +519,10 @@
         unknown: "Trend derzeit unklar",
       },
       headlines: {
-        stable: "Live-Signale zeigen aktuell einen weitgehend stabilen Overwatch-Service.",
+        stable: "Live-Signale zeigen aktuell einen weitgehend stabilen {service}-Service.",
         minor: "Für einige Spieler sind zeitweise Reibungen möglich.",
         degraded: "Die Servicezuverlässigkeit steht unter Druck; spürbare Störungen sind wahrscheinlich.",
-        major: "Mehrere starke Instabilitätssignale sind für zentrale Overwatch-Dienste aktiv.",
+        major: "Mehrere starke Instabilitätssignale sind für zentrale {service}-Dienste aktiv.",
         unknown: "Der Live-Feed ist vorübergehend nicht verfügbar; der Servicezustand kann nicht sicher bestimmt werden.",
       },
       impacts: {
@@ -643,6 +647,8 @@ const els = {
   menuPrimaryLabel: document.getElementById("menuPrimaryLabel"),
   menuToolsLabel: document.getElementById("menuToolsLabel"),
   menuHomeLink: document.getElementById("menuHomeLink"),
+  menuSonyLink: document.getElementById("menuSonyLink"),
+  menuOverwatchLink: document.getElementById("menuOverwatchLink"),
   menuEmailAlertsLink: document.getElementById("menuEmailAlertsLink"),
   menuRssLink: document.getElementById("menuRssLink"),
   menuGithubLink: document.getElementById("menuGithubLink"),
@@ -742,17 +748,52 @@ const els = {
   footnoteText: document.getElementById("footnoteText"),
 };
 
+const APP_CONFIG = (() => {
+  const raw = window.SERVICE_RADAR_CONFIG;
+  if (!raw || typeof raw !== "object") {
+    return {};
+  }
+  return raw;
+})();
+
+function storageKeyPrefix() {
+  const candidate = typeof APP_CONFIG.storagePrefix === "string" ? APP_CONFIG.storagePrefix.trim() : "";
+  return candidate || "ow_radar";
+}
+
+function buildStorageKey(suffix) {
+  return `${storageKeyPrefix()}_${suffix}`;
+}
+
+function getServiceName(lang = "en") {
+  const explicitByLang = typeof APP_CONFIG.serviceNames === "object" && APP_CONFIG.serviceNames ? APP_CONFIG.serviceNames[lang] : null;
+  if (explicitByLang) {
+    return String(explicitByLang);
+  }
+  if (lang === "de" && APP_CONFIG.serviceNameDe) {
+    return String(APP_CONFIG.serviceNameDe);
+  }
+  if (APP_CONFIG.serviceNameEn) {
+    return String(APP_CONFIG.serviceNameEn);
+  }
+  if (APP_CONFIG.serviceName) {
+    return String(APP_CONFIG.serviceName);
+  }
+  return "Overwatch";
+}
+
+const LOG_PREFIX = APP_CONFIG.logPrefix || "[service-radar]";
 const REFRESH_INTERVAL_MS = 60_000;
 const DATA_URLS = {
-  status: "./data/status.json",
-  history: "./data/history.json",
-  subscription: "./data/subscription.json",
+  status: APP_CONFIG?.dataUrls?.status || "./data/status.json",
+  history: APP_CONFIG?.dataUrls?.history || "./data/history.json",
+  subscription: APP_CONFIG?.dataUrls?.subscription || "./data/subscription.json",
 };
 const STORAGE_KEYS = {
-  lang: "ow_radar_lang",
-  tab: "ow_radar_tab",
-  sort: "ow_radar_sort",
-  analyticsRegion: "ow_radar_analytics_region",
+  lang: buildStorageKey("lang"),
+  tab: buildStorageKey("tab"),
+  sort: buildStorageKey("sort"),
+  analyticsRegion: buildStorageKey("analytics_region"),
 };
 const VALID_TABS = ["overview", "incidents", "analytics"];
 const VALID_SORT_MODES = ["recent", "impact"];
@@ -830,7 +871,13 @@ function t(key, vars = {}) {
   if (typeof value !== "string") {
     return typeof value === "undefined" ? key : value;
   }
-  return value.replace(/\{(\w+)\}/g, (_, name) => (vars[name] !== undefined ? String(vars[name]) : `{${name}}`));
+  const baseVars = {
+    service: getServiceName(currentLang),
+    service_en: getServiceName("en"),
+    service_de: getServiceName("de"),
+  };
+  const resolvedVars = { ...baseVars, ...vars };
+  return value.replace(/\{(\w+)\}/g, (_, name) => (resolvedVars[name] !== undefined ? String(resolvedVars[name]) : `{${name}}`));
 }
 
 function ta(key) {
@@ -1316,6 +1363,12 @@ function applyMenuTexts() {
   }
   if (els.menuHomeLink) {
     els.menuHomeLink.textContent = t("ui.menu.home");
+  }
+  if (els.menuSonyLink) {
+    els.menuSonyLink.textContent = t("ui.menu.sony");
+  }
+  if (els.menuOverwatchLink) {
+    els.menuOverwatchLink.textContent = t("ui.menu.overwatch");
   }
   if (els.menuEmailAlertsLink) {
     els.menuEmailAlertsLink.textContent = t("ui.menu.emailAlerts");
@@ -2440,7 +2493,7 @@ function initChartsIfNeeded() {
     destroyCharts();
     els.chart24Empty.hidden = false;
     els.chart7Empty.hidden = false;
-    console.info("[ow-radar] history points:", latestHistory?.points?.length || 0, "region:", analyticsRegion, "chart init status:", "empty");
+    console.info(LOG_PREFIX, "history points:", latestHistory?.points?.length || 0, "region:", analyticsRegion, "chart init status:", "empty");
     return;
   }
 
@@ -2585,7 +2638,8 @@ function initChartsIfNeeded() {
 
   const lastPoint = latestHistory.points[latestHistory.points.length - 1];
   console.info(
-    "[ow-radar] history points:",
+    LOG_PREFIX,
+    "history points:",
     latestHistory.points.length,
     "region:",
     analyticsRegion,

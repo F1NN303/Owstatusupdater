@@ -24,7 +24,9 @@ jobs:
         run: pip install -r requirements.site.txt
 
       - name: Build status JSON
-        run: python scripts/build_site_data.py
+        run: |
+          python scripts/build_site_data.py --service overwatch
+          python scripts/build_site_data.py --service sony
 
       - name: Send major outage email via Brevo
         env:
@@ -40,11 +42,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/data/state.json site/data/email_alert_state.json; then
+          if git diff --quiet -- site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/data/state.json site/data/email_alert_state.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json site/sony/data/state.json; then
             echo "No status data changes."
             exit 0
           fi
-          git add site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/data/state.json site/data/email_alert_state.json
+          git add site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/data/state.json site/data/email_alert_state.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json site/sony/data/state.json
           git commit -m "chore: refresh status data"
           max_attempts=3
           attempt=1
