@@ -1073,7 +1073,7 @@ function setupTopNavMenu() {
     if (!(target instanceof Node)) {
       return;
     }
-    if (!els.menuPanel.hidden && !els.menuPanel.contains(target) && target !== els.menuTrigger) {
+    if (!els.menuPanel.hidden && !els.menuPanel.contains(target) && !els.menuTrigger.contains(target)) {
       closeTopNavMenu(false);
     }
   });
@@ -1083,7 +1083,7 @@ function setupTopNavMenu() {
     if (!(target instanceof Node)) {
       return;
     }
-    if (!els.menuPanel.hidden && !els.menuPanel.contains(target) && target !== els.menuTrigger) {
+    if (!els.menuPanel.hidden && !els.menuPanel.contains(target) && !els.menuTrigger.contains(target)) {
       closeTopNavMenu(false);
     }
   });
