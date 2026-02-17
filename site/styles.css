@@ -11,6 +11,12 @@
   --degraded: #f97316;
   --bad: #ef4444;
   --unknown: #7b8ea8;
+  --mobile-gap: 0.72rem;
+  --mobile-card-pad: 0.9rem;
+  --mobile-radius: 0.9rem;
+  --mobile-font-title: clamp(1.4rem, 7vw, 1.95rem);
+  --mobile-font-body: 0.96rem;
+  --mobile-font-meta: 0.77rem;
 }
 
 * {
@@ -28,10 +34,16 @@ body {
     linear-gradient(160deg, var(--bg), #06090d);
 }
 
+body.menu-open {
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
 .page {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 1.35rem 1rem 2.4rem;
+  padding: calc(1.35rem + env(safe-area-inset-top)) 1rem calc(2.4rem + env(safe-area-inset-bottom));
   display: grid;
   gap: 1rem;
 }
@@ -192,6 +204,17 @@ body {
   pointer-events: auto;
 }
 
+.menu-sheet-card {
+  display: contents;
+}
+
+.menu-sheet-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.56rem;
+}
+
 .menu-panel-meta {
   display: grid;
   gap: 0.16rem;
@@ -215,6 +238,26 @@ body {
   color: #90a8c3;
   font-size: 0.7rem;
   font-family: "IBM Plex Mono", monospace;
+}
+
+.menu-close-btn {
+  display: none;
+  border: 1px solid rgba(123, 142, 168, 0.5);
+  background: rgba(16, 24, 36, 0.7);
+  color: #d8ebff;
+  border-radius: 0.62rem;
+  min-height: 2rem;
+  padding: 0.34rem 0.56rem;
+  font-size: 0.72rem;
+  font-family: "IBM Plex Mono", monospace;
+  cursor: pointer;
+}
+
+.menu-close-btn:hover,
+.menu-close-btn:focus-visible {
+  border-color: rgba(66, 197, 255, 0.66);
+  box-shadow: 0 10px 22px rgba(56, 189, 248, 0.18);
+  outline: none;
 }
 
 .menu-group-label {
@@ -1375,144 +1418,191 @@ h2 {
 
 @media (max-width: 600px) {
   .page {
-    padding: 1rem 0.7rem 1.8rem;
-    gap: 0.82rem;
+    padding:
+      max(0.9rem, env(safe-area-inset-top))
+      0.66rem
+      calc(1.4rem + env(safe-area-inset-bottom));
+    gap: var(--mobile-gap);
   }
 
   .top-nav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-items: stretch;
+    gap: 0.5rem;
   }
 
   .top-actions {
-    gap: 0.36rem;
+    gap: 0.34rem;
   }
 
   .top-actions-dashboard {
     margin-left: 0;
     width: 100%;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "refresh refresh"
-      "lang menu";
-    align-items: stretch;
-  }
-
-  .top-actions-dashboard .menu-shell {
-    grid-area: menu;
-    display: grid;
-    justify-self: end;
-  }
-
-  .top-actions-dashboard .top-lang-btn {
-    grid-area: lang;
-    justify-self: start;
+    display: flex;
+    align-items: center;
+    gap: 0.36rem;
+    flex-wrap: nowrap;
   }
 
   .top-actions-dashboard .top-refresh-btn {
-    grid-area: refresh;
-    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
     justify-content: center;
   }
 
-  .top-actions-dashboard .top-lang-btn,
+  .top-actions-dashboard .top-lang-btn {
+    flex: 0 0 auto;
+    min-width: 2.65rem;
+    justify-content: center;
+  }
+
+  .top-actions-dashboard .menu-shell {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
   .top-actions-dashboard .menu-button {
-    min-width: 2.8rem;
+    min-width: 2.9rem;
   }
 
   .top-actions-email {
     margin-left: 0;
     width: 100%;
-    justify-content: space-between;
-    align-items: stretch;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.36rem;
+    flex-wrap: nowrap;
   }
 
   .top-actions-email .top-link {
     flex: 1 1 auto;
-    justify-content: flex-start;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .top-actions-email .menu-button {
+    min-width: 2.9rem;
   }
 
   .brand-link,
   .top-link,
   .menu-button {
-    font-size: 0.72rem;
-    padding: 0.4rem 0.56rem;
-    min-height: 2.55rem;
+    font-size: 0.71rem;
+    padding: 0.38rem 0.54rem;
+    min-height: 2.5rem;
   }
 
   .top-refresh-btn {
-    padding-inline: 0.58rem;
+    padding-inline: 0.56rem;
   }
 
-  .menu-panel {
-    min-width: 14rem;
-    max-width: min(96vw, 20rem);
-    right: 0;
+  .menu-panel.menu-panel--sheet {
+    position: fixed;
+    inset: 0;
+    right: auto;
+    top: auto;
+    min-width: 0;
+    max-width: none;
+    border: 0;
+    border-radius: 0;
+    background: rgba(4, 10, 19, 0.74);
+    backdrop-filter: blur(3px);
+    box-shadow: none;
+    padding:
+      max(0.46rem, env(safe-area-inset-top))
+      0.62rem
+      calc(0.66rem + env(safe-area-inset-bottom));
+    align-items: stretch;
+    transform: translateY(0.85rem);
+    z-index: 560;
+  }
+
+  .menu-panel.menu-panel--sheet .menu-sheet-card {
+    display: grid;
+    gap: 0.2rem;
+    border: 1px solid #2a3d56;
+    border-radius: 0.94rem;
+    background: linear-gradient(165deg, rgba(12, 20, 31, 0.98), rgba(15, 24, 37, 0.98));
+    box-shadow: 0 24px 46px rgba(0, 0, 0, 0.42);
+    padding: 0.56rem;
+    max-height: 100%;
+    overflow: auto;
+  }
+
+  .menu-sheet-head {
+    margin-bottom: 0.14rem;
+  }
+
+  .menu-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.12rem;
+    padding: 0.35rem 0.62rem;
   }
 
   .card {
-    padding: 0.92rem;
-    border-radius: 0.92rem;
+    padding: var(--mobile-card-pad);
+    border-radius: var(--mobile-radius);
   }
 
   .hero {
-    padding: 0.88rem 0.86rem;
-    gap: 0.78rem;
+    padding: var(--mobile-card-pad);
+    gap: 0.72rem;
   }
 
   .hero-side {
-    gap: 0.58rem;
+    gap: 0.5rem;
   }
 
   .hero-main h1 {
-    font-size: clamp(1.55rem, 8vw, 2.05rem);
+    font-size: var(--mobile-font-title);
   }
 
   .headline {
-    margin-top: 0.52rem;
-    line-height: 1.4;
+    margin-top: 0.44rem;
+    line-height: 1.34;
+    font-size: var(--mobile-font-body);
   }
 
   .status-marker {
     width: 100%;
+    padding: 0.54rem 0.66rem;
   }
 
   .hero-badges {
     width: 100%;
-    gap: 0.36rem;
+    gap: 0.32rem;
   }
 
   .hero-badges .badge {
-    font-size: 0.67rem;
-    padding: 0.28rem 0.5rem;
-    letter-spacing: 0.05em;
+    font-size: 0.64rem;
+    padding: 0.26rem 0.48rem;
+    letter-spacing: 0.04em;
   }
 
   #refreshBtn {
-    min-height: 2.55rem;
-    font-size: 0.78rem;
-    padding: 0.4rem 0.58rem;
+    min-height: 2.5rem;
+    font-size: 0.75rem;
+    padding: 0.38rem 0.54rem;
   }
 
   #languageBtn {
-    min-height: 2.55rem;
-  }
-
-  #languageBtn {
+    min-height: 2.5rem;
     width: auto;
-    min-width: 2.6rem;
-    padding: 0.4rem 0.6rem;
-    justify-self: end;
+    min-width: 2.65rem;
+    padding: 0.36rem 0.56rem;
     text-align: center;
   }
 
   .hero-meta {
-    gap: 0.38rem;
+    gap: 0.3rem;
     flex-direction: column;
   }
 
   .generated {
-    font-size: 0.78rem;
+    font-size: var(--mobile-font-meta);
   }
 
   .tab-nav {
@@ -1521,46 +1611,95 @@ h2 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.28rem;
     padding: 0.24rem;
+    position: sticky;
+    top: max(0.28rem, env(safe-area-inset-top));
+    z-index: 72;
+    backdrop-filter: blur(8px);
+    background: rgba(12, 18, 30, 0.9);
   }
 
   .tab-btn {
     width: 100%;
     text-align: center;
-    padding: 0.4rem 0.36rem;
-    font-size: 0.75rem;
-    min-height: 2.3rem;
+    padding: 0.42rem 0.34rem;
+    font-size: 0.74rem;
+    min-height: 2.75rem;
+  }
+
+  .system-tile {
+    padding: 0.52rem;
+  }
+
+  .feed-item {
+    padding: 0.5rem;
+  }
+
+  .feed-meta {
+    font-size: 0.72rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-subscribe .subscribe-widget {
+    min-height: 7.4rem;
+    background: rgba(16, 24, 39, 0.4);
+  }
+
+  .chart-wrap {
+    padding: 0.4rem;
+    min-height: 11.8rem;
+  }
+
+  .chart-legend {
+    gap: 0.44rem;
+    font-size: 0.7rem;
+  }
+
+  .eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
   }
 }
 
 @media (max-width: 420px) {
   .page {
-    padding: 0.95rem 0.58rem 1.6rem;
+    padding:
+      max(0.76rem, env(safe-area-inset-top))
+      0.52rem
+      calc(1.1rem + env(safe-area-inset-bottom));
   }
 
   .top-nav {
-    gap: 0.42rem;
+    gap: 0.4rem;
   }
 
   .top-actions {
-    gap: 0.28rem;
+    gap: 0.24rem;
   }
 
   .brand-link {
-    padding-inline: 0.56rem;
-  }
-
-  .menu-panel {
-    min-width: 11.8rem;
-    right: 0;
+    padding-inline: 0.52rem;
   }
 
   .top-actions-dashboard .top-refresh-btn {
-    font-size: 0.73rem;
-    padding-inline: 0.46rem;
+    font-size: 0.7rem;
+    padding-inline: 0.42rem;
   }
 
   .top-actions-email .top-link {
-    padding-inline: 0.5rem;
+    padding-inline: 0.42rem;
+  }
+
+  .menu-panel.menu-panel--sheet {
+    padding:
+      max(0.35rem, env(safe-area-inset-top))
+      0.44rem
+      calc(0.5rem + env(safe-area-inset-bottom));
+  }
+
+  .menu-panel.menu-panel--sheet .menu-sheet-card {
+    padding: 0.5rem;
   }
 
   .newsletter-submit {
@@ -1573,11 +1712,11 @@ h2 {
   }
 
   #refreshBtn {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
 
   .tab-btn {
-    font-size: 0.72rem;
-    padding: 0.38rem 0.32rem;
+    font-size: 0.7rem;
+    padding: 0.36rem 0.3rem;
   }
 }
