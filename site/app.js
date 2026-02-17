@@ -1,13 +1,13 @@
 ﻿const I18N = {
   en: {
-    pageTitle: "{service} Service Radar",
+    pageTitle: "{service} Status",
     ui: {
-      eyebrow: "Live {service} Monitor",
-      title: "Service Radar",
+      eyebrow: "Live {service} Status",
+      title: "Current Status",
       refresh: "Refresh now",
       languageAria: "Switch language",
       menu: {
-        brand: "Service Radar",
+        brand: "{service} Status",
         button: "Menu",
         services: "Services",
         primary: "Navigation",
@@ -325,16 +325,16 @@
     },
   },
   de: {
-    pageTitle: "{service} Service-Radar",
+    pageTitle: "{service}-Status",
     ui: {
-      eyebrow: "Live-{service}-Monitor",
-      title: "Service-Radar",
+      eyebrow: "Live-{service}-Status",
+      title: "Aktueller Status",
       refresh: "Jetzt aktualisieren",
       languageAria: "Sprache wechseln",
       menu: {
-        brand: "Service-Radar",
+        brand: "{service}-Status",
         button: "Menü",
-        services: "Services",
+        services: "Dienste",
         primary: "Navigation",
         tools: "Tools",
         updated: "Zuletzt aktualisiert: {time}",
