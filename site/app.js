@@ -66,12 +66,18 @@
       subscribe: {
         hint: "Get outage updates by email via a secure Brevo form with captcha and double opt-in.",
         loading: "Loading secure signup form...",
-        ready: "Secure signup form loaded ({provider}).",
+        ready: "Secure signup is ready ({provider}).",
         missing: "Signup form is not configured yet. Open the setup guide to connect Brevo.",
         invalid: "Configured signup form URL is invalid. Open the setup guide.",
         openGuide: "Open setup guide",
         openExternal: "Open secure signup in new tab",
-        frameTitle: "Outage email signup form",
+        emailLabel: "Email address",
+        emailPlaceholder: "you@example.com",
+        emailHelp: "Your email is collected on Brevo's secure page.",
+        captchaNote: "Captcha and double opt-in are completed in the secure step.",
+        cta: "Continue secure signup",
+        invalidEmail: "Please enter a valid email address.",
+        opening: "Secure signup opened in a new tab.",
         providers: {
           brevo: "Brevo",
           generic: "secure provider",
@@ -371,12 +377,18 @@
       subscribe: {
         hint: "Erhalte Störungsupdates per E-Mail über ein sicheres Brevo-Formular mit Captcha und Double-Opt-In.",
         loading: "Sicheres Anmeldeformular wird geladen...",
-        ready: "Sicheres Anmeldeformular geladen ({provider}).",
+        ready: "Sichere Anmeldung ist bereit ({provider}).",
         missing: "Anmeldeformular ist noch nicht konfiguriert. Öffne die Setup-Anleitung für Brevo.",
         invalid: "Die konfigurierte Formular-URL ist ungültig. Öffne die Setup-Anleitung.",
         openGuide: "Setup-Anleitung öffnen",
         openExternal: "Sichere Anmeldung in neuem Tab öffnen",
-        frameTitle: "Anmeldeformular für Störungs-E-Mails",
+        emailLabel: "E-Mail-Adresse",
+        emailPlaceholder: "du@beispiel.de",
+        emailHelp: "Deine E-Mail wird auf der sicheren Brevo-Seite erfasst.",
+        captchaNote: "Captcha und Double-Opt-in erfolgen im sicheren Schritt.",
+        cta: "Zur sicheren Anmeldung",
+        invalidEmail: "Bitte gib eine gültige E-Mail-Adresse ein.",
+        opening: "Sichere Anmeldung wurde in einem neuen Tab geöffnet.",
         providers: {
           brevo: "Brevo",
           generic: "sicherer Anbieter",
@@ -1042,6 +1054,14 @@ function parseHttpsUrl(value) {
   }
 }
 
+function isLikelyEmail(value) {
+  const text = String(value || "").trim();
+  if (!text || text.length > 320) {
+    return false;
+  }
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+}
+
 function isAllowedSubscriptionHost(parsedUrl, config) {
   const host = String(parsedUrl?.hostname || "").toLowerCase();
   if (!host) {
@@ -1125,12 +1145,56 @@ function renderSubscribeWidget(config = latestSubscriptionConfig) {
     return;
   }
 
-  const frame = document.createElement("iframe");
-  frame.src = parsedUrl.toString();
-  frame.loading = "lazy";
-  frame.referrerPolicy = "no-referrer";
-  frame.title = t("ui.subscribe.frameTitle");
-  els.subscribeWidget.appendChild(frame);
+  const form = document.createElement("form");
+  form.className = "newsletter-shell";
+  form.noValidate = true;
+
+  const label = document.createElement("label");
+  label.className = "newsletter-label";
+  label.setAttribute("for", "subscribeEmailInput");
+  label.textContent = t("ui.subscribe.emailLabel");
+
+  const input = document.createElement("input");
+  input.className = "newsletter-input";
+  input.type = "email";
+  input.id = "subscribeEmailInput";
+  input.name = "email";
+  input.placeholder = t("ui.subscribe.emailPlaceholder");
+  input.required = true;
+  input.autocomplete = "email";
+
+  const help = document.createElement("p");
+  help.className = "newsletter-help";
+  help.textContent = t("ui.subscribe.emailHelp");
+
+  const captcha = document.createElement("p");
+  captcha.className = "newsletter-note";
+  captcha.textContent = t("ui.subscribe.captchaNote");
+
+  const button = document.createElement("button");
+  button.className = "newsletter-submit";
+  button.type = "submit";
+  button.textContent = t("ui.subscribe.cta");
+
+  form.appendChild(label);
+  form.appendChild(input);
+  form.appendChild(help);
+  form.appendChild(captcha);
+  form.appendChild(button);
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const email = String(input.value || "").trim();
+    if (!isLikelyEmail(email)) {
+      els.subscribeStateText.textContent = t("ui.subscribe.invalidEmail");
+      input.focus();
+      return;
+    }
+    const targetUrl = new URL(parsedUrl.toString());
+    targetUrl.searchParams.set("email", email);
+    window.open(targetUrl.toString(), "_blank", "noopener,noreferrer");
+    els.subscribeStateText.textContent = t("ui.subscribe.opening");
+  });
+  els.subscribeWidget.appendChild(form);
 
   els.subscribeStateText.textContent = t("ui.subscribe.ready", { provider });
   els.subscribeActionLink.href = parsedUrl.toString();

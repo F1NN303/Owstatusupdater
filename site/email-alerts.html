@@ -12,7 +12,7 @@
 <body>
   <main class="page">
     <nav class="top-nav reveal" aria-label="Site menu">
-      <a class="top-link" href="./index.html">Zurück zum Dashboard</a>
+      <a class="top-link" href="./index.html">Zur&uuml;ck zum Dashboard</a>
       <a class="top-link" href="./data/rss.xml" target="_blank" rel="noreferrer">RSS</a>
     </nav>
 
@@ -20,37 +20,48 @@
       <div class="hero-main">
         <p class="eyebrow">Outage Newsletter</p>
         <h1>E-Mail-Benachrichtigung</h1>
-        <p class="headline">Melde dich an, um Updates zu Ausfällen direkt per E-Mail zu erhalten.</p>
+        <p class="headline">Melde dich an, um Updates zu Ausf&auml;llen direkt per E-Mail zu erhalten.</p>
       </div>
     </section>
 
     <section class="overview-grid">
       <article class="card reveal">
         <h2>Newsletter</h2>
-        <p class="summary">Das Formular verwendet Captcha und Double-Opt-in (Bestätigungslink per E-Mail).</p>
-        <div id="subscribeWidget" class="subscribe-widget">
-          <p id="subscribeWidgetText" class="feed-meta">Sicheres Formular wird geladen...</p>
+        <p class="summary">Sch&ouml;nes Frontend, sichere Anmeldung: Captcha und Double-Opt-in laufen auf Brevo.</p>
+
+        <div id="signupShell" class="subscribe-widget">
+          <form id="signupForm" class="newsletter-shell" novalidate>
+            <label for="signupEmail" class="newsletter-label">E-Mail-Adresse</label>
+            <input id="signupEmail" class="newsletter-input" type="email" name="email" placeholder="du@beispiel.de" required autocomplete="email">
+            <p class="newsletter-help">Du wirst zum sicheren Brevo-Formular weitergeleitet.</p>
+            <p class="newsletter-note">Captcha und Best&auml;tigungslink sind dort aktiviert.</p>
+            <button id="signupSubmit" class="newsletter-submit" type="submit">Zur sicheren Anmeldung</button>
+          </form>
         </div>
-        <p id="subscribeStateText" class="feed-meta">Sicheres Formular wird geladen...</p>
-        <a id="subscribeActionLink" class="subscribe-action-link" href="./index.html">Zum Dashboard</a>
+
+        <p id="signupState" class="feed-meta">Anmeldung wird vorbereitet...</p>
+        <a id="signupDirect" class="subscribe-action-link" href="./index.html">Zum Dashboard</a>
       </article>
     </section>
   </main>
 
   <script>
     (async () => {
-      const widget = document.getElementById("subscribeWidget");
-      const state = document.getElementById("subscribeStateText");
-      const action = document.getElementById("subscribeActionLink");
-      if (!widget || !state || !action) {
+      const state = document.getElementById("signupState");
+      const direct = document.getElementById("signupDirect");
+      const form = document.getElementById("signupForm");
+      const email = document.getElementById("signupEmail");
+      if (!state || !direct || !form || !email) {
         return;
       }
 
+      const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
       const fallbackHref = "./index.html";
-      action.href = fallbackHref;
-      action.target = "_self";
-      action.rel = "";
-      action.textContent = "Zum Dashboard";
+
+      direct.href = fallbackHref;
+      direct.target = "_self";
+      direct.rel = "";
+      direct.textContent = "Zum Dashboard";
 
       let config = null;
       try {
@@ -58,24 +69,24 @@
         if (response.ok) {
           config = await response.json();
         }
-      } catch (error) {
+      } catch (_error) {
         config = null;
       }
 
-      const formUrl = String(config?.form_url || "").trim();
-      if (!formUrl) {
+      const url = String(config?.form_url || "").trim();
+      if (!url) {
         state.textContent = "Formular ist noch nicht konfiguriert.";
         return;
       }
 
       let parsed = null;
       try {
-        parsed = new URL(formUrl);
-      } catch (error) {
+        parsed = new URL(url);
+      } catch (_error) {
         parsed = null;
       }
       if (!parsed || parsed.protocol !== "https:") {
-        state.textContent = "Formular-URL ist ungültig.";
+        state.textContent = "Formular-URL ist ung&uuml;ltig.";
         return;
       }
 
@@ -85,19 +96,25 @@
         return;
       }
 
-      widget.innerHTML = "";
-      const frame = document.createElement("iframe");
-      frame.src = parsed.toString();
-      frame.loading = "lazy";
-      frame.referrerPolicy = "no-referrer";
-      frame.title = "Newsletter Anmeldung";
-      widget.appendChild(frame);
+      direct.href = parsed.toString();
+      direct.target = "_blank";
+      direct.rel = "noreferrer";
+      direct.textContent = "Formular direkt in neuem Tab &ouml;ffnen";
+      state.textContent = "Sichere Anmeldung bereit.";
 
-      state.textContent = "Formular geladen.";
-      action.href = parsed.toString();
-      action.target = "_blank";
-      action.rel = "noreferrer";
-      action.textContent = "Formular in neuem Tab öffnen";
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const value = String(email.value || "").trim();
+        if (!isEmail(value)) {
+          state.textContent = "Bitte gib eine g&uuml;ltige E-Mail-Adresse ein.";
+          email.focus();
+          return;
+        }
+        const target = new URL(parsed.toString());
+        target.searchParams.set("email", value);
+        window.open(target.toString(), "_blank", "noopener,noreferrer");
+        state.textContent = "Sichere Anmeldung wurde in neuem Tab ge&ouml;ffnet.";
+      });
     })();
   </script>
 </body>
