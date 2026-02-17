@@ -128,11 +128,11 @@ def _send_via_brevo(api_key: str, payload: dict) -> tuple[bool, str]:
     }
     try:
         response = requests.post(BREVO_ENDPOINT, headers=headers, json=payload, timeout=25)
-    except requests.RequestException as exc:
-        return False, f"request_error: {exc}"
+    except requests.RequestException:
+        return False, "request_error"
     if response.status_code not in {200, 201, 202}:
-        body = response.text.strip().replace("\n", " ")
-        return False, f"http_{response.status_code}: {body[:240]}"
+        # Keep error reason generic so no remote response payload is persisted.
+        return False, f"http_{response.status_code}"
     try:
         data = response.json()
     except Exception:
@@ -154,9 +154,10 @@ def main() -> None:
             "last_major_status_generated_at": None,
             "last_email_result": "never",
             "last_email_reason": "not_evaluated",
-            "last_message_id": None,
         },
     )
+    # Drop legacy field so relay metadata is not retained in repository state.
+    state.pop("last_message_id", None)
 
     severity = str((status.get("analytics") or {}).get("severity_key") or "unknown")
     generated_at = str(status.get("generated_at") or "")
@@ -207,7 +208,6 @@ def main() -> None:
     if ok:
         state["last_major_email_at"] = _iso_utc(now)
         state["last_major_status_generated_at"] = generated_at
-        state["last_message_id"] = message
         state["last_email_result"] = "sent"
         state["last_email_reason"] = "forced_test" if force_send else "major_outage"
         _write_json(STATE_PATH, state)

@@ -1042,6 +1042,26 @@ function parseHttpsUrl(value) {
   }
 }
 
+function isAllowedSubscriptionHost(parsedUrl, config) {
+  const host = String(parsedUrl?.hostname || "").toLowerCase();
+  if (!host) {
+    return false;
+  }
+
+  const explicitHosts = Array.isArray(config?.allowed_hosts)
+    ? config.allowed_hosts.map((item) => String(item || "").toLowerCase().trim()).filter(Boolean)
+    : [];
+  if (explicitHosts.length) {
+    return explicitHosts.some((allowed) => host === allowed || host.endsWith(`.${allowed}`));
+  }
+
+  const providerKey = String(config?.provider || "brevo").trim().toLowerCase();
+  if (providerKey === "brevo") {
+    return host === "sibforms.com" || host.endsWith(".sibforms.com");
+  }
+  return true;
+}
+
 function providerLabel(providerKey) {
   const normalized = String(providerKey || "").trim().toLowerCase();
   if (normalized === "brevo") {
@@ -1089,6 +1109,14 @@ function renderSubscribeWidget(config = latestSubscriptionConfig) {
     return;
   }
   if (!parsedUrl) {
+    els.subscribeStateText.textContent = t("ui.subscribe.invalid");
+    els.subscribeActionLink.href = guideHref;
+    els.subscribeActionLink.target = "_self";
+    els.subscribeActionLink.rel = "";
+    els.subscribeActionLink.textContent = t("ui.subscribe.openGuide");
+    return;
+  }
+  if (!isAllowedSubscriptionHost(parsedUrl, config)) {
     els.subscribeStateText.textContent = t("ui.subscribe.invalid");
     els.subscribeActionLink.href = guideHref;
     els.subscribeActionLink.target = "_self";
