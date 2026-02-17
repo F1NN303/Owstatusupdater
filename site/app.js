@@ -1290,23 +1290,21 @@ function syncMenuGroupVisibility() {
   }
 }
 
-function filterMenuItems(queryText) {
+function filterMenuItems() {
   if (!els.menuPanel) {
     return;
   }
-  const normalizedQuery = normalizeMenuSearchText(queryText);
   const menuItems = Array.from(els.menuPanel.querySelectorAll("a[role='menuitem']"));
   for (const item of menuItems) {
-    const label = normalizeMenuSearchText(item.textContent || "");
-    const matches = !normalizedQuery || label.includes(normalizedQuery);
-    item.hidden = !matches;
+    item.hidden = false;
   }
   const serviceGrid = els.menuPanel.querySelector(".menu-service-grid");
   if (serviceGrid) {
-    const visibleServices = Array.from(serviceGrid.querySelectorAll("a[role='menuitem']")).some((item) => !item.hidden);
-    serviceGrid.hidden = !visibleServices;
+    serviceGrid.hidden = false;
   }
-  syncMenuGroupVisibility();
+  for (const label of Array.from(els.menuPanel.querySelectorAll(".menu-group-label"))) {
+    label.hidden = false;
+  }
 }
 
 function getMenuSearchMatches(queryText, limit = 8) {
@@ -1406,7 +1404,7 @@ function resetMenuSearch() {
     return;
   }
   els.menuSearchInput.value = "";
-  filterMenuItems("");
+  filterMenuItems();
   closeMenuSearchResults();
 }
 
@@ -1417,7 +1415,6 @@ function setupMenuSearch() {
   let blurCloseTimer = null;
   const updateSearchState = () => {
     const query = els.menuSearchInput?.value || "";
-    filterMenuItems(query);
     renderMenuSearchResults(query);
   };
 
@@ -1538,6 +1535,8 @@ function openTopNavMenu() {
   if (document.activeElement === els.menuSearchInput) {
     els.menuSearchInput.blur();
   }
+  filterMenuItems();
+  closeMenuSearchResults();
   if (topMenuCloseTimer) {
     window.clearTimeout(topMenuCloseTimer);
     topMenuCloseTimer = null;
@@ -1927,11 +1926,9 @@ function applyMenuTexts() {
     els.menuSearchEmpty.textContent = t("ui.menu.searchEmpty");
   }
   if (els.menuSearchInput?.value) {
-    const query = els.menuSearchInput.value;
-    filterMenuItems(query);
-    renderMenuSearchResults(query);
+    renderMenuSearchResults(els.menuSearchInput.value);
   } else {
-    filterMenuItems("");
+    filterMenuItems();
     closeMenuSearchResults();
   }
 }
