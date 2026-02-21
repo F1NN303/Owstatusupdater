@@ -896,7 +896,6 @@ let analyticsRegion = detectInitialAnalyticsRegion();
 let isLoading = false;
 let chart24 = null;
 let chart7 = null;
-let topMenuCloseTimer = null;
 let menuMode = "dropdown";
 
 function detectInitialLanguage() {
@@ -1526,10 +1525,6 @@ function closeTopNavMenu(focusTrigger = false) {
     return;
   }
   syncMenuMode();
-  if (topMenuCloseTimer) {
-    window.clearTimeout(topMenuCloseTimer);
-    topMenuCloseTimer = null;
-  }
   els.menuTrigger.setAttribute("aria-expanded", "false");
   els.menuPanel.classList.remove("is-open");
   const shell = getTopMenuShell();
@@ -1538,19 +1533,7 @@ function closeTopNavMenu(focusTrigger = false) {
   }
   setMenuOpenState(false);
   resetMenuSheetScroll();
-  if (menuMode === "sheet") {
-    els.menuPanel.hidden = true;
-  } else {
-    topMenuCloseTimer = window.setTimeout(() => {
-      if (!els.menuTrigger || !els.menuPanel) {
-        return;
-      }
-      if (els.menuTrigger.getAttribute("aria-expanded") === "true") {
-        return;
-      }
-      els.menuPanel.hidden = true;
-    }, 120);
-  }
+  els.menuPanel.hidden = true;
   if (focusTrigger) {
     els.menuTrigger.focus();
   }
@@ -1566,10 +1549,6 @@ function openTopNavMenu() {
   }
   filterMenuItems();
   closeMenuSearchResults();
-  if (topMenuCloseTimer) {
-    window.clearTimeout(topMenuCloseTimer);
-    topMenuCloseTimer = null;
-  }
   els.menuTrigger.setAttribute("aria-expanded", "true");
   els.menuPanel.hidden = false;
   forceMenuSheetScrollTop();

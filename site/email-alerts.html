@@ -229,10 +229,21 @@
       if (!trigger || !panel || !closeBtn) {
         return;
       }
-      let closeTimer = null;
-      let lockedScrollY = 0;
+      let menuMode = "dropdown";
 
-      const isMobileSheet = () => window.matchMedia("(max-width: 600px)").matches;
+      const isMobileSheet = () => {
+        const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+        if (viewportWidth > 0 && viewportWidth <= 760) {
+          return true;
+        }
+        const compactViewport = window.matchMedia("(max-width: 760px)").matches;
+        const touchViewport = window.matchMedia("(hover: none) and (pointer: coarse) and (max-width: 1024px)").matches;
+        return compactViewport || touchViewport;
+      };
+      const syncMenuMode = () => {
+        menuMode = isMobileSheet() ? "sheet" : "dropdown";
+        document.body.dataset.menuMode = menuMode;
+      };
       const normalizeText = (value) =>
         String(value || "")
           .toLowerCase()
@@ -247,27 +258,12 @@
         if (document.body.classList.contains("menu-open")) {
           return;
         }
-        lockedScrollY = window.scrollY || window.pageYOffset || 0;
         document.documentElement.classList.add("menu-open");
         document.body.classList.add("menu-open");
-        document.body.style.position = "fixed";
-        document.body.style.top = `-${lockedScrollY}px`;
-        document.body.style.left = "0";
-        document.body.style.right = "0";
-        document.body.style.width = "100%";
       };
       const unlockScroll = () => {
-        const wasLocked = document.body.classList.contains("menu-open");
         document.documentElement.classList.remove("menu-open");
         document.body.classList.remove("menu-open");
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.left = "";
-        document.body.style.right = "";
-        document.body.style.width = "";
-        if (wasLocked) {
-          window.scrollTo(0, lockedScrollY);
-        }
       };
       const syncGroupVisibility = () => {
         const labels = Array.from(panel.querySelectorAll(".menu-group-label"));
@@ -316,7 +312,7 @@
       };
 
       const setMenuOpenState = (isOpen) => {
-        if (isOpen && isMobileSheet()) {
+        if (isOpen && menuMode === "sheet") {
           document.body.dataset.menuOpen = "true";
           lockScroll();
           return;
@@ -324,40 +320,29 @@
         document.body.dataset.menuOpen = "false";
         unlockScroll();
       };
-      setMenuOpenState(false);
-      resetSearch();
-
-      const closeMenu = (focusTrigger) => {
-        if (closeTimer) {
-          window.clearTimeout(closeTimer);
-          closeTimer = null;
-        }
+      const resetMenuState = () => {
         panel.classList.remove("is-open");
         const shell = trigger.closest(".menu-shell");
         if (shell) {
           shell.classList.remove("is-open");
         }
         trigger.setAttribute("aria-expanded", "false");
+        panel.hidden = true;
         setMenuOpenState(false);
-        if (isMobileSheet()) {
-          panel.hidden = true;
-        } else {
-          closeTimer = window.setTimeout(() => {
-            if (trigger.getAttribute("aria-expanded") === "true") {
-              return;
-            }
-            panel.hidden = true;
-          }, 120);
-        }
+      };
+
+      const closeMenu = (focusTrigger) => {
+        syncMenuMode();
+        resetMenuState();
         if (focusTrigger) {
           trigger.focus();
         }
       };
 
       const openMenu = () => {
-        if (closeTimer) {
-          window.clearTimeout(closeTimer);
-          closeTimer = null;
+        syncMenuMode();
+        if (document.activeElement === searchInput) {
+          searchInput.blur();
         }
         trigger.setAttribute("aria-expanded", "true");
         panel.hidden = false;
@@ -370,14 +355,16 @@
         window.requestAnimationFrame(() => {
           if (trigger.getAttribute("aria-expanded") === "true") {
             panel.classList.add("is-open");
-            if (isMobileSheet()) {
-              if (searchInput) {
-                searchInput.focus();
-              } else {
-                const focusables = getFocusable();
-                if (focusables.length) {
-                  focusables[0].focus();
-                }
+            if (menuMode === "sheet") {
+              closeBtn.focus();
+              return;
+            }
+            if (searchInput) {
+              searchInput.focus();
+            } else {
+              const focusables = getFocusable();
+              if (focusables.length) {
+                focusables[0].focus();
               }
             }
           }
@@ -404,7 +391,7 @@
       });
 
       panel.addEventListener("click", (event) => {
-        if (!isMobileSheet()) {
+        if (menuMode !== "sheet") {
           return;
         }
         if (event.target === panel) {
@@ -427,7 +414,7 @@
           closeMenu(true);
           return;
         }
-        if (event.key === "Tab" && !panel.hidden && isMobileSheet()) {
+        if (event.key === "Tab" && !panel.hidden && menuMode === "sheet") {
           const focusables = getFocusable();
           if (!focusables.length) {
             return;
@@ -452,11 +439,46 @@
         searchInput.addEventListener("input", () => filterMenu(searchInput.value || ""));
       }
       closeBtn.addEventListener("click", () => closeMenu(true));
-      window.addEventListener("resize", () => {
-        if (!isMobileSheet()) {
+      const handleViewportChange = () => {
+        const previousMode = menuMode;
+        syncMenuMode();
+        if (previousMode !== menuMode) {
+          closeMenu(false);
+        }
+        if (menuMode !== "sheet") {
           setMenuOpenState(false);
         }
+      };
+      window.addEventListener("resize", () => {
+        handleViewportChange();
       });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", () => {
+          handleViewportChange();
+        });
+      }
+      window.addEventListener("orientationchange", () => {
+        handleViewportChange();
+      });
+      window.addEventListener("hashchange", () => {
+        closeMenu(false);
+      });
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState !== "visible") {
+          resetMenuState();
+        }
+      });
+      window.addEventListener("pageshow", () => {
+        syncMenuMode();
+        resetMenuState();
+      });
+      window.addEventListener("pagehide", () => {
+        resetMenuState();
+      });
+
+      syncMenuMode();
+      resetSearch();
+      resetMenuState();
     })();
   </script>
   <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>

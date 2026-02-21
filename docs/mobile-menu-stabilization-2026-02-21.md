@@ -1,0 +1,64 @@
+# Mobile Menu Stabilization (February 21, 2026)
+
+## Scope
+- Stabilize top navigation menu open/close behavior on mobile layouts.
+- Reduce state desync risk where menu content could stay visible while logically closed.
+- Align email alerts page menu behavior with dashboard menu state model.
+
+## Files Changed
+- `site/app.js`
+- `site/email-alerts.html`
+- `site/styles.css`
+
+## What Changed
+1. Dashboard menu close flow (`site/app.js`)
+- Removed delayed close timer logic.
+- `closeTopNavMenu()` now always enforces a hard closed state immediately:
+  - `aria-expanded="false"`
+  - remove `.is-open`
+  - `panel.hidden = true`
+  - `data-menu-open="false"` via `setMenuOpenState(false)`
+
+2. Email alerts page menu controller (`site/email-alerts.html`)
+- Updated inline menu logic to use the same mobile mode detection strategy as dashboard:
+  - compact width and coarse-pointer detection
+  - body `data-menu-mode` synchronization
+- Removed fixed-body scroll position mutation logic to match dashboard behavior.
+- Added strict reset routine (`resetMenuState`) used by close/visibility/pageshow/pagehide flows.
+- Added viewport and lifecycle listeners for mode changes and safe reset:
+  - `resize`
+  - `visualViewport.resize` (when available)
+  - `orientationchange`
+  - `hashchange`
+  - `visibilitychange`
+  - `pageshow`
+  - `pagehide`
+
+3. CSS guardrail (`site/styles.css`)
+- Added explicit hidden rule in sheet mode:
+  - `body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet[hidden] { display: none !important; ... }`
+- Purpose: prevent rendering edge cases where hidden panel could still appear in mobile sheet mode.
+
+## Why
+- Menu state was managed across several flags/classes (`hidden`, `aria-expanded`, `.is-open`, body dataset).
+- Any delayed or mode-dependent close path increased the chance of visual/semantic mismatch, especially on iOS Safari.
+- Consolidating toward immediate close semantics and aligned mode handling reduces race conditions and repeated regressions.
+
+## Validation Performed
+- JavaScript syntax check:
+  - `node --check site/app.js`
+- Inline script parse check for email menu script block:
+  - evaluated via Node `Function(...)` compilation after extraction from `site/email-alerts.html`
+
+## Post-Deploy Manual Retest (Recommended)
+1. iPhone Safari (or iOS simulator): open/close menu repeatedly on:
+   - `index.html`
+   - `sony/index.html`
+   - `email-alerts.html`
+2. With menu open, rotate portrait/landscape and confirm closed state remains consistent.
+3. Interleave search focus and menu open/close interactions.
+4. Navigate away/back (history) and verify menu is closed on return.
+
+## Notes
+- This change does not alter data generation pipelines.
+- Public subscription configuration (`site/data/subscription.json`) remains unchanged and secret-safe.
