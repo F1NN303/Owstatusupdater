@@ -346,6 +346,7 @@
         }
         trigger.setAttribute("aria-expanded", "true");
         panel.hidden = false;
+        panel.classList.add("is-open");
         resetSearch();
         setMenuOpenState(true);
         const shell = trigger.closest(".menu-shell");
@@ -354,7 +355,6 @@
         }
         window.requestAnimationFrame(() => {
           if (trigger.getAttribute("aria-expanded") === "true") {
-            panel.classList.add("is-open");
             if (menuMode === "sheet") {
               closeBtn.focus();
               return;

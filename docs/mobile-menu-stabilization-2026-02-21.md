@@ -62,3 +62,11 @@
 ## Notes
 - This change does not alter data generation pipelines.
 - Public subscription configuration (`site/data/subscription.json`) remains unchanged and secret-safe.
+
+## Follow-Up Patch (Same Day)
+- Symptom still reported on mobile Safari: menu trigger showed open (`X`) state while panel appeared closed.
+- Additional hardening applied:
+  - In `site/app.js` and `site/email-alerts.html`, menu open now sets `.is-open` immediately after `hidden = false` (synchronous), instead of waiting for `requestAnimationFrame`.
+- Rationale:
+  - Removes visual dependency on delayed frame scheduling for panel visibility.
+  - Prevents "trigger open, panel not visible" mismatch under Safari timing quirks.

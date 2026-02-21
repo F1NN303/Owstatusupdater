@@ -1551,6 +1551,7 @@ function openTopNavMenu() {
   closeMenuSearchResults();
   els.menuTrigger.setAttribute("aria-expanded", "true");
   els.menuPanel.hidden = false;
+  els.menuPanel.classList.add("is-open");
   forceMenuSheetScrollTop();
   setMenuOpenState(true);
   const shell = getTopMenuShell();
@@ -1559,7 +1560,6 @@ function openTopNavMenu() {
   }
   window.requestAnimationFrame(() => {
     if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
-      els.menuPanel?.classList.add("is-open");
       if (menuMode === "sheet") {
         if (els.menuCloseBtn instanceof HTMLElement) {
           els.menuCloseBtn.focus();
