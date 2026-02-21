@@ -896,7 +896,6 @@ let analyticsRegion = detectInitialAnalyticsRegion();
 let isLoading = false;
 let chart24 = null;
 let chart7 = null;
-let topNavMenuController = null;
 
 function detectInitialLanguage() {
   const stored = safeGetLocalStorage(STORAGE_KEYS.lang);
@@ -1317,9 +1316,6 @@ function setupMenuSearch() {
       window.clearTimeout(blurCloseTimer);
       blurCloseTimer = null;
     }
-    if (topNavMenuController?.isOpen?.()) {
-      topNavMenuController.close(false);
-    }
     updateSearchState();
   });
 
@@ -1388,27 +1384,7 @@ function setupMenuSearch() {
 }
 
 function setupTopNavMenu() {
-  if (!els.menuTrigger || !els.menuPanel) {
-    return;
-  }
-  setupMenuSearch();
-  if (!window.OwMenu || typeof window.OwMenu.createTopNavMenu !== "function") {
-    console.error(`${LOG_PREFIX} shared menu controller is missing`);
-    return;
-  }
-  topNavMenuController = window.OwMenu.createTopNavMenu({
-    trigger: els.menuTrigger,
-    panel: els.menuPanel,
-    closeButton: els.menuCloseBtn,
-    closeOnScrollDesktop: true,
-    onBeforeOpen: () => {
-      if (document.activeElement === els.menuSearchInput) {
-        els.menuSearchInput.blur();
-      }
-      filterMenuItems();
-      closeMenuSearchResults();
-    },
-  });
+  // menu removed intentionally; quick links are now always visible
 }
 
 function parseHttpsUrl(value) {
@@ -3159,7 +3135,6 @@ function toggleLanguage() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupTopNavMenu();
   try {
     applyStaticTexts();
   } catch (error) {
