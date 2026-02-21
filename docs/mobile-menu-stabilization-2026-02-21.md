@@ -74,3 +74,15 @@
 - Rationale:
   - Removes visual dependency on delayed frame scheduling for panel visibility.
   - Prevents "trigger open, panel not visible" mismatch under Safari timing quirks.
+
+## Follow-Up Unification Pass (Same Day)
+- User feedback: behavior stable, but mobile menu UI felt inconsistent between dashboard pages and email page.
+- Changes:
+  - Removed email-page-only in-menu search block to match dashboard menu complexity and reduce cognitive load.
+  - Tuned mobile sheet menu spacing/tap targets for easier one-handed navigation.
+  - Added viewport-driven sheet fallback CSS so mobile sheet layout is enforced by media query in addition to body mode attributes.
+  - Added reduced-motion handling for menu and reveal effects.
+- Files:
+  - `site/email-alerts.html`
+  - `site/styles.css`
+  - `docs/mobile-ui-unification-plan-2026-02-21.md`

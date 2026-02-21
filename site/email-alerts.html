@@ -87,12 +87,7 @@
                   <span class="menu-page-chip">Newsletter</span>
                   <span class="menu-last-updated">Setup</span>
                 </div>
-                <button id="emailMenuCloseBtn" class="menu-close-btn" type="button" aria-label="Menü schließen">Schließen</button>
-              </div>
-              <div class="menu-search-wrap">
-                <label class="menu-search-label" for="emailMenuSearchInput">Suche</label>
-                <input id="emailMenuSearchInput" class="menu-search-input" type="search" placeholder="Dienste oder Links suchen..." autocomplete="off">
-                <p id="emailMenuSearchEmpty" class="menu-search-empty" hidden>Keine Menüeinträge gefunden.</p>
+                <button id="emailMenuCloseBtn" class="menu-close-btn" type="button" aria-label="Men&uuml; schlie&szlig;en">Schlie&szlig;en</button>
               </div>
               <p class="menu-group-label">Services</p>
               <div class="menu-service-grid">
@@ -107,9 +102,9 @@
               </div>
               <p class="menu-group-label">Navigation</p>
               <a href="./index.html" role="menuitem">Dashboard</a>
-              <a href="./email-alerts.html" role="menuitem">E-Mail-Alerts</a>
+              <a href="./email-alerts.html" role="menuitem" aria-current="page">E-Mail-Alarme</a>
               <p class="menu-group-label">Tools</p>
-              <a href="./data/rss.xml" target="_blank" rel="noreferrer" role="menuitem">RSS</a>
+              <a href="./data/rss.xml" target="_blank" rel="noreferrer" role="menuitem">RSS-Feed</a>
               <a href="https://github.com/F1NN303/Owstatusupdater" target="_blank" rel="noreferrer" role="menuitem">GitHub</a>
             </div>
           </div>
@@ -224,8 +219,6 @@
       const trigger = document.getElementById("emailMenuTrigger");
       const panel = document.getElementById("emailMenuPanel");
       const closeBtn = document.getElementById("emailMenuCloseBtn");
-      const searchInput = document.getElementById("emailMenuSearchInput");
-      const searchEmpty = document.getElementById("emailMenuSearchEmpty");
       if (!trigger || !panel || !closeBtn) {
         return;
       }
@@ -244,12 +237,6 @@
         menuMode = isMobileSheet() ? "sheet" : "dropdown";
         document.body.dataset.menuMode = menuMode;
       };
-      const normalizeText = (value) =>
-        String(value || "")
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .trim();
       const getFocusable = () =>
         Array.from(panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter(
           (item) => item instanceof HTMLElement && !item.hidden
@@ -264,51 +251,6 @@
       const unlockScroll = () => {
         document.documentElement.classList.remove("menu-open");
         document.body.classList.remove("menu-open");
-      };
-      const syncGroupVisibility = () => {
-        const labels = Array.from(panel.querySelectorAll(".menu-group-label"));
-        for (const label of labels) {
-          let node = label.nextElementSibling;
-          let hasVisibleItem = false;
-          while (node && !node.classList.contains("menu-group-label")) {
-            const items = node.matches("a[role='menuitem']")
-              ? [node]
-              : Array.from(node.querySelectorAll("a[role='menuitem']"));
-            if (items.some((item) => !item.hidden)) {
-              hasVisibleItem = true;
-              break;
-            }
-            node = node.nextElementSibling;
-          }
-          label.hidden = !hasVisibleItem;
-        }
-      };
-      const filterMenu = (value) => {
-        const query = normalizeText(value);
-        const items = Array.from(panel.querySelectorAll("a[role='menuitem']"));
-        let visibleCount = 0;
-        for (const item of items) {
-          const matches = !query || normalizeText(item.textContent || "").includes(query);
-          item.hidden = !matches;
-          if (matches) {
-            visibleCount += 1;
-          }
-        }
-        const serviceGrid = panel.querySelector(".menu-service-grid");
-        if (serviceGrid) {
-          serviceGrid.hidden = !Array.from(serviceGrid.querySelectorAll("a[role='menuitem']")).some((item) => !item.hidden);
-        }
-        syncGroupVisibility();
-        if (searchEmpty) {
-          searchEmpty.hidden = visibleCount > 0;
-        }
-      };
-      const resetSearch = () => {
-        if (!searchInput) {
-          return;
-        }
-        searchInput.value = "";
-        filterMenu("");
       };
 
       const setMenuOpenState = (isOpen) => {
@@ -341,13 +283,9 @@
 
       const openMenu = () => {
         syncMenuMode();
-        if (document.activeElement === searchInput) {
-          searchInput.blur();
-        }
         trigger.setAttribute("aria-expanded", "true");
         panel.hidden = false;
         panel.classList.add("is-open");
-        resetSearch();
         setMenuOpenState(true);
         const shell = trigger.closest(".menu-shell");
         if (shell) {
@@ -359,13 +297,9 @@
               closeBtn.focus();
               return;
             }
-            if (searchInput) {
-              searchInput.focus();
-            } else {
-              const focusables = getFocusable();
-              if (focusables.length) {
-                focusables[0].focus();
-              }
+            const focusables = getFocusable();
+            if (focusables.length) {
+              focusables[0].focus();
             }
           }
         });
@@ -435,9 +369,6 @@
       for (const link of Array.from(panel.querySelectorAll("a"))) {
         link.addEventListener("click", () => closeMenu(false));
       }
-      if (searchInput) {
-        searchInput.addEventListener("input", () => filterMenu(searchInput.value || ""));
-      }
       closeBtn.addEventListener("click", () => closeMenu(true));
       const handleViewportChange = () => {
         const previousMode = menuMode;
@@ -477,7 +408,6 @@
       });
 
       syncMenuMode();
-      resetSearch();
       resetMenuState();
     })();
   </script>
@@ -485,3 +415,4 @@
   <script src="https://www.google.com/recaptcha/api.js?hl=de"></script>
 </body>
 </html>
+
