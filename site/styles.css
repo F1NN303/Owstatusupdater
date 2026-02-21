@@ -180,7 +180,7 @@ html.menu-open {
   gap: 0.2rem;
   max-height: min(46vh, 16rem);
   overflow: auto;
-  z-index: 420;
+  z-index: 1320;
 }
 
 .top-search-result {
@@ -299,6 +299,74 @@ html.menu-open {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
+}
+
+body[data-menu-mode="sheet"] .menu-shell {
+  position: static;
+}
+
+body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet {
+  position: fixed;
+  inset: 0;
+  right: auto;
+  top: auto;
+  min-width: 0;
+  max-width: none;
+  border: 0;
+  border-radius: 0;
+  background: rgba(4, 10, 19, 0.94);
+  backdrop-filter: blur(6px);
+  box-shadow: none;
+  padding: 0;
+  align-items: stretch;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  opacity: 0;
+  transform: none;
+  transition: opacity 140ms ease;
+  z-index: 1400;
+}
+
+body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet .menu-sheet-card {
+  display: grid;
+  gap: 0.32rem;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(165deg, rgba(12, 20, 31, 0.98), rgba(15, 24, 37, 0.98));
+  box-shadow: none;
+  padding:
+    max(0.72rem, env(safe-area-inset-top))
+    0.74rem
+    calc(0.92rem + env(safe-area-inset-bottom));
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  margin: 0;
+}
+
+body[data-menu-mode="sheet"] .menu-sheet-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin-bottom: 0.14rem;
+  padding-bottom: 0.24rem;
+  background: linear-gradient(180deg, rgba(12, 20, 31, 0.98), rgba(12, 20, 31, 0.88));
+}
+
+body[data-menu-mode="sheet"] .menu-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.12rem;
+  padding: 0.35rem 0.62rem;
+}
+
+body[data-menu-open="true"] .top-search-results {
+  display: none;
 }
 
 .menu-sheet-card {
@@ -1560,65 +1628,6 @@ h2 {
   }
 }
 
-@media (max-width: 760px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
-  .menu-panel.menu-panel--sheet {
-    position: fixed;
-    inset: 0;
-    right: auto;
-    top: auto;
-    min-width: 0;
-    max-width: none;
-    border: 0;
-    border-radius: 0;
-    background: rgba(4, 10, 19, 0.94);
-    backdrop-filter: blur(6px);
-    box-shadow: none;
-    padding: 0;
-    align-items: stretch;
-    overflow: hidden;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    transform: none;
-    z-index: 1200;
-  }
-
-  .menu-panel.menu-panel--sheet .menu-sheet-card {
-    display: grid;
-    gap: 0.32rem;
-    border: 0;
-    border-radius: 0;
-    background: linear-gradient(165deg, rgba(12, 20, 31, 0.98), rgba(15, 24, 37, 0.98));
-    box-shadow: none;
-    padding:
-      max(0.72rem, env(safe-area-inset-top))
-      0.74rem
-      calc(0.92rem + env(safe-area-inset-bottom));
-    min-height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    margin: 0;
-  }
-
-  .menu-sheet-head {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    margin-bottom: 0.14rem;
-    padding-bottom: 0.24rem;
-    background: linear-gradient(180deg, rgba(12, 20, 31, 0.98), rgba(12, 20, 31, 0.88));
-  }
-
-  .menu-close-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2.12rem;
-    padding: 0.35rem 0.62rem;
-  }
-}
-
 @media (max-width: 600px) {
   .page {
     padding:
@@ -1726,63 +1735,6 @@ h2 {
 
   .top-refresh-btn {
     padding-inline: 0.56rem;
-  }
-
-  .menu-panel.menu-panel--sheet {
-    position: fixed;
-    inset: 0;
-    right: auto;
-    top: auto;
-    min-width: 0;
-    max-width: none;
-    border: 0;
-    border-radius: 0;
-    background: rgba(4, 10, 19, 0.94);
-    backdrop-filter: blur(6px);
-    box-shadow: none;
-    padding: 0;
-    align-items: stretch;
-    overflow: hidden;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    transform: none;
-    z-index: 1200;
-  }
-
-  .menu-panel.menu-panel--sheet .menu-sheet-card {
-    display: grid;
-    gap: 0.32rem;
-    border: 0;
-    border-radius: 0;
-    background: linear-gradient(165deg, rgba(12, 20, 31, 0.98), rgba(15, 24, 37, 0.98));
-    box-shadow: none;
-    padding:
-      max(0.72rem, env(safe-area-inset-top))
-      0.74rem
-      calc(0.92rem + env(safe-area-inset-bottom));
-    min-height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    margin: 0;
-  }
-
-  .menu-sheet-head {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    margin-bottom: 0.14rem;
-    padding-bottom: 0.24rem;
-    background: linear-gradient(180deg, rgba(12, 20, 31, 0.98), rgba(12, 20, 31, 0.88));
-  }
-
-  .menu-close-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2.12rem;
-    padding: 0.35rem 0.62rem;
   }
 
   .menu-search-input {
@@ -1950,7 +1902,7 @@ h2 {
     padding-inline: 0.42rem;
   }
 
-  .menu-panel.menu-panel--sheet .menu-sheet-card {
+  body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet .menu-sheet-card {
     padding:
       max(0.62rem, env(safe-area-inset-top))
       0.56rem

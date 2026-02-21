@@ -897,7 +897,7 @@ let isLoading = false;
 let chart24 = null;
 let chart7 = null;
 let topMenuCloseTimer = null;
-let menuLockedScrollY = 0;
+let menuMode = "dropdown";
 
 function detectInitialLanguage() {
   const stored = safeGetLocalStorage(STORAGE_KEYS.lang);
@@ -1161,9 +1161,21 @@ function updateLanguageButtonLabel() {
 }
 
 function isMobileMenuSheet() {
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+  if (viewportWidth > 0 && viewportWidth <= 760) {
+    return true;
+  }
   const compactViewport = window.matchMedia("(max-width: 760px)").matches;
   const touchViewport = window.matchMedia("(hover: none) and (pointer: coarse) and (max-width: 1024px)").matches;
   return compactViewport || touchViewport;
+}
+
+function syncMenuMode() {
+  if (!document.body) {
+    return;
+  }
+  menuMode = isMobileMenuSheet() ? "sheet" : "dropdown";
+  document.body.dataset.menuMode = menuMode;
 }
 
 function getTopMenuShell() {
@@ -1240,44 +1252,44 @@ function lockPageScroll() {
   if (document.body.classList.contains("menu-open")) {
     return;
   }
-  menuLockedScrollY = window.scrollY || window.pageYOffset || 0;
   document.documentElement.classList.add("menu-open");
   document.body.classList.add("menu-open");
-  document.body.style.position = "fixed";
-  document.body.style.top = `-${menuLockedScrollY}px`;
-  document.body.style.left = "0";
-  document.body.style.right = "0";
-  document.body.style.width = "100%";
 }
 
 function unlockPageScroll() {
   if (!document.body || !document.documentElement) {
     return;
   }
-  const wasLocked = document.body.classList.contains("menu-open");
   document.documentElement.classList.remove("menu-open");
   document.body.classList.remove("menu-open");
-  document.body.style.position = "";
-  document.body.style.top = "";
-  document.body.style.left = "";
-  document.body.style.right = "";
-  document.body.style.width = "";
-  if (wasLocked) {
-    window.scrollTo(0, menuLockedScrollY);
-  }
 }
 
 function setMenuOpenState(isOpen) {
   if (!document.body) {
     return;
   }
-  if (isOpen && isMobileMenuSheet()) {
+  if (isOpen && menuMode === "sheet") {
     document.body.dataset.menuOpen = "true";
     lockPageScroll();
     return;
   }
   document.body.dataset.menuOpen = "false";
   unlockPageScroll();
+}
+
+function resetTopNavMenuState() {
+  if (!els.menuTrigger || !els.menuPanel) {
+    return;
+  }
+  els.menuTrigger.setAttribute("aria-expanded", "false");
+  els.menuPanel.classList.remove("is-open");
+  els.menuPanel.hidden = true;
+  const shell = getTopMenuShell();
+  if (shell) {
+    shell.classList.remove("is-open");
+  }
+  setMenuOpenState(false);
+  resetMenuSheetScroll();
 }
 
 function syncMenuGroupVisibility() {
@@ -1439,6 +1451,9 @@ function setupMenuSearch() {
       window.clearTimeout(blurCloseTimer);
       blurCloseTimer = null;
     }
+    if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
+      closeTopNavMenu(false);
+    }
     updateSearchState();
   });
 
@@ -1510,6 +1525,7 @@ function closeTopNavMenu(focusTrigger = false) {
   if (!els.menuTrigger || !els.menuPanel) {
     return;
   }
+  syncMenuMode();
   if (topMenuCloseTimer) {
     window.clearTimeout(topMenuCloseTimer);
     topMenuCloseTimer = null;
@@ -1522,7 +1538,7 @@ function closeTopNavMenu(focusTrigger = false) {
   }
   setMenuOpenState(false);
   resetMenuSheetScroll();
-  if (isMobileMenuSheet()) {
+  if (menuMode === "sheet") {
     els.menuPanel.hidden = true;
   } else {
     topMenuCloseTimer = window.setTimeout(() => {
@@ -1544,6 +1560,7 @@ function openTopNavMenu() {
   if (!els.menuTrigger || !els.menuPanel) {
     return;
   }
+  syncMenuMode();
   if (document.activeElement === els.menuSearchInput) {
     els.menuSearchInput.blur();
   }
@@ -1564,7 +1581,11 @@ function openTopNavMenu() {
   window.requestAnimationFrame(() => {
     if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
       els.menuPanel?.classList.add("is-open");
-      if (isMobileMenuSheet()) {
+      if (menuMode === "sheet") {
+        if (els.menuCloseBtn instanceof HTMLElement) {
+          els.menuCloseBtn.focus();
+          return;
+        }
         const focusables = getMenuFocusableElements();
         if (focusables.length) {
           focusables[0].focus();
@@ -1593,7 +1614,8 @@ function setupTopNavMenu() {
   if (!els.menuTrigger || !els.menuPanel) {
     return;
   }
-  closeTopNavMenu(false);
+  syncMenuMode();
+  resetTopNavMenuState();
   setupMenuSearch();
 
   els.menuTrigger.addEventListener("click", () => {
@@ -1616,7 +1638,7 @@ function setupTopNavMenu() {
   });
 
   els.menuPanel.addEventListener("click", (event) => {
-    if (!isMobileMenuSheet()) {
+    if (menuMode !== "sheet") {
       return;
     }
     if (event.target === els.menuPanel) {
@@ -1639,7 +1661,7 @@ function setupTopNavMenu() {
       closeTopNavMenu(true);
       return;
     }
-    if (event.key === "Tab" && !els.menuPanel.hidden && isMobileMenuSheet()) {
+    if (event.key === "Tab" && !els.menuPanel.hidden && menuMode === "sheet") {
       const focusables = getMenuFocusableElements();
       if (!focusables.length) {
         return;
@@ -1663,25 +1685,46 @@ function setupTopNavMenu() {
   if (els.menuCloseBtn) {
     els.menuCloseBtn.addEventListener("click", () => closeTopNavMenu(true));
   }
-  window.addEventListener("resize", () => {
-    if (!isMobileMenuSheet()) {
+  const handleViewportChange = () => {
+    const previousMode = menuMode;
+    syncMenuMode();
+    if (previousMode !== menuMode) {
+      closeTopNavMenu(false);
+    }
+    if (menuMode !== "sheet") {
       setMenuOpenState(false);
-      if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
-        closeTopNavMenu(false);
-      }
+    }
+  };
+  window.addEventListener("resize", () => {
+    handleViewportChange();
+  });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", () => {
+      handleViewportChange();
+    });
+  }
+  window.addEventListener("orientationchange", () => {
+    handleViewportChange();
+  });
+  window.addEventListener("hashchange", () => {
+    closeTopNavMenu(false);
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") {
+      resetTopNavMenuState();
     }
   });
   window.addEventListener("scroll", () => {
-    if (els.menuTrigger?.getAttribute("aria-expanded") === "true" && !isMobileMenuSheet()) {
+    if (els.menuTrigger?.getAttribute("aria-expanded") === "true" && menuMode !== "sheet") {
       closeTopNavMenu(false);
     }
   }, { passive: true });
   window.addEventListener("pageshow", () => {
-    closeTopNavMenu(false);
-    forceMenuSheetScrollTop();
+    syncMenuMode();
+    resetTopNavMenuState();
   });
   window.addEventListener("pagehide", () => {
-    closeTopNavMenu(false);
+    resetTopNavMenuState();
   });
 }
 
