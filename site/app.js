@@ -682,6 +682,10 @@ const els = {
   menuEmailAlertsLink: document.getElementById("menuEmailAlertsLink"),
   menuRssLink: document.getElementById("menuRssLink"),
   menuGithubLink: document.getElementById("menuGithubLink"),
+  dockOverwatchLink: document.getElementById("dockOverwatchLink"),
+  dockSonyLink: document.getElementById("dockSonyLink"),
+  dockEmailAlertsLink: document.getElementById("dockEmailAlertsLink"),
+  dockRssLink: document.getElementById("dockRssLink"),
   eyebrowText: document.getElementById("eyebrowText"),
   titleText: document.getElementById("titleText"),
   severityBadge: document.getElementById("severityBadge"),
@@ -1627,14 +1631,26 @@ function applyMenuTexts() {
   if (els.menuSonyLink) {
     setMenuServiceLabel(els.menuSonyLink, t("ui.menu.sony"));
   }
+  if (els.dockSonyLink) {
+    setMenuServiceLabel(els.dockSonyLink, t("ui.menu.sony"));
+  }
   if (els.menuOverwatchLink) {
     setMenuServiceLabel(els.menuOverwatchLink, t("ui.menu.overwatch"));
+  }
+  if (els.dockOverwatchLink) {
+    setMenuServiceLabel(els.dockOverwatchLink, t("ui.menu.overwatch"));
   }
   if (els.menuEmailAlertsLink) {
     els.menuEmailAlertsLink.textContent = t("ui.menu.emailAlerts");
   }
+  if (els.dockEmailAlertsLink) {
+    els.dockEmailAlertsLink.textContent = t("ui.menu.emailAlerts");
+  }
   if (els.menuRssLink) {
     els.menuRssLink.textContent = t("ui.menu.rss");
+  }
+  if (els.dockRssLink) {
+    els.dockRssLink.textContent = t("ui.menu.rss");
   }
   if (els.menuGithubLink) {
     els.menuGithubLink.textContent = t("ui.menu.github");

@@ -17,6 +17,8 @@
   --mobile-font-title: clamp(1.4rem, 7vw, 1.95rem);
   --mobile-font-body: 0.96rem;
   --mobile-font-meta: 0.77rem;
+  --mobile-dock-height: 4.45rem;
+  --mobile-dock-offset: 0.46rem;
 }
 
 * {
@@ -62,6 +64,14 @@ html.menu-open {
   font-size: 0.68rem;
   letter-spacing: 0.04em;
   text-align: center;
+}
+
+.mobile-dock {
+  display: none;
+}
+
+.mobile-dock-link {
+  text-decoration: none;
 }
 
 .top-nav {
@@ -970,6 +980,28 @@ h2 {
   background: rgba(18, 25, 34, 0.86);
   border-radius: 999px;
   padding: 0.28rem;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.tab-liquid-indicator {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 0;
+  height: 0;
+  border-radius: 999px;
+  background:
+    linear-gradient(145deg, rgba(132, 223, 255, 0.26), rgba(74, 146, 255, 0.1)),
+    rgba(28, 48, 74, 0.6);
+  border: 1px solid rgba(111, 217, 255, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(235, 247, 255, 0.3),
+    0 8px 18px rgba(52, 165, 255, 0.24);
+  transform: translate3d(0, 0, 0);
+  transition: transform 260ms cubic-bezier(0.2, 0.85, 0.2, 1), width 260ms ease, height 260ms ease;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .tab-btn {
@@ -981,6 +1013,9 @@ h2 {
   font-size: 0.82rem;
   font-family: "IBM Plex Mono", monospace;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: color 200ms ease, border-color 200ms ease;
 }
 
 .tab-btn:hover {
@@ -1030,9 +1065,10 @@ h2 {
 }
 
 .tab-btn.active {
-  color: #94deff;
-  background: rgba(66, 197, 255, 0.16);
-  border-color: rgba(66, 197, 255, 0.5);
+  color: #e9f6ff;
+  background: transparent;
+  border-color: transparent;
+  text-shadow: 0 0 10px rgba(120, 225, 255, 0.26);
 }
 
 .tab-panel {
@@ -1766,17 +1802,129 @@ h2 {
   }
 }
 
+@media (max-width: 900px) {
+  .page {
+    padding-bottom: calc(var(--mobile-dock-height) + var(--mobile-dock-offset) + 1.2rem + env(safe-area-inset-bottom));
+  }
+
+  .page-version {
+    padding-bottom: calc(var(--mobile-dock-height) + var(--mobile-dock-offset) + 0.66rem + env(safe-area-inset-bottom));
+  }
+
+  .top-actions-links .top-link {
+    display: none;
+  }
+
+  .top-actions-email {
+    display: none;
+  }
+
+  .top-actions-dashboard {
+    width: auto;
+    margin-left: auto;
+  }
+
+  .mobile-dock {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--mobile-dock-offset) + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: min(96vw, 33rem);
+    padding: 0.28rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 0.2rem;
+    border-radius: 1.12rem;
+    border: 1px solid rgba(130, 216, 255, 0.28);
+    background:
+      radial-gradient(130% 180% at 0% -40%, rgba(118, 235, 255, 0.16), transparent 60%),
+      linear-gradient(160deg, rgba(9, 20, 34, 0.86), rgba(10, 22, 40, 0.78));
+    box-shadow:
+      0 14px 36px rgba(4, 9, 18, 0.62),
+      inset 0 1px 0 rgba(228, 244, 255, 0.2);
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+    z-index: 220;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .mobile-dock::before {
+    content: "";
+    position: absolute;
+    inset: -20% -30% 45%;
+    background: radial-gradient(closest-side, rgba(202, 245, 255, 0.22), transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mobile-dock-indicator {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 0;
+    height: 0;
+    border-radius: 0.86rem;
+    background:
+      linear-gradient(145deg, rgba(170, 236, 255, 0.34), rgba(90, 172, 255, 0.12)),
+      rgba(24, 46, 72, 0.56);
+    border: 1px solid rgba(129, 223, 255, 0.5);
+    box-shadow:
+      inset 0 1px 0 rgba(236, 247, 255, 0.34),
+      0 10px 22px rgba(48, 167, 255, 0.28);
+    pointer-events: none;
+    transform: translate3d(0, 0, 0);
+    transition: transform 280ms cubic-bezier(0.2, 0.85, 0.2, 1), width 280ms ease, height 280ms ease;
+    z-index: 1;
+  }
+
+  .mobile-dock-link {
+    position: relative;
+    z-index: 2;
+    min-height: 3.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 0.86rem;
+    border: 1px solid transparent;
+    color: #9fb9d8;
+    padding: 0.3rem 0.2rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    line-height: 1.15;
+    text-decoration: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+
+  .mobile-dock-link:hover,
+  .mobile-dock-link:focus-visible {
+    color: #dff4ff;
+    border-color: rgba(130, 216, 255, 0.38);
+    outline: none;
+  }
+
+  .mobile-dock-link.is-active,
+  .mobile-dock-link[aria-current="page"] {
+    color: #eaf8ff;
+    text-shadow: 0 0 12px rgba(124, 228, 255, 0.26);
+  }
+}
+
 @media (max-width: 600px) {
   .page {
     padding:
       max(0.9rem, env(safe-area-inset-top))
       0.66rem
-      calc(1.4rem + env(safe-area-inset-bottom));
+      calc(var(--mobile-dock-height) + var(--mobile-dock-offset) + 0.88rem + env(safe-area-inset-bottom));
     gap: var(--mobile-gap);
   }
 
   .page-version {
-    padding: 0 0.66rem calc(0.68rem + env(safe-area-inset-bottom));
+    padding: 0 0.66rem calc(var(--mobile-dock-height) + var(--mobile-dock-offset) + 0.48rem + env(safe-area-inset-bottom));
     font-size: 0.63rem;
   }
 
@@ -1824,6 +1972,7 @@ h2 {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 0.36rem;
     flex-wrap: nowrap;
   }
@@ -1850,23 +1999,7 @@ h2 {
   }
 
   .top-actions-email {
-    margin-left: 0;
-    width: 100%;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    justify-content: stretch;
-    align-items: center;
-    gap: 0.36rem;
-  }
-
-  .top-actions-email .top-link {
-    width: 100%;
-    justify-content: center;
-    min-width: 0;
-  }
-
-  .top-actions-email .menu-button {
-    min-width: 2.9rem;
+    display: none;
   }
 
   .top-actions-links {
@@ -1977,6 +2110,7 @@ h2 {
     z-index: 72;
     backdrop-filter: blur(8px);
     background: rgba(12, 18, 30, 0.9);
+    touch-action: manipulation;
   }
 
   .tab-btn {
@@ -2028,11 +2162,11 @@ h2 {
     padding:
       max(0.76rem, env(safe-area-inset-top))
       0.52rem
-      calc(1.1rem + env(safe-area-inset-bottom));
+      calc(var(--mobile-dock-height) + var(--mobile-dock-offset) + 0.7rem + env(safe-area-inset-bottom));
   }
 
   .page-version {
-    padding-inline: 0.52rem;
+    padding: 0 0.52rem calc(var(--mobile-dock-height) + var(--mobile-dock-offset) + 0.44rem + env(safe-area-inset-bottom));
     font-size: 0.6rem;
   }
 
@@ -2098,6 +2232,11 @@ h2 {
 
 @media (prefers-reduced-motion: reduce) {
   .menu-panel {
+    transition: none;
+  }
+
+  .tab-liquid-indicator,
+  .mobile-dock-indicator {
     transition: none;
   }
 
