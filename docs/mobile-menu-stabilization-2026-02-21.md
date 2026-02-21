@@ -67,6 +67,10 @@
 - Symptom still reported on mobile Safari: menu trigger showed open (`X`) state while panel appeared closed.
 - Additional hardening applied:
   - In `site/app.js` and `site/email-alerts.html`, menu open now sets `.is-open` immediately after `hidden = false` (synchronous), instead of waiting for `requestAnimationFrame`.
+- Root cause fix applied in `site/styles.css`:
+  - `body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet` set `opacity: 0` with higher specificity than `.menu-panel.is-open`, so the panel stayed visually hidden in sheet mode.
+  - Added a specific open override:
+    - `body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet.is-open { opacity: 1; pointer-events: auto; }`
 - Rationale:
   - Removes visual dependency on delayed frame scheduling for panel visibility.
   - Prevents "trigger open, panel not visible" mismatch under Safari timing quirks.
