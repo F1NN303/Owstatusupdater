@@ -59,56 +59,19 @@
   </style>
   <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
 </head>
-<body data-menu-mode="dropdown" data-menu-open="false" data-version-url="./data/status.json">
+<body data-version-url="./data/status.json">
   <main class="page">
     <nav class="top-nav" aria-label="Site menu">
       <a class="brand-link" href="./index.html">
         <img class="brand-logo-image" src="./vendor/logo-overwatch.svg" alt="" aria-hidden="true">
         <span>Overwatch Status</span>
       </a>
-      <div class="top-actions top-actions-email">
-        <a class="top-link" href="./index.html">Dashboard</a>
-        <div class="menu-shell">
-          <button
-            id="emailMenuTrigger"
-            class="menu-button"
-            type="button"
-            aria-haspopup="menu"
-            aria-expanded="false"
-            aria-controls="emailMenuPanel"
-          >
-            <span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
-            <span>Men&uuml;</span>
-          </button>
-          <div id="emailMenuPanel" class="menu-panel menu-panel--sheet" role="menu" hidden>
-            <div class="menu-sheet-card">
-              <div class="menu-sheet-head">
-                <div class="menu-panel-meta">
-                  <span class="menu-page-chip">Newsletter</span>
-                  <span class="menu-last-updated">Setup</span>
-                </div>
-                <button id="emailMenuCloseBtn" class="menu-close-btn" type="button" aria-label="Men&uuml; schlie&szlig;en">Schlie&szlig;en</button>
-              </div>
-              <p class="menu-group-label">Services</p>
-              <div class="menu-service-grid">
-                <a class="menu-service-link" href="./index.html" role="menuitem">
-                  <img class="menu-service-logo" src="./vendor/logo-overwatch.svg" alt="" aria-hidden="true">
-                  <span>Overwatch</span>
-                </a>
-                <a class="menu-service-link" href="./sony/index.html" role="menuitem">
-                  <img class="menu-service-logo" src="./vendor/logo-sony.svg" alt="" aria-hidden="true">
-                  <span>Sony PSN</span>
-                </a>
-              </div>
-              <p class="menu-group-label">Navigation</p>
-              <a href="./index.html" role="menuitem">Dashboard</a>
-              <a href="./email-alerts.html" role="menuitem" aria-current="page">E-Mail-Alarme</a>
-              <p class="menu-group-label">Tools</p>
-              <a href="./data/rss.xml" target="_blank" rel="noreferrer" role="menuitem">RSS-Feed</a>
-              <a href="https://github.com/F1NN303/Owstatusupdater" target="_blank" rel="noreferrer" role="menuitem">GitHub</a>
-            </div>
-          </div>
-        </div>
+      <div class="top-actions top-actions-email top-actions-links" aria-label="Quick links">
+        <a id="menuOverwatchLink" class="top-link" href="./index.html">Overwatch</a>
+        <a id="menuSonyLink" class="top-link" href="./sony/index.html">Sony PSN</a>
+        <a id="menuEmailAlertsLink" class="top-link" href="./email-alerts.html" aria-current="page">E-Mail-Alarme</a>
+        <a id="menuRssLink" class="top-link" href="./data/rss.xml" target="_blank" rel="noreferrer">RSS-Feed</a>
+        <a id="menuGithubLink" class="top-link" href="https://github.com/F1NN303/Owstatusupdater" target="_blank" rel="noreferrer">GitHub</a>
       </div>
     </nav>
 
@@ -215,20 +178,7 @@
     };
     var AUTOHIDE = Boolean(0);
   </script>
-  <script src="./menu.js" defer></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      if (!window.OwMenu || typeof window.OwMenu.createTopNavMenu !== "function") {
-        return;
-      }
-      window.OwMenu.createTopNavMenu({
-        trigger: document.getElementById("emailMenuTrigger"),
-        panel: document.getElementById("emailMenuPanel"),
-        closeButton: document.getElementById("emailMenuCloseBtn"),
-        closeOnScrollDesktop: true,
-      });
-    });
-  </script>
+  <script src="./version-info.js" defer></script>
   <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
   <script src="https://www.google.com/recaptcha/api.js?hl=de"></script>
 </body>
