@@ -49,3 +49,4 @@
   - Dashboard pages now load shared menu controller before `site/app.js`.
   - `site/app.js` now uses `window.OwMenu.createTopNavMenu(...)` instead of local duplicated open/close logic.
   - `site/email-alerts.html` inline menu controller removed and replaced with shared-menu initialization.
+  - Added bottom version info (`[data-version-info]`) on all pages, hydrated from `status.json` (`cache: no-store`) to make updates visible.

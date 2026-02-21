@@ -53,6 +53,17 @@ html.menu-open {
   gap: 1rem;
 }
 
+.page-version {
+  max-width: 1240px;
+  margin: 0.2rem auto 0;
+  padding: 0 1rem calc(0.78rem + env(safe-area-inset-bottom));
+  color: #8ea6c1;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
 .top-nav {
   display: flex;
   justify-content: space-between;
@@ -288,6 +299,7 @@ html.menu-open {
   opacity: 0;
   transform: translateY(-0.3rem) scale(0.985);
   pointer-events: none;
+  will-change: opacity, transform;
   transition: opacity 160ms ease, transform 160ms ease;
 }
 
@@ -321,7 +333,8 @@ body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet {
   border: 0;
   border-radius: 0;
   background: rgba(4, 10, 19, 0.94);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   box-shadow: none;
   padding: 0;
   align-items: stretch;
@@ -330,7 +343,7 @@ body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet {
   -webkit-overflow-scrolling: touch;
   opacity: 0;
   transform: none;
-  transition: opacity 170ms ease;
+  transition: opacity 130ms ease;
   z-index: 1400;
 }
 
@@ -349,7 +362,7 @@ body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet .menu-group-label {
   margin-top: 0.34rem;
 }
 
-@media (max-width: 760px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
+@media (max-width: 1024px) {
   .menu-shell {
     position: static;
   }
@@ -370,7 +383,8 @@ body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet .menu-group-label {
     border: 0;
     border-radius: 0;
     background: rgba(4, 10, 19, 0.94);
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     box-shadow: none;
     padding: 0;
     align-items: stretch;
@@ -379,7 +393,7 @@ body[data-menu-mode="sheet"] .menu-panel.menu-panel--sheet .menu-group-label {
     -webkit-overflow-scrolling: touch;
     opacity: 0;
     transform: none;
-    transition: opacity 170ms ease;
+    transition: opacity 130ms ease;
     z-index: 1400;
   }
 
@@ -1746,6 +1760,11 @@ h2 {
     gap: var(--mobile-gap);
   }
 
+  .page-version {
+    padding: 0 0.66rem calc(0.68rem + env(safe-area-inset-bottom));
+    font-size: 0.63rem;
+  }
+
   .top-nav {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -1977,6 +1996,11 @@ h2 {
       max(0.76rem, env(safe-area-inset-top))
       0.52rem
       calc(1.1rem + env(safe-area-inset-bottom));
+  }
+
+  .page-version {
+    padding-inline: 0.52rem;
+    font-size: 0.6rem;
   }
 
   .top-nav {

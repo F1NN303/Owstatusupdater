@@ -94,6 +94,7 @@
   - Wired dashboard pages to shared controller by loading `menu.js` before `app.js`.
   - Refactored `site/app.js` to consume shared controller and removed duplicated menu open/close event orchestration.
   - Replaced email inline menu controller with lightweight shared-controller initialization.
+  - Added visible footer version info on all pages, hydrated from `status.json` to verify fresh deploys and reduce cache confusion.
 - Files:
   - `site/menu.js`
   - `site/app.js`
