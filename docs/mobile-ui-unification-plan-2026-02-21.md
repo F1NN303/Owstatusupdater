@@ -41,8 +41,11 @@
 4. Menu navigation is usable with one hand and low cognitive load.
 
 ## Implementation Status
-- Phase 1-4 implemented in this branch:
+- Phase 1-4 implemented:
   - `site/styles.css` mobile sheet fallback + touch target tuning + reduced motion.
-  - `site/email-alerts.html` menu simplification and aligned menu behavior script.
-- Next phase (optional hard unification):
-  - Extract shared menu controller into dedicated JS file and remove remaining duplication between dashboard and email scripts.
+  - `site/email-alerts.html` menu simplification.
+- Phase 5 hard unification implemented:
+  - Added shared controller: `site/menu.js`.
+  - Dashboard pages now load shared menu controller before `site/app.js`.
+  - `site/app.js` now uses `window.OwMenu.createTopNavMenu(...)` instead of local duplicated open/close logic.
+  - `site/email-alerts.html` inline menu controller removed and replaced with shared-menu initialization.

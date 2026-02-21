@@ -896,7 +896,7 @@ let analyticsRegion = detectInitialAnalyticsRegion();
 let isLoading = false;
 let chart24 = null;
 let chart7 = null;
-let menuMode = "dropdown";
+let topNavMenuController = null;
 
 function detectInitialLanguage() {
   const stored = safeGetLocalStorage(STORAGE_KEYS.lang);
@@ -1159,136 +1159,12 @@ function updateLanguageButtonLabel() {
   els.languageBtn.setAttribute("aria-label", t("ui.languageAria"));
 }
 
-function isMobileMenuSheet() {
-  const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
-  if (viewportWidth > 0 && viewportWidth <= 760) {
-    return true;
-  }
-  const compactViewport = window.matchMedia("(max-width: 760px)").matches;
-  const touchViewport = window.matchMedia("(hover: none) and (pointer: coarse) and (max-width: 1024px)").matches;
-  return compactViewport || touchViewport;
-}
-
-function syncMenuMode() {
-  if (!document.body) {
-    return;
-  }
-  menuMode = isMobileMenuSheet() ? "sheet" : "dropdown";
-  document.body.dataset.menuMode = menuMode;
-}
-
-function getTopMenuShell() {
-  if (!els.menuTrigger) {
-    return null;
-  }
-  const shell = els.menuTrigger.closest(".menu-shell");
-  return shell instanceof HTMLElement ? shell : null;
-}
-
-function getMenuSheetCard() {
-  if (!els.menuPanel) {
-    return null;
-  }
-  const card = els.menuPanel.querySelector(".menu-sheet-card");
-  return card instanceof HTMLElement ? card : null;
-}
-
-function getMenuSheetHead() {
-  if (!els.menuPanel) {
-    return null;
-  }
-  const head = els.menuPanel.querySelector(".menu-sheet-head");
-  return head instanceof HTMLElement ? head : null;
-}
-
-function resetMenuSheetScroll() {
-  if (els.menuPanel) {
-    els.menuPanel.scrollTop = 0;
-  }
-  const card = getMenuSheetCard();
-  if (card) {
-    card.scrollTop = 0;
-  }
-}
-
-function forceMenuSheetScrollTop() {
-  resetMenuSheetScroll();
-  window.requestAnimationFrame(() => {
-    resetMenuSheetScroll();
-    window.requestAnimationFrame(() => {
-      resetMenuSheetScroll();
-      const head = getMenuSheetHead();
-      if (head) {
-        head.scrollIntoView({ block: "start", inline: "nearest" });
-      }
-    });
-  });
-}
-
-function getMenuFocusableElements() {
-  if (!els.menuPanel) {
-    return [];
-  }
-  return Array.from(
-    els.menuPanel.querySelectorAll(
-      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    )
-  ).filter((element) => element instanceof HTMLElement && !element.hidden);
-}
-
 function normalizeMenuSearchText(value) {
   return String(value || "")
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim();
-}
-
-function lockPageScroll() {
-  if (!document.body || !document.documentElement) {
-    return;
-  }
-  if (document.body.classList.contains("menu-open")) {
-    return;
-  }
-  document.documentElement.classList.add("menu-open");
-  document.body.classList.add("menu-open");
-}
-
-function unlockPageScroll() {
-  if (!document.body || !document.documentElement) {
-    return;
-  }
-  document.documentElement.classList.remove("menu-open");
-  document.body.classList.remove("menu-open");
-}
-
-function setMenuOpenState(isOpen) {
-  if (!document.body) {
-    return;
-  }
-  if (isOpen && menuMode === "sheet") {
-    document.body.dataset.menuOpen = "true";
-    lockPageScroll();
-    return;
-  }
-  document.body.dataset.menuOpen = "false";
-  unlockPageScroll();
-}
-
-function resetTopNavMenuState() {
-  if (!els.menuTrigger || !els.menuPanel) {
-    return;
-  }
-  els.menuTrigger.setAttribute("aria-expanded", "false");
-  els.menuPanel.classList.remove("is-open");
-  els.menuPanel.hidden = true;
-  const shell = getTopMenuShell();
-  if (shell) {
-    shell.classList.remove("is-open");
-  }
-  setMenuOpenState(false);
-  resetMenuSheetScroll();
 }
 
 function syncMenuGroupVisibility() {
@@ -1422,15 +1298,6 @@ function renderMenuSearchResults(queryText) {
   return matches;
 }
 
-function resetMenuSearch() {
-  if (!els.menuSearchInput) {
-    return;
-  }
-  els.menuSearchInput.value = "";
-  filterMenuItems();
-  closeMenuSearchResults();
-}
-
 function setupMenuSearch() {
   if (!els.menuSearchInput) {
     return;
@@ -1450,8 +1317,8 @@ function setupMenuSearch() {
       window.clearTimeout(blurCloseTimer);
       blurCloseTimer = null;
     }
-    if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
-      closeTopNavMenu(false);
+    if (topNavMenuController?.isOpen?.()) {
+      topNavMenuController.close(false);
     }
     updateSearchState();
   });
@@ -1520,190 +1387,27 @@ function setupMenuSearch() {
   });
 }
 
-function closeTopNavMenu(focusTrigger = false) {
-  if (!els.menuTrigger || !els.menuPanel) {
-    return;
-  }
-  syncMenuMode();
-  els.menuTrigger.setAttribute("aria-expanded", "false");
-  els.menuPanel.classList.remove("is-open");
-  const shell = getTopMenuShell();
-  if (shell) {
-    shell.classList.remove("is-open");
-  }
-  setMenuOpenState(false);
-  resetMenuSheetScroll();
-  els.menuPanel.hidden = true;
-  if (focusTrigger) {
-    els.menuTrigger.focus();
-  }
-}
-
-function openTopNavMenu() {
-  if (!els.menuTrigger || !els.menuPanel) {
-    return;
-  }
-  syncMenuMode();
-  if (document.activeElement === els.menuSearchInput) {
-    els.menuSearchInput.blur();
-  }
-  filterMenuItems();
-  closeMenuSearchResults();
-  els.menuTrigger.setAttribute("aria-expanded", "true");
-  els.menuPanel.hidden = false;
-  els.menuPanel.classList.add("is-open");
-  forceMenuSheetScrollTop();
-  setMenuOpenState(true);
-  const shell = getTopMenuShell();
-  if (shell) {
-    shell.classList.add("is-open");
-  }
-  window.requestAnimationFrame(() => {
-    if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
-      if (menuMode === "sheet") {
-        if (els.menuCloseBtn instanceof HTMLElement) {
-          els.menuCloseBtn.focus();
-          return;
-        }
-        const focusables = getMenuFocusableElements();
-        if (focusables.length) {
-          focusables[0].focus();
-        }
-      }
-    }
-  });
-  window.setTimeout(() => {
-    if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
-      forceMenuSheetScrollTop();
-    }
-  }, 120);
-  window.setTimeout(() => {
-    if (els.menuTrigger?.getAttribute("aria-expanded") === "true") {
-      const head = getMenuSheetHead();
-      if (head) {
-        head.scrollIntoView({ block: "start", inline: "nearest" });
-      } else {
-        forceMenuSheetScrollTop();
-      }
-    }
-  }, 260);
-}
-
 function setupTopNavMenu() {
   if (!els.menuTrigger || !els.menuPanel) {
     return;
   }
-  syncMenuMode();
-  resetTopNavMenuState();
   setupMenuSearch();
-
-  els.menuTrigger.addEventListener("click", () => {
-    const isOpen = els.menuTrigger.getAttribute("aria-expanded") === "true";
-    if (isOpen) {
-      closeTopNavMenu(false);
-      return;
-    }
-    openTopNavMenu();
-  });
-
-  document.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof Node)) {
-      return;
-    }
-    if (!els.menuPanel.hidden && !els.menuPanel.contains(target) && !els.menuTrigger.contains(target)) {
-      closeTopNavMenu(false);
-    }
-  });
-
-  els.menuPanel.addEventListener("click", (event) => {
-    if (menuMode !== "sheet") {
-      return;
-    }
-    if (event.target === els.menuPanel) {
-      closeTopNavMenu(false);
-    }
-  });
-
-  document.addEventListener("focusin", (event) => {
-    const target = event.target;
-    if (!(target instanceof Node)) {
-      return;
-    }
-    if (!els.menuPanel.hidden && !els.menuPanel.contains(target) && !els.menuTrigger.contains(target)) {
-      closeTopNavMenu(false);
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeTopNavMenu(true);
-      return;
-    }
-    if (event.key === "Tab" && !els.menuPanel.hidden && menuMode === "sheet") {
-      const focusables = getMenuFocusableElements();
-      if (!focusables.length) {
-        return;
+  if (!window.OwMenu || typeof window.OwMenu.createTopNavMenu !== "function") {
+    console.error(`${LOG_PREFIX} shared menu controller is missing`);
+    return;
+  }
+  topNavMenuController = window.OwMenu.createTopNavMenu({
+    trigger: els.menuTrigger,
+    panel: els.menuPanel,
+    closeButton: els.menuCloseBtn,
+    closeOnScrollDesktop: true,
+    onBeforeOpen: () => {
+      if (document.activeElement === els.menuSearchInput) {
+        els.menuSearchInput.blur();
       }
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      const active = document.activeElement;
-      if (event.shiftKey && active === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && active === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-  });
-
-  for (const link of Array.from(els.menuPanel.querySelectorAll("a"))) {
-    link.addEventListener("click", () => closeTopNavMenu(false));
-  }
-  if (els.menuCloseBtn) {
-    els.menuCloseBtn.addEventListener("click", () => closeTopNavMenu(true));
-  }
-  const handleViewportChange = () => {
-    const previousMode = menuMode;
-    syncMenuMode();
-    if (previousMode !== menuMode) {
-      closeTopNavMenu(false);
-    }
-    if (menuMode !== "sheet") {
-      setMenuOpenState(false);
-    }
-  };
-  window.addEventListener("resize", () => {
-    handleViewportChange();
-  });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", () => {
-      handleViewportChange();
-    });
-  }
-  window.addEventListener("orientationchange", () => {
-    handleViewportChange();
-  });
-  window.addEventListener("hashchange", () => {
-    closeTopNavMenu(false);
-  });
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState !== "visible") {
-      resetTopNavMenuState();
-    }
-  });
-  window.addEventListener("scroll", () => {
-    if (els.menuTrigger?.getAttribute("aria-expanded") === "true" && menuMode !== "sheet") {
-      closeTopNavMenu(false);
-    }
-  }, { passive: true });
-  window.addEventListener("pageshow", () => {
-    syncMenuMode();
-    resetTopNavMenuState();
-  });
-  window.addEventListener("pagehide", () => {
-    resetTopNavMenuState();
+      filterMenuItems();
+      closeMenuSearchResults();
+    },
   });
 }
 

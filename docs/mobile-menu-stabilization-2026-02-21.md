@@ -86,3 +86,17 @@
   - `site/email-alerts.html`
   - `site/styles.css`
   - `docs/mobile-ui-unification-plan-2026-02-21.md`
+
+## Phase 2 Shared Controller (Same Day)
+- Goal: remove remaining menu-controller drift between dashboard and email pages.
+- Changes:
+  - Added `site/menu.js` as the single shared menu behavior controller.
+  - Wired dashboard pages to shared controller by loading `menu.js` before `app.js`.
+  - Refactored `site/app.js` to consume shared controller and removed duplicated menu open/close event orchestration.
+  - Replaced email inline menu controller with lightweight shared-controller initialization.
+- Files:
+  - `site/menu.js`
+  - `site/app.js`
+  - `site/index.html`
+  - `site/sony/index.html`
+  - `site/email-alerts.html`
