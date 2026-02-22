@@ -1,4 +1,5 @@
 import AppLayout from "@/components/AppLayout";
+import { pickLang, useAppShell } from "@/lib/appShell";
 import { resolveLegacyPath } from "@/lib/legacySite";
 import {
   fetchLegacySubscriptionConfig,
@@ -23,7 +24,7 @@ function statusText(result: LegacySubscriptionLoadResult | null) {
     return "Loading subscription config...";
   }
   if (result.status === "ready") {
-    return `Ready Â· ${providerLabel(result.config?.provider)} form verified`;
+    return `Ready · ${providerLabel(result.config?.provider)} form verified`;
   }
   if (result.status === "loading") {
     return "Loading subscription config...";
@@ -58,6 +59,7 @@ const STATUS_CLASS: Record<NoticeTone, string> = {
 };
 
 const EmailAlerts = () => {
+  const { language } = useAppShell();
   const [email, setEmail] = useState("");
   const [configResult, setConfigResult] = useState<LegacySubscriptionLoadResult | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -136,17 +138,21 @@ const EmailAlerts = () => {
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              E-Mail Alerts
+              {pickLang(language, "E-Mail Alerts", "E-Mail-Alarme")}
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">
-              Secure outage notifications via Brevo with captcha and double opt-in
+              {pickLang(
+                language,
+                "Secure outage notifications via Brevo with captcha and double opt-in",
+                "Sichere Stoerungs-Benachrichtigungen via Brevo mit Captcha und Double-Opt-In"
+              )}
             </p>
           </div>
           <button
             type="button"
             onClick={() => void loadConfig()}
             className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all active:scale-95"
-            aria-label="Refresh subscription config"
+            aria-label={pickLang(language, "Refresh subscription config", "Abo-Konfiguration aktualisieren")}
           >
             <RefreshCw
               size={18}
@@ -164,7 +170,7 @@ const EmailAlerts = () => {
                 </div>
                 <div className="min-w-0">
                   <h2 className="truncate text-sm font-bold text-foreground">
-                    Subscription Configuration
+                    {pickLang(language, "Subscription Configuration", "Abo-Konfiguration")}
                   </h2>
                   <p className="mt-0.5 text-xs text-muted-foreground">{statusText(configResult)}</p>
                 </div>
@@ -185,9 +191,15 @@ const EmailAlerts = () => {
                 <Mail size={16} className="text-primary" />
               </div>
               <div>
-                <h2 className="text-sm font-semibold text-foreground">Newsletter Signup</h2>
+                <h2 className="text-sm font-semibold text-foreground">
+                  {pickLang(language, "Newsletter Signup", "Newsletter-Anmeldung")}
+                </h2>
                 <p className="text-[11px] text-muted-foreground">
-                  Same `subscription.json` config as the current site
+                  {pickLang(
+                    language,
+                    "Same `subscription.json` config as the current site",
+                    "Gleiche `subscription.json`-Konfiguration wie auf der aktuellen Seite"
+                  )}
                 </p>
               </div>
             </div>
@@ -195,7 +207,7 @@ const EmailAlerts = () => {
             <form className="space-y-3" noValidate onSubmit={onSubmit}>
               <label className="block">
                 <span className="mb-1.5 block text-xs font-medium text-foreground">
-                  Enter your email address
+                  {pickLang(language, "Enter your email address", "E-Mail-Adresse eingeben")}
                 </span>
                 <input
                   className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary/40"
@@ -203,14 +215,18 @@ const EmailAlerts = () => {
                   name="email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  placeholder="you@example.com"
+                  placeholder={pickLang(language, "you@example.com", "du@example.com")}
                   autoComplete="email"
                   inputMode="email"
                 />
               </label>
 
               <p className="text-[11px] leading-relaxed text-muted-foreground">
-                Captcha and double opt-in are completed on the secure Brevo page after you continue.
+                {pickLang(
+                  language,
+                  "Captcha and double opt-in are completed on the secure Brevo page after you continue.",
+                  "Captcha und Double-Opt-In werden nach dem Fortfahren auf der sicheren Brevo-Seite abgeschlossen."
+                )}
               </p>
 
               <button
@@ -218,7 +234,7 @@ const EmailAlerts = () => {
                 disabled={!canSubmit}
                 className="inline-flex h-11 items-center justify-center rounded-xl border border-primary/25 bg-primary/15 px-4 text-sm font-semibold text-primary transition-all enabled:hover:bg-primary/20 enabled:active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Open Secure Signup
+                {pickLang(language, "Open Secure Signup", "Sichere Anmeldung oeffnen")}
               </button>
             </form>
 
@@ -232,7 +248,7 @@ const EmailAlerts = () => {
           <div className="glass glass-specular rounded-2xl p-4">
             <div className="relative z-10">
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Config Details
+                {pickLang(language, "Config Details", "Konfigurationsdetails")}
               </h2>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
@@ -273,13 +289,13 @@ const EmailAlerts = () => {
           <div className="glass glass-specular rounded-2xl p-4">
             <div className="relative z-10 space-y-2">
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Fallback Links
+                {pickLang(language, "Fallback Links", "Fallback-Links")}
               </h2>
               <a
                 href={resolveLegacyPath("/email-alerts.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>Open legacy embedded signup page</span>
+                <span>{pickLang(language, "Open legacy embedded signup page", "Legacy-Seite mit eingebettetem Formular oeffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               {configResult?.parsedUrl ? (
@@ -289,7 +305,7 @@ const EmailAlerts = () => {
                   rel="noreferrer"
                   className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
                 >
-                  <span>Open Brevo form directly</span>
+                  <span>{pickLang(language, "Open Brevo form directly", "Brevo-Formular direkt oeffnen")}</span>
                   <ExternalLink size={14} className="text-muted-foreground" />
                 </a>
               ) : null}

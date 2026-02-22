@@ -1,22 +1,41 @@
 import { Bell, Home, Settings, Star } from "lucide-react";
+import { formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const navItems = [
   {
     icon: Home,
-    label: "Home",
+    labelKey: "home",
     path: "/",
     matches: ["/", "/status/overwatch", "/status/sony"],
   },
-  { icon: Star, label: "Favorites", path: "/favorites", matches: ["/favorites"] },
-  { icon: Bell, label: "Alerts", path: "/alerts", matches: ["/alerts", "/email-alerts"] },
-  { icon: Settings, label: "Settings", path: "/settings", matches: ["/settings"] },
+  { icon: Star, labelKey: "favorites", path: "/favorites", matches: ["/favorites"] },
+  { icon: Bell, labelKey: "alerts", path: "/alerts", matches: ["/alerts", "/email-alerts"] },
+  { icon: Settings, labelKey: "settings", path: "/settings", matches: ["/settings"] },
 ];
 
 const BottomNav = () => {
+  const { language, setLanguage } = useAppShell();
   const location = useLocation();
   const navigate = useNavigate();
   const normalizedPath = location.pathname.replace(/\/+$/, "") || "/";
+  const versionLabel = formatBuildLabel(language);
+
+  const navLabel = (key: string) => {
+    if (key === "home") {
+      return pickLang(language, "Home", "Start");
+    }
+    if (key === "favorites") {
+      return pickLang(language, "Favorites", "Favoriten");
+    }
+    if (key === "alerts") {
+      return pickLang(language, "Alerts", "Alarme");
+    }
+    if (key === "settings") {
+      return pickLang(language, "Settings", "Einst.");
+    }
+    return key;
+  };
 
   const activeIndex = navItems.findIndex((item) => {
     return item.matches.some((matchPath) => {
@@ -33,6 +52,37 @@ const BottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-[env(safe-area-inset-bottom,8px)] pt-0">
+      <div className="pointer-events-none mx-auto mb-1 flex max-w-md items-center justify-between px-1">
+        <div className="pointer-events-auto inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/35 px-1 py-1 shadow-[0_8px_20px_rgba(0,0,0,0.25)] backdrop-blur-md">
+          <button
+            type="button"
+            onClick={() => setLanguage("en")}
+            className={`rounded-full px-2 py-1 text-[10px] font-semibold transition-colors ${
+              language === "en"
+                ? "bg-white/10 text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+            aria-label="Switch language to English"
+          >
+            EN
+          </button>
+          <button
+            type="button"
+            onClick={() => setLanguage("de")}
+            className={`rounded-full px-2 py-1 text-[10px] font-semibold transition-colors ${
+              language === "de"
+                ? "bg-white/10 text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+            aria-label="Sprache auf Deutsch wechseln"
+          >
+            DE
+          </button>
+        </div>
+        <div className="rounded-full border border-white/10 bg-black/30 px-2.5 py-1 text-[10px] text-muted-foreground shadow-[0_8px_20px_rgba(0,0,0,0.25)] backdrop-blur-md">
+          {versionLabel}
+        </div>
+      </div>
       <div className="glass-nav mx-auto flex max-w-md items-center justify-around rounded-[1.75rem] px-1 py-1.5">
         {navItems.map((item, i) => {
           const Icon = item.icon;
@@ -40,7 +90,7 @@ const BottomNav = () => {
 
           return (
             <button
-              key={item.label}
+              key={`${item.labelKey}-${i}`}
               type="button"
               onClick={() => navigate(item.path)}
               className={`relative flex flex-col items-center gap-0.5 rounded-2xl px-5 py-2 transition-all duration-200 ${
@@ -62,7 +112,7 @@ const BottomNav = () => {
                   isActive ? "text-primary" : "text-muted-foreground"
                 }`}
               >
-                {item.label}
+                {navLabel(item.labelKey)}
               </span>
             </button>
           );

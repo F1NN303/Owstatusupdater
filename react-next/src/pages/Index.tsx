@@ -2,6 +2,7 @@ import AppLayout from "@/components/AppLayout";
 import OverallStatus from "@/components/OverallStatus";
 import ServerCard from "@/components/ServerCard";
 import type { ServerService, Status } from "@/data/servers";
+import { pickLang, useAppShell } from "@/lib/appShell";
 import {
   fetchLegacyServiceDetail,
   type LegacyDetailServiceId,
@@ -271,28 +272,37 @@ function buildErrorCard(serviceId: LegacyDetailServiceId, error: string): HomeSe
   };
 }
 
-function formatHeaderSubtitle(lastRefreshAt: string | null) {
+function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de") {
   if (!lastRefreshAt) {
-    return "Live monitoring · Fetching live status";
+    return pickLang(language, "Live monitoring · Fetching live status", "Live-Monitoring · Lade Live-Status");
   }
 
   const refreshed = parseDate(lastRefreshAt);
   if (!refreshed) {
-    return "Live monitoring";
+    return pickLang(language, "Live monitoring", "Live-Monitoring");
   }
 
   const diffSeconds = Math.max(0, Math.round((Date.now() - refreshed.getTime()) / 1000));
   if (diffSeconds < 15) {
-    return "Live monitoring · Updated just now";
+    return pickLang(language, "Live monitoring · Updated just now", "Live-Monitoring · Gerade aktualisiert");
   }
   if (diffSeconds < 60) {
-    return `Live monitoring · Updated ${diffSeconds}s ago`;
+    return pickLang(
+      language,
+      `Live monitoring · Updated ${diffSeconds}s ago`,
+      `Live-Monitoring · Vor ${diffSeconds}s aktualisiert`
+    );
   }
 
-  return `Live monitoring · Updated ${refreshed.toLocaleTimeString([], {
+  const timeLabel = refreshed.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
-  })}`;
+  });
+  return pickLang(
+    language,
+    `Live monitoring · Updated ${timeLabel}`,
+    `Live-Monitoring · Aktualisiert ${timeLabel}`
+  );
 }
 
 function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): OverallState {
@@ -306,6 +316,7 @@ function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): Ov
 }
 
 const Index = () => {
+  const { language } = useAppShell();
   const [cards, setCards] = useState<HomeServiceCard[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefreshAt, setLastRefreshAt] = useState<string | null>(null);
@@ -369,7 +380,10 @@ const Index = () => {
     () => cards.filter((card) => card.server.status === "online").length,
     [cards]
   );
-  const subtitle = useMemo(() => formatHeaderSubtitle(lastRefreshAt), [lastRefreshAt]);
+  const subtitle = useMemo(
+    () => formatHeaderSubtitle(lastRefreshAt, language),
+    [lastRefreshAt, language]
+  );
 
   return (
     <AppLayout>
@@ -377,7 +391,7 @@ const Index = () => {
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              Server Status
+              {pickLang(language, "Server Status", "Server-Status")}
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">{subtitle}</p>
           </div>
@@ -385,7 +399,7 @@ const Index = () => {
             type="button"
             onClick={() => void loadCards()}
             className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all active:scale-95"
-            aria-label="Refresh live status"
+            aria-label={pickLang(language, "Refresh live status", "Live-Status aktualisieren")}
           >
             <RefreshCw
               size={18}
@@ -435,9 +449,15 @@ const Index = () => {
                 <Bell size={18} className="text-primary" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-foreground">E-Mail Alerts</p>
+                <p className="text-sm font-semibold text-foreground">
+                  {pickLang(language, "E-Mail Alerts", "E-Mail-Alarme")}
+                </p>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  Open the current signup page for outage notifications
+                  {pickLang(
+                    language,
+                    "Open the current signup page for outage notifications",
+                    "Aktuelle Anmeldeseite fuer Stoerungs-Benachrichtigungen öffnen"
+                  )}
                 </p>
               </div>
             </div>
@@ -447,7 +467,11 @@ const Index = () => {
 
         {errorMessages.length > 0 ? (
           <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-3 py-2 text-[11px] text-amber-200">
-            Some live sources failed to load. Cards stay available and will retry automatically.
+            {pickLang(
+              language,
+              "Some live sources failed to load. Cards stay available and will retry automatically.",
+              "Einige Live-Quellen konnten nicht geladen werden. Karten bleiben sichtbar und werden automatisch erneut geladen."
+            )}
           </div>
         ) : null}
       </main>

@@ -1,4 +1,5 @@
 import AppLayout from "@/components/AppLayout";
+import { pickLang, useAppShell } from "@/lib/appShell";
 import { resolveLegacyPath } from "@/lib/legacySite";
 import {
   Bell,
@@ -46,16 +47,21 @@ const favoriteItems: FavoriteItem[] = [
 ];
 
 const Favorites = () => {
+  const { language } = useAppShell();
   return (
     <AppLayout>
       <main className="mx-auto max-w-md px-4 pb-28 pt-8">
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              Favorites
+              {pickLang(language, "Favorites", "Favoriten")}
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">
-              Quick access to the most used status pages and tools
+              {pickLang(
+                language,
+                "Quick access to the most used status pages and tools",
+                "Schnellzugriff auf die meistgenutzten Status-Seiten und Tools"
+              )}
             </p>
           </div>
           <div className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl">
@@ -67,10 +73,10 @@ const Favorites = () => {
           <div className="relative z-10">
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Pinned Shortcuts
+                {pickLang(language, "Pinned Shortcuts", "Fixierte Kurzlinks")}
               </h2>
               <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground">
-                {favoriteItems.length} items
+                {favoriteItems.length} {pickLang(language, "items", "Eintraege")}
               </span>
             </div>
 
@@ -98,7 +104,9 @@ const Favorites = () => {
                           </p>
                         </div>
                       </div>
-                      <span className="text-[11px] text-muted-foreground">Open</span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {pickLang(language, "Open", "Oeffnen")}
+                      </span>
                     </Link>
                   );
                 }
@@ -139,9 +147,11 @@ const Favorites = () => {
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary">
                 <Gamepad2 size={16} className="text-primary" />
               </div>
-              <p className="mt-3 text-sm font-semibold text-foreground">Service Home</p>
+              <p className="mt-3 text-sm font-semibold text-foreground">
+                {pickLang(language, "Service Home", "Status-Start")}
+              </p>
               <p className="mt-1 text-[11px] text-muted-foreground">
-                Open live overview cards
+                {pickLang(language, "Open live overview cards", "Live-Uebersichtskarten oeffnen")}
               </p>
             </div>
           </Link>
@@ -153,9 +163,11 @@ const Favorites = () => {
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary">
                 <Settings size={16} className="text-primary" />
               </div>
-              <p className="mt-3 text-sm font-semibold text-foreground">Settings</p>
+              <p className="mt-3 text-sm font-semibold text-foreground">
+                {pickLang(language, "Settings", "Einstellungen")}
+              </p>
               <p className="mt-1 text-[11px] text-muted-foreground">
-                Preview preferences and links
+                {pickLang(language, "Preview preferences and links", "Preview-Einstellungen und Links")}
               </p>
             </div>
           </Link>

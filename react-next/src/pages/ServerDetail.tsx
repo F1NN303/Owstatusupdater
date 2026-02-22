@@ -3,6 +3,7 @@ import MiniSparkline from "@/components/MiniSparkline";
 import StatusBadge from "@/components/StatusBadge";
 import UptimeBar from "@/components/UptimeBar";
 import { getIconComponent, type Status } from "@/data/servers";
+import { pickLang, useAppShell } from "@/lib/appShell";
 import { resolveLegacyUrl } from "@/lib/legacySite";
 import {
   fetchLegacyServiceDetail,
@@ -558,11 +559,11 @@ function incidentToneClass(incident: LegacyOutageIncident) {
   return "bg-status-online";
 }
 
-const DETAIL_TABS: Array<{ key: DetailTabKey; label: string }> = [
-  { key: "overview", label: "Übersicht" },
-  { key: "incidents", label: "Vorfälle" },
-  { key: "analysis", label: "Analyse" },
-  { key: "sources", label: "Quellen" },
+const DETAIL_TABS: Array<{ key: DetailTabKey }> = [
+  { key: "overview" },
+  { key: "incidents" },
+  { key: "analysis" },
+  { key: "sources" },
 ];
 
 function LinkListSection({
@@ -612,6 +613,7 @@ function LinkListSection({
 }
 
 const ServerDetail = () => {
+  const { language } = useAppShell();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const serviceId = normalizeDetailId(id);
@@ -752,6 +754,18 @@ const ServerDetail = () => {
     Math.min(lastTabIndex, activeTabIndex + tabDragOffset)
   );
   const indicatorStretch = 1 + Math.min(0.1, Math.abs(tabDragOffset) * 0.08);
+  const detailTabLabel = (key: DetailTabKey) => {
+    if (key === "overview") {
+      return pickLang(language, "Overview", "Uebersicht");
+    }
+    if (key === "incidents") {
+      return pickLang(language, "Incidents", "Vorfaelle");
+    }
+    if (key === "analysis") {
+      return pickLang(language, "Analysis", "Analyse");
+    }
+    return pickLang(language, "Sources", "Quellen");
+  };
 
   const beginTabSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
     if (event.touches.length !== 1) {
@@ -846,7 +860,7 @@ const ServerDetail = () => {
             </button>
             <div>
               <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
-                Live Service Detail
+                {pickLang(language, "Live Service Detail", "Live-Service-Detail")}
               </p>
               <p className="text-sm font-medium text-foreground">
                 {detail?.service.name || (serviceId === "overwatch" ? "Overwatch" : "Sony PSN")}
@@ -899,7 +913,7 @@ const ServerDetail = () => {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">
-                        Live Status Monitor
+                        {pickLang(language, "Live Status Monitor", "Live-Status-Monitor")}
                       </p>
                       <h1 className="mt-1 text-xl font-bold tracking-tight text-foreground">
                         {detail.service.name}
@@ -1022,7 +1036,7 @@ const ServerDetail = () => {
                         isActive ? "text-foreground" : "text-muted-foreground"
                       }`}
                     >
-                      {tab.label}
+                      {detailTabLabel(tab.key)}
                     </button>
                   );
                 })}

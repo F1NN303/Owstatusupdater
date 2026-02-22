@@ -1,4 +1,5 @@
 import AppLayout from "@/components/AppLayout";
+import { pickLang, useAppShell } from "@/lib/appShell";
 import { resolveLegacyPath } from "@/lib/legacySite";
 import {
   ExternalLink,
@@ -12,6 +13,7 @@ import {
 const runtimeMode = import.meta.env.MODE;
 
 const SettingsPage = () => {
+  const { language } = useAppShell();
   const builtAt = new Date().toLocaleString();
 
   return (
@@ -20,10 +22,14 @@ const SettingsPage = () => {
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              Settings
+              {pickLang(language, "Settings", "Einstellungen")}
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">
-              Preview controls, links, and migration diagnostics
+              {pickLang(
+                language,
+                "Preview controls, links, and migration diagnostics",
+                "Preview-Steuerung, Links und Migrationsdiagnose"
+              )}
             </p>
           </div>
           <div className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl">
@@ -36,25 +42,27 @@ const SettingsPage = () => {
             <div className="flex items-center gap-2">
               <Wrench size={14} className="text-primary/80" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Preview State
+                {pickLang(language, "Preview State", "Preview-Status")}
               </h2>
             </div>
             <div className="mt-3 grid grid-cols-2 gap-3">
               <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                 <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  Runtime
+                  {pickLang(language, "Runtime", "Laufzeit")}
                 </p>
                 <p className="mt-1 text-sm font-semibold text-foreground">{runtimeMode}</p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                 <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  Render
+                  {pickLang(language, "Render", "Darstellung")}
                 </p>
-                <p className="mt-1 text-sm font-semibold text-foreground">React Preview</p>
+                <p className="mt-1 text-sm font-semibold text-foreground">
+                  {pickLang(language, "React Preview", "React-Preview")}
+                </p>
               </div>
               <div className="col-span-2 rounded-xl border border-white/10 bg-white/5 p-3">
                 <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  Session Opened
+                  {pickLang(language, "Session Opened", "Sitzung gestartet")}
                 </p>
                 <p className="mt-1 text-xs font-medium text-foreground">{builtAt}</p>
               </div>
@@ -68,28 +76,28 @@ const SettingsPage = () => {
               <div className="flex items-center gap-2">
                 <Globe size={14} className="text-primary/80" />
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Navigation
+                  {pickLang(language, "Navigation", "Navigation")}
                 </h2>
               </div>
               <a
                 href={resolveLegacyPath("/")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>Open legacy site root</span>
+                <span>{pickLang(language, "Open legacy site root", "Legacy-Startseite oeffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               <a
                 href={resolveLegacyPath("/overwatch.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>Open legacy Overwatch dashboard</span>
+                <span>{pickLang(language, "Open legacy Overwatch dashboard", "Legacy-Overwatch-Dashboard oeffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               <a
                 href={resolveLegacyPath("/sony/index.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>Open legacy Sony PSN dashboard</span>
+                <span>{pickLang(language, "Open legacy Sony PSN dashboard", "Legacy-Sony-PSN-Dashboard oeffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
             </div>
@@ -100,16 +108,22 @@ const SettingsPage = () => {
               <div className="flex items-center gap-2">
                 <ShieldCheck size={14} className="text-primary/80" />
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Migration Notes
+                  {pickLang(language, "Migration Notes", "Migrationshinweise")}
                 </h2>
               </div>
               <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground">
-                Bottom navigation is now app-style (`Home`, `Favorites`, `Alerts`, `Settings`).
-                Service detail pages remain under Home and now use compact tabbed sections.
+                {pickLang(
+                  language,
+                  "Bottom navigation now uses the app-style shell (`Home`, `Favorites`, `Alerts`, `Settings`). Service detail pages remain under Home and use compact tabbed sections.",
+                  "Die untere Navigation nutzt jetzt die App-Leiste (`Start`, `Favoriten`, `Alarme`, `Einst.`). Service-Details bleiben unter Start und verwenden kompakte Tab-Bereiche."
+                )}
               </p>
               <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground">
-                EN/DE toggle and persistent version footer are planned next for feature parity with
-                the legacy site.
+                {pickLang(
+                  language,
+                  "EN/DE toggle and persistent version footer are now integrated in the app shell for preview testing.",
+                  "EN/DE-Umschalter und Versionsanzeige sind jetzt in die App-Leiste integriert und koennen im Preview getestet werden."
+                )}
               </p>
             </div>
           </div>
@@ -118,7 +132,11 @@ const SettingsPage = () => {
             <div className="relative z-10 flex items-center gap-2">
               <Info size={14} className="text-primary/80" />
               <p className="text-xs text-muted-foreground">
-                This page is a preview shell and does not change backend status pipelines.
+                {pickLang(
+                  language,
+                  "This page is a preview shell and does not change backend status pipelines.",
+                  "Diese Seite ist nur eine Preview-Huelle und aendert keine Backend-Status-Pipelines."
+                )}
               </p>
             </div>
           </div>
