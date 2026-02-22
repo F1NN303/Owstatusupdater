@@ -9,6 +9,9 @@ export interface ServerService {
   status: Status;
   uptime: number; // percentage
   latency?: number;
+  metricLabel?: string;
+  trendLabel?: string;
+  trendValueLabel?: string;
   lastIncident?: string;
   // 30-day uptime data (1 = up, 0.5 = degraded, 0 = down)
   uptimeHistory: number[];
