@@ -42,6 +42,7 @@ const TONE_STYLES = {
 } as const;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 
 function toneToStatus(tone: LegacyServiceDetailResult["tone"]): Status {
   if (tone === "good") {
@@ -542,6 +543,13 @@ function incidentToneClass(incident: LegacyOutageIncident) {
   return "bg-status-online";
 }
 
+const DETAIL_TABS: Array<{ key: DetailTabKey; label: string }> = [
+  { key: "overview", label: "Übersicht" },
+  { key: "incidents", label: "Vorfälle" },
+  { key: "analysis", label: "Analyse" },
+  { key: "sources", label: "Quellen" },
+];
+
 function LinkListSection({
   title,
   items,
@@ -596,6 +604,7 @@ const ServerDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<DetailTabKey>("overview");
 
   const loadDetail = async (mode: "initial" | "refresh" = "initial") => {
     if (!serviceId) {
@@ -718,6 +727,7 @@ const ServerDetail = () => {
   const quickMetricLabel = detail ? shortMetricLabel(detail) : "Live signals";
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? inferServiceComponents(serviceId, detail) : [];
+  const activeTabIndex = DETAIL_TABS.findIndex((tab) => tab.key === activeTab);
 
   return (
     <AppLayout>
@@ -877,6 +887,37 @@ const ServerDetail = () => {
               </div>
             ) : null}
 
+            <section className="glass glass-specular rounded-2xl p-2">
+              <div className="relative grid grid-cols-4 gap-1">
+                <span
+                  className="pointer-events-none absolute bottom-1 top-1 rounded-xl border border-white/10 bg-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_8px_24px_rgba(0,0,0,0.22)] transition-transform duration-300"
+                  style={{
+                    left: "0.25rem",
+                    width: "calc(25% - 0.5rem)",
+                    transform: `translateX(${Math.max(0, activeTabIndex) * 100}%)`,
+                  }}
+                  aria-hidden="true"
+                />
+                {DETAIL_TABS.map((tab) => {
+                  const isActive = activeTab === tab.key;
+                  return (
+                    <button
+                      key={tab.key}
+                      type="button"
+                      onClick={() => setActiveTab(tab.key)}
+                      className={`relative z-10 rounded-xl px-2 py-2 text-[11px] font-medium transition-colors duration-200 ${
+                        isActive ? "text-foreground" : "text-muted-foreground"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            {activeTab === "overview" ? (
+              <>
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -928,7 +969,11 @@ const ServerDetail = () => {
               <MetricTile label="Sources" value={`${sourceOkCount}/${sourceTotalCount}`} />
               <MetricTile label="Model" value={String(modelVersion)} />
             </section>
+              </>
+            ) : null}
 
+            {activeTab === "incidents" ? (
+              <>
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -956,50 +1001,6 @@ const ServerDetail = () => {
                 </div>
               </div>
             </section>
-
-            <section className="glass glass-specular rounded-2xl p-4">
-              <div className="relative z-10">
-                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Regional Snapshot
-                </h2>
-                <div className="mt-3 space-y-2.5">
-                  {regionEntries.length === 0 ? (
-                    <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      No regional data in payload.
-                    </p>
-                  ) : (
-                    regionEntries.map((region) => {
-                      const regionToneKey =
-                        region.severityKey === "major"
-                          ? "bad"
-                          : region.severityKey === "minor" || region.severityKey === "degraded"
-                            ? "warn"
-                            : region.severityKey === "stable"
-                              ? "good"
-                              : "unknown";
-                      return (
-                        <div
-                          key={region.key}
-                          className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className={`h-2 w-2 rounded-full ${TONE_STYLES[regionToneKey].dot}`} aria-hidden="true" />
-                            <span className="text-sm font-medium text-foreground">{region.key}</span>
-                          </div>
-                          <div className="text-right text-[11px] text-muted-foreground">
-                            <p>{region.severityKey}</p>
-                            <p>
-                              score {region.score ?? "n/a"} | weight {region.weight ?? "n/a"}%
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              </div>
-            </section>
-
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -1045,6 +1046,53 @@ const ServerDetail = () => {
                         </div>
                       </div>
                     ))
+                  )}
+                </div>
+              </div>
+            </section>
+              </>
+            ) : null}
+
+            {activeTab === "analysis" ? (
+              <>
+            <section className="glass glass-specular rounded-2xl p-4">
+              <div className="relative z-10">
+                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Regional Snapshot
+                </h2>
+                <div className="mt-3 space-y-2.5">
+                  {regionEntries.length === 0 ? (
+                    <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
+                      No regional data in payload.
+                    </p>
+                  ) : (
+                    regionEntries.map((region) => {
+                      const regionToneKey =
+                        region.severityKey === "major"
+                          ? "bad"
+                          : region.severityKey === "minor" || region.severityKey === "degraded"
+                            ? "warn"
+                            : region.severityKey === "stable"
+                              ? "good"
+                              : "unknown";
+                      return (
+                        <div
+                          key={region.key}
+                          className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className={`h-2 w-2 rounded-full ${TONE_STYLES[regionToneKey].dot}`} aria-hidden="true" />
+                            <span className="text-sm font-medium text-foreground">{region.key}</span>
+                          </div>
+                          <div className="text-right text-[11px] text-muted-foreground">
+                            <p>{region.severityKey}</p>
+                            <p>
+                              score {region.score ?? "n/a"} | weight {region.weight ?? "n/a"}%
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               </div>
@@ -1103,12 +1151,18 @@ const ServerDetail = () => {
                 </div>
               </div>
             </section>
+              </>
+            ) : null}
 
-            <LinkListSection title="Official Updates" items={officialItems} emptyText="No official updates in payload." />
-            <LinkListSection title="Reports" items={reportItems} emptyText="No report entries in payload." />
-            <LinkListSection title="News" items={newsItems} emptyText="No news entries in payload." />
-            <LinkListSection title="Social" items={socialItems} emptyText="No social entries in payload." />
-            <LinkListSection title="Known Resources" items={knownItems} emptyText="No known resources in payload." />
+            {activeTab === "sources" ? (
+              <>
+                <LinkListSection title="Official Updates" items={officialItems} emptyText="No official updates in payload." />
+                <LinkListSection title="Reports" items={reportItems} emptyText="No report entries in payload." />
+                <LinkListSection title="News" items={newsItems} emptyText="No news entries in payload." />
+                <LinkListSection title="Social" items={socialItems} emptyText="No social entries in payload." />
+                <LinkListSection title="Known Resources" items={knownItems} emptyText="No known resources in payload." />
+              </>
+            ) : null}
           </div>
         ) : null}
       </main>
