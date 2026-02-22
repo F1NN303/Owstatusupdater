@@ -18,7 +18,7 @@
         tools: "Tools",
         updated: "Last update: {time}",
         updatedUnknown: "Last update: --",
-        home: "Dashboard",
+        home: "Home",
         sony: "Sony PSN status",
         overwatch: "Overwatch status",
         emailAlerts: "Email alerts",
@@ -347,7 +347,7 @@
         tools: "Tools",
         updated: "Zuletzt aktualisiert: {time}",
         updatedUnknown: "Zuletzt aktualisiert: --",
-        home: "Dashboard",
+        home: "Start",
         sony: "Sony-PSN-Status",
         overwatch: "Overwatch-Status",
         emailAlerts: "E-Mail-Alarme",
@@ -682,6 +682,7 @@ const els = {
   menuEmailAlertsLink: document.getElementById("menuEmailAlertsLink"),
   menuRssLink: document.getElementById("menuRssLink"),
   menuGithubLink: document.getElementById("menuGithubLink"),
+  dockHomeLink: document.getElementById("dockHomeLink"),
   dockOverwatchLink: document.getElementById("dockOverwatchLink"),
   dockSonyLink: document.getElementById("dockSonyLink"),
   dockEmailAlertsLink: document.getElementById("dockEmailAlertsLink"),
@@ -1627,6 +1628,9 @@ function applyMenuTexts() {
   }
   if (els.menuHomeLink) {
     els.menuHomeLink.textContent = t("ui.menu.home");
+  }
+  if (els.dockHomeLink) {
+    els.dockHomeLink.textContent = t("ui.menu.home");
   }
   if (els.menuSonyLink) {
     setMenuServiceLabel(els.menuSonyLink, t("ui.menu.sony"));
