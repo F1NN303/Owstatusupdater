@@ -19,6 +19,15 @@
   --mobile-font-meta: 0.77rem;
   --mobile-dock-height: 4.45rem;
   --mobile-dock-offset: 0.46rem;
+  --glass-fill-soft: rgba(14, 24, 38, 0.56);
+  --glass-fill-strong: rgba(12, 20, 34, 0.78);
+  --glass-edge: rgba(133, 203, 255, 0.26);
+  --glass-edge-strong: rgba(133, 218, 255, 0.4);
+  --glass-highlight: rgba(236, 247, 255, 0.28);
+  --glass-shadow-soft: 0 14px 30px rgba(3, 10, 20, 0.3);
+  --glass-shadow-strong: 0 22px 44px rgba(3, 10, 20, 0.46);
+  --glass-blur: 16px;
+  --glass-saturate: 165%;
 }
 
 * {
@@ -30,7 +39,11 @@ body {
   min-height: 100vh;
   font-family: "Sora", sans-serif;
   color: var(--ink);
+  overflow-x: clip;
+  position: relative;
   background:
+    radial-gradient(34rem 20rem at 20% -6%, rgba(126, 228, 255, 0.19), transparent 72%),
+    radial-gradient(40rem 22rem at 85% 5%, rgba(64, 131, 255, 0.14), transparent 72%),
     radial-gradient(50rem 24rem at 5% -10%, rgba(56, 189, 248, 0.22), transparent 70%),
     radial-gradient(60rem 25rem at 100% 0%, rgba(34, 197, 94, 0.16), transparent 75%),
     linear-gradient(160deg, var(--bg), #06090d);
@@ -53,6 +66,8 @@ html.menu-open {
   padding: calc(1.35rem + env(safe-area-inset-top)) 1rem calc(2.4rem + env(safe-area-inset-bottom));
   display: grid;
   gap: 1rem;
+  position: relative;
+  z-index: 2;
 }
 
 .page-version {
@@ -64,6 +79,8 @@ html.menu-open {
   font-size: 0.68rem;
   letter-spacing: 0.04em;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .mobile-dock {
@@ -82,11 +99,40 @@ html.menu-open {
   gap: 0.7rem;
   position: relative;
   z-index: 80;
+  padding: 0.56rem 0.62rem;
+  border: 1px solid var(--glass-edge);
+  border-radius: 1rem;
+  background:
+    linear-gradient(154deg, rgba(178, 238, 255, 0.11), rgba(101, 170, 255, 0.04) 38%, transparent 72%),
+    var(--glass-fill-soft);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    var(--glass-shadow-soft);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  overflow: hidden;
+}
+
+.top-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 46%;
+  background: linear-gradient(180deg, rgba(226, 246, 255, 0.22), rgba(226, 246, 255, 0));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.top-nav > * {
+  position: relative;
+  z-index: 1;
 }
 
 .brand-link {
-  border: 1px solid rgba(77, 199, 255, 0.28);
-  background: rgba(10, 20, 32, 0.6);
+  border: 1px solid rgba(132, 214, 255, 0.42);
+  background:
+    linear-gradient(160deg, rgba(196, 240, 255, 0.13), rgba(90, 170, 255, 0.04) 62%, rgba(24, 44, 70, 0.5)),
+    rgba(10, 20, 32, 0.54);
   color: #dff4ff;
   border-radius: 999px;
   padding: 0.45rem 0.72rem;
@@ -98,6 +144,12 @@ html.menu-open {
   align-items: center;
   gap: 0.45rem;
   white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(233, 247, 255, 0.28),
+    0 10px 22px rgba(13, 29, 52, 0.34);
+  backdrop-filter: blur(8px) saturate(138%);
+  -webkit-backdrop-filter: blur(8px) saturate(138%);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
 }
 
 .brand-link,
@@ -141,9 +193,9 @@ html.menu-open {
 }
 
 .top-actions-links {
-  margin-left: 0;
-  width: 100%;
-  justify-content: flex-start;
+  margin-left: auto;
+  width: auto;
+  justify-content: flex-end;
 }
 
 .top-actions-links .top-link {
@@ -249,8 +301,10 @@ html.menu-open {
 
 .top-link,
 .menu-button {
-  border: 1px solid rgba(123, 142, 168, 0.4);
-  background: rgba(16, 24, 36, 0.7);
+  border: 1px solid rgba(133, 174, 213, 0.38);
+  background:
+    linear-gradient(152deg, rgba(194, 239, 255, 0.11), rgba(107, 169, 255, 0.04) 62%, rgba(18, 34, 52, 0.5)),
+    rgba(16, 24, 36, 0.5);
   color: #d8ebff;
   border-radius: 0.7rem;
   padding: 0.46rem 0.7rem;
@@ -264,6 +318,12 @@ html.menu-open {
   justify-content: center;
   white-space: nowrap;
   cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(238, 247, 255, 0.22),
+    0 8px 16px rgba(8, 18, 34, 0.28);
+  backdrop-filter: blur(10px) saturate(132%);
+  -webkit-backdrop-filter: blur(10px) saturate(132%);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
 }
 
 .menu-button {
@@ -293,8 +353,11 @@ html.menu-open {
 .top-link:hover,
 .menu-button:hover,
 .brand-link:hover {
-  border-color: rgba(66, 197, 255, 0.6);
-  box-shadow: 0 10px 22px rgba(56, 189, 248, 0.14);
+  transform: translateY(-1px);
+  border-color: rgba(122, 223, 255, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(242, 250, 255, 0.34),
+    0 12px 24px rgba(30, 114, 170, 0.22);
 }
 
 .top-link:visited {
@@ -670,23 +733,80 @@ body[data-menu-open="true"] .top-search-results {
 }
 
 .card {
-  background: linear-gradient(165deg, rgba(16, 24, 37, 0.94), rgba(15, 24, 37, 0.86));
-  border: 1px solid var(--border);
+  background:
+    linear-gradient(155deg, rgba(190, 237, 255, 0.11), rgba(74, 149, 255, 0.05) 40%, transparent 76%),
+    linear-gradient(165deg, rgba(15, 24, 38, 0.8), rgba(13, 22, 35, 0.7));
+  border: 1px solid rgba(134, 196, 236, 0.24);
   border-radius: 1.08rem;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 247, 255, 0.18),
+    var(--glass-shadow-soft);
   padding: 1.06rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(145%);
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(145%);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(221, 244, 255, 0.12), rgba(221, 244, 255, 0));
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero {
-  background: linear-gradient(160deg, rgba(15, 24, 37, 0.92), rgba(12, 20, 32, 0.9));
-  border: 1px solid var(--border);
+  background:
+    radial-gradient(100% 160% at 8% -20%, rgba(120, 228, 255, 0.22), transparent 62%),
+    linear-gradient(158deg, rgba(14, 24, 38, 0.84), rgba(11, 19, 31, 0.72));
+  border: 1px solid rgba(132, 194, 236, 0.26);
   border-radius: 1.24rem;
   padding: 1.16rem 1.2rem;
-  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(237, 248, 255, 0.18),
+    var(--glass-shadow-strong);
   display: grid;
   gap: 0.9rem;
   position: relative;
   z-index: 10;
+  overflow: hidden;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 52%;
+  background: linear-gradient(180deg, rgba(224, 246, 255, 0.18), rgba(224, 246, 255, 0));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0.025) 0 1px,
+    transparent 1px 10px
+  );
+  pointer-events: none;
+  opacity: 0.24;
+  z-index: 0;
+}
+
+.hero > *,
+.card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-main {
@@ -976,13 +1096,30 @@ h2 {
   display: inline-flex;
   width: fit-content;
   gap: 0.32rem;
-  border: 1px solid var(--border);
-  background: rgba(18, 25, 34, 0.86);
+  border: 1px solid rgba(130, 193, 236, 0.3);
+  background:
+    linear-gradient(150deg, rgba(186, 236, 255, 0.12), rgba(77, 150, 255, 0.04) 50%, rgba(16, 30, 46, 0.58)),
+    rgba(15, 23, 36, 0.62);
   border-radius: 999px;
   padding: 0.28rem;
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(237, 248, 255, 0.2),
+    0 12px 22px rgba(8, 18, 36, 0.34);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+}
+
+.tab-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 44%;
+  background: linear-gradient(180deg, rgba(233, 248, 255, 0.18), rgba(233, 248, 255, 0));
+  pointer-events: none;
+  z-index: 0;
 }
 
 .tab-liquid-indicator {
@@ -992,16 +1129,18 @@ h2 {
   height: 0;
   border-radius: 999px;
   background:
-    linear-gradient(145deg, rgba(132, 223, 255, 0.26), rgba(74, 146, 255, 0.1)),
-    rgba(28, 48, 74, 0.6);
-  border: 1px solid rgba(111, 217, 255, 0.42);
+    radial-gradient(130% 180% at 14% 10%, rgba(232, 249, 255, 0.42), transparent 62%),
+    linear-gradient(145deg, rgba(163, 235, 255, 0.34), rgba(86, 176, 255, 0.11) 48%, rgba(39, 76, 120, 0.58));
+  border: 1px solid rgba(127, 219, 255, 0.55);
   box-shadow:
-    inset 0 1px 0 rgba(235, 247, 255, 0.3),
-    0 8px 18px rgba(52, 165, 255, 0.24);
+    inset 0 1px 0 rgba(241, 251, 255, 0.42),
+    inset 0 -10px 18px rgba(39, 112, 189, 0.2),
+    0 10px 20px rgba(36, 137, 226, 0.24);
   transform: translate3d(0, 0, 0);
-  transition: transform 260ms cubic-bezier(0.2, 0.85, 0.2, 1), width 260ms ease, height 260ms ease;
+  transition: transform 320ms cubic-bezier(0.18, 0.88, 0.24, 1), width 320ms ease, height 320ms ease;
   pointer-events: none;
   z-index: 0;
+  will-change: transform, width, height;
 }
 
 .tab-btn {
@@ -1068,7 +1207,7 @@ h2 {
   color: #e9f6ff;
   background: transparent;
   border-color: transparent;
-  text-shadow: 0 0 10px rgba(120, 225, 255, 0.26);
+  text-shadow: 0 0 16px rgba(133, 231, 255, 0.34);
 }
 
 .tab-panel {
@@ -1176,9 +1315,11 @@ h2 {
 }
 
 .home-service-link {
-  border: 1px solid #274263;
+  border: 1px solid rgba(130, 193, 236, 0.29);
   border-radius: 0.92rem;
-  background: linear-gradient(160deg, rgba(14, 25, 40, 0.92), rgba(10, 20, 34, 0.82));
+  background:
+    radial-gradient(120% 200% at 0% -38%, rgba(163, 235, 255, 0.13), transparent 62%),
+    linear-gradient(160deg, rgba(14, 25, 40, 0.76), rgba(10, 20, 34, 0.64));
   color: #deebfb;
   text-decoration: none;
   min-height: 4.1rem;
@@ -1187,14 +1328,21 @@ h2 {
   align-items: center;
   justify-content: space-between;
   gap: 0.9rem;
-  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  box-shadow:
+    inset 0 1px 0 rgba(235, 247, 255, 0.18),
+    0 14px 28px rgba(5, 16, 31, 0.32);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
 .home-service-link:hover,
 .home-service-link:focus-visible {
   transform: translateY(-1px);
-  border-color: rgba(92, 200, 255, 0.62);
-  box-shadow: 0 16px 30px rgba(11, 24, 40, 0.5);
+  border-color: rgba(122, 219, 255, 0.66);
+  box-shadow:
+    inset 0 1px 0 rgba(246, 251, 255, 0.3),
+    0 18px 34px rgba(9, 23, 40, 0.5);
   outline: none;
 }
 
@@ -1227,10 +1375,11 @@ h2 {
 }
 
 .home-service-dot {
+  --dot-glow: rgba(100, 116, 139, 0.24);
   width: 0.72rem;
   height: 0.72rem;
   border-radius: 999px;
-  box-shadow: 0 0 0 0.16rem rgba(113, 137, 170, 0.18);
+  box-shadow: 0 0 0 0.16rem var(--dot-glow);
 }
 
 .home-service-updated {
@@ -1242,22 +1391,28 @@ h2 {
 
 .home-tone-good {
   background: #22c55e;
-  box-shadow: 0 0 0 0.16rem rgba(34, 197, 94, 0.22);
+  --dot-glow: rgba(34, 197, 94, 0.22);
+  box-shadow: 0 0 0 0.16rem var(--dot-glow);
 }
 
 .home-tone-warn {
   background: #eab308;
-  box-shadow: 0 0 0 0.16rem rgba(234, 179, 8, 0.24);
+  --dot-glow: rgba(234, 179, 8, 0.24);
+  box-shadow: 0 0 0 0.16rem var(--dot-glow);
+  animation: status-pulse 1900ms ease-in-out infinite;
 }
 
 .home-tone-bad {
   background: #ef4444;
-  box-shadow: 0 0 0 0.16rem rgba(239, 68, 68, 0.24);
+  --dot-glow: rgba(239, 68, 68, 0.24);
+  box-shadow: 0 0 0 0.16rem var(--dot-glow);
+  animation: status-pulse 1400ms ease-in-out infinite;
 }
 
 .home-tone-unknown {
   background: #64748b;
-  box-shadow: 0 0 0 0.16rem rgba(100, 116, 139, 0.24);
+  --dot-glow: rgba(100, 116, 139, 0.24);
+  box-shadow: 0 0 0 0.16rem var(--dot-glow);
 }
 
 .card h2,
@@ -1856,6 +2011,16 @@ h2 {
   animation: rise-in 520ms ease forwards;
 }
 
+@keyframes status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0.16rem var(--dot-glow);
+  }
+  50% {
+    box-shadow: 0 0 0 0.24rem var(--dot-glow);
+  }
+}
+
 @keyframes rise-in {
   from {
     opacity: 0;
@@ -1929,6 +2094,10 @@ h2 {
     display: none;
   }
 
+  .home-page .top-actions-links {
+    display: none;
+  }
+
   .top-actions-dashboard {
     width: auto;
     margin-left: auto;
@@ -1939,22 +2108,23 @@ h2 {
     left: 50%;
     bottom: calc(var(--mobile-dock-offset) + env(safe-area-inset-bottom));
     transform: translateX(-50%);
-    width: min(96vw, 33rem);
-    padding: 0.28rem;
+    width: min(96vw, 34rem);
+    padding: 0.32rem;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: stretch;
-    gap: 0.2rem;
-    border-radius: 1.12rem;
-    border: 1px solid rgba(130, 216, 255, 0.28);
+    gap: 0.24rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(138, 217, 255, 0.38);
     background:
-      radial-gradient(130% 180% at 0% -40%, rgba(118, 235, 255, 0.16), transparent 60%),
-      linear-gradient(160deg, rgba(9, 20, 34, 0.86), rgba(10, 22, 40, 0.78));
+      radial-gradient(130% 180% at 0% -42%, rgba(149, 238, 255, 0.28), transparent 58%),
+      radial-gradient(130% 180% at 100% 140%, rgba(81, 130, 255, 0.15), transparent 60%),
+      linear-gradient(160deg, rgba(8, 18, 32, 0.8), rgba(10, 22, 40, 0.72));
     box-shadow:
-      0 14px 36px rgba(4, 9, 18, 0.62),
-      inset 0 1px 0 rgba(228, 244, 255, 0.2);
-    backdrop-filter: blur(16px) saturate(130%);
-    -webkit-backdrop-filter: blur(16px) saturate(130%);
+      0 20px 42px rgba(4, 9, 18, 0.62),
+      inset 0 1px 0 rgba(238, 248, 255, 0.34);
+    backdrop-filter: blur(20px) saturate(185%);
+    -webkit-backdrop-filter: blur(20px) saturate(185%);
     z-index: 220;
     overflow: hidden;
     isolation: isolate;
@@ -1963,8 +2133,18 @@ h2 {
   .mobile-dock::before {
     content: "";
     position: absolute;
-    inset: -20% -30% 45%;
-    background: radial-gradient(closest-side, rgba(202, 245, 255, 0.22), transparent 75%);
+    inset: -24% -30% 46%;
+    background: radial-gradient(closest-side, rgba(231, 248, 255, 0.3), transparent 76%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mobile-dock::after {
+    content: "";
+    position: absolute;
+    inset: auto 6% 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(220, 243, 255, 0.48), transparent);
     pointer-events: none;
     z-index: 0;
   }
@@ -1974,18 +2154,20 @@ h2 {
     inset: 0 auto auto 0;
     width: 0;
     height: 0;
-    border-radius: 0.86rem;
+    border-radius: 0.96rem;
     background:
-      linear-gradient(145deg, rgba(170, 236, 255, 0.34), rgba(90, 172, 255, 0.12)),
-      rgba(24, 46, 72, 0.56);
-    border: 1px solid rgba(129, 223, 255, 0.5);
+      radial-gradient(130% 180% at 14% 10%, rgba(244, 252, 255, 0.48), transparent 58%),
+      linear-gradient(145deg, rgba(182, 240, 255, 0.37), rgba(98, 184, 255, 0.14) 52%, rgba(26, 54, 82, 0.5));
+    border: 1px solid rgba(141, 225, 255, 0.62);
     box-shadow:
-      inset 0 1px 0 rgba(236, 247, 255, 0.34),
-      0 10px 22px rgba(48, 167, 255, 0.28);
+      inset 0 1px 0 rgba(245, 251, 255, 0.46),
+      inset 0 -10px 16px rgba(40, 119, 200, 0.19),
+      0 12px 24px rgba(48, 167, 255, 0.32);
     pointer-events: none;
     transform: translate3d(0, 0, 0);
-    transition: transform 280ms cubic-bezier(0.2, 0.85, 0.2, 1), width 280ms ease, height 280ms ease;
+    transition: transform 360ms cubic-bezier(0.18, 0.88, 0.24, 1), width 360ms ease, height 360ms ease;
     z-index: 1;
+    will-change: transform, width, height;
   }
 
   .mobile-dock-link {
@@ -1996,7 +2178,7 @@ h2 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    border-radius: 0.86rem;
+    border-radius: 0.96rem;
     border: 1px solid transparent;
     color: #9fb9d8;
     padding: 0.3rem 0.2rem;
@@ -2007,7 +2189,7 @@ h2 {
     text-decoration: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-    transition: color 180ms ease, border-color 180ms ease;
+    transition: color 180ms ease, border-color 180ms ease, transform 200ms ease;
   }
 
   .mobile-dock-link:hover,
@@ -2021,6 +2203,7 @@ h2 {
   .mobile-dock-link[aria-current="page"] {
     color: #eaf8ff;
     text-shadow: 0 0 12px rgba(124, 228, 255, 0.26);
+    transform: translateY(-1px);
   }
 }
 
@@ -2116,6 +2299,10 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     gap: 0.34rem;
+  }
+
+  .home-page .top-actions-links {
+    display: none;
   }
 
   .top-actions-links .top-link {
@@ -2370,6 +2557,11 @@ h2 {
   .tab-liquid-indicator,
   .mobile-dock-indicator {
     transition: none;
+  }
+
+  .home-tone-warn,
+  .home-tone-bad {
+    animation: none;
   }
 
   .reveal {

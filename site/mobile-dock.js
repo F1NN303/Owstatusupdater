@@ -25,6 +25,24 @@ function setSlidingIndicator(trackEl, indicatorEl, activeEl) {
   indicatorEl.style.transform = `translate3d(${x}px, ${y}px, 0)`;
 }
 
+function getClosestElementByClientX(elements, clientX) {
+  if (!elements.length) {
+    return null;
+  }
+  let best = elements[0];
+  let bestDistance = Number.POSITIVE_INFINITY;
+  for (const element of elements) {
+    const rect = element.getBoundingClientRect();
+    const center = rect.left + rect.width / 2;
+    const distance = Math.abs(center - clientX);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      best = element;
+    }
+  }
+  return best;
+}
+
 function initMobileDock() {
   const dock = document.getElementById("mobileDock");
   if (!dock) {
@@ -42,21 +60,76 @@ function initMobileDock() {
     links.find((link) => normalizePath(link.getAttribute("href")) === currentPath) ||
     links[0];
 
-  for (const link of links) {
-    const isActive = link === activeLink;
-    link.classList.toggle("is-active", isActive);
-    if (isActive) {
-      link.setAttribute("aria-current", "page");
-    } else {
-      link.removeAttribute("aria-current");
+  const syncDockState = () => {
+    for (const link of links) {
+      const isActive = link === activeLink;
+      link.classList.toggle("is-active", isActive);
+      if (isActive) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
     }
+  };
+
+  syncDockState();
+
+  for (const link of links) {
     link.addEventListener("click", () => {
       activeLink = link;
+      syncDockState();
       window.requestAnimationFrame(() => {
         setSlidingIndicator(dock, indicator, activeLink);
       });
     });
   }
+
+  let touchPreviewActive = false;
+  let previewLink = null;
+  const clearDockPreview = () => {
+    touchPreviewActive = false;
+    previewLink = null;
+    window.requestAnimationFrame(() => {
+      setSlidingIndicator(dock, indicator, activeLink);
+    });
+  };
+
+  dock.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.touches.length !== 1) {
+        touchPreviewActive = false;
+        return;
+      }
+      touchPreviewActive = true;
+      const touch = event.touches[0];
+      previewLink = getClosestElementByClientX(links, touch.clientX) || activeLink;
+      if (previewLink) {
+        setSlidingIndicator(dock, indicator, previewLink);
+      }
+    },
+    { passive: true }
+  );
+
+  dock.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!touchPreviewActive || event.touches.length !== 1) {
+        return;
+      }
+      const touch = event.touches[0];
+      const nextPreview = getClosestElementByClientX(links, touch.clientX);
+      if (!nextPreview || nextPreview === previewLink) {
+        return;
+      }
+      previewLink = nextPreview;
+      setSlidingIndicator(dock, indicator, previewLink);
+    },
+    { passive: true }
+  );
+
+  dock.addEventListener("touchend", clearDockPreview, { passive: true });
+  dock.addEventListener("touchcancel", clearDockPreview, { passive: true });
 
   const update = () => setSlidingIndicator(dock, indicator, activeLink);
   window.requestAnimationFrame(update);
@@ -121,6 +194,77 @@ function initSwipeTabs() {
   window.requestAnimationFrame(updateTabIndicator);
   window.addEventListener("resize", updateTabIndicator);
   window.addEventListener("orientationchange", updateTabIndicator);
+
+  let dragActive = false;
+  let dragMoved = false;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let dragPreviewButton = null;
+  const MIN_DRAG_X = 14;
+
+  const resetTabDrag = () => {
+    dragActive = false;
+    dragMoved = false;
+    dragPreviewButton = null;
+    window.requestAnimationFrame(updateTabIndicator);
+  };
+
+  tabNav.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.touches.length !== 1) {
+        dragActive = false;
+        return;
+      }
+      const touch = event.touches[0];
+      dragActive = true;
+      dragMoved = false;
+      dragStartX = touch.clientX;
+      dragStartY = touch.clientY;
+      dragPreviewButton = getClosestElementByClientX(buttons, touch.clientX) || getActiveButton();
+    },
+    { passive: true }
+  );
+
+  tabNav.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!dragActive || event.touches.length !== 1) {
+        return;
+      }
+      const touch = event.touches[0];
+      const dx = touch.clientX - dragStartX;
+      const dy = touch.clientY - dragStartY;
+      if (Math.abs(dx) < MIN_DRAG_X || Math.abs(dx) < Math.abs(dy)) {
+        return;
+      }
+      dragMoved = true;
+      const candidate = getClosestElementByClientX(buttons, touch.clientX);
+      if (!candidate || candidate === dragPreviewButton) {
+        return;
+      }
+      dragPreviewButton = candidate;
+      setSlidingIndicator(tabNav, indicator, dragPreviewButton);
+    },
+    { passive: true }
+  );
+
+  tabNav.addEventListener(
+    "touchend",
+    () => {
+      if (!dragActive) {
+        return;
+      }
+      const activeButton = getActiveButton();
+      if (dragMoved && dragPreviewButton && dragPreviewButton !== activeButton) {
+        dragPreviewButton.click();
+      }
+      resetTabDrag();
+    },
+    { passive: true }
+  );
+
+  tabNav.addEventListener("touchcancel", resetTabDrag, { passive: true });
 
   const SWIPE_X = 52;
   const SWIPE_Y = 38;
