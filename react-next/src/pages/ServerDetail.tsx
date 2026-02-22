@@ -19,7 +19,7 @@ import {
   ShieldCheck,
   TriangleAlert,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TONE_STYLES = {
@@ -294,6 +294,254 @@ function MetricTile({
   );
 }
 
+function SignalChartCard({
+  title,
+  valueLabel,
+  subtitle,
+  children,
+}: {
+  title: string;
+  valueLabel?: string;
+  subtitle?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="glass glass-specular rounded-2xl p-4">
+      <div className="relative z-10">
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {title}
+            </h2>
+            {subtitle ? (
+              <p className="mt-1 text-[11px] text-muted-foreground">{subtitle}</p>
+            ) : null}
+          </div>
+          {valueLabel ? (
+            <p className="shrink-0 text-lg font-bold tracking-tight text-foreground">
+              {valueLabel}
+            </p>
+          ) : null}
+        </div>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function pickNiceMax(value: number) {
+  if (!Number.isFinite(value) || value <= 0) {
+    return 10;
+  }
+  const steps = [10, 20, 40, 60, 80, 100, 120, 160, 200];
+  for (const step of steps) {
+    if (value <= step) {
+      return step;
+    }
+  }
+  return Math.ceil(value / 50) * 50;
+}
+
+function SignalActivityChart({ data }: { data: number[] }) {
+  const width = 320;
+  const height = 150;
+  const top = 8;
+  const right = 8;
+  const bottom = 8;
+  const left = 4;
+  const maxValue = pickNiceMax(Math.max(...data, 1));
+  const xStep = (width - left - right) / Math.max(1, data.length - 1);
+  const innerHeight = height - top - bottom;
+
+  const points = data
+    .map((value, index) => {
+      const x = left + index * xStep;
+      const y = top + innerHeight - (Math.max(0, value) / maxValue) * innerHeight;
+      return `${x},${y}`;
+    })
+    .join(" ");
+
+  const gridRows = [0, 0.25, 0.5, 0.75, 1];
+  const xTicks = [0, 6, 12, 18];
+
+  return (
+    <div>
+      <div className="flex gap-2">
+        <div className="flex h-[150px] flex-col justify-between pb-0.5 pt-1 text-[11px] text-muted-foreground">
+          {gridRows.map((ratio) => (
+            <span key={ratio}>{Math.round(maxValue * (1 - ratio))}</span>
+          ))}
+        </div>
+        <div className="flex-1">
+          <svg viewBox={`0 0 ${width} ${height}`} className="h-[150px] w-full">
+            {gridRows.map((ratio) => {
+              const y = top + ratio * innerHeight;
+              return (
+                <line
+                  key={`gy-${ratio}`}
+                  x1={left}
+                  x2={width - right}
+                  y1={y}
+                  y2={y}
+                  stroke="rgba(148,163,184,0.12)"
+                  strokeDasharray="3 4"
+                />
+              );
+            })}
+            {xTicks.map((tick) => {
+              const index = Math.min(data.length - 1, tick);
+              const x = left + index * xStep;
+              return (
+                <line
+                  key={`gx-${tick}`}
+                  x1={x}
+                  x2={x}
+                  y1={top}
+                  y2={height - bottom}
+                  stroke="rgba(148,163,184,0.09)"
+                  strokeDasharray="3 5"
+                />
+              );
+            })}
+            <polyline
+              points={points}
+              fill="none"
+              stroke="hsl(199 89% 48%)"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity="0.95"
+            />
+          </svg>
+          <div className="mt-1 flex justify-between px-1 text-[11px] text-muted-foreground">
+            <span>0h</span>
+            <span>6h</span>
+            <span>12h</span>
+            <span>18h</span>
+            <span>24h</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DailySignalBars({ values }: { values: number[] }) {
+  const labels = [1, 6, 11, 16, 21, 26];
+
+  return (
+    <div>
+      <div className="flex gap-2">
+        <div className="flex h-[120px] flex-col justify-between text-[11px] text-muted-foreground">
+          <span>100%</span>
+          <span>75%</span>
+          <span>50%</span>
+          <span>25%</span>
+          <span>0%</span>
+        </div>
+        <div className="relative flex-1">
+          <div className="pointer-events-none absolute inset-0">
+            {[0, 25, 50, 75, 100].map((tick) => (
+              <div
+                key={tick}
+                className="absolute left-0 right-0 border-t border-dashed border-white/10"
+                style={{ bottom: `${tick}%` }}
+              />
+            ))}
+          </div>
+          <div className="relative flex h-[120px] items-end gap-[3px] pt-1">
+            {values.map((value, index) => {
+              const height = Math.max(2, Math.min(100, value));
+              const toneClass =
+                value >= 99
+                  ? "bg-status-online/80"
+                  : value >= 70
+                    ? "bg-status-degraded/80"
+                    : "bg-status-offline/85";
+              return (
+                <div
+                  key={`bar-${index}`}
+                  className={`flex-1 rounded-[3px] ${toneClass}`}
+                  style={{ height: `${height}%` }}
+                  title={`Day ${index + 1}: ${value.toFixed(0)}%`}
+                />
+              );
+            })}
+          </div>
+          <div className="mt-2 flex justify-between px-[2px] text-[11px] text-muted-foreground">
+            {labels.map((label) => (
+              <span key={label}>{label}</span>
+            ))}
+            <span>30</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function inferServiceComponents(
+  serviceId: LegacyDetailServiceId,
+  detail: LegacyServiceDetailResult
+): Array<{ name: string; status: Status }> {
+  const catalog =
+    serviceId === "sony"
+      ? ["Gaming & Social", "Account Management", "PlayStation Store", "PlayStation Video"]
+      : ["Game Servers", "Authentication", "Matchmaking", "Shop & Store"];
+
+  const overall = toneToStatus(detail.tone);
+  const incidentText = [
+    detail.payload.outage?.summary,
+    ...(detail.payload.outage?.incidents || []).slice(0, 6).map((incident) => incident.title || ""),
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  const map = new Map<string, Status>(catalog.map((name) => [name, "online"]));
+  const mark = (keywords: string[], target: string) => {
+    if (keywords.some((keyword) => incidentText.includes(keyword))) {
+      map.set(target, overall === "offline" ? "offline" : "degraded");
+      return true;
+    }
+    return false;
+  };
+
+  if (serviceId === "sony") {
+    const hitStore = mark(["store"], "PlayStation Store");
+    const hitAccount = mark(["sign", "account", "login"], "Account Management");
+    const hitSocial = mark(["gaming", "social", "network", "multiplayer"], "Gaming & Social");
+    if (overall !== "online" && !hitStore && !hitAccount && !hitSocial) {
+      map.set("Gaming & Social", overall);
+    }
+  } else {
+    const hitAuth = mark(["login", "auth", "sign in", "queue"], "Authentication");
+    const hitMatch = mark(["match", "queue", "competitive"], "Matchmaking");
+    const hitStore = mark(["shop", "store"], "Shop & Store");
+    const hitGame = mark(["server", "connection", "game"], "Game Servers");
+    if (overall !== "online" && !hitAuth && !hitMatch && !hitStore && !hitGame) {
+      map.set("Game Servers", overall);
+    }
+  }
+
+  return catalog.map((name) => ({ name, status: map.get(name) || "online" }));
+}
+
+function incidentToneClass(incident: LegacyOutageIncident) {
+  const text = `${incident.title || ""} ${incident.acknowledgement || ""}`.toLowerCase();
+  if (text.includes("outage") || text.includes("offline")) {
+    return "bg-status-offline";
+  }
+  if (
+    text.includes("degraded") ||
+    text.includes("issue") ||
+    text.includes("queue") ||
+    text.includes("maintenance")
+  ) {
+    return "bg-status-degraded";
+  }
+  return "bg-status-online";
+}
+
 function LinkListSection({
   title,
   items,
@@ -468,6 +716,8 @@ const ServerDetail = () => {
   ).length;
   const latestIncidentTitle = outageIncidents[0]?.title || "No active incidents";
   const quickMetricLabel = detail ? shortMetricLabel(detail) : "Live signals";
+  const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
+  const componentRows = detail ? inferServiceComponents(serviceId, detail) : [];
 
   return (
     <AppLayout>
@@ -627,6 +877,51 @@ const ServerDetail = () => {
               </div>
             ) : null}
 
+            <section className="glass glass-specular rounded-2xl p-4">
+              <div className="relative z-10">
+                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Service Components
+                </h2>
+                <div className="mt-3 space-y-2">
+                  {componentRows.map((item) => (
+                    <div
+                      key={item.name}
+                      className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
+                    >
+                      <span className="text-sm font-medium text-foreground">{item.name}</span>
+                      <StatusBadge status={item.status} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <SignalChartCard
+              title="30-Day Signal Health"
+              valueLabel={trendScoreLabel}
+              subtitle="Derived from incidents across the last 30 days"
+            >
+              <UptimeBar data={trendHistory} />
+              <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
+                <span>30 days ago</span>
+                <span>Today</span>
+              </div>
+            </SignalChartCard>
+
+            <SignalChartCard
+              title="Signal Activity (24h)"
+              subtitle="Derived from incident/report/news timestamps (not latency)"
+            >
+              <SignalActivityChart data={sparklineData} />
+            </SignalChartCard>
+
+            <SignalChartCard
+              title="Daily Signal %"
+              subtitle="Derived daily health score from incident overlap"
+            >
+              <DailySignalBars values={dailySignalPercentages} />
+            </SignalChartCard>
+
             <section className="grid grid-cols-2 gap-3">
               <MetricTile label="Severity Score" value={String(severityScore)} />
               <MetricTile label="Reports (24h)" value={String(reports24h)} />
@@ -708,26 +1003,45 @@ const ServerDetail = () => {
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Active Incidents
+                  Recent Incidents
                 </h2>
                 <div className="mt-3 space-y-2.5">
                   {outageIncidents.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      No active incidents listed in the current outage payload.
+                      No recent incidents listed in the current outage payload.
                     </p>
                   ) : (
                     outageIncidents.map((incident, index) => (
                       <div
                         key={`${incident.title || "incident"}-${incident.started_at || index}`}
-                        className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
+                        className="rounded-xl border border-white/10 bg-white/5 px-3 py-3"
                       >
-                        <p className="text-sm font-medium leading-snug text-foreground">
-                          {incident.title || "Untitled incident"}
-                        </p>
-                        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
-                          {incident.started_at ? <span>Started: {formatDateTime(incident.started_at)}</span> : null}
-                          {incident.duration ? <span>Duration: {incident.duration}</span> : null}
-                          {incident.acknowledgement ? <span>{incident.acknowledgement}</span> : null}
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold leading-snug text-foreground">
+                              {incident.title || "Untitled incident"}
+                            </p>
+                            {incident.acknowledgement ? (
+                              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                                {incident.acknowledgement}
+                              </p>
+                            ) : null}
+                            <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+                              {incident.duration ? <span>{incident.duration}</span> : null}
+                              {incident.started_at ? (
+                                <span>
+                                  {new Date(incident.started_at).toLocaleDateString(undefined, {
+                                    month: "short",
+                                    day: "numeric",
+                                  })}
+                                </span>
+                              ) : null}
+                            </div>
+                          </div>
+                          <span
+                            className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${incidentToneClass(incident)}`}
+                            aria-hidden="true"
+                          />
                         </div>
                       </div>
                     ))
