@@ -178,9 +178,36 @@ function initMobileDock() {
   dock.addEventListener("touchcancel", clearDockPreview, { passive: true });
 
   const update = () => setSlidingIndicator(dock, indicator, activeLink);
+  let dockUpdateRaf = 0;
+  const scheduleDockUpdate = () => {
+    if (dockUpdateRaf) {
+      return;
+    }
+    dockUpdateRaf = window.requestAnimationFrame(() => {
+      dockUpdateRaf = 0;
+      update();
+    });
+  };
+
   window.requestAnimationFrame(update);
-  window.addEventListener("resize", update);
-  window.addEventListener("orientationchange", update);
+  window.addEventListener("resize", scheduleDockUpdate);
+  window.addEventListener("orientationchange", scheduleDockUpdate);
+  window.addEventListener("pageshow", scheduleDockUpdate);
+  window.addEventListener("load", scheduleDockUpdate, { once: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", scheduleDockUpdate);
+    window.visualViewport.addEventListener("scroll", scheduleDockUpdate);
+  }
+  if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === "function") {
+    document.fonts.ready.then(scheduleDockUpdate).catch(() => {});
+  }
+  if (typeof ResizeObserver === "function") {
+    const dockResizeObserver = new ResizeObserver(scheduleDockUpdate);
+    dockResizeObserver.observe(dock);
+    for (const link of links) {
+      dockResizeObserver.observe(link);
+    }
+  }
 }
 
 function isInteractiveTarget(node) {
@@ -225,6 +252,16 @@ function initSwipeTabs() {
     }
     setSlidingIndicator(tabNav, indicator, activeButton);
   };
+  let tabUpdateRaf = 0;
+  const scheduleTabIndicatorUpdate = () => {
+    if (tabUpdateRaf) {
+      return;
+    }
+    tabUpdateRaf = window.requestAnimationFrame(() => {
+      tabUpdateRaf = 0;
+      updateTabIndicator();
+    });
+  };
 
   const observer = new MutationObserver(() => updateTabIndicator());
   for (const button of buttons) {
@@ -233,13 +270,29 @@ function initSwipeTabs() {
       attributeFilter: ["class", "aria-selected"],
     });
     button.addEventListener("click", () => {
-      window.requestAnimationFrame(updateTabIndicator);
+      scheduleTabIndicatorUpdate();
     });
   }
 
   window.requestAnimationFrame(updateTabIndicator);
-  window.addEventListener("resize", updateTabIndicator);
-  window.addEventListener("orientationchange", updateTabIndicator);
+  window.addEventListener("resize", scheduleTabIndicatorUpdate);
+  window.addEventListener("orientationchange", scheduleTabIndicatorUpdate);
+  window.addEventListener("pageshow", scheduleTabIndicatorUpdate);
+  window.addEventListener("load", scheduleTabIndicatorUpdate, { once: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", scheduleTabIndicatorUpdate);
+    window.visualViewport.addEventListener("scroll", scheduleTabIndicatorUpdate);
+  }
+  if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === "function") {
+    document.fonts.ready.then(scheduleTabIndicatorUpdate).catch(() => {});
+  }
+  if (typeof ResizeObserver === "function") {
+    const tabResizeObserver = new ResizeObserver(scheduleTabIndicatorUpdate);
+    tabResizeObserver.observe(tabNav);
+    for (const button of buttons) {
+      tabResizeObserver.observe(button);
+    }
+  }
 
   let dragActive = false;
   let dragMoved = false;
@@ -256,7 +309,7 @@ function initSwipeTabs() {
     dragMoved = false;
     dragPreviewButton = null;
     emitLiquidGlassGesture("tab", "end", { strength: 0.7 });
-    window.requestAnimationFrame(updateTabIndicator);
+    scheduleTabIndicatorUpdate();
   };
 
   tabNav.addEventListener(

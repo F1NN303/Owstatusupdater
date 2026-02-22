@@ -1610,7 +1610,10 @@ function setMenuServiceLabel(linkEl, text) {
   if (!linkEl) {
     return;
   }
-  const labelNode = linkEl.querySelector("span");
+  const labelNode =
+    linkEl.querySelector("[data-link-label]") ||
+    linkEl.querySelector("span:last-of-type") ||
+    linkEl.querySelector("span");
   if (labelNode) {
     labelNode.textContent = text;
     return;
@@ -1642,7 +1645,7 @@ function applyMenuTexts() {
     els.menuHomeLink.textContent = t("ui.menu.home");
   }
   if (els.dockHomeLink) {
-    els.dockHomeLink.textContent = t("ui.dock.home");
+    setMenuServiceLabel(els.dockHomeLink, t("ui.dock.home"));
   }
   if (els.menuSonyLink) {
     setMenuServiceLabel(els.menuSonyLink, t("ui.menu.sony"));
@@ -1660,7 +1663,7 @@ function applyMenuTexts() {
     els.menuEmailAlertsLink.textContent = t("ui.menu.emailAlerts");
   }
   if (els.dockEmailAlertsLink) {
-    els.dockEmailAlertsLink.textContent = t("ui.dock.emailAlerts");
+    setMenuServiceLabel(els.dockEmailAlertsLink, t("ui.dock.emailAlerts"));
   }
   if (els.menuRssLink) {
     els.menuRssLink.textContent = t("ui.menu.rss");
