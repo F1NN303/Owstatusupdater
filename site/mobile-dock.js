@@ -1,5 +1,25 @@
 "use strict";
 
+function emitLiquidGlassGesture(channel, phase, payload = {}) {
+  try {
+    window.dispatchEvent(
+      new CustomEvent("liquid-glass-gesture", {
+        detail: {
+          channel,
+          phase,
+          x: Number.isFinite(payload.x) ? payload.x : null,
+          y: Number.isFinite(payload.y) ? payload.y : null,
+          velocityX: Number.isFinite(payload.velocityX) ? payload.velocityX : 0,
+          velocityY: Number.isFinite(payload.velocityY) ? payload.velocityY : 0,
+          strength: Number.isFinite(payload.strength) ? payload.strength : 0,
+        },
+      })
+    );
+  } catch (_error) {
+    // Gesture bridge is optional; ignore unsupported environments.
+  }
+}
+
 function normalizePath(path) {
   try {
     const parsed = new URL(path, window.location.href);
@@ -86,9 +106,13 @@ function initMobileDock() {
 
   let touchPreviewActive = false;
   let previewLink = null;
+  let dockTouchPrevX = 0;
+  let dockTouchPrevY = 0;
+  let dockTouchPrevTs = 0;
   const clearDockPreview = () => {
     touchPreviewActive = false;
     previewLink = null;
+    emitLiquidGlassGesture("dock", "end", { strength: 0.7 });
     window.requestAnimationFrame(() => {
       setSlidingIndicator(dock, indicator, activeLink);
     });
@@ -103,10 +127,18 @@ function initMobileDock() {
       }
       touchPreviewActive = true;
       const touch = event.touches[0];
+      dockTouchPrevX = touch.clientX;
+      dockTouchPrevY = touch.clientY;
+      dockTouchPrevTs = performance.now();
       previewLink = getClosestElementByClientX(links, touch.clientX) || activeLink;
       if (previewLink) {
         setSlidingIndicator(dock, indicator, previewLink);
       }
+      emitLiquidGlassGesture("dock", "start", {
+        x: touch.clientX,
+        y: touch.clientY,
+        strength: 1,
+      });
     },
     { passive: true }
   );
@@ -118,7 +150,21 @@ function initMobileDock() {
         return;
       }
       const touch = event.touches[0];
+      const now = performance.now();
+      const dt = Math.max(8, now - dockTouchPrevTs);
+      const velocityX = (touch.clientX - dockTouchPrevX) / dt;
+      const velocityY = (touch.clientY - dockTouchPrevY) / dt;
+      dockTouchPrevX = touch.clientX;
+      dockTouchPrevY = touch.clientY;
+      dockTouchPrevTs = now;
       const nextPreview = getClosestElementByClientX(links, touch.clientX);
+      emitLiquidGlassGesture("dock", "move", {
+        x: touch.clientX,
+        y: touch.clientY,
+        velocityX,
+        velocityY,
+        strength: 1,
+      });
       if (!nextPreview || nextPreview === previewLink) {
         return;
       }
@@ -201,11 +247,15 @@ function initSwipeTabs() {
   let dragStartY = 0;
   let dragPreviewButton = null;
   const MIN_DRAG_X = 14;
+  let tabTouchPrevX = 0;
+  let tabTouchPrevY = 0;
+  let tabTouchPrevTs = 0;
 
   const resetTabDrag = () => {
     dragActive = false;
     dragMoved = false;
     dragPreviewButton = null;
+    emitLiquidGlassGesture("tab", "end", { strength: 0.7 });
     window.requestAnimationFrame(updateTabIndicator);
   };
 
@@ -221,7 +271,15 @@ function initSwipeTabs() {
       dragMoved = false;
       dragStartX = touch.clientX;
       dragStartY = touch.clientY;
+      tabTouchPrevX = touch.clientX;
+      tabTouchPrevY = touch.clientY;
+      tabTouchPrevTs = performance.now();
       dragPreviewButton = getClosestElementByClientX(buttons, touch.clientX) || getActiveButton();
+      emitLiquidGlassGesture("tab", "start", {
+        x: touch.clientX,
+        y: touch.clientY,
+        strength: 1,
+      });
     },
     { passive: true }
   );
@@ -233,8 +291,22 @@ function initSwipeTabs() {
         return;
       }
       const touch = event.touches[0];
+      const now = performance.now();
+      const dt = Math.max(8, now - tabTouchPrevTs);
+      const velocityX = (touch.clientX - tabTouchPrevX) / dt;
+      const velocityY = (touch.clientY - tabTouchPrevY) / dt;
+      tabTouchPrevX = touch.clientX;
+      tabTouchPrevY = touch.clientY;
+      tabTouchPrevTs = now;
       const dx = touch.clientX - dragStartX;
       const dy = touch.clientY - dragStartY;
+      emitLiquidGlassGesture("tab", "move", {
+        x: touch.clientX,
+        y: touch.clientY,
+        velocityX,
+        velocityY,
+        strength: 1,
+      });
       if (Math.abs(dx) < MIN_DRAG_X || Math.abs(dx) < Math.abs(dy)) {
         return;
       }

@@ -2,7 +2,7 @@
 
 (function () {
   const MAX_RECTS = 12;
-  const TARGET_FPS = 45;
+  const TARGET_FPS = 48;
   const FRAME_MS = 1000 / TARGET_FPS;
   const DPR_CAP = 1.35;
 
@@ -13,13 +13,13 @@
   };
 
   const SHAPE_DEFS = [
-    { selector: ".top-nav", kind: SHAPE_KIND.shell, intensity: 0.35, radiusScale: 1.0 },
-    { selector: ".hero", kind: SHAPE_KIND.emphasis, intensity: 0.28, radiusScale: 1.0 },
-    { selector: ".home-services-card", kind: SHAPE_KIND.shell, intensity: 0.26, radiusScale: 1.0 },
-    { selector: "#tabNav", kind: SHAPE_KIND.shell, intensity: 0.52, radiusScale: 1.0 },
-    { selector: "#tabNav .tab-liquid-indicator", kind: SHAPE_KIND.active, intensity: 0.98, radiusScale: 1.0 },
-    { selector: "#mobileDock", kind: SHAPE_KIND.shell, intensity: 0.62, radiusScale: 1.0 },
-    { selector: "#mobileDockIndicator", kind: SHAPE_KIND.active, intensity: 1.14, radiusScale: 1.0 },
+    { selector: ".top-nav", kind: SHAPE_KIND.shell, intensity: 0.35, radiusScale: 1.0, channel: 0 },
+    { selector: ".hero", kind: SHAPE_KIND.emphasis, intensity: 0.28, radiusScale: 1.0, channel: 0 },
+    { selector: ".home-services-card", kind: SHAPE_KIND.shell, intensity: 0.26, radiusScale: 1.0, channel: 0 },
+    { selector: "#tabNav", kind: SHAPE_KIND.shell, intensity: 0.52, radiusScale: 1.0, channel: 0 },
+    { selector: "#tabNav .tab-liquid-indicator", kind: SHAPE_KIND.active, intensity: 1.08, radiusScale: 1.0, channel: 1 },
+    { selector: "#mobileDock", kind: SHAPE_KIND.shell, intensity: 0.62, radiusScale: 1.0, channel: 0 },
+    { selector: "#mobileDockIndicator", kind: SHAPE_KIND.active, intensity: 1.22, radiusScale: 1.0, channel: 2 },
   ];
 
   const VERTEX_SHADER = `
@@ -40,7 +40,9 @@
     uniform vec2 u_pointer;
     uniform float u_count;
     uniform vec4 u_rects[MAX_RECTS];   // x, y, w, h in CSS px
-    uniform vec4 u_styles[MAX_RECTS];  // radius, kind, intensity, reserved
+    uniform vec4 u_styles[MAX_RECTS];  // radius, kind, intensity, channel
+    uniform vec4 u_gestureDock;        // x, y, strength, speed
+    uniform vec4 u_gestureTab;         // x, y, strength, speed
 
     float sdRoundRect(vec2 p, vec2 b, float r) {
       vec2 q = abs(p) - (b - vec2(r));
@@ -57,6 +59,7 @@
       float radius = style.x;
       float kind = style.y;
       float intensity = style.z;
+      float channel = style.w;
 
       vec2 rectPos = rect.xy;
       vec2 rectSize = max(rect.zw, vec2(1.0));
@@ -73,16 +76,48 @@
 
       vec2 uv = clamp((cssPos - rectPos) / rectSize, 0.0, 1.0);
       float t = u_time;
+      vec4 gesture = channel > 1.5 ? u_gestureDock : (channel > 0.5 ? u_gestureTab : vec4(-10000.0, -10000.0, 0.0, 0.0));
+      float gestureStrength = clamp(gesture.z, 0.0, 1.5);
+      float gestureSpeed = clamp(gesture.w, 0.0, 2.5);
+      vec2 gestureDelta = cssPos - gesture.xy;
+      float gestureDist = length(gestureDelta);
+      float gestureInfluence = exp(-gestureDist * (0.024 + (channel > 1.5 ? 0.01 : 0.0)));
+      vec2 gestureDir = gestureDist > 0.001 ? gestureDelta / gestureDist : vec2(0.0, 0.0);
+
+      vec2 lensUv = uv;
+      if (channel > 0.5) {
+        float lensWave = sin(gestureDist * 0.17 - t * (6.0 + gestureSpeed * 3.0) + uv.x * 5.0) * 0.5 + 0.5;
+        float lensOffset = gestureInfluence * gestureStrength * (0.010 + 0.006 * gestureSpeed) * (0.4 + 0.6 * lensWave);
+        lensUv += gestureDir * lensOffset;
+        lensUv += vec2(
+          sin(t * 1.8 + uv.y * 12.0) * 0.0018,
+          cos(t * 1.4 + uv.x * 11.0) * 0.0015
+        ) * (0.35 + gestureStrength);
+        lensUv = clamp(lensUv, 0.0, 1.0);
+      }
 
       float edge = (1.0 - smoothstep(0.0, 2.0, abs(d)));
       float edgeGlow = (1.0 - smoothstep(1.5, 7.5, abs(d)));
       float innerFade = smoothstep(-12.0, -0.5, d);
 
-      float topGloss = smoothstep(0.58, 0.02, uv.y) * (0.65 + 0.35 * smoothstep(0.0, 1.0, uv.x));
-      float diagonalSpec = exp(-pow(uv.y - (0.18 + 0.06 * sin(t * 0.8 + uv.x * 7.0)), 2.0) / 0.0026);
-      float waveA = sin((uv.x * 10.0 + uv.y * 6.0) + t * 1.25);
-      float waveB = cos((uv.x * 6.0 - uv.y * 12.0) - t * 0.85 + kind * 0.7);
-      float caustic = smoothstep(0.7, 1.0, 0.5 + 0.25 * waveA + 0.25 * waveB) * (0.35 + 0.65 * (1.0 - uv.y));
+      float topGloss = smoothstep(0.58, 0.02, lensUv.y) * (0.65 + 0.35 * smoothstep(0.0, 1.0, lensUv.x));
+      float diagonalSpec = exp(-pow(lensUv.y - (0.18 + 0.06 * sin(t * 0.8 + lensUv.x * 7.0)), 2.0) / 0.0026);
+      float waveA = sin((lensUv.x * 10.0 + lensUv.y * 6.0) + t * 1.25);
+      float waveB = cos((lensUv.x * 6.0 - lensUv.y * 12.0) - t * 0.85 + kind * 0.7);
+      float caustic = smoothstep(0.7, 1.0, 0.5 + 0.25 * waveA + 0.25 * waveB) * (0.35 + 0.65 * (1.0 - lensUv.y));
+      float gestureCaustic = 0.0;
+      float gestureRim = 0.0;
+      float gestureStreak = 0.0;
+      if (channel > 0.5) {
+        gestureCaustic =
+          gestureInfluence *
+          gestureStrength *
+          (0.35 + 0.65 * gestureSpeed) *
+          (0.45 + 0.55 * sin(t * 8.0 - gestureDist * 0.12 + lensUv.x * 22.0));
+        float sweepLine = lensUv.x - (0.5 + 0.18 * sin(t * 2.1 + gestureSpeed * 1.9));
+        gestureStreak = exp(-pow(sweepLine, 2.0) / (0.010 - min(0.006, gestureStrength * 0.003))) * (0.2 + 0.8 * (1.0 - lensUv.y));
+        gestureRim = exp(-gestureDist * 0.04) * (0.4 + 0.6 * edgeGlow) * gestureStrength;
+      }
 
       vec2 pointerDelta = pointerCss - cssPos;
       float pointerDist = length(pointerDelta);
@@ -90,7 +125,7 @@
       float pointerMask = mask * (0.25 + 0.75 * smoothstep(0.0, 1.0, intensity));
 
       float grain = (hash21(floor(cssPos * 0.5) + vec2(13.0, 29.0)) - 0.5) * 0.03;
-      float shimmer = 0.5 + 0.5 * sin(t * 1.15 + uv.x * 14.0 + uv.y * 11.0);
+      float shimmer = 0.5 + 0.5 * sin(t * 1.15 + lensUv.x * 14.0 + lensUv.y * 11.0);
 
       vec3 shellBase = vec3(0.15, 0.29, 0.48);
       vec3 shellCool = vec3(0.38, 0.64, 0.92);
@@ -124,11 +159,15 @@
       color += hotColor * (0.05 * edge + 0.07 * diagonalSpec + 0.05 * shimmer * innerFade) * (0.75 + intensity * 0.4);
       color += vec3(0.56, 0.81, 1.0) * edgeGlow * (0.02 + 0.06 * intensity + 0.05 * activeBoost);
       color += vec3(0.95, 0.98, 1.0) * pointerGlow * pointerMask * (0.02 + 0.08 * activeBoost + 0.03 * emphBoost);
+      color += vec3(0.78, 0.93, 1.0) * gestureCaustic * (0.03 + 0.14 * activeBoost);
+      color += vec3(0.96, 0.99, 1.0) * gestureStreak * gestureStrength * (0.01 + 0.06 * activeBoost);
+      color += vec3(0.52, 0.83, 1.0) * gestureRim * (0.02 + 0.08 * activeBoost);
       color += vec3(grain);
 
       float alpha = mask * (0.028 + 0.05 * shellBoost + 0.11 * activeBoost + 0.04 * emphBoost) * (0.45 + intensity * 0.75);
       alpha += edge * (0.02 + 0.05 * intensity);
       alpha += diagonalSpec * 0.015 * (0.5 + activeBoost);
+      alpha += gestureInfluence * gestureStrength * activeBoost * 0.04;
       alpha = clamp(alpha, 0.0, 0.42 + activeBoost * 0.26);
 
       alphaOut = alpha;
@@ -279,6 +318,10 @@
     const styles = new Float32Array(MAX_RECTS * 4);
     let pointerX = -10000;
     let pointerY = -10000;
+    const gesture = {
+      dock: { x: -10000, y: -10000, strength: 0, speed: 0, active: false, lastTs: 0 },
+      tab: { x: -10000, y: -10000, strength: 0, speed: 0, active: false, lastTs: 0 },
+    };
     let viewportWidthCss = window.innerWidth;
     let viewportHeightCss = window.innerHeight;
     let dpr = 1;
@@ -294,6 +337,8 @@
       count: gl.getUniformLocation(program, "u_count"),
       rects: gl.getUniformLocation(program, "u_rects[0]"),
       styles: gl.getUniformLocation(program, "u_styles[0]"),
+      gestureDock: gl.getUniformLocation(program, "u_gestureDock"),
+      gestureTab: gl.getUniformLocation(program, "u_gestureTab"),
     };
 
     const vertexBuffer = gl.createBuffer();
@@ -350,10 +395,56 @@
         styles[base + 0] = radius;
         styles[base + 1] = def.kind;
         styles[base + 2] = def.intensity;
-        styles[base + 3] = 0;
+        styles[base + 3] = def.channel || 0;
         count += 1;
       }
       return count;
+    }
+
+    function decayGestureState(state, deltaMs) {
+      const decayFactor = Math.exp(-deltaMs / 220.0);
+      const speedDecay = Math.exp(-deltaMs / 160.0);
+      if (!state.active) {
+        state.strength *= decayFactor;
+      } else {
+        state.strength = Math.max(state.strength, 0.85);
+      }
+      state.speed *= speedDecay;
+      if (state.strength < 0.002) {
+        state.strength = 0;
+      }
+      if (state.speed < 0.0005) {
+        state.speed = 0;
+      }
+    }
+
+    function handleGestureEvent(event) {
+      const detail = event && event.detail ? event.detail : null;
+      if (!detail) {
+        return;
+      }
+      const channel = detail.channel === "dock" ? "dock" : detail.channel === "tab" ? "tab" : null;
+      if (!channel) {
+        return;
+      }
+      const target = gesture[channel];
+      if (Number.isFinite(detail.x)) {
+        target.x = detail.x;
+      }
+      if (Number.isFinite(detail.y)) {
+        target.y = detail.y;
+      }
+      const velocityX = Number.isFinite(detail.velocityX) ? detail.velocityX : 0;
+      const velocityY = Number.isFinite(detail.velocityY) ? detail.velocityY : 0;
+      const speed = Math.min(2.5, Math.hypot(velocityX, velocityY) * 18);
+      target.speed = Math.max(target.speed * 0.6, speed);
+      target.strength = Math.max(0, Math.min(1.4, Number(detail.strength) || 0));
+      target.active = detail.phase === "start" || detail.phase === "move";
+      if (detail.phase === "end") {
+        target.active = false;
+        target.strength = Math.min(target.strength, 0.95);
+      }
+      target.lastTs = performance.now();
     }
 
     function draw(ts) {
@@ -368,7 +459,10 @@
       if (ts - lastFrameTs < FRAME_MS) {
         return;
       }
+      const frameDeltaMs = lastFrameTs ? Math.max(8, ts - lastFrameTs) : FRAME_MS;
       lastFrameTs = ts;
+      decayGestureState(gesture.dock, frameDeltaMs);
+      decayGestureState(gesture.tab, frameDeltaMs);
 
       const shapeCount = collectShapes();
       if (shapeCount === 0) {
@@ -389,6 +483,8 @@
       gl.uniform1f(locations.count, shapeCount);
       gl.uniform4fv(locations.rects, rects);
       gl.uniform4fv(locations.styles, styles);
+      gl.uniform4f(locations.gestureDock, gesture.dock.x, gesture.dock.y, gesture.dock.strength, gesture.dock.speed);
+      gl.uniform4f(locations.gestureTab, gesture.tab.x, gesture.tab.y, gesture.tab.strength, gesture.tab.speed);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
 
@@ -410,6 +506,7 @@
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("pointerleave", clearPointer, { passive: true });
     window.addEventListener("pointercancel", clearPointer, { passive: true });
+    window.addEventListener("liquid-glass-gesture", handleGestureEvent);
 
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) {
@@ -423,6 +520,7 @@
       refresh: resizeCanvas,
       destroy() {
         running = false;
+        window.removeEventListener("liquid-glass-gesture", handleGestureEvent);
         try {
           gl.deleteProgram(program);
           gl.deleteBuffer(vertexBuffer);
