@@ -25,6 +25,12 @@
         rss: "RSS feed",
         github: "GitHub",
       },
+      dock: {
+        home: "Home",
+        sony: "PSN",
+        overwatch: "OW",
+        emailAlerts: "Mail",
+      },
       tabs: {
         overview: "Overview",
         incidents: "Incidents",
@@ -353,6 +359,12 @@
         emailAlerts: "E-Mail-Alarme",
         rss: "RSS-Feed",
         github: "GitHub",
+      },
+      dock: {
+        home: "Start",
+        sony: "PSN",
+        overwatch: "OW",
+        emailAlerts: "Mail",
       },
       tabs: {
         overview: "Übersicht",
@@ -1630,25 +1642,25 @@ function applyMenuTexts() {
     els.menuHomeLink.textContent = t("ui.menu.home");
   }
   if (els.dockHomeLink) {
-    els.dockHomeLink.textContent = t("ui.menu.home");
+    els.dockHomeLink.textContent = t("ui.dock.home");
   }
   if (els.menuSonyLink) {
     setMenuServiceLabel(els.menuSonyLink, t("ui.menu.sony"));
   }
   if (els.dockSonyLink) {
-    setMenuServiceLabel(els.dockSonyLink, t("ui.menu.sony"));
+    setMenuServiceLabel(els.dockSonyLink, t("ui.dock.sony"));
   }
   if (els.menuOverwatchLink) {
     setMenuServiceLabel(els.menuOverwatchLink, t("ui.menu.overwatch"));
   }
   if (els.dockOverwatchLink) {
-    setMenuServiceLabel(els.dockOverwatchLink, t("ui.menu.overwatch"));
+    setMenuServiceLabel(els.dockOverwatchLink, t("ui.dock.overwatch"));
   }
   if (els.menuEmailAlertsLink) {
     els.menuEmailAlertsLink.textContent = t("ui.menu.emailAlerts");
   }
   if (els.dockEmailAlertsLink) {
-    els.dockEmailAlertsLink.textContent = t("ui.menu.emailAlerts");
+    els.dockEmailAlertsLink.textContent = t("ui.dock.emailAlerts");
   }
   if (els.menuRssLink) {
     els.menuRssLink.textContent = t("ui.menu.rss");
