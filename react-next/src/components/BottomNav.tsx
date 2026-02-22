@@ -1,12 +1,16 @@
-import { Bell, Gamepad2, Home, Tv } from "lucide-react";
+import { Bell, Home, Settings, Star } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { resolveLegacyPath } from "@/lib/legacySite";
 
 const navItems = [
-  { icon: Home, label: "Home", path: "/", kind: "route" as const },
-  { icon: Gamepad2, label: "OW", path: "/overwatch.html", kind: "legacy" as const },
-  { icon: Tv, label: "PSN", path: "/sony/index.html", kind: "legacy" as const },
-  { icon: Bell, label: "E-Mail", path: "/email-alerts", kind: "route" as const },
+  {
+    icon: Home,
+    label: "Home",
+    path: "/",
+    matches: ["/", "/status/overwatch", "/status/sony"],
+  },
+  { icon: Star, label: "Favorites", path: "/favorites", matches: ["/favorites"] },
+  { icon: Bell, label: "Alerts", path: "/alerts", matches: ["/alerts", "/email-alerts"] },
+  { icon: Settings, label: "Settings", path: "/settings", matches: ["/settings"] },
 ];
 
 const BottomNav = () => {
@@ -15,16 +19,16 @@ const BottomNav = () => {
   const normalizedPath = location.pathname.replace(/\/+$/, "") || "/";
 
   const activeIndex = navItems.findIndex((item) => {
-    if (item.path === "/overwatch.html" && normalizedPath.startsWith("/status/overwatch")) {
-      return true;
-    }
-    if (item.path === "/sony/index.html" && normalizedPath.startsWith("/status/sony")) {
-      return true;
-    }
-    const targetPath =
-      item.kind === "route" ? item.path : resolveLegacyPath(item.path);
-    const normalizedTarget = targetPath.replace(/\/+$/, "") || "/";
-    return normalizedPath === normalizedTarget;
+    return item.matches.some((matchPath) => {
+      const normalizedMatch = matchPath.replace(/\/+$/, "") || "/";
+      if (normalizedMatch === "/") {
+        return normalizedPath === "/";
+      }
+      return (
+        normalizedPath === normalizedMatch ||
+        normalizedPath.startsWith(`${normalizedMatch}/`)
+      );
+    });
   });
 
   return (
@@ -38,13 +42,7 @@ const BottomNav = () => {
             <button
               key={item.label}
               type="button"
-              onClick={() => {
-                if (item.kind === "route") {
-                  navigate(item.path);
-                  return;
-                }
-                window.location.href = resolveLegacyPath(item.path);
-              }}
+              onClick={() => navigate(item.path)}
               className={`relative flex flex-col items-center gap-0.5 rounded-2xl px-5 py-2 transition-all duration-200 ${
                 isActive ? "" : "active:scale-95"
               }`}

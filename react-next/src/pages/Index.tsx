@@ -426,7 +426,7 @@ const Index = () => {
         )}
 
         <Link
-          to="/email-alerts"
+          to="/alerts"
           className="glass glass-specular mt-4 block rounded-2xl p-4 transition-all duration-300 hover:scale-[1.01] active:scale-[0.98]"
         >
           <div className="relative z-10 flex items-center justify-between gap-3">

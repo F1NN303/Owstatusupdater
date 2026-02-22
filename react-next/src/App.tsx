@@ -6,6 +6,8 @@ import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ServerDetail from "./pages/ServerDetail";
 import EmailAlerts from "./pages/EmailAlerts";
+import Favorites from "./pages/Favorites";
+import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,8 +23,11 @@ const App = () => (
       <Router basename={routerBasename}>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/favorites" element={<Favorites />} />
           <Route path="/status/:id" element={<ServerDetail />} />
+          <Route path="/alerts" element={<EmailAlerts />} />
           <Route path="/email-alerts" element={<EmailAlerts />} />
+          <Route path="/settings" element={<SettingsPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

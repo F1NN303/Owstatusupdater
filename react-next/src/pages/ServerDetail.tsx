@@ -19,7 +19,14 @@ import {
   ShieldCheck,
   TriangleAlert,
 } from "lucide-react";
-import { type ReactNode, useEffect, useMemo, useState } from "react";
+import {
+  type ReactNode,
+  type TouchEvent as ReactTouchEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TONE_STYLES = {
@@ -43,6 +50,14 @@ const TONE_STYLES = {
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
+type SwipeAxisLock = "x" | "y" | null;
+
+interface TabSwipeSession {
+  startX: number;
+  startY: number;
+  width: number;
+  axisLock: SwipeAxisLock;
+}
 
 function toneToStatus(tone: LegacyServiceDetailResult["tone"]): Status {
   if (tone === "good") {
@@ -605,6 +620,9 @@ const ServerDetail = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<DetailTabKey>("overview");
+  const [tabDragOffset, setTabDragOffset] = useState(0);
+  const [isTabDragging, setIsTabDragging] = useState(false);
+  const tabSwipeSessionRef = useRef<TabSwipeSession | null>(null);
 
   const loadDetail = async (mode: "initial" | "refresh" = "initial") => {
     if (!serviceId) {
@@ -728,6 +746,90 @@ const ServerDetail = () => {
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? inferServiceComponents(serviceId, detail) : [];
   const activeTabIndex = DETAIL_TABS.findIndex((tab) => tab.key === activeTab);
+  const lastTabIndex = DETAIL_TABS.length - 1;
+  const indicatorVisualIndex = Math.max(
+    0,
+    Math.min(lastTabIndex, activeTabIndex + tabDragOffset)
+  );
+  const indicatorStretch = 1 + Math.min(0.1, Math.abs(tabDragOffset) * 0.08);
+
+  const beginTabSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 1) {
+      return;
+    }
+    const touch = event.touches[0];
+    const rect = event.currentTarget.getBoundingClientRect();
+    tabSwipeSessionRef.current = {
+      startX: touch.clientX,
+      startY: touch.clientY,
+      width: Math.max(1, rect.width),
+      axisLock: null,
+    };
+    setIsTabDragging(false);
+    setTabDragOffset(0);
+  };
+
+  const moveTabSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
+    const session = tabSwipeSessionRef.current;
+    if (!session || event.touches.length !== 1 || activeTabIndex < 0) {
+      return;
+    }
+
+    const touch = event.touches[0];
+    const dx = touch.clientX - session.startX;
+    const dy = touch.clientY - session.startY;
+
+    if (session.axisLock === null) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) {
+        return;
+      }
+      session.axisLock = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+    }
+
+    if (session.axisLock !== "x") {
+      return;
+    }
+
+    let nextOffset = -(dx / session.width);
+    if (activeTabIndex === 0 && nextOffset < 0) {
+      nextOffset *= 0.25;
+    }
+    if (activeTabIndex === lastTabIndex && nextOffset > 0) {
+      nextOffset *= 0.25;
+    }
+
+    setIsTabDragging(true);
+    setTabDragOffset(Math.max(-0.95, Math.min(0.95, nextOffset)));
+
+    if (event.cancelable) {
+      event.preventDefault();
+    }
+  };
+
+  const endTabSwipe = () => {
+    const session = tabSwipeSessionRef.current;
+    tabSwipeSessionRef.current = null;
+
+    if (!session || session.axisLock !== "x") {
+      setIsTabDragging(false);
+      setTabDragOffset(0);
+      return;
+    }
+
+    let nextIndex = activeTabIndex;
+    if (tabDragOffset > 0.22) {
+      nextIndex = Math.min(lastTabIndex, activeTabIndex + 1);
+    } else if (tabDragOffset < -0.22) {
+      nextIndex = Math.max(0, activeTabIndex - 1);
+    }
+
+    if (nextIndex >= 0 && nextIndex !== activeTabIndex) {
+      setActiveTab(DETAIL_TABS[nextIndex].key);
+    }
+
+    setIsTabDragging(false);
+    setTabDragOffset(0);
+  };
 
   return (
     <AppLayout>
@@ -888,13 +990,24 @@ const ServerDetail = () => {
             ) : null}
 
             <section className="glass glass-specular rounded-2xl p-2">
-              <div className="relative grid grid-cols-4 gap-1">
+              <div
+                className="relative grid grid-cols-4 gap-1"
+                style={{ touchAction: "pan-y" }}
+                onTouchStart={beginTabSwipe}
+                onTouchMove={moveTabSwipe}
+                onTouchEnd={endTabSwipe}
+                onTouchCancel={endTabSwipe}
+              >
                 <span
-                  className="pointer-events-none absolute bottom-1 top-1 rounded-xl border border-white/10 bg-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_8px_24px_rgba(0,0,0,0.22)] transition-transform duration-300"
+                  className="pointer-events-none absolute bottom-1 top-1 rounded-xl border border-white/10 bg-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_8px_24px_rgba(0,0,0,0.22),0_0_18px_rgba(87,177,255,0.08)]"
                   style={{
                     left: "0.25rem",
                     width: "calc(25% - 0.5rem)",
-                    transform: `translateX(${Math.max(0, activeTabIndex) * 100}%)`,
+                    opacity: 0.88 + Math.min(0.12, Math.abs(tabDragOffset) * 0.12),
+                    transform: `translate3d(${indicatorVisualIndex * 100}%, 0, 0) scaleX(${indicatorStretch})`,
+                    transition: isTabDragging
+                      ? "none"
+                      : "transform 340ms cubic-bezier(0.22, 1, 0.36, 1), opacity 240ms ease",
                   }}
                   aria-hidden="true"
                 />
@@ -916,6 +1029,14 @@ const ServerDetail = () => {
               </div>
             </section>
 
+            <div
+              className="space-y-4"
+              style={{ touchAction: "pan-y" }}
+              onTouchStart={beginTabSwipe}
+              onTouchMove={moveTabSwipe}
+              onTouchEnd={endTabSwipe}
+              onTouchCancel={endTabSwipe}
+            >
             {activeTab === "overview" ? (
               <>
             <section className="glass glass-specular rounded-2xl p-4">
@@ -1163,6 +1284,7 @@ const ServerDetail = () => {
                 <LinkListSection title="Known Resources" items={knownItems} emptyText="No known resources in payload." />
               </>
             ) : null}
+            </div>
           </div>
         ) : null}
       </main>
