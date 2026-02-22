@@ -2,15 +2,15 @@ import AppLayout from "@/components/AppLayout";
 import OverallStatus from "@/components/OverallStatus";
 import ServerCard from "@/components/ServerCard";
 import type { ServerService, Status } from "@/data/servers";
-import { resolveLegacyPath } from "@/lib/legacySite";
 import {
   fetchLegacyServiceDetail,
   type LegacyDetailServiceId,
   type LegacyOutageIncident,
   type LegacyServiceDetailResult,
 } from "@/lib/legacyServiceDetail";
-import { Bell, ExternalLink, RefreshCw } from "lucide-react";
+import { Bell, ChevronRight, RefreshCw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 type OverallState = "all-good" | "some-issues" | "major-outage";
 
@@ -425,8 +425,8 @@ const Index = () => {
           </div>
         )}
 
-        <a
-          href={resolveLegacyPath("/email-alerts.html")}
+        <Link
+          to="/email-alerts"
           className="glass glass-specular mt-4 block rounded-2xl p-4 transition-all duration-300 hover:scale-[1.01] active:scale-[0.98]"
         >
           <div className="relative z-10 flex items-center justify-between gap-3">
@@ -441,9 +441,9 @@ const Index = () => {
                 </p>
               </div>
             </div>
-            <ExternalLink size={16} className="text-muted-foreground" />
+            <ChevronRight size={16} className="text-muted-foreground" />
           </div>
-        </a>
+        </Link>
 
         {errorMessages.length > 0 ? (
           <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-3 py-2 text-[11px] text-amber-200">

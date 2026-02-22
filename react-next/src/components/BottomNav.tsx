@@ -6,7 +6,7 @@ const navItems = [
   { icon: Home, label: "Home", path: "/", kind: "route" as const },
   { icon: Gamepad2, label: "OW", path: "/overwatch.html", kind: "legacy" as const },
   { icon: Tv, label: "PSN", path: "/sony/index.html", kind: "legacy" as const },
-  { icon: Bell, label: "E-Mail", path: "/email-alerts.html", kind: "legacy" as const },
+  { icon: Bell, label: "E-Mail", path: "/email-alerts", kind: "route" as const },
 ];
 
 const BottomNav = () => {
