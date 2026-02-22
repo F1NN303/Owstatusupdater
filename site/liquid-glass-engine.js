@@ -18,8 +18,8 @@
     { selector: ".home-services-card", kind: SHAPE_KIND.shell, intensity: 0.26, radiusScale: 1.0, channel: 0 },
     { selector: "#tabNav", kind: SHAPE_KIND.shell, intensity: 0.52, radiusScale: 1.0, channel: 0 },
     { selector: "#tabNav .tab-liquid-indicator", kind: SHAPE_KIND.active, intensity: 1.08, radiusScale: 1.0, channel: 1 },
-    { selector: "#mobileDock", kind: SHAPE_KIND.shell, intensity: 0.62, radiusScale: 1.0, channel: 0 },
-    { selector: "#mobileDockIndicator", kind: SHAPE_KIND.active, intensity: 1.22, radiusScale: 1.0, channel: 2 },
+    { selector: "#mobileDock", kind: SHAPE_KIND.shell, intensity: 0.44, radiusScale: 1.0, channel: 0 },
+    { selector: "#mobileDockIndicator", kind: SHAPE_KIND.active, intensity: 0.92, radiusScale: 1.0, channel: 2 },
   ];
 
   const VERTEX_SHADER = `
