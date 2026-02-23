@@ -11,9 +11,18 @@ import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-const useHashRouter = import.meta.env.VITE_ROUTER_MODE === "hash";
+const routerModeEnv = (import.meta.env.VITE_ROUTER_MODE as string | undefined)?.trim().toLowerCase();
+const useHashRouter = routerModeEnv ? routerModeEnv === "hash" : import.meta.env.PROD;
 const Router = useHashRouter ? HashRouter : BrowserRouter;
-const routerBasename = (import.meta.env.VITE_ROUTER_BASENAME as string | undefined) || undefined;
+const baseUrl = (import.meta.env.BASE_URL as string | undefined) || "/";
+const normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+const envBasename = (import.meta.env.VITE_ROUTER_BASENAME as string | undefined)?.trim();
+const routerBasename =
+  envBasename && envBasename.length > 0
+    ? envBasename
+    : !useHashRouter && normalizedBaseUrl && normalizedBaseUrl !== "/"
+      ? normalizedBaseUrl
+      : undefined;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
