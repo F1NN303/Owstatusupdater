@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overwatch Status</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-version-url="./data/status.json">
+  <main class="page">
+    <nav class="top-nav" aria-label="Site menu">
+      <span class="brand-link brand-static" aria-label="Overwatch Status">
+        <img class="brand-logo-image" src="./vendor/logo-overwatch.svg" alt="" aria-hidden="true">
+        <span id="menuBrandText">Overwatch Status</span>
+      </span>
+      <div class="top-actions top-actions-dashboard top-actions-links" aria-label="Quick links">
+        <button id="languageBtn" class="lang-btn top-lang-btn" type="button" aria-label="Switch language">DE</button>
+        <a id="menuHomeLink" class="top-link" href="./legacy-home.html">Home</a>
+        <a id="menuSonyLink" class="top-link" href="./sony/legacy-index.html">Sony PSN</a>
+        <a id="menuEmailAlertsLink" class="top-link" href="./email-alerts.html">Email alerts</a>
+        <a id="menuGithubLink" class="top-link" href="https://github.com/F1NN303/Owstatusupdater" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </nav>
+
+    <header class="hero reveal">
+      <div class="hero-main">
+        <p id="eyebrowText" class="eyebrow">Live Overwatch Status</p>
+        <h1 id="titleText">Overwatch Status</h1>
+        <p id="headlineText" class="headline">Collecting live service signals...</p>
+        <div id="statusMarker" class="status-marker marker-unknown" role="status" aria-live="polite">
+          <span class="marker-dot" aria-hidden="true"></span>
+          <span id="statusMarkerText">Status: Checking live telemetry...</span>
+          <span id="statusInlineConfidence" class="marker-confidence">Confidence: --</span>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="hero-badges">
+          <span id="severityBadge" class="badge sev-unknown">Analyzing</span>
+          <span id="trendBadge" class="badge trend-neutral">Trend stable</span>
+          <span id="confidenceBadge" class="badge conf-neutral">Confidence --</span>
+        </div>
+      </div>
+      <div class="hero-meta">
+        <p id="generatedAt" class="generated">Last update: --</p>
+        <p id="nextRefresh" class="generated">Next refresh: --</p>
+      </div>
+    </header>
+
+    <nav id="tabNav" class="tab-nav reveal" role="tablist" aria-label="Dashboard sections">
+      <button id="tabOverviewBtn" class="tab-btn active" role="tab" aria-selected="true" aria-controls="panelOverview" data-tab-target="overview">Overview</button>
+      <button id="tabIncidentsBtn" class="tab-btn" role="tab" aria-selected="false" aria-controls="panelIncidents" data-tab-target="incidents">Incidents</button>
+      <button id="tabAnalyticsBtn" class="tab-btn" role="tab" aria-selected="false" aria-controls="panelAnalytics" data-tab-target="analytics">Analytics</button>
+    </nav>
+
+    <section id="panelOverview" class="tab-panel active" role="tabpanel" aria-labelledby="tabOverviewBtn" data-tab-panel="overview">
+      <section class="overview-grid">
+        <article class="card card-impact reveal">
+          <h2 id="impactTitle">What This Means Right Now</h2>
+          <p id="impactQuickText" class="summary">Waiting for live status data...</p>
+          <details id="impactDetailsToggle" class="detail-toggle">
+            <summary id="impactDetailsSummary">Show recommendations</summary>
+            <ul id="impactList" class="impact-list">
+              <li>Waiting for live status data...</li>
+            </ul>
+          </details>
+        </article>
+
+        <article class="card card-systems reveal">
+          <h2 id="systemsTitle">Potentially Affected Systems</h2>
+          <div id="systemGrid" class="system-grid"></div>
+        </article>
+
+        <article class="card card-outage reveal">
+          <h2 id="outageTitle">Outage Snapshot</h2>
+          <p id="outageSummary" class="summary">Loading outage summary...</p>
+          <div class="stats">
+            <div class="stat">
+              <span id="reports24hLabel">24h reports</span>
+              <strong id="reports24h">--</strong>
+            </div>
+            <a id="outageSourceLink" target="_blank" rel="noreferrer">Open source</a>
+          </div>
+        </article>
+
+        <article class="card card-subscribe reveal">
+          <h2 id="subscribeTitle">Email Outage Alerts</h2>
+          <p id="subscribeHint" class="summary">Sign up to receive outage updates via a secure Brevo form with human verification.</p>
+          <div id="subscribeWidget" class="subscribe-widget">
+            <p id="subscribeWidgetText" class="feed-meta">Loading secure subscription form...</p>
+          </div>
+          <p id="subscribeStateText" class="feed-meta">Loading secure subscription form...</p>
+          <a id="subscribeActionLink" class="subscribe-action-link" href="./email-alerts.html">Open setup guide</a>
+        </article>
+
+        <article class="card card-advanced reveal">
+          <h2 id="advancedDiagnosticsTitle">Advanced diagnostics</h2>
+          <details id="advancedDiagnosticsToggle" class="detail-toggle">
+            <summary id="advancedDiagnosticsSummary">Show diagnostics</summary>
+            <div class="advanced-grid">
+              <section class="diagnostic-block">
+                <h3 id="sourceConfidenceTitle">Source Confidence</h3>
+                <p id="sourceConfidenceText" class="summary">Evaluating source reliability...</p>
+                <div id="sourceChips" class="chips"></div>
+                <p id="sourceMethodText" class="feed-meta">Scoring safeguards are active to reduce false outage spikes.</p>
+                <details id="sourceDetailsToggle" class="detail-toggle">
+                  <summary id="sourceDetailsSummary">Show source diagnostics</summary>
+                  <ul id="sourceDetailsList" class="source-detail-list"></ul>
+                </details>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="kpiTitle">Service KPIs</h3>
+                <p id="kpiRegionHint" class="summary">Region: Global</p>
+                <div class="kpi-grid">
+                  <article class="kpi-tile">
+                    <span id="kpiUptime24Label">Uptime signal (24h)</span>
+                    <strong id="kpiUptime24Value">--</strong>
+                  </article>
+                  <article class="kpi-tile">
+                    <span id="kpiUptime7Label">Uptime signal (7d)</span>
+                    <strong id="kpiUptime7Value">--</strong>
+                  </article>
+                  <article class="kpi-tile">
+                    <span id="kpiTopSystemLabel">Top affected system</span>
+                    <strong id="kpiTopSystemValue">--</strong>
+                  </article>
+                </div>
+                <p id="kpiTopSystemHint" class="feed-meta">Waiting for live status data...</p>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="regionSnapshotTitle">Regional Snapshot</h3>
+                <p id="regionSnapshotHint" class="summary">Comparing latest signals across regions.</p>
+                <div id="regionSnapshotGrid" class="region-snapshot-grid"></div>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="sourceReliabilityTitle">Source Reliability (7d)</h3>
+                <p id="sourceReliabilityHint" class="summary">Reliability trends are based on source availability over recent history.</p>
+                <ul id="sourceReliabilityList" class="source-reliability-list"></ul>
+              </section>
+
+              <section class="diagnostic-block">
+                <h3 id="knownTitle">Known Resources</h3>
+                <ul id="knownList" class="feed-list compact"></ul>
+              </section>
+            </div>
+          </details>
+        </article>
+      </section>
+    </section>
+
+    <section id="panelIncidents" class="tab-panel" role="tabpanel" aria-labelledby="tabIncidentsBtn" data-tab-panel="incidents" hidden>
+      <section class="incidents-header card reveal">
+        <p id="changeSummary" class="change-summary">No incident changes in the latest refresh.</p>
+        <div class="sort-wrap">
+          <label id="sortLabel" for="sortSelect">Sort by</label>
+          <select id="sortSelect">
+            <option value="recent">Most recent</option>
+            <option value="impact">Highest impact</option>
+          </select>
+          <button id="exportIncidentsBtn" class="secondary-btn" type="button">Export incidents CSV</button>
+        </div>
+      </section>
+
+      <section class="feed-grid">
+        <article class="card reveal">
+          <h2 id="timelineTitle">Incident Timeline</h2>
+          <ul id="incidentList" class="feed-list compact"></ul>
+        </article>
+
+        <article class="card reveal">
+          <h2 id="reportsTitle">Status Reports</h2>
+          <ul id="reportList" class="feed-list"></ul>
+        </article>
+
+        <article class="card reveal">
+          <h2 id="newsTitle">Official News</h2>
+          <ul id="newsList" class="feed-list"></ul>
+        </article>
+
+        <article class="card reveal">
+          <h2 id="socialTitle">Social Feed</h2>
+          <ul id="socialList" class="feed-list"></ul>
+        </article>
+      </section>
+    </section>
+
+    <section id="panelAnalytics" class="tab-panel" role="tabpanel" aria-labelledby="tabAnalyticsBtn" data-tab-panel="analytics" hidden>
+      <section class="analytics-grid">
+        <article class="card reveal">
+          <h2 id="analytics24Title">24h Service Health Bars</h2>
+          <div class="analytics-controls">
+            <label id="analyticsRegionLabel" for="analyticsRegionSelect">Region</label>
+            <select id="analyticsRegionSelect">
+              <option value="global">Global</option>
+              <option value="eu">EU</option>
+              <option value="na">NA</option>
+              <option value="apac">APAC</option>
+            </select>
+          </div>
+          <p id="analyticsDataAge" class="summary">Waiting for history data...</p>
+          <div class="chart-wrap">
+            <canvas id="chart24h" height="160"></canvas>
+          </div>
+          <p id="chart24Empty" class="empty" hidden>No 24h chart data available yet.</p>
+          <div class="chart-legend">
+            <span><i class="legend-dot legend-stable"></i><span id="legendStable">Service up</span></span>
+            <span><i class="legend-dot legend-minor"></i><span id="legendMinor">Possible outage</span></span>
+            <span><i class="legend-dot legend-degraded"></i><span id="legendDegraded">Likely outage</span></span>
+            <span><i class="legend-dot legend-major"></i><span id="legendMajor">Major outage</span></span>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <h2 id="analytics7Title">7d Trend Line</h2>
+          <p id="analytics7Subtitle" class="summary">Rolling trend from 30-minute points.</p>
+          <div class="chart-wrap">
+            <canvas id="chart7d" height="160"></canvas>
+          </div>
+          <p id="chart7Empty" class="empty" hidden>No 7d trend data available yet.</p>
+        </article>
+      </section>
+    </section>
+
+    <section class="card reveal">
+      <h2 id="howToTitle">How To Read This Page</h2>
+      <details id="howToDetails" class="detail-toggle">
+        <summary id="howToSummary">Show guidance</summary>
+        <ul class="guidance-list">
+          <li id="guideLine1">The top status line explains expected player impact in plain language.</li>
+          <li id="guideLine2">Severity combines outage volume, incident wording, and source availability.</li>
+          <li id="guideLine3">Confidence increases when independent sources agree.</li>
+        </ul>
+        <p id="footnoteText" class="footnote">
+          External platforms can throttle automated access. This dashboard favors stable public sources and exposes source health so reliability remains visible.
+        </p>
+      </details>
+    </section>
+  </main>
+  <nav id="mobileDock" class="mobile-dock" aria-label="Quick navigation">
+    <span id="mobileDockIndicator" class="mobile-dock-indicator" aria-hidden="true"></span>
+    <a id="dockHomeLink" class="mobile-dock-link mobile-dock-link--home" href="./legacy-home.html">
+      <span class="mobile-dock-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 10.5L12 4l8 6.5"></path>
+          <path d="M6.5 9.5V20h11V9.5"></path>
+          <path d="M10 20v-5h4v5"></path>
+        </svg>
+      </span>
+      <span class="mobile-dock-label" data-link-label>Home</span>
+    </a>
+    <a id="dockOverwatchLink" class="mobile-dock-link mobile-dock-link--overwatch" href="./legacy-overwatch.html" aria-current="page">
+      <span class="mobile-dock-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="6.5"></circle>
+          <path d="M12 3v3"></path>
+          <path d="M12 18v3"></path>
+          <path d="M3 12h3"></path>
+          <path d="M18 12h3"></path>
+          <circle class="dock-icon-fill" cx="12" cy="12" r="1.45"></circle>
+        </svg>
+      </span>
+      <span class="mobile-dock-label" data-link-label>OW</span>
+    </a>
+    <a id="dockSonyLink" class="mobile-dock-link mobile-dock-link--sony" href="./sony/legacy-index.html">
+      <span class="mobile-dock-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M7.6 9.5h8.8c1.96 0 3.6 1.49 3.6 3.38 0 1.24-.36 2.43-1 3.47-.42.7-1.4.84-2.02.27l-1.84-1.62H8.88L7.04 16.62c-.63.57-1.6.43-2.02-.27-.64-1.04-1-2.23-1-3.47 0-1.89 1.64-3.38 3.58-3.38Z"></path>
+          <path d="M8.2 12.25h2.9"></path>
+          <path d="M9.65 10.8v2.9"></path>
+          <path d="M15.95 11.9h.1"></path>
+          <path d="M17.75 13.1h.1"></path>
+        </svg>
+      </span>
+      <span class="mobile-dock-label" data-link-label>PSN</span>
+    </a>
+    <a id="dockEmailAlertsLink" class="mobile-dock-link mobile-dock-link--mail" href="./email-alerts.html">
+      <span class="mobile-dock-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="6.5" width="16" height="11" rx="2.4"></rect>
+          <path d="M5.4 8l6.6 5 6.6-5"></path>
+        </svg>
+      </span>
+      <span class="mobile-dock-label" data-link-label>Mail</span>
+    </a>
+  </nav>
+  <footer class="page-version" data-version-info>Version: loading...</footer>
+
+  <script src="./vendor/chart.umd.min.js" defer></script>
+  <script src="./version-info.js" defer></script>
+  <script src="./mobile-dock.js" defer></script>
+  <script src="./app.js" defer></script>
+  <script src="./liquid-glass-engine.js" defer></script>
+</body>
+</html>

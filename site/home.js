@@ -4,13 +4,13 @@ const HOME_SERVICES = [
   {
     id: "overwatch",
     name: "Overwatch",
-    href: "./overwatch.html",
+    href: "./legacy-overwatch.html",
     statusUrl: "./data/status.json",
   },
   {
     id: "sony",
     name: "Sony PSN",
-    href: "./sony/index.html",
+    href: "./sony/legacy-index.html",
     statusUrl: "./sony/data/status.json",
   },
 ];

@@ -155,21 +155,21 @@ const SettingsPage = () => {
                 </h2>
               </div>
               <a
-                href={resolveLegacyPath("/")}
+                href={resolveLegacyPath("/legacy-home.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>{pickLang(language, "Open legacy site root", "Legacy-Startseite oeffnen")}</span>
+                <span>{pickLang(language, "Open legacy home", "Legacy-Startseite oeffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               <a
-                href={resolveLegacyPath("/overwatch.html")}
+                href={resolveLegacyPath("/legacy-overwatch.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
                 <span>{pickLang(language, "Open legacy Overwatch dashboard", "Legacy-Overwatch-Dashboard oeffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               <a
-                href={resolveLegacyPath("/sony/index.html")}
+                href={resolveLegacyPath("/sony/legacy-index.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
                 <span>{pickLang(language, "Open legacy Sony PSN dashboard", "Legacy-Sony-PSN-Dashboard oeffnen")}</span>

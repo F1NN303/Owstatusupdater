@@ -42,7 +42,7 @@ const favoriteItems: FavoriteItem[] = [
     title: "Legacy Overwatch Dashboard",
     subtitle: "Open the original dashboard page",
     icon: ExternalLink,
-    href: resolveLegacyPath("/overwatch.html"),
+    href: resolveLegacyPath("/legacy-overwatch.html"),
   },
 ];
 
