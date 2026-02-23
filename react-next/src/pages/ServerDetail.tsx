@@ -3,7 +3,7 @@ import MiniSparkline from "@/components/MiniSparkline";
 import StatusBadge from "@/components/StatusBadge";
 import UptimeBar from "@/components/UptimeBar";
 import { getIconComponent, type Status } from "@/data/servers";
-import { pickLang, useAppShell } from "@/lib/appShell";
+import { pickLang, useAppShell, type AppLanguage } from "@/lib/appShell";
 import { resolveLegacyUrl } from "@/lib/legacySite";
 import {
   fetchLegacyServiceDetail,
@@ -235,19 +235,19 @@ function formatPercent(value: number | null) {
   return `${value >= 99 ? value.toFixed(2) : value.toFixed(1)}%`;
 }
 
-function shortMetricLabel(detail: LegacyServiceDetailResult) {
+function shortMetricLabel(detail: LegacyServiceDetailResult, language: AppLanguage) {
   const ok = detail.payload.analytics?.source_ok_count;
   const total = detail.payload.analytics?.source_total_count;
   if (typeof ok === "number" && typeof total === "number" && total > 0) {
-    return `${ok}/${total} sources`;
+    return pickLang(language, `${ok}/${total} sources`, `${ok}/${total} Quellen`);
   }
   const reports24h =
     detail.payload.outage?.reports_24h ??
     detail.payload.analytics?.signal_metrics?.reports_24h;
   if (typeof reports24h === "number") {
-    return `${reports24h} reports/24h`;
+    return pickLang(language, `${reports24h} reports/24h`, `${reports24h} Meldungen/24h`);
   }
-  return "Live signals";
+  return pickLang(language, "Live signals", "Live-Signale");
 }
 
 function normalizeDetailId(id?: string): LegacyDetailServiceId | null {
@@ -575,6 +575,7 @@ function LinkListSection({
   items: LegacyLinkItem[];
   emptyText: string;
 }) {
+  const { language } = useAppShell();
   return (
     <section className="glass glass-specular rounded-2xl p-4">
       <div className="relative z-10">
@@ -596,7 +597,7 @@ function LinkListSection({
                 className="block rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 transition-colors hover:bg-white/10"
               >
                 <p className="line-clamp-2 text-sm font-medium leading-snug text-foreground">
-                  {item.title || "Untitled item"}
+                  {item.title || pickLang(language, "Untitled item", "Unbenannter Eintrag")}
                 </p>
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
                   {item.source ? <span>{item.source}</span> : null}
@@ -708,9 +709,13 @@ const ServerDetail = () => {
             <ArrowLeft size={18} />
           </button>
           <div className="glass rounded-2xl p-4">
-            <p className="text-sm font-semibold text-foreground">Service not found</p>
+            <p className="text-sm font-semibold text-foreground">
+              {pickLang(language, "Service not found", "Service nicht gefunden")}
+            </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Supported routes: <code>/status/overwatch</code> and <code>/status/sony</code>
+              {pickLang(language, "Supported routes:", "Unterstuetzte Routen:")}{" "}
+              <code>/status/overwatch</code> {pickLang(language, "and", "und")}{" "}
+              <code>/status/sony</code>
             </p>
           </div>
         </main>
@@ -743,8 +748,9 @@ const ServerDetail = () => {
   const impactedRegionCount = regionEntries.filter(
     (region) => region.severityKey !== "stable"
   ).length;
-  const latestIncidentTitle = outageIncidents[0]?.title || "No active incidents";
-  const quickMetricLabel = detail ? shortMetricLabel(detail) : "Live signals";
+  const latestIncidentTitle =
+    outageIncidents[0]?.title || pickLang(language, "No active incidents", "Keine aktiven Vorfaelle");
+  const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? inferServiceComponents(serviceId, detail) : [];
   const activeTabIndex = DETAIL_TABS.findIndex((tab) => tab.key === activeTab);
@@ -754,17 +760,18 @@ const ServerDetail = () => {
     Math.min(lastTabIndex, activeTabIndex + tabDragOffset)
   );
   const indicatorStretch = 1 + Math.min(0.1, Math.abs(tabDragOffset) * 0.08);
+  const t = (en: string, de: string) => pickLang(language, en, de);
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
-      return pickLang(language, "Overview", "Uebersicht");
+      return t("Overview", "Uebersicht");
     }
     if (key === "incidents") {
-      return pickLang(language, "Incidents", "Vorfaelle");
+      return t("Incidents", "Vorfaelle");
     }
     if (key === "analysis") {
-      return pickLang(language, "Analysis", "Analyse");
+      return t("Analysis", "Analyse");
     }
-    return pickLang(language, "Sources", "Quellen");
+    return t("Sources", "Quellen");
   };
 
   const beginTabSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
@@ -854,7 +861,7 @@ const ServerDetail = () => {
               type="button"
               onClick={() => navigate(-1)}
               className="glass flex h-9 w-9 items-center justify-center rounded-xl transition-all active:scale-90"
-              aria-label="Go back"
+              aria-label={t("Go back", "Zurueck")}
             >
               <ArrowLeft size={18} className="text-foreground" />
             </button>
@@ -871,7 +878,7 @@ const ServerDetail = () => {
             type="button"
             onClick={() => void loadDetail("refresh")}
             className="glass flex h-9 w-9 items-center justify-center rounded-xl transition-all active:scale-90"
-            aria-label="Refresh detail"
+            aria-label={t("Refresh detail", "Detail aktualisieren")}
           >
             <RefreshCw
               size={16}
@@ -883,7 +890,9 @@ const ServerDetail = () => {
         {isLoading && !detail ? (
           <div className="space-y-3">
             <div className="glass rounded-2xl p-4">
-              <p className="text-sm text-muted-foreground">Loading live service detail...</p>
+              <p className="text-sm text-muted-foreground">
+                {t("Loading live service detail...", "Lade Live-Service-Detail...")}
+              </p>
             </div>
             <div className="glass rounded-2xl p-4 h-24" />
             <div className="glass rounded-2xl p-4 h-40" />
@@ -895,7 +904,9 @@ const ServerDetail = () => {
             <div className="flex items-start gap-3">
               <TriangleAlert size={18} className="mt-0.5 text-amber-300" />
               <div>
-                <p className="text-sm font-semibold text-foreground">Failed to load live data</p>
+                <p className="text-sm font-semibold text-foreground">
+                  {t("Failed to load live data", "Live-Daten konnten nicht geladen werden")}
+                </p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{errorText}</p>
               </div>
             </div>
@@ -946,8 +957,8 @@ const ServerDetail = () => {
                   </div>
                   <div className="mt-2">
                     <div className="mb-1.5 flex items-center justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-                      <span>30-day signal trend</span>
-                      <span>{incidentCount} active incidents</span>
+                      <span>{t("30-day signal trend", "30-Tage-Signaltrend")}</span>
+                      <span>{t(`${incidentCount} active incidents`, `${incidentCount} aktive Vorfaelle`)}</span>
                     </div>
                     <UptimeBar data={trendHistory} />
                   </div>
@@ -956,21 +967,28 @@ const ServerDetail = () => {
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {detail.payload.outage?.summary ||
                     detail.payload.official?.summary ||
-                    "Live service signals loaded from the current status JSON pipeline."}
+                    t(
+                      "Live service signals loaded from the current status JSON pipeline.",
+                      "Live-Service-Signale wurden aus der aktuellen Status-JSON-Pipeline geladen."
+                    )}
                 </p>
 
                 <div className="mt-3 flex flex-wrap gap-2">
                   <span className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold ${tone.chip}`}>
-                    Status: {severityLabel}
+                    {t("Status", "Status")}: {severityLabel}
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
-                    Confidence: {detail.sourceConfidenceText}
+                    {t("Confidence", "Vertrauen")}: {detail.sourceConfidenceText}
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
-                    Updated: {formatDateTime(detail.payload.generated_at)}
+                    {t("Updated", "Aktualisiert")}: {formatDateTime(detail.payload.generated_at)}
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
-                    Regions: {stableRegionCount} stable / {impactedRegionCount} impacted
+                    {t("Regions", "Regionen")}:{" "}
+                    {t(
+                      `${stableRegionCount} stable / ${impactedRegionCount} impacted`,
+                      `${stableRegionCount} stabil / ${impactedRegionCount} betroffen`
+                    )}
                   </span>
                 </div>
 
@@ -979,7 +997,7 @@ const ServerDetail = () => {
                     href={resolveLegacyUrl(detail.service.legacyHref || detail.service.href)}
                     className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-white/10"
                   >
-                    Open full legacy dashboard
+                    {t("Open full legacy dashboard", "Legacy-Dashboard oeffnen")}
                     <ExternalLink size={13} />
                   </a>
                   {detail.payload.outage?.url ? (
@@ -989,7 +1007,7 @@ const ServerDetail = () => {
                       rel="noreferrer"
                       className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-white/10"
                     >
-                      Open source
+                      {t("Open source", "Quelle oeffnen")}
                       <ExternalLink size={13} />
                     </a>
                   ) : null}
@@ -999,7 +1017,7 @@ const ServerDetail = () => {
 
             {errorText ? (
               <div className="glass rounded-2xl p-3 text-xs text-amber-300">
-                Refresh error: {errorText}
+                {t("Refresh error", "Aktualisierungsfehler")}: {errorText}
               </div>
             ) : null}
 
@@ -1056,7 +1074,7 @@ const ServerDetail = () => {
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Service Components
+                  {t("Service Components", "Service-Komponenten")}
                 </h2>
                 <div className="mt-3 space-y-2">
                   {componentRows.map((item) => (
@@ -1073,36 +1091,45 @@ const ServerDetail = () => {
             </section>
 
             <SignalChartCard
-              title="30-Day Signal Health"
+              title={t("30-Day Signal Health", "30-Tage-Signalgesundheit")}
               valueLabel={trendScoreLabel}
-              subtitle="Derived from incidents across the last 30 days"
+              subtitle={t(
+                "Derived from incidents across the last 30 days",
+                "Aus Vorfaellen der letzten 30 Tage abgeleitet"
+              )}
             >
               <UptimeBar data={trendHistory} />
               <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
-                <span>30 days ago</span>
-                <span>Today</span>
+                <span>{t("30 days ago", "Vor 30 Tagen")}</span>
+                <span>{t("Today", "Heute")}</span>
               </div>
             </SignalChartCard>
 
             <SignalChartCard
-              title="Signal Activity (24h)"
-              subtitle="Derived from incident/report/news timestamps (not latency)"
+              title={t("Signal Activity (24h)", "Signalaktivitaet (24h)")}
+              subtitle={t(
+                "Derived from incident/report/news timestamps (not latency)",
+                "Aus Zeitstempeln von Vorfaellen/Meldungen/News abgeleitet (keine Latenz)"
+              )}
             >
               <SignalActivityChart data={sparklineData} />
             </SignalChartCard>
 
             <SignalChartCard
-              title="Daily Signal %"
-              subtitle="Derived daily health score from incident overlap"
+              title={t("Daily Signal %", "Taegliches Signal %")}
+              subtitle={t(
+                "Derived daily health score from incident overlap",
+                "Abgeleiteter taeglicher Gesundheitswert aus Vorfall-Ueberlappung"
+              )}
             >
               <DailySignalBars values={dailySignalPercentages} />
             </SignalChartCard>
 
             <section className="grid grid-cols-2 gap-3">
-              <MetricTile label="Severity Score" value={String(severityScore)} />
-              <MetricTile label="Reports (24h)" value={String(reports24h)} />
-              <MetricTile label="Sources" value={`${sourceOkCount}/${sourceTotalCount}`} />
-              <MetricTile label="Model" value={String(modelVersion)} />
+              <MetricTile label={t("Severity Score", "Schweregrad-Score")} value={String(severityScore)} />
+              <MetricTile label={t("Reports (24h)", "Meldungen (24h)")} value={String(reports24h)} />
+              <MetricTile label={t("Sources", "Quellen")} value={`${sourceOkCount}/${sourceTotalCount}`} />
+              <MetricTile label={t("Model", "Modell")} value={String(modelVersion)} />
             </section>
               </>
             ) : null}
@@ -1112,25 +1139,25 @@ const ServerDetail = () => {
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Change Summary
+                  {t("Change Summary", "Aenderungsuebersicht")}
                 </h2>
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   <MetricTile
-                    label="New Reports"
+                    label={t("New Reports", "Neue Meldungen")}
                     value={String(changeSummary?.new_reports ?? 0)}
-                    hint="Latest refresh delta"
+                    hint={t("Latest refresh delta", "Delta der letzten Aktualisierung")}
                   />
                   <MetricTile
-                    label="New Incidents"
+                    label={t("New Incidents", "Neue Vorfaelle")}
                     value={String(changeSummary?.new_incidents ?? 0)}
-                    hint="Latest refresh delta"
+                    hint={t("Latest refresh delta", "Delta der letzten Aktualisierung")}
                   />
                   <MetricTile
-                    label="Updated Incidents"
+                    label={t("Updated Incidents", "Aktualisierte Vorfaelle")}
                     value={String(changeSummary?.updated_incidents ?? 0)}
                   />
                   <MetricTile
-                    label="Resolved Incidents"
+                    label={t("Resolved Incidents", "Geloeste Vorfaelle")}
                     value={String(changeSummary?.resolved_incidents ?? 0)}
                   />
                 </div>
@@ -1139,12 +1166,15 @@ const ServerDetail = () => {
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Recent Incidents
+                  {t("Recent Incidents", "Letzte Vorfaelle")}
                 </h2>
                 <div className="mt-3 space-y-2.5">
                   {outageIncidents.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      No recent incidents listed in the current outage payload.
+                      {t(
+                        "No recent incidents listed in the current outage payload.",
+                        "Keine aktuellen Vorfaelle im derzeitigen Ausfall-Payload gelistet."
+                      )}
                     </p>
                   ) : (
                     outageIncidents.map((incident, index) => (
@@ -1155,7 +1185,7 @@ const ServerDetail = () => {
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <p className="text-sm font-semibold leading-snug text-foreground">
-                              {incident.title || "Untitled incident"}
+                              {incident.title || t("Untitled incident", "Unbenannter Vorfall")}
                             </p>
                             {incident.acknowledgement ? (
                               <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
@@ -1193,12 +1223,12 @@ const ServerDetail = () => {
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Regional Snapshot
+                  {t("Regional Snapshot", "Regionale Uebersicht")}
                 </h2>
                 <div className="mt-3 space-y-2.5">
                   {regionEntries.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      No regional data in payload.
+                      {t("No regional data in payload.", "Keine Regionaldaten im Payload.")}
                     </p>
                   ) : (
                     regionEntries.map((region) => {
@@ -1238,13 +1268,13 @@ const ServerDetail = () => {
                 <div className="flex items-center gap-2">
                   <ShieldCheck size={14} className="text-primary/80" />
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    Source Health
+                    {t("Source Health", "Quellenstatus")}
                   </h2>
                 </div>
                 <div className="mt-3 space-y-2.5">
                   {sources.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      No source diagnostics in payload.
+                      {t("No source diagnostics in payload.", "Keine Quellendiagnose im Payload.")}
                     </p>
                   ) : (
                     sources.map((source, index) => (
@@ -1255,7 +1285,7 @@ const ServerDetail = () => {
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <p className="truncate text-sm font-medium text-foreground">
-                              {source.name || "Unknown source"}
+                              {source.name || t("Unknown source", "Unbekannte Quelle")}
                             </p>
                             <p className="mt-0.5 text-[11px] text-muted-foreground">
                               {(source.kind || "unknown").replace(/-/g, " ")}
@@ -1268,14 +1298,14 @@ const ServerDetail = () => {
                                 : "border-rose-300/20 bg-rose-300/10 text-rose-200"
                             }`}
                           >
-                            {source.ok ? "OK" : "Error"}
+                            {source.ok ? "OK" : t("Error", "Fehler")}
                           </span>
                         </div>
                         <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
-                          <span>freshness: {source.freshness || "unknown"}</span>
-                          <span>age: {formatAgeMinutes(source.age_minutes)}</span>
-                          {typeof source.item_count === "number" ? <span>items: {source.item_count}</span> : null}
-                          {typeof source.duration_ms === "number" ? <span>fetch: {source.duration_ms}ms</span> : null}
+                          <span>{t("freshness", "Frische")}: {source.freshness || t("unknown", "unbekannt")}</span>
+                          <span>{t("age", "Alter")}: {formatAgeMinutes(source.age_minutes)}</span>
+                          {typeof source.item_count === "number" ? <span>{t("items", "Eintraege")}: {source.item_count}</span> : null}
+                          {typeof source.duration_ms === "number" ? <span>{t("fetch", "Abruf")}: {source.duration_ms}ms</span> : null}
                         </div>
                         {source.error ? (
                           <p className="mt-1 text-[11px] text-rose-200">{source.error}</p>
@@ -1291,11 +1321,11 @@ const ServerDetail = () => {
 
             {activeTab === "sources" ? (
               <>
-                <LinkListSection title="Official Updates" items={officialItems} emptyText="No official updates in payload." />
-                <LinkListSection title="Reports" items={reportItems} emptyText="No report entries in payload." />
-                <LinkListSection title="News" items={newsItems} emptyText="No news entries in payload." />
-                <LinkListSection title="Social" items={socialItems} emptyText="No social entries in payload." />
-                <LinkListSection title="Known Resources" items={knownItems} emptyText="No known resources in payload." />
+                <LinkListSection title={t("Official Updates", "Offizielle Updates")} items={officialItems} emptyText={t("No official updates in payload.", "Keine offiziellen Updates im Payload.")} />
+                <LinkListSection title={t("Reports", "Meldungen")} items={reportItems} emptyText={t("No report entries in payload.", "Keine Meldungseintraege im Payload.")} />
+                <LinkListSection title={t("News", "News")} items={newsItems} emptyText={t("No news entries in payload.", "Keine News-Eintraege im Payload.")} />
+                <LinkListSection title={t("Social", "Social")} items={socialItems} emptyText={t("No social entries in payload.", "Keine Social-Eintraege im Payload.")} />
+                <LinkListSection title={t("Known Resources", "Bekannte Quellen")} items={knownItems} emptyText={t("No known resources in payload.", "Keine bekannten Quellen im Payload.")} />
               </>
             ) : null}
             </div>

@@ -13,7 +13,7 @@ import {
 const runtimeMode = import.meta.env.MODE;
 
 const SettingsPage = () => {
-  const { language } = useAppShell();
+  const { language, setLanguage, reduceMotion, setReduceMotion } = useAppShell();
   const builtAt = new Date().toLocaleString();
 
   return (
@@ -65,6 +65,81 @@ const SettingsPage = () => {
                   {pickLang(language, "Session Opened", "Sitzung gestartet")}
                 </p>
                 <p className="mt-1 text-xs font-medium text-foreground">{builtAt}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="glass glass-specular mt-4 rounded-2xl p-4">
+          <div className="relative z-10 space-y-3">
+            <div className="flex items-center gap-2">
+              <Wrench size={14} className="text-primary/80" />
+              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {pickLang(language, "Preferences", "Einstellungen")}
+              </h2>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                {pickLang(language, "Language", "Sprache")}
+              </p>
+              <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/20 p-1">
+                <button
+                  type="button"
+                  onClick={() => setLanguage("en")}
+                  className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                    language === "en"
+                      ? "bg-white/10 text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  English
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLanguage("de")}
+                  className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                    language === "de"
+                      ? "bg-white/10 text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Deutsch
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                    {pickLang(language, "Motion", "Bewegung")}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {pickLang(
+                      language,
+                      "Reduce UI animations and transitions across the preview.",
+                      "Reduziert UI-Animationen und Uebergaenge im gesamten Preview."
+                    )}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={reduceMotion}
+                  onClick={() => setReduceMotion(!reduceMotion)}
+                  className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors ${
+                    reduceMotion
+                      ? "border-primary/40 bg-primary/20"
+                      : "border-white/10 bg-white/5"
+                  }`}
+                >
+                  <span
+                    className={`absolute h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                      reduceMotion ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
               </div>
             </div>
           </div>

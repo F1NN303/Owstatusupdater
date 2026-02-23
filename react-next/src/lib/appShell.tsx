@@ -9,12 +9,15 @@ import {
 
 export type AppLanguage = "en" | "de";
 
-const STORAGE_KEY = "owstatusupdater.react.lang";
+const LANGUAGE_STORAGE_KEY = "owstatusupdater.react.lang";
+const REDUCED_MOTION_STORAGE_KEY = "owstatusupdater.react.reduceMotion";
 
 interface AppShellContextValue {
   language: AppLanguage;
   setLanguage: (next: AppLanguage) => void;
   toggleLanguage: () => void;
+  reduceMotion: boolean;
+  setReduceMotion: (next: boolean) => void;
 }
 
 const AppShellContext = createContext<AppShellContextValue | null>(null);
@@ -24,7 +27,7 @@ function detectInitialLanguage(): AppLanguage {
     return "en";
   }
 
-  const stored = window.localStorage.getItem(STORAGE_KEY);
+  const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
   if (stored === "en" || stored === "de") {
     return stored;
   }
@@ -33,23 +36,50 @@ function detectInitialLanguage(): AppLanguage {
   return browserLang.startsWith("de") ? "de" : "en";
 }
 
+function detectInitialReducedMotion() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const stored = window.localStorage.getItem(REDUCED_MOTION_STORAGE_KEY);
+  if (stored === "1") {
+    return true;
+  }
+  if (stored === "0") {
+    return false;
+  }
+
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+}
+
 export function AppShellProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<AppLanguage>(detectInitialLanguage);
+  const [reduceMotion, setReduceMotion] = useState<boolean>(detectInitialReducedMotion);
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
-    window.localStorage.setItem(STORAGE_KEY, language);
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
   }, [language]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.localStorage.setItem(REDUCED_MOTION_STORAGE_KEY, reduceMotion ? "1" : "0");
+    document.documentElement.dataset.motion = reduceMotion ? "reduced" : "full";
+  }, [reduceMotion]);
 
   const value = useMemo<AppShellContextValue>(
     () => ({
       language,
       setLanguage,
       toggleLanguage: () => setLanguage((prev) => (prev === "en" ? "de" : "en")),
+      reduceMotion,
+      setReduceMotion,
     }),
-    [language]
+    [language, reduceMotion]
   );
 
   return <AppShellContext.Provider value={value}>{children}</AppShellContext.Provider>;
@@ -96,4 +126,3 @@ export function formatBuildLabel(language: AppLanguage) {
   }
   return `${prefix}: ${shortId}`;
 }
-
