@@ -32,6 +32,7 @@ REGION_LABELS = {
 
 SOURCE_FRESH_MINUTES_FRESH = 120
 SOURCE_FRESH_MINUTES_WARM = 24 * 60
+ACTIVE_EVENT_MAX_AGE_HOURS = 14 * 24
 
 STATUS_BASE_SCORE = {
     "outage": 4.6,
@@ -72,7 +73,10 @@ def _hours_since(value: str | None) -> float | None:
 
 def _clean(value: str | None) -> str:
     text = html_lib.unescape(str(value or ""))
-    if any(token in text for token in ("Ã", "Ð", "Ñ", "â€™", "â€“", "â€”")):
+    # Repair common UTF-8 -> latin-1 mojibake sequences from upstream status messages.
+    suspect_markers = ("\u00c3", "\u00c2", "\u00e2", "\u00d0", "\u00d1")
+    suspect_hits = sum(text.count(marker) for marker in suspect_markers)
+    if suspect_hits >= 2:
         try:
             repaired = text.encode("latin-1", "ignore").decode("utf-8", "ignore")
             if repaired:
@@ -296,6 +300,19 @@ def _event_score(event: dict[str, Any]) -> float:
     return base * recency * scope_weight
 
 
+def _is_active_incident_event(event: dict[str, Any]) -> bool:
+    """Sony region feeds can keep long-lived historical rows (for example RU store outages).
+    Count only recent non-ok rows as active incidents for current status severity/output.
+    """
+    status_type = str(event.get("status_type") or "ok")
+    if status_type == "ok":
+        return False
+    age_h = _hours_since(event.get("started_at"))
+    if age_h is None:
+        return False
+    return age_h <= ACTIVE_EVENT_MAX_AGE_HOURS
+
+
 def _estimate_reports_24h(events: list[dict[str, Any]]) -> int:
     if not events:
         return 0
@@ -374,6 +391,7 @@ def _build_official_updates(incidents: list[dict[str, Any]]) -> list[dict[str, A
 def _collect_payload() -> dict[str, Any]:
     now_iso = _utc_now_iso()
     all_events: list[dict[str, Any]] = []
+    all_raw_events: list[dict[str, Any]] = []
     region_events: dict[str, list[dict[str, Any]]] = {key: [] for key in REGION_ENDPOINTS}
     sources: list[dict[str, Any]] = []
 
@@ -382,10 +400,15 @@ def _collect_payload() -> dict[str, Any]:
         url = f"{SONY_REGION_URL}/{region_code}.json"
         try:
             payload = _request_json(url)
-            events = _extract_region_events(region_key, payload)
-            region_events[region_key] = events
-            all_events.extend(events)
-            latest_item = next((event.get("started_at") for event in events if event.get("started_at")), None)
+            raw_events = _extract_region_events(region_key, payload)
+            active_events = [event for event in raw_events if _is_active_incident_event(event)]
+
+            region_events[region_key] = active_events
+            all_events.extend(active_events)
+            all_raw_events.extend(raw_events)
+
+            latest_item = next((event.get("started_at") for event in raw_events if event.get("started_at")), None)
+            latest_active_item = next((event.get("started_at") for event in active_events if event.get("started_at")), None)
             freshness, age_minutes = _source_freshness(latest_item)
             sources.append(
                 {
@@ -394,8 +417,11 @@ def _collect_payload() -> dict[str, Any]:
                     "url": url,
                     "ok": True,
                     "error": None,
-                    "item_count": len(events),
+                    "item_count": len(raw_events),
+                    "active_item_count": len(active_events),
+                    "archived_item_count": max(len(raw_events) - len(active_events), 0),
                     "last_item_at": latest_item,
+                    "last_active_item_at": latest_active_item,
                     "freshness": freshness,
                     "age_minutes": age_minutes,
                     "duration_ms": int((time.perf_counter() - started) * 1000),
@@ -421,6 +447,7 @@ def _collect_payload() -> dict[str, Any]:
             )
 
     all_events.sort(key=lambda item: _parse_iso8601(item.get("started_at")) or dt.datetime.min.replace(tzinfo=dt.UTC), reverse=True)
+    all_raw_events.sort(key=lambda item: _parse_iso8601(item.get("started_at")) or dt.datetime.min.replace(tzinfo=dt.UTC), reverse=True)
     source_total = len(sources)
     source_ok = sum(1 for source in sources if source.get("ok"))
 
@@ -504,6 +531,8 @@ def _collect_payload() -> dict[str, Any]:
         "cross_source_guard": True,
         "low_volume_guard": global_reports_24h < 160,
         "operational_dampening": not incidents,
+        "active_event_max_age_hours": ACTIVE_EVENT_MAX_AGE_HOURS,
+        "archived_events_ignored": max(len(all_raw_events) - len(all_events), 0),
     }
 
     return {
