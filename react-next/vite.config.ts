@@ -6,7 +6,8 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const base = (env.VITE_APP_BASE_PATH || "/").trim() || "/";
+  const defaultBase = mode === "development" ? "/" : "/Owstatusupdater/next/";
+  const base = (env.VITE_APP_BASE_PATH || defaultBase).trim() || defaultBase;
   const normalizedBase = base.endsWith("/") ? base : `${base}/`;
 
   return {
