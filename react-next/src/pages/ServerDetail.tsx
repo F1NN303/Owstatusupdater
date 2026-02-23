@@ -23,7 +23,9 @@ import {
 import {
   type ReactNode,
   type TouchEvent as ReactTouchEvent,
+  useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -58,6 +60,11 @@ interface TabSwipeSession {
   startY: number;
   width: number;
   axisLock: SwipeAxisLock;
+}
+
+interface TabIndicatorMeasure {
+  left: number;
+  width: number;
 }
 
 function toneToStatus(tone: LegacyServiceDetailResult["tone"]): Status {
@@ -637,6 +644,10 @@ const ServerDetail = () => {
   const [tabDragOffset, setTabDragOffset] = useState(0);
   const [isTabDragging, setIsTabDragging] = useState(false);
   const tabSwipeSessionRef = useRef<TabSwipeSession | null>(null);
+  const tabTrackRef = useRef<HTMLDivElement | null>(null);
+  const tabButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const [tabIndicatorMeasures, setTabIndicatorMeasures] = useState<TabIndicatorMeasure[]>([]);
+  const [tabTrackWidth, setTabTrackWidth] = useState(0);
 
   const loadDetail = async (mode: "initial" | "refresh" = "initial") => {
     if (!serviceId) {
@@ -671,6 +682,101 @@ const ServerDetail = () => {
     }, 60_000);
     return () => window.clearInterval(timer);
   }, [serviceId]);
+
+  const refreshTabIndicatorMeasures = useCallback(() => {
+    const track = tabTrackRef.current;
+    if (!track) {
+      return;
+    }
+    const trackRect = track.getBoundingClientRect();
+    if (!Number.isFinite(trackRect.width) || trackRect.width <= 0) {
+      return;
+    }
+
+    const nextMeasures = DETAIL_TABS.map((_, index) => {
+      const button = tabButtonRefs.current[index];
+      if (!button) {
+        return null;
+      }
+      const rect = button.getBoundingClientRect();
+      return {
+        left: rect.left - trackRect.left,
+        width: rect.width,
+      };
+    }).filter((value): value is TabIndicatorMeasure => value !== null);
+
+    setTabTrackWidth(trackRect.width);
+    setTabIndicatorMeasures((previous) => {
+      if (
+        previous.length === nextMeasures.length &&
+        previous.every(
+          (item, index) =>
+            Math.abs(item.left - nextMeasures[index].left) < 0.25 &&
+            Math.abs(item.width - nextMeasures[index].width) < 0.25
+        )
+      ) {
+        return previous;
+      }
+      return nextMeasures;
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    refreshTabIndicatorMeasures();
+  }, [refreshTabIndicatorMeasures, activeTab, language]);
+
+  useEffect(() => {
+    refreshTabIndicatorMeasures();
+
+    const onResize = () => refreshTabIndicatorMeasures();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("pageshow", onResize);
+
+    const viewport = window.visualViewport;
+    viewport?.addEventListener("resize", onResize);
+    viewport?.addEventListener("scroll", onResize);
+
+    const track = tabTrackRef.current;
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => {
+            refreshTabIndicatorMeasures();
+          })
+        : null;
+    if (resizeObserver && track) {
+      resizeObserver.observe(track);
+      for (const button of tabButtonRefs.current) {
+        if (button) {
+          resizeObserver.observe(button);
+        }
+      }
+    }
+
+    const fontSet = document.fonts;
+    let isDisposed = false;
+    fontSet?.ready
+      ?.then(() => {
+        if (!isDisposed) {
+          refreshTabIndicatorMeasures();
+        }
+      })
+      .catch(() => {});
+
+    const onFontsEvent = () => refreshTabIndicatorMeasures();
+    fontSet?.addEventListener?.("loadingdone", onFontsEvent);
+    fontSet?.addEventListener?.("loadingerror", onFontsEvent);
+
+    return () => {
+      isDisposed = true;
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("pageshow", onResize);
+      viewport?.removeEventListener("resize", onResize);
+      viewport?.removeEventListener("scroll", onResize);
+      resizeObserver?.disconnect();
+      fontSet?.removeEventListener?.("loadingdone", onFontsEvent);
+      fontSet?.removeEventListener?.("loadingerror", onFontsEvent);
+    };
+  }, [refreshTabIndicatorMeasures]);
 
   const outageIncidents = useMemo(
     () => clampList<LegacyOutageIncident>(detail?.payload.outage?.incidents, 8),
@@ -766,11 +872,39 @@ const ServerDetail = () => {
   const componentRows = detail ? extractApiServiceComponents(detail) : [];
   const activeTabIndex = DETAIL_TABS.findIndex((tab) => tab.key === activeTab);
   const lastTabIndex = DETAIL_TABS.length - 1;
-  const indicatorVisualIndex = Math.max(
-    0,
-    Math.min(lastTabIndex, activeTabIndex + tabDragOffset)
+  const indicatorProgress = Math.max(0, Math.min(lastTabIndex, activeTabIndex + tabDragOffset));
+  const fallbackTabWidth = tabTrackWidth > 0 ? tabTrackWidth / DETAIL_TABS.length : 0;
+  const fallbackInset = 4;
+  const fallbackIndicator = {
+    left: fallbackInset + Math.max(0, indicatorProgress) * fallbackTabWidth,
+    width: Math.max(0, fallbackTabWidth - fallbackInset * 2),
+  };
+  const indicatorBaseIndex = Math.max(0, Math.min(lastTabIndex, activeTabIndex));
+  const indicatorFraction = Math.abs(tabDragOffset);
+  const indicatorNeighborIndex =
+    tabDragOffset > 0
+      ? Math.min(lastTabIndex, indicatorBaseIndex + 1)
+      : Math.max(0, indicatorBaseIndex - 1);
+  const baseMeasure = tabIndicatorMeasures[indicatorBaseIndex];
+  const neighborMeasure = tabIndicatorMeasures[indicatorNeighborIndex] || baseMeasure;
+  const interpolatedIndicator =
+    baseMeasure && neighborMeasure
+      ? {
+          left:
+            baseMeasure.left + (neighborMeasure.left - baseMeasure.left) * indicatorFraction,
+          width:
+            baseMeasure.width + (neighborMeasure.width - baseMeasure.width) * indicatorFraction,
+        }
+      : fallbackIndicator;
+  const indicatorExtraWidth =
+    Math.min(12, interpolatedIndicator.width * 0.08) * Math.min(1, indicatorFraction);
+  const unclampedIndicatorLeft = interpolatedIndicator.left - indicatorExtraWidth / 2;
+  const unclampedIndicatorWidth = interpolatedIndicator.width + indicatorExtraWidth;
+  const indicatorLeft = Math.max(
+    4,
+    Math.min(Math.max(4, tabTrackWidth - 4 - unclampedIndicatorWidth), unclampedIndicatorLeft)
   );
-  const indicatorStretch = 1 + Math.min(0.1, Math.abs(tabDragOffset) * 0.08);
+  const indicatorWidth = Math.max(0, unclampedIndicatorWidth);
   const t = (en: string, de: string) => pickLang(language, en, de);
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
@@ -1034,6 +1168,7 @@ const ServerDetail = () => {
 
             <section className="glass glass-specular rounded-2xl p-2">
               <div
+                ref={tabTrackRef}
                 className="relative grid grid-cols-4 gap-1"
                 style={{ touchAction: "pan-y" }}
                 onTouchStart={beginTabSwipe}
@@ -1044,21 +1179,23 @@ const ServerDetail = () => {
                 <span
                   className="pointer-events-none absolute bottom-1 top-1 rounded-xl border border-white/10 bg-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_8px_24px_rgba(0,0,0,0.22),0_0_18px_rgba(87,177,255,0.08)]"
                   style={{
-                    left: "0.25rem",
-                    width: "calc(25% - 0.5rem)",
+                    left: `${indicatorLeft}px`,
+                    width: `${indicatorWidth}px`,
                     opacity: 0.88 + Math.min(0.12, Math.abs(tabDragOffset) * 0.12),
-                    transform: `translate3d(${indicatorVisualIndex * 100}%, 0, 0) scaleX(${indicatorStretch})`,
                     transition: isTabDragging
                       ? "none"
-                      : "transform 340ms cubic-bezier(0.22, 1, 0.36, 1), opacity 240ms ease",
+                      : "left 340ms cubic-bezier(0.22, 1, 0.36, 1), width 340ms cubic-bezier(0.22, 1, 0.36, 1), opacity 240ms ease",
                   }}
                   aria-hidden="true"
                 />
-                {DETAIL_TABS.map((tab) => {
+                {DETAIL_TABS.map((tab, index) => {
                   const isActive = activeTab === tab.key;
                   return (
                     <button
                       key={tab.key}
+                      ref={(node) => {
+                        tabButtonRefs.current[index] = node;
+                      }}
                       type="button"
                       onClick={() => setActiveTab(tab.key)}
                       className={`relative z-10 rounded-xl px-2 py-2 text-[11px] font-medium transition-colors duration-200 ${
