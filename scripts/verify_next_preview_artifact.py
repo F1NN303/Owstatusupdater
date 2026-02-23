@@ -6,9 +6,12 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
+SITE_ROOT = ROOT / "site"
 SITE_NEXT = ROOT / "site" / "next"
+ROOT_INDEX_HTML = SITE_ROOT / "index.html"
 INDEX_HTML = SITE_NEXT / "index.html"
 EXPECTED_BASE = "/Owstatusupdater/next/"
+EXPECTED_ROOT_BASE = "/Owstatusupdater/"
 
 
 def fail(message: str) -> None:
@@ -35,34 +38,57 @@ def extract_asset_paths(html: str) -> tuple[list[str], list[str]]:
     return script_paths, style_paths
 
 
-def assert_path_prefix(paths: list[str], kind: str) -> None:
+def assert_path_prefix(paths: list[str], kind: str, expected_base: str, disallow_root_assets: bool = False) -> None:
     if not paths:
-        fail(f"No {kind} paths found in {INDEX_HTML}")
+        fail(f"No {kind} paths found")
     for path in paths:
-        if not path.startswith(f"{EXPECTED_BASE}assets/"):
-            fail(f"{kind} path uses unexpected base: {path}")
-        if path.startswith("/assets/"):
+        if not path.startswith(f"{expected_base}assets/"):
+            fail(f"{kind} path uses unexpected base: {path} (expected prefix {expected_base}assets/)")
+        if disallow_root_assets and path.startswith("/assets/"):
             fail(f"{kind} path incorrectly points to root assets: {path}")
 
 
-def assert_assets_exist(paths: list[str]) -> None:
+def assert_assets_exist(paths: list[str], site_dir: Path, expected_base: str) -> None:
     for path in paths:
-        relative = path.removeprefix(EXPECTED_BASE)
-        file_path = SITE_NEXT / relative
+        relative = path.removeprefix(expected_base)
+        file_path = site_dir / relative
         if not file_path.is_file():
-            fail(f"Referenced asset missing from site/next: {path} -> {file_path}")
+            fail(f"Referenced asset missing: {path} -> {file_path}")
 
 
-def assert_favicon(html: str) -> None:
+def assert_favicon(html: str, expected_href: str, site_dir: Path) -> None:
     match = re.search(r'<link[^>]+rel="icon"[^>]+href="([^"]+)"', html, flags=re.IGNORECASE)
     if not match:
-        fail("Missing favicon link in site/next/index.html")
+        fail("Missing favicon link in index.html")
     href = match.group(1)
-    expected = f"{EXPECTED_BASE}favicon.ico"
-    if href != expected:
-        fail(f"Unexpected favicon href: {href} (expected {expected})")
-    if not (SITE_NEXT / "favicon.ico").is_file():
-        fail("Missing site/next/favicon.ico")
+    if href != expected_href:
+        fail(f"Unexpected favicon href: {href} (expected {expected_href})")
+    if not (site_dir / "favicon.ico").is_file():
+        fail(f"Missing {site_dir / 'favicon.ico'}")
+
+
+def assert_root_artifact() -> None:
+    html = read_text(ROOT_INDEX_HTML)
+    if 'http-equiv="refresh"' in html.lower():
+        fail("site/index.html is still a redirect page; expected React root build")
+    if '<div id="root"></div>' not in html:
+        fail("site/index.html does not look like the React root shell")
+
+    script_paths, style_paths = extract_asset_paths(html)
+    assert_path_prefix(script_paths, "root script", EXPECTED_ROOT_BASE)
+    assert_path_prefix(style_paths, "root stylesheet", EXPECTED_ROOT_BASE)
+    assert_assets_exist(script_paths + style_paths, SITE_ROOT, EXPECTED_ROOT_BASE)
+    assert_favicon(html, f"{EXPECTED_ROOT_BASE}favicon.ico", SITE_ROOT)
+
+
+def assert_next_preview_artifact() -> None:
+    html = read_text(INDEX_HTML)
+    script_paths, style_paths = extract_asset_paths(html)
+
+    assert_path_prefix(script_paths, "preview script", EXPECTED_BASE, disallow_root_assets=True)
+    assert_path_prefix(style_paths, "preview stylesheet", EXPECTED_BASE, disallow_root_assets=True)
+    assert_assets_exist(script_paths + style_paths, SITE_NEXT, EXPECTED_BASE)
+    assert_favicon(html, f"{EXPECTED_BASE}favicon.ico", SITE_NEXT)
 
 
 def assert_source_contracts() -> None:
@@ -89,16 +115,11 @@ def assert_source_contracts() -> None:
 
 
 def main() -> None:
-    html = read_text(INDEX_HTML)
-    script_paths, style_paths = extract_asset_paths(html)
-
-    assert_path_prefix(script_paths, "script")
-    assert_path_prefix(style_paths, "stylesheet")
-    assert_assets_exist(script_paths + style_paths)
-    assert_favicon(html)
+    assert_root_artifact()
+    assert_next_preview_artifact()
     assert_source_contracts()
 
-    print("[verify-next] OK: /next artifact paths and preview routing/data path contracts look valid.")
+    print("[verify-next] OK: root + /next artifact paths and preview routing/data path contracts look valid.")
 
 
 if __name__ == "__main__":
