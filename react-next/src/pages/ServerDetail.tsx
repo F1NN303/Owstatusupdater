@@ -129,8 +129,6 @@ function buildSignalTrend(detail: LegacyServiceDetailResult) {
     ? detail.payload.outage?.incidents
     : [];
 
-  let hasIncidentOverlap = false;
-
   for (const incident of incidents) {
     const startedAt = parseMaybeDate(incident.started_at);
     if (!startedAt) {
@@ -150,19 +148,7 @@ function buildSignalTrend(detail: LegacyServiceDetailResult) {
       const dayEndMs = dayStartMs + DAY_MS;
       if (startMs < dayEndMs && incidentEndMs > dayStartMs) {
         history[i] = Math.min(history[i], level);
-        hasIncidentOverlap = true;
       }
-    }
-  }
-
-  if (!hasIncidentOverlap) {
-    if (detail.tone === "warn") {
-      history[28] = 0.5;
-      history[29] = 0.5;
-    } else if (detail.tone === "bad") {
-      history[27] = 0.5;
-      history[28] = 0;
-      history[29] = 0;
     }
   }
 
@@ -205,11 +191,7 @@ function buildSignalSparkline(detail: LegacyServiceDetailResult) {
     0;
 
   if (bins.every((value) => value === 0)) {
-    return Array.from({ length: 24 }, (_, i) => {
-      const wave = Math.sin((i + 1) * 0.8) * 4;
-      const offset = detail.tone === "warn" ? 4 : detail.tone === "bad" ? 8 : 0;
-      return Math.max(4, base + offset + wave + combinedScore * 2);
-    });
+    return Array.from({ length: 24 }, () => 0);
   }
 
   return bins.map((value, i) => {

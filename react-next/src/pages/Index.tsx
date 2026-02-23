@@ -92,8 +92,6 @@ function buildTrendHistory(detail: LegacyServiceDetailResult) {
   const history = Array.from({ length: 30 }, () => 1);
   const incidents = Array.isArray(detail.payload.outage?.incidents) ? detail.payload.outage?.incidents : [];
 
-  let hasOverlap = false;
-
   for (const incident of incidents) {
     const startDate = parseDate(incident.started_at);
     if (!startDate) {
@@ -115,19 +113,7 @@ function buildTrendHistory(detail: LegacyServiceDetailResult) {
       const dayEnd = dayStart + DAY_MS;
       if (startMs < dayEnd && endMs > dayStart) {
         history[i] = Math.min(history[i], level);
-        hasOverlap = true;
       }
-    }
-  }
-
-  if (!hasOverlap) {
-    if (detail.tone === "warn") {
-      history[28] = 0.5;
-      history[29] = 0.5;
-    } else if (detail.tone === "bad") {
-      history[27] = 0.5;
-      history[28] = 0;
-      history[29] = 0;
     }
   }
 
@@ -169,11 +155,7 @@ function buildActivitySparkline(detail: LegacyServiceDetailResult) {
   const reports24h = detail.payload.outage?.reports_24h ?? detail.payload.analytics?.signal_metrics?.reports_24h ?? 0;
 
   if (bins.every((value) => value === 0)) {
-    return Array.from({ length: 24 }, (_, i) => {
-      const wave = Math.sin((i + 1) * 0.8) * 4;
-      const trendBoost = detail.tone === "warn" ? 4 : detail.tone === "bad" ? 8 : 0;
-      return Math.max(4, severityOffset + trendBoost + wave + combinedScore * 2);
-    });
+    return Array.from({ length: 24 }, () => 0);
   }
 
   return bins.map((value, i) => {
@@ -247,7 +229,7 @@ function buildServerCard(detail: LegacyServiceDetailResult): HomeServiceCard {
 
 function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de") {
   if (!lastRefreshAt) {
-    return pickLang(language, "Live monitoring Â· Fetching live status", "Live-Monitoring Â· Lade Live-Status");
+    return pickLang(language, "Live monitoring · Fetching live status", "Live-Monitoring · Lade Live-Status");
   }
 
   const refreshed = parseDate(lastRefreshAt);
@@ -257,13 +239,13 @@ function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de
 
   const diffSeconds = Math.max(0, Math.round((Date.now() - refreshed.getTime()) / 1000));
   if (diffSeconds < 15) {
-    return pickLang(language, "Live monitoring Â· Updated just now", "Live-Monitoring Â· Gerade aktualisiert");
+    return pickLang(language, "Live monitoring · Updated just now", "Live-Monitoring · Gerade aktualisiert");
   }
   if (diffSeconds < 60) {
     return pickLang(
       language,
-      `Live monitoring Â· Updated ${diffSeconds}s ago`,
-      `Live-Monitoring Â· Vor ${diffSeconds}s aktualisiert`
+      `Live monitoring · Updated ${diffSeconds}s ago`,
+      `Live-Monitoring · Vor ${diffSeconds}s aktualisiert`
     );
   }
 
@@ -273,8 +255,8 @@ function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de
   });
   return pickLang(
     language,
-    `Live monitoring Â· Updated ${timeLabel}`,
-    `Live-Monitoring Â· Aktualisiert ${timeLabel}`
+    `Live monitoring · Updated ${timeLabel}`,
+    `Live-Monitoring · Aktualisiert ${timeLabel}`
   );
 }
 
@@ -445,7 +427,7 @@ const Index = () => {
                   {pickLang(
                     language,
                     "Open the current signup page for outage notifications",
-                    "Aktuelle Anmeldeseite fuer Stoerungs-Benachrichtigungen Ã¶ffnen"
+                    "Aktuelle Anmeldeseite fuer Stoerungs-Benachrichtigungen oeffnen"
                   )}
                 </p>
               </div>

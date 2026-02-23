@@ -37,7 +37,7 @@ const ServerCard = ({ server, index }: ServerCardProps) => {
                 {server.metricLabel ? (
                   <span className="text-[11px] text-muted-foreground">{server.metricLabel}</span>
                 ) : server.latency !== undefined ? (
-                  <span className="text-[11px] text-muted-foreground">Â· {server.latency}ms</span>
+                  <span className="text-[11px] text-muted-foreground">· {server.latency}ms</span>
                 ) : null}
               </div>
             </div>
