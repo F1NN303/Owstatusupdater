@@ -497,50 +497,79 @@ function DailySignalBars({ values }: { values: number[] }) {
   );
 }
 
-function inferServiceComponents(
-  serviceId: LegacyDetailServiceId,
+function normalizeComponentStatus(value: unknown): Status | null {
+  const text = String(value ?? "").toLowerCase();
+  if (!text) {
+    return null;
+  }
+  if (
+    text.includes("up") ||
+    text.includes("ok") ||
+    text.includes("operational") ||
+    text.includes("stable") ||
+    text.includes("online")
+  ) {
+    return "online";
+  }
+  if (
+    text.includes("major") ||
+    text.includes("outage") ||
+    text.includes("down") ||
+    text.includes("offline")
+  ) {
+    return "offline";
+  }
+  if (
+    text.includes("degraded") ||
+    text.includes("minor") ||
+    text.includes("warn") ||
+    text.includes("issue")
+  ) {
+    return "degraded";
+  }
+  return null;
+}
+
+function extractApiServiceComponents(
   detail: LegacyServiceDetailResult
 ): Array<{ name: string; status: Status }> {
-  const catalog =
-    serviceId === "sony"
-      ? ["Gaming & Social", "Account Management", "PlayStation Store", "PlayStation Video"]
-      : ["Game Servers", "Authentication", "Matchmaking", "Shop & Store"];
+  const payloadAny = detail.payload as unknown as Record<string, unknown>;
+  const outageAny = (payloadAny.outage as Record<string, unknown> | undefined) ?? {};
+  const candidates = [
+    payloadAny.components,
+    payloadAny.services,
+    outageAny.components,
+    outageAny.services,
+  ];
 
-  const overall = toneToStatus(detail.tone);
-  const incidentText = [
-    detail.payload.outage?.summary,
-    ...(detail.payload.outage?.incidents || []).slice(0, 6).map((incident) => incident.title || ""),
-  ]
-    .join(" ")
-    .toLowerCase();
-
-  const map = new Map<string, Status>(catalog.map((name) => [name, "online"]));
-  const mark = (keywords: string[], target: string) => {
-    if (keywords.some((keyword) => incidentText.includes(keyword))) {
-      map.set(target, overall === "offline" ? "offline" : "degraded");
-      return true;
+  for (const candidate of candidates) {
+    if (!Array.isArray(candidate)) {
+      continue;
     }
-    return false;
-  };
 
-  if (serviceId === "sony") {
-    const hitStore = mark(["store"], "PlayStation Store");
-    const hitAccount = mark(["sign", "account", "login"], "Account Management");
-    const hitSocial = mark(["gaming", "social", "network", "multiplayer"], "Gaming & Social");
-    if (overall !== "online" && !hitStore && !hitAccount && !hitSocial) {
-      map.set("Gaming & Social", overall);
-    }
-  } else {
-    const hitAuth = mark(["login", "auth", "sign in", "queue"], "Authentication");
-    const hitMatch = mark(["match", "queue", "competitive"], "Matchmaking");
-    const hitStore = mark(["shop", "store"], "Shop & Store");
-    const hitGame = mark(["server", "connection", "game"], "Game Servers");
-    if (overall !== "online" && !hitAuth && !hitMatch && !hitStore && !hitGame) {
-      map.set("Game Servers", overall);
+    const rows = candidate
+      .map((entry) => {
+        const item = entry as Record<string, unknown>;
+        const name =
+          String(item.name ?? item.component ?? item.service ?? item.label ?? "").trim();
+        const status =
+          normalizeComponentStatus(item.status) ??
+          normalizeComponentStatus(item.state) ??
+          normalizeComponentStatus(item.severity_key) ??
+          normalizeComponentStatus(item.health);
+        if (!name || !status) {
+          return null;
+        }
+        return { name, status };
+      })
+      .filter((row): row is { name: string; status: Status } => Boolean(row));
+
+    if (rows.length > 0) {
+      return rows;
     }
   }
 
-  return catalog.map((name) => ({ name, status: map.get(name) || "online" }));
+  return [];
 }
 
 function incidentToneClass(incident: LegacyOutageIncident) {
@@ -752,7 +781,7 @@ const ServerDetail = () => {
     outageIncidents[0]?.title || pickLang(language, "No active incidents", "Keine aktiven Vorfaelle");
   const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
-  const componentRows = detail ? inferServiceComponents(serviceId, detail) : [];
+  const componentRows = detail ? extractApiServiceComponents(detail) : [];
   const activeTabIndex = DETAIL_TABS.findIndex((tab) => tab.key === activeTab);
   const lastTabIndex = DETAIL_TABS.length - 1;
   const indicatorVisualIndex = Math.max(
@@ -1074,18 +1103,27 @@ const ServerDetail = () => {
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Service Components", "Service-Komponenten")}
+                  {t("API Component Breakdown", "API-Komponentenstatus")}
                 </h2>
                 <div className="mt-3 space-y-2">
-                  {componentRows.map((item) => (
-                    <div
-                      key={item.name}
-                      className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
-                    >
-                      <span className="text-sm font-medium text-foreground">{item.name}</span>
-                      <StatusBadge status={item.status} />
-                    </div>
-                  ))}
+                  {componentRows.length === 0 ? (
+                    <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
+                      {t(
+                        "No component breakdown is provided in the current API payload.",
+                        "Im aktuellen API-Payload wird kein Komponentenstatus bereitgestellt."
+                      )}
+                    </p>
+                  ) : (
+                    componentRows.map((item) => (
+                      <div
+                        key={item.name}
+                        className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
+                      >
+                        <span className="text-sm font-medium text-foreground">{item.name}</span>
+                        <StatusBadge status={item.status} />
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </section>

@@ -245,33 +245,6 @@ function buildServerCard(detail: LegacyServiceDetailResult): HomeServiceCard {
   };
 }
 
-function buildErrorCard(serviceId: LegacyDetailServiceId, error: string): HomeServiceCard {
-  const name = serviceId === "sony" ? "PlayStation Network" : "Overwatch";
-  const icon = serviceId === "sony" ? "Tv" : "Gamepad2";
-  const uptimeHistory = Array.from({ length: 30 }, () => 0.5);
-  const responseHistory = Array.from({ length: 24 }, (_, i) => 26 + Math.sin(i * 0.6) * 2);
-
-  return {
-    serviceId,
-    generatedAt: null,
-    error,
-    server: {
-      id: serviceId,
-      name,
-      icon,
-      status: "degraded",
-      uptime: 50,
-      metricLabel: "Live data unavailable",
-      trendLabel: "Status pipeline",
-      trendValueLabel: "Fetch error",
-      uptimeHistory,
-      responseHistory,
-      incidents: [],
-      services: [],
-    },
-  };
-}
-
 function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de") {
   if (!lastRefreshAt) {
     return pickLang(language, "Live monitoring · Fetching live status", "Live-Monitoring · Lade Live-Status");
@@ -345,7 +318,6 @@ const Index = () => {
         const reason =
           result.reason instanceof Error ? result.reason.message : "Unknown fetch error";
         nextErrors.push(`${serviceId}: ${reason}`);
-        nextCards.push(buildErrorCard(serviceId, reason));
       }
 
       const generatedTimes = nextCards
@@ -410,7 +382,7 @@ const Index = () => {
 
         {cards.length === 0 && isRefreshing ? (
           <div className="glass glass-specular h-[84px] animate-fade-in-up rounded-2xl" />
-        ) : (
+        ) : cards.length > 0 ? (
           <div className="animate-fade-in-up">
             <OverallStatus
               state={overallState}
@@ -418,13 +390,30 @@ const Index = () => {
               totalCount={cards.length}
             />
           </div>
+        ) : (
+          <div className="glass glass-specular rounded-2xl p-4 animate-fade-in-up">
+            <div className="relative z-10">
+              <p className="text-sm font-semibold text-foreground">
+                {pickLang(language, "No live service data loaded", "Keine Live-Service-Daten geladen")}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {pickLang(
+                  language,
+                  "Cards are shown only when the live API/JSON response loads successfully.",
+                  "Karten werden nur angezeigt, wenn die Live-API/JSON-Antwort erfolgreich geladen wird."
+                )}
+              </p>
+            </div>
+          </div>
         )}
 
         {cards.length === 0 ? (
-          <div className="mt-4 space-y-4">
-            <div className="glass glass-specular h-40 rounded-2xl" />
-            <div className="glass glass-specular h-40 rounded-2xl" />
-          </div>
+          isRefreshing ? (
+            <div className="mt-4 space-y-4">
+              <div className="glass glass-specular h-40 rounded-2xl" />
+              <div className="glass glass-specular h-40 rounded-2xl" />
+            </div>
+          ) : null
         ) : (
           <div className="mt-4 space-y-4">
             {cards.map((card, index) => (
@@ -467,11 +456,14 @@ const Index = () => {
 
         {errorMessages.length > 0 ? (
           <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-3 py-2 text-[11px] text-amber-200">
-            {pickLang(
-              language,
-              "Some live sources failed to load. Cards stay available and will retry automatically.",
-              "Einige Live-Quellen konnten nicht geladen werden. Karten bleiben sichtbar und werden automatisch erneut geladen."
-            )}
+            <p>
+              {pickLang(
+                language,
+                "Some live sources failed to load. Only successfully loaded API data is shown. Automatic retries stay active.",
+                "Einige Live-Quellen konnten nicht geladen werden. Es werden nur erfolgreich geladene API-Daten angezeigt. Automatische Wiederholungen bleiben aktiv."
+              )}
+            </p>
+            <p className="mt-1 opacity-90">{errorMessages.join(" | ")}</p>
           </div>
         ) : null}
       </main>
