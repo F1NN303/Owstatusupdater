@@ -7,7 +7,7 @@ import requests
 
 ROOT = Path(__file__).resolve().parent.parent
 STATUS_PATH = ROOT / "site" / "data" / "status.json"
-STATE_PATH = ROOT / "site" / "data" / "email_alert_state.json"
+STATE_PATH = ROOT / ".bot_state" / "email_alert_state.json"
 DEFAULT_SITE_URL = "https://f1nn303.github.io/Owstatusupdater/"
 DEFAULT_COOLDOWN_MINUTES = 360
 BREVO_ENDPOINT = "https://api.brevo.com/v3/smtp/email"

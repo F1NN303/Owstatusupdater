@@ -26,12 +26,14 @@ SERVICE_CONFIGS = {
         "builder": build_overwatch_dashboard_payload,
         "site_url": "https://f1nn303.github.io/Owstatusupdater/",
         "data_dir": Path("site/data"),
+        "state_path": Path(".bot_state/overwatch_state.json"),
     },
     "sony": {
         "label": "Sony",
         "builder": build_sony_dashboard_payload,
         "site_url": "https://f1nn303.github.io/Owstatusupdater/sony/",
         "data_dir": Path("site/sony/data"),
+        "state_path": Path(".bot_state/sony_state.json"),
     },
 }
 
@@ -559,7 +561,6 @@ def _build_summary(payload: dict, history: dict) -> dict:
             "status": "./status.json",
             "history": "./history.json",
             "alerts": "./alerts.json",
-            "state": "./state.json",
             "rss": "./rss.xml",
         },
     }
@@ -678,7 +679,8 @@ def main(service_key: str = "overwatch") -> None:
     now = dt.datetime.now(dt.UTC)
     data_dir = Path(config["data_dir"])
     data_dir.mkdir(parents=True, exist_ok=True)
-    state_path = data_dir / "state.json"
+    state_path = Path(config.get("state_path") or (data_dir / "state.json"))
+    state_path.parent.mkdir(parents=True, exist_ok=True)
     previous_state = _read_state(state_path)
 
     builder_kwargs: dict = {"force_refresh": True}
