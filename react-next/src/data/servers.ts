@@ -10,6 +10,7 @@ export interface ServerService {
   uptime: number; // percentage
   latency?: number;
   metricLabel?: string;
+  sourceUnavailableCount?: number;
   trendLabel?: string;
   trendValueLabel?: string;
   lastIncident?: string;

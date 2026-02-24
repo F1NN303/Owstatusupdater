@@ -923,6 +923,19 @@ const ServerDetail = () => {
     detail?.payload.analytics?.signal_metrics?.reports_24h ?? detail?.payload.outage?.reports_24h ?? "--";
   const severityScore = detail?.payload.analytics?.severity_score ?? "--";
   const modelVersion = detail?.payload.analytics?.model_version ?? "--";
+  const sourceOkCountNum =
+    typeof detail?.payload.analytics?.source_ok_count === "number"
+      ? detail.payload.analytics.source_ok_count
+      : null;
+  const sourceTotalCountNum =
+    typeof detail?.payload.analytics?.source_total_count === "number"
+      ? detail.payload.analytics.source_total_count
+      : null;
+  const sourceUnavailableCount =
+    sourceOkCountNum !== null && sourceTotalCountNum !== null && sourceTotalCountNum > sourceOkCountNum
+      ? Math.max(sourceTotalCountNum - sourceOkCountNum, 0)
+      : 0;
+  const hasSourceUnavailable = sourceUnavailableCount > 0;
   const sourceOkCount = detail?.payload.analytics?.source_ok_count ?? "--";
   const sourceTotalCount = detail?.payload.analytics?.source_total_count ?? "--";
   const changeSummary = detail?.payload.changes?.summary;
@@ -988,6 +1001,16 @@ const ServerDetail = () => {
   );
   const indicatorWidth = Math.max(0, unclampedIndicatorWidth);
   const t = (en: string, de: string) => pickLang(language, en, de);
+  const sourceUnavailableLabel = hasSourceUnavailable
+    ? t(
+        sourceUnavailableCount === 1
+          ? "1 source unavailable"
+          : `${sourceUnavailableCount} sources unavailable`,
+        sourceUnavailableCount === 1
+          ? "1 Quelle nicht verfuegbar"
+          : `${sourceUnavailableCount} Quellen nicht verfuegbar`
+      )
+    : null;
   const apiBadge = t("API", "API");
   const derivedBadge = t("Derived", "Abgeleitet");
   const formatRegionSeverityLabel = (value?: string | null) => {
@@ -1227,11 +1250,17 @@ const ServerDetail = () => {
 
                 <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3">
                   <div className="flex items-center justify-between gap-3">
-                    <div className="flex min-w-0 items-center gap-2">
+                    <div className="flex min-w-0 flex-wrap items-center gap-2">
                       <StatusBadge status={serviceStatus} size="md" />
                       <span className="truncate text-[11px] text-muted-foreground">
                         {quickMetricLabel}
                       </span>
+                      {hasSourceUnavailable && sourceUnavailableLabel ? (
+                        <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-1.5 py-0.5 text-[10px] font-medium text-status-offline">
+                          <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
+                          {sourceUnavailableLabel}
+                        </span>
+                      ) : null}
                     </div>
                     <span className="shrink-0 text-[11px] font-medium text-foreground">
                       {trendScoreLabel}
@@ -1262,6 +1291,12 @@ const ServerDetail = () => {
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
                     {t("Confidence", "Vertrauen")}: {detail.sourceConfidenceText}
                   </span>
+                  {hasSourceUnavailable && sourceUnavailableLabel ? (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-2.5 py-1 text-[11px] font-medium text-status-offline">
+                      <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
+                      {sourceUnavailableLabel}
+                    </span>
+                  ) : null}
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
                     {t("Updated", "Aktualisiert")}: {formatDateTime(detail.payload.generated_at)}
                   </span>

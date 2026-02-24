@@ -18,6 +18,14 @@ const ServerCard = ({ server, index }: ServerCardProps) => {
   const IconComp = getIconComponent(server.icon);
   const trendLabel = server.trendLabel || pickLang(language, "30-day uptime", "30-Tage-Uptime");
   const trendValueLabel = server.trendValueLabel || `${server.uptime}%`;
+  const sourceUnavailableCount =
+    typeof server.sourceUnavailableCount === "number" ? Math.max(server.sourceUnavailableCount, 0) : 0;
+  const hasSourceUnavailable = sourceUnavailableCount > 0;
+  const sourceUnavailableLabel = pickLang(
+    language,
+    sourceUnavailableCount === 1 ? "1 source unavailable" : `${sourceUnavailableCount} sources unavailable`,
+    sourceUnavailableCount === 1 ? "1 Quelle nicht verfuegbar" : `${sourceUnavailableCount} Quellen nicht verfuegbar`
+  );
 
   return (
     <button
@@ -34,12 +42,18 @@ const ServerCard = ({ server, index }: ServerCardProps) => {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-foreground">{server.name}</h3>
-              <div className="mt-0.5 flex items-center gap-2">
+              <div className="mt-0.5 flex flex-wrap items-center gap-2">
                 <StatusBadge status={server.status} />
                 {server.metricLabel ? (
                   <span className="text-[11px] text-muted-foreground">{server.metricLabel}</span>
                 ) : server.latency !== undefined ? (
                   <span className="text-[11px] text-muted-foreground">· {server.latency}ms</span>
+                ) : null}
+                {hasSourceUnavailable ? (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-1.5 py-0.5 text-[10px] font-medium text-status-offline">
+                    <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
+                    {sourceUnavailableLabel}
+                  </span>
                 ) : null}
               </div>
             </div>

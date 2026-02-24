@@ -207,6 +207,12 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
 
   const name = detail.service.id === "sony" ? "PlayStation Network" : "Overwatch";
   const icon = detail.service.id === "sony" ? "Tv" : "Gamepad2";
+  const sourceOk = detail.payload.analytics?.source_ok_count;
+  const sourceTotal = detail.payload.analytics?.source_total_count;
+  const sourceUnavailableCount =
+    typeof sourceOk === "number" && typeof sourceTotal === "number" && sourceTotal > sourceOk
+      ? Math.max(sourceTotal - sourceOk, 0)
+      : 0;
 
   const server: ServerService = {
     id: detail.service.id,
@@ -215,6 +221,7 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
     status,
     uptime: Number(score.toFixed(2)),
     metricLabel: deriveMetricLabel(detail, language),
+    sourceUnavailableCount,
     trendLabel: pickLang(language, "30-day signal trend", "30-Tage-Signaltrend"),
     trendValueLabel: formatPercent(score),
     lastIncident: detail.payload.outage?.incidents?.[0]?.title || undefined,
