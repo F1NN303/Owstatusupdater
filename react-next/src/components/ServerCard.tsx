@@ -24,7 +24,7 @@ const ServerCard = ({ server, index }: ServerCardProps) => {
   const sourceUnavailableLabel = pickLang(
     language,
     sourceUnavailableCount === 1 ? "1 source unavailable" : `${sourceUnavailableCount} sources unavailable`,
-    sourceUnavailableCount === 1 ? "1 Quelle nicht verfuegbar" : `${sourceUnavailableCount} Quellen nicht verfuegbar`
+    sourceUnavailableCount === 1 ? "1 Quelle nicht verfügbar" : `${sourceUnavailableCount} Quellen nicht verfügbar`
   );
 
   return (

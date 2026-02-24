@@ -381,7 +381,7 @@ const Index = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-28 pt-8">
+      <main className="mx-auto max-w-md px-4 pb-6 pt-8">
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
@@ -465,7 +465,7 @@ const Index = () => {
                   {pickLang(
                     language,
                     "Live data refresh may be delayed",
-                    "Live-Datenaktualisierung moeglicherweise verzoegert"
+                    "Live-Datenaktualisierung möglicherweise verzögert"
                   )}
                 </p>
                 <p className="mt-0.5 opacity-90">
@@ -497,7 +497,7 @@ const Index = () => {
                   {pickLang(
                     language,
                     "Open the current signup page for outage notifications",
-                    "Aktuelle Anmeldeseite fuer Stoerungs-Benachrichtigungen oeffnen"
+                    "Aktuelle Anmeldeseite für Störungs-Benachrichtigungen öffnen"
                   )}
                 </p>
               </div>

@@ -50,7 +50,7 @@ const Favorites = () => {
   const { language } = useAppShell();
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-28 pt-8">
+      <main className="mx-auto max-w-md px-4 pb-6 pt-8">
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
@@ -76,7 +76,7 @@ const Favorites = () => {
                 {pickLang(language, "Pinned Shortcuts", "Fixierte Kurzlinks")}
               </h2>
               <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground">
-                {favoriteItems.length} {pickLang(language, "items", "Eintraege")}
+                {favoriteItems.length} {pickLang(language, "items", "Einträge")}
               </span>
             </div>
 
@@ -105,7 +105,7 @@ const Favorites = () => {
                         </div>
                       </div>
                       <span className="text-[11px] text-muted-foreground">
-                        {pickLang(language, "Open", "Oeffnen")}
+                        {pickLang(language, "Open", "öffnen")}
                       </span>
                     </Link>
                   );
@@ -151,7 +151,7 @@ const Favorites = () => {
                 {pickLang(language, "Service Home", "Status-Start")}
               </p>
               <p className="mt-1 text-[11px] text-muted-foreground">
-                {pickLang(language, "Open live overview cards", "Live-Uebersichtskarten oeffnen")}
+                {pickLang(language, "Open live overview cards", "Live-Übersichtskarten öffnen")}
               </p>
             </div>
           </Link>

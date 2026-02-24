@@ -20,7 +20,7 @@ const SettingsPage = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-28 pt-8">
+      <main className="mx-auto max-w-md px-4 pb-6 pt-8">
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
@@ -126,7 +126,7 @@ const SettingsPage = () => {
                     {pickLang(
                       language,
                       "Reduce UI animations and transitions across the app.",
-                      "Reduziert UI-Animationen und Uebergaenge in der gesamten App."
+                      "Reduziert UI-Animationen und Übergänge in der gesamten App."
                     )}
                   </p>
                 </div>
@@ -165,21 +165,21 @@ const SettingsPage = () => {
                 href={resolveLegacyPath("/legacy-home.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>{pickLang(language, "Open legacy home", "Legacy-Startseite oeffnen")}</span>
+                <span>{pickLang(language, "Open legacy home", "Legacy-Startseite öffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               <a
                 href={resolveLegacyPath("/legacy-overwatch.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>{pickLang(language, "Open legacy Overwatch dashboard", "Legacy-Overwatch-Dashboard oeffnen")}</span>
+                <span>{pickLang(language, "Open legacy Overwatch dashboard", "Legacy-Overwatch-Dashboard öffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               <a
                 href={resolveLegacyPath("/sony/legacy-index.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>{pickLang(language, "Open legacy Sony PSN dashboard", "Legacy-Sony-PSN-Dashboard oeffnen")}</span>
+                <span>{pickLang(language, "Open legacy Sony PSN dashboard", "Legacy-Sony-PSN-Dashboard öffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
             </div>
@@ -217,7 +217,7 @@ const SettingsPage = () => {
                 {pickLang(
                   language,
                   "This page changes local UI preferences and links only. Backend status pipelines continue to run in GitHub Actions.",
-                  "Diese Seite aendert nur lokale UI-Einstellungen und Links. Die Backend-Status-Pipelines laufen weiter in GitHub Actions."
+                  "Diese Seite ändert nur lokale UI-Einstellungen und Links. Die Backend-Status-Pipelines laufen weiter in GitHub Actions."
                 )}
               </p>
             </div>

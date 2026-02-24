@@ -24,7 +24,7 @@ function statusText(result: LegacySubscriptionLoadResult | null) {
     return "Loading subscription config...";
   }
   if (result.status === "ready") {
-    return `Ready � ${providerLabel(result.config?.provider)} form verified`;
+    return `Ready · ${providerLabel(result.config?.provider)} form verified`;
   }
   if (result.status === "loading") {
     return "Loading subscription config...";
@@ -134,7 +134,7 @@ const EmailAlerts = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-28 pt-8">
+      <main className="mx-auto max-w-md px-4 pb-6 pt-8">
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
@@ -144,7 +144,7 @@ const EmailAlerts = () => {
               {pickLang(
                 language,
                 "Secure outage notifications via Brevo with captcha and double opt-in",
-                "Sichere Stoerungs-Benachrichtigungen via Brevo mit Captcha und Double-Opt-In"
+                "Sichere Störungs-Benachrichtigungen via Brevo mit Captcha und Double-Opt-In"
               )}
             </p>
           </div>
@@ -234,7 +234,7 @@ const EmailAlerts = () => {
                 disabled={!canSubmit}
                 className="inline-flex h-11 items-center justify-center rounded-xl border border-primary/25 bg-primary/15 px-4 text-sm font-semibold text-primary transition-all enabled:hover:bg-primary/20 enabled:active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {pickLang(language, "Open Secure Signup", "Sichere Anmeldung oeffnen")}
+                {pickLang(language, "Open Secure Signup", "Sichere Anmeldung öffnen")}
               </button>
             </form>
 
@@ -295,7 +295,7 @@ const EmailAlerts = () => {
                 href={resolveLegacyPath("/email-alerts.html")}
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>{pickLang(language, "Open legacy embedded signup page", "Legacy-Seite mit eingebettetem Formular oeffnen")}</span>
+                <span>{pickLang(language, "Open legacy embedded signup page", "Legacy-Seite mit eingebettetem Formular öffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               {configResult?.parsedUrl ? (
@@ -305,7 +305,7 @@ const EmailAlerts = () => {
                   rel="noreferrer"
                   className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
                 >
-                  <span>{pickLang(language, "Open Brevo form directly", "Brevo-Formular direkt oeffnen")}</span>
+                  <span>{pickLang(language, "Open Brevo form directly", "Brevo-Formular direkt öffnen")}</span>
                   <ExternalLink size={14} className="text-muted-foreground" />
                 </a>
               ) : null}
