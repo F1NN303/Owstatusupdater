@@ -293,18 +293,46 @@ function clampList<T>(value: T[] | undefined, max = 6) {
   return Array.isArray(value) ? value.slice(0, max) : [];
 }
 
+function DataOriginBadge({
+  label,
+  tone = "api",
+}: {
+  label: string;
+  tone?: "api" | "derived";
+}) {
+  const toneClass =
+    tone === "derived"
+      ? "border-amber-300/20 bg-amber-300/10 text-amber-200"
+      : "border-sky-300/20 bg-sky-300/10 text-sky-200";
+
+  return (
+    <span
+      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${toneClass}`}
+    >
+      {label}
+    </span>
+  );
+}
+
 function MetricTile({
   label,
   value,
   hint,
+  badgeLabel,
+  badgeTone,
 }: {
   label: string;
   value: string | number;
   hint?: string;
+  badgeLabel?: string;
+  badgeTone?: "api" | "derived";
 }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-      <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+        {badgeLabel ? <DataOriginBadge label={badgeLabel} tone={badgeTone} /> : null}
+      </div>
       <p className="mt-1 text-base font-semibold tracking-tight text-foreground">{value}</p>
       {hint ? <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{hint}</p> : null}
     </div>
@@ -316,20 +344,27 @@ function SignalChartCard({
   valueLabel,
   subtitle,
   children,
+  badgeLabel,
+  badgeTone,
 }: {
   title: string;
   valueLabel?: string;
   subtitle?: string;
   children: ReactNode;
+  badgeLabel?: string;
+  badgeTone?: "api" | "derived";
 }) {
   return (
     <section className="glass glass-specular rounded-2xl p-4">
       <div className="relative z-10">
         <div className="mb-3 flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              {title}
-            </h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {title}
+              </h2>
+              {badgeLabel ? <DataOriginBadge label={badgeLabel} tone={badgeTone} /> : null}
+            </div>
             {subtitle ? (
               <p className="mt-1 text-[11px] text-muted-foreground">{subtitle}</p>
             ) : null}
@@ -625,18 +660,23 @@ function LinkListSection({
   title,
   items,
   emptyText,
+  badgeLabel,
 }: {
   title: string;
   items: LegacyLinkItem[];
   emptyText: string;
+  badgeLabel?: string;
 }) {
   const { language } = useAppShell();
   return (
     <section className="glass glass-specular rounded-2xl p-4">
       <div className="relative z-10">
-        <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          {title}
-        </h2>
+        <div className="flex flex-wrap items-center gap-2">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            {title}
+          </h2>
+          {badgeLabel ? <DataOriginBadge label={badgeLabel} tone="api" /> : null}
+        </div>
         <div className="mt-3 space-y-2.5">
           {items.length === 0 ? (
             <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
@@ -947,6 +987,8 @@ const ServerDetail = () => {
   );
   const indicatorWidth = Math.max(0, unclampedIndicatorWidth);
   const t = (en: string, de: string) => pickLang(language, en, de);
+  const apiBadge = t("API", "API");
+  const derivedBadge = t("Derived", "Abgeleitet");
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
       return t("Overview", "Uebersicht");
@@ -1287,9 +1329,12 @@ const ServerDetail = () => {
               <>
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
-                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("API Component Breakdown", "API-Komponentenstatus")}
-                </h2>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {t("API Component Breakdown", "API-Komponentenstatus")}
+                  </h2>
+                  <DataOriginBadge label={apiBadge} tone="api" />
+                </div>
                 <div className="mt-3 space-y-2">
                   {componentRows.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
@@ -1316,6 +1361,8 @@ const ServerDetail = () => {
             <SignalChartCard
               title={t("30-Day Signal Health", "30-Tage-Signalgesundheit")}
               valueLabel={trendScoreLabel}
+              badgeLabel={derivedBadge}
+              badgeTone="derived"
               subtitle={t(
                 "Derived from incidents across the last 30 days",
                 "Aus Vorfaellen der letzten 30 Tage abgeleitet"
@@ -1330,6 +1377,8 @@ const ServerDetail = () => {
 
             <SignalChartCard
               title={t("Signal Activity (24h)", "Signalaktivitaet (24h)")}
+              badgeLabel={derivedBadge}
+              badgeTone="derived"
               subtitle={t(
                 "Derived from incident/report/news timestamps (not latency)",
                 "Aus Zeitstempeln von Vorfaellen/Meldungen/News abgeleitet (keine Latenz)"
@@ -1340,6 +1389,8 @@ const ServerDetail = () => {
 
             <SignalChartCard
               title={t("Daily Signal %", "Taegliches Signal %")}
+              badgeLabel={derivedBadge}
+              badgeTone="derived"
               subtitle={t(
                 "Derived daily health score from incident overlap",
                 "Abgeleiteter taeglicher Gesundheitswert aus Vorfall-Ueberlappung"
@@ -1349,10 +1400,10 @@ const ServerDetail = () => {
             </SignalChartCard>
 
             <section className="grid grid-cols-2 gap-3">
-              <MetricTile label={t("Severity Score", "Schweregrad-Score")} value={String(severityScore)} />
-              <MetricTile label={t("Reports (24h)", "Meldungen (24h)")} value={String(reports24h)} />
-              <MetricTile label={t("Sources", "Quellen")} value={`${sourceOkCount}/${sourceTotalCount}`} />
-              <MetricTile label={t("Model", "Modell")} value={String(modelVersion)} />
+              <MetricTile label={t("Severity Score", "Schweregrad-Score")} value={String(severityScore)} badgeLabel={apiBadge} />
+              <MetricTile label={t("Reports (24h)", "Meldungen (24h)")} value={String(reports24h)} badgeLabel={apiBadge} />
+              <MetricTile label={t("Sources", "Quellen")} value={`${sourceOkCount}/${sourceTotalCount}`} badgeLabel={apiBadge} />
+              <MetricTile label={t("Model", "Modell")} value={String(modelVersion)} badgeLabel={apiBadge} />
             </section>
               </>
             ) : null}
@@ -1361,27 +1412,34 @@ const ServerDetail = () => {
               <>
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
-                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Change Summary", "Aenderungsuebersicht")}
-                </h2>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {t("Change Summary", "Aenderungsuebersicht")}
+                  </h2>
+                  <DataOriginBadge label={apiBadge} tone="api" />
+                </div>
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   <MetricTile
                     label={t("New Reports", "Neue Meldungen")}
                     value={String(changeSummary?.new_reports ?? 0)}
                     hint={t("Latest refresh delta", "Delta der letzten Aktualisierung")}
+                    badgeLabel={apiBadge}
                   />
                   <MetricTile
                     label={t("New Incidents", "Neue Vorfaelle")}
                     value={String(changeSummary?.new_incidents ?? 0)}
                     hint={t("Latest refresh delta", "Delta der letzten Aktualisierung")}
+                    badgeLabel={apiBadge}
                   />
                   <MetricTile
                     label={t("Updated Incidents", "Aktualisierte Vorfaelle")}
                     value={String(changeSummary?.updated_incidents ?? 0)}
+                    badgeLabel={apiBadge}
                   />
                   <MetricTile
                     label={t("Resolved Incidents", "Geloeste Vorfaelle")}
                     value={String(changeSummary?.resolved_incidents ?? 0)}
+                    badgeLabel={apiBadge}
                   />
                 </div>
               </div>
@@ -1394,6 +1452,9 @@ const ServerDetail = () => {
                       <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                         {t("Top Reported Issues", "Top gemeldete Probleme")}
                       </h2>
+                      <div className="mt-1">
+                        <DataOriginBadge label={apiBadge} tone="api" />
+                      </div>
                       <p className="mt-1 text-[11px] text-muted-foreground">
                         {t(
                           "StatusGator community issue labels (live source scrape)",
@@ -1440,9 +1501,12 @@ const ServerDetail = () => {
             ) : null}
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
-                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Recent Incidents", "Letzte Vorfaelle")}
-                </h2>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {t("Recent Incidents", "Letzte Vorfaelle")}
+                  </h2>
+                  <DataOriginBadge label={apiBadge} tone="api" />
+                </div>
                 <div className="mt-3 space-y-2.5">
                   {outageIncidents.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
@@ -1497,9 +1561,12 @@ const ServerDetail = () => {
               <>
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
-                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Regional Snapshot", "Regionale Uebersicht")}
-                </h2>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {t("Regional Snapshot", "Regionale Uebersicht")}
+                  </h2>
+                  <DataOriginBadge label={apiBadge} tone="api" />
+                </div>
                 <div className="mt-3 space-y-2.5">
                   {regionEntries.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
@@ -1545,6 +1612,7 @@ const ServerDetail = () => {
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                     {t("Source Health", "Quellenstatus")}
                   </h2>
+                  <DataOriginBadge label={apiBadge} tone="api" />
                 </div>
                 <div className="mt-3 space-y-2.5">
                   {sources.length === 0 ? (
@@ -1596,11 +1664,11 @@ const ServerDetail = () => {
 
             {activeTab === "sources" ? (
               <>
-                <LinkListSection title={t("Official Updates", "Offizielle Updates")} items={officialItems} emptyText={t("No official updates in payload.", "Keine offiziellen Updates im Payload.")} />
-                <LinkListSection title={t("Reports", "Meldungen")} items={reportItems} emptyText={t("No report entries in payload.", "Keine Meldungseintraege im Payload.")} />
-                <LinkListSection title={t("News", "News")} items={newsItems} emptyText={t("No news entries in payload.", "Keine News-Eintraege im Payload.")} />
-                <LinkListSection title={t("Social", "Social")} items={socialItems} emptyText={t("No social entries in payload.", "Keine Social-Eintraege im Payload.")} />
-                <LinkListSection title={t("Known Resources", "Bekannte Quellen")} items={knownItems} emptyText={t("No known resources in payload.", "Keine bekannten Quellen im Payload.")} />
+                <LinkListSection title={t("Official Updates", "Offizielle Updates")} items={officialItems} emptyText={t("No official updates in payload.", "Keine offiziellen Updates im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Reports", "Meldungen")} items={reportItems} emptyText={t("No report entries in payload.", "Keine Meldungseintraege im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("News", "News")} items={newsItems} emptyText={t("No news entries in payload.", "Keine News-Eintraege im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Social", "Social")} items={socialItems} emptyText={t("No social entries in payload.", "Keine Social-Eintraege im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Known Resources", "Bekannte Quellen")} items={knownItems} emptyText={t("No known resources in payload.", "Keine bekannten Quellen im Payload.")} badgeLabel={apiBadge} />
               </>
             ) : null}
             </div>
