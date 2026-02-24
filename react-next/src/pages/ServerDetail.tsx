@@ -405,13 +405,13 @@ function MetricTile({
   badgeTone?: "api" | "derived";
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-2.5 sm:p-3">
       <div className="flex items-start justify-between gap-2">
-        <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+        <p className="text-[10px] uppercase tracking-[0.13em] text-muted-foreground">{label}</p>
         {badgeLabel ? <DataOriginBadge label={badgeLabel} tone={badgeTone} /> : null}
       </div>
-      <p className="mt-1 text-base font-semibold tracking-tight text-foreground">{value}</p>
-      {hint ? <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{hint}</p> : null}
+      <p className="mt-1 text-sm font-semibold tracking-tight text-foreground sm:text-base">{value}</p>
+      {hint ? <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground sm:text-[11px]">{hint}</p> : null}
     </div>
   );
 }
@@ -432,22 +432,22 @@ function SignalChartCard({
   badgeTone?: "api" | "derived";
 }) {
   return (
-    <section className="glass glass-specular rounded-2xl p-4">
+    <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
       <div className="relative z-10">
-        <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="mb-2.5 flex items-start justify-between gap-3">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              <h2 className="text-[11px] font-semibold uppercase tracking-[0.13em] text-muted-foreground sm:text-xs">
                 {title}
               </h2>
               {badgeLabel ? <DataOriginBadge label={badgeLabel} tone={badgeTone} /> : null}
             </div>
             {subtitle ? (
-              <p className="mt-1 text-[11px] text-muted-foreground">{subtitle}</p>
+              <p className="mt-1 text-[10px] text-muted-foreground sm:text-[11px]">{subtitle}</p>
             ) : null}
           </div>
           {valueLabel ? (
-            <p className="shrink-0 text-lg font-bold tracking-tight text-foreground">
+            <p className="shrink-0 text-base font-bold tracking-tight text-foreground sm:text-lg">
               {valueLabel}
             </p>
           ) : null}
@@ -905,7 +905,7 @@ function LinkListSection({
 }) {
   const { language } = useAppShell();
   return (
-    <section className="glass glass-specular rounded-2xl p-4">
+    <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
       <div className="relative z-10">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -913,9 +913,9 @@ function LinkListSection({
           </h2>
           {badgeLabel ? <DataOriginBadge label={badgeLabel} tone="api" /> : null}
         </div>
-        <div className="mt-3 space-y-2.5">
+        <div className="mt-2.5 space-y-2">
           {items.length === 0 ? (
-            <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
+            <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[13px] text-muted-foreground sm:text-sm">
               {emptyText}
             </p>
           ) : (
@@ -925,12 +925,12 @@ function LinkListSection({
                 href={item.url || "#"}
                 target="_blank"
                 rel="noreferrer"
-                className="block rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 transition-colors hover:bg-white/10"
+                className="block rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-colors hover:bg-white/10 sm:py-2.5"
               >
-                <p className="line-clamp-2 text-sm font-medium leading-snug text-foreground">
+                <p className="line-clamp-2 text-[13px] font-medium leading-snug text-foreground sm:text-sm">
                   {item.title || pickLang(language, "Untitled item", "Unbenannter Eintrag")}
                 </p>
-                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
+                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-muted-foreground sm:text-[11px]">
                   {item.source ? <span>{item.source}</span> : null}
                   {item.published_at ? <span>{formatDateTime(item.published_at)}</span> : null}
                   {item.meta ? <span>{item.meta}</span> : null}
@@ -1405,16 +1405,16 @@ const ServerDetail = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-6 pt-6">
-        <div className="flex items-center justify-between gap-3 pb-3 pt-2">
+      <main className="mx-auto max-w-md px-4 pb-6 pt-4">
+        <div className="flex items-center justify-between gap-3 pb-2.5 pt-1">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="glass flex h-9 w-9 items-center justify-center rounded-xl transition-all active:scale-90"
+              className="glass flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90"
               aria-label={t("Go back", "Zurück")}
             >
-              <ArrowLeft size={18} className="text-foreground" />
+              <ArrowLeft size={16} className="text-foreground" />
             </button>
             <div>
               <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
@@ -1428,11 +1428,11 @@ const ServerDetail = () => {
           <button
             type="button"
             onClick={() => void loadDetail("refresh")}
-            className="glass flex h-9 w-9 items-center justify-center rounded-xl transition-all active:scale-90"
+            className="glass flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90"
             aria-label={t("Refresh detail", "Detail aktualisieren")}
           >
             <RefreshCw
-              size={16}
+              size={15}
               className={`text-muted-foreground transition-transform ${isRefreshing ? "animate-spin" : ""}`}
             />
           </button>
@@ -1474,26 +1474,26 @@ const ServerDetail = () => {
                       <ServiceIcon size={18} className="text-primary" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80 sm:text-[11px] sm:tracking-[0.18em]">
                         {pickLang(language, "Live Status Monitor", "Live-Status-Monitor")}
                       </p>
-                      <h1 className="mt-1 text-xl font-bold tracking-tight text-foreground">
+                      <h1 className="mt-1 text-lg font-bold tracking-tight text-foreground sm:text-xl">
                         {detail.service.name}
                       </h1>
-                      <p className="mt-1 text-[12px] leading-snug text-muted-foreground">
+                      <p className="mt-1 text-[11px] leading-snug text-muted-foreground sm:text-[12px]">
                         {latestIncidentTitle}
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                        <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground">
+                        <span className="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[9px] text-muted-foreground sm:px-2 sm:text-[10px]">
                           {topUpdatedLabel}
                         </span>
                         {topSourceLabel ? (
-                          <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground">
+                          <span className="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[9px] text-muted-foreground sm:px-2 sm:text-[10px]">
                             {topSourceLabel}
                           </span>
                         ) : null}
                         {hasSourceUnavailable && sourceUnavailableLabel ? (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-2 py-0.5 text-[10px] font-medium text-status-offline">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-1.5 py-0.5 text-[9px] font-medium text-status-offline sm:px-2 sm:text-[10px]">
                             <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
                             {sourceUnavailableLabel}
                           </span>
@@ -1518,7 +1518,7 @@ const ServerDetail = () => {
                         {quickMetricLabel}
                       </span>
                     </div>
-                    <span className="shrink-0 text-[11px] font-medium text-foreground">
+                    <span className="shrink-0 text-[10px] font-medium text-foreground sm:text-[11px]">
                       {trendScoreLabel}
                     </span>
                   </div>
@@ -1531,7 +1531,7 @@ const ServerDetail = () => {
                   </div>
                 </div>
 
-                <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
                   {detail.payload.outage?.summary ||
                     detail.payload.official?.summary ||
                     t(
@@ -1756,7 +1756,7 @@ const ServerDetail = () => {
 
             {activeTab === "incidents" ? (
               <>
-            <section className="glass glass-specular rounded-2xl p-4">
+            <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -1839,7 +1839,7 @@ const ServerDetail = () => {
                 </div>
               </section>
             ) : null}
-            <section className="glass glass-specular rounded-2xl p-4">
+            <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -1906,11 +1906,11 @@ const ServerDetail = () => {
               <MetricTile label={t("Model", "Modell")} value={String(modelVersion)} badgeLabel={apiBadge} />
             </section>
 
-            <section className="glass glass-specular rounded-2xl p-4">
+            <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Regional Snapshot", "Regionale Übersicht")}
+                    {t("Region Status", "Regionenstatus")}
                   </h2>
                   <DataOriginBadge label={apiBadge} tone="api" />
                 </div>
@@ -1952,19 +1952,19 @@ const ServerDetail = () => {
               </div>
             </section>
 
-            <section className="glass glass-specular rounded-2xl p-4">
+            <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
               <div className="relative z-10">
                 <div className="flex items-center gap-2">
                   <ShieldCheck size={14} className="text-primary/80" />
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Source Health", "Quellenstatus")}
+                    {t("Source Checks", "Quellenchecks")}
                   </h2>
                   <DataOriginBadge label={apiBadge} tone="api" />
                 </div>
                 <div className="mt-3 space-y-2.5">
                   {sources.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      {t("No source diagnostics in payload.", "Keine Quellendiagnose im Payload.")}
+                      {t("No source check details in payload.", "Keine Quellenprüfungen im Payload.")}
                     </p>
                   ) : (
                     sources.map((source, index) => (
@@ -1992,10 +1992,10 @@ const ServerDetail = () => {
                           </span>
                         </div>
                         <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
-                          <span>{t("freshness", "Frische")}: {formatSourceFreshnessLabel(source.freshness)}</span>
+                          <span>{t("freshness", "Aktualität")}: {formatSourceFreshnessLabel(source.freshness)}</span>
                           <span>{t("age", "Alter")}: {formatAgeMinutes(source.age_minutes)}</span>
                           {typeof source.item_count === "number" ? <span>{t("items", "Einträge")}: {source.item_count}</span> : null}
-                          {typeof source.duration_ms === "number" ? <span>{t("fetch", "Abruf")}: {source.duration_ms}ms</span> : null}
+                          {typeof source.duration_ms === "number" ? <span>{t("fetch", "Abrufzeit")}: {source.duration_ms}ms</span> : null}
                         </div>
                         {source.error ? (
                           <p className="mt-1 text-[11px] text-rose-200">{source.error}</p>
@@ -2011,11 +2011,11 @@ const ServerDetail = () => {
 
             {activeTab === "sources" ? (
               <>
-                <LinkListSection title={t("Official Updates", "Offizielle Updates")} items={officialItems} emptyText={t("No official updates in payload.", "Keine offiziellen Updates im Payload.")} badgeLabel={apiBadge} />
-                <LinkListSection title={t("Reports", "Meldungen")} items={reportItems} emptyText={t("No report entries in payload.", "Keine Meldungseinträge im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Official Updates", "Offizielle Meldungen")} items={officialItems} emptyText={t("No official updates in payload.", "Keine offiziellen Meldungen im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("User Reports", "Nutzermeldungen")} items={reportItems} emptyText={t("No report entries in payload.", "Keine Nutzermeldungen im Payload.")} badgeLabel={apiBadge} />
                 <LinkListSection title={t("News", "News")} items={newsItems} emptyText={t("No news entries in payload.", "Keine News-Einträge im Payload.")} badgeLabel={apiBadge} />
                 <LinkListSection title={t("Social", "Social")} items={socialItems} emptyText={t("No social entries in payload.", "Keine Social-Einträge im Payload.")} badgeLabel={apiBadge} />
-                <LinkListSection title={t("Known Resources", "Bekannte Quellen")} items={knownItems} emptyText={t("No known resources in payload.", "Keine bekannten Quellen im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Helpful Links", "Hilfreiche Links")} items={knownItems} emptyText={t("No known resources in payload.", "Keine hilfreichen Links im Payload.")} badgeLabel={apiBadge} />
               </>
             ) : null}
             </div>
