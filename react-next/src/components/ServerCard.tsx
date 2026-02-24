@@ -5,6 +5,7 @@ import UptimeBar from "./UptimeBar";
 import MiniSparkline from "./MiniSparkline";
 import type { ServerService } from "@/data/servers";
 import { getIconComponent } from "@/data/servers";
+import { pickLang, useAppShell } from "@/lib/appShell";
 
 interface ServerCardProps {
   server: ServerService;
@@ -12,9 +13,10 @@ interface ServerCardProps {
 }
 
 const ServerCard = ({ server, index }: ServerCardProps) => {
+  const { language } = useAppShell();
   const navigate = useNavigate();
   const IconComp = getIconComponent(server.icon);
-  const trendLabel = server.trendLabel || "30-day uptime";
+  const trendLabel = server.trendLabel || pickLang(language, "30-day uptime", "30-Tage-Uptime");
   const trendValueLabel = server.trendValueLabel || `${server.uptime}%`;
 
   return (
@@ -37,7 +39,7 @@ const ServerCard = ({ server, index }: ServerCardProps) => {
                 {server.metricLabel ? (
                   <span className="text-[11px] text-muted-foreground">{server.metricLabel}</span>
                 ) : server.latency !== undefined ? (
-                  <span className="text-[11px] text-muted-foreground">· {server.latency}ms</span>
+                  <span className="text-[11px] text-muted-foreground">Â· {server.latency}ms</span>
                 ) : null}
               </div>
             </div>

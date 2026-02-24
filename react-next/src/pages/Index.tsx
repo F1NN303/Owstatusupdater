@@ -154,7 +154,8 @@ function buildActivitySparkline(detail: LegacyServiceDetailResult) {
 
   const severityOffset = detail.tone === "bad" ? 55 : detail.tone === "warn" ? 34 : 16;
   const combinedScore = detail.payload.analytics?.signal_metrics?.cross_source?.combined_score ?? 0;
-  const reports24h = detail.payload.outage?.reports_24h ?? detail.payload.analytics?.signal_metrics?.reports_24h ?? 0;
+  const reports24h =
+    detail.payload.outage?.reports_24h ?? detail.payload.analytics?.signal_metrics?.reports_24h ?? 0;
 
   if (bins.every((value) => value === 0)) {
     return Array.from({ length: 24 }, () => 0);
@@ -182,22 +183,23 @@ function formatPercent(value: number) {
   return `${value >= 99 ? value.toFixed(2) : value.toFixed(1)}%`;
 }
 
-function deriveMetricLabel(detail: LegacyServiceDetailResult) {
+function deriveMetricLabel(detail: LegacyServiceDetailResult, language: "en" | "de") {
   const ok = detail.payload.analytics?.source_ok_count;
   const total = detail.payload.analytics?.source_total_count;
   if (typeof ok === "number" && typeof total === "number" && total > 0) {
-    return `${ok}/${total} sources`;
+    return pickLang(language, `${ok}/${total} sources`, `${ok}/${total} Quellen`);
   }
 
-  const reports24h = detail.payload.outage?.reports_24h ?? detail.payload.analytics?.signal_metrics?.reports_24h;
+  const reports24h =
+    detail.payload.outage?.reports_24h ?? detail.payload.analytics?.signal_metrics?.reports_24h;
   if (typeof reports24h === "number") {
-    return `${reports24h} reports/24h`;
+    return pickLang(language, `${reports24h} reports/24h`, `${reports24h} Meldungen/24h`);
   }
 
-  return "Live signals";
+  return pickLang(language, "Live signals", "Live-Signale");
 }
 
-function buildServerCard(detail: LegacyServiceDetailResult): HomeServiceCard {
+function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de"): HomeServiceCard {
   const uptimeHistory = buildTrendHistory(detail);
   const score = trendPercent(uptimeHistory);
   const responseHistory = buildActivitySparkline(detail);
@@ -212,8 +214,8 @@ function buildServerCard(detail: LegacyServiceDetailResult): HomeServiceCard {
     icon,
     status,
     uptime: Number(score.toFixed(2)),
-    metricLabel: deriveMetricLabel(detail),
-    trendLabel: "30-day signal trend",
+    metricLabel: deriveMetricLabel(detail, language),
+    trendLabel: pickLang(language, "30-day signal trend", "30-Tage-Signaltrend"),
     trendValueLabel: formatPercent(score),
     lastIncident: detail.payload.outage?.incidents?.[0]?.title || undefined,
     uptimeHistory,
@@ -319,7 +321,7 @@ const Index = () => {
         const result = results[i];
 
         if (result.status === "fulfilled") {
-          nextCards.push(buildServerCard(result.value));
+          nextCards.push(buildServerCard(result.value, language));
           continue;
         }
 
@@ -350,7 +352,7 @@ const Index = () => {
     }, 60_000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [language]);
 
   const overallState = useMemo(
     () => overallStateFromCards(cards, errorMessages.length > 0),

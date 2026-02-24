@@ -478,7 +478,7 @@ function SignalActivityChart({ data }: { data: number[] }) {
   );
 }
 
-function DailySignalBars({ values }: { values: number[] }) {
+function DailySignalBars({ values, dayLabel }: { values: number[]; dayLabel: string }) {
   const labels = [1, 6, 11, 16, 21, 26];
 
   return (
@@ -515,7 +515,7 @@ function DailySignalBars({ values }: { values: number[] }) {
                   key={`bar-${index}`}
                   className={`flex-1 rounded-[3px] ${toneClass}`}
                   style={{ height: `${height}%` }}
-                  title={`Day ${index + 1}: ${value.toFixed(0)}%`}
+                  title={`${dayLabel} ${index + 1}: ${value.toFixed(0)}%`}
                 />
               );
             })}
@@ -989,6 +989,23 @@ const ServerDetail = () => {
   const t = (en: string, de: string) => pickLang(language, en, de);
   const apiBadge = t("API", "API");
   const derivedBadge = t("Derived", "Abgeleitet");
+  const formatRegionSeverityLabel = (value?: string | null) => {
+    const key = String(value || "").toLowerCase();
+    if (key === "stable") return t("Stable", "Stabil");
+    if (key === "minor") return t("Minor", "Gering");
+    if (key === "degraded") return t("Degraded", "Beeintraechtigt");
+    if (key === "major") return t("Major", "Schwer");
+    if (key === "unknown") return t("Unknown", "Unbekannt");
+    return value || t("Unknown", "Unbekannt");
+  };
+  const formatSourceFreshnessLabel = (value?: string | null) => {
+    const key = String(value || "").toLowerCase();
+    if (key === "fresh") return t("fresh", "frisch");
+    if (key === "warm") return t("warm", "aktuell");
+    if (key === "stale") return t("stale", "veraltet");
+    if (key === "unknown") return t("unknown", "unbekannt");
+    return value || t("unknown", "unbekannt");
+  };
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
       return t("Overview", "Uebersicht");
@@ -1396,7 +1413,7 @@ const ServerDetail = () => {
                 "Abgeleiteter taeglicher Gesundheitswert aus Vorfall-Ueberlappung"
               )}
             >
-              <DailySignalBars values={dailySignalPercentages} />
+              <DailySignalBars values={dailySignalPercentages} dayLabel={t("Day", "Tag")} />
             </SignalChartCard>
 
             <section className="grid grid-cols-2 gap-3">
@@ -1592,9 +1609,9 @@ const ServerDetail = () => {
                             <span className="text-sm font-medium text-foreground">{region.key}</span>
                           </div>
                           <div className="text-right text-[11px] text-muted-foreground">
-                            <p>{region.severityKey}</p>
+                            <p>{formatRegionSeverityLabel(region.severityKey)}</p>
                             <p>
-                              score {region.score ?? "n/a"} | weight {region.weight ?? "n/a"}%
+                              {t("score", "Score")} {region.score ?? "n/a"} | {t("weight", "Gewicht")} {region.weight ?? "n/a"}%
                             </p>
                           </div>
                         </div>
@@ -1631,7 +1648,7 @@ const ServerDetail = () => {
                               {source.name || t("Unknown source", "Unbekannte Quelle")}
                             </p>
                             <p className="mt-0.5 text-[11px] text-muted-foreground">
-                              {(source.kind || "unknown").replace(/-/g, " ")}
+                              {String(source.kind || t("unknown", "unbekannt")).replace(/-/g, " ")}
                             </p>
                           </div>
                           <span
@@ -1645,7 +1662,7 @@ const ServerDetail = () => {
                           </span>
                         </div>
                         <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
-                          <span>{t("freshness", "Frische")}: {source.freshness || t("unknown", "unbekannt")}</span>
+                          <span>{t("freshness", "Frische")}: {formatSourceFreshnessLabel(source.freshness)}</span>
                           <span>{t("age", "Alter")}: {formatAgeMinutes(source.age_minutes)}</span>
                           {typeof source.item_count === "number" ? <span>{t("items", "Eintraege")}: {source.item_count}</span> : null}
                           {typeof source.duration_ms === "number" ? <span>{t("fetch", "Abruf")}: {source.duration_ms}ms</span> : null}
