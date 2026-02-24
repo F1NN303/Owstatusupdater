@@ -97,6 +97,7 @@ def _read_state(path: Path) -> dict:
             "incident_index": {},
             "report_index": {},
             "last_alert_id": None,
+            "last_good_outage_snapshot": None,
         }
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -108,6 +109,39 @@ def _read_state(path: Path) -> dict:
         "incident_index": dict(data.get("incident_index", {})),
         "report_index": dict(data.get("report_index", {})),
         "last_alert_id": data.get("last_alert_id"),
+        "last_good_outage_snapshot": data.get("last_good_outage_snapshot"),
+    }
+
+
+def _extract_last_good_outage_snapshot(payload: dict) -> dict | None:
+    outage = payload.get("outage")
+    if not isinstance(outage, dict):
+        return None
+    if str(outage.get("source") or "") != "StatusGator":
+        return None
+
+    current_status = str(outage.get("current_status") or "").strip().lower()
+    reports_24h = outage.get("reports_24h")
+    incidents = outage.get("incidents") if isinstance(outage.get("incidents"), list) else []
+    top_reported_issues = (
+        outage.get("top_reported_issues") if isinstance(outage.get("top_reported_issues"), list) else []
+    )
+    summary = str(outage.get("summary") or "").strip().lower()
+    is_placeholder = (
+        current_status in {"", "unknown"}
+        and reports_24h in (None, "")
+        and len(incidents) == 0
+        and len(top_reported_issues) == 0
+        and "temporarily unavailable" in summary
+    )
+    if is_placeholder:
+        return None
+
+    outage_copy = dict(outage)
+    outage_copy.pop("fallback", None)
+    return {
+        "captured_at": payload.get("generated_at"),
+        "outage": outage_copy,
     }
 
 
@@ -642,12 +676,16 @@ def main(service_key: str = "overwatch") -> None:
     SERVICE_SITE_URL = str(config["site_url"])
 
     now = dt.datetime.now(dt.UTC)
-    payload = config["builder"](force_refresh=True)
-
     data_dir = Path(config["data_dir"])
     data_dir.mkdir(parents=True, exist_ok=True)
     state_path = data_dir / "state.json"
     previous_state = _read_state(state_path)
+
+    builder_kwargs: dict = {"force_refresh": True}
+    if service_key == "overwatch" and previous_state.get("last_good_outage_snapshot"):
+        builder_kwargs["previous_outage_fallback"] = previous_state.get("last_good_outage_snapshot")
+
+    payload = config["builder"](**builder_kwargs)
 
     changes, incident_index, report_index = _build_changes(previous_state, payload)
     payload["changes"] = changes
@@ -676,12 +714,19 @@ def main(service_key: str = "overwatch") -> None:
     alerts_path = data_dir / "alerts.json"
     alerts_path.write_text(json.dumps(alerts, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    next_last_good_outage_snapshot = previous_state.get("last_good_outage_snapshot")
+    if service_key == "overwatch":
+        extracted = _extract_last_good_outage_snapshot(payload)
+        if extracted:
+            next_last_good_outage_snapshot = extracted
+
     state = {
         "updated_at": _iso_utc(now),
         "last_severity_key": str((payload.get("analytics") or {}).get("severity_key") or "unknown"),
         "incident_index": incident_index,
         "report_index": report_index,
         "last_alert_id": alerts.get("events", [{}])[0].get("id") if alerts.get("events") else previous_state.get("last_alert_id"),
+        "last_good_outage_snapshot": next_last_good_outage_snapshot,
     }
     state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 

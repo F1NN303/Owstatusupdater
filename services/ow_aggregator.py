@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime as dt
 import html as html_lib
+import copy
 import re
 import threading
 import time
@@ -46,6 +47,7 @@ SEVERITY_INCIDENT_SCORE_CAP = 5.5
 SEVERITY_MODEL_VERSION = "2.4"
 SOURCE_FRESH_MINUTES_FRESH = 120
 SOURCE_FRESH_MINUTES_WARM = 24 * 60
+STATUSGATOR_FALLBACK_MAX_AGE_HOURS = 12
 REGION_KEYWORDS = {
     "eu": ("eu", "europe", "emea", "germany", "france", "uk", "netherlands", "poland", "sweden"),
     "na": ("na", "north america", "usa", "us", "canada", "mexico", "west coast", "east coast"),
@@ -258,6 +260,59 @@ def _source_freshness(last_item_at: str | None) -> tuple[str, int | None]:
 def _safe_error_message(exc: Exception) -> str:
     msg = str(exc).strip().splitlines()[0] if exc else "unknown error"
     return _clean(msg)[:220]
+
+
+def _is_statusgator_placeholder_outage(outage: dict[str, Any] | None) -> bool:
+    if not isinstance(outage, dict):
+        return True
+    if str(outage.get("source") or "") != "StatusGator":
+        return False
+    summary = _clean(outage.get("summary"))
+    current_status = _clean(outage.get("current_status")).lower()
+    reports_24h = outage.get("reports_24h")
+    incidents = outage.get("incidents") if isinstance(outage.get("incidents"), list) else []
+    top_reported_issues = (
+        outage.get("top_reported_issues") if isinstance(outage.get("top_reported_issues"), list) else []
+    )
+    return (
+        current_status in {"", "unknown"}
+        and reports_24h in (None, "")
+        and len(incidents) == 0
+        and len(top_reported_issues) == 0
+        and "temporarily unavailable" in summary.lower()
+    )
+
+
+def _build_cached_statusgator_fallback(
+    snapshot: dict[str, Any] | None,
+    reason: str,
+) -> tuple[dict[str, Any] | None, int | None]:
+    if not isinstance(snapshot, dict):
+        return None, None
+
+    outage = snapshot.get("outage")
+    if not isinstance(outage, dict):
+        return None, None
+    if str(outage.get("source") or "") != "StatusGator":
+        return None, None
+    if _is_statusgator_placeholder_outage(outage):
+        return None, None
+
+    captured_at = str(snapshot.get("captured_at") or "")
+    age_h = _hours_since(captured_at)
+    if age_h is None or age_h > STATUSGATOR_FALLBACK_MAX_AGE_HOURS:
+        return None, None
+
+    age_minutes = int(max(age_h * 60.0, 0.0))
+    fallback = copy.deepcopy(outage)
+    fallback["fallback"] = {
+        "kind": "last-good-statusgator-cache",
+        "captured_at": captured_at,
+        "age_minutes": age_minutes,
+        "reason": reason,
+    }
+    fallback.setdefault("source_type", "Downdetector-like")
+    return fallback, age_minutes
 
 
 def _parse_statusgator_top_reported_issues(soup: BeautifulSoup) -> list[dict[str, Any]]:
@@ -801,7 +856,7 @@ def _build_official_block(known_resources: list[dict[str, Any]], news: list[dict
     }
 
 
-def _collect_payload() -> dict[str, Any]:
+def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> dict[str, Any]:
     sources: list[dict[str, Any]] = []
     reports: list[dict[str, Any]] = []
     known_resources: list[dict[str, Any]] = []
@@ -829,7 +884,11 @@ def _collect_payload() -> dict[str, Any]:
             }
         )
     except Exception as exc:  # pragma: no cover
-        outage = {
+        fallback_outage, fallback_age_minutes = _build_cached_statusgator_fallback(
+            previous_outage_fallback,
+            reason="statusgator-fetch-failed",
+        )
+        outage = fallback_outage or {
             "source": "StatusGator",
             "source_type": "Downdetector-like",
             "url": STATUSGATOR_URL,
@@ -851,6 +910,8 @@ def _collect_payload() -> dict[str, Any]:
                 "age_minutes": None,
                 "duration_ms": int((time.perf_counter() - started) * 1000),
                 "fetched_at": _utc_now_iso(),
+                "fallback_cache_used": bool(fallback_outage),
+                "fallback_age_minutes": fallback_age_minutes,
             }
         )
 
@@ -999,7 +1060,10 @@ def _collect_payload() -> dict[str, Any]:
     }
 
 
-def build_dashboard_payload(force_refresh: bool = False) -> dict[str, Any]:
+def build_dashboard_payload(
+    force_refresh: bool = False,
+    previous_outage_fallback: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     global _CACHE_TS
     global _CACHE_PAYLOAD
 
@@ -1008,7 +1072,7 @@ def build_dashboard_payload(force_refresh: bool = False) -> dict[str, Any]:
         if not force_refresh and _CACHE_PAYLOAD and (now - _CACHE_TS) < CACHE_TTL_SECONDS:
             return _CACHE_PAYLOAD
 
-    payload = _collect_payload()
+    payload = _collect_payload(previous_outage_fallback=previous_outage_fallback)
 
     with _CACHE_LOCK:
         _CACHE_PAYLOAD = payload
