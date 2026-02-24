@@ -53,7 +53,7 @@ const TONE_STYLES = {
 } as const;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
-const DATA_STALE_WARNING_MINUTES = 60;
+const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 type SwipeAxisLock = "x" | "y" | null;

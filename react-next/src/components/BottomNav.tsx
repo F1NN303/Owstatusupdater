@@ -1,5 +1,5 @@
 import { Bell, Home, Settings, Star } from "lucide-react";
-import { formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
+import { appBuildMeta, formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const navItems = [
@@ -20,6 +20,10 @@ const BottomNav = () => {
   const navigate = useNavigate();
   const normalizedPath = location.pathname.replace(/\/+$/, "") || "/";
   const versionLabel = formatBuildLabel(language);
+  const buildMeta = appBuildMeta();
+  const compactVersionLabel = buildMeta.id
+    ? `v ${buildMeta.id.slice(0, 7)}`
+    : pickLang(language, "v unknown", "v unbekannt");
 
   const navLabel = (key: string) => {
     if (key === "home") {
@@ -52,8 +56,8 @@ const BottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-[env(safe-area-inset-bottom,8px)] pt-0">
-      <div className="pointer-events-none mx-auto mb-1 flex max-w-md items-center justify-between px-1">
-        <div className="pointer-events-auto inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/35 px-1 py-1 shadow-[0_8px_20px_rgba(0,0,0,0.25)] backdrop-blur-md">
+      <div className="pointer-events-none mx-auto mb-1.5 flex max-w-md items-center justify-center px-1">
+        <div className="pointer-events-auto inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/35 px-1.5 py-1 shadow-[0_8px_20px_rgba(0,0,0,0.25)] backdrop-blur-md">
           <button
             type="button"
             onClick={() => setLanguage("en")}
@@ -78,9 +82,14 @@ const BottomNav = () => {
           >
             DE
           </button>
-        </div>
-        <div className="rounded-full border border-white/10 bg-black/30 px-2.5 py-1 text-[10px] text-muted-foreground shadow-[0_8px_20px_rgba(0,0,0,0.25)] backdrop-blur-md">
-          {versionLabel}
+          <span className="h-3.5 w-px bg-white/10" aria-hidden="true" />
+          <div
+            className="rounded-full border border-white/10 bg-black/25 px-2 py-1 text-[10px] text-muted-foreground"
+            title={versionLabel}
+            aria-label={versionLabel}
+          >
+            {compactVersionLabel}
+          </div>
         </div>
       </div>
       <div className="glass-nav mx-auto flex max-w-md items-center justify-around rounded-[1.75rem] px-1 py-1.5">

@@ -24,7 +24,7 @@ interface HomeServiceCard {
 
 const LIVE_SERVICE_IDS: LegacyDetailServiceId[] = ["overwatch", "sony"];
 const DAY_MS = 24 * 60 * 60 * 1000;
-const DATA_STALE_WARNING_MINUTES = 60;
+const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
 
 function parseDate(value?: string | null) {
