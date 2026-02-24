@@ -1,0 +1,34 @@
+name: Watch Data Freshness
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  watch-freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check deployed payload freshness and trigger recovery refresh if stale
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/watch_data_freshness.py \
+            --dispatch-on-stale \
+            --repo F1NN303/Owstatusupdater \
+            --workflow-id update-site-data.yml \
+            --ref main \
+            --max-age-minutes 75 \
+            --cooldown-minutes 20
