@@ -260,6 +260,68 @@ def _safe_error_message(exc: Exception) -> str:
     return _clean(msg)[:220]
 
 
+def _parse_statusgator_top_reported_issues(soup: BeautifulSoup) -> list[dict[str, Any]]:
+    heading = None
+    for candidate in soup.find_all(["h2", "h3", "h4"]):
+        heading_text = _clean(candidate.get_text(" ", strip=True)).lower()
+        if "top reported issues" in heading_text:
+            heading = candidate
+            break
+
+    if heading is None:
+        return []
+
+    issue_list = heading.find_next("ul")
+    if issue_list is None:
+        return []
+
+    items: list[dict[str, Any]] = []
+    seen_labels: set[str] = set()
+    for row in issue_list.find_all("li", recursive=False):
+        label = _clean(row.get("aria-label"))
+
+        if not label:
+            for span in row.find_all("span"):
+                candidate = _clean(span.get_text(" ", strip=True))
+                if not candidate:
+                    continue
+                if re.fullmatch(r"\d+", candidate):
+                    continue
+                if len(candidate) <= 2 and candidate.lower() in {"ok", "up"}:
+                    continue
+                label = candidate
+                break
+
+        x_data = str(row.get("x-data") or "")
+        count: int | None = None
+        x_data_match = re.search(r"initialCount\s*:\s*(\d+)", x_data)
+        if x_data_match:
+            count = int(x_data_match.group(1))
+        else:
+            count_candidates = re.findall(r"\b(\d+)\b", _clean(row.get_text(" ", strip=True)))
+            if count_candidates:
+                count = int(count_candidates[-1])
+
+        if not label:
+            continue
+
+        normalized_label = label.casefold()
+        if normalized_label in seen_labels:
+            continue
+        seen_labels.add(normalized_label)
+
+        items.append(
+            {
+                "label": label,
+                "count": count,
+            }
+        )
+        if len(items) >= 8:
+            break
+
+    return items
+
+
 def fetch_statusgator_outages() -> dict[str, Any]:
     html = _request_text(STATUSGATOR_URL)
     soup = BeautifulSoup(html, "html.parser")
@@ -316,6 +378,7 @@ def fetch_statusgator_outages() -> dict[str, Any]:
             break
 
     incidents = _sort_by_datetime(incidents, field="started_at")[:8]
+    top_reported_issues = _parse_statusgator_top_reported_issues(soup)
     return {
         "source": "StatusGator",
         "source_type": "Downdetector-like",
@@ -324,6 +387,7 @@ def fetch_statusgator_outages() -> dict[str, Any]:
         "current_status": current_status,
         "reports_24h": reports_24h,
         "incidents": incidents,
+        "top_reported_issues": top_reported_issues,
     }
 
 

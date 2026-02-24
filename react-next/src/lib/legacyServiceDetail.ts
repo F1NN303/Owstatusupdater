@@ -25,6 +25,11 @@ export interface LegacyOutageIncident {
   acknowledgement?: string | null;
 }
 
+export interface LegacyTopReportedIssue {
+  label?: string | null;
+  count?: number | null;
+}
+
 export interface LegacySourceHealth {
   name?: string;
   kind?: string;
@@ -73,6 +78,7 @@ export interface LegacyStatusDetailPayload {
     current_status?: string;
     reports_24h?: number;
     incidents?: LegacyOutageIncident[];
+    top_reported_issues?: LegacyTopReportedIssue[];
   };
   official?: {
     summary?: string;

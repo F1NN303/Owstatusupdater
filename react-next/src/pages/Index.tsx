@@ -9,7 +9,7 @@ import {
   type LegacyOutageIncident,
   type LegacyServiceDetailResult,
 } from "@/lib/legacyServiceDetail";
-import { Bell, ChevronRight, RefreshCw } from "lucide-react";
+import { Bell, ChevronRight, RefreshCw, TriangleAlert } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -24,6 +24,8 @@ interface HomeServiceCard {
 
 const LIVE_SERVICE_IDS: LegacyDetailServiceId[] = ["overwatch", "sony"];
 const DAY_MS = 24 * 60 * 60 * 1000;
+const DATA_STALE_WARNING_MINUTES = 60;
+const DATA_STALE_CRITICAL_MINUTES = 180;
 
 function parseDate(value?: string | null) {
   if (!value) {
@@ -229,7 +231,7 @@ function buildServerCard(detail: LegacyServiceDetailResult): HomeServiceCard {
 
 function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de") {
   if (!lastRefreshAt) {
-    return pickLang(language, "Live monitoring · Fetching live status", "Live-Monitoring · Lade Live-Status");
+    return pickLang(language, "Live monitoring Â· Fetching live status", "Live-Monitoring Â· Lade Live-Status");
   }
 
   const refreshed = parseDate(lastRefreshAt);
@@ -239,13 +241,13 @@ function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de
 
   const diffSeconds = Math.max(0, Math.round((Date.now() - refreshed.getTime()) / 1000));
   if (diffSeconds < 15) {
-    return pickLang(language, "Live monitoring · Updated just now", "Live-Monitoring · Gerade aktualisiert");
+    return pickLang(language, "Live monitoring Â· Updated just now", "Live-Monitoring Â· Gerade aktualisiert");
   }
   if (diffSeconds < 60) {
     return pickLang(
       language,
-      `Live monitoring · Updated ${diffSeconds}s ago`,
-      `Live-Monitoring · Vor ${diffSeconds}s aktualisiert`
+      `Live monitoring Â· Updated ${diffSeconds}s ago`,
+      `Live-Monitoring Â· Vor ${diffSeconds}s aktualisiert`
     );
   }
 
@@ -255,9 +257,33 @@ function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de
   });
   return pickLang(
     language,
-    `Live monitoring · Updated ${timeLabel}`,
-    `Live-Monitoring · Aktualisiert ${timeLabel}`
+    `Live monitoring Â· Updated ${timeLabel}`,
+    `Live-Monitoring Â· Aktualisiert ${timeLabel}`
   );
+}
+
+function ageMinutesSince(value?: string | null) {
+  const parsed = parseDate(value);
+  if (!parsed) {
+    return null;
+  }
+  return Math.max(0, Math.round((Date.now() - parsed.getTime()) / (60 * 1000)));
+}
+
+function formatAgeMinutes(value?: number | null) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return "n/a";
+  }
+  if (value < 60) {
+    return `${Math.round(value)}m`;
+  }
+  const hours = Math.floor(value / 60);
+  const mins = Math.round(value % 60);
+  if (hours < 24) {
+    return `${hours}h ${mins}m`;
+  }
+  const days = Math.floor(hours / 24);
+  return `${days}d ${hours % 24}h`;
 }
 
 function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): OverallState {
@@ -338,6 +364,11 @@ const Index = () => {
     () => formatHeaderSubtitle(lastRefreshAt, language),
     [lastRefreshAt, language]
   );
+  const dataAgeMinutes = useMemo(() => ageMinutesSince(lastRefreshAt), [lastRefreshAt]);
+  const isDataStale =
+    typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_WARNING_MINUTES;
+  const isDataVeryStale =
+    typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_CRITICAL_MINUTES;
 
   return (
     <AppLayout>
@@ -409,6 +440,36 @@ const Index = () => {
             ))}
           </div>
         )}
+
+        {isDataStale ? (
+          <div
+            className={`mt-4 rounded-2xl border px-3 py-2.5 text-[11px] ${
+              isDataVeryStale
+                ? "border-rose-300/20 bg-rose-300/10 text-rose-200"
+                : "border-amber-300/20 bg-amber-300/10 text-amber-200"
+            }`}
+          >
+            <div className="flex items-start gap-2">
+              <TriangleAlert size={14} className="mt-0.5 shrink-0" />
+              <div>
+                <p className="font-semibold">
+                  {pickLang(
+                    language,
+                    "Live data refresh may be delayed",
+                    "Live-Datenaktualisierung moeglicherweise verzoegert"
+                  )}
+                </p>
+                <p className="mt-0.5 opacity-90">
+                  {pickLang(
+                    language,
+                    `Latest successful payload is ${formatAgeMinutes(dataAgeMinutes)} old.`,
+                    `Der letzte erfolgreiche Payload ist ${formatAgeMinutes(dataAgeMinutes)} alt.`
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : null}
 
         <Link
           to="/alerts"

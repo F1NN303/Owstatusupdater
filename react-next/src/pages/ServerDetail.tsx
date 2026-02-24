@@ -12,6 +12,7 @@ import {
   type LegacyOutageIncident,
   type LegacyServiceDetailResult,
   type LegacySourceHealth,
+  type LegacyTopReportedIssue,
 } from "@/lib/legacyServiceDetail";
 import {
   ArrowLeft,
@@ -52,6 +53,8 @@ const TONE_STYLES = {
 } as const;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+const DATA_STALE_WARNING_MINUTES = 60;
+const DATA_STALE_CRITICAL_MINUTES = 180;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 type SwipeAxisLock = "x" | "y" | null;
 
@@ -83,6 +86,14 @@ function parseMaybeDate(value?: string | null) {
   }
   const parsed = new Date(value);
   return Number.isFinite(parsed.getTime()) ? parsed : null;
+}
+
+function ageMinutesSince(value?: string | null) {
+  const parsed = parseMaybeDate(value);
+  if (!parsed) {
+    return null;
+  }
+  return Math.max(0, Math.round((Date.now() - parsed.getTime()) / (60 * 1000)));
 }
 
 function parseDurationToMs(value?: string | null) {
@@ -561,6 +572,32 @@ function extractApiServiceComponents(
   return [];
 }
 
+function extractTopReportedIssues(
+  detail: LegacyServiceDetailResult
+): Array<{ label: string; count: number | null }> {
+  const issues = detail.payload.outage?.top_reported_issues;
+  if (!Array.isArray(issues)) {
+    return [];
+  }
+
+  return issues
+    .map((item) => {
+      const issue = item as LegacyTopReportedIssue;
+      const label = String(issue.label ?? "").trim();
+      const rawCount = issue.count;
+      const count =
+        typeof rawCount === "number" && Number.isFinite(rawCount)
+          ? Math.max(0, Math.round(rawCount))
+          : null;
+      if (!label) {
+        return null;
+      }
+      return { label, count };
+    })
+    .filter((item): item is { label: string; count: number | null } => Boolean(item))
+    .slice(0, 8);
+}
+
 function incidentToneClass(incident: LegacyOutageIncident) {
   const text = `${incident.title || ""} ${incident.acknowledgement || ""}`.toLowerCase();
   if (text.includes("outage") || text.includes("offline")) {
@@ -870,6 +907,10 @@ const ServerDetail = () => {
   const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? extractApiServiceComponents(detail) : [];
+  const topReportedIssues = detail ? extractTopReportedIssues(detail) : [];
+  const dataAgeMinutes = detail ? ageMinutesSince(detail.payload.generated_at) : null;
+  const isDataStale = typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_WARNING_MINUTES;
+  const isDataVeryStale = typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_CRITICAL_MINUTES;
   const activeTabIndex = DETAIL_TABS.findIndex((tab) => tab.key === activeTab);
   const lastTabIndex = DETAIL_TABS.length - 1;
   const indicatorProgress = Math.max(0, Math.min(lastTabIndex, activeTabIndex + tabDragOffset));
@@ -1166,6 +1207,31 @@ const ServerDetail = () => {
               </div>
             ) : null}
 
+            {detail && isDataStale ? (
+              <div
+                className={`rounded-2xl border px-3 py-2.5 text-xs ${
+                  isDataVeryStale
+                    ? "border-rose-300/20 bg-rose-300/10 text-rose-200"
+                    : "border-amber-300/20 bg-amber-300/10 text-amber-200"
+                }`}
+              >
+                <div className="flex items-start gap-2">
+                  <TriangleAlert size={15} className="mt-0.5 shrink-0" />
+                  <div>
+                    <p className="font-semibold">
+                      {t("Data refresh may be delayed", "Datenaktualisierung moeglicherweise verzoegert")}
+                    </p>
+                    <p className="mt-0.5 opacity-90">
+                      {t(
+                        `The latest successful payload is ${formatAgeMinutes(dataAgeMinutes)} old.`,
+                        `Der letzte erfolgreiche Payload ist ${formatAgeMinutes(dataAgeMinutes)} alt.`
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
             <section className="glass glass-specular rounded-2xl p-2">
               <div
                 ref={tabTrackRef}
@@ -1320,6 +1386,58 @@ const ServerDetail = () => {
                 </div>
               </div>
             </section>
+            {detail.service.id === "overwatch" || topReportedIssues.length > 0 ? (
+              <section className="glass glass-specular rounded-2xl p-4">
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                        {t("Top Reported Issues", "Top gemeldete Probleme")}
+                      </h2>
+                      <p className="mt-1 text-[11px] text-muted-foreground">
+                        {t(
+                          "StatusGator community issue labels (live source scrape)",
+                          "StatusGator Community-Problemlabels (Live-Quellenabruf)"
+                        )}
+                      </p>
+                    </div>
+                    {detail.payload.outage?.url ? (
+                      <a
+                        href={detail.payload.outage.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-foreground hover:bg-white/10"
+                      >
+                        {t("Source", "Quelle")}
+                        <ExternalLink size={12} />
+                      </a>
+                    ) : null}
+                  </div>
+                  <div className="mt-3 space-y-2">
+                    {topReportedIssues.length === 0 ? (
+                      <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
+                        {t(
+                          "No top issue labels are available in the current StatusGator page response.",
+                          "In der aktuellen StatusGator-Seitenantwort sind keine Top-Problemlabels verfuegbar."
+                        )}
+                      </p>
+                    ) : (
+                      topReportedIssues.map((item) => (
+                        <div
+                          key={item.label}
+                          className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
+                        >
+                          <p className="text-sm font-medium text-foreground">{item.label}</p>
+                          <span className="shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-muted-foreground">
+                            {item.count ?? "--"}
+                          </span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </section>
+            ) : null}
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
