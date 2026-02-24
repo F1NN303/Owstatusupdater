@@ -5,6 +5,10 @@ import { execSync } from "node:child_process";
 import { componentTagger } from "lovable-tagger";
 
 function safeGitSha() {
+  const envSha = String(process.env.VITE_GIT_SHA || process.env.GITHUB_SHA || "").trim();
+  if (envSha) {
+    return envSha.slice(0, 40);
+  }
   try {
     return execSync("git rev-parse HEAD", {
       cwd: path.resolve(__dirname, ".."),
@@ -28,7 +32,13 @@ export default defineConfig(({ mode }) => {
   const defaultBase = mode === "development" ? "/" : "/Owstatusupdater/next/";
   const base = (env.VITE_APP_BASE_PATH || defaultBase).trim() || defaultBase;
   const normalizedBase = base.endsWith("/") ? base : `${base}/`;
-  const buildStamp = (env.VITE_BUILD_STAMP || env.VITE_BUILD_TIME || defaultBuildStamp()).trim();
+  const buildStamp = (
+    env.VITE_BUILD_STAMP ||
+    env.VITE_BUILD_TIME ||
+    process.env.VITE_BUILD_STAMP ||
+    process.env.GITHUB_BUILD_STAMP ||
+    defaultBuildStamp()
+  ).trim();
   const buildId = (env.VITE_BUILD_ID || env.VITE_GIT_SHA || safeGitSha()).trim();
 
   return {

@@ -33,6 +33,22 @@ jobs:
         with:
           ref: main
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: react-next/package-lock.json
+
+      - name: Install React app dependencies
+        run: npm ci --no-audit --no-fund
+        working-directory: react-next
+
+      - name: Build React root + preview artifacts
+        env:
+          VITE_GIT_SHA: ${{ github.sha }}
+        run: python3 scripts/build_react_artifacts.py
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
