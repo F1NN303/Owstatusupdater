@@ -114,7 +114,7 @@ export function formatBuildLabel(language: AppLanguage) {
   const prefix = language === "de" ? "Version" : "Version";
 
   if (!stamp && !id) {
-    return `${prefix}: Preview`;
+    return `${prefix}: ${language === "de" ? "unbekannt" : "unknown"}`;
   }
 
   const shortId = id ? id.slice(0, 7) : "";
@@ -126,3 +126,4 @@ export function formatBuildLabel(language: AppLanguage) {
   }
   return `${prefix}: ${shortId}`;
 }
+
