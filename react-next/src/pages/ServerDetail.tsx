@@ -948,6 +948,7 @@ const ServerDetail = () => {
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? extractApiServiceComponents(detail) : [];
   const topReportedIssues = detail ? extractTopReportedIssues(detail) : [];
+  const topReportedIssuesMeta = detail?.payload.outage?.top_reported_issues_meta;
   const dataAgeMinutes = detail ? ageMinutesSince(detail.payload.generated_at) : null;
   const isDataStale = typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_WARNING_MINUTES;
   const isDataVeryStale = typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_CRITICAL_MINUTES;
@@ -1018,6 +1019,42 @@ const ServerDetail = () => {
     }
     return t("Sources", "Quellen");
   };
+  const isOverwatchDetail = detail?.service.id === "overwatch";
+  const isSonyDetail = detail?.service.id === "sony";
+  const sonyTopIssueMode = String(topReportedIssuesMeta?.mode || "").toLowerCase();
+  const sonyTopIssueWindowHours =
+    typeof topReportedIssuesMeta?.window_hours === "number" ? topReportedIssuesMeta.window_hours : null;
+  const sonyTopIssueWindowDays =
+    typeof sonyTopIssueWindowHours === "number" && sonyTopIssueWindowHours > 0
+      ? Math.round(sonyTopIssueWindowHours / 24)
+      : null;
+  const showTopIssueCard = Boolean(detail && (isOverwatchDetail || isSonyDetail || topReportedIssues.length > 0));
+  const topIssueCardTitle = isSonyDetail
+    ? t("Top Status Feed Labels", "Top Status-Feed-Labels")
+    : t("Top Reported Issues", "Top gemeldete Probleme");
+  const topIssueCardSubtitle = isSonyDetail
+    ? sonyTopIssueMode === "history"
+      ? t(
+          `Grouped from official PlayStation regional status feed rows (history window ${sonyTopIssueWindowDays ?? "n/a"}d, not user reports).`,
+          `Gruppiert aus offiziellen PlayStation-Regional-Statusfeeds (Historienfenster ${sonyTopIssueWindowDays ?? "n/a"} Tage, keine Nutzerberichte).`
+        )
+      : t(
+          "Grouped from official PlayStation regional status feed rows (active feed rows, not user reports).",
+          "Gruppiert aus offiziellen PlayStation-Regional-Statusfeeds (aktive Feed-Zeilen, keine Nutzerberichte)."
+        )
+    : t(
+        "StatusGator community issue labels (live source scrape)",
+        "StatusGator Community-Problemlabels (Live-Quellenabruf)"
+      );
+  const topIssueEmptyText = isSonyDetail
+    ? t(
+        "No grouped Sony status feed labels are available in the current payload window.",
+        "Im aktuellen Payload-Fenster sind keine gruppierten Sony-Statusfeed-Labels verfuegbar."
+      )
+    : t(
+        "No top issue labels are available in the current StatusGator page response.",
+        "In der aktuellen StatusGator-Seitenantwort sind keine Top-Problemlabels verfuegbar."
+      );
 
   const beginTabSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
     if (event.touches.length !== 1) {
@@ -1461,22 +1498,19 @@ const ServerDetail = () => {
                 </div>
               </div>
             </section>
-            {detail.service.id === "overwatch" || topReportedIssues.length > 0 ? (
+            {showTopIssueCard ? (
               <section className="glass glass-specular rounded-2xl p-4">
                 <div className="relative z-10">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                        {t("Top Reported Issues", "Top gemeldete Probleme")}
+                        {topIssueCardTitle}
                       </h2>
                       <div className="mt-1">
                         <DataOriginBadge label={apiBadge} tone="api" />
                       </div>
                       <p className="mt-1 text-[11px] text-muted-foreground">
-                        {t(
-                          "StatusGator community issue labels (live source scrape)",
-                          "StatusGator Community-Problemlabels (Live-Quellenabruf)"
-                        )}
+                        {topIssueCardSubtitle}
                       </p>
                     </div>
                     {detail.payload.outage?.url ? (
@@ -1494,10 +1528,7 @@ const ServerDetail = () => {
                   <div className="mt-3 space-y-2">
                     {topReportedIssues.length === 0 ? (
                       <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                        {t(
-                          "No top issue labels are available in the current StatusGator page response.",
-                          "In der aktuellen StatusGator-Seitenantwort sind keine Top-Problemlabels verfuegbar."
-                        )}
+                        {topIssueEmptyText}
                       </p>
                     ) : (
                       topReportedIssues.map((item) => (

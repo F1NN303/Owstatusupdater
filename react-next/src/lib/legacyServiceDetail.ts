@@ -30,6 +30,13 @@ export interface LegacyTopReportedIssue {
   count?: number | null;
 }
 
+export interface LegacyTopReportedIssuesMeta {
+  source?: string | null;
+  kind?: string | null;
+  mode?: string | null;
+  window_hours?: number | null;
+}
+
 export interface LegacySourceHealth {
   name?: string;
   kind?: string;
@@ -79,6 +86,7 @@ export interface LegacyStatusDetailPayload {
     reports_24h?: number;
     incidents?: LegacyOutageIncident[];
     top_reported_issues?: LegacyTopReportedIssue[];
+    top_reported_issues_meta?: LegacyTopReportedIssuesMeta;
   };
   official?: {
     summary?: string;

@@ -33,6 +33,8 @@ REGION_LABELS = {
 SOURCE_FRESH_MINUTES_FRESH = 120
 SOURCE_FRESH_MINUTES_WARM = 24 * 60
 ACTIVE_EVENT_MAX_AGE_HOURS = 14 * 24
+TOP_ISSUE_HISTORY_MAX_AGE_HOURS = 90 * 24
+TOP_REPORTED_ISSUES_LIMIT = 8
 
 STATUS_BASE_SCORE = {
     "outage": 4.6,
@@ -388,6 +390,106 @@ def _build_official_updates(incidents: list[dict[str, Any]]) -> list[dict[str, A
     return updates
 
 
+def _top_reported_issue_label(event: dict[str, Any]) -> str:
+    service_name = _clean(event.get("service"))
+    country = _clean(event.get("country"))
+    region_key = _clean(event.get("region")).lower()
+    region_label = REGION_LABELS.get(region_key, region_key.upper() if region_key else "Region")
+    status_label = _clean(event.get("status_label")) or _clean(event.get("status_type")) or "Status"
+
+    if service_name:
+        subject = service_name
+    elif country:
+        subject = f"{country} region"
+    else:
+        subject = region_label
+    return f"{subject} - {status_label}"
+
+
+def _top_issue_priority(event: dict[str, Any]) -> int:
+    status_type = str(event.get("status_type") or "ok")
+    if status_type == "outage":
+        return 3
+    if status_type == "degraded":
+        return 2
+    if status_type == "maintenance":
+        return 1
+    return 0
+
+
+def _build_top_reported_issues(
+    active_events: list[dict[str, Any]],
+    raw_events: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    active_candidates = [
+        event for event in active_events if str(event.get("status_type") or "ok") != "ok"
+    ]
+
+    mode = "active"
+    candidates = active_candidates
+    window_hours = ACTIVE_EVENT_MAX_AGE_HOURS
+
+    if not candidates:
+        mode = "history"
+        window_hours = TOP_ISSUE_HISTORY_MAX_AGE_HOURS
+        candidates = []
+        for event in raw_events:
+            if str(event.get("status_type") or "ok") == "ok":
+                continue
+            age_h = _hours_since(event.get("started_at"))
+            if age_h is None or age_h > TOP_ISSUE_HISTORY_MAX_AGE_HOURS:
+                continue
+            candidates.append(event)
+
+    grouped: dict[str, dict[str, Any]] = {}
+    for event in candidates:
+        label = _top_reported_issue_label(event)
+        if not label:
+            continue
+        latest_dt = _parse_iso8601(str(event.get("started_at") or "")) or dt.datetime.min.replace(
+            tzinfo=dt.UTC
+        )
+        bucket = grouped.setdefault(
+            label,
+            {
+                "label": label,
+                "count": 0,
+                "priority": _top_issue_priority(event),
+                "latest_dt": latest_dt,
+            },
+        )
+        bucket["count"] += 1
+        bucket["priority"] = max(int(bucket["priority"]), _top_issue_priority(event))
+        if latest_dt > bucket["latest_dt"]:
+            bucket["latest_dt"] = latest_dt
+
+    rows = sorted(
+        grouped.values(),
+        key=lambda item: (
+            int(item.get("priority") or 0),
+            int(item.get("count") or 0),
+            item.get("latest_dt") or dt.datetime.min.replace(tzinfo=dt.UTC),
+        ),
+        reverse=True,
+    )
+
+    return (
+        [
+            {
+                "label": str(item.get("label") or "Status event"),
+                "count": int(item.get("count") or 0),
+            }
+            for item in rows[:TOP_REPORTED_ISSUES_LIMIT]
+        ],
+        {
+            "source": "PlayStation Status regional feeds",
+            "kind": "official-feed-derived",
+            "mode": mode if candidates else "none",
+            "window_hours": window_hours,
+        },
+    )
+
+
 def _collect_payload() -> dict[str, Any]:
     now_iso = _utc_now_iso()
     all_events: list[dict[str, Any]] = []
@@ -516,6 +618,9 @@ def _collect_payload() -> dict[str, Any]:
     ]
 
     updates = _build_official_updates(incidents)
+    top_reported_issues, top_reported_issues_meta = _build_top_reported_issues(
+        all_events, all_raw_events
+    )
     if not incidents:
         outage_summary = "PlayStation Network currently reports no widespread service issues across monitored regions."
     else:
@@ -559,6 +664,8 @@ def _collect_payload() -> dict[str, Any]:
             "summary": outage_summary,
             "reports_24h": global_reports_24h,
             "incidents": incidents,
+            "top_reported_issues": top_reported_issues,
+            "top_reported_issues_meta": top_reported_issues_meta,
         },
         "reports": reports,
         "known_resources": known_resources,
