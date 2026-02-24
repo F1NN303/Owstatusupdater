@@ -1,22 +1,14 @@
-import AppLayout from "@/components/AppLayout";
+﻿import AppLayout from "@/components/AppLayout";
 import { appBuildMeta, formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
-import { resolveLegacyPath } from "@/lib/legacySite";
-import {
-  ExternalLink,
-  Globe,
-  Info,
-  Settings,
-  ShieldCheck,
-  Wrench,
-} from "lucide-react";
-
-const runtimeMode = import.meta.env.MODE;
+import { ExternalLink, Info, Mail, MonitorSmartphone, Settings, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const SettingsPage = () => {
   const { language, setLanguage, reduceMotion, setReduceMotion } = useAppShell();
   const buildMeta = appBuildMeta();
   const versionLabel = formatBuildLabel(language);
   const compactBuildId = buildMeta.id ? buildMeta.id.slice(0, 7) : pickLang(language, "unknown", "unbekannt");
+  const buildTimeLabel = buildMeta.stamp || pickLang(language, "Unknown", "Unbekannt");
 
   return (
     <AppLayout>
@@ -29,8 +21,8 @@ const SettingsPage = () => {
             <p className="mt-1 text-[13px] text-muted-foreground">
               {pickLang(
                 language,
-                "App controls, links, and migration diagnostics",
-                "App-Steuerung, Links und Migrationsdiagnose"
+                "Display and notification preferences for this device",
+                "Anzeige- und Benachrichtigungseinstellungen für dieses Gerät"
               )}
             </p>
           </div>
@@ -42,111 +34,80 @@ const SettingsPage = () => {
         <section className="glass glass-specular rounded-2xl p-4">
           <div className="relative z-10">
             <div className="flex items-center gap-2">
-              <Wrench size={14} className="text-primary/80" />
+              <MonitorSmartphone size={14} className="text-primary/80" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {pickLang(language, "App State", "App-Status")}
-              </h2>
-            </div>
-            <div className="mt-3 grid grid-cols-2 gap-3">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Runtime", "Laufzeit")}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-foreground">{runtimeMode}</p>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Render", "Darstellung")}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-foreground">
-                  {pickLang(language, "React App", "React-App")}
-                </p>
-              </div>
-              <div className="col-span-2 rounded-xl border border-white/10 bg-white/5 p-3">
-                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Build Version", "Build-Version")}
-                </p>
-                <p className="mt-1 text-xs font-medium text-foreground" title={versionLabel}>
-                  v {compactBuildId}
-                </p>
-                {buildMeta.stamp ? (
-                  <p className="mt-1 text-[11px] text-muted-foreground">{buildMeta.stamp}</p>
-                ) : null}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="glass glass-specular mt-4 rounded-2xl p-4">
-          <div className="relative z-10 space-y-3">
-            <div className="flex items-center gap-2">
-              <Wrench size={14} className="text-primary/80" />
-              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {pickLang(language, "Preferences", "Einstellungen")}
+                {pickLang(language, "Display", "Anzeige")}
               </h2>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-              <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                {pickLang(language, "Language", "Sprache")}
-              </p>
-              <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/20 p-1">
-                <button
-                  type="button"
-                  onClick={() => setLanguage("en")}
-                  className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    language === "en"
-                      ? "bg-white/10 text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  English
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLanguage("de")}
-                  className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    language === "de"
-                      ? "bg-white/10 text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Deutsch
-                </button>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {pickLang(language, "Motion", "Bewegung")}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {pickLang(
-                      language,
-                      "Reduce UI animations and transitions across the app.",
-                      "Reduziert UI-Animationen und Übergänge in der gesamten App."
-                    )}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={reduceMotion}
-                  onClick={() => setReduceMotion(!reduceMotion)}
-                  className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors ${
-                    reduceMotion
-                      ? "border-primary/40 bg-primary/20"
-                      : "border-white/10 bg-white/5"
-                  }`}
-                >
-                  <span
-                    className={`absolute h-5 w-5 rounded-full bg-white shadow transition-transform ${
-                      reduceMotion ? "translate-x-6" : "translate-x-1"
+            <div className="mt-3 space-y-3">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                  {pickLang(language, "Language", "Sprache")}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {pickLang(
+                    language,
+                    "Choose the interface language for this browser.",
+                    "Wähle die Sprache der Oberfläche für diesen Browser."
+                  )}
+                </p>
+                <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/20 p-1">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("en")}
+                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      language === "en"
+                        ? "bg-white/10 text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
-                  />
-                </button>
+                  >
+                    English
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("de")}
+                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      language === "de"
+                        ? "bg-white/10 text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Deutsch
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                      {pickLang(language, "Motion", "Bewegung")}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {pickLang(
+                        language,
+                        "Reduce UI animations and transitions across the app.",
+                        "Reduziert UI-Animationen und Übergänge in der gesamten App."
+                      )}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={reduceMotion}
+                    onClick={() => setReduceMotion(!reduceMotion)}
+                    className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors ${
+                      reduceMotion ? "border-primary/40 bg-primary/20" : "border-white/10 bg-white/5"
+                    }`}
+                  >
+                    <span
+                      className={`absolute h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                        reduceMotion ? "translate-x-6" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -156,70 +117,81 @@ const SettingsPage = () => {
           <div className="glass glass-specular rounded-2xl p-4">
             <div className="relative z-10 space-y-2">
               <div className="flex items-center gap-2">
-                <Globe size={14} className="text-primary/80" />
+                <Mail size={14} className="text-primary/80" />
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Navigation", "Navigation")}
+                  {pickLang(language, "Notifications", "Benachrichtigungen")}
                 </h2>
               </div>
-              <a
-                href={resolveLegacyPath("/legacy-home.html")}
-                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
+              <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] leading-relaxed text-muted-foreground">
+                {pickLang(
+                  language,
+                  "Manage outage e-mail alerts in the Alerts tab. The signup form is embedded directly in the app.",
+                  "Verwalte Störungs-E-Mail-Alarme im Tab „Alarme“. Das Anmeldeformular ist direkt in die App eingebettet."
+                )}
+              </p>
+              <Link
+                to="/alerts"
+                className="flex items-center justify-between rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
               >
-                <span>{pickLang(language, "Open legacy home", "Legacy-Startseite öffnen")}</span>
-                <ExternalLink size={14} className="text-muted-foreground" />
-              </a>
-              <a
-                href={resolveLegacyPath("/legacy-overwatch.html")}
-                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
-              >
-                <span>{pickLang(language, "Open legacy Overwatch dashboard", "Legacy-Overwatch-Dashboard öffnen")}</span>
-                <ExternalLink size={14} className="text-muted-foreground" />
-              </a>
-              <a
-                href={resolveLegacyPath("/sony/legacy-index.html")}
-                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
-              >
-                <span>{pickLang(language, "Open legacy Sony PSN dashboard", "Legacy-Sony-PSN-Dashboard öffnen")}</span>
-                <ExternalLink size={14} className="text-muted-foreground" />
-              </a>
+                <span>{pickLang(language, "Open Alerts", "Alarme öffnen")}</span>
+                <ExternalLink size={14} />
+              </Link>
             </div>
           </div>
 
           <div className="glass glass-specular rounded-2xl p-4">
             <div className="relative z-10 space-y-2">
               <div className="flex items-center gap-2">
-                <ShieldCheck size={14} className="text-primary/80" />
+                <Sparkles size={14} className="text-primary/80" />
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Migration Notes", "Migrationshinweise")}
+                  {pickLang(language, "About", "Info")}
                 </h2>
               </div>
-              <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground">
-                {pickLang(
-                  language,
-                  "Bottom navigation now uses the app-style shell (`Home`, `Favorites`, `Alerts`, `Settings`). Service detail pages remain under Home and use compact tabbed sections.",
-                  "Die untere Navigation nutzt jetzt die App-Leiste (`Start`, `Favoriten`, `Alarme`, `Einst.`). Service-Details bleiben unter Start und verwenden kompakte Tab-Bereiche."
-                )}
-              </p>
-              <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground">
-                {pickLang(
-                  language,
-                  "Language and version info are kept in Settings to keep mobile detail pages compact.",
-                  "Sprache und Versionsinfo bleiben in den Einstellungen, damit Detailseiten mobil kompakt bleiben."
-                )}
-              </p>
-            </div>
-          </div>
 
-          <div className="glass glass-specular rounded-2xl p-4">
-            <div className="relative z-10 flex items-center gap-2">
-              <Info size={14} className="text-primary/80" />
-              <p className="text-xs text-muted-foreground">
-                {pickLang(
-                  language,
-                  "This page changes local UI preferences and links only. Backend status pipelines continue to run in GitHub Actions.",
-                  "Diese Seite ändert nur lokale UI-Einstellungen und Links. Die Backend-Status-Pipelines laufen weiter in GitHub Actions."
-                )}
-              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                    {pickLang(language, "Version", "Version")}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-foreground" title={versionLabel}>
+                    v {compactBuildId}
+                  </p>
+                  <p className="mt-1 text-[10px] text-muted-foreground">{buildTimeLabel}</p>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                    {pickLang(language, "Storage", "Speicher")}
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                    {pickLang(
+                      language,
+                      "Only local UI preferences are stored in your browser.",
+                      "Es werden nur lokale UI-Einstellungen im Browser gespeichert."
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+                <Info size={14} className="mt-0.5 shrink-0 text-primary/80" />
+                <p className="text-[11px] leading-relaxed text-muted-foreground">
+                  {pickLang(
+                    language,
+                    "Status and outage data are loaded from the public JSON APIs used by the site.",
+                    "Status- und Störungsdaten werden aus den öffentlichen JSON-APIs der Website geladen."
+                  )}
+                </p>
+              </div>
+
+              <a
+                href="https://github.com/F1NN303/Owstatusupdater"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
+              >
+                <span>{pickLang(language, "Open GitHub repository", "GitHub-Repository öffnen")}</span>
+                <ExternalLink size={14} className="text-muted-foreground" />
+              </a>
             </div>
           </div>
         </section>

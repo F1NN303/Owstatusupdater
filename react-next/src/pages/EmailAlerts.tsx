@@ -1,41 +1,17 @@
-import AppLayout from "@/components/AppLayout";
+﻿import AppLayout from "@/components/AppLayout";
 import { pickLang, useAppShell } from "@/lib/appShell";
-import { resolveLegacyPath } from "@/lib/legacySite";
 import {
   fetchLegacySubscriptionConfig,
-  isLikelyEmail,
   providerLabel,
   type LegacySubscriptionLoadResult,
 } from "@/lib/legacySubscription";
 import { ExternalLink, Mail, RefreshCw, ShieldCheck } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type NoticeTone = "neutral" | "good" | "warn" | "bad";
 
 function formatHost(url: URL | null) {
-  if (!url) {
-    return "Unavailable";
-  }
-  return url.hostname;
-}
-
-function statusText(result: LegacySubscriptionLoadResult | null) {
-  if (!result) {
-    return "Loading subscription config...";
-  }
-  if (result.status === "ready") {
-    return `Ready · ${providerLabel(result.config?.provider)} form verified`;
-  }
-  if (result.status === "loading") {
-    return "Loading subscription config...";
-  }
-  if (result.status === "missing") {
-    return "Subscription form is not configured";
-  }
-  if (result.status === "invalid") {
-    return "Subscription config is invalid";
-  }
-  return "Could not load subscription config";
+  return url ? url.hostname : "-";
 }
 
 function statusTone(result: LegacySubscriptionLoadResult | null): NoticeTone {
@@ -60,12 +36,29 @@ const STATUS_CLASS: Record<NoticeTone, string> = {
 
 const EmailAlerts = () => {
   const { language } = useAppShell();
-  const [email, setEmail] = useState("");
   const [configResult, setConfigResult] = useState<LegacySubscriptionLoadResult | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastCheckedAt, setLastCheckedAt] = useState<string | null>(null);
-  const [submitNotice, setSubmitNotice] = useState<string>("Captcha and double opt-in continue on the secure form page.");
-  const [submitTone, setSubmitTone] = useState<NoticeTone>("neutral");
+  const [embedLoaded, setEmbedLoaded] = useState(false);
+  const [embedTimedOut, setEmbedTimedOut] = useState(false);
+
+  const t = (en: string, de: string) => pickLang(language, en, de);
+
+  const statusText = (result: LegacySubscriptionLoadResult | null) => {
+    if (!result || result.status === "loading") {
+      return t("Loading subscription config...", "Lade Abo-Konfiguration...");
+    }
+    if (result.status === "ready") {
+      return `${t("Ready", "Bereit")} · ${providerLabel(result.config?.provider)} ${t("form verified", "Formular geprüft")}`;
+    }
+    if (result.status === "missing") {
+      return t("Subscription form is not configured", "Abo-Formular ist nicht konfiguriert");
+    }
+    if (result.status === "invalid") {
+      return t("Subscription config is invalid", "Abo-Konfiguration ist ungültig");
+    }
+    return t("Could not load subscription config", "Abo-Konfiguration konnte nicht geladen werden");
+  };
 
   const loadConfig = async () => {
     setIsRefreshing(true);
@@ -74,63 +67,43 @@ const EmailAlerts = () => {
     setConfigResult(result);
     setLastCheckedAt(new Date().toISOString());
     setIsRefreshing(false);
-
-    if (result.status === "ready") {
-      setSubmitNotice("Secure signup is ready. Enter your email to continue to the Brevo form.");
-      setSubmitTone("good");
-    } else if (result.status === "missing" || result.status === "invalid") {
-      setSubmitNotice(result.message || "Subscription config is not ready.");
-      setSubmitTone("warn");
-    } else if (result.status === "error") {
-      setSubmitNotice(result.message || "Could not load subscription config.");
-      setSubmitTone("bad");
-    } else {
-      setSubmitNotice("Loading subscription config...");
-      setSubmitTone("neutral");
-    }
   };
 
   useEffect(() => {
     void loadConfig();
   }, []);
 
+  const embedUrl = configResult?.status === "ready" ? configResult.parsedUrl?.toString() ?? "" : "";
+  const canEmbed = Boolean(embedUrl);
+
+  useEffect(() => {
+    setEmbedLoaded(false);
+    setEmbedTimedOut(false);
+
+    if (!canEmbed) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setEmbedTimedOut(true);
+    }, 8000);
+
+    return () => window.clearTimeout(timeout);
+  }, [canEmbed, embedUrl]);
+
   const provider = providerLabel(configResult?.config?.provider);
   const currentTone = statusTone(configResult);
-  const canSubmit = configResult?.status === "ready" && Boolean(configResult.parsedUrl);
 
   const checkedLabel = useMemo(() => {
     if (!lastCheckedAt) {
-      return "Check: pending";
+      return t("Pending", "Ausstehend");
     }
     const date = new Date(lastCheckedAt);
     if (!Number.isFinite(date.getTime())) {
-      return "Check: pending";
+      return t("Pending", "Ausstehend");
     }
-    return `Check: ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
-  }, [lastCheckedAt]);
-
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!canSubmit || !configResult?.parsedUrl) {
-      setSubmitNotice(configResult?.message || "Subscription form is not available right now.");
-      setSubmitTone(configResult?.status === "error" ? "bad" : "warn");
-      return;
-    }
-
-    const nextEmail = String(email || "").trim();
-    if (!isLikelyEmail(nextEmail)) {
-      setSubmitNotice("Please enter a valid email address.");
-      setSubmitTone("warn");
-      return;
-    }
-
-    const targetUrl = new URL(configResult.parsedUrl.toString());
-    targetUrl.searchParams.set("email", nextEmail);
-    window.open(targetUrl.toString(), "_blank", "noopener,noreferrer");
-    setSubmitNotice("Opening secure Brevo signup form in a new tab...");
-    setSubmitTone("good");
-  };
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }, [lastCheckedAt, language]);
 
   return (
     <AppLayout>
@@ -138,11 +111,10 @@ const EmailAlerts = () => {
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              {pickLang(language, "E-Mail Alerts", "E-Mail-Alarme")}
+              {t("E-Mail Alerts", "E-Mail-Alarme")}
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">
-              {pickLang(
-                language,
+              {t(
                 "Secure outage notifications via Brevo with captcha and double opt-in",
                 "Sichere Störungs-Benachrichtigungen via Brevo mit Captcha und Double-Opt-In"
               )}
@@ -152,7 +124,7 @@ const EmailAlerts = () => {
             type="button"
             onClick={() => void loadConfig()}
             className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all active:scale-95"
-            aria-label={pickLang(language, "Refresh subscription config", "Abo-Konfiguration aktualisieren")}
+            aria-label={t("Refresh subscription config", "Abo-Konfiguration aktualisieren")}
           >
             <RefreshCw
               size={18}
@@ -161,7 +133,7 @@ const EmailAlerts = () => {
           </button>
         </div>
 
-        <section className="glass glass-specular rounded-2xl overflow-hidden">
+        <section className="glass glass-specular overflow-hidden rounded-2xl">
           <div className="bg-gradient-to-r from-primary/15 to-transparent p-4">
             <div className="relative z-10 flex items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
@@ -170,14 +142,12 @@ const EmailAlerts = () => {
                 </div>
                 <div className="min-w-0">
                   <h2 className="truncate text-sm font-bold text-foreground">
-                    {pickLang(language, "Subscription Configuration", "Abo-Konfiguration")}
+                    {t("Subscription Configuration", "Abo-Konfiguration")}
                   </h2>
                   <p className="mt-0.5 text-xs text-muted-foreground">{statusText(configResult)}</p>
                 </div>
               </div>
-              <span
-                className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${STATUS_CLASS[currentTone]}`}
-              >
+              <span className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${STATUS_CLASS[currentTone]}`}>
                 {provider}
               </span>
             </div>
@@ -192,55 +162,72 @@ const EmailAlerts = () => {
               </div>
               <div>
                 <h2 className="text-sm font-semibold text-foreground">
-                  {pickLang(language, "Newsletter Signup", "Newsletter-Anmeldung")}
+                  {t("Newsletter Signup", "Newsletter-Anmeldung")}
                 </h2>
                 <p className="text-[11px] text-muted-foreground">
-                  {pickLang(
-                    language,
-                    "Same `subscription.json` config as the current site",
-                    "Gleiche `subscription.json`-Konfiguration wie auf der aktuellen Seite"
+                  {t(
+                    "Embedded Brevo form using the same subscription.json config",
+                    "Eingebettetes Brevo-Formular mit derselben subscription.json-Konfiguration"
                   )}
                 </p>
               </div>
             </div>
 
-            <form className="space-y-3" noValidate onSubmit={onSubmit}>
-              <label className="block">
-                <span className="mb-1.5 block text-xs font-medium text-foreground">
-                  {pickLang(language, "Enter your email address", "E-Mail-Adresse eingeben")}
-                </span>
-                <input
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary/40"
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder={pickLang(language, "you@example.com", "du@example.com")}
-                  autoComplete="email"
-                  inputMode="email"
-                />
-              </label>
+            {canEmbed ? (
+              <div className="space-y-3">
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                  {!embedLoaded ? (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+                      <p className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-[11px] text-muted-foreground">
+                        {t("Loading secure signup form...", "Lade sicheres Anmeldeformular...")}
+                      </p>
+                    </div>
+                  ) : null}
+                  <iframe
+                    key={embedUrl}
+                    src={embedUrl}
+                    title={t("Brevo newsletter signup", "Brevo-Newsletter-Anmeldung")}
+                    className="block h-[720px] w-full bg-white"
+                    loading="lazy"
+                    onLoad={() => {
+                      setEmbedLoaded(true);
+                      setEmbedTimedOut(false);
+                    }}
+                  />
+                </div>
 
-              <p className="text-[11px] leading-relaxed text-muted-foreground">
-                {pickLang(
-                  language,
-                  "Captcha and double opt-in are completed on the secure Brevo page after you continue.",
-                  "Captcha und Double-Opt-In werden nach dem Fortfahren auf der sicheren Brevo-Seite abgeschlossen."
-                )}
-              </p>
+                <p className="text-[11px] leading-relaxed text-muted-foreground">
+                  {t(
+                    "Captcha and double opt-in are handled inside the embedded Brevo form.",
+                    "Captcha und Double-Opt-In werden direkt im eingebetteten Brevo-Formular verarbeitet."
+                  )}
+                </p>
 
-              <button
-                type="submit"
-                disabled={!canSubmit}
-                className="inline-flex h-11 items-center justify-center rounded-xl border border-primary/25 bg-primary/15 px-4 text-sm font-semibold text-primary transition-all enabled:hover:bg-primary/20 enabled:active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {pickLang(language, "Open Secure Signup", "Sichere Anmeldung öffnen")}
-              </button>
-            </form>
-
-            <p className={`mt-3 rounded-xl border px-3 py-2 text-[11px] ${STATUS_CLASS[submitTone]}`}>
-              {submitNotice}
-            </p>
+                {embedTimedOut && !embedLoaded ? (
+                  <div className="rounded-xl border border-amber-300/20 bg-amber-300/10 px-3 py-2 text-[11px] text-amber-200">
+                    <p>
+                      {t(
+                        "The embedded form is taking too long to load. You can open the secure provider form directly.",
+                        "Das eingebettete Formular lädt zu lange. Du kannst das sichere Formular direkt beim Anbieter öffnen."
+                      )}
+                    </p>
+                    <a
+                      href={embedUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 rounded-lg border border-amber-200/20 bg-amber-200/10 px-2.5 py-1.5 text-[11px] font-medium text-amber-100"
+                    >
+                      {t("Open Brevo form directly", "Brevo-Formular direkt öffnen")}
+                      <ExternalLink size={12} />
+                    </a>
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground">
+                {configResult?.message || t("Subscription form is not available right now.", "Abo-Formular ist aktuell nicht verfügbar.")}
+              </div>
+            )}
           </div>
         </section>
 
@@ -248,36 +235,30 @@ const EmailAlerts = () => {
           <div className="glass glass-specular rounded-2xl p-4">
             <div className="relative z-10">
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {pickLang(language, "Config Details", "Konfigurationsdetails")}
+                {t("Config Details", "Konfigurationsdetails")}
               </h2>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    Provider
-                  </p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Provider</p>
                   <p className="mt-1 text-sm font-semibold text-foreground">{provider}</p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    Host
-                  </p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Host</p>
                   <p className="mt-1 truncate text-sm font-semibold text-foreground">
                     {formatHost(configResult?.parsedUrl || null)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    Source
+                    {t("Source", "Quelle")}
                   </p>
                   <p className="mt-1 text-xs font-medium text-foreground">/data/subscription.json</p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {checkedLabel.split(":")[0]}
+                    {t("Checked", "Geprüft")}
                   </p>
-                  <p className="mt-1 text-xs font-medium text-foreground">
-                    {checkedLabel.replace(/^Check:\s*/, "")}
-                  </p>
+                  <p className="mt-1 text-xs font-medium text-foreground">{checkedLabel}</p>
                 </div>
               </div>
               {configResult?.message ? (
@@ -286,31 +267,24 @@ const EmailAlerts = () => {
             </div>
           </div>
 
-          <div className="glass glass-specular rounded-2xl p-4">
-            <div className="relative z-10 space-y-2">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {pickLang(language, "Fallback Links", "Fallback-Links")}
-              </h2>
-              <a
-                href={resolveLegacyPath("/email-alerts.html")}
-                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
-              >
-                <span>{pickLang(language, "Open legacy embedded signup page", "Legacy-Seite mit eingebettetem Formular öffnen")}</span>
-                <ExternalLink size={14} className="text-muted-foreground" />
-              </a>
-              {configResult?.parsedUrl ? (
+          {configResult?.parsedUrl ? (
+            <div className="glass glass-specular rounded-2xl p-4">
+              <div className="relative z-10 space-y-2">
+                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {t("Fallback", "Fallback")}
+                </h2>
                 <a
                   href={configResult.parsedUrl.toString()}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
                 >
-                  <span>{pickLang(language, "Open Brevo form directly", "Brevo-Formular direkt öffnen")}</span>
+                  <span>{t("Open Brevo form directly", "Brevo-Formular direkt öffnen")}</span>
                   <ExternalLink size={14} className="text-muted-foreground" />
                 </a>
-              ) : null}
+              </div>
             </div>
-          </div>
+          ) : null}
         </section>
       </main>
     </AppLayout>
