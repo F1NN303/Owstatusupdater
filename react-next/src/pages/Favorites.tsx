@@ -167,7 +167,7 @@ const Favorites = () => {
                 {pickLang(language, "Settings", "Einstellungen")}
               </p>
               <p className="mt-1 text-[11px] text-muted-foreground">
-                {pickLang(language, "Preview preferences and links", "Preview-Einstellungen und Links")}
+                {pickLang(language, "App preferences and links", "App-Einstellungen und Links")}
               </p>
             </div>
           </Link>

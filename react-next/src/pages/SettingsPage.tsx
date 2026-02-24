@@ -27,8 +27,8 @@ const SettingsPage = () => {
             <p className="mt-1 text-[13px] text-muted-foreground">
               {pickLang(
                 language,
-                "Preview controls, links, and migration diagnostics",
-                "Preview-Steuerung, Links und Migrationsdiagnose"
+                "App controls, links, and migration diagnostics",
+                "App-Steuerung, Links und Migrationsdiagnose"
               )}
             </p>
           </div>
@@ -42,7 +42,7 @@ const SettingsPage = () => {
             <div className="flex items-center gap-2">
               <Wrench size={14} className="text-primary/80" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {pickLang(language, "Preview State", "Preview-Status")}
+                {pickLang(language, "App State", "App-Status")}
               </h2>
             </div>
             <div className="mt-3 grid grid-cols-2 gap-3">
@@ -57,7 +57,7 @@ const SettingsPage = () => {
                   {pickLang(language, "Render", "Darstellung")}
                 </p>
                 <p className="mt-1 text-sm font-semibold text-foreground">
-                  {pickLang(language, "React Preview", "React-Preview")}
+                  {pickLang(language, "React App", "React-App")}
                 </p>
               </div>
               <div className="col-span-2 rounded-xl border border-white/10 bg-white/5 p-3">
@@ -118,8 +118,8 @@ const SettingsPage = () => {
                   <p className="mt-1 text-xs text-muted-foreground">
                     {pickLang(
                       language,
-                      "Reduce UI animations and transitions across the preview.",
-                      "Reduziert UI-Animationen und Uebergaenge im gesamten Preview."
+                      "Reduce UI animations and transitions across the app.",
+                      "Reduziert UI-Animationen und Uebergaenge in der gesamten App."
                     )}
                   </p>
                 </div>
@@ -196,8 +196,8 @@ const SettingsPage = () => {
               <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground">
                 {pickLang(
                   language,
-                  "EN/DE toggle and persistent version footer are now integrated in the app shell for preview testing.",
-                  "EN/DE-Umschalter und Versionsanzeige sind jetzt in die App-Leiste integriert und koennen im Preview getestet werden."
+                  "EN/DE toggle and persistent version footer are integrated in the app shell.",
+                  "EN/DE-Umschalter und Versionsanzeige sind in die App-Leiste integriert."
                 )}
               </p>
             </div>
@@ -209,8 +209,8 @@ const SettingsPage = () => {
               <p className="text-xs text-muted-foreground">
                 {pickLang(
                   language,
-                  "This page is a preview shell and does not change backend status pipelines.",
-                  "Diese Seite ist nur eine Preview-Huelle und aendert keine Backend-Status-Pipelines."
+                  "This page changes local UI preferences and links only. Backend status pipelines continue to run in GitHub Actions.",
+                  "Diese Seite aendert nur lokale UI-Einstellungen und Links. Die Backend-Status-Pipelines laufen weiter in GitHub Actions."
                 )}
               </p>
             </div>
