@@ -37,6 +37,36 @@ export interface LegacyTopReportedIssuesMeta {
   window_hours?: number | null;
 }
 
+export interface LegacyServiceHealth24hPoint {
+  timestamp?: string | null;
+  signal_value?: number | null;
+  status_code?: number | null;
+  status_label?: string | null;
+}
+
+export interface LegacyServiceHealth24hMeta {
+  source?: string | null;
+  kind?: string | null;
+  window_hours?: number | null;
+  sample_count?: number | null;
+  interval_minutes?: number | null;
+  last_sample_at?: string | null;
+}
+
+export interface LegacyUserReports24hPoint {
+  label?: string | null;
+  count?: number | null;
+}
+
+export interface LegacyUserReports24hMeta {
+  source?: string | null;
+  kind?: string | null;
+  window_hours?: number | null;
+  sample_count?: number | null;
+  interval_minutes?: number | null;
+  last_reviewed_at?: string | null;
+}
+
 export interface LegacySourceHealth {
   name?: string;
   kind?: string;
@@ -82,11 +112,16 @@ export interface LegacyStatusDetailPayload {
     source?: string;
     url?: string;
     summary?: string;
+    summary_origin?: string;
     current_status?: string;
     reports_24h?: number;
     incidents?: LegacyOutageIncident[];
     top_reported_issues?: LegacyTopReportedIssue[];
     top_reported_issues_meta?: LegacyTopReportedIssuesMeta;
+    service_health_24h?: LegacyServiceHealth24hPoint[];
+    service_health_24h_meta?: LegacyServiceHealth24hMeta;
+    user_reports_24h?: LegacyUserReports24hPoint[];
+    user_reports_24h_meta?: LegacyUserReports24hMeta;
   };
   official?: {
     summary?: string;

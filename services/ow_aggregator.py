@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime as dt
 import html as html_lib
 import copy
+import json
 import re
 import threading
 import time
@@ -17,6 +18,7 @@ REQUEST_TIMEOUT = 20
 CACHE_TTL_SECONDS = 120
 
 STATUSGATOR_URL = "https://statusgator.com/services/overwatch-2"
+ISDOWN_STATUS_URL = "https://isdown.app/status/overwatch-2"
 FORUM_BASE_URL = "https://us.forums.blizzard.com/en/overwatch"
 OVERWATCH_NEWS_URL = "https://overwatch.blizzard.com/en-us/news/"
 X_MIRROR_URL = "https://r.jina.ai/http://x.com/PlayOverwatch"
@@ -57,6 +59,12 @@ REGION_KEYWORDS = {
 _CACHE_LOCK = threading.Lock()
 _CACHE_TS = 0.0
 _CACHE_PAYLOAD: dict[str, Any] | None = None
+
+STATUSGATOR_SERVICE_HEALTH_STATUS_LABELS = {
+    0: "service up",
+    1: "possible outage",
+    2: "likely outage",
+}
 
 
 def _utc_now() -> dt.datetime:
@@ -315,6 +323,218 @@ def _build_cached_statusgator_fallback(
     return fallback, age_minutes
 
 
+def _parse_statusgator_service_health_series(html: str) -> tuple[list[dict[str, Any]], dict[str, Any] | None]:
+    match = re.search(r"var\s+data\s*=\s*(\[[\s\S]*?\]);", html, flags=re.IGNORECASE)
+    if not match:
+        return [], None
+    try:
+        raw_points = json.loads(match.group(1))
+    except json.JSONDecodeError:
+        return [], None
+
+    points: list[dict[str, Any]] = []
+    for row in raw_points if isinstance(raw_points, list) else []:
+        if not isinstance(row, dict):
+            continue
+        timestamp = row.get("five_min")
+        value_raw = row.get("interpolated_sum_value")
+        status_raw = row.get("status")
+        parsed_ts = _parse_iso8601(str(timestamp) if timestamp else None)
+        if parsed_ts is None:
+            continue
+        try:
+            value = float(value_raw)
+        except (TypeError, ValueError):
+            continue
+        try:
+            status_code = int(status_raw)
+        except (TypeError, ValueError):
+            status_code = 0
+        points.append(
+            {
+                "timestamp": parsed_ts.isoformat().replace("+00:00", "Z"),
+                "signal_value": round(max(value, 0.0), 3),
+                "status_code": status_code,
+                "status_label": STATUSGATOR_SERVICE_HEALTH_STATUS_LABELS.get(status_code, "unknown"),
+            }
+        )
+
+    if not points:
+        return [], None
+
+    interval_minutes: int | None = None
+    if len(points) >= 2:
+        first = _parse_iso8601(points[0].get("timestamp"))
+        second = _parse_iso8601(points[1].get("timestamp"))
+        if first and second:
+            interval_minutes = int(abs((second - first).total_seconds()) // 60)
+    meta = {
+        "source": "StatusGator",
+        "kind": "service-health-series",
+        "window_hours": 24,
+        "sample_count": len(points),
+        "interval_minutes": interval_minutes,
+        "last_sample_at": points[-1].get("timestamp"),
+    }
+    return points[-192:], meta
+
+
+def _normalize_outage_status_text(value: str | None) -> str:
+    text = _clean(value).lower()
+    if not text:
+        return "unknown"
+    if any(token in text for token in ("operational", "service up", "up", "online", "ok")):
+        return "operational"
+    if any(token in text for token in ("likely outage", "major outage", "down", "offline")):
+        return "major outage"
+    if any(token in text for token in ("possible outage", "degraded", "issue", "maintenance")):
+        return "degraded"
+    return text
+
+
+def _synthesize_statusgator_summary(
+    current_status: str,
+    reports_24h: int | None,
+    incidents: list[dict[str, Any]],
+    top_reported_issues: list[dict[str, Any]],
+) -> str:
+    normalized_status = _normalize_outage_status_text(current_status)
+    if normalized_status != "unknown" and isinstance(reports_24h, int):
+        return (
+            f"StatusGator indicates Overwatch 2 is currently {normalized_status} "
+            f"with {reports_24h} user-submitted reports in the past 24 hours."
+        )
+    if incidents:
+        latest_title = _clean(str(incidents[0].get("title") or "Recent incident listed"))
+        if isinstance(reports_24h, int):
+            return (
+                f"StatusGator incident table is available. Latest listed incident: {latest_title}. "
+                f"{reports_24h} user-submitted reports were recorded in the past 24 hours."
+            )
+        return f"StatusGator incident table is available. Latest listed incident: {latest_title}."
+    if top_reported_issues:
+        top_label = _clean(str(top_reported_issues[0].get("label") or "Community issue signal"))
+        return f"StatusGator community issue labels are available (top label: {top_label})."
+    return "Status summary unavailable."
+
+
+def _extract_isdown_status_text(page_text: str) -> tuple[str, str]:
+    summary_match = re.search(
+        r"What is Overwatch 2 status right now\?\s+Overwatch 2 is ([^.]+)\.",
+        page_text,
+        flags=re.IGNORECASE,
+    )
+    if not summary_match:
+        return "Status summary unavailable.", "unknown"
+
+    status_phrase = _clean(summary_match.group(1))
+    summary = f"IsDown indicates Overwatch 2 is {status_phrase}."
+    lowered = status_phrase.lower()
+    if "operational" in lowered:
+        current_status = "operational"
+    elif any(token in lowered for token in ("outage", "down", "offline")):
+        current_status = "major outage"
+    elif any(token in lowered for token in ("degraded", "issue", "maintenance")):
+        current_status = "degraded"
+    else:
+        current_status = lowered or "unknown"
+    return summary, current_status
+
+
+def fetch_isdown_outages() -> dict[str, Any]:
+    html = _request_text(ISDOWN_STATUS_URL)
+    soup = BeautifulSoup(html, "html.parser")
+    page_text = _clean(soup.get_text(" ", strip=True))
+
+    chart_match = re.search(
+        r"UserReportsChart\.create\('myChart',\s*(\[[\s\S]*?\])\s*,",
+        html,
+        flags=re.IGNORECASE,
+    )
+    chart_points: list[dict[str, Any]] = []
+    if chart_match:
+        try:
+            raw_chart = json.loads(chart_match.group(1))
+        except json.JSONDecodeError:
+            raw_chart = []
+        for row in raw_chart if isinstance(raw_chart, list) else []:
+            if not isinstance(row, dict):
+                continue
+            label = _clean(str(row.get("x") or ""))
+            try:
+                count = int(float(row.get("y") or 0))
+            except (TypeError, ValueError):
+                continue
+            if not label:
+                continue
+            chart_points.append({"label": label, "count": max(count, 0)})
+
+    reports_24h = sum(point.get("count", 0) for point in chart_points) if chart_points else None
+
+    last_reviewed_match = re.search(r'"lastReviewed":"([^"]+)"', html)
+    last_reviewed_at = last_reviewed_match.group(1) if last_reviewed_match else None
+
+    summary, current_status = _extract_isdown_status_text(page_text)
+    return {
+        "source": "IsDown",
+        "source_type": "Downdetector-like",
+        "url": ISDOWN_STATUS_URL,
+        "summary": summary,
+        "current_status": current_status,
+        "reports_24h": reports_24h,
+        "incidents": [],
+        "top_reported_issues": [],
+        "user_reports_24h": chart_points[:120],
+        "user_reports_24h_meta": {
+            "source": "IsDown",
+            "kind": "user-reports-chart",
+            "window_hours": 24,
+            "sample_count": len(chart_points),
+            "interval_minutes": 20 if chart_points else None,
+            "last_reviewed_at": last_reviewed_at,
+        },
+        "last_reviewed_at": last_reviewed_at,
+    }
+
+
+def _merge_secondary_outage_signal(primary: dict[str, Any], secondary: dict[str, Any] | None) -> dict[str, Any]:
+    if not isinstance(primary, dict) or not isinstance(secondary, dict):
+        return primary
+
+    merged = copy.deepcopy(primary)
+    primary_summary = _clean(merged.get("summary"))
+    secondary_summary = _clean(secondary.get("summary"))
+    if (not primary_summary or "summary unavailable" in primary_summary.lower()) and secondary_summary:
+        merged["summary"] = secondary_summary
+        merged["summary_origin"] = "IsDown"
+
+    primary_status = _normalize_outage_status_text(merged.get("current_status"))
+    secondary_status = _normalize_outage_status_text(secondary.get("current_status"))
+    if primary_status == "unknown" and secondary_status != "unknown":
+        merged["current_status"] = secondary_status
+
+    if merged.get("reports_24h") in (None, "") and isinstance(secondary.get("reports_24h"), int):
+        merged["reports_24h"] = int(secondary["reports_24h"])
+        merged["reports_24h_origin"] = "IsDown"
+
+    if not isinstance(merged.get("user_reports_24h"), list) and isinstance(secondary.get("user_reports_24h"), list):
+        merged["user_reports_24h"] = copy.deepcopy(secondary.get("user_reports_24h"))
+        if isinstance(secondary.get("user_reports_24h_meta"), dict):
+            merged["user_reports_24h_meta"] = copy.deepcopy(secondary.get("user_reports_24h_meta"))
+
+    if not isinstance(merged.get("secondary_sources"), list):
+        merged["secondary_sources"] = []
+    merged["secondary_sources"].append(
+        {
+            "source": "IsDown",
+            "available": True,
+            "reports_24h": secondary.get("reports_24h"),
+            "last_reviewed_at": secondary.get("last_reviewed_at"),
+        }
+    )
+    return merged
+
+
 def _parse_statusgator_top_reported_issues(soup: BeautifulSoup) -> list[dict[str, Any]]:
     heading = None
     for candidate in soup.find_all(["h2", "h3", "h4"]):
@@ -381,6 +601,7 @@ def fetch_statusgator_outages() -> dict[str, Any]:
     html = _request_text(STATUSGATOR_URL)
     soup = BeautifulSoup(html, "html.parser")
     page_text = _clean(soup.get_text(" ", strip=True))
+    service_health_24h, service_health_24h_meta = _parse_statusgator_service_health_series(html)
 
     summary_match = re.search(
         r"StatusGator reports that Overwatch 2 is currently .*?past 24 hours\.",
@@ -391,6 +612,8 @@ def fetch_statusgator_outages() -> dict[str, Any]:
 
     status_match = re.search(r"currently\s+([a-zA-Z ]+)\.", summary, flags=re.IGNORECASE)
     current_status = _clean(status_match.group(1)).lower() if status_match else "unknown"
+    if current_status == "unknown" and service_health_24h:
+        current_status = _normalize_outage_status_text(service_health_24h[-1].get("status_label"))
 
     reports_match = re.search(
         r"There have been\s+([\d,]+)\s+user-submitted reports of outages in the past 24 hours",
@@ -434,6 +657,8 @@ def fetch_statusgator_outages() -> dict[str, Any]:
 
     incidents = _sort_by_datetime(incidents, field="started_at")[:8]
     top_reported_issues = _parse_statusgator_top_reported_issues(soup)
+    if "summary unavailable" in summary.lower():
+        summary = _synthesize_statusgator_summary(current_status, reports_24h, incidents, top_reported_issues)
     return {
         "source": "StatusGator",
         "source_type": "Downdetector-like",
@@ -443,6 +668,12 @@ def fetch_statusgator_outages() -> dict[str, Any]:
         "reports_24h": reports_24h,
         "incidents": incidents,
         "top_reported_issues": top_reported_issues,
+        "top_reported_issues_meta": {
+            "source": "StatusGator",
+            "kind": "community-labels",
+        },
+        "service_health_24h": service_health_24h,
+        "service_health_24h_meta": service_health_24h_meta,
     }
 
 
@@ -862,6 +1093,7 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
     known_resources: list[dict[str, Any]] = []
     news: list[dict[str, Any]] = []
     social: list[dict[str, Any]] = []
+    isdown_outage: dict[str, Any] | None = None
 
     started = time.perf_counter()
     try:
@@ -914,6 +1146,47 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
                 "fallback_age_minutes": fallback_age_minutes,
             }
         )
+
+    started = time.perf_counter()
+    try:
+        isdown_outage = fetch_isdown_outages()
+        last_item_at = isdown_outage.get("last_reviewed_at") or _latest_timestamp(
+            isdown_outage.get("user_reports_24h") or [], "timestamp"
+        )
+        freshness, age_minutes = _source_freshness(last_item_at)
+        sources.append(
+            {
+                "name": "IsDown",
+                "kind": "outage-index-alt",
+                "url": ISDOWN_STATUS_URL,
+                "ok": True,
+                "error": None,
+                "item_count": len(isdown_outage.get("user_reports_24h") or []),
+                "last_item_at": last_item_at,
+                "freshness": freshness,
+                "age_minutes": age_minutes,
+                "duration_ms": int((time.perf_counter() - started) * 1000),
+                "fetched_at": _utc_now_iso(),
+            }
+        )
+    except Exception as exc:  # pragma: no cover
+        sources.append(
+            {
+                "name": "IsDown",
+                "kind": "outage-index-alt",
+                "url": ISDOWN_STATUS_URL,
+                "ok": False,
+                "error": _safe_error_message(exc),
+                "item_count": 0,
+                "last_item_at": None,
+                "freshness": "unknown",
+                "age_minutes": None,
+                "duration_ms": int((time.perf_counter() - started) * 1000),
+                "fetched_at": _utc_now_iso(),
+            }
+        )
+
+    outage = _merge_secondary_outage_signal(outage, isdown_outage)
 
     for slug, category_id, label in FORUM_CATEGORIES:
         source_name = f"Blizzard Forums - {label}"

@@ -13,6 +13,8 @@ import {
   type LegacyServiceDetailResult,
   type LegacySourceHealth,
   type LegacyTopReportedIssue,
+  type LegacyServiceHealth24hPoint,
+  type LegacyUserReports24hPoint,
 } from "@/lib/legacyServiceDetail";
 import {
   ArrowLeft,
@@ -218,6 +220,65 @@ function buildSignalSparkline(detail: LegacyServiceDetailResult) {
     const scaled = base + smoothed * 18 + combinedScore * 2 + Math.min(reports24h, 40) * 0.15;
     return Math.max(4, Math.min(140, scaled));
   });
+}
+
+type Status24hChartPoint = {
+  timestamp: string;
+  value: number;
+  statusCode: number;
+};
+
+function extractStatusgator24hServiceHealth(detail: LegacyServiceDetailResult): Status24hChartPoint[] {
+  const rows = detail.payload.outage?.service_health_24h;
+  if (!Array.isArray(rows)) {
+    return [];
+  }
+  return rows
+    .map((row) => {
+      const point = row as LegacyServiceHealth24hPoint;
+      const timestamp = String(point.timestamp ?? "").trim();
+      const value =
+        typeof point.signal_value === "number" && Number.isFinite(point.signal_value)
+          ? Math.max(0, point.signal_value)
+          : null;
+      const statusCode =
+        typeof point.status_code === "number" && Number.isFinite(point.status_code)
+          ? Math.max(0, Math.round(point.status_code))
+          : 0;
+      if (!timestamp || value === null) {
+        return null;
+      }
+      return { timestamp, value, statusCode };
+    })
+    .filter((point): point is Status24hChartPoint => Boolean(point))
+    .slice(-120);
+}
+
+type UserReport24hChartPoint = {
+  label: string;
+  count: number;
+};
+
+function extractUserReports24h(detail: LegacyServiceDetailResult): UserReport24hChartPoint[] {
+  const rows = detail.payload.outage?.user_reports_24h;
+  if (!Array.isArray(rows)) {
+    return [];
+  }
+  return rows
+    .map((row) => {
+      const point = row as LegacyUserReports24hPoint;
+      const label = String(point.label ?? "").trim();
+      const count =
+        typeof point.count === "number" && Number.isFinite(point.count)
+          ? Math.max(0, Math.round(point.count))
+          : null;
+      if (!label || count === null) {
+        return null;
+      }
+      return { label, count };
+    })
+    .filter((point): point is UserReport24hChartPoint => Boolean(point))
+    .slice(-120);
 }
 
 function signalPercent(history: number[]) {
@@ -466,6 +527,165 @@ function SignalActivityChart({ data }: { data: number[] }) {
             />
           </svg>
           <div className="mt-1 flex justify-between px-1 text-[11px] text-muted-foreground">
+            <span>0h</span>
+            <span>6h</span>
+            <span>12h</span>
+            <span>18h</span>
+            <span>24h</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatusServiceHealth24hChart({
+  points,
+  language,
+}: {
+  points: Status24hChartPoint[];
+  language: AppLanguage;
+}) {
+  const maxValue = pickNiceMax(
+    points.reduce((max, point) => Math.max(max, point.value), 0)
+  );
+  const yTicks = [0, 0.25, 0.5, 0.75, 1];
+  const lastPoint = points[points.length - 1];
+  const lastPointTime = lastPoint?.timestamp
+    ? new Date(lastPoint.timestamp).toLocaleString(undefined, {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      })
+    : null;
+
+  return (
+    <div>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+          <span className="inline-flex items-center gap-1">
+            <span className="h-2.5 w-2.5 rounded-full bg-status-online" />
+            {pickLang(language, "Service up", "Dienst verfuegbar")}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <span className="h-2.5 w-2.5 rounded-full bg-status-degraded" />
+            {pickLang(language, "Possible outage", "Moeglicher Ausfall")}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <span className="h-2.5 w-2.5 rounded-full bg-status-offline" />
+            {pickLang(language, "Likely outage", "Wahrscheinlicher Ausfall")}
+          </span>
+        </div>
+        {lastPointTime ? (
+          <span className="text-[11px] text-muted-foreground">
+            {pickLang(language, "24h ending", "24h endend")} {lastPointTime}
+          </span>
+        ) : null}
+      </div>
+      <div className="flex gap-2">
+        <div className="flex h-[150px] flex-col justify-between pb-0.5 pt-1 text-[11px] text-muted-foreground">
+          {yTicks.map((ratio) => (
+            <span key={ratio}>{Math.round(maxValue * (1 - ratio))}</span>
+          ))}
+        </div>
+        <div className="relative flex-1">
+          <div className="pointer-events-none absolute inset-0">
+            {yTicks.map((ratio) => (
+              <div
+                key={`grid-${ratio}`}
+                className="absolute left-0 right-0 border-t border-dashed border-white/10"
+                style={{ top: `${ratio * 100}%` }}
+              />
+            ))}
+          </div>
+          <div className="relative flex h-[150px] items-end gap-px pt-1">
+            {points.map((point, index) => {
+              const height = Math.max(2, Math.min(100, (point.value / Math.max(maxValue, 1)) * 100));
+              const toneClass =
+                point.statusCode >= 2
+                  ? "bg-status-offline/95"
+                  : point.statusCode === 1
+                    ? "bg-status-degraded/90"
+                    : "bg-status-online/85";
+              const ts = new Date(point.timestamp);
+              const label = Number.isFinite(ts.getTime())
+                ? ts.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                : point.timestamp;
+              return (
+                <div
+                  key={`${point.timestamp}-${index}`}
+                  className={`flex-1 rounded-[2px] ${toneClass}`}
+                  style={{ height: `${height}%` }}
+                  title={`${label}: ${Math.round(point.value)} (${point.statusCode})`}
+                />
+              );
+            })}
+          </div>
+          <div className="mt-2 flex justify-between px-[2px] text-[11px] text-muted-foreground">
+            <span>0h</span>
+            <span>6h</span>
+            <span>12h</span>
+            <span>18h</span>
+            <span>24h</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function UserReports24hChart({
+  points,
+  language,
+}: {
+  points: UserReport24hChartPoint[];
+  language: AppLanguage;
+}) {
+  const maxValue = pickNiceMax(points.reduce((max, point) => Math.max(max, point.count), 0));
+  const yTicks = [0, 0.25, 0.5, 0.75, 1];
+
+  return (
+    <div>
+      <div className="mb-2 flex items-center gap-2 text-[11px] text-muted-foreground">
+        <span className="inline-flex items-center gap-1">
+          <span className="h-2.5 w-2.5 rounded-full bg-sky-400" />
+          {pickLang(language, "User reports", "Nutzerberichte")}
+        </span>
+        <span>
+          {pickLang(language, "IsDown fallback chart", "IsDown-Fallback-Chart")}
+        </span>
+      </div>
+      <div className="flex gap-2">
+        <div className="flex h-[150px] flex-col justify-between pb-0.5 pt-1 text-[11px] text-muted-foreground">
+          {yTicks.map((ratio) => (
+            <span key={ratio}>{Math.round(maxValue * (1 - ratio))}</span>
+          ))}
+        </div>
+        <div className="relative flex-1">
+          <div className="pointer-events-none absolute inset-0">
+            {yTicks.map((ratio) => (
+              <div
+                key={`ugrid-${ratio}`}
+                className="absolute left-0 right-0 border-t border-dashed border-white/10"
+                style={{ top: `${ratio * 100}%` }}
+              />
+            ))}
+          </div>
+          <div className="relative flex h-[150px] items-end gap-px pt-1">
+            {points.map((point, index) => {
+              const height = Math.max(2, Math.min(100, (point.count / Math.max(maxValue, 1)) * 100));
+              return (
+                <div
+                  key={`${point.label}-${index}`}
+                  className="flex-1 rounded-[2px] bg-sky-400/85"
+                  style={{ height: `${height}%` }}
+                  title={`${point.label}: ${point.count}`}
+                />
+              );
+            })}
+          </div>
+          <div className="mt-2 flex justify-between px-[2px] text-[11px] text-muted-foreground">
             <span>0h</span>
             <span>6h</span>
             <span>12h</span>
@@ -946,6 +1166,8 @@ const ServerDetail = () => {
   const sparklineData = detail
     ? buildSignalSparkline(detail)
     : Array.from({ length: 24 }, (_, i) => 24 + Math.sin(i * 0.8) * 3);
+  const statusgator24hSeries = detail ? extractStatusgator24hServiceHealth(detail) : [];
+  const isDown24hSeries = detail ? extractUserReports24h(detail) : [];
   const trendScore = detail ? signalPercent(trendHistory) : null;
   const trendScoreLabel = formatPercent(trendScore);
   const incidentCount = outageIncidents.length;
@@ -956,7 +1178,7 @@ const ServerDetail = () => {
     (region) => region.severityKey !== "stable"
   ).length;
   const latestIncidentTitle =
-    outageIncidents[0]?.title || pickLang(language, "No active incidents", "Keine aktiven Vorfaelle");
+    outageIncidents[0]?.title || pickLang(language, "No listed incidents", "Keine gelisteten Vorfaelle");
   const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? extractApiServiceComponents(detail) : [];
@@ -1052,6 +1274,10 @@ const ServerDetail = () => {
       ? Math.round(sonyTopIssueWindowHours / 24)
       : null;
   const showTopIssueCard = Boolean(detail && (isOverwatchDetail || isSonyDetail || topReportedIssues.length > 0));
+  const showStatusgatorServiceHealthChart =
+    isOverwatchDetail && statusgator24hSeries.length >= 8;
+  const showIsDownUserReportsChartFallback =
+    isOverwatchDetail && !showStatusgatorServiceHealthChart && isDown24hSeries.length >= 8;
   const topIssueCardTitle = isSonyDetail
     ? t("Top Status Feed Labels", "Top Status-Feed-Labels")
     : t("Top Reported Issues", "Top gemeldete Probleme");
@@ -1269,7 +1495,7 @@ const ServerDetail = () => {
                   <div className="mt-2">
                     <div className="mb-1.5 flex items-center justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
                       <span>{t("30-day signal trend", "30-Tage-Signaltrend")}</span>
-                      <span>{t(`${incidentCount} active incidents`, `${incidentCount} aktive Vorfaelle`)}</span>
+                      <span>{t(`${incidentCount} listed incidents`, `${incidentCount} gelistete Vorfaelle`)}</span>
                     </div>
                     <UptimeBar data={trendHistory} />
                   </div>
@@ -1464,17 +1690,43 @@ const ServerDetail = () => {
               </div>
             </SignalChartCard>
 
-            <SignalChartCard
-              title={t("Signal Activity (24h)", "Signalaktivitaet (24h)")}
-              badgeLabel={derivedBadge}
-              badgeTone="derived"
-              subtitle={t(
-                "Derived from incident/report/news timestamps (not latency)",
-                "Aus Zeitstempeln von Vorfaellen/Meldungen/News abgeleitet (keine Latenz)"
-              )}
-            >
-              <SignalActivityChart data={sparklineData} />
-            </SignalChartCard>
+            {showStatusgatorServiceHealthChart ? (
+              <SignalChartCard
+                title={t("Service Health (24h)", "Service-Health (24h)")}
+                badgeLabel={apiBadge}
+                badgeTone="api"
+                subtitle={t(
+                  "StatusGator live service-health samples (not direct latency)",
+                  "StatusGator Live-Service-Health-Samples (keine direkte Latenz)"
+                )}
+              >
+                <StatusServiceHealth24hChart points={statusgator24hSeries} language={language} />
+              </SignalChartCard>
+            ) : showIsDownUserReportsChartFallback ? (
+              <SignalChartCard
+                title={t("User Reports (24h)", "Nutzerberichte (24h)")}
+                badgeLabel={apiBadge}
+                badgeTone="api"
+                subtitle={t(
+                  "IsDown user-report timeline used as outage-source fallback",
+                  "IsDown-Nutzerbericht-Zeitreihe als Ausfallquellen-Fallback"
+                )}
+              >
+                <UserReports24hChart points={isDown24hSeries} language={language} />
+              </SignalChartCard>
+            ) : (
+              <SignalChartCard
+                title={t("Signal Activity (24h)", "Signalaktivitaet (24h)")}
+                badgeLabel={derivedBadge}
+                badgeTone="derived"
+                subtitle={t(
+                  "Derived from incident/report/news timestamps (not latency)",
+                  "Aus Zeitstempeln von Vorfaellen/Meldungen/News abgeleitet (keine Latenz)"
+                )}
+              >
+                <SignalActivityChart data={sparklineData} />
+              </SignalChartCard>
+            )}
 
             <SignalChartCard
               title={t("Daily Signal %", "Taegliches Signal %")}
