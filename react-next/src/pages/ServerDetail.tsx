@@ -1130,7 +1130,7 @@ const ServerDetail = () => {
   if (!serviceId) {
     return (
       <AppLayout>
-        <main className="mx-auto max-w-md px-4 pb-28 pt-12">
+        <main className="mx-auto max-w-md px-4 pb-6 pt-10">
           <button
             type="button"
             onClick={() => navigate(-1)}
@@ -1405,8 +1405,8 @@ const ServerDetail = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-28 pt-10">
-        <div className="flex items-center justify-between gap-3 pb-4 pt-4">
+      <main className="mx-auto max-w-md px-4 pb-6 pt-6">
+        <div className="flex items-center justify-between gap-3 pb-3 pt-2">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -1465,19 +1465,25 @@ const ServerDetail = () => {
         ) : null}
 
         {detail ? (
-          <div className="space-y-4">
-            <section className="glass-heavy glass-specular rounded-2xl p-4">
+          <div className="space-y-3">
+            <section className="glass-heavy glass-specular rounded-2xl p-3 sm:p-4">
               <div className="relative z-10">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-start gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary">
-                      <ServiceIcon size={19} className="text-primary" />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary">
+                      <ServiceIcon size={18} className="text-primary" />
                     </div>
                     <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">
-                          {pickLang(language, "Live Status Monitor", "Live-Status-Monitor")}
-                        </p>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                        {pickLang(language, "Live Status Monitor", "Live-Status-Monitor")}
+                      </p>
+                      <h1 className="mt-1 text-xl font-bold tracking-tight text-foreground">
+                        {detail.service.name}
+                      </h1>
+                      <p className="mt-1 text-[12px] leading-snug text-muted-foreground">
+                        {latestIncidentTitle}
+                      </p>
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5">
                         <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground">
                           {topUpdatedLabel}
                         </span>
@@ -1493,12 +1499,6 @@ const ServerDetail = () => {
                           </span>
                         ) : null}
                       </div>
-                      <h1 className="mt-1 text-xl font-bold tracking-tight text-foreground">
-                        {detail.service.name}
-                      </h1>
-                      <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">
-                        {latestIncidentTitle}
-                      </p>
                     </div>
                   </div>
                   <div className="mt-0.5 flex items-center gap-2">
@@ -1510,19 +1510,13 @@ const ServerDetail = () => {
                   </div>
                 </div>
 
-                <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div className="mt-2.5 rounded-2xl border border-white/10 bg-white/5 p-3">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex min-w-0 flex-wrap items-center gap-2">
                       <StatusBadge status={serviceStatus} size="md" />
                       <span className="truncate text-[11px] text-muted-foreground">
                         {quickMetricLabel}
                       </span>
-                      {hasSourceUnavailable && sourceUnavailableLabel ? (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-1.5 py-0.5 text-[10px] font-medium text-status-offline">
-                          <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
-                          {sourceUnavailableLabel}
-                        </span>
-                      ) : null}
                     </div>
                     <span className="shrink-0 text-[11px] font-medium text-foreground">
                       {trendScoreLabel}
@@ -1537,7 +1531,7 @@ const ServerDetail = () => {
                   </div>
                 </div>
 
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
                   {detail.payload.outage?.summary ||
                     detail.payload.official?.summary ||
                     t(
@@ -1546,7 +1540,7 @@ const ServerDetail = () => {
                     )}
                 </p>
 
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-2.5 flex flex-wrap gap-1.5">
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
                     {t("Confidence", "Vertrauen")}: {detail.sourceConfidenceText}
                   </span>
@@ -1560,7 +1554,7 @@ const ServerDetail = () => {
                 </div>
 
                 {detail.payload.outage?.url ? (
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-2.5 flex flex-wrap gap-2">
                     <a
                       href={detail.payload.outage.url}
                       target="_blank"
@@ -1606,7 +1600,7 @@ const ServerDetail = () => {
               </div>
             ) : null}
 
-            <section className="glass glass-specular rounded-2xl p-2">
+            <section className="glass glass-specular rounded-2xl p-1.5">
               <div
                 ref={tabTrackRef}
                 className="relative grid grid-cols-4 gap-1"
@@ -1638,7 +1632,7 @@ const ServerDetail = () => {
                       }}
                       type="button"
                       onClick={() => setActiveTab(tab.key)}
-                      className={`relative z-10 rounded-xl px-2 py-2 text-[11px] font-medium transition-colors duration-200 ${
+                      className={`relative z-10 rounded-xl px-2 py-1.5 text-[11px] font-medium transition-colors duration-200 ${
                         isActive ? "text-foreground" : "text-muted-foreground"
                       }`}
                     >
@@ -1650,7 +1644,7 @@ const ServerDetail = () => {
             </section>
 
             <div
-              className="space-y-4"
+              className="space-y-3"
               style={{ touchAction: "pan-y" }}
               onTouchStart={beginTabSwipe}
               onTouchMove={moveTabSwipe}
@@ -1659,17 +1653,17 @@ const ServerDetail = () => {
             >
             {activeTab === "overview" ? (
               <>
-            <section className="glass glass-specular rounded-2xl p-4">
+            <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("API Component Breakdown", "API-Komponentenstatus")}
+                    {t("Service Components", "Komponentenstatus")}
                   </h2>
                   <DataOriginBadge label={apiBadge} tone="api" />
                 </div>
-                <div className="mt-3 space-y-2">
+                <div className="mt-2.5 space-y-2">
                   {componentRows.length === 0 ? (
-                    <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
+                    <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[13px] text-muted-foreground">
                       {t(
                         "No component breakdown is provided in the current API payload.",
                         "Im aktuellen API-Payload wird kein Komponentenstatus bereitgestellt."
@@ -1757,12 +1751,6 @@ const ServerDetail = () => {
               <DailySignalBars values={dailySignalPercentages} dayLabel={t("Day", "Tag")} />
             </SignalChartCard>
 
-            <section className="grid grid-cols-2 gap-3">
-              <MetricTile label={t("Severity Score", "Schweregrad-Score")} value={String(severityScore)} badgeLabel={apiBadge} />
-              <MetricTile label={t("Reports (24h)", "Meldungen (24h)")} value={String(reports24h)} badgeLabel={apiBadge} />
-              <MetricTile label={t("Sources", "Quellen")} value={`${sourceOkCount}/${sourceTotalCount}`} badgeLabel={apiBadge} />
-              <MetricTile label={t("Model", "Modell")} value={String(modelVersion)} badgeLabel={apiBadge} />
-            </section>
               </>
             ) : null}
 
@@ -1911,6 +1899,13 @@ const ServerDetail = () => {
 
             {activeTab === "analysis" ? (
               <>
+            <section className="grid grid-cols-2 gap-3">
+              <MetricTile label={t("Severity Score", "Schweregrad-Score")} value={String(severityScore)} badgeLabel={apiBadge} />
+              <MetricTile label={t("Reports (24h)", "Meldungen (24h)")} value={String(reports24h)} badgeLabel={apiBadge} />
+              <MetricTile label={t("Sources", "Quellen")} value={`${sourceOkCount}/${sourceTotalCount}`} badgeLabel={apiBadge} />
+              <MetricTile label={t("Model", "Modell")} value={String(modelVersion)} badgeLabel={apiBadge} />
+            </section>
+
             <section className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">

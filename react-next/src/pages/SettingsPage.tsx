@@ -1,5 +1,5 @@
 import AppLayout from "@/components/AppLayout";
-import { pickLang, useAppShell } from "@/lib/appShell";
+import { appBuildMeta, formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
 import { resolveLegacyPath } from "@/lib/legacySite";
 import {
   ExternalLink,
@@ -14,7 +14,9 @@ const runtimeMode = import.meta.env.MODE;
 
 const SettingsPage = () => {
   const { language, setLanguage, reduceMotion, setReduceMotion } = useAppShell();
-  const builtAt = new Date().toLocaleString();
+  const buildMeta = appBuildMeta();
+  const versionLabel = formatBuildLabel(language);
+  const compactBuildId = buildMeta.id ? buildMeta.id.slice(0, 7) : pickLang(language, "unknown", "unbekannt");
 
   return (
     <AppLayout>
@@ -62,9 +64,14 @@ const SettingsPage = () => {
               </div>
               <div className="col-span-2 rounded-xl border border-white/10 bg-white/5 p-3">
                 <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Session Opened", "Sitzung gestartet")}
+                  {pickLang(language, "Build Version", "Build-Version")}
                 </p>
-                <p className="mt-1 text-xs font-medium text-foreground">{builtAt}</p>
+                <p className="mt-1 text-xs font-medium text-foreground" title={versionLabel}>
+                  v {compactBuildId}
+                </p>
+                {buildMeta.stamp ? (
+                  <p className="mt-1 text-[11px] text-muted-foreground">{buildMeta.stamp}</p>
+                ) : null}
               </div>
             </div>
           </div>
@@ -196,8 +203,8 @@ const SettingsPage = () => {
               <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground">
                 {pickLang(
                   language,
-                  "EN/DE toggle and persistent version footer are integrated in the app shell.",
-                  "EN/DE-Umschalter und Versionsanzeige sind in die App-Leiste integriert."
+                  "Language and version info are kept in Settings to keep mobile detail pages compact.",
+                  "Sprache und Versionsinfo bleiben in den Einstellungen, damit Detailseiten mobil kompakt bleiben."
                 )}
               </p>
             </div>

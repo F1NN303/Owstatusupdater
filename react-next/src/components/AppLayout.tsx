@@ -28,7 +28,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         style={{ backgroundImage: `url(${bgGradient})` }}
       />
       <div className="fixed inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background" />
-      <div className="relative z-10 pb-[calc(7.25rem+env(safe-area-inset-bottom,8px))]">
+      <div className="relative z-10 pb-[calc(5.25rem+env(safe-area-inset-bottom,8px))]">
         {children}
       </div>
       <BottomNav />
