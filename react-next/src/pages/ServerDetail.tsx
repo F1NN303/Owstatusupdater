@@ -4,7 +4,6 @@ import StatusBadge from "@/components/StatusBadge";
 import UptimeBar from "@/components/UptimeBar";
 import { getIconComponent, type Status } from "@/data/servers";
 import { pickLang, useAppShell, type AppLanguage } from "@/lib/appShell";
-import { resolveLegacyUrl } from "@/lib/legacySite";
 import {
   fetchLegacyServiceDetail,
   type LegacyDetailServiceId,
@@ -331,6 +330,23 @@ function formatDateTime(value?: string | null) {
     return "Unknown";
   }
   return parsed.toLocaleString();
+}
+
+function formatCompactDateTime(value?: string | null) {
+  if (!value) {
+    return "Unknown";
+  }
+  const parsed = new Date(value);
+  if (!Number.isFinite(parsed.getTime())) {
+    return "Unknown";
+  }
+  return parsed.toLocaleString(undefined, {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 function formatAgeMinutes(value?: number | null) {
@@ -1138,7 +1154,6 @@ const ServerDetail = () => {
   }
 
   const tone = detail ? TONE_STYLES[detail.tone] : TONE_STYLES.unknown;
-  const severityLabel = detail ? detail.severity.toUpperCase() : "LOADING";
   const reports24h =
     detail?.payload.analytics?.signal_metrics?.reports_24h ?? detail?.payload.outage?.reports_24h ?? "--";
   const severityScore = detail?.payload.analytics?.severity_score ?? "--";
@@ -1233,6 +1248,11 @@ const ServerDetail = () => {
           : `${sourceUnavailableCount} Quellen nicht verfuegbar`
       )
     : null;
+  const topUpdatedLabel = `${t("Updated", "Aktualisiert")}: ${formatCompactDateTime(detail?.payload.generated_at)}`;
+  const topSourceLabel =
+    sourceOkCountNum !== null && sourceTotalCountNum !== null
+      ? t(`${sourceOkCountNum}/${sourceTotalCountNum} sources`, `${sourceOkCountNum}/${sourceTotalCountNum} Quellen`)
+      : null;
   const apiBadge = t("API", "API");
   const derivedBadge = t("Derived", "Abgeleitet");
   const formatRegionSeverityLabel = (value?: string | null) => {
@@ -1454,9 +1474,25 @@ const ServerDetail = () => {
                       <ServiceIcon size={19} className="text-primary" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">
-                        {pickLang(language, "Live Status Monitor", "Live-Status-Monitor")}
-                      </p>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                          {pickLang(language, "Live Status Monitor", "Live-Status-Monitor")}
+                        </p>
+                        <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground">
+                          {topUpdatedLabel}
+                        </span>
+                        {topSourceLabel ? (
+                          <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground">
+                            {topSourceLabel}
+                          </span>
+                        ) : null}
+                        {hasSourceUnavailable && sourceUnavailableLabel ? (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-2 py-0.5 text-[10px] font-medium text-status-offline">
+                            <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
+                            {sourceUnavailableLabel}
+                          </span>
+                        ) : null}
+                      </div>
                       <h1 className="mt-1 text-xl font-bold tracking-tight text-foreground">
                         {detail.service.name}
                       </h1>
@@ -1511,20 +1547,8 @@ const ServerDetail = () => {
                 </p>
 
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <span className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold ${tone.chip}`}>
-                    {t("Status", "Status")}: {severityLabel}
-                  </span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
                     {t("Confidence", "Vertrauen")}: {detail.sourceConfidenceText}
-                  </span>
-                  {hasSourceUnavailable && sourceUnavailableLabel ? (
-                    <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-2.5 py-1 text-[11px] font-medium text-status-offline">
-                      <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
-                      {sourceUnavailableLabel}
-                    </span>
-                  ) : null}
-                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
-                    {t("Updated", "Aktualisiert")}: {formatDateTime(detail.payload.generated_at)}
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground">
                     {t("Regions", "Regionen")}:{" "}
@@ -1535,15 +1559,8 @@ const ServerDetail = () => {
                   </span>
                 </div>
 
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <a
-                    href={resolveLegacyUrl(detail.service.legacyHref || detail.service.href)}
-                    className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-white/10"
-                  >
-                    {t("Open full legacy dashboard", "Legacy-Dashboard oeffnen")}
-                    <ExternalLink size={13} />
-                  </a>
-                  {detail.payload.outage?.url ? (
+                {detail.payload.outage?.url ? (
+                  <div className="mt-3 flex flex-wrap gap-2">
                     <a
                       href={detail.payload.outage.url}
                       target="_blank"
@@ -1553,8 +1570,8 @@ const ServerDetail = () => {
                       {t("Open source", "Quelle oeffnen")}
                       <ExternalLink size={13} />
                     </a>
-                  ) : null}
-                </div>
+                  </div>
+                ) : null}
               </div>
             </section>
 
