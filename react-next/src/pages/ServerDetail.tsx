@@ -56,6 +56,7 @@ const TONE_STYLES = {
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
+const RECENT_INCIDENT_SUBTITLE_MAX_MINUTES = 24 * 60;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 type SwipeAxisLock = "x" | "y" | null;
 
@@ -1195,8 +1196,15 @@ const ServerDetail = () => {
   const impactedRegionCount = regionEntries.filter(
     (region) => region.severityKey !== "stable"
   ).length;
-  const latestIncidentTitle =
-    outageIncidents[0]?.title || pickLang(language, "No listed incidents", "Keine gelisteten Vorfälle");
+  const latestIncidentAgeMinutes = ageMinutesSince(outageIncidents[0]?.started_at);
+  const showLatestIncidentSubtitle =
+    Boolean(outageIncidents[0]?.title) &&
+    (detail?.tone !== "good" ||
+      typeof latestIncidentAgeMinutes !== "number" ||
+      latestIncidentAgeMinutes <= RECENT_INCIDENT_SUBTITLE_MAX_MINUTES);
+  const latestIncidentTitle = showLatestIncidentSubtitle
+    ? outageIncidents[0]?.title || pickLang(language, "No listed incidents", "Keine gelisteten Vorfälle")
+    : pickLang(language, "No recent listed incidents", "Keine aktuellen gelisteten Vorfälle");
   const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? extractApiServiceComponents(detail) : [];

@@ -84,11 +84,29 @@ def _synthesize_statusgator_summary(
     top_reported_issues: list[dict[str, Any]],
 ) -> str:
     normalized_status = _normalize_outage_status_text(current_status)
+    latest_incident = incidents[0] if incidents else None
+    latest_incident_age_hours = _hours_since(
+        str(latest_incident.get("started_at")) if isinstance(latest_incident, dict) else None
+    )
     if normalized_status != "unknown" and isinstance(reports_24h, int):
         return (
             f"StatusGator indicates Microsoft 365 is currently {normalized_status} "
             f"with {reports_24h} user-submitted reports in the past 24 hours."
         )
+    if normalized_status != "unknown":
+        if isinstance(latest_incident_age_hours, float):
+            rounded_age_hours = max(1, int(round(latest_incident_age_hours)))
+            if latest_incident_age_hours <= 24:
+                return (
+                    f"StatusGator service-health trend indicates Microsoft 365 is currently "
+                    f"{normalized_status}. Most recent listed incident started about "
+                    f"{rounded_age_hours}h ago."
+                )
+            return (
+                f"StatusGator service-health trend indicates Microsoft 365 is currently "
+                f"{normalized_status}. Latest listed incident was about {rounded_age_hours}h ago."
+            )
+        return f"StatusGator service-health trend indicates Microsoft 365 is currently {normalized_status}."
     if incidents:
         latest_title = _clean(str(incidents[0].get("title") or "Recent incident listed"))
         if isinstance(reports_24h, int):
