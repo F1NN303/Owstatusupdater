@@ -582,7 +582,7 @@ function StatusServiceHealth24hChart({
         <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
           <span className="inline-flex items-center gap-1">
             <span className="h-2.5 w-2.5 rounded-full bg-status-online" />
-            {pickLang(language, "Service up", "Dienst verfÃ¼gbar")}
+            {pickLang(language, "Service up", "Dienst verfügbar")}
           </span>
           <span className="inline-flex items-center gap-1">
             <span className="h-2.5 w-2.5 rounded-full bg-status-degraded" />
@@ -1143,7 +1143,7 @@ const ServerDetail = () => {
               {pickLang(language, "Service not found", "Service nicht gefunden")}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {pickLang(language, "Supported routes:", "UnterstÃ¼tzte Routen:")}{" "}
+              {pickLang(language, "Supported routes:", "Unterstützte Routen:")}{" "}
               <code>/status/overwatch</code> {pickLang(language, "and", "und")}{" "}
               <code>/status/sony</code>
             </p>
@@ -1193,7 +1193,7 @@ const ServerDetail = () => {
     (region) => region.severityKey !== "stable"
   ).length;
   const latestIncidentTitle =
-    outageIncidents[0]?.title || pickLang(language, "No listed incidents", "Keine gelisteten VorfÃ¤lle");
+    outageIncidents[0]?.title || pickLang(language, "No listed incidents", "Keine gelisteten Vorfälle");
   const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? extractApiServiceComponents(detail) : [];
@@ -1244,8 +1244,8 @@ const ServerDetail = () => {
           ? "1 source unavailable"
           : `${sourceUnavailableCount} sources unavailable`,
         sourceUnavailableCount === 1
-          ? "1 Quelle nicht verfÃ¼gbar"
-          : `${sourceUnavailableCount} Quellen nicht verfÃ¼gbar`
+          ? "1 Quelle nicht verfügbar"
+          : `${sourceUnavailableCount} Quellen nicht verfügbar`
       )
     : null;
   const topUpdatedLabel = `${t("Updated", "Aktualisiert")}: ${formatCompactDateTime(detail?.payload.generated_at)}`;
@@ -1259,7 +1259,7 @@ const ServerDetail = () => {
     const key = String(value || "").toLowerCase();
     if (key === "stable") return t("Stable", "Stabil");
     if (key === "minor") return t("Minor", "Gering");
-    if (key === "degraded") return t("Degraded", "BeeintrÃ¤chtigt");
+    if (key === "degraded") return t("Degraded", "Beeinträchtigt");
     if (key === "major") return t("Major", "Schwer");
     if (key === "unknown") return t("Unknown", "Unbekannt");
     return value || t("Unknown", "Unbekannt");
@@ -1274,10 +1274,10 @@ const ServerDetail = () => {
   };
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
-      return t("Overview", "Ãœbersicht");
+      return t("Overview", "Übersicht");
     }
     if (key === "incidents") {
-      return t("Incidents", "VorfÃ¤lle");
+      return t("Incidents", "Vorfälle");
     }
     if (key === "analysis") {
       return t("Analysis", "Analyse");
@@ -1318,11 +1318,11 @@ const ServerDetail = () => {
   const topIssueEmptyText = isSonyDetail
     ? t(
         "No grouped Sony status feed labels are available in the current payload window.",
-        "Im aktuellen Payload-Fenster sind keine gruppierten Sony-Statusfeed-Labels verfÃ¼gbar."
+        "Im aktuellen Payload-Fenster sind keine gruppierten Sony-Statusfeed-Labels verfügbar."
       )
     : t(
         "No top issue labels are available in the current StatusGator page response.",
-        "In der aktuellen StatusGator-Seitenantwort sind keine Top-Problemlabels verfÃ¼gbar."
+        "In der aktuellen StatusGator-Seitenantwort sind keine Top-Problemlabels verfügbar."
       );
 
   const beginTabSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
@@ -1412,7 +1412,7 @@ const ServerDetail = () => {
               type="button"
               onClick={() => navigate(-1)}
               className="glass flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90"
-              aria-label={t("Go back", "ZurÃ¼ck")}
+              aria-label={t("Go back", "Zurück")}
             >
               <ArrowLeft size={16} className="text-foreground" />
             </button>
@@ -1525,7 +1525,7 @@ const ServerDetail = () => {
                   <div className="mt-2">
                     <div className="mb-1 flex items-center justify-between text-[9px] uppercase tracking-[0.12em] text-muted-foreground sm:text-[10px] sm:tracking-wider">
                       <span>{t("30-day signal trend", "30-Tage-Signaltrend")}</span>
-                      <span>{t(`${incidentCount} listed incidents`, `${incidentCount} gelistete VorfÃ¤lle`)}</span>
+                      <span>{t(`${incidentCount} listed incidents`, `${incidentCount} gelistete Vorfälle`)}</span>
                     </div>
                     <UptimeBar data={trendHistory} />
                   </div>
@@ -1561,7 +1561,7 @@ const ServerDetail = () => {
                       rel="noreferrer"
                       className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:bg-white/10 sm:px-3 sm:py-2 sm:text-xs"
                     >
-                      {t("Open source", "Quelle Ã¶ffnen")}
+                      {t("Open source", "Quelle öffnen")}
                       <ExternalLink size={13} />
                     </a>
                   </div>
@@ -1587,7 +1587,7 @@ const ServerDetail = () => {
                   <TriangleAlert size={15} className="mt-0.5 shrink-0" />
                   <div>
                     <p className="font-semibold">
-                      {t("Data refresh may be delayed", "Datenaktualisierung mÃ¶glicherweise verzÃ¶gert")}
+                      {t("Data refresh may be delayed", "Datenaktualisierung möglicherweise verzögert")}
                     </p>
                     <p className="mt-0.5 opacity-90">
                       {t(
@@ -1691,7 +1691,7 @@ const ServerDetail = () => {
               badgeTone="derived"
               subtitle={t(
                 "Derived from incidents across the last 30 days",
-                "Aus VorfÃ¤llen der letzten 30 Tage abgeleitet"
+                "Aus Vorfällen der letzten 30 Tage abgeleitet"
               )}
             >
               <UptimeBar data={trendHistory} />
@@ -1727,12 +1727,12 @@ const ServerDetail = () => {
               </SignalChartCard>
             ) : (
               <SignalChartCard
-                title={t("Signal Activity (24h)", "SignalaktivitÃ¤t (24h)")}
+                title={t("Signal Activity (24h)", "Signalaktivität (24h)")}
                 badgeLabel={derivedBadge}
                 badgeTone="derived"
                 subtitle={t(
                   "Derived from incident/report/news timestamps (not latency)",
-                  "Aus Zeitstempeln von VorfÃ¤llen/Meldungen/News abgeleitet (keine Latenz)"
+                  "Aus Zeitstempeln von Vorfällen/Meldungen/News abgeleitet (keine Latenz)"
                 )}
               >
                 <SignalActivityChart data={sparklineData} />
@@ -1740,12 +1740,12 @@ const ServerDetail = () => {
             )}
 
             <SignalChartCard
-              title={t("Daily Signal %", "TÃ¤gliches Signal %")}
+              title={t("Daily Signal %", "Tägliches Signal %")}
               badgeLabel={derivedBadge}
               badgeTone="derived"
               subtitle={t(
                 "Derived daily health score from incident overlap",
-                "Abgeleiteter tÃ¤glicher Gesundheitswert aus Vorfall-Ãœberlappung"
+                "Abgeleiteter täglicher Gesundheitswert aus Vorfall-Überlappung"
               )}
             >
               <DailySignalBars values={dailySignalPercentages} dayLabel={t("Day", "Tag")} />
@@ -1760,7 +1760,7 @@ const ServerDetail = () => {
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Change Summary", "Ã„nderungsÃ¼bersicht")}
+                    {t("Change Summary", "Änderungsübersicht")}
                   </h2>
                   <DataOriginBadge label={apiBadge} tone="api" />
                 </div>
@@ -1772,18 +1772,18 @@ const ServerDetail = () => {
                     badgeLabel={apiBadge}
                   />
                   <MetricTile
-                    label={t("New Incidents", "Neue VorfÃ¤lle")}
+                    label={t("New Incidents", "Neue Vorfälle")}
                     value={String(changeSummary?.new_incidents ?? 0)}
                     hint={t("Latest refresh delta", "Delta der letzten Aktualisierung")}
                     badgeLabel={apiBadge}
                   />
                   <MetricTile
-                    label={t("Updated Incidents", "Aktualisierte VorfÃ¤lle")}
+                    label={t("Updated Incidents", "Aktualisierte Vorfälle")}
                     value={String(changeSummary?.updated_incidents ?? 0)}
                     badgeLabel={apiBadge}
                   />
                   <MetricTile
-                    label={t("Resolved Incidents", "GelÃ¶ste VorfÃ¤lle")}
+                    label={t("Resolved Incidents", "Gelöste Vorfälle")}
                     value={String(changeSummary?.resolved_incidents ?? 0)}
                     badgeLabel={apiBadge}
                   />
@@ -1843,7 +1843,7 @@ const ServerDetail = () => {
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Recent Incidents", "Letzte VorfÃ¤lle")}
+                    {t("Recent Incidents", "Letzte Vorfälle")}
                   </h2>
                   <DataOriginBadge label={apiBadge} tone="api" />
                 </div>
@@ -1852,7 +1852,7 @@ const ServerDetail = () => {
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
                       {t(
                         "No recent incidents listed in the current outage payload.",
-                        "Keine aktuellen VorfÃ¤lle im derzeitigen Ausfall-Payload gelistet."
+                        "Keine aktuellen Vorfälle im derzeitigen Ausfall-Payload gelistet."
                       )}
                     </p>
                   ) : (
@@ -1964,7 +1964,7 @@ const ServerDetail = () => {
                 <div className="mt-3 space-y-2.5">
                   {sources.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      {t("No source status details available.", "Keine QuellenprÃ¼fungen im Payload.")}
+                      {t("No source status details available.", "Keine Quellenprüfungen im Payload.")}
                     </p>
                   ) : (
                     sources.map((source, index) => (
@@ -1992,9 +1992,9 @@ const ServerDetail = () => {
                           </span>
                         </div>
                         <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
-                          <span>{t("freshness", "AktualitÃ¤t")}: {formatSourceFreshnessLabel(source.freshness)}</span>
+                          <span>{t("freshness", "Aktualität")}: {formatSourceFreshnessLabel(source.freshness)}</span>
                           <span>{t("age", "Alter")}: {formatAgeMinutes(source.age_minutes)}</span>
-                          {typeof source.item_count === "number" ? <span>{t("items", "EintrÃ¤ge")}: {source.item_count}</span> : null}
+                          {typeof source.item_count === "number" ? <span>{t("items", "Einträge")}: {source.item_count}</span> : null}
                           {typeof source.duration_ms === "number" ? <span>{t("fetch", "Abrufzeit")}: {source.duration_ms}ms</span> : null}
                         </div>
                         {source.error ? (
@@ -2013,8 +2013,8 @@ const ServerDetail = () => {
               <>
                 <LinkListSection title={t("Official Updates", "Offizielle Meldungen")} items={officialItems} emptyText={t("No official updates in payload.", "Keine offiziellen Meldungen im Payload.")} badgeLabel={apiBadge} />
                 <LinkListSection title={t("User Reports", "Nutzermeldungen")} items={reportItems} emptyText={t("No report entries in payload.", "Keine Nutzermeldungen im Payload.")} badgeLabel={apiBadge} />
-                <LinkListSection title={t("News", "News")} items={newsItems} emptyText={t("No news entries in payload.", "Keine News-EintrÃ¤ge im Payload.")} badgeLabel={apiBadge} />
-                <LinkListSection title={t("Social", "Social")} items={socialItems} emptyText={t("No social entries in payload.", "Keine Social-EintrÃ¤ge im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("News", "News")} items={newsItems} emptyText={t("No news entries in payload.", "Keine News-Einträge im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Social", "Social")} items={socialItems} emptyText={t("No social entries in payload.", "Keine Social-Einträge im Payload.")} badgeLabel={apiBadge} />
                 <LinkListSection title={t("Helpful Links", "Hilfreiche Links")} items={knownItems} emptyText={t("No known resources in payload.", "Keine hilfreichen Links im Payload.")} badgeLabel={apiBadge} />
               </>
             ) : null}
