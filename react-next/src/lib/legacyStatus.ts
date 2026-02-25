@@ -4,7 +4,7 @@ export type LegacySeverity = "stable" | "minor" | "degraded" | "major" | "unknow
 export type LegacyTone = "good" | "warn" | "bad" | "unknown";
 
 export interface LegacyHomeServiceConfig {
-  id: "overwatch" | "sony" | "email";
+  id: "overwatch" | "sony" | "m365" | "email";
   name: string;
   href: string;
   legacyHref?: string;
@@ -48,6 +48,14 @@ export const HOME_SERVICES: LegacyHomeServiceConfig[] = [
     legacyHref: "/sony/legacy-index.html",
     note: "PlayStation Network live signals, service trend, and incident data.",
     statusPath: "/sony/data/status.json",
+  },
+  {
+    id: "m365",
+    name: "Microsoft 365",
+    href: "/status/m365",
+    legacyHref: "/m365/",
+    note: "Microsoft 365 live service health signals with official and provider sources.",
+    statusPath: "/m365/data/status.json",
   },
   {
     id: "email",

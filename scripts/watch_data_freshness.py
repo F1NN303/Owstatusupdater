@@ -14,6 +14,7 @@ from typing import Any
 DEFAULT_ENDPOINTS = [
     ("overwatch", "https://f1nn303.github.io/Owstatusupdater/data/status.json"),
     ("sony", "https://f1nn303.github.io/Owstatusupdater/sony/data/status.json"),
+    ("m365", "https://f1nn303.github.io/Owstatusupdater/m365/data/status.json"),
 ]
 DEFAULT_REPO = "F1NN303/Owstatusupdater"
 DEFAULT_WORKFLOW_ID = "update-site-data.yml"

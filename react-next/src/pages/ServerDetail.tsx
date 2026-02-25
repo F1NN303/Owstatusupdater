@@ -318,6 +318,9 @@ function normalizeDetailId(id?: string): LegacyDetailServiceId | null {
   if (key === "sony" || key === "psn" || key === "playstation" || key === "playstation-network") {
     return "sony";
   }
+  if (key === "m365" || key === "microsoft365" || key === "office365" || key === "microsoft-365") {
+    return "m365";
+  }
   return null;
 }
 
@@ -1175,7 +1178,7 @@ const ServerDetail = () => {
   const sourceTotalCount = detail?.payload.analytics?.source_total_count ?? "--";
   const changeSummary = detail?.payload.changes?.summary;
   const serviceStatus = detail ? toneToStatus(detail.tone) : "degraded";
-  const serviceIconName = serviceId === "sony" ? "Tv" : "Gamepad2";
+  const serviceIconName = serviceId === "sony" ? "Tv" : serviceId === "m365" ? "Globe" : "Gamepad2";
   const ServiceIcon = getIconComponent(serviceIconName);
   const trendHistory = detail ? buildSignalTrend(detail) : Array.from({ length: 30 }, () => 0.5);
   const sparklineData = detail
@@ -1286,6 +1289,7 @@ const ServerDetail = () => {
   };
   const isOverwatchDetail = detail?.service.id === "overwatch";
   const isSonyDetail = detail?.service.id === "sony";
+  const isM365Detail = detail?.service.id === "m365";
   const sonyTopIssueMode = String(topReportedIssuesMeta?.mode || "").toLowerCase();
   const sonyTopIssueWindowHours =
     typeof topReportedIssuesMeta?.window_hours === "number" ? topReportedIssuesMeta.window_hours : null;
@@ -1293,11 +1297,11 @@ const ServerDetail = () => {
     typeof sonyTopIssueWindowHours === "number" && sonyTopIssueWindowHours > 0
       ? Math.round(sonyTopIssueWindowHours / 24)
       : null;
-  const showTopIssueCard = Boolean(detail && (isOverwatchDetail || isSonyDetail || topReportedIssues.length > 0));
+  const showTopIssueCard = Boolean(detail && (isOverwatchDetail || isSonyDetail || isM365Detail || topReportedIssues.length > 0));
   const showStatusgatorServiceHealthChart =
-    isOverwatchDetail && statusgator24hSeries.length >= 8;
+    (isOverwatchDetail || isM365Detail) && statusgator24hSeries.length >= 8;
   const showIsDownUserReportsChartFallback =
-    isOverwatchDetail && !showStatusgatorServiceHealthChart && isDown24hSeries.length >= 8;
+    (isOverwatchDetail || isM365Detail) && !showStatusgatorServiceHealthChart && isDown24hSeries.length >= 8;
   const topIssueCardTitle = isSonyDetail
     ? t("Top Status Feed Labels", "Top Status-Feed-Labels")
     : t("Top Reported Issues", "Top gemeldete Probleme");
@@ -1421,7 +1425,7 @@ const ServerDetail = () => {
                 {pickLang(language, "Live Service Detail", "Live-Service-Detail")}
               </p>
               <p className="text-sm font-medium text-foreground">
-                {detail?.service.name || (serviceId === "overwatch" ? "Overwatch" : "Sony PSN")}
+                {detail?.service.name || (serviceId === "overwatch" ? "Overwatch" : serviceId === "m365" ? "Microsoft 365" : "Sony PSN")}
               </p>
             </div>
           </div>

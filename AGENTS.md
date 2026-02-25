@@ -47,7 +47,7 @@ Validation script:
 
 ## 5) CI/CD Workflows (Current)
 - `update-site-data.yml`
-  - builds Overwatch + Sony data
+  - builds Overwatch + Sony + Microsoft 365 data
   - sends major outage Brevo alert (via GitHub secrets)
   - commits public data outputs only
   - restores/saves `.bot_state` via Actions cache

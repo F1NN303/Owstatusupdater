@@ -20,6 +20,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/index.html` -> React app
   - `site/overwatch.html` -> React route wrapper
   - `site/sony/index.html` -> React route wrapper
+  - `site/m365/index.html` -> React route wrapper
 
 ## Build / Deploy Model (Changed)
 - React artifacts for root and `/next` are built in CI, not manually committed as part of normal UI work.
@@ -58,6 +59,16 @@ Key files:
 Key file:
 - `services/sony_aggregator.py`
 
+### Microsoft 365 (Phase 1 / Public-Safe)
+- New public-safe service using Microsoft public status page + `@MSFT365Status` mirror + StatusGator + IsDown.
+- Uses the same `status.json` / `history.json` / `summary.json` / `rss.xml` / `alerts.json` pipeline contract and React detail page.
+- `StatusGator service health (24h)` and `IsDown user reports (24h)` series are exposed for the existing chart UI.
+
+Key files:
+- `services/m365_aggregator.py`
+- `scripts/build_site_data.py`
+- `site/m365/index.html`
+
 ### Freshness / Scheduling
 - UI shows stale-data warning if payload age exceeds threshold.
 - Watchdog workflow auto-triggers data refresh if data gets stale.
@@ -93,7 +104,7 @@ Key file:
 - `react-next/src/pages/ServerDetail.tsx`
 
 ### Home
-- Uses uploaded design style + live JSON-backed status cards for Overwatch / Sony.
+- Uses uploaded design style + live JSON-backed status cards for Overwatch / Sony / Microsoft 365.
 - No fake fallback cards are shown on API failure.
 
 Key file:

@@ -13,6 +13,7 @@ if str(ROOT) not in sys.path:
 
 from services.ow_aggregator import build_dashboard_payload as build_overwatch_dashboard_payload
 from services.sony_aggregator import build_dashboard_payload as build_sony_dashboard_payload
+from services.m365_aggregator import build_dashboard_payload as build_m365_dashboard_payload
 
 CADENCE_MINUTES = 30
 RETENTION_DAYS = 30
@@ -34,6 +35,13 @@ SERVICE_CONFIGS = {
         "site_url": "https://f1nn303.github.io/Owstatusupdater/sony/",
         "data_dir": Path("site/sony/data"),
         "state_path": Path(".bot_state/sony_state.json"),
+    },
+    "m365": {
+        "label": "Microsoft 365",
+        "builder": build_m365_dashboard_payload,
+        "site_url": "https://f1nn303.github.io/Owstatusupdater/m365/",
+        "data_dir": Path("site/m365/data"),
+        "state_path": Path(".bot_state/m365_state.json"),
     },
 }
 
