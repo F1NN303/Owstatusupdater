@@ -2,7 +2,7 @@
 
 Last updated: 2026-02-25
 Current branch: `main`
-Latest known commit at handoff creation: `223232d`
+Latest known commit at handoff update: `3246472`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent major changes, deployment behavior, known issues, and the recommended next steps.
@@ -106,6 +106,7 @@ Key file:
   - notifications shortcut
   - about/version
 - Internal migration/planning/legacy links removed from user-facing settings UI.
+- Added public-facing `Terms & Ownership` link.
 
 Key file:
 - `react-next/src/pages/SettingsPage.tsx`
@@ -119,7 +120,16 @@ Key files:
 - `react-next/src/lib/legacySubscription.ts`
 - `site/data/subscription.json`
 
+### Legal / Ownership UI
+- Public in-app legal page is available at `/terms`.
+- Shared footer link to `Terms & Ownership` is visible across React pages.
+
+Key file:
+- `react-next/src/pages/TermsPage.tsx`
+
 ## Recent Important Commits (Context)
+- `3246472` - Add public terms page and legal footer link
+- `78dc269` - Harden public repo privacy and stop tracking runtime state
 - `404be53` - Simplified settings page and embedded Brevo alerts form
 - `223232d` - Tightened mobile detail layout spacing and labels
 - `0fcd008` - CI builds React artifacts + version SHA injection improvements
@@ -145,6 +155,7 @@ This is normal with current workflow design.
 ## Ownership / Reuse Policy (Repo)
 - Repository is public but proprietary (not open source).
 - See `LICENSE` and `NOTICE.md` for usage restrictions and ownership notice.
+- Public app also exposes a visible `/terms` page for users.
 
 ## Local Workspace Note (Do Not Accidentally Commit)
 There may be leftover untracked built artifacts from local builds. Example:

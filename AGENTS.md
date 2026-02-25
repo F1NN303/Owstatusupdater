@@ -1,168 +1,96 @@
-# Agent Handoff: Owstatusupdater
+﻿# AGENTS.md - Owstatusupdater (Public-Safe Agent Guide)
 
-Last updated: 2026-02-21
+Last updated: 2026-02-25
 
-## Public Repo Hard Rule (Do Not Violate)
-- This repository is public. Treat **all committed files** as public.
-- The deployed `site/` directory is public web output. Do not expose secrets, runtime state, internal operational data, or private notes in `site/` or tracked files.
-- If state persistence is needed for workflows, prefer non-public persistence (for example Actions cache/artifacts) over committing state files.
+## 0) Public Repo Hard Rule (Do Not Violate)
+- This repository is public. Treat all committed files as public.
+- The deployed `site/` directory is public web output.
+- Do not commit secrets, tokens, credentials, internal runtime state, or private notes.
+- Runtime workflow state must not be tracked in Git. Use non-public persistence (GitHub Actions cache/artifacts).
+- Run `scripts/check_public_exposure.py` when changing data/build/deploy/security-sensitive files.
 
-## 1) Canonical Repo + Deployment
-- Canonical repo path (local): `Owstatusupdater-main/project/mc-regeln-main`
-- GitHub repo: `https://github.com/F1NN303/Owstatusupdater`
+## 1) Start Here (New Agent)
+Read these first, in order:
+1. `docs/AGENT_HANDOFF.md` (current project state, recent changes, backlog)
+2. `AGENTS.md` (this file - rules + workflow expectations)
+3. `git log --oneline -20`
+
+## 2) Canonical Repo / Paths
+- Repo root (local): `Owstatusupdater-main/project/mc-regeln-main`
+- Public repo: `https://github.com/F1NN303/Owstatusupdater`
 - Live site: `https://f1nn303.github.io/Owstatusupdater/`
-- Sony page: `https://f1nn303.github.io/Owstatusupdater/sony/`
-- Email alerts page: `https://f1nn303.github.io/Owstatusupdater/email-alerts.html`
+- React preview copy: `https://f1nn303.github.io/Owstatusupdater/next/`
 
-Note: There is another sibling `site/` folder outside this repo root. Do not edit that by mistake. Work inside `project/mc-regeln-main/site`.
+Important:
+- Work in this repo's `site/` and `react-next/` only.
+- There may be another sibling `site/` folder outside this repo root. Ignore it.
 
-## 2) Stack / Architecture
-- Frontend: static HTML + CSS + vanilla JS.
-- No React/Vue/Next build pipeline.
-- Data generation: Python scripts write JSON/XML into `site/data` and `site/sony/data`.
-- Hosting: GitHub Pages via Actions deploy.
+## 3) Current Architecture (High-Level)
+- Frontend (primary): React app in `react-next/`
+- Deployed root app artifacts are built in CI into `site/`
+- `/next/` preview artifacts are also built in CI into `site/next/`
+- Legacy HTML pages still exist as fallbacks (`site/legacy-*.html`, `site/sony/legacy-index.html`)
+- Data pipeline: Python scripts generate JSON/XML into `site/data` and `site/sony/data`
+- Hosting: GitHub Pages via GitHub Actions
 
-Main frontend files:
-- `site/index.html` (Overwatch dashboard)
-- `site/sony/index.html` (Sony PSN dashboard)
-- `site/email-alerts.html` (Brevo signup page + local menu logic)
-- `site/styles.css`
-- `site/app.js` (shared dashboard logic for Overwatch + Sony)
+## 4) Data / Security Guardrails
+- `site/data/subscription.json` is public-safe config only (provider/form URL/allowed hosts)
+- `.bot_state/` is workflow runtime state and must remain untracked
+- Public output must not contain:
+  - `state.json` runtime files
+  - `.env*`
+  - source maps (`*.map`) unless intentionally allowed
+  - secret markers / credentials
 
-Data files:
-- Overwatch: `site/data/*.json`, `site/data/rss.xml`
-- Sony: `site/sony/data/*.json`, `site/sony/data/rss.xml`
+Validation script:
+- `py -3 scripts/check_public_exposure.py`
 
-## 3) CI/CD Workflows
+## 5) CI/CD Workflows (Current)
 - `update-site-data.yml`
-  - Runs every 30 min.
-  - Executes:
-    - `python scripts/build_site_data.py --service overwatch`
-    - `python scripts/build_site_data.py --service sony`
-  - Sends major outage mail via Brevo using repo secrets.
-  - Commits generated data files with retry/rebase logic.
-
+  - builds Overwatch + Sony data
+  - sends major outage Brevo alert (via GitHub secrets)
+  - commits public data outputs only
+  - restores/saves `.bot_state` via Actions cache
+- `watch-data-freshness.yml`
+  - watches deployed payload freshness
+  - dispatches recovery refresh if stale
 - `send-test-email.yml`
-  - Manual run for test email.
-  - Force sends via `ALERT_FORCE_SEND=1`.
-
+  - manual forced alert test
+  - restores/saves `.bot_state` via Actions cache
 - `deploy-pages.yml`
-  - Deploys `site/` folder to GitHub Pages on `main` push and successful data workflow.
+  - builds React root + `/next` artifacts in CI
+  - validates artifact paths + exposure rules
+  - deploys `site/` to GitHub Pages
 
-## 4) Security Notes (Public Repo)
-- Secrets are expected only in GitHub Actions secrets:
-  - `BREVO_API_KEY`
-  - `ALERT_EMAIL_FROM`
-  - `ALERT_EMAIL_TO`
-- Public file `site/data/subscription.json` contains:
-  - provider
-  - hosted Brevo form URL
-  - allowed host list
-  This is public-safe and contains no secret keys.
-- Email sending script avoids persisting full provider response payload.
+## 6) Known Operational Reality (Git Push Rejections)
+`git push` rejections are expected because auto refresh workflows also push to `main`.
 
-## 5) User Priorities / Product Direction
-User repeatedly requested:
-- Mobile-first UI quality.
-- Clear service identity (Overwatch vs Sony with proper logos).
-- Reduced cognitive load and simpler UI.
-- Working menu/search behavior on iPhone Safari.
-- No secret leakage in public repo.
+Normal resolution:
+1. `git fetch origin`
+2. `git rebase origin/main`
+3. `git push origin main`
 
-## 6) Current Known Problems (Important)
-### P0: Mobile menu glitch still unresolved per user
-User reports menu still visually broken/overlaying content on mobile even after recent patches.
-Symptoms from screenshots:
-- Menu content appears stuck at top when it should be closed.
-- UI overlaps hero and tab area.
-- Search + menu state conflicts on iOS Safari.
+If conflict involves `.bot_state/*`, keep them untracked/deleted from Git.
 
-### P1: Menu logic split across two implementations
-- Dashboard pages use `site/app.js`.
-- `site/email-alerts.html` has a separate inline menu implementation with its own breakpoints, scroll lock, and filtering logic.
-- This drift is high risk for repeated regressions.
+## 7) Product / UX Priorities (User)
+- Mobile-first UI quality
+- Compact layout / low cognitive load
+- No fake/example data shown as real
+- Clear source availability (red marker when a source fails)
+- No public leakage of internal info
 
-### P1: iOS Safari behavior/caching
-- User tests mostly on iPhone simulation and Safari.
-- Hard reload/querystring was used, but issue still reported.
+## 8) Validation Checklist Before Shipping
+- React UI changes: `npm.cmd run build` in `react-next`
+- Security-sensitive/data/deploy changes: `py -3 scripts/check_public_exposure.py`
+- Confirm no fake/example data reintroduced
+- Confirm source-unavailable red marker still appears when source health is partial
+- Confirm mobile layout does not overlap tab switcher / bottom nav
 
-## 7) Recent Commits to Inspect First
-- `df7ec75` - "Fix mobile menu sheet behavior and refresh site data"
-  - Touched menu mode/state logic and CSS sheet rules.
-- `3f82342` - "Restore data snapshots from upstream"
-  - Reintroduced upstream-generated data after rebase conflict.
+## 9) Local Workspace Cleanup Warning
+There may be untracked local build leftovers like `site/assets/index-*.js` and `site/next/assets/index-*.js`.
+Do not commit them unless intentionally doing a manual artifact publish (normally CI handles artifacts).
 
-If menu bug persists, start by reviewing/reverting part of `df7ec75` (menu-specific hunks only).
-
-## 8) Practical Debug Runbook
-1. Pull latest:
-```powershell
-git pull origin main
-```
-
-2. Run local static preview:
-```powershell
-python -m http.server 8000 --directory site
-```
-
-3. Reproduce on mobile viewport:
-- Open `http://127.0.0.1:8000/index.html`
-- Open/close menu repeatedly.
-- Focus search field before/after menu open.
-- Rotate viewport / trigger resize.
-- Navigate to Sony and repeat.
-
-4. Inspect live state in devtools console:
-```js
-document.body.dataset.menuMode
-document.body.dataset.menuOpen
-document.getElementById('menuTrigger')?.getAttribute('aria-expanded')
-document.getElementById('menuPanel')?.hidden
-```
-
-5. Validate no data/security regressions:
-```powershell
-python scripts/build_site_data.py --service overwatch
-python scripts/build_site_data.py --service sony
-python -c "import json; [json.load(open(p,encoding='utf-8')) for p in ['site/data/status.json','site/data/history.json','site/sony/data/status.json','site/sony/data/history.json']]; print('ok')"
-```
-
-## 9) Recommended Next Fix Strategy (for next AI)
-1. Stabilize before redesign:
-  - Temporarily disable fullscreen-sheet behavior for mobile and use one simple anchored dropdown that always closes on blur/navigation.
-  - Confirm bug disappears.
-
-2. Unify menu implementation:
-  - Remove inline menu JS from `site/email-alerts.html`.
-  - Reuse a shared menu controller from one JS source.
-
-3. Enforce hard closed state:
-  - Keep `panel.hidden = true` + `aria-expanded=false` as single source of truth.
-  - Avoid mixed CSS visibility conditions that can render despite hidden state.
-
-4. Add temporary debug telemetry:
-  - `console.debug('[menu]', { mode, open, expanded, hidden })` on every open/close.
-  - Remove once stable.
-
-5. Only after stable:
-  - Continue mobile visual overhaul.
-  - Keep functionality changes and visual changes in separate commits.
-
-## 10) High-Risk Files
-- `site/app.js` (large monolith, ~3500 lines)
-- `site/styles.css` (large style sheet, ~1900 lines)
-- `site/email-alerts.html` (inline menu logic diverges from app.js)
-
-## 11) Data/Service Implementation Notes
-- Data builder supports both services via `--service`.
-- Service configs in `scripts/build_site_data.py`:
-  - Overwatch data dir: `site/data`
-  - Sony data dir: `site/sony/data`
-- Alert script currently reads `site/data/status.json` (Overwatch-major flow).
-
-## 12) Guardrails for Next AI
-- Do not commit secrets or credentials.
-- Do not remove/overwrite user custom branding text blindly.
-- Keep EN/DE functionality intact.
-- Keep generated data updates separate from UI fixes when possible (smaller reviews, easier rollback).
-
+## 10) Ownership / Public Repo Notice
+- Repo is public but proprietary (not open source)
+- See `LICENSE`, `NOTICE.md`, and the in-app `/terms` page
+- Public availability does not grant reuse or re-hosting rights

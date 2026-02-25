@@ -1,55 +1,30 @@
-# Overwatch Status Radar
+﻿# Overwatch Status Radar
 
-Public status dashboard for Overwatch service health.
+Public status dashboard for Overwatch and Sony PSN service health.
 
-## What it shows
-- Service status summary
-- Recent incident signals
-- Blizzard forum status reports
-- Official news and social updates
+## Live Website
+- https://f1nn303.github.io/Owstatusupdater/
 
-## Live website
-`https://f1nn303.github.io/Owstatusupdater/`
+## What It Shows
+- Live service status summary
+- Incident and outage signals
+- Official news / updates / social links
+- E-mail alert signup (Brevo hosted form embedded in app)
 
-## For maintainers
-1. Open `Settings` -> `Pages`
-2. Set source to `GitHub Actions`
-3. Run the data update/deploy workflows when needed
+## Ownership / Reuse
+This project is public for deployment and collaboration, but it is not open source.
+See:
+- `LICENSE`
+- `NOTICE.md`
+- `/#/terms` (live app legal page)
 
-## Brevo Email Alerts (Major Outages)
-The repository supports automatic email notifications via Brevo when status severity reaches `major`.
-
-### 1. Create Brevo credentials
-1. In Brevo, create a transactional email API key.
-2. Add and verify your sender identity (single sender or domain).
-
-### 2. Add GitHub Secrets
-In `Repository -> Settings -> Secrets and variables -> Actions`, add:
-- `BREVO_API_KEY`
-- `ALERT_EMAIL_FROM` (verified sender email in Brevo)
-- `ALERT_EMAIL_TO` (comma-separated recipients)
-
-### 3. Automatic sending
-- Workflow: `.github/workflows/update-site-data.yml`
-- Cadence: every 30 minutes
-- Script: `scripts/send_brevo_major_alert.py`
-- Behavior:
-  - sends when severity is `major`,
-  - deduplicates repeated snapshots,
-  - applies cooldown (`ALERT_MAJOR_COOLDOWN_MINUTES`, default `360`).
-
-### 4. Send a test mail anytime
-- Run workflow `Send Test Email Alert` from the Actions tab.
-- It force-sends a test message without waiting for a real major outage.
-
-### 5. Enable public signup widget with captcha
-- Create a Brevo hosted signup form (captcha + double opt-in).
-- Edit `site/data/subscription.json` and set `form_url` to the Brevo form URL.
-- The dashboard will embed that secure form in the Overview tab.
-
-## Local preview
+## Local Preview (basic)
 ```bash
 python -m http.server 8000 --directory site
 ```
 
 Open `http://127.0.0.1:8000`.
+
+## Notes
+- Build/deploy and private workflow configuration details are intentionally minimized in this public README.
+- If you are a maintainer/agent, use `AGENTS.md` and `docs/AGENT_HANDOFF.md`.
