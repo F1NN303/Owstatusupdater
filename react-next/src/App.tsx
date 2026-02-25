@@ -8,6 +8,7 @@ import ServerDetail from "./pages/ServerDetail";
 import EmailAlerts from "./pages/EmailAlerts";
 import Favorites from "./pages/Favorites";
 import SettingsPage from "./pages/SettingsPage";
+import TermsPage from "./pages/TermsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/alerts" element={<EmailAlerts />} />
           <Route path="/email-alerts" element={<EmailAlerts />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/terms" element={<TermsPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

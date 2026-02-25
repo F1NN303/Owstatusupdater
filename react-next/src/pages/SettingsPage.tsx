@@ -192,6 +192,13 @@ const SettingsPage = () => {
                 <span>{pickLang(language, "Open GitHub repository", "GitHub-Repository öffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
+              <Link
+                to="/terms"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
+              >
+                <span>{pickLang(language, "Terms & Ownership", "Nutzung & Eigentum")}</span>
+                <ExternalLink size={14} className="text-muted-foreground" />
+              </Link>
             </div>
           </div>
         </section>
