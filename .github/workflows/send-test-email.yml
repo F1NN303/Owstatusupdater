@@ -31,6 +31,10 @@ jobs:
         run: pip install -r requirements.site.txt
 
       - name: Refresh latest status data
+        env:
+          M365_GRAPH_TENANT_ID: ${{ secrets.M365_GRAPH_TENANT_ID }}
+          M365_GRAPH_CLIENT_ID: ${{ secrets.M365_GRAPH_CLIENT_ID }}
+          M365_GRAPH_CLIENT_SECRET: ${{ secrets.M365_GRAPH_CLIENT_SECRET }}
         run: |
           python scripts/build_site_data.py --service overwatch
           python scripts/build_site_data.py --service sony
