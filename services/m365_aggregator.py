@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import os
 import re
 import threading
 import time
@@ -40,6 +41,12 @@ MICROSOFT_SERVICE_HEALTH_DOCS_URL = (
 MICROSOFT_GRAPH_COMMUNICATIONS_DOCS_URL = (
     "https://learn.microsoft.com/en-us/graph/service-communications-concept-overview"
 )
+MICROSOFT_GRAPH_API_ROOT = "https://graph.microsoft.com/v1.0"
+MICROSOFT_GRAPH_TOKEN_SCOPE = "https://graph.microsoft.com/.default"
+MICROSOFT_GRAPH_TOKEN_URL_TMPL = (
+    "https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
+)
+MICROSOFT_ADMIN_SERVICE_HEALTH_URL = "https://admin.microsoft.com/Adminportal/Home#/servicehealth"
 
 _CACHE_LOCK = threading.Lock()
 _CACHE_TS = 0.0
@@ -75,6 +82,412 @@ def _hours_since(value: str | None) -> float | None:
         return None
     delta = _utc_now() - parsed
     return max(delta.total_seconds() / 3600.0, 0.0)
+
+
+def _read_env_first(*names: str) -> str:
+    for name in names:
+        value = os.getenv(name)
+        if value and value.strip():
+            return value.strip()
+    return ""
+
+
+def _graph_credentials_from_env() -> tuple[str, str, str] | None:
+    tenant_id = _read_env_first("M365_GRAPH_TENANT_ID", "MICROSOFT_GRAPH_TENANT_ID")
+    client_id = _read_env_first("M365_GRAPH_CLIENT_ID", "MICROSOFT_GRAPH_CLIENT_ID")
+    client_secret = _read_env_first("M365_GRAPH_CLIENT_SECRET", "MICROSOFT_GRAPH_CLIENT_SECRET")
+    if tenant_id and client_id and client_secret:
+        return tenant_id, client_id, client_secret
+    return None
+
+
+def _request_json(
+    url: str,
+    *,
+    timeout: int = REQUEST_TIMEOUT,
+    headers: dict[str, str] | None = None,
+    params: dict[str, Any] | None = None,
+) -> Any:
+    response = requests.get(url, timeout=timeout, headers=headers or UA, params=params)
+    response.raise_for_status()
+    return response.json()
+
+
+def _post_form_json(
+    url: str,
+    *,
+    data: dict[str, str],
+    timeout: int = REQUEST_TIMEOUT,
+    headers: dict[str, str] | None = None,
+) -> Any:
+    response = requests.post(url, timeout=timeout, data=data, headers=headers or {})
+    response.raise_for_status()
+    return response.json()
+
+
+def _graph_token(credentials: tuple[str, str, str]) -> str:
+    tenant_id, client_id, client_secret = credentials
+    token_url = MICROSOFT_GRAPH_TOKEN_URL_TMPL.format(tenant_id=tenant_id)
+    payload = _post_form_json(
+        token_url,
+        data={
+            "grant_type": "client_credentials",
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "scope": MICROSOFT_GRAPH_TOKEN_SCOPE,
+        },
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    access_token = str(payload.get("access_token") or "").strip()
+    if not access_token:
+        raise RuntimeError("Microsoft Graph token response did not contain access_token")
+    return access_token
+
+
+def _graph_get_collection(
+    path: str,
+    access_token: str,
+    *,
+    top: int | None = None,
+    max_pages: int = 3,
+) -> list[dict[str, Any]]:
+    url = f"{MICROSOFT_GRAPH_API_ROOT}{path}"
+    headers = {"Authorization": f"Bearer {access_token}", "Accept": "application/json"}
+    params: dict[str, Any] | None = {"$top": top} if isinstance(top, int) and top > 0 else None
+    items: list[dict[str, Any]] = []
+
+    for _ in range(max_pages):
+        payload = _request_json(url, headers=headers, params=params)
+        params = None
+        if isinstance(payload, dict):
+            raw_items = payload.get("value")
+            if isinstance(raw_items, list):
+                for item in raw_items:
+                    if isinstance(item, dict):
+                        items.append(item)
+            next_link = payload.get("@odata.nextLink")
+            if isinstance(next_link, str) and next_link.strip():
+                url = next_link.strip()
+                continue
+        break
+
+    return items
+
+
+def _graph_status_token(value: Any) -> str:
+    return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
+
+
+def _graph_status_to_outage_status(value: Any) -> str:
+    token = _graph_status_token(value)
+    if not token:
+        return "unknown"
+    if token in {
+        "serviceoperational",
+        "servicerestored",
+        "verificationcompleted",
+        "postincidentreviewpublished",
+        "falsepositive",
+    }:
+        return "operational"
+    if token in {"serviceinterruption"}:
+        return "major outage"
+    if token in {
+        "investigating",
+        "servicedegradation",
+        "restoringservice",
+        "extendedrecovery",
+        "advisory",
+        "servicewarning",
+        "informationavailable",
+        "serviceavailablewithissues",
+        "serviceissue",
+    }:
+        return "degraded"
+    normalized = _normalize_outage_status_text(str(value or ""))
+    return normalized if normalized != "unknown" else "unknown"
+
+
+def _graph_issue_is_active(issue: dict[str, Any]) -> bool:
+    if bool(issue.get("isResolved")):
+        return False
+    if issue.get("endDateTime"):
+        return False
+    status_token = _graph_status_token(issue.get("status"))
+    if status_token in {
+        "servicerestored",
+        "verificationcompleted",
+        "postincidentreviewpublished",
+        "falsepositive",
+        "resolved",
+    }:
+        return False
+    return True
+
+
+def _format_human_duration(started_at: str | None, ended_at: str | None) -> str | None:
+    start_dt = _parse_iso8601(started_at)
+    end_dt = _parse_iso8601(ended_at)
+    if not start_dt:
+        return None
+    if not end_dt:
+        return "ongoing"
+    total_minutes = max(int((end_dt - start_dt).total_seconds() // 60), 0)
+    days, rem_minutes = divmod(total_minutes, 60 * 24)
+    hours, minutes = divmod(rem_minutes, 60)
+    parts: list[str] = []
+    if days:
+        parts.append(f"{days}d")
+    if hours:
+        parts.append(f"{hours}h")
+    if minutes and len(parts) < 2:
+        parts.append(f"{minutes}m")
+    if not parts:
+        parts.append("0m")
+    return " ".join(parts[:3])
+
+
+def _graph_issue_title(issue: dict[str, Any]) -> str:
+    title = _clean(issue.get("title"))
+    if title:
+        return title
+    service = _clean(issue.get("service")) or "Microsoft 365"
+    feature = _clean(issue.get("feature"))
+    status = _clean(issue.get("status")) or "issue"
+    if feature:
+        return f"{service}: {feature} ({status})"
+    return f"{service} ({status})"
+
+
+def _graph_issue_reference_url(issue: dict[str, Any]) -> str:
+    issue_id = _clean(issue.get("id"))
+    if issue_id:
+        safe_id = re.sub(r"[^A-Za-z0-9_-]+", "-", issue_id).strip("-")
+        if safe_id:
+            return f"{MICROSOFT_ADMIN_SERVICE_HEALTH_URL}#issue-{safe_id}"
+    return MICROSOFT_ADMIN_SERVICE_HEALTH_URL
+
+
+def _graph_issue_sort_timestamp(issue: dict[str, Any]) -> str | None:
+    for field in ("lastModifiedDateTime", "startDateTime", "endDateTime"):
+        value = issue.get(field)
+        if isinstance(value, str) and value:
+            return value
+    return None
+
+
+def _graph_issue_to_incident(issue: dict[str, Any]) -> dict[str, Any]:
+    started_at = _clean(issue.get("startDateTime")) or None
+    ended_at = _clean(issue.get("endDateTime")) or None
+    classification = _clean(issue.get("classification"))
+    status = _clean(issue.get("status"))
+    service = _clean(issue.get("service"))
+    ack_parts = [part for part in (service, classification, status) if part]
+    return {
+        "title": _graph_issue_title(issue),
+        "started_at": started_at,
+        "duration": _format_human_duration(started_at, ended_at),
+        "acknowledgement": " / ".join(ack_parts) if ack_parts else "Microsoft Graph issue",
+    }
+
+
+def _graph_issue_to_update(issue: dict[str, Any]) -> dict[str, Any]:
+    published_at = _graph_issue_sort_timestamp(issue)
+    service = _clean(issue.get("service"))
+    status = _clean(issue.get("status"))
+    classification = _clean(issue.get("classification"))
+    meta_parts = [part for part in (service, classification, status) if part]
+    return {
+        "title": _graph_issue_title(issue),
+        "url": _graph_issue_reference_url(issue),
+        "published_at": published_at,
+        "source": "Microsoft Graph Service Communications",
+        "meta": " / ".join(meta_parts) if meta_parts else "Tenant-auth API",
+    }
+
+
+def _merge_incidents(
+    primary: list[dict[str, Any]],
+    secondary: list[dict[str, Any]],
+    *,
+    limit: int = 8,
+) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    seen: set[tuple[str, str | None]] = set()
+    for item in [*(primary or []), *(secondary or [])]:
+        if not isinstance(item, dict):
+            continue
+        title = _clean(item.get("title"))
+        started_at = _clean(item.get("started_at")) or None
+        if not title:
+            continue
+        key = (title, started_at)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(item)
+    return _sort_by_datetime(out, field="started_at")[:limit]
+
+
+def _graph_component_rows(
+    health_overviews: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for item in health_overviews:
+        if not isinstance(item, dict):
+            continue
+        service = _clean(item.get("service"))
+        if not service:
+            continue
+        graph_status = _clean(item.get("status"))
+        mapped_status = _graph_status_to_outage_status(graph_status)
+        rows.append(
+            {
+                "name": service,
+                "service": service,
+                "status": mapped_status if mapped_status != "unknown" else (graph_status or "unknown"),
+                "health": graph_status or mapped_status or "unknown",
+                "updated_at": _clean(item.get("lastModifiedDateTime")) or None,
+                "source": "Microsoft Graph",
+            }
+        )
+    return rows
+
+
+def _graph_top_impacted_services(
+    issues: list[dict[str, Any]],
+    *,
+    limit: int = 8,
+) -> list[dict[str, Any]]:
+    counts: dict[str, int] = {}
+    for issue in issues:
+        if not isinstance(issue, dict):
+            continue
+        label = _clean(issue.get("service")) or _clean(issue.get("featureGroup")) or _clean(issue.get("feature"))
+        if not label:
+            continue
+        counts[label] = counts.get(label, 0) + 1
+    return [
+        {"label": label, "count": count}
+        for label, count in sorted(counts.items(), key=lambda item: (-item[1], item[0].lower()))[:limit]
+    ]
+
+
+def fetch_microsoft_graph_service_health() -> dict[str, Any]:
+    credentials = _graph_credentials_from_env()
+    if not credentials:
+        raise RuntimeError("Microsoft Graph credentials are not configured")
+
+    checked_at = _utc_now_iso()
+    access_token = _graph_token(credentials)
+    health_overviews = _graph_get_collection(
+        "/admin/serviceAnnouncement/healthOverviews",
+        access_token,
+        top=100,
+        max_pages=2,
+    )
+    issues = _graph_get_collection(
+        "/admin/serviceAnnouncement/issues",
+        access_token,
+        top=80,
+        max_pages=3,
+    )
+
+    valid_health = [item for item in health_overviews if isinstance(item, dict)]
+    valid_issues = [item for item in issues if isinstance(item, dict)]
+    sorted_issues = sorted(
+        valid_issues,
+        key=lambda item: _parse_iso8601(_graph_issue_sort_timestamp(item)) or dt.datetime.min.replace(tzinfo=dt.UTC),
+        reverse=True,
+    )
+    active_issues = [item for item in sorted_issues if _graph_issue_is_active(item)]
+
+    impacted_overviews = [
+        item
+        for item in valid_health
+        if _graph_status_to_outage_status(item.get("status")) != "operational"
+    ]
+
+    worst_status = "operational" if valid_health else "unknown"
+    for item in [*impacted_overviews, *active_issues]:
+        candidate = _graph_status_to_outage_status(item.get("status"))
+        if candidate == "major outage":
+            worst_status = "major outage"
+            break
+        if candidate == "degraded" and worst_status != "major outage":
+            worst_status = "degraded"
+    if active_issues and worst_status == "operational":
+        worst_status = "degraded"
+
+    top_services = _graph_top_impacted_services(active_issues or sorted_issues[:12])
+    service_names = [entry.get("label") for entry in top_services if isinstance(entry.get("label"), str)]
+    services_preview = ", ".join(service_names[:3])
+    if active_issues:
+        summary = (
+            f"Microsoft Graph reports {len(active_issues)} active Microsoft 365 service "
+            f"{'issue' if len(active_issues) == 1 else 'issues'}"
+        )
+        if services_preview:
+            summary += f" affecting {services_preview}"
+        summary += "."
+    elif impacted_overviews:
+        impacted_services = [
+            _clean(item.get("service"))
+            for item in impacted_overviews
+            if _clean(item.get("service"))
+        ]
+        preview = ", ".join(impacted_services[:3])
+        summary = (
+            f"Microsoft Graph health overviews show {len(impacted_overviews)} impacted "
+            f"{'service' if len(impacted_overviews) == 1 else 'services'}"
+        )
+        if preview:
+            summary += f" ({preview})"
+        summary += "."
+    elif valid_health:
+        summary = (
+            "Microsoft Graph health overviews indicate Microsoft 365 services are currently "
+            f"operational across {len(valid_health)} tracked services."
+        )
+    elif sorted_issues:
+        summary = "Microsoft Graph issues feed is reachable, but health overview status was unavailable."
+        worst_status = "unknown"
+    else:
+        summary = "Microsoft Graph service communications returned no health overview or issue items."
+        worst_status = "unknown"
+
+    recent_issue_updates = [_graph_issue_to_update(item) for item in sorted_issues[:8]]
+    if not recent_issue_updates:
+        recent_issue_updates = [
+            {
+                "title": summary,
+                "url": MICROSOFT_ADMIN_SERVICE_HEALTH_URL,
+                "published_at": checked_at,
+                "source": "Microsoft Graph Service Communications",
+                "meta": "Tenant-auth API summary",
+            }
+        ]
+
+    incidents = [_graph_issue_to_incident(item) for item in sorted_issues[:12]]
+    active_incidents = [_graph_issue_to_incident(item) for item in active_issues[:8]]
+
+    return {
+        "source": "Microsoft Graph Service Communications",
+        "url": MICROSOFT_ADMIN_SERVICE_HEALTH_URL,
+        "summary": summary,
+        "current_status": worst_status,
+        "checked_at": checked_at,
+        "updates": recent_issue_updates,
+        "issues": sorted_issues[:20],
+        "incidents": incidents,
+        "active_incidents": active_incidents,
+        "active_issue_count": len(active_issues),
+        "issue_count": len(sorted_issues),
+        "health_overview_count": len(valid_health),
+        "impacted_overview_count": len(impacted_overviews),
+        "top_impacted_services": top_services,
+        "components": _graph_component_rows(valid_health)[:24],
+    }
 
 
 def _synthesize_statusgator_summary(
@@ -389,6 +802,7 @@ def _build_official_block(
 def _collect_payload() -> dict[str, Any]:
     sources: list[dict[str, Any]] = []
     official_status: dict[str, Any] | None = None
+    graph_official: dict[str, Any] | None = None
     social: list[dict[str, Any]] = []
     isdown_outage: dict[str, Any] | None = None
 
@@ -517,6 +931,47 @@ def _collect_payload() -> dict[str, Any]:
             }
         )
 
+    graph_credentials = _graph_credentials_from_env()
+    if graph_credentials:
+        started = time.perf_counter()
+        try:
+            graph_official = fetch_microsoft_graph_service_health()
+            last_item_at = _latest_timestamp(graph_official.get("updates") or [], "published_at")
+            if not last_item_at:
+                last_item_at = graph_official.get("checked_at")
+            freshness, age_minutes = _source_freshness(last_item_at)
+            sources.append(
+                {
+                    "name": "Microsoft Graph Service Communications",
+                    "kind": "official-api",
+                    "url": f"{MICROSOFT_GRAPH_API_ROOT}/admin/serviceAnnouncement",
+                    "ok": True,
+                    "error": None,
+                    "item_count": int(graph_official.get("issue_count") or 0),
+                    "last_item_at": last_item_at,
+                    "freshness": freshness,
+                    "age_minutes": age_minutes,
+                    "duration_ms": int((time.perf_counter() - started) * 1000),
+                    "fetched_at": _utc_now_iso(),
+                }
+            )
+        except Exception as exc:  # pragma: no cover
+            sources.append(
+                {
+                    "name": "Microsoft Graph Service Communications",
+                    "kind": "official-api",
+                    "url": f"{MICROSOFT_GRAPH_API_ROOT}/admin/serviceAnnouncement",
+                    "ok": False,
+                    "error": _safe_error_message(exc),
+                    "item_count": 0,
+                    "last_item_at": None,
+                    "freshness": "unknown",
+                    "age_minutes": None,
+                    "duration_ms": int((time.perf_counter() - started) * 1000),
+                    "fetched_at": _utc_now_iso(),
+                }
+            )
+
     started = time.perf_counter()
     try:
         social = fetch_x_updates()
@@ -562,6 +1017,42 @@ def _collect_payload() -> dict[str, Any]:
         outage["summary"] = official_status.get("summary") or outage.get("summary")
         outage["summary_origin"] = "Microsoft Public Status"
 
+    if graph_official:
+        graph_status_text = _normalize_outage_status_text(graph_official.get("current_status"))
+        if graph_status_text != "unknown":
+            outage["current_status"] = graph_status_text
+            outage["current_status_origin"] = "Microsoft Graph"
+
+        graph_components = graph_official.get("components")
+        if isinstance(graph_components, list) and graph_components:
+            outage["components"] = graph_components
+
+        graph_top_services = graph_official.get("top_impacted_services")
+        if (
+            (not isinstance(outage.get("top_reported_issues"), list) or not outage.get("top_reported_issues"))
+            and isinstance(graph_top_services, list)
+            and graph_top_services
+        ):
+            outage["top_reported_issues"] = graph_top_services
+            outage["top_reported_issues_meta"] = {
+                "source": "Microsoft Graph",
+                "kind": "service-issue-counts",
+                "mode": "active" if int(graph_official.get("active_issue_count") or 0) > 0 else "recent",
+            }
+
+        graph_active_incidents = graph_official.get("active_incidents")
+        if isinstance(graph_active_incidents, list) and graph_active_incidents:
+            outage["incidents"] = _merge_incidents(
+                graph_active_incidents,
+                outage.get("incidents") or [],
+                limit=8,
+            )
+
+        if int(graph_official.get("active_issue_count") or 0) > 0:
+            outage["summary"] = graph_official.get("summary") or outage.get("summary")
+            outage["summary_origin"] = "Microsoft Graph"
+            outage["url"] = MICROSOFT_PUBLIC_STATUS_URL
+
     successful_sources = sum(1 for source in sources if source.get("ok"))
     if successful_sources == 0:
         health = "error"
@@ -584,6 +1075,19 @@ def _collect_payload() -> dict[str, Any]:
         }
         for incident in (outage.get("incidents") or [])
     ]
+    if graph_official:
+        graph_report_items = [
+            {
+                "title": issue_update.get("title"),
+                "url": issue_update.get("url"),
+                "published_at": issue_update.get("published_at"),
+                "source": "Microsoft Graph Service Communications",
+                "meta": issue_update.get("meta"),
+            }
+            for issue_update in (graph_official.get("updates") or [])
+            if isinstance(issue_update, dict)
+        ]
+        reports.extend(graph_report_items[:6])
     reports = _sort_by_datetime(_dedupe_by_url(reports), field="published_at")[:12]
 
     official_status_updates = (
@@ -591,6 +1095,14 @@ def _collect_payload() -> dict[str, Any]:
         if official_status
         else []
     )
+    if graph_official:
+        official_status_updates.extend(
+            [
+                item
+                for item in (graph_official.get("updates") or [])
+                if isinstance(item, dict)
+            ]
+        )
     news = _sort_by_datetime(_dedupe_by_url(official_status_updates), field="published_at")[:6]
     official = _build_official_block(official_status_updates, social)
 
