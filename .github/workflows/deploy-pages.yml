@@ -55,6 +55,9 @@ jobs:
       - name: Verify React preview artifact paths
         run: python3 scripts/verify_next_preview_artifact.py
 
+      - name: Validate public artifact exposure rules
+        run: python3 scripts/check_public_exposure.py
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

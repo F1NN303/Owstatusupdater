@@ -32,6 +32,11 @@ This file is the persistent handoff for future agents. It captures the current p
 
 ## Data Pipeline / Reliability State
 
+### Runtime State Privacy (Important)
+- Runtime workflow state is intended to persist via GitHub Actions cache (`.bot_state` path), not via tracked files in the public repo.
+- `.bot_state/*` should not be committed.
+- Public exposure checks are enforced in workflows via `scripts/check_public_exposure.py`.
+
 ### Overwatch
 - Primary outage source: StatusGator
 - Secondary outage/report fallback: IsDown
@@ -63,6 +68,7 @@ Key files:
 
 ## Security State (Recent Audit)
 - Public internal state files were removed from public site paths and moved to `.bot_state/`.
+- `.bot_state` persistence is now workflow-cache based and should not be tracked in Git.
 - Public `state.json` endpoints should no longer be exposed.
 - React runtime dependency vulnerabilities were cleaned up (runtime `npm audit --omit=dev` was brought to zero at the time of fix).
 
@@ -135,6 +141,10 @@ Expected workflow for agents:
 4. `git push origin main`
 
 This is normal with current workflow design.
+
+## Ownership / Reuse Policy (Repo)
+- Repository is public but proprietary (not open source).
+- See `LICENSE` and `NOTICE.md` for usage restrictions and ownership notice.
 
 ## Local Workspace Note (Do Not Accidentally Commit)
 There may be leftover untracked built artifacts from local builds. Example:

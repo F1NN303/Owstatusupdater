@@ -15,6 +15,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Restore private bot state cache
+        id: bot_state_restore
+        uses: actions/cache/restore@v4
+        with:
+          path: .bot_state
+          key: bot-state-${{ runner.os }}-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            bot-state-${{ runner.os }}-${{ github.ref_name }}-
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -38,15 +47,18 @@ jobs:
           ALERT_SITE_URL: https://f1nn303.github.io/Owstatusupdater/
         run: python scripts/send_brevo_major_alert.py
 
+      - name: Validate public artifact exposure rules
+        run: python scripts/check_public_exposure.py
+
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json .bot_state/overwatch_state.json .bot_state/sony_state.json .bot_state/email_alert_state.json; then
+          if git diff --quiet -- site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json; then
             echo "No status data changes."
             exit 0
           fi
-          git add -f site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json .bot_state/overwatch_state.json .bot_state/sony_state.json .bot_state/email_alert_state.json
+          git add -f site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json
           git commit -m "chore: refresh status data"
           max_attempts=3
           attempt=1
@@ -65,3 +77,10 @@ jobs:
           done
           echo "Push failed after $max_attempts attempts."
           exit 1
+
+      - name: Save private bot state cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .bot_state
+          key: ${{ steps.bot_state_restore.outputs.cache-primary-key }}

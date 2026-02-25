@@ -2,6 +2,11 @@
 
 Last updated: 2026-02-21
 
+## Public Repo Hard Rule (Do Not Violate)
+- This repository is public. Treat **all committed files** as public.
+- The deployed `site/` directory is public web output. Do not expose secrets, runtime state, internal operational data, or private notes in `site/` or tracked files.
+- If state persistence is needed for workflows, prefer non-public persistence (for example Actions cache/artifacts) over committing state files.
+
 ## 1) Canonical Repo + Deployment
 - Canonical repo path (local): `Owstatusupdater-main/project/mc-regeln-main`
 - GitHub repo: `https://github.com/F1NN303/Owstatusupdater`
