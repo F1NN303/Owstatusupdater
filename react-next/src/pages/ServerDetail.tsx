@@ -638,7 +638,7 @@ function useBarChartInspector(pointCount: number) {
         return;
       }
       event.stopPropagation();
-      endTouchSession(false);
+      endTouchSession(true);
       const session: ChartInspectPointerSession = {
         pointerId: touch.identifier,
         pointerType: "touch",
@@ -649,6 +649,7 @@ function useBarChartInspector(pointCount: number) {
         activated: false,
         timeoutId: null,
       };
+      updateFromClientX(touch.clientX);
       session.timeoutId = window.setTimeout(() => {
         if (touchSessionRef.current !== session) {
           return;
@@ -676,6 +677,7 @@ function useBarChartInspector(pointCount: number) {
       session.lastX = touch.clientX;
       session.lastY = touch.clientY;
       if (!session.activated) {
+        updateFromClientX(touch.clientX);
         const dx = touch.clientX - session.startX;
         const dy = touch.clientY - session.startY;
         const absDx = Math.abs(dx);
@@ -690,7 +692,7 @@ function useBarChartInspector(pointCount: number) {
           return;
         }
         if (absDy > CHART_INSPECT_MOVE_TOLERANCE_PX && absDy > absDx + 6) {
-          endTouchSession(false);
+          endTouchSession(true);
         }
         return;
       }
@@ -709,8 +711,7 @@ function useBarChartInspector(pointCount: number) {
         return;
       }
       event.stopPropagation();
-      const shouldClear = touchSessionRef.current.activated;
-      endTouchSession(shouldClear);
+      endTouchSession(true);
     },
     [endTouchSession]
   );
