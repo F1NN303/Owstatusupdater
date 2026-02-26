@@ -727,6 +727,38 @@ function useBarChartInspector(pointCount: number) {
     [endTouchSession]
   );
 
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) {
+      return;
+    }
+
+    const onTouchStart = (event: TouchEvent) => {
+      handleTouchStart(event as unknown as ReactTouchEvent<HTMLDivElement>);
+    };
+    const onTouchMove = (event: TouchEvent) => {
+      handleTouchMove(event as unknown as ReactTouchEvent<HTMLDivElement>);
+    };
+    const onTouchEnd = (event: TouchEvent) => {
+      handleTouchEnd(event as unknown as ReactTouchEvent<HTMLDivElement>);
+    };
+    const onTouchCancel = (event: TouchEvent) => {
+      handleTouchCancel(event as unknown as ReactTouchEvent<HTMLDivElement>);
+    };
+
+    node.addEventListener("touchstart", onTouchStart, { passive: false });
+    node.addEventListener("touchmove", onTouchMove, { passive: false });
+    node.addEventListener("touchend", onTouchEnd, { passive: false });
+    node.addEventListener("touchcancel", onTouchCancel, { passive: false });
+
+    return () => {
+      node.removeEventListener("touchstart", onTouchStart);
+      node.removeEventListener("touchmove", onTouchMove);
+      node.removeEventListener("touchend", onTouchEnd);
+      node.removeEventListener("touchcancel", onTouchCancel);
+    };
+  }, [handleTouchCancel, handleTouchEnd, handleTouchMove, handleTouchStart]);
+
   return {
     activeIndex,
     containerRef,
@@ -734,10 +766,6 @@ function useBarChartInspector(pointCount: number) {
       onPointerDown: handlePointerDown,
       onPointerMove: handlePointerMove,
       onPointerLeave: handlePointerLeave,
-      onTouchStart: handleTouchStart,
-      onTouchMove: handleTouchMove,
-      onTouchEnd: handleTouchEnd,
-      onTouchCancel: handleTouchCancel,
     },
   };
 }
@@ -952,7 +980,7 @@ function StatusServiceHealth24hChart({
           <div
             ref={inspector.containerRef}
             className="relative flex h-[150px] select-none items-end gap-px pt-1"
-            style={{ touchAction: "pan-y" }}
+            style={{ touchAction: "pan-y", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
             {...inspector.interactionProps}
           >
             {points.map((point, index) => {
@@ -1053,7 +1081,7 @@ function UserReports24hChart({
           <div
             ref={inspector.containerRef}
             className="relative flex h-[150px] select-none items-end gap-px pt-1"
-            style={{ touchAction: "pan-y" }}
+            style={{ touchAction: "pan-y", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
             {...inspector.interactionProps}
           >
             {points.map((point, index) => {
