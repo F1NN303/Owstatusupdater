@@ -24,7 +24,6 @@ import {
 } from "lucide-react";
 import {
   type ReactNode,
-  type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
   type TouchEvent as ReactTouchEvent,
   useCallback,
@@ -484,6 +483,8 @@ interface ChartInspectPointerSession {
   pointerType: string;
   startX: number;
   startY: number;
+  lastX: number;
+  lastY: number;
   activated: boolean;
   timeoutId: number | null;
 }
@@ -615,17 +616,6 @@ function useBarChartInspector(pointCount: number) {
     []
   );
 
-  const handleClick = useCallback(
-    (event: ReactMouseEvent<HTMLDivElement>) => {
-      if (pointCount <= 0) {
-        return;
-      }
-      event.stopPropagation();
-      updateFromClientX(event.clientX);
-    },
-    [pointCount, updateFromClientX]
-  );
-
   const endTouchSession = useCallback(
     (clearActive: boolean) => {
       clearTouchTimer();
@@ -653,6 +643,8 @@ function useBarChartInspector(pointCount: number) {
         pointerType: "touch",
         startX: touch.clientX,
         startY: touch.clientY,
+        lastX: touch.clientX,
+        lastY: touch.clientY,
         activated: false,
         timeoutId: null,
       };
@@ -661,7 +653,7 @@ function useBarChartInspector(pointCount: number) {
           return;
         }
         session.activated = true;
-        updateFromClientX(session.startX);
+        updateFromClientX(session.lastX);
       }, CHART_INSPECT_HOLD_MS);
       touchSessionRef.current = session;
     },
@@ -680,10 +672,14 @@ function useBarChartInspector(pointCount: number) {
       }
 
       event.stopPropagation();
+      session.lastX = touch.clientX;
+      session.lastY = touch.clientY;
       if (!session.activated) {
         const dx = touch.clientX - session.startX;
         const dy = touch.clientY - session.startY;
-        if (Math.hypot(dx, dy) > CHART_INSPECT_MOVE_TOLERANCE_PX) {
+        const absDx = Math.abs(dx);
+        const absDy = Math.abs(dy);
+        if (absDy > CHART_INSPECT_MOVE_TOLERANCE_PX && absDy > absDx + 6) {
           endTouchSession(false);
         }
         return;
@@ -727,7 +723,6 @@ function useBarChartInspector(pointCount: number) {
       onPointerDown: handlePointerDown,
       onPointerMove: handlePointerMove,
       onPointerLeave: handlePointerLeave,
-      onClick: handleClick,
       onTouchStart: handleTouchStart,
       onTouchMove: handleTouchMove,
       onTouchEnd: handleTouchEnd,
