@@ -11,6 +11,8 @@ from typing import Any, Callable
 import requests
 from bs4 import BeautifulSoup
 
+from services.adapters.isdown import parse_isdown_outage_html
+from services.adapters.statusgator import parse_statusgator_outage_html
 from services.core.shared import (
     _build_region_signals,
     _calculate_severity,
@@ -573,76 +575,12 @@ def _synthesize_statusgator_summary(
 
 def fetch_statusgator_outages() -> dict[str, Any]:
     html = _request_text(STATUSGATOR_URL)
-    soup = BeautifulSoup(html, "html.parser")
-    page_text = _clean(soup.get_text(" ", strip=True))
-    service_health_24h, service_health_24h_meta = _parse_statusgator_service_health_series(html)
-
-    summary_match = re.search(
-        r"StatusGator reports that .*? is currently .*?past 24 hours\.",
-        page_text,
-        flags=re.IGNORECASE,
+    return parse_statusgator_outage_html(
+        html,
+        source_url=STATUSGATOR_URL,
+        summary_regex=r"StatusGator reports that .*? is currently .*?past 24 hours\.",
+        synthesize_summary=_synthesize_statusgator_summary,
     )
-    summary = _clean(summary_match.group(0)) if summary_match else "Status summary unavailable."
-
-    status_match = re.search(r"currently\s+([a-zA-Z ]+)\.", summary, flags=re.IGNORECASE)
-    current_status = _clean(status_match.group(1)).lower() if status_match else "unknown"
-    if current_status == "unknown" and service_health_24h:
-        current_status = _normalize_outage_status_text(service_health_24h[-1].get("status_label"))
-
-    reports_match = re.search(
-        r"There have been\s+([\d,]+)\s+user-submitted reports of outages in the past 24 hours",
-        summary,
-        flags=re.IGNORECASE,
-    )
-    reports_24h = int(reports_match.group(1).replace(",", "")) if reports_match else None
-
-    incidents: list[dict[str, Any]] = []
-    seen: set[tuple[str, str | None, str]] = set()
-    for row in soup.select("tr"):
-        cells = row.find_all("td")
-        if len(cells) < 3:
-            continue
-        title_holder = cells[0].find("span")
-        title = _clean(title_holder.get_text(" ", strip=True) if title_holder else cells[0].get_text(" ", strip=True))
-        duration = _clean(cells[1].get_text(" ", strip=True))
-        time_tag = cells[2].find("time")
-        started_at = time_tag.get("datetime") if time_tag else None
-        acknowledgement = _clean(cells[3].get_text(" ", strip=True)) if len(cells) > 3 else ""
-        if not title or not started_at:
-            continue
-        key = (title, started_at, duration)
-        if key in seen:
-            continue
-        seen.add(key)
-        incidents.append(
-            {
-                "title": title,
-                "started_at": started_at,
-                "duration": duration,
-                "acknowledgement": acknowledgement or None,
-            }
-        )
-        if len(incidents) >= 12:
-            break
-
-    incidents = _sort_by_datetime(incidents, field="started_at")[:8]
-    top_reported_issues = _parse_statusgator_top_reported_issues(soup)
-    if "summary unavailable" in summary.lower():
-        summary = _synthesize_statusgator_summary(current_status, reports_24h, incidents, top_reported_issues)
-
-    return {
-        "source": "StatusGator",
-        "source_type": "Downdetector-like",
-        "url": STATUSGATOR_URL,
-        "summary": summary,
-        "current_status": current_status,
-        "reports_24h": reports_24h,
-        "incidents": incidents,
-        "top_reported_issues": top_reported_issues,
-        "top_reported_issues_meta": {"source": "StatusGator", "kind": "community-labels"},
-        "service_health_24h": service_health_24h,
-        "service_health_24h_meta": service_health_24h_meta,
-    }
 
 
 def _extract_isdown_status_text(page_text: str) -> tuple[str, str]:
@@ -669,57 +607,11 @@ def _extract_isdown_status_text(page_text: str) -> tuple[str, str]:
 
 def fetch_isdown_outages() -> dict[str, Any]:
     html = _request_text(ISDOWN_STATUS_URL)
-    soup = BeautifulSoup(html, "html.parser")
-    page_text = _clean(soup.get_text(" ", strip=True))
-
-    chart_match = re.search(
-        r"UserReportsChart\.create\('myChart',\s*(\[[\s\S]*?\])\s*,",
+    return parse_isdown_outage_html(
         html,
-        flags=re.IGNORECASE,
+        source_url=ISDOWN_STATUS_URL,
+        extract_status_text=_extract_isdown_status_text,
     )
-    chart_points: list[dict[str, Any]] = []
-    if chart_match:
-        try:
-            raw_chart = json.loads(chart_match.group(1))
-        except json.JSONDecodeError:
-            raw_chart = []
-        for row in raw_chart if isinstance(raw_chart, list) else []:
-            if not isinstance(row, dict):
-                continue
-            label = _clean(str(row.get("x") or ""))
-            try:
-                count = int(float(row.get("y") or 0))
-            except (TypeError, ValueError):
-                continue
-            if not label:
-                continue
-            chart_points.append({"label": label, "count": max(count, 0)})
-
-    reports_24h = sum(point.get("count", 0) for point in chart_points) if chart_points else None
-    last_reviewed_match = re.search(r'"lastReviewed":"([^"]+)"', html)
-    last_reviewed_at = last_reviewed_match.group(1) if last_reviewed_match else None
-    summary, current_status = _extract_isdown_status_text(page_text)
-
-    return {
-        "source": "IsDown",
-        "source_type": "Downdetector-like",
-        "url": ISDOWN_STATUS_URL,
-        "summary": summary,
-        "current_status": current_status,
-        "reports_24h": reports_24h,
-        "incidents": [],
-        "top_reported_issues": [],
-        "user_reports_24h": chart_points[:120],
-        "user_reports_24h_meta": {
-            "source": "IsDown",
-            "kind": "user-reports-chart",
-            "window_hours": 24,
-            "sample_count": len(chart_points),
-            "interval_minutes": 20 if chart_points else None,
-            "last_reviewed_at": last_reviewed_at,
-        },
-        "last_reviewed_at": last_reviewed_at,
-    }
 
 
 def fetch_microsoft_public_status() -> dict[str, Any]:
