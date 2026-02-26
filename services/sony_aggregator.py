@@ -9,6 +9,12 @@ import time
 from typing import Any
 
 import requests
+from services.core.source_runner import (
+    CallableSourceAdapter,
+    SourceAdapterSpec,
+    SourceRunResult,
+    run_source_adapter,
+)
 
 UA = {"User-Agent": "Sony-Service-Radar/1.0 (+github-actions)"}
 REQUEST_TIMEOUT = 20
@@ -95,6 +101,10 @@ def _request_json(url: str) -> dict[str, Any]:
     return response.json()
 
 
+def _safe_error_message(exc: Exception) -> str:
+    return (_clean(str(exc)) or "request failed")[:220]
+
+
 def _severity_from_score(score: float, source_total: int) -> str:
     if source_total <= 0:
         return "unknown"
@@ -169,6 +179,51 @@ def _source_freshness(last_item_at: str | None) -> tuple[str, int | None]:
     if age_minutes <= SOURCE_FRESH_MINUTES_WARM:
         return "warm", age_minutes
     return "stale", age_minutes
+
+
+def _sony_region_source_bundle(region_key: str, payload: dict[str, Any]) -> dict[str, Any]:
+    raw_events = _extract_region_events(region_key, payload)
+    active_events = [event for event in raw_events if _is_active_incident_event(event)]
+    latest_item = next((event.get("started_at") for event in raw_events if event.get("started_at")), None)
+    latest_active_item = next((event.get("started_at") for event in active_events if event.get("started_at")), None)
+    return {
+        "raw_events": raw_events,
+        "active_events": active_events,
+        "latest_item": latest_item,
+        "latest_active_item": latest_active_item,
+    }
+
+
+def _sony_region_item_count(bundle: dict[str, Any]) -> int | None:
+    raw_events = bundle.get("raw_events")
+    return len(raw_events) if isinstance(raw_events, list) else 0
+
+
+def _sony_region_last_item_at(bundle: dict[str, Any]) -> str | None:
+    latest_item = bundle.get("latest_item")
+    return str(latest_item) if latest_item else None
+
+
+def _run_sony_region_source(*, region_key: str, region_code: str) -> SourceRunResult[dict[str, Any]]:
+    url = f"{SONY_REGION_URL}/{region_code}.json"
+    return run_source_adapter(
+        CallableSourceAdapter(
+            spec=SourceAdapterSpec(
+                service_id="sony",
+                adapter_id=f"psn-region-{region_key}",
+                name=f"PlayStation Status {region_code}",
+                kind="official-status-region",
+                url=url,
+                cache_ttl_seconds=CACHE_TTL_SECONDS,
+            ),
+            fetch_fn=lambda: _sony_region_source_bundle(region_key, _request_json(url)),
+            item_count_fn=_sony_region_item_count,
+            last_item_at_fn=_sony_region_last_item_at,
+        ),
+        utc_now_iso=_utc_now_iso,
+        source_freshness=_source_freshness,
+        safe_error_message=_safe_error_message,
+    )
 
 
 def _event_timestamp(status: dict[str, Any]) -> str:
@@ -498,55 +553,30 @@ def _collect_payload() -> dict[str, Any]:
     sources: list[dict[str, Any]] = []
 
     for region_key, region_code in REGION_ENDPOINTS.items():
-        started = time.perf_counter()
-        url = f"{SONY_REGION_URL}/{region_code}.json"
-        try:
-            payload = _request_json(url)
-            raw_events = _extract_region_events(region_key, payload)
-            active_events = [event for event in raw_events if _is_active_incident_event(event)]
+        result = _run_sony_region_source(region_key=region_key, region_code=region_code)
+        source_entry = dict(result.source)
+        source_entry["fetched_at"] = now_iso
+        if result.ok and result.data:
+            raw_events = result.data.get("raw_events") if isinstance(result.data, dict) else []
+            active_events = result.data.get("active_events") if isinstance(result.data, dict) else []
+            latest_active_item = result.data.get("latest_active_item") if isinstance(result.data, dict) else None
+            raw_events = raw_events if isinstance(raw_events, list) else []
+            active_events = active_events if isinstance(active_events, list) else []
 
             region_events[region_key] = active_events
             all_events.extend(active_events)
             all_raw_events.extend(raw_events)
 
-            latest_item = next((event.get("started_at") for event in raw_events if event.get("started_at")), None)
-            latest_active_item = next((event.get("started_at") for event in active_events if event.get("started_at")), None)
-            freshness, age_minutes = _source_freshness(latest_item)
-            sources.append(
+            source_entry.update(
                 {
-                    "name": f"PlayStation Status {region_code}",
-                    "kind": "official-status-region",
-                    "url": url,
-                    "ok": True,
-                    "error": None,
-                    "item_count": len(raw_events),
                     "active_item_count": len(active_events),
                     "archived_item_count": max(len(raw_events) - len(active_events), 0),
-                    "last_item_at": latest_item,
                     "last_active_item_at": latest_active_item,
-                    "freshness": freshness,
-                    "age_minutes": age_minutes,
-                    "duration_ms": int((time.perf_counter() - started) * 1000),
-                    "fetched_at": now_iso,
                 }
             )
-        except Exception as exc:  # pragma: no cover
+        else:
             region_events[region_key] = []
-            sources.append(
-                {
-                    "name": f"PlayStation Status {region_code}",
-                    "kind": "official-status-region",
-                    "url": url,
-                    "ok": False,
-                    "error": _clean(str(exc)) or "request failed",
-                    "item_count": 0,
-                    "last_item_at": None,
-                    "freshness": "unknown",
-                    "age_minutes": None,
-                    "duration_ms": int((time.perf_counter() - started) * 1000),
-                    "fetched_at": now_iso,
-                }
-            )
+        sources.append(source_entry)
 
     all_events.sort(key=lambda item: _parse_iso8601(item.get("started_at")) or dt.datetime.min.replace(tzinfo=dt.UTC), reverse=True)
     all_raw_events.sort(key=lambda item: _parse_iso8601(item.get("started_at")) or dt.datetime.min.replace(tzinfo=dt.UTC), reverse=True)
