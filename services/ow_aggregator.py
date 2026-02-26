@@ -7,11 +7,17 @@ import json
 import re
 import threading
 import time
-from typing import Any
+from typing import Any, Callable
 from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
+from services.core.source_runner import (
+    CallableSourceAdapter,
+    SourceAdapterSpec,
+    SourceRunResult,
+    run_source_adapter,
+)
 
 UA = {"User-Agent": "OW-Web-Status/2.0 (+github-actions)"}
 REQUEST_TIMEOUT = 20
@@ -130,6 +136,37 @@ def _request_json(url: str, timeout: int = REQUEST_TIMEOUT) -> dict[str, Any]:
     response = requests.get(url, timeout=timeout, headers=UA)
     response.raise_for_status()
     return response.json()
+
+
+def _run_ow_source(
+    *,
+    adapter_id: str,
+    name: str,
+    kind: str,
+    url: str,
+    fetch_fn: Callable[[], Any],
+    item_count_fn: Callable[[Any], int | None],
+    last_item_at_fn: Callable[[Any], str | None],
+    cache_ttl_seconds: int = CACHE_TTL_SECONDS,
+) -> SourceRunResult[Any]:
+    return run_source_adapter(
+        CallableSourceAdapter(
+            spec=SourceAdapterSpec(
+                service_id="overwatch",
+                adapter_id=adapter_id,
+                name=name,
+                kind=kind,
+                url=url,
+                cache_ttl_seconds=cache_ttl_seconds,
+            ),
+            fetch_fn=fetch_fn,
+            item_count_fn=item_count_fn,
+            last_item_at_fn=last_item_at_fn,
+        ),
+        utc_now_iso=_utc_now_iso,
+        source_freshness=_source_freshness,
+        safe_error_message=_safe_error_message,
+    )
 
 
 def _sort_by_datetime(items: list[dict[str, Any]], field: str = "published_at") -> list[dict[str, Any]]:
@@ -834,6 +871,52 @@ def fetch_x_updates(limit: int = 4) -> list[dict[str, Any]]:
     return items
 
 
+def _ow_statusgator_item_count(payload: Any) -> int | None:
+    return len(payload.get("incidents") or []) if isinstance(payload, dict) else 0
+
+
+def _ow_statusgator_last_item_at(payload: Any) -> str | None:
+    return _latest_timestamp(payload.get("incidents") or [], "started_at") if isinstance(payload, dict) else None
+
+
+def _ow_isdown_item_count(payload: Any) -> int | None:
+    return len(payload.get("user_reports_24h") or []) if isinstance(payload, dict) else 0
+
+
+def _ow_isdown_last_item_at(payload: Any) -> str | None:
+    if not isinstance(payload, dict):
+        return None
+    return payload.get("last_reviewed_at") or _latest_timestamp(payload.get("user_reports_24h") or [], "timestamp")
+
+
+def _ow_forum_item_count(payload: Any) -> int | None:
+    if isinstance(payload, tuple) and len(payload) >= 1 and isinstance(payload[0], list):
+        return len(payload[0])
+    return 0
+
+
+def _ow_forum_last_item_at(payload: Any) -> str | None:
+    if isinstance(payload, tuple) and len(payload) >= 1 and isinstance(payload[0], list):
+        return _latest_timestamp(payload[0], "published_at")
+    return None
+
+
+def _ow_news_item_count(payload: Any) -> int | None:
+    return len(payload) if isinstance(payload, list) else 0
+
+
+def _ow_news_last_item_at(payload: Any) -> str | None:
+    return _latest_timestamp(payload, "published_at") if isinstance(payload, list) else None
+
+
+def _ow_social_item_count(payload: Any) -> int | None:
+    return len(payload) if isinstance(payload, list) else 0
+
+
+def _ow_social_last_item_at(payload: Any) -> str | None:
+    return _latest_timestamp(payload, "published_at") if isinstance(payload, list) else None
+
+
 def _calculate_severity(
     outage: dict[str, Any],
     sources: list[dict[str, Any]],
@@ -1095,27 +1178,19 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
     social: list[dict[str, Any]] = []
     isdown_outage: dict[str, Any] | None = None
 
-    started = time.perf_counter()
-    try:
-        outage = fetch_statusgator_outages()
-        last_item_at = _latest_timestamp(outage.get("incidents") or [], "started_at")
-        freshness, age_minutes = _source_freshness(last_item_at)
-        sources.append(
-            {
-                "name": "StatusGator",
-                "kind": "outage-index",
-                "url": STATUSGATOR_URL,
-                "ok": True,
-                "error": None,
-                "item_count": len(outage.get("incidents") or []),
-                "last_item_at": last_item_at,
-                "freshness": freshness,
-                "age_minutes": age_minutes,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
-    except Exception as exc:  # pragma: no cover
+    statusgator_run = _run_ow_source(
+        adapter_id="statusgator",
+        name="StatusGator",
+        kind="outage-index",
+        url=STATUSGATOR_URL,
+        fetch_fn=fetch_statusgator_outages,
+        item_count_fn=_ow_statusgator_item_count,
+        last_item_at_fn=_ow_statusgator_last_item_at,
+    )
+    if statusgator_run.ok and isinstance(statusgator_run.data, dict):
+        outage = statusgator_run.data
+        sources.append(statusgator_run.source)
+    else:
         fallback_outage, fallback_age_minutes = _build_cached_statusgator_fallback(
             previous_outage_fallback,
             reason="statusgator-fetch-failed",
@@ -1129,179 +1204,70 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
             "reports_24h": None,
             "incidents": [],
         }
-        sources.append(
-            {
-                "name": "StatusGator",
-                "kind": "outage-index",
-                "url": STATUSGATOR_URL,
-                "ok": False,
-                "error": _safe_error_message(exc),
-                "item_count": 0,
-                "last_item_at": None,
-                "freshness": "unknown",
-                "age_minutes": None,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-                "fallback_cache_used": bool(fallback_outage),
-                "fallback_age_minutes": fallback_age_minutes,
-            }
-        )
+        failed_statusgator_source = dict(statusgator_run.source)
+        failed_statusgator_source["fallback_cache_used"] = bool(fallback_outage)
+        failed_statusgator_source["fallback_age_minutes"] = fallback_age_minutes
+        sources.append(failed_statusgator_source)
 
-    started = time.perf_counter()
-    try:
-        isdown_outage = fetch_isdown_outages()
-        last_item_at = isdown_outage.get("last_reviewed_at") or _latest_timestamp(
-            isdown_outage.get("user_reports_24h") or [], "timestamp"
-        )
-        freshness, age_minutes = _source_freshness(last_item_at)
-        sources.append(
-            {
-                "name": "IsDown",
-                "kind": "outage-index-alt",
-                "url": ISDOWN_STATUS_URL,
-                "ok": True,
-                "error": None,
-                "item_count": len(isdown_outage.get("user_reports_24h") or []),
-                "last_item_at": last_item_at,
-                "freshness": freshness,
-                "age_minutes": age_minutes,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
-    except Exception as exc:  # pragma: no cover
-        sources.append(
-            {
-                "name": "IsDown",
-                "kind": "outage-index-alt",
-                "url": ISDOWN_STATUS_URL,
-                "ok": False,
-                "error": _safe_error_message(exc),
-                "item_count": 0,
-                "last_item_at": None,
-                "freshness": "unknown",
-                "age_minutes": None,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
+    isdown_run = _run_ow_source(
+        adapter_id="isdown",
+        name="IsDown",
+        kind="outage-index-alt",
+        url=ISDOWN_STATUS_URL,
+        fetch_fn=fetch_isdown_outages,
+        item_count_fn=_ow_isdown_item_count,
+        last_item_at_fn=_ow_isdown_last_item_at,
+    )
+    sources.append(isdown_run.source)
+    if isdown_run.ok and isinstance(isdown_run.data, dict):
+        isdown_outage = isdown_run.data
 
     outage = _merge_secondary_outage_signal(outage, isdown_outage)
 
     for slug, category_id, label in FORUM_CATEGORIES:
         source_name = f"Blizzard Forums - {label}"
-        started = time.perf_counter()
-        try:
-            category_items, category_known = fetch_forum_topics(slug, category_id, label)
-            reports.extend(category_items)
-            known_resources.extend(category_known)
-            last_item_at = _latest_timestamp(category_items, "published_at")
-            freshness, age_minutes = _source_freshness(last_item_at)
-            sources.append(
-                {
-                    "name": source_name,
-                    "kind": "community-forum",
-                    "url": f"{FORUM_BASE_URL}/c/{slug}/{category_id}",
-                    "ok": True,
-                    "error": None,
-                    "item_count": len(category_items),
-                    "last_item_at": last_item_at,
-                    "freshness": freshness,
-                    "age_minutes": age_minutes,
-                    "duration_ms": int((time.perf_counter() - started) * 1000),
-                    "fetched_at": _utc_now_iso(),
-                }
-            )
-        except Exception as exc:  # pragma: no cover
-            sources.append(
-                {
-                    "name": source_name,
-                    "kind": "community-forum",
-                    "url": f"{FORUM_BASE_URL}/c/{slug}/{category_id}",
-                    "ok": False,
-                    "error": _safe_error_message(exc),
-                    "item_count": 0,
-                    "last_item_at": None,
-                    "freshness": "unknown",
-                    "age_minutes": None,
-                    "duration_ms": int((time.perf_counter() - started) * 1000),
-                    "fetched_at": _utc_now_iso(),
-                }
-            )
+        forum_run = _run_ow_source(
+            adapter_id=f"blizzard_forum_{slug}",
+            name=source_name,
+            kind="community-forum",
+            url=f"{FORUM_BASE_URL}/c/{slug}/{category_id}",
+            fetch_fn=lambda slug=slug, category_id=category_id, label=label: fetch_forum_topics(slug, category_id, label),
+            item_count_fn=_ow_forum_item_count,
+            last_item_at_fn=_ow_forum_last_item_at,
+        )
+        sources.append(forum_run.source)
+        if forum_run.ok and isinstance(forum_run.data, tuple) and len(forum_run.data) >= 2:
+            category_items, category_known = forum_run.data
+            if isinstance(category_items, list):
+                reports.extend(category_items)
+            if isinstance(category_known, list):
+                known_resources.extend(category_known)
 
-    started = time.perf_counter()
-    try:
-        news = fetch_overwatch_news()
-        last_item_at = _latest_timestamp(news, "published_at")
-        freshness, age_minutes = _source_freshness(last_item_at)
-        sources.append(
-            {
-                "name": "Overwatch News",
-                "kind": "official-news",
-                "url": OVERWATCH_NEWS_URL,
-                "ok": True,
-                "error": None,
-                "item_count": len(news),
-                "last_item_at": last_item_at,
-                "freshness": freshness,
-                "age_minutes": age_minutes,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
-    except Exception as exc:  # pragma: no cover
-        sources.append(
-            {
-                "name": "Overwatch News",
-                "kind": "official-news",
-                "url": OVERWATCH_NEWS_URL,
-                "ok": False,
-                "error": _safe_error_message(exc),
-                "item_count": 0,
-                "last_item_at": None,
-                "freshness": "unknown",
-                "age_minutes": None,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
+    news_run = _run_ow_source(
+        adapter_id="overwatch_news",
+        name="Overwatch News",
+        kind="official-news",
+        url=OVERWATCH_NEWS_URL,
+        fetch_fn=fetch_overwatch_news,
+        item_count_fn=_ow_news_item_count,
+        last_item_at_fn=_ow_news_last_item_at,
+    )
+    sources.append(news_run.source)
+    if news_run.ok and isinstance(news_run.data, list):
+        news = news_run.data
 
-    started = time.perf_counter()
-    try:
-        social = fetch_x_updates()
-        last_item_at = _latest_timestamp(social, "published_at")
-        freshness, age_minutes = _source_freshness(last_item_at)
-        sources.append(
-            {
-                "name": "X mirror feed",
-                "kind": "social-mirror",
-                "url": X_MIRROR_URL,
-                "ok": True,
-                "error": None,
-                "item_count": len(social),
-                "last_item_at": last_item_at,
-                "freshness": freshness,
-                "age_minutes": age_minutes,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
-    except Exception as exc:  # pragma: no cover
-        sources.append(
-            {
-                "name": "X mirror feed",
-                "kind": "social-mirror",
-                "url": X_MIRROR_URL,
-                "ok": False,
-                "error": _safe_error_message(exc),
-                "item_count": 0,
-                "last_item_at": None,
-                "freshness": "unknown",
-                "age_minutes": None,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
+    social_run = _run_ow_source(
+        adapter_id="x_mirror_playoverwatch",
+        name="X mirror feed",
+        kind="social-mirror",
+        url=X_MIRROR_URL,
+        fetch_fn=fetch_x_updates,
+        item_count_fn=_ow_social_item_count,
+        last_item_at_fn=_ow_social_last_item_at,
+    )
+    sources.append(social_run.source)
+    if social_run.ok and isinstance(social_run.data, list):
+        social = social_run.data
 
     successful_sources = sum(1 for source in sources if source["ok"])
     if successful_sources == 0:
