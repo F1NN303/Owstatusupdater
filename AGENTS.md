@@ -85,6 +85,8 @@ If conflict involves `.bot_state/*`, keep them untracked/deleted from Git.
 - Confirm no fake/example data reintroduced
 - Confirm source-unavailable red marker still appears when source health is partial
 - Confirm mobile layout does not overlap tab switcher / bottom nav
+- After pushing, verify the in-app Settings page version updates to the new deployed commit SHA (new commit = new visible version).
+- In agent progress updates, append the current short commit SHA/version so the user can cross-check quickly.
 
 ## 9) Local Workspace Cleanup Warning
 There may be untracked local build leftovers like `site/assets/index-*.js` and `site/next/assets/index-*.js`.
