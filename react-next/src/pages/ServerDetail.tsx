@@ -638,6 +638,9 @@ function useBarChartInspector(pointCount: number) {
         return;
       }
       event.stopPropagation();
+      if (event.cancelable) {
+        event.preventDefault();
+      }
       endTouchSession(true);
       const session: ChartInspectPointerSession = {
         pointerId: touch.identifier,
@@ -980,7 +983,7 @@ function StatusServiceHealth24hChart({
           <div
             ref={inspector.containerRef}
             className="relative flex h-[150px] select-none items-end gap-px pt-1"
-            style={{ touchAction: "pan-y", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
+            style={{ touchAction: "none", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
             {...inspector.interactionProps}
           >
             {points.map((point, index) => {
@@ -1081,7 +1084,7 @@ function UserReports24hChart({
           <div
             ref={inspector.containerRef}
             className="relative flex h-[150px] select-none items-end gap-px pt-1"
-            style={{ touchAction: "pan-y", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
+            style={{ touchAction: "none", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
             {...inspector.interactionProps}
           >
             {points.map((point, index) => {
