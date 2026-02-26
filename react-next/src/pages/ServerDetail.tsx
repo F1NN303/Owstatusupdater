@@ -537,11 +537,11 @@ function serviceHealthStatusLabel(language: AppLanguage, statusCode: number) {
 
 function useBarChartInspector(pointCount: number) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const sessionRef = useRef<ChartInspectPointerSession | null>(null);
+  const touchSessionRef = useRef<ChartInspectPointerSession | null>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const clearSessionTimer = useCallback(() => {
-    const session = sessionRef.current;
+  const clearTouchTimer = useCallback(() => {
+    const session = touchSessionRef.current;
     if (session?.timeoutId !== null) {
       window.clearTimeout(session.timeoutId);
       session.timeoutId = null;
@@ -550,10 +550,10 @@ function useBarChartInspector(pointCount: number) {
 
   useEffect(() => {
     return () => {
-      clearSessionTimer();
-      sessionRef.current = null;
+      clearTouchTimer();
+      touchSessionRef.current = null;
     };
-  }, [clearSessionTimer]);
+  }, [clearTouchTimer]);
 
   const indexFromClientX = useCallback(
     (clientX: number) => {
@@ -586,33 +586,11 @@ function useBarChartInspector(pointCount: number) {
 
   const handlePointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
-      if (pointCount <= 0) {
-        return;
-      }
-      if (event.pointerType === "mouse") {
+      if (pointCount > 0 && event.pointerType === "mouse") {
         updateFromClientX(event.clientX);
-        return;
       }
-
-      clearSessionTimer();
-      const session: ChartInspectPointerSession = {
-        pointerId: event.pointerId,
-        pointerType: event.pointerType || "touch",
-        startX: event.clientX,
-        startY: event.clientY,
-        activated: false,
-        timeoutId: null,
-      };
-      session.timeoutId = window.setTimeout(() => {
-        if (sessionRef.current !== session) {
-          return;
-        }
-        session.activated = true;
-        updateFromClientX(session.startX);
-      }, CHART_INSPECT_HOLD_MS);
-      sessionRef.current = session;
     },
-    [clearSessionTimer, pointCount, updateFromClientX]
+    [pointCount, updateFromClientX]
   );
 
   const handlePointerMove = useCallback(
@@ -622,76 +600,112 @@ function useBarChartInspector(pointCount: number) {
       }
       if (event.pointerType === "mouse") {
         updateFromClientX(event.clientX);
-        return;
-      }
-
-      const session = sessionRef.current;
-      if (!session || session.pointerId !== event.pointerId) {
-        return;
-      }
-      if (!session.activated) {
-        const dx = event.clientX - session.startX;
-        const dy = event.clientY - session.startY;
-        if (Math.hypot(dx, dy) > CHART_INSPECT_MOVE_TOLERANCE_PX) {
-          clearSessionTimer();
-          sessionRef.current = null;
-        }
-        return;
-      }
-      updateFromClientX(event.clientX);
-      if (event.cancelable) {
-        event.preventDefault();
       }
     },
-    [clearSessionTimer, pointCount, updateFromClientX]
-  );
-
-  const endPointerSession = useCallback(
-    (pointerId?: number, pointerType?: string) => {
-      const session = sessionRef.current;
-      if (!session) {
-        return;
-      }
-      if (typeof pointerId === "number" && session.pointerId !== pointerId) {
-        return;
-      }
-      const shouldClear = session.activated || pointerType !== "mouse";
-      clearSessionTimer();
-      sessionRef.current = null;
-      if (shouldClear) {
-        setActiveIndex(null);
-      }
-    },
-    [clearSessionTimer]
-  );
-
-  const handlePointerUp = useCallback(
-    (event: ReactPointerEvent<HTMLDivElement>) => {
-      endPointerSession(event.pointerId, event.pointerType);
-    },
-    [endPointerSession]
-  );
-
-  const handlePointerCancel = useCallback(
-    (event: ReactPointerEvent<HTMLDivElement>) => {
-      endPointerSession(event.pointerId, event.pointerType);
-    },
-    [endPointerSession]
+    [pointCount, updateFromClientX]
   );
 
   const handlePointerLeave = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
       if (event.pointerType === "mouse") {
         setActiveIndex(null);
-        return;
-      }
-      const session = sessionRef.current;
-      if (session && !session.activated && session.pointerId === event.pointerId) {
-        clearSessionTimer();
-        sessionRef.current = null;
       }
     },
-    [clearSessionTimer]
+    []
+  );
+
+  const endTouchSession = useCallback(
+    (clearActive: boolean) => {
+      clearTouchTimer();
+      touchSessionRef.current = null;
+      if (clearActive) {
+        setActiveIndex(null);
+      }
+    },
+    [clearTouchTimer]
+  );
+
+  const handleTouchStart = useCallback(
+    (event: ReactTouchEvent<HTMLDivElement>) => {
+      if (pointCount <= 0 || event.touches.length < 1) {
+        return;
+      }
+      const touch = event.touches[0];
+      if (!touch) {
+        return;
+      }
+      event.stopPropagation();
+      endTouchSession(false);
+      const session: ChartInspectPointerSession = {
+        pointerId: touch.identifier,
+        pointerType: "touch",
+        startX: touch.clientX,
+        startY: touch.clientY,
+        activated: false,
+        timeoutId: null,
+      };
+      session.timeoutId = window.setTimeout(() => {
+        if (touchSessionRef.current !== session) {
+          return;
+        }
+        session.activated = true;
+        updateFromClientX(session.startX);
+      }, CHART_INSPECT_HOLD_MS);
+      touchSessionRef.current = session;
+    },
+    [endTouchSession, pointCount, updateFromClientX]
+  );
+
+  const handleTouchMove = useCallback(
+    (event: ReactTouchEvent<HTMLDivElement>) => {
+      const session = touchSessionRef.current;
+      if (!session) {
+        return;
+      }
+      const touch = Array.from(event.touches).find((item) => item.identifier === session.pointerId) ?? event.touches[0];
+      if (!touch) {
+        return;
+      }
+
+      event.stopPropagation();
+      if (!session.activated) {
+        const dx = touch.clientX - session.startX;
+        const dy = touch.clientY - session.startY;
+        if (Math.hypot(dx, dy) > CHART_INSPECT_MOVE_TOLERANCE_PX) {
+          endTouchSession(false);
+        }
+        return;
+      }
+
+      updateFromClientX(touch.clientX);
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+    },
+    [endTouchSession, updateFromClientX]
+  );
+
+  const handleTouchEnd = useCallback(
+    (event: ReactTouchEvent<HTMLDivElement>) => {
+      if (!touchSessionRef.current) {
+        return;
+      }
+      event.stopPropagation();
+      const shouldClear = touchSessionRef.current.activated;
+      endTouchSession(shouldClear);
+    },
+    [endTouchSession]
+  );
+
+  const handleTouchCancel = useCallback(
+    (event: ReactTouchEvent<HTMLDivElement>) => {
+      if (!touchSessionRef.current) {
+        return;
+      }
+      event.stopPropagation();
+      endTouchSession(true);
+    },
+    [endTouchSession]
   );
 
   return {
@@ -700,9 +714,11 @@ function useBarChartInspector(pointCount: number) {
     interactionProps: {
       onPointerDown: handlePointerDown,
       onPointerMove: handlePointerMove,
-      onPointerUp: handlePointerUp,
-      onPointerCancel: handlePointerCancel,
       onPointerLeave: handlePointerLeave,
+      onTouchStart: handleTouchStart,
+      onTouchMove: handleTouchMove,
+      onTouchEnd: handleTouchEnd,
+      onTouchCancel: handleTouchCancel,
     },
   };
 }
