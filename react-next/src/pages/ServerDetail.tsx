@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import {
   type ReactNode,
+  type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
   type TouchEvent as ReactTouchEvent,
   useCallback,
@@ -58,9 +59,6 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
 const RECENT_INCIDENT_SUBTITLE_MAX_MINUTES = 24 * 60;
-const CHART_INSPECT_HOLD_MS = 160;
-const CHART_INSPECT_MOVE_TOLERANCE_PX = 22;
-const CHART_INSPECT_HORIZONTAL_ACTIVATE_PX = 6;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 type SwipeAxisLock = "x" | "y" | null;
 
@@ -479,17 +477,6 @@ function pickNiceMax(value: number) {
   return Math.ceil(value / 50) * 50;
 }
 
-interface ChartInspectPointerSession {
-  pointerId: number;
-  pointerType: string;
-  startX: number;
-  startY: number;
-  lastX: number;
-  lastY: number;
-  activated: boolean;
-  timeoutId: number | null;
-}
-
 function build24hTickLabels() {
   return ["0h", "6h", "12h", "18h", "24h"];
 }
@@ -540,23 +527,7 @@ function serviceHealthStatusLabel(language: AppLanguage, statusCode: number) {
 
 function useBarChartInspector(pointCount: number) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const touchSessionRef = useRef<ChartInspectPointerSession | null>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
-  const clearTouchTimer = useCallback(() => {
-    const session = touchSessionRef.current;
-    if (session?.timeoutId !== null) {
-      window.clearTimeout(session.timeoutId);
-      session.timeoutId = null;
-    }
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      clearTouchTimer();
-      touchSessionRef.current = null;
-    };
-  }, [clearTouchTimer]);
 
   const indexFromClientX = useCallback(
     (clientX: number) => {
@@ -617,150 +588,15 @@ function useBarChartInspector(pointCount: number) {
     []
   );
 
-  const endTouchSession = useCallback(
-    (clearActive: boolean) => {
-      clearTouchTimer();
-      touchSessionRef.current = null;
-      if (clearActive) {
-        setActiveIndex(null);
+  const handleClick = useCallback(
+    (event: ReactMouseEvent<HTMLDivElement>) => {
+      if (pointCount <= 0) {
+        return;
       }
+      updateFromClientX(event.clientX);
     },
-    [clearTouchTimer]
+    [pointCount, updateFromClientX]
   );
-
-  const handleTouchStart = useCallback(
-    (event: ReactTouchEvent<HTMLDivElement>) => {
-      if (pointCount <= 0 || event.touches.length < 1) {
-        return;
-      }
-      const touch = event.touches[0];
-      if (!touch) {
-        return;
-      }
-      event.stopPropagation();
-      if (event.cancelable) {
-        event.preventDefault();
-      }
-      endTouchSession(true);
-      const session: ChartInspectPointerSession = {
-        pointerId: touch.identifier,
-        pointerType: "touch",
-        startX: touch.clientX,
-        startY: touch.clientY,
-        lastX: touch.clientX,
-        lastY: touch.clientY,
-        activated: false,
-        timeoutId: null,
-      };
-      updateFromClientX(touch.clientX);
-      session.timeoutId = window.setTimeout(() => {
-        if (touchSessionRef.current !== session) {
-          return;
-        }
-        session.activated = true;
-        updateFromClientX(session.lastX);
-      }, CHART_INSPECT_HOLD_MS);
-      touchSessionRef.current = session;
-    },
-    [endTouchSession, pointCount, updateFromClientX]
-  );
-
-  const handleTouchMove = useCallback(
-    (event: ReactTouchEvent<HTMLDivElement>) => {
-      const session = touchSessionRef.current;
-      if (!session) {
-        return;
-      }
-      const touch = Array.from(event.touches).find((item) => item.identifier === session.pointerId) ?? event.touches[0];
-      if (!touch) {
-        return;
-      }
-
-      event.stopPropagation();
-      session.lastX = touch.clientX;
-      session.lastY = touch.clientY;
-      if (!session.activated) {
-        updateFromClientX(touch.clientX);
-        const dx = touch.clientX - session.startX;
-        const dy = touch.clientY - session.startY;
-        const absDx = Math.abs(dx);
-        const absDy = Math.abs(dy);
-        if (absDx >= CHART_INSPECT_HORIZONTAL_ACTIVATE_PX && absDx > absDy + 2) {
-          clearTouchTimer();
-          session.activated = true;
-          updateFromClientX(touch.clientX);
-          if (event.cancelable) {
-            event.preventDefault();
-          }
-          return;
-        }
-        if (absDy > CHART_INSPECT_MOVE_TOLERANCE_PX && absDy > absDx + 6) {
-          endTouchSession(true);
-        }
-        return;
-      }
-
-      updateFromClientX(touch.clientX);
-      if (event.cancelable) {
-        event.preventDefault();
-      }
-    },
-    [clearTouchTimer, endTouchSession, updateFromClientX]
-  );
-
-  const handleTouchEnd = useCallback(
-    (event: ReactTouchEvent<HTMLDivElement>) => {
-      if (!touchSessionRef.current) {
-        return;
-      }
-      event.stopPropagation();
-      endTouchSession(true);
-    },
-    [endTouchSession]
-  );
-
-  const handleTouchCancel = useCallback(
-    (event: ReactTouchEvent<HTMLDivElement>) => {
-      if (!touchSessionRef.current) {
-        return;
-      }
-      event.stopPropagation();
-      endTouchSession(true);
-    },
-    [endTouchSession]
-  );
-
-  useEffect(() => {
-    const node = containerRef.current;
-    if (!node) {
-      return;
-    }
-
-    const onTouchStart = (event: TouchEvent) => {
-      handleTouchStart(event as unknown as ReactTouchEvent<HTMLDivElement>);
-    };
-    const onTouchMove = (event: TouchEvent) => {
-      handleTouchMove(event as unknown as ReactTouchEvent<HTMLDivElement>);
-    };
-    const onTouchEnd = (event: TouchEvent) => {
-      handleTouchEnd(event as unknown as ReactTouchEvent<HTMLDivElement>);
-    };
-    const onTouchCancel = (event: TouchEvent) => {
-      handleTouchCancel(event as unknown as ReactTouchEvent<HTMLDivElement>);
-    };
-
-    node.addEventListener("touchstart", onTouchStart, { passive: false });
-    node.addEventListener("touchmove", onTouchMove, { passive: false });
-    node.addEventListener("touchend", onTouchEnd, { passive: false });
-    node.addEventListener("touchcancel", onTouchCancel, { passive: false });
-
-    return () => {
-      node.removeEventListener("touchstart", onTouchStart);
-      node.removeEventListener("touchmove", onTouchMove);
-      node.removeEventListener("touchend", onTouchEnd);
-      node.removeEventListener("touchcancel", onTouchCancel);
-    };
-  }, [handleTouchCancel, handleTouchEnd, handleTouchMove, handleTouchStart]);
 
   return {
     activeIndex,
@@ -769,6 +605,7 @@ function useBarChartInspector(pointCount: number) {
       onPointerDown: handlePointerDown,
       onPointerMove: handlePointerMove,
       onPointerLeave: handlePointerLeave,
+      onClick: handleClick,
     },
   };
 }
@@ -983,7 +820,7 @@ function StatusServiceHealth24hChart({
           <div
             ref={inspector.containerRef}
             className="relative flex h-[150px] select-none items-end gap-px pt-1"
-            style={{ touchAction: "none", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
+            style={{ touchAction: "pan-y", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
             {...inspector.interactionProps}
           >
             {points.map((point, index) => {
@@ -1084,7 +921,7 @@ function UserReports24hChart({
           <div
             ref={inspector.containerRef}
             className="relative flex h-[150px] select-none items-end gap-px pt-1"
-            style={{ touchAction: "none", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
+            style={{ touchAction: "pan-y", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
             {...inspector.interactionProps}
           >
             {points.map((point, index) => {
