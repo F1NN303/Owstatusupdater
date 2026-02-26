@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import {
   type ReactNode,
+  type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
   type TouchEvent as ReactTouchEvent,
   useCallback,
@@ -58,8 +59,8 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
 const RECENT_INCIDENT_SUBTITLE_MAX_MINUTES = 24 * 60;
-const CHART_INSPECT_HOLD_MS = 220;
-const CHART_INSPECT_MOVE_TOLERANCE_PX = 10;
+const CHART_INSPECT_HOLD_MS = 160;
+const CHART_INSPECT_MOVE_TOLERANCE_PX = 22;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 type SwipeAxisLock = "x" | "y" | null;
 
@@ -614,6 +615,17 @@ function useBarChartInspector(pointCount: number) {
     []
   );
 
+  const handleClick = useCallback(
+    (event: ReactMouseEvent<HTMLDivElement>) => {
+      if (pointCount <= 0) {
+        return;
+      }
+      event.stopPropagation();
+      updateFromClientX(event.clientX);
+    },
+    [pointCount, updateFromClientX]
+  );
+
   const endTouchSession = useCallback(
     (clearActive: boolean) => {
       clearTouchTimer();
@@ -715,6 +727,7 @@ function useBarChartInspector(pointCount: number) {
       onPointerDown: handlePointerDown,
       onPointerMove: handlePointerMove,
       onPointerLeave: handlePointerLeave,
+      onClick: handleClick,
       onTouchStart: handleTouchStart,
       onTouchMove: handleTouchMove,
       onTouchEnd: handleTouchEnd,
