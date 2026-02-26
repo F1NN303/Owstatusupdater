@@ -11,7 +11,7 @@ from typing import Any
 import requests
 from bs4 import BeautifulSoup
 
-from services.ow_aggregator import (
+from services.core.shared import (
     _build_region_signals,
     _calculate_severity,
     _clean,
