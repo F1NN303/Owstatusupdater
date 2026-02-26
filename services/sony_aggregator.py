@@ -9,6 +9,7 @@ import time
 from typing import Any
 
 import requests
+from services.adapters.sony_psn import parse_playstation_region_events
 from services.core.source_runner import (
     CallableSourceAdapter,
     SourceAdapterSpec,
@@ -117,45 +118,6 @@ def _severity_from_score(score: float, source_total: int) -> str:
     return "major"
 
 
-def _status_type_key(value: str | None) -> str:
-    text = _clean(value).lower()
-    if "outage" in text:
-        return "outage"
-    if "degrad" in text:
-        return "degraded"
-    if "maint" in text:
-        return "maintenance"
-    return "ok"
-
-
-def _pick_message(status: dict[str, Any]) -> str:
-    raw = status.get("message")
-    if not isinstance(raw, dict):
-        return ""
-    messages = raw.get("messages")
-    if not isinstance(messages, dict):
-        return ""
-    preferred = (
-        "en-US",
-        "en-GB",
-        "en",
-        "de-DE",
-        "de",
-        "fr-FR",
-        "es-ES",
-        "ja-JP",
-    )
-    for key in preferred:
-        text = _clean(messages.get(key))
-        if text:
-            return text
-    for value in messages.values():
-        text = _clean(value)
-        if text:
-            return text
-    return ""
-
-
 def _format_duration(hours: float | None) -> str:
     if hours is None:
         return "n/a"
@@ -182,7 +144,13 @@ def _source_freshness(last_item_at: str | None) -> tuple[str, int | None]:
 
 
 def _sony_region_source_bundle(region_key: str, payload: dict[str, Any]) -> dict[str, Any]:
-    raw_events = _extract_region_events(region_key, payload)
+    raw_events = parse_playstation_region_events(
+        region_key,
+        payload,
+        clean=_clean,
+        region_labels=REGION_LABELS,
+        utc_now_iso=_utc_now_iso,
+    )
     active_events = [event for event in raw_events if _is_active_incident_event(event)]
     latest_item = next((event.get("started_at") for event in raw_events if event.get("started_at")), None)
     latest_active_item = next((event.get("started_at") for event in active_events if event.get("started_at")), None)
@@ -224,109 +192,6 @@ def _run_sony_region_source(*, region_key: str, region_code: str) -> SourceRunRe
         source_freshness=_source_freshness,
         safe_error_message=_safe_error_message,
     )
-
-
-def _event_timestamp(status: dict[str, Any]) -> str:
-    for field in ("startDate", "modifiedDate", "createdDate"):
-        raw = _clean(status.get(field))
-        if raw:
-            return raw
-    return _utc_now_iso()
-
-
-def _event_title(scope: str, region_key: str, country: str | None, service_name: str | None, status: dict[str, Any]) -> str:
-    status_type = _clean(status.get("statusType")) or "Status update"
-    message = _pick_message(status)
-    region_label = REGION_LABELS.get(region_key, region_key.upper())
-    if scope == "service" and service_name:
-        base = f"{service_name}: {status_type}"
-    elif scope == "country" and country:
-        base = f"{country} region: {status_type}"
-    else:
-        base = f"{region_label}: {status_type}"
-    if message:
-        return f"{base} - {message}"
-    return base
-
-
-def _extract_region_events(region_key: str, payload: dict[str, Any]) -> list[dict[str, Any]]:
-    events: list[dict[str, Any]] = []
-    region_statuses = payload.get("status") if isinstance(payload.get("status"), list) else []
-    countries = payload.get("countries") if isinstance(payload.get("countries"), list) else []
-
-    for status in region_statuses:
-        if not isinstance(status, dict):
-            continue
-        status_type = _status_type_key(status.get("statusType"))
-        events.append(
-            {
-                "event_id": _clean(status.get("statusId")) or f"{region_key}-region-{len(events)}",
-                "scope": "region",
-                "region": region_key,
-                "country": None,
-                "service": None,
-                "status_type": status_type,
-                "status_label": _clean(status.get("statusType")) or "Status",
-                "started_at": _event_timestamp(status),
-                "title": _event_title("region", region_key, None, None, status),
-            }
-        )
-
-    for country in countries:
-        if not isinstance(country, dict):
-            continue
-        country_code = _clean(country.get("countryCode"))
-        country_statuses = country.get("status") if isinstance(country.get("status"), list) else []
-        services = country.get("services") if isinstance(country.get("services"), list) else []
-
-        for status in country_statuses:
-            if not isinstance(status, dict):
-                continue
-            status_type = _status_type_key(status.get("statusType"))
-            events.append(
-                {
-                    "event_id": _clean(status.get("statusId")) or f"{region_key}-{country_code}-country-{len(events)}",
-                    "scope": "country",
-                    "region": region_key,
-                    "country": country_code,
-                    "service": None,
-                    "status_type": status_type,
-                    "status_label": _clean(status.get("statusType")) or "Status",
-                    "started_at": _event_timestamp(status),
-                    "title": _event_title("country", region_key, country_code, None, status),
-                }
-            )
-
-        for service in services:
-            if not isinstance(service, dict):
-                continue
-            service_name = _clean(service.get("serviceName")) or _clean(service.get("serviceId")) or "Service"
-            service_statuses = service.get("status") if isinstance(service.get("status"), list) else []
-            for status in service_statuses:
-                if not isinstance(status, dict):
-                    continue
-                status_type = _status_type_key(status.get("statusType"))
-                events.append(
-                    {
-                        "event_id": _clean(status.get("statusId")) or f"{region_key}-{country_code}-{service_name}-{len(events)}",
-                        "scope": "service",
-                        "region": region_key,
-                        "country": country_code,
-                        "service": service_name,
-                        "status_type": status_type,
-                        "status_label": _clean(status.get("statusType")) or "Status",
-                        "started_at": _event_timestamp(status),
-                        "title": _event_title("service", region_key, country_code, service_name, status),
-                    }
-                )
-
-    deduped: dict[tuple[str, str, str | None, str | None], dict[str, Any]] = {}
-    for event in events:
-        key = (event["event_id"], event["scope"], event.get("country"), event.get("service"))
-        deduped[key] = event
-    out = list(deduped.values())
-    out.sort(key=lambda item: _parse_iso8601(item.get("started_at")) or dt.datetime.min.replace(tzinfo=dt.UTC), reverse=True)
-    return out
 
 
 def _event_score(event: dict[str, Any]) -> float:
