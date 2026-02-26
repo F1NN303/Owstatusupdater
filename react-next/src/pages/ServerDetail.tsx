@@ -60,6 +60,7 @@ const DATA_STALE_CRITICAL_MINUTES = 180;
 const RECENT_INCIDENT_SUBTITLE_MAX_MINUTES = 24 * 60;
 const CHART_INSPECT_HOLD_MS = 160;
 const CHART_INSPECT_MOVE_TOLERANCE_PX = 22;
+const CHART_INSPECT_HORIZONTAL_ACTIVATE_PX = 6;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 type SwipeAxisLock = "x" | "y" | null;
 
@@ -679,6 +680,15 @@ function useBarChartInspector(pointCount: number) {
         const dy = touch.clientY - session.startY;
         const absDx = Math.abs(dx);
         const absDy = Math.abs(dy);
+        if (absDx >= CHART_INSPECT_HORIZONTAL_ACTIVATE_PX && absDx > absDy + 2) {
+          clearTouchTimer();
+          session.activated = true;
+          updateFromClientX(touch.clientX);
+          if (event.cancelable) {
+            event.preventDefault();
+          }
+          return;
+        }
         if (absDy > CHART_INSPECT_MOVE_TOLERANCE_PX && absDy > absDx + 6) {
           endTouchSession(false);
         }
@@ -690,7 +700,7 @@ function useBarChartInspector(pointCount: number) {
         event.preventDefault();
       }
     },
-    [endTouchSession, updateFromClientX]
+    [clearTouchTimer, endTouchSession, updateFromClientX]
   );
 
   const handleTouchEnd = useCallback(
