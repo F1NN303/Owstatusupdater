@@ -6,7 +6,7 @@ import os
 import re
 import threading
 import time
-from typing import Any
+from typing import Any, Callable
 
 import requests
 from bs4 import BeautifulSoup
@@ -24,6 +24,12 @@ from services.core.shared import (
     _safe_error_message,
     _sort_by_datetime,
     _source_freshness,
+)
+from services.core.source_runner import (
+    CallableSourceAdapter,
+    SourceAdapterSpec,
+    SourceRunResult,
+    run_source_adapter,
 )
 
 UA = {"User-Agent": "M365-Service-Radar/1.0 (+github-actions)"}
@@ -59,6 +65,37 @@ def _utc_now() -> dt.datetime:
 
 def _utc_now_iso() -> str:
     return _utc_now().isoformat().replace("+00:00", "Z")
+
+
+def _run_m365_source(
+    *,
+    adapter_id: str,
+    name: str,
+    kind: str,
+    url: str,
+    fetch_fn: Callable[[], Any],
+    item_count_fn: Callable[[Any], int | None],
+    last_item_at_fn: Callable[[Any], str | None],
+    cache_ttl_seconds: int = CACHE_TTL_SECONDS,
+) -> SourceRunResult[Any]:
+    return run_source_adapter(
+        CallableSourceAdapter(
+            spec=SourceAdapterSpec(
+                service_id="m365",
+                adapter_id=adapter_id,
+                name=name,
+                kind=kind,
+                url=url,
+                cache_ttl_seconds=cache_ttl_seconds,
+            ),
+            fetch_fn=fetch_fn,
+            item_count_fn=item_count_fn,
+            last_item_at_fn=last_item_at_fn,
+        ),
+        utc_now_iso=_utc_now_iso,
+        source_freshness=_source_freshness,
+        safe_error_message=_safe_error_message,
+    )
 
 
 def _request_text(url: str, timeout: int = REQUEST_TIMEOUT) -> str:
@@ -752,6 +789,61 @@ def fetch_x_updates(limit: int = 4) -> list[dict[str, Any]]:
     ]
 
 
+def _statusgator_item_count(payload: Any) -> int | None:
+    return len(payload.get("incidents") or []) if isinstance(payload, dict) else 0
+
+
+def _statusgator_last_item_at(payload: Any) -> str | None:
+    if not isinstance(payload, dict):
+        return None
+    last_item_at = _latest_timestamp(payload.get("incidents") or [], "started_at")
+    if not last_item_at and isinstance(payload.get("service_health_24h_meta"), dict):
+        last_item_at = payload["service_health_24h_meta"].get("last_sample_at")
+    return last_item_at
+
+
+def _isdown_item_count(payload: Any) -> int | None:
+    return len(payload.get("user_reports_24h") or []) if isinstance(payload, dict) else 0
+
+
+def _isdown_last_item_at(payload: Any) -> str | None:
+    return str(payload.get("last_reviewed_at") or "") or None if isinstance(payload, dict) else None
+
+
+def _official_public_item_count(payload: Any) -> int | None:
+    return len(payload.get("updates") or []) if isinstance(payload, dict) else 0
+
+
+def _official_public_last_item_at(payload: Any) -> str | None:
+    return str(payload.get("checked_at") or "") or None if isinstance(payload, dict) else None
+
+
+def _graph_item_count(payload: Any) -> int | None:
+    if not isinstance(payload, dict):
+        return 0
+    try:
+        return int(payload.get("issue_count") or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _graph_last_item_at(payload: Any) -> str | None:
+    if not isinstance(payload, dict):
+        return None
+    last_item_at = _latest_timestamp(payload.get("updates") or [], "published_at")
+    if not last_item_at:
+        last_item_at = payload.get("checked_at")
+    return str(last_item_at or "") or None
+
+
+def _social_item_count(payload: Any) -> int | None:
+    return len(payload) if isinstance(payload, list) else 0
+
+
+def _social_last_item_at(payload: Any) -> str | None:
+    return _latest_timestamp(payload, "published_at") if isinstance(payload, list) else None
+
+
 def _build_official_block(
     official_status_updates: list[dict[str, Any]],
     social_updates: list[dict[str, Any]],
@@ -806,29 +898,19 @@ def _collect_payload() -> dict[str, Any]:
     social: list[dict[str, Any]] = []
     isdown_outage: dict[str, Any] | None = None
 
-    started = time.perf_counter()
-    try:
-        outage = fetch_statusgator_outages()
-        last_item_at = _latest_timestamp(outage.get("incidents") or [], "started_at")
-        if not last_item_at and isinstance(outage.get("service_health_24h_meta"), dict):
-            last_item_at = outage["service_health_24h_meta"].get("last_sample_at")
-        freshness, age_minutes = _source_freshness(last_item_at)
-        sources.append(
-            {
-                "name": "StatusGator",
-                "kind": "outage-index",
-                "url": STATUSGATOR_URL,
-                "ok": True,
-                "error": None,
-                "item_count": len(outage.get("incidents") or []),
-                "last_item_at": last_item_at,
-                "freshness": freshness,
-                "age_minutes": age_minutes,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
-    except Exception as exc:  # pragma: no cover
+    statusgator_run = _run_m365_source(
+        adapter_id="statusgator",
+        name="StatusGator",
+        kind="outage-index",
+        url=STATUSGATOR_URL,
+        fetch_fn=fetch_statusgator_outages,
+        item_count_fn=_statusgator_item_count,
+        last_item_at_fn=_statusgator_last_item_at,
+    )
+    sources.append(statusgator_run.source)
+    if statusgator_run.ok and isinstance(statusgator_run.data, dict):
+        outage = statusgator_run.data
+    else:
         outage = {
             "source": "StatusGator",
             "source_type": "Downdetector-like",
@@ -839,175 +921,62 @@ def _collect_payload() -> dict[str, Any]:
             "incidents": [],
             "top_reported_issues": [],
         }
-        sources.append(
-            {
-                "name": "StatusGator",
-                "kind": "outage-index",
-                "url": STATUSGATOR_URL,
-                "ok": False,
-                "error": _safe_error_message(exc),
-                "item_count": 0,
-                "last_item_at": None,
-                "freshness": "unknown",
-                "age_minutes": None,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
 
-    started = time.perf_counter()
-    try:
-        isdown_outage = fetch_isdown_outages()
-        last_item_at = isdown_outage.get("last_reviewed_at")
-        freshness, age_minutes = _source_freshness(last_item_at)
-        sources.append(
-            {
-                "name": "IsDown",
-                "kind": "outage-index-alt",
-                "url": ISDOWN_STATUS_URL,
-                "ok": True,
-                "error": None,
-                "item_count": len(isdown_outage.get("user_reports_24h") or []),
-                "last_item_at": last_item_at,
-                "freshness": freshness,
-                "age_minutes": age_minutes,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
-    except Exception as exc:  # pragma: no cover
-        sources.append(
-            {
-                "name": "IsDown",
-                "kind": "outage-index-alt",
-                "url": ISDOWN_STATUS_URL,
-                "ok": False,
-                "error": _safe_error_message(exc),
-                "item_count": 0,
-                "last_item_at": None,
-                "freshness": "unknown",
-                "age_minutes": None,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
+    isdown_run = _run_m365_source(
+        adapter_id="isdown",
+        name="IsDown",
+        kind="outage-index-alt",
+        url=ISDOWN_STATUS_URL,
+        fetch_fn=fetch_isdown_outages,
+        item_count_fn=_isdown_item_count,
+        last_item_at_fn=_isdown_last_item_at,
+    )
+    sources.append(isdown_run.source)
+    if isdown_run.ok and isinstance(isdown_run.data, dict):
+        isdown_outage = isdown_run.data
 
     outage = _merge_secondary_outage_signal(outage, isdown_outage)
 
-    started = time.perf_counter()
-    try:
-        official_status = fetch_microsoft_public_status()
-        last_item_at = official_status.get("checked_at")
-        freshness, age_minutes = _source_freshness(last_item_at)
-        sources.append(
-            {
-                "name": "Microsoft Public Status",
-                "kind": "official-status-page",
-                "url": MICROSOFT_PUBLIC_STATUS_URL,
-                "ok": True,
-                "error": None,
-                "item_count": len(official_status.get("updates") or []),
-                "last_item_at": last_item_at,
-                "freshness": freshness,
-                "age_minutes": age_minutes,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
-    except Exception as exc:  # pragma: no cover
-        sources.append(
-            {
-                "name": "Microsoft Public Status",
-                "kind": "official-status-page",
-                "url": MICROSOFT_PUBLIC_STATUS_URL,
-                "ok": False,
-                "error": _safe_error_message(exc),
-                "item_count": 0,
-                "last_item_at": None,
-                "freshness": "unknown",
-                "age_minutes": None,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
+    official_status_run = _run_m365_source(
+        adapter_id="microsoft_public_status",
+        name="Microsoft Public Status",
+        kind="official-status-page",
+        url=MICROSOFT_PUBLIC_STATUS_URL,
+        fetch_fn=fetch_microsoft_public_status,
+        item_count_fn=_official_public_item_count,
+        last_item_at_fn=_official_public_last_item_at,
+    )
+    sources.append(official_status_run.source)
+    if official_status_run.ok and isinstance(official_status_run.data, dict):
+        official_status = official_status_run.data
 
     graph_credentials = _graph_credentials_from_env()
     if graph_credentials:
-        started = time.perf_counter()
-        try:
-            graph_official = fetch_microsoft_graph_service_health()
-            last_item_at = _latest_timestamp(graph_official.get("updates") or [], "published_at")
-            if not last_item_at:
-                last_item_at = graph_official.get("checked_at")
-            freshness, age_minutes = _source_freshness(last_item_at)
-            sources.append(
-                {
-                    "name": "Microsoft Graph Service Communications",
-                    "kind": "official-api",
-                    "url": f"{MICROSOFT_GRAPH_API_ROOT}/admin/serviceAnnouncement",
-                    "ok": True,
-                    "error": None,
-                    "item_count": int(graph_official.get("issue_count") or 0),
-                    "last_item_at": last_item_at,
-                    "freshness": freshness,
-                    "age_minutes": age_minutes,
-                    "duration_ms": int((time.perf_counter() - started) * 1000),
-                    "fetched_at": _utc_now_iso(),
-                }
-            )
-        except Exception as exc:  # pragma: no cover
-            sources.append(
-                {
-                    "name": "Microsoft Graph Service Communications",
-                    "kind": "official-api",
-                    "url": f"{MICROSOFT_GRAPH_API_ROOT}/admin/serviceAnnouncement",
-                    "ok": False,
-                    "error": _safe_error_message(exc),
-                    "item_count": 0,
-                    "last_item_at": None,
-                    "freshness": "unknown",
-                    "age_minutes": None,
-                    "duration_ms": int((time.perf_counter() - started) * 1000),
-                    "fetched_at": _utc_now_iso(),
-                }
-            )
+        graph_run = _run_m365_source(
+            adapter_id="microsoft_graph_service_comm",
+            name="Microsoft Graph Service Communications",
+            kind="official-api",
+            url=f"{MICROSOFT_GRAPH_API_ROOT}/admin/serviceAnnouncement",
+            fetch_fn=fetch_microsoft_graph_service_health,
+            item_count_fn=_graph_item_count,
+            last_item_at_fn=_graph_last_item_at,
+        )
+        sources.append(graph_run.source)
+        if graph_run.ok and isinstance(graph_run.data, dict):
+            graph_official = graph_run.data
 
-    started = time.perf_counter()
-    try:
-        social = fetch_x_updates()
-        last_item_at = _latest_timestamp(social, "published_at")
-        freshness, age_minutes = _source_freshness(last_item_at)
-        sources.append(
-            {
-                "name": "X mirror feed (MSFT365Status)",
-                "kind": "social-mirror",
-                "url": X_MIRROR_URL,
-                "ok": True,
-                "error": None,
-                "item_count": len(social),
-                "last_item_at": last_item_at,
-                "freshness": freshness,
-                "age_minutes": age_minutes,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
-    except Exception as exc:  # pragma: no cover
-        sources.append(
-            {
-                "name": "X mirror feed (MSFT365Status)",
-                "kind": "social-mirror",
-                "url": X_MIRROR_URL,
-                "ok": False,
-                "error": _safe_error_message(exc),
-                "item_count": 0,
-                "last_item_at": None,
-                "freshness": "unknown",
-                "age_minutes": None,
-                "duration_ms": int((time.perf_counter() - started) * 1000),
-                "fetched_at": _utc_now_iso(),
-            }
-        )
+    social_run = _run_m365_source(
+        adapter_id="x_mirror_msft365status",
+        name="X mirror feed (MSFT365Status)",
+        kind="social-mirror",
+        url=X_MIRROR_URL,
+        fetch_fn=fetch_x_updates,
+        item_count_fn=_social_item_count,
+        last_item_at_fn=_social_last_item_at,
+    )
+    sources.append(social_run.source)
+    if social_run.ok and isinstance(social_run.data, list):
+        social = social_run.data
 
     if official_status and _normalize_outage_status_text(outage.get("current_status")) == "unknown":
         official_status_text = _normalize_outage_status_text(official_status.get("current_status"))
