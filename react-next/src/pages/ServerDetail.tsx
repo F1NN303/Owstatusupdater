@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import {
   type ReactNode,
+  type PointerEvent as ReactPointerEvent,
   type TouchEvent as ReactTouchEvent,
   useCallback,
   useEffect,
@@ -57,6 +58,8 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
 const RECENT_INCIDENT_SUBTITLE_MAX_MINUTES = 24 * 60;
+const CHART_INSPECT_HOLD_MS = 220;
+const CHART_INSPECT_MOVE_TOLERANCE_PX = 10;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 type SwipeAxisLock = "x" | "y" | null;
 
@@ -475,6 +478,276 @@ function pickNiceMax(value: number) {
   return Math.ceil(value / 50) * 50;
 }
 
+interface ChartInspectPointerSession {
+  pointerId: number;
+  pointerType: string;
+  startX: number;
+  startY: number;
+  activated: boolean;
+  timeoutId: number | null;
+}
+
+function build24hTickLabels() {
+  return ["0h", "6h", "12h", "18h", "24h"];
+}
+
+function buildTimeAxisTickIndexes(length: number) {
+  const maxIndex = Math.max(0, length - 1);
+  return [0, 0.25, 0.5, 0.75, 1].map((ratio) => Math.round(maxIndex * ratio));
+}
+
+function formatChartTimeTickLabel(value?: string | null) {
+  const raw = String(value ?? "").trim();
+  if (!raw) {
+    return "--";
+  }
+  const parsed = new Date(raw);
+  if (Number.isFinite(parsed.getTime())) {
+    return parsed.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+  return raw.length > 10 ? `${raw.slice(0, 10)}…` : raw;
+}
+
+function formatChartTooltipDateTime(value?: string | null) {
+  const raw = String(value ?? "").trim();
+  if (!raw) {
+    return "Unknown";
+  }
+  const parsed = new Date(raw);
+  if (!Number.isFinite(parsed.getTime())) {
+    return raw;
+  }
+  return parsed.toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
+function serviceHealthStatusLabel(language: AppLanguage, statusCode: number) {
+  if (statusCode >= 2) {
+    return pickLang(language, "Likely outage", "Wahrscheinlicher Ausfall");
+  }
+  if (statusCode === 1) {
+    return pickLang(language, "Possible outage", "Möglicher Ausfall");
+  }
+  return pickLang(language, "Service up", "Dienst verfügbar");
+}
+
+function useBarChartInspector(pointCount: number) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const sessionRef = useRef<ChartInspectPointerSession | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const clearSessionTimer = useCallback(() => {
+    const session = sessionRef.current;
+    if (session?.timeoutId !== null) {
+      window.clearTimeout(session.timeoutId);
+      session.timeoutId = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      clearSessionTimer();
+      sessionRef.current = null;
+    };
+  }, [clearSessionTimer]);
+
+  const indexFromClientX = useCallback(
+    (clientX: number) => {
+      if (pointCount <= 0) {
+        return null;
+      }
+      const node = containerRef.current;
+      if (!node) {
+        return null;
+      }
+      const rect = node.getBoundingClientRect();
+      if (!Number.isFinite(rect.width) || rect.width <= 0) {
+        return null;
+      }
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const index = Math.round(ratio * Math.max(pointCount - 1, 0));
+      return Math.max(0, Math.min(pointCount - 1, index));
+    },
+    [pointCount]
+  );
+
+  const updateFromClientX = useCallback(
+    (clientX: number) => {
+      const nextIndex = indexFromClientX(clientX);
+      setActiveIndex(nextIndex);
+      return nextIndex;
+    },
+    [indexFromClientX]
+  );
+
+  const handlePointerDown = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      if (pointCount <= 0) {
+        return;
+      }
+      if (event.pointerType === "mouse") {
+        updateFromClientX(event.clientX);
+        return;
+      }
+
+      clearSessionTimer();
+      const session: ChartInspectPointerSession = {
+        pointerId: event.pointerId,
+        pointerType: event.pointerType || "touch",
+        startX: event.clientX,
+        startY: event.clientY,
+        activated: false,
+        timeoutId: null,
+      };
+      session.timeoutId = window.setTimeout(() => {
+        if (sessionRef.current !== session) {
+          return;
+        }
+        session.activated = true;
+        updateFromClientX(session.startX);
+      }, CHART_INSPECT_HOLD_MS);
+      sessionRef.current = session;
+    },
+    [clearSessionTimer, pointCount, updateFromClientX]
+  );
+
+  const handlePointerMove = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      if (pointCount <= 0) {
+        return;
+      }
+      if (event.pointerType === "mouse") {
+        updateFromClientX(event.clientX);
+        return;
+      }
+
+      const session = sessionRef.current;
+      if (!session || session.pointerId !== event.pointerId) {
+        return;
+      }
+      if (!session.activated) {
+        const dx = event.clientX - session.startX;
+        const dy = event.clientY - session.startY;
+        if (Math.hypot(dx, dy) > CHART_INSPECT_MOVE_TOLERANCE_PX) {
+          clearSessionTimer();
+          sessionRef.current = null;
+        }
+        return;
+      }
+      updateFromClientX(event.clientX);
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+    },
+    [clearSessionTimer, pointCount, updateFromClientX]
+  );
+
+  const endPointerSession = useCallback(
+    (pointerId?: number, pointerType?: string) => {
+      const session = sessionRef.current;
+      if (!session) {
+        return;
+      }
+      if (typeof pointerId === "number" && session.pointerId !== pointerId) {
+        return;
+      }
+      const shouldClear = session.activated || pointerType !== "mouse";
+      clearSessionTimer();
+      sessionRef.current = null;
+      if (shouldClear) {
+        setActiveIndex(null);
+      }
+    },
+    [clearSessionTimer]
+  );
+
+  const handlePointerUp = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      endPointerSession(event.pointerId, event.pointerType);
+    },
+    [endPointerSession]
+  );
+
+  const handlePointerCancel = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      endPointerSession(event.pointerId, event.pointerType);
+    },
+    [endPointerSession]
+  );
+
+  const handlePointerLeave = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      if (event.pointerType === "mouse") {
+        setActiveIndex(null);
+        return;
+      }
+      const session = sessionRef.current;
+      if (session && !session.activated && session.pointerId === event.pointerId) {
+        clearSessionTimer();
+        sessionRef.current = null;
+      }
+    },
+    [clearSessionTimer]
+  );
+
+  return {
+    activeIndex,
+    containerRef,
+    interactionProps: {
+      onPointerDown: handlePointerDown,
+      onPointerMove: handlePointerMove,
+      onPointerUp: handlePointerUp,
+      onPointerCancel: handlePointerCancel,
+      onPointerLeave: handlePointerLeave,
+    },
+  };
+}
+
+function BarChartInspectorOverlay({
+  activeIndex,
+  pointCount,
+  headline,
+  detail,
+  accentClassName = "bg-sky-300/90",
+}: {
+  activeIndex: number | null;
+  pointCount: number;
+  headline: string | null;
+  detail: string | null;
+  accentClassName?: string;
+}) {
+  if (activeIndex === null || pointCount <= 0 || (!headline && !detail)) {
+    return null;
+  }
+
+  const xPercent = pointCount <= 1 ? 50 : ((activeIndex + 0.5) / pointCount) * 100;
+  const edgeAlign =
+    xPercent < 20 ? "left-1" : xPercent > 80 ? "right-1" : "left-1/2 -translate-x-1/2";
+
+  return (
+    <div
+      className="pointer-events-none absolute inset-y-0 z-10"
+      style={{ left: `${xPercent}%`, width: 0 }}
+      aria-hidden="true"
+    >
+      <div className="absolute inset-y-0 left-0 w-px -translate-x-1/2 bg-white/20" />
+      <div
+        className={`absolute left-0 top-0 h-2.5 w-2.5 -translate-x-1/2 rounded-full border border-white/60 shadow-[0_0_12px_rgba(255,255,255,0.18)] ${accentClassName}`}
+      />
+      <div
+        className={`absolute top-1 ${edgeAlign} min-w-[132px] max-w-[calc(100vw-64px)] rounded-lg border border-white/12 bg-slate-950/88 px-2 py-1 shadow-[0_12px_32px_rgba(0,0,0,0.35)] backdrop-blur`}
+      >
+        {headline ? <p className="text-[10px] font-semibold leading-tight text-foreground">{headline}</p> : null}
+        {detail ? <p className="mt-0.5 text-[10px] leading-tight text-muted-foreground">{detail}</p> : null}
+      </div>
+    </div>
+  );
+}
+
 function SignalActivityChart({ data }: { data: number[] }) {
   const width = 320;
   const height = 150;
@@ -570,6 +843,7 @@ function StatusServiceHealth24hChart({
     points.reduce((max, point) => Math.max(max, point.value), 0)
   );
   const yTicks = [0, 0.25, 0.5, 0.75, 1];
+  const inspector = useBarChartInspector(points.length);
   const lastPoint = points[points.length - 1];
   const lastPointTime = lastPoint?.timestamp
     ? new Date(lastPoint.timestamp).toLocaleString(undefined, {
@@ -579,6 +853,27 @@ function StatusServiceHealth24hChart({
         minute: "2-digit",
       })
     : null;
+  const defaultXTicks = build24hTickLabels();
+  const xTickLabels = useMemo(() => {
+    if (!points.length) {
+      return defaultXTicks;
+    }
+    return buildTimeAxisTickIndexes(points.length).map(
+      (index, tickIndex) => formatChartTimeTickLabel(points[index]?.timestamp) || defaultXTicks[tickIndex] || "--"
+    );
+  }, [defaultXTicks, points]);
+  const activePoint = inspector.activeIndex !== null ? points[inspector.activeIndex] ?? null : null;
+  const activeOverlayHeadline = activePoint ? formatChartTooltipDateTime(activePoint.timestamp) : null;
+  const activeOverlayDetail = activePoint
+    ? `${Math.round(activePoint.value).toLocaleString()} • ${serviceHealthStatusLabel(language, activePoint.statusCode)}`
+    : null;
+  const activeOverlayAccent = activePoint
+    ? activePoint.statusCode >= 2
+      ? "bg-status-offline"
+      : activePoint.statusCode === 1
+        ? "bg-status-degraded"
+        : "bg-status-online"
+    : "bg-sky-300/90";
 
   return (
     <div>
@@ -619,7 +914,12 @@ function StatusServiceHealth24hChart({
               />
             ))}
           </div>
-          <div className="relative flex h-[150px] items-end gap-px pt-1">
+          <div
+            ref={inspector.containerRef}
+            className="relative flex h-[150px] select-none items-end gap-px pt-1"
+            style={{ touchAction: "pan-y" }}
+            {...inspector.interactionProps}
+          >
             {points.map((point, index) => {
               const height = Math.max(2, Math.min(100, (point.value / Math.max(maxValue, 1)) * 100));
               const toneClass =
@@ -628,26 +928,30 @@ function StatusServiceHealth24hChart({
                   : point.statusCode === 1
                     ? "bg-status-degraded/90"
                     : "bg-status-online/85";
-              const ts = new Date(point.timestamp);
-              const label = Number.isFinite(ts.getTime())
-                ? ts.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-                : point.timestamp;
+              const isActive = inspector.activeIndex === index;
+              const isInspecting = inspector.activeIndex !== null;
               return (
                 <div
                   key={`${point.timestamp}-${index}`}
-                  className={`flex-1 rounded-[2px] ${toneClass}`}
+                  className={`flex-1 rounded-[2px] transition-opacity duration-150 ${toneClass} ${
+                    isActive ? "brightness-125 opacity-100" : isInspecting ? "opacity-45" : ""
+                  }`}
                   style={{ height: `${height}%` }}
-                  title={`${label}: ${Math.round(point.value)} (${point.statusCode})`}
                 />
               );
             })}
+            <BarChartInspectorOverlay
+              activeIndex={inspector.activeIndex}
+              pointCount={points.length}
+              headline={activeOverlayHeadline}
+              detail={activeOverlayDetail}
+              accentClassName={activeOverlayAccent}
+            />
           </div>
           <div className="mt-2 flex justify-between px-[2px] text-[11px] text-muted-foreground">
-            <span>0h</span>
-            <span>6h</span>
-            <span>12h</span>
-            <span>18h</span>
-            <span>24h</span>
+            {xTickLabels.map((label, index) => (
+              <span key={`status-x-${label}-${index}`}>{label}</span>
+            ))}
           </div>
         </div>
       </div>
@@ -664,6 +968,25 @@ function UserReports24hChart({
 }) {
   const maxValue = pickNiceMax(points.reduce((max, point) => Math.max(max, point.count), 0));
   const yTicks = [0, 0.25, 0.5, 0.75, 1];
+  const inspector = useBarChartInspector(points.length);
+  const defaultXTicks = build24hTickLabels();
+  const xTickLabels = useMemo(() => {
+    if (!points.length) {
+      return defaultXTicks;
+    }
+    return buildTimeAxisTickIndexes(points.length).map(
+      (index, tickIndex) => formatChartTimeTickLabel(points[index]?.label) || defaultXTicks[tickIndex] || "--"
+    );
+  }, [defaultXTicks, points]);
+  const activePoint = inspector.activeIndex !== null ? points[inspector.activeIndex] ?? null : null;
+  const activeOverlayHeadline = activePoint ? formatChartTooltipDateTime(activePoint.label) : null;
+  const activeOverlayDetail = activePoint
+    ? pickLang(
+        language,
+        `${activePoint.count.toLocaleString()} user reports`,
+        `${activePoint.count.toLocaleString()} Nutzerberichte`
+      )
+    : null;
 
   return (
     <div>
@@ -692,25 +1015,38 @@ function UserReports24hChart({
               />
             ))}
           </div>
-          <div className="relative flex h-[150px] items-end gap-px pt-1">
+          <div
+            ref={inspector.containerRef}
+            className="relative flex h-[150px] select-none items-end gap-px pt-1"
+            style={{ touchAction: "pan-y" }}
+            {...inspector.interactionProps}
+          >
             {points.map((point, index) => {
               const height = Math.max(2, Math.min(100, (point.count / Math.max(maxValue, 1)) * 100));
+              const isActive = inspector.activeIndex === index;
+              const isInspecting = inspector.activeIndex !== null;
               return (
                 <div
                   key={`${point.label}-${index}`}
-                  className="flex-1 rounded-[2px] bg-sky-400/85"
+                  className={`flex-1 rounded-[2px] bg-sky-400/85 transition-opacity duration-150 ${
+                    isActive ? "brightness-110 opacity-100" : isInspecting ? "opacity-45" : ""
+                  }`}
                   style={{ height: `${height}%` }}
-                  title={`${point.label}: ${point.count}`}
                 />
               );
             })}
+            <BarChartInspectorOverlay
+              activeIndex={inspector.activeIndex}
+              pointCount={points.length}
+              headline={activeOverlayHeadline}
+              detail={activeOverlayDetail}
+              accentClassName="bg-sky-400"
+            />
           </div>
           <div className="mt-2 flex justify-between px-[2px] text-[11px] text-muted-foreground">
-            <span>0h</span>
-            <span>6h</span>
-            <span>12h</span>
-            <span>18h</span>
-            <span>24h</span>
+            {xTickLabels.map((label, index) => (
+              <span key={`reports-x-${label}-${index}`}>{label}</span>
+            ))}
           </div>
         </div>
       </div>
