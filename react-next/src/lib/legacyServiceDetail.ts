@@ -8,7 +8,7 @@ import {
   type LegacyTone,
 } from "@/lib/legacyStatus";
 
-export type LegacyDetailServiceId = "overwatch" | "sony" | "m365";
+export type LegacyDetailServiceId = "overwatch" | "sony" | "m365" | "openai";
 
 export interface LegacyLinkItem {
   title?: string;

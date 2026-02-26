@@ -4,7 +4,7 @@ export type LegacySeverity = "stable" | "minor" | "degraded" | "major" | "unknow
 export type LegacyTone = "good" | "warn" | "bad" | "unknown";
 
 export interface LegacyHomeServiceConfig {
-  id: "overwatch" | "sony" | "m365" | "email";
+  id: "overwatch" | "sony" | "m365" | "openai" | "email";
   name: string;
   href: string;
   legacyHref?: string;
@@ -56,6 +56,14 @@ export const HOME_SERVICES: LegacyHomeServiceConfig[] = [
     legacyHref: "/m365/",
     note: "Microsoft 365 live service health signals with official and provider sources.",
     statusPath: "/m365/data/status.json",
+  },
+  {
+    id: "openai",
+    name: "OpenAI / ChatGPT",
+    href: "/status/openai",
+    legacyHref: "/openai/",
+    note: "OpenAI and ChatGPT live status signals with official Statuspage API and provider corroboration.",
+    statusPath: "/openai/data/status.json",
   },
   {
     id: "email",

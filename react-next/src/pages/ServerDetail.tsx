@@ -324,6 +324,9 @@ function normalizeDetailId(id?: string): LegacyDetailServiceId | null {
   if (key === "m365" || key === "microsoft365" || key === "office365" || key === "microsoft-365") {
     return "m365";
   }
+  if (key === "openai" || key === "chatgpt" || key === "open-ai") {
+    return "openai";
+  }
   return null;
 }
 
@@ -1388,7 +1391,8 @@ const ServerDetail = () => {
             <p className="mt-1 text-sm text-muted-foreground">
               {pickLang(language, "Supported routes:", "Unterstützte Routen:")}{" "}
               <code>/status/overwatch</code> {pickLang(language, "and", "und")}{" "}
-              <code>/status/sony</code>
+              <code>/status/sony</code>, <code>/status/m365</code> {pickLang(language, "and", "und")}{" "}
+              <code>/status/openai</code>
             </p>
           </div>
         </main>
@@ -1418,7 +1422,8 @@ const ServerDetail = () => {
   const sourceTotalCount = detail?.payload.analytics?.source_total_count ?? "--";
   const changeSummary = detail?.payload.changes?.summary;
   const serviceStatus = detail ? toneToStatus(detail.tone) : "degraded";
-  const serviceIconName = serviceId === "sony" ? "Tv" : serviceId === "m365" ? "Globe" : "Gamepad2";
+  const serviceIconName =
+    serviceId === "sony" ? "Tv" : serviceId === "m365" ? "Globe" : serviceId === "openai" ? "Cpu" : "Gamepad2";
   const ServiceIcon = getIconComponent(serviceIconName);
   const trendHistory = detail ? buildSignalTrend(detail) : Array.from({ length: 30 }, () => 0.5);
   const sparklineData = detail
@@ -1537,6 +1542,7 @@ const ServerDetail = () => {
   const isOverwatchDetail = detail?.service.id === "overwatch";
   const isSonyDetail = detail?.service.id === "sony";
   const isM365Detail = detail?.service.id === "m365";
+  const isOpenAIDetail = detail?.service.id === "openai";
   const sonyTopIssueMode = String(topReportedIssuesMeta?.mode || "").toLowerCase();
   const sonyTopIssueWindowHours =
     typeof topReportedIssuesMeta?.window_hours === "number" ? topReportedIssuesMeta.window_hours : null;
@@ -1544,11 +1550,15 @@ const ServerDetail = () => {
     typeof sonyTopIssueWindowHours === "number" && sonyTopIssueWindowHours > 0
       ? Math.round(sonyTopIssueWindowHours / 24)
       : null;
-  const showTopIssueCard = Boolean(detail && (isOverwatchDetail || isSonyDetail || isM365Detail || topReportedIssues.length > 0));
+  const showTopIssueCard = Boolean(
+    detail && (isOverwatchDetail || isSonyDetail || isM365Detail || isOpenAIDetail || topReportedIssues.length > 0)
+  );
   const showStatusgatorServiceHealthChart =
-    (isOverwatchDetail || isM365Detail) && statusgator24hSeries.length >= 8;
+    (isOverwatchDetail || isM365Detail || isOpenAIDetail) && statusgator24hSeries.length >= 8;
   const showIsDownUserReportsChartFallback =
-    (isOverwatchDetail || isM365Detail) && !showStatusgatorServiceHealthChart && isDown24hSeries.length >= 8;
+    (isOverwatchDetail || isM365Detail || isOpenAIDetail) &&
+    !showStatusgatorServiceHealthChart &&
+    isDown24hSeries.length >= 8;
   const topIssueCardTitle = isSonyDetail
     ? t("Top Status Feed Labels", "Top Status-Feed-Labels")
     : t("Top Reported Issues", "Top gemeldete Probleme");
@@ -1672,7 +1682,14 @@ const ServerDetail = () => {
                 {pickLang(language, "Live Service Detail", "Live-Service-Detail")}
               </p>
               <p className="text-sm font-medium text-foreground">
-                {detail?.service.name || (serviceId === "overwatch" ? "Overwatch" : serviceId === "m365" ? "Microsoft 365" : "Sony PSN")}
+                {detail?.service.name ||
+                  (serviceId === "overwatch"
+                    ? "Overwatch"
+                    : serviceId === "m365"
+                      ? "Microsoft 365"
+                      : serviceId === "openai"
+                        ? "OpenAI / ChatGPT"
+                        : "Sony PSN")}
               </p>
             </div>
           </div>

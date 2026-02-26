@@ -39,6 +39,7 @@ jobs:
           python scripts/build_site_data.py --service overwatch
           python scripts/build_site_data.py --service sony
           python scripts/build_site_data.py --service m365
+          python scripts/build_site_data.py --service openai
 
       - name: Send forced test email via Brevo
         env:
@@ -57,11 +58,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json site/m365/data/status.json site/m365/data/history.json site/m365/data/summary.json site/m365/data/rss.xml site/m365/data/alerts.json; then
+          if git diff --quiet -- site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json site/m365/data/status.json site/m365/data/history.json site/m365/data/summary.json site/m365/data/rss.xml site/m365/data/alerts.json site/openai/data/status.json site/openai/data/history.json site/openai/data/summary.json site/openai/data/rss.xml site/openai/data/alerts.json; then
             echo "No data changes."
             exit 0
           fi
-          git add -f site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json site/m365/data/status.json site/m365/data/history.json site/m365/data/summary.json site/m365/data/rss.xml site/m365/data/alerts.json
+          git add -f site/data/status.json site/data/history.json site/data/summary.json site/data/rss.xml site/data/alerts.json site/sony/data/status.json site/sony/data/history.json site/sony/data/summary.json site/sony/data/rss.xml site/sony/data/alerts.json site/m365/data/status.json site/m365/data/history.json site/m365/data/summary.json site/m365/data/rss.xml site/m365/data/alerts.json site/openai/data/status.json site/openai/data/history.json site/openai/data/summary.json site/openai/data/rss.xml site/openai/data/alerts.json
           git commit -m "chore: refresh status data and test email state"
           max_attempts=3
           attempt=1

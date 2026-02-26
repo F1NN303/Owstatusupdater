@@ -22,7 +22,7 @@ interface HomeServiceCard {
   error?: string;
 }
 
-const LIVE_SERVICE_IDS: LegacyDetailServiceId[] = ["overwatch", "sony", "m365"];
+const LIVE_SERVICE_IDS: LegacyDetailServiceId[] = ["overwatch", "sony", "m365", "openai"];
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
@@ -210,8 +210,17 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
       ? "PlayStation Network"
       : detail.service.id === "m365"
         ? "Microsoft 365"
-        : "Overwatch";
-  const icon = detail.service.id === "sony" ? "Tv" : detail.service.id === "m365" ? "Globe" : "Gamepad2";
+        : detail.service.id === "openai"
+          ? "OpenAI / ChatGPT"
+          : "Overwatch";
+  const icon =
+    detail.service.id === "sony"
+      ? "Tv"
+      : detail.service.id === "m365"
+        ? "Globe"
+        : detail.service.id === "openai"
+          ? "Cpu"
+          : "Gamepad2";
   const sourceOk = detail.payload.analytics?.source_ok_count;
   const sourceTotal = detail.payload.analytics?.source_total_count;
   const sourceUnavailableCount =

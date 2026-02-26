@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
 from services.ow_aggregator import build_dashboard_payload as build_overwatch_dashboard_payload
 from services.sony_aggregator import build_dashboard_payload as build_sony_dashboard_payload
 from services.m365_aggregator import build_dashboard_payload as build_m365_dashboard_payload
+from services.openai_aggregator import build_dashboard_payload as build_openai_dashboard_payload
 
 CADENCE_MINUTES = 30
 RETENTION_DAYS = 30
@@ -42,6 +43,13 @@ SERVICE_CONFIGS = {
         "site_url": "https://f1nn303.github.io/Owstatusupdater/m365/",
         "data_dir": Path("site/m365/data"),
         "state_path": Path(".bot_state/m365_state.json"),
+    },
+    "openai": {
+        "label": "OpenAI (ChatGPT)",
+        "builder": build_openai_dashboard_payload,
+        "site_url": "https://f1nn303.github.io/Owstatusupdater/openai/",
+        "data_dir": Path("site/openai/data"),
+        "state_path": Path(".bot_state/openai_state.json"),
     },
 }
 
