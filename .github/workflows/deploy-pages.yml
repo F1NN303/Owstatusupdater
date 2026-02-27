@@ -44,6 +44,9 @@ jobs:
         run: npm ci --no-audit --no-fund
         working-directory: react-next
 
+      - name: Validate service configs
+        run: python3 scripts/validate_services.py
+
       - name: Build React root + preview artifacts
         env:
           VITE_GIT_SHA: ${{ github.sha }}

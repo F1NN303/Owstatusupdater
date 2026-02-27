@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.site.txt
 
+      - name: Validate service configs
+        run: python scripts/validate_services.py
+
       - name: Build status JSON
         env:
           M365_GRAPH_TENANT_ID: ${{ secrets.M365_GRAPH_TENANT_ID }}
