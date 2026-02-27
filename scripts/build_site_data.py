@@ -12,10 +12,6 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from services.ow_aggregator import build_dashboard_payload as build_overwatch_dashboard_payload
-from services.sony_aggregator import build_dashboard_payload as build_sony_dashboard_payload
-from services.m365_aggregator import build_dashboard_payload as build_m365_dashboard_payload
-
 CADENCE_MINUTES = 30
 RETENTION_DAYS = 30
 RSS_ITEM_LIMIT = 20
@@ -30,6 +26,7 @@ BUILDER_IMPORT_TARGETS = {
     "m365": "services.m365_aggregator:build_dashboard_payload",
     "openai": "services.openai_aggregator:build_dashboard_payload",
 }
+DEFAULT_SERVICE_PREFERRED = "overwatch"
 
 
 def _resolve_builder(builder_key: str):
@@ -69,7 +66,7 @@ def _parse_flat_yaml(path: Path) -> dict[str, object]:
     return parsed
 
 
-def _load_external_service_configs() -> dict[str, dict[str, object]]:
+def _load_service_configs() -> dict[str, dict[str, object]]:
     loaded: dict[str, dict[str, object]] = {}
     if not SERVICE_CONFIG_DIR.exists():
         return loaded
@@ -103,32 +100,18 @@ def _load_external_service_configs() -> dict[str, dict[str, object]]:
         }
     return loaded
 
-SERVICE_CONFIGS = {
-    "overwatch": {
-        "label": "Overwatch",
-        "builder": build_overwatch_dashboard_payload,
-        "site_url": "https://f1nn303.github.io/Owstatusupdater/",
-        "data_dir": Path("site/data"),
-        "state_path": Path(".bot_state/overwatch_state.json"),
-    },
-    "sony": {
-        "label": "Sony",
-        "builder": build_sony_dashboard_payload,
-        "site_url": "https://f1nn303.github.io/Owstatusupdater/sony/",
-        "data_dir": Path("site/sony/data"),
-        "state_path": Path(".bot_state/sony_state.json"),
-    },
-    "m365": {
-        "label": "Microsoft 365",
-        "builder": build_m365_dashboard_payload,
-        "site_url": "https://f1nn303.github.io/Owstatusupdater/m365/",
-        "data_dir": Path("site/m365/data"),
-        "state_path": Path(".bot_state/m365_state.json"),
-    },
-}
-SERVICE_CONFIGS.update(_load_external_service_configs())
+SERVICE_CONFIGS = _load_service_configs()
+if not SERVICE_CONFIGS:
+    raise RuntimeError(
+        f"No enabled service configs found under {SERVICE_CONFIG_DIR}. "
+        "Add config/services/*.yaml entries."
+    )
 
-ACTIVE_SERVICE_KEY = "overwatch"
+ACTIVE_SERVICE_KEY = (
+    DEFAULT_SERVICE_PREFERRED
+    if DEFAULT_SERVICE_PREFERRED in SERVICE_CONFIGS
+    else sorted(SERVICE_CONFIGS.keys())[0]
+)
 SERVICE_LABEL = SERVICE_CONFIGS[ACTIVE_SERVICE_KEY]["label"]
 SERVICE_SITE_URL = SERVICE_CONFIGS[ACTIVE_SERVICE_KEY]["site_url"]
 
@@ -138,8 +121,8 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--service",
         choices=sorted(SERVICE_CONFIGS.keys()),
-        default="overwatch",
-        help="Service dataset to build (default: overwatch).",
+        default=ACTIVE_SERVICE_KEY,
+        help=f"Service dataset to build (default: {ACTIVE_SERVICE_KEY}).",
     )
     return parser.parse_args()
 
