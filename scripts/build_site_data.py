@@ -133,6 +133,21 @@ def _build_services_manifest_payload() -> dict:
             seen_aliases.add(lowered)
             aliases_lower.append(lowered)
 
+        tags = _parse_csv_list(config.get("tags"))
+        tags_lower: list[str] = []
+        seen_tags: set[str] = set()
+        for tag in tags:
+            lowered = str(tag).strip().lower()
+            if not lowered or lowered in seen_tags:
+                continue
+            seen_tags.add(lowered)
+            tags_lower.append(lowered)
+
+        priority = _parse_int(config.get("priority"), default=None)
+        if priority is None:
+            priority = _parse_int(config.get("home_order"), default=1000)
+        category = str(config.get("category") or "general").strip().lower() or "general"
+
         services.append(
             {
                 "id": service_id,
@@ -144,6 +159,9 @@ def _build_services_manifest_payload() -> dict:
                 "note": str(config.get("note") or "").strip() or None,
                 "icon": str(config.get("icon") or "").strip() or None,
                 "aliases": aliases_lower,
+                "category": category,
+                "priority": priority,
+                "tags": tags_lower,
             }
         )
 
@@ -202,6 +220,9 @@ def _load_service_configs() -> dict[str, dict[str, object]]:
             "icon": str(raw.get("icon") or "").strip() or None,
             "aliases": _parse_csv_list(raw.get("aliases")),
             "note": str(raw.get("note") or "").strip() or None,
+            "category": str(raw.get("category") or "").strip().lower() or None,
+            "priority": _parse_int(raw.get("priority"), default=None),
+            "tags": _parse_csv_list(raw.get("tags")),
             "home_enabled": _parse_bool(raw.get("home_enabled"), default=True),
             "home_order": _parse_int(raw.get("home_order"), default=None),
             "source": str(config_path.relative_to(ROOT)).replace("\\", "/"),

@@ -151,6 +151,9 @@ export interface LegacyServiceDetailResult {
     note: string;
     statusPath: string;
     iconName?: string;
+    category?: string;
+    priority?: number;
+    tags?: string[];
     aliases?: string[];
   };
   payload: LegacyStatusDetailPayload;

@@ -17,7 +17,10 @@ def _service_yaml(
     state_path: str,
     scoring_profile: str,
     home_order: str,
+    priority: str,
+    category: str,
     aliases: str,
+    tags: str,
     icon: str = "Globe",
 ) -> str:
     return "\n".join(
@@ -31,9 +34,12 @@ def _service_yaml(
             f"state_path: {state_path}",
             f"scoring_profile: {scoring_profile}",
             f"home_order: {home_order}",
+            f"priority: {priority}",
+            f"category: {category}",
             "legacy_href: /service/",
             f"icon: {icon}",
             f"aliases: {aliases}",
+            f"tags: {tags}",
             "note: test",
             "enabled: true",
             "home_enabled: true",
@@ -60,7 +66,10 @@ class ValidateServicesTests(unittest.TestCase):
                     state_path=".bot_state/alpha_state.json",
                     scoring_profile="baseline_v1",
                     home_order="10",
+                    priority="100",
+                    category="gaming",
                     aliases="alpha,a",
+                    tags="alpha,core",
                 ),
             )
             self._write(
@@ -75,7 +84,10 @@ class ValidateServicesTests(unittest.TestCase):
                     state_path=".bot_state/beta_state.json",
                     scoring_profile="official_first_v1",
                     home_order="20",
+                    priority="200",
+                    category="productivity",
                     aliases="beta,b",
+                    tags="beta,collab",
                     icon="Cpu",
                 ),
             )
@@ -98,7 +110,10 @@ class ValidateServicesTests(unittest.TestCase):
                     state_path=".bot_state/first_state.json",
                     scoring_profile="baseline_v1",
                     home_order="10",
+                    priority="100",
+                    category="gaming",
                     aliases="first,shared",
+                    tags="first,live",
                 ),
             )
             self._write(
@@ -113,7 +128,10 @@ class ValidateServicesTests(unittest.TestCase):
                     state_path=".bot_state/second_state.json",
                     scoring_profile="baseline_v1",
                     home_order="20",
+                    priority="120",
+                    category="gaming",
                     aliases="second,shared",
+                    tags="second,live",
                 ),
             )
 
@@ -135,7 +153,10 @@ class ValidateServicesTests(unittest.TestCase):
                     state_path="state.json",
                     scoring_profile="INVALID",
                     home_order="-1",
+                    priority="-5",
+                    category="BAD CATEGORY",
                     aliases="broken,bad alias",
+                    tags="ok,bad tag,bad tag",
                     icon="Rocket",
                 ),
             )
@@ -146,7 +167,10 @@ class ValidateServicesTests(unittest.TestCase):
             self.assertTrue(any("state_path must be under .bot_state/" in error for error in errors))
             self.assertTrue(any("unsupported icon 'Rocket'" in error for error in errors))
             self.assertTrue(any("home_order must be a non-negative integer" in error for error in errors))
+            self.assertTrue(any("priority must be a non-negative integer" in error for error in errors))
+            self.assertTrue(any("invalid category" in error for error in errors))
             self.assertTrue(any("invalid alias 'bad alias'" in error for error in errors))
+            self.assertTrue(any("invalid tag 'bad tag'" in error for error in errors))
             self.assertTrue(any("invalid scoring_profile" in error for error in errors))
 
 

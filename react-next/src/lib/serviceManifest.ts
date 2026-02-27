@@ -9,6 +9,9 @@ export interface ServiceManifestEntry {
   legacyHref?: string;
   note?: string;
   iconName?: string;
+  category: string;
+  priority: number;
+  tags: string[];
   aliases: string[];
 }
 
@@ -25,6 +28,9 @@ interface RawServiceManifestEntry {
   note?: unknown;
   icon?: unknown;
   iconName?: unknown;
+  category?: unknown;
+  priority?: unknown;
+  tags?: unknown;
   aliases?: unknown;
 }
 
@@ -42,6 +48,9 @@ const FALLBACK_SERVICE_MANIFEST: ServiceManifestEntry[] = [
     legacyHref: "/legacy-overwatch.html",
     note: "Full live dashboard with incidents, analytics, and status summary.",
     iconName: "Gamepad2",
+    category: "gaming",
+    priority: 100,
+    tags: ["overwatch", "blizzard", "battle-net", "fps"],
     aliases: ["overwatch", "ow"],
   },
   {
@@ -53,6 +62,9 @@ const FALLBACK_SERVICE_MANIFEST: ServiceManifestEntry[] = [
     legacyHref: "/sony/legacy-index.html",
     note: "PlayStation Network live signals, service trend, and incident data.",
     iconName: "Tv",
+    category: "gaming",
+    priority: 110,
+    tags: ["sony", "psn", "playstation", "console"],
     aliases: ["sony", "psn", "playstation", "playstation-network"],
   },
   {
@@ -64,6 +76,9 @@ const FALLBACK_SERVICE_MANIFEST: ServiceManifestEntry[] = [
     legacyHref: "/m365/",
     note: "Microsoft 365 live service health signals with official and provider sources.",
     iconName: "Globe",
+    category: "productivity",
+    priority: 200,
+    tags: ["microsoft", "office", "collaboration", "enterprise"],
     aliases: ["m365", "microsoft365", "office365", "microsoft-365"],
   },
   {
@@ -75,6 +90,9 @@ const FALLBACK_SERVICE_MANIFEST: ServiceManifestEntry[] = [
     legacyHref: "/openai/",
     note: "OpenAI and ChatGPT live status signals with official Statuspage API and provider corroboration.",
     iconName: "Cpu",
+    category: "ai",
+    priority: 210,
+    tags: ["openai", "chatgpt", "api", "ai"],
     aliases: ["openai", "chatgpt", "open-ai"],
   },
 ];
@@ -113,6 +131,34 @@ function normalizeAliases(rawAliases: unknown, serviceId: string) {
   return Array.from(new Set(candidates));
 }
 
+function normalizeTags(rawTags: unknown) {
+  const candidates: string[] = [];
+  if (Array.isArray(rawTags)) {
+    for (const item of rawTags) {
+      const tag = String(item ?? "").trim().toLowerCase();
+      if (tag) {
+        candidates.push(tag);
+      }
+    }
+  } else if (typeof rawTags === "string") {
+    for (const item of rawTags.split(",")) {
+      const tag = item.trim().toLowerCase();
+      if (tag) {
+        candidates.push(tag);
+      }
+    }
+  }
+  return Array.from(new Set(candidates));
+}
+
+function normalizePriority(rawPriority: unknown, fallback: number) {
+  const parsed = Number.parseInt(String(rawPriority ?? "").trim(), 10);
+  if (Number.isFinite(parsed) && parsed >= 0) {
+    return parsed;
+  }
+  return fallback;
+}
+
 function normalizeManifestEntry(entry: RawServiceManifestEntry): ServiceManifestEntry | null {
   const id = String(entry.id ?? "").trim().toLowerCase();
   if (!id) {
@@ -125,6 +171,9 @@ function normalizeManifestEntry(entry: RawServiceManifestEntry): ServiceManifest
   const legacyHrefRaw = String(entry.legacy_href ?? entry.legacyHref ?? "").trim();
   const noteRaw = String(entry.note ?? "").trim();
   const iconRaw = String(entry.icon ?? entry.iconName ?? "").trim();
+  const categoryRaw = String(entry.category ?? "").trim().toLowerCase();
+  const category = categoryRaw || "general";
+  const priority = normalizePriority(entry.priority, 1000);
 
   return {
     id,
@@ -135,6 +184,9 @@ function normalizeManifestEntry(entry: RawServiceManifestEntry): ServiceManifest
     legacyHref: legacyHrefRaw || undefined,
     note: noteRaw || undefined,
     iconName: iconRaw || undefined,
+    category,
+    priority,
+    tags: normalizeTags(entry.tags),
     aliases: normalizeAliases(entry.aliases, id),
   };
 }
@@ -165,7 +217,11 @@ function parseManifestPayload(payload: unknown): ServiceManifestEntry[] {
 }
 
 export function getFallbackServiceManifestEntries(): ServiceManifestEntry[] {
-  return FALLBACK_SERVICE_MANIFEST.map((entry) => ({ ...entry, aliases: [...entry.aliases] }));
+  return FALLBACK_SERVICE_MANIFEST.map((entry) => ({
+    ...entry,
+    tags: [...entry.tags],
+    aliases: [...entry.aliases],
+  }));
 }
 
 export async function fetchServiceManifestEntries(forceRefresh = false): Promise<ServiceManifestEntry[]> {

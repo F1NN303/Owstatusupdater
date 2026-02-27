@@ -16,6 +16,9 @@ export interface LegacyHomeServiceConfig {
   note: string;
   statusPath?: string;
   iconName?: string;
+  category?: string;
+  priority?: number;
+  tags?: string[];
   aliases?: string[];
 }
 
@@ -45,6 +48,9 @@ const EMAIL_SERVICE: LegacyHomeServiceConfig = {
   href: "/email-alerts.html",
   legacyHref: "/email-alerts.html",
   note: "Brevo signup page for outage notifications with captcha and double opt-in.",
+  category: "notifications",
+  priority: 9000,
+  tags: ["email", "alerts"],
 };
 
 function mapManifestToLegacyHomeService(entry: ServiceManifestEntry): LegacyHomeServiceConfig {
@@ -56,6 +62,9 @@ function mapManifestToLegacyHomeService(entry: ServiceManifestEntry): LegacyHome
     note: entry.note || "Live service status and incident summary.",
     statusPath: entry.statusPath,
     iconName: entry.iconName,
+    category: entry.category,
+    priority: entry.priority,
+    tags: entry.tags,
     aliases: entry.aliases,
   };
 }

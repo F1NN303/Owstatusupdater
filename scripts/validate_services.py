@@ -20,11 +20,14 @@ ALLOWED_KEYS = {
     "state_path",
     "scoring_profile",
     "home_order",
+    "priority",
+    "category",
     "legacy_href",
     "detail_path",
     "status_path",
     "icon",
     "aliases",
+    "tags",
     "note",
     "enabled",
     "home_enabled",
@@ -33,6 +36,8 @@ REQUIRED_KEYS = {"id", "label", "builder", "site_url", "data_dir", "state_path",
 ALLOWED_ICON_NAMES = {"Gamepad2", "Tv", "Flame", "Cpu", "Joystick", "Globe"}
 ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
 ALIAS_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
+CATEGORY_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{0,31}$")
+TAG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{0,31}$")
 
 
 def _parse_args() -> argparse.Namespace:
@@ -215,6 +220,24 @@ def validate_service_configs(config_dir: Path) -> list[str]:
                 "(use lowercase slug like baseline_v1)"
             )
 
+        category = str(raw.get("category") or "").strip().lower()
+        if category and not CATEGORY_PATTERN.match(category):
+            errors.append(
+                f"{rel}: invalid category '{category}' "
+                "(expected lowercase slug 1-32 chars: a-z, 0-9, -, _)"
+            )
+
+        priority_raw = raw.get("priority")
+        if priority_raw is None or str(priority_raw).strip() == "":
+            errors.append(f"{rel}: priority is required for enabled services")
+        else:
+            try:
+                priority_value = _parse_int(priority_raw)
+                if priority_value < 0:
+                    raise ValueError("must be >= 0")
+            except Exception:
+                errors.append(f"{rel}: priority must be a non-negative integer")
+
         for key in ("legacy_href", "detail_path", "status_path"):
             value = str(raw.get(key) or "").strip()
             if value and not _validate_public_path(value):
@@ -246,6 +269,23 @@ def validate_service_configs(config_dir: Path) -> list[str]:
                 errors.append(f"{rel}: alias '{lowered}' already used by service '{owner}'")
             else:
                 alias_to_owner[lowered] = service_id
+
+        tags = _parse_csv(raw.get("tags"))
+        seen_tags_local: set[str] = set()
+        for tag in tags:
+            lowered = str(tag).strip().lower()
+            if not lowered:
+                continue
+            if not TAG_PATTERN.match(lowered):
+                errors.append(
+                    f"{rel}: invalid tag '{tag}' "
+                    "(expected lowercase slug 1-32 chars: a-z, 0-9, -, _)"
+                )
+                continue
+            if lowered in seen_tags_local:
+                errors.append(f"{rel}: duplicate tag '{lowered}'")
+                continue
+            seen_tags_local.add(lowered)
 
         if home_enabled:
             home_order_raw = raw.get("home_order")

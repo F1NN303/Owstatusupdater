@@ -33,6 +33,15 @@ class ServicesManifestContractTests(unittest.TestCase):
             self.assertIsInstance(entry.get("status_path"), str)
             self.assertTrue(str(entry.get("detail_path")).startswith("/"))
             self.assertTrue(str(entry.get("status_path")).startswith("/"))
+            self.assertIsInstance(entry.get("category"), str)
+            self.assertTrue(str(entry.get("category")).strip())
+            self.assertIsInstance(entry.get("priority"), int)
+            self.assertGreaterEqual(int(entry.get("priority")), 0)
+
+            tags = entry.get("tags")
+            self.assertIsInstance(tags, list)
+            tag_values = [str(tag).strip().lower() for tag in tags]
+            self.assertEqual(len(tag_values), len(set(tag_values)))
 
             aliases = entry.get("aliases")
             self.assertIsInstance(aliases, list)

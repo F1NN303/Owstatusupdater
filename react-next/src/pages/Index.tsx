@@ -10,15 +10,20 @@ import {
 } from "@/lib/legacyServiceDetail";
 import { getLegacyLiveStatusServices } from "@/lib/legacyStatus";
 import { Bell, ChevronRight, RefreshCw, TriangleAlert } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 type OverallState = "all-good" | "some-issues" | "major-outage";
+type HomeFilterKey = "all" | "issues" | "healthy" | `category:${string}`;
 
 interface HomeServiceCard {
   serviceId: string;
   server: ServerService;
   generatedAt: string | null;
+  serviceNote?: string;
+  serviceCategory: string;
+  servicePriority: number;
+  serviceTags: string[];
   error?: string;
 }
 
@@ -242,6 +247,15 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
     serviceId: detail.service.id,
     server,
     generatedAt: detail.payload.generated_at ?? null,
+    serviceNote: detail.service.note,
+    serviceCategory: String(detail.service.category || "general").toLowerCase(),
+    servicePriority:
+      typeof detail.service.priority === "number" && Number.isFinite(detail.service.priority)
+        ? detail.service.priority
+        : 1000,
+    serviceTags: Array.isArray(detail.service.tags)
+      ? detail.service.tags.map((tag) => String(tag || "").toLowerCase()).filter(Boolean)
+      : [],
   };
 }
 
@@ -302,6 +316,26 @@ function formatAgeMinutes(value?: number | null) {
   return `${days}d ${hours % 24}h`;
 }
 
+function categoryLabel(category: string, language: "en" | "de") {
+  const key = String(category || "").trim().toLowerCase();
+  if (key === "gaming") {
+    return pickLang(language, "Gaming", "Gaming");
+  }
+  if (key === "productivity") {
+    return pickLang(language, "Productivity", "Produktivität");
+  }
+  if (key === "ai") {
+    return pickLang(language, "AI", "KI");
+  }
+  if (key === "notifications") {
+    return pickLang(language, "Notifications", "Benachrichtigungen");
+  }
+  if (!key) {
+    return pickLang(language, "General", "Allgemein");
+  }
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
+
 function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): OverallState {
   if (cards.some((card) => card.server.status === "offline")) {
     return "major-outage";
@@ -318,6 +352,9 @@ const Index = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefreshAt, setLastRefreshAt] = useState<string | null>(null);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+  const [activeFilter, setActiveFilter] = useState<HomeFilterKey>("all");
 
   const loadCards = async () => {
     setIsRefreshing(true);
@@ -386,6 +423,66 @@ const Index = () => {
     typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_WARNING_MINUTES;
   const isDataVeryStale =
     typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_CRITICAL_MINUTES;
+  const categoryFilters = useMemo(() => {
+    const uniqueCategories = Array.from(
+      new Set(cards.map((card) => card.serviceCategory).filter(Boolean))
+    );
+    return uniqueCategories.sort((a, b) =>
+      categoryLabel(a, language).localeCompare(categoryLabel(b, language))
+    );
+  }, [cards, language]);
+  const filteredCards = useMemo(() => {
+    const query = deferredSearchQuery.trim().toLowerCase();
+
+    return cards
+      .filter((card) => {
+        if (activeFilter === "all") {
+          return true;
+        }
+        if (activeFilter === "issues") {
+          return card.server.status !== "online";
+        }
+        if (activeFilter === "healthy") {
+          return card.server.status === "online";
+        }
+        if (activeFilter.startsWith("category:")) {
+          return card.serviceCategory === activeFilter.replace("category:", "");
+        }
+        return true;
+      })
+      .filter((card) => {
+        if (!query) {
+          return true;
+        }
+        const haystack = [
+          card.server.name,
+          card.serviceId,
+          card.serviceCategory,
+          card.serviceNote || "",
+          ...card.serviceTags,
+        ]
+          .join(" ")
+          .toLowerCase();
+        return haystack.includes(query);
+      })
+      .sort((left, right) => {
+        const byPriority = left.servicePriority - right.servicePriority;
+        if (byPriority !== 0) {
+          return byPriority;
+        }
+        return left.server.name.localeCompare(right.server.name);
+      });
+  }, [activeFilter, cards, deferredSearchQuery]);
+
+  useEffect(() => {
+    if (!activeFilter.startsWith("category:")) {
+      return;
+    }
+    const activeCategory = activeFilter.replace("category:", "");
+    if (!categoryFilters.includes(activeCategory)) {
+      setActiveFilter("all");
+    }
+  }, [activeFilter, categoryFilters]);
 
   return (
     <AppLayout>
@@ -437,6 +534,75 @@ const Index = () => {
           </div>
         )}
 
+        {cards.length > 0 ? (
+          <div className="mt-4 animate-fade-in-up">
+            <div className="glass rounded-2xl px-3 py-2.5">
+              <label className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {pickLang(language, "Search services", "Services suchen")}
+              </label>
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder={pickLang(
+                  language,
+                  "Search by name, category, or tags",
+                  "Nach Name, Kategorie oder Tags suchen"
+                )}
+                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary/40"
+                aria-label={pickLang(
+                  language,
+                  "Search service cards",
+                  "Service-Karten durchsuchen"
+                )}
+              />
+            </div>
+            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+              {[
+                {
+                  key: "all" as HomeFilterKey,
+                  label: pickLang(language, "All", "Alle"),
+                },
+                {
+                  key: "issues" as HomeFilterKey,
+                  label: pickLang(language, "Issues", "Probleme"),
+                },
+                {
+                  key: "healthy" as HomeFilterKey,
+                  label: pickLang(language, "Healthy", "Stabil"),
+                },
+                ...categoryFilters.map((category) => ({
+                  key: `category:${category}` as HomeFilterKey,
+                  label: categoryLabel(category, language),
+                })),
+              ].map((filter) => {
+                const isActive = activeFilter === filter.key;
+                return (
+                  <button
+                    key={filter.key}
+                    type="button"
+                    onClick={() => setActiveFilter(filter.key)}
+                    className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+                      isActive
+                        ? "border-primary/40 bg-primary/20 text-primary"
+                        : "border-white/10 bg-white/5 text-muted-foreground"
+                    }`}
+                  >
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-2 text-[11px] text-muted-foreground">
+              {pickLang(
+                language,
+                `Showing ${filteredCards.length}/${cards.length} services`,
+                `${filteredCards.length}/${cards.length} Services angezeigt`
+              )}
+            </p>
+          </div>
+        ) : null}
+
         {cards.length === 0 ? (
           isRefreshing ? (
             <div className="mt-4 space-y-4">
@@ -444,9 +610,24 @@ const Index = () => {
               <div className="glass glass-specular h-40 rounded-2xl" />
             </div>
           ) : null
+        ) : filteredCards.length === 0 ? (
+          <div className="glass glass-specular mt-4 rounded-2xl p-4 animate-fade-in-up">
+            <div className="relative z-10">
+              <p className="text-sm font-semibold text-foreground">
+                {pickLang(language, "No services match the current filters", "Keine Services passen zu den Filtern")}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {pickLang(
+                  language,
+                  "Adjust the search or filter chips to show cards again.",
+                  "Passe Suche oder Filter-Chips an, um Karten wieder anzuzeigen."
+                )}
+              </p>
+            </div>
+          </div>
         ) : (
           <div className="mt-4 space-y-4">
-            {cards.map((card, index) => (
+            {filteredCards.map((card, index) => (
               <div
                 key={card.serviceId}
                 className="animate-fade-in-up"
