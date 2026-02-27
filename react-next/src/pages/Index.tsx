@@ -11,10 +11,11 @@ import {
 import { getLegacyLiveStatusServices } from "@/lib/legacyStatus";
 import { Bell, ChevronRight, RefreshCw, TriangleAlert } from "lucide-react";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 type OverallState = "all-good" | "some-issues" | "major-outage";
 type HomeFilterKey = "all" | "issues" | "healthy" | `category:${string}`;
+type HomeSortKey = "impact" | "name" | "updated";
 
 interface HomeServiceCard {
   serviceId: string;
@@ -336,6 +337,63 @@ function categoryLabel(category: string, language: "en" | "de") {
   return key.charAt(0).toUpperCase() + key.slice(1);
 }
 
+function parseFilterParam(rawValue: string | null): HomeFilterKey {
+  const value = String(rawValue || "").trim().toLowerCase();
+  if (!value || value === "all") {
+    return "all";
+  }
+  if (value === "issues" || value === "healthy") {
+    return value;
+  }
+  if (value.startsWith("category:")) {
+    const category = value.slice("category:".length).trim();
+    if (category) {
+      return `category:${category}`;
+    }
+  }
+  if (value.startsWith("cat:")) {
+    const category = value.slice("cat:".length).trim();
+    if (category) {
+      return `category:${category}`;
+    }
+  }
+  return "all";
+}
+
+function encodeFilterParam(value: HomeFilterKey): string | null {
+  if (value === "all") {
+    return null;
+  }
+  if (value === "issues" || value === "healthy") {
+    return value;
+  }
+  if (value.startsWith("category:")) {
+    const category = value.slice("category:".length).trim();
+    if (category) {
+      return `cat:${category}`;
+    }
+  }
+  return null;
+}
+
+function parseSortParam(rawValue: string | null): HomeSortKey {
+  const value = String(rawValue || "").trim().toLowerCase();
+  if (value === "name" || value === "updated") {
+    return value;
+  }
+  return "impact";
+}
+
+function impactRank(status: Status): number {
+  if (status === "offline") {
+    return 0;
+  }
+  if (status === "degraded") {
+    return 1;
+  }
+  return 2;
+}
+
 function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): OverallState {
   if (cards.some((card) => card.server.status === "offline")) {
     return "major-outage";
@@ -348,13 +406,17 @@ function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): Ov
 
 const Index = () => {
   const { language } = useAppShell();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [cards, setCards] = useState<HomeServiceCard[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefreshAt, setLastRefreshAt] = useState<string | null>(null);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get("q") || "");
   const deferredSearchQuery = useDeferredValue(searchQuery);
-  const [activeFilter, setActiveFilter] = useState<HomeFilterKey>("all");
+  const [activeFilter, setActiveFilter] = useState<HomeFilterKey>(
+    () => parseFilterParam(searchParams.get("filter"))
+  );
+  const [sortBy, setSortBy] = useState<HomeSortKey>(() => parseSortParam(searchParams.get("sort")));
 
   const loadCards = async () => {
     setIsRefreshing(true);
@@ -466,13 +528,29 @@ const Index = () => {
         return haystack.includes(query);
       })
       .sort((left, right) => {
+        if (sortBy === "name") {
+          return left.server.name.localeCompare(right.server.name);
+        }
+        if (sortBy === "updated") {
+          const leftTime = parseDate(left.generatedAt)?.getTime() || 0;
+          const rightTime = parseDate(right.generatedAt)?.getTime() || 0;
+          if (rightTime !== leftTime) {
+            return rightTime - leftTime;
+          }
+          return left.server.name.localeCompare(right.server.name);
+        }
+
+        const byImpact = impactRank(left.server.status) - impactRank(right.server.status);
+        if (byImpact !== 0) {
+          return byImpact;
+        }
         const byPriority = left.servicePriority - right.servicePriority;
         if (byPriority !== 0) {
           return byPriority;
         }
         return left.server.name.localeCompare(right.server.name);
       });
-  }, [activeFilter, cards, deferredSearchQuery]);
+  }, [activeFilter, cards, deferredSearchQuery, sortBy]);
 
   useEffect(() => {
     if (!activeFilter.startsWith("category:")) {
@@ -483,6 +561,42 @@ const Index = () => {
       setActiveFilter("all");
     }
   }, [activeFilter, categoryFilters]);
+
+  useEffect(() => {
+    const queryFromUrl = searchParams.get("q") || "";
+    const filterFromUrl = parseFilterParam(searchParams.get("filter"));
+    const sortFromUrl = parseSortParam(searchParams.get("sort"));
+
+    if (queryFromUrl !== searchQuery) {
+      setSearchQuery(queryFromUrl);
+    }
+    if (filterFromUrl !== activeFilter) {
+      setActiveFilter(filterFromUrl);
+    }
+    if (sortFromUrl !== sortBy) {
+      setSortBy(sortFromUrl);
+    }
+  }, [searchParams, searchQuery, activeFilter, sortBy]);
+
+  useEffect(() => {
+    const nextParams = new URLSearchParams();
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      nextParams.set("q", trimmedQuery);
+    }
+
+    const encodedFilter = encodeFilterParam(activeFilter);
+    if (encodedFilter) {
+      nextParams.set("filter", encodedFilter);
+    }
+    if (sortBy !== "impact") {
+      nextParams.set("sort", sortBy);
+    }
+
+    if (nextParams.toString() !== searchParams.toString()) {
+      setSearchParams(nextParams, { replace: true });
+    }
+  }, [searchQuery, activeFilter, sortBy, searchParams, setSearchParams]);
 
   return (
     <AppLayout>
@@ -592,6 +706,43 @@ const Index = () => {
                   </button>
                 );
               })}
+            </div>
+            <div className="mt-2 flex items-center justify-between gap-2">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {pickLang(language, "Sort", "Sortierung")}
+              </span>
+              <div className="flex gap-2 overflow-x-auto">
+                {[
+                  {
+                    key: "impact" as HomeSortKey,
+                    label: pickLang(language, "Impact", "Impact"),
+                  },
+                  {
+                    key: "name" as HomeSortKey,
+                    label: pickLang(language, "Name", "Name"),
+                  },
+                  {
+                    key: "updated" as HomeSortKey,
+                    label: pickLang(language, "Updated", "Aktualisiert"),
+                  },
+                ].map((sortOption) => {
+                  const isSortActive = sortBy === sortOption.key;
+                  return (
+                    <button
+                      key={sortOption.key}
+                      type="button"
+                      onClick={() => setSortBy(sortOption.key)}
+                      className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+                        isSortActive
+                          ? "border-primary/40 bg-primary/20 text-primary"
+                          : "border-white/10 bg-white/5 text-muted-foreground"
+                      }`}
+                    >
+                      {sortOption.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
             <p className="mt-2 text-[11px] text-muted-foreground">
               {pickLang(
