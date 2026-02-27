@@ -12,6 +12,7 @@ SERVICE_DATA_DIRS = {
     "sony": ROOT / "site" / "sony" / "data",
     "m365": ROOT / "site" / "m365" / "data",
     "openai": ROOT / "site" / "openai" / "data",
+    "steam": ROOT / "site" / "steam" / "data",
 }
 VALID_HEALTH = {"ok", "degraded", "error"}
 VALID_SEVERITY = {"stable", "minor", "degraded", "major", "unknown"}

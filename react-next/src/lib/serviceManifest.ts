@@ -95,6 +95,20 @@ const FALLBACK_SERVICE_MANIFEST: ServiceManifestEntry[] = [
     tags: ["openai", "chatgpt", "api", "ai"],
     aliases: ["openai", "chatgpt", "open-ai"],
   },
+  {
+    id: "steam",
+    label: "Steam",
+    name: "Steam",
+    detailPath: "/status/steam",
+    statusPath: "/steam/data/status.json",
+    legacyHref: "/steam/",
+    note: "Steam live status synthesized from official Valve API probes and provider corroboration.",
+    iconName: "Flame",
+    category: "gaming",
+    priority: 120,
+    tags: ["steam", "valve", "pc", "gaming"],
+    aliases: ["steam", "valve", "steam-platform"],
+  },
 ];
 
 let manifestCache: ServiceManifestEntry[] | null = null;
