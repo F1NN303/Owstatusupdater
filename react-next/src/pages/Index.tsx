@@ -493,6 +493,44 @@ const Index = () => {
       categoryLabel(a, language).localeCompare(categoryLabel(b, language))
     );
   }, [cards, language]);
+  const filterOptions = useMemo(
+    () => [
+      {
+        key: "all" as HomeFilterKey,
+        label: pickLang(language, "All", "Alle"),
+      },
+      {
+        key: "issues" as HomeFilterKey,
+        label: pickLang(language, "Issues", "Probleme"),
+      },
+      {
+        key: "healthy" as HomeFilterKey,
+        label: pickLang(language, "Healthy", "Stabil"),
+      },
+      ...categoryFilters.map((category) => ({
+        key: `category:${category}` as HomeFilterKey,
+        label: categoryLabel(category, language),
+      })),
+    ],
+    [categoryFilters, language]
+  );
+  const sortOptions = useMemo(
+    () => [
+      {
+        key: "impact" as HomeSortKey,
+        label: pickLang(language, "Impact", "Impact"),
+      },
+      {
+        key: "name" as HomeSortKey,
+        label: pickLang(language, "Name", "Name"),
+      },
+      {
+        key: "updated" as HomeSortKey,
+        label: pickLang(language, "Updated", "Aktualisiert"),
+      },
+    ],
+    [language]
+  );
   const filteredCards = useMemo(() => {
     const query = deferredSearchQuery.trim().toLowerCase();
 
@@ -671,78 +709,41 @@ const Index = () => {
                 )}
               />
             </div>
-            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
-              {[
-                {
-                  key: "all" as HomeFilterKey,
-                  label: pickLang(language, "All", "Alle"),
-                },
-                {
-                  key: "issues" as HomeFilterKey,
-                  label: pickLang(language, "Issues", "Probleme"),
-                },
-                {
-                  key: "healthy" as HomeFilterKey,
-                  label: pickLang(language, "Healthy", "Stabil"),
-                },
-                ...categoryFilters.map((category) => ({
-                  key: `category:${category}` as HomeFilterKey,
-                  label: categoryLabel(category, language),
-                })),
-              ].map((filter) => {
-                const isActive = activeFilter === filter.key;
-                return (
-                  <button
-                    key={filter.key}
-                    type="button"
-                    onClick={() => setActiveFilter(filter.key)}
-                    className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
-                      isActive
-                        ? "border-primary/40 bg-primary/20 text-primary"
-                        : "border-white/10 bg-white/5 text-muted-foreground"
-                    }`}
-                  >
-                    {filter.label}
-                  </button>
-                );
-              })}
-            </div>
-            <div className="mt-2 flex items-center justify-between gap-2">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {pickLang(language, "Sort", "Sortierung")}
-              </span>
-              <div className="flex gap-2 overflow-x-auto">
-                {[
-                  {
-                    key: "impact" as HomeSortKey,
-                    label: pickLang(language, "Impact", "Impact"),
-                  },
-                  {
-                    key: "name" as HomeSortKey,
-                    label: pickLang(language, "Name", "Name"),
-                  },
-                  {
-                    key: "updated" as HomeSortKey,
-                    label: pickLang(language, "Updated", "Aktualisiert"),
-                  },
-                ].map((sortOption) => {
-                  const isSortActive = sortBy === sortOption.key;
-                  return (
-                    <button
-                      key={sortOption.key}
-                      type="button"
-                      onClick={() => setSortBy(sortOption.key)}
-                      className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
-                        isSortActive
-                          ? "border-primary/40 bg-primary/20 text-primary"
-                          : "border-white/10 bg-white/5 text-muted-foreground"
-                      }`}
-                    >
-                      {sortOption.label}
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <label className="glass rounded-xl px-2.5 py-2">
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {pickLang(language, "Filter", "Filter")}
+                </span>
+                <select
+                  value={activeFilter}
+                  onChange={(event) => setActiveFilter(event.target.value as HomeFilterKey)}
+                  className="mt-1 w-full bg-transparent text-xs font-semibold text-foreground outline-none"
+                  aria-label={pickLang(language, "Filter services", "Services filtern")}
+                >
+                  {filterOptions.map((option) => (
+                    <option key={option.key} value={option.key} className="bg-[#0B1324] text-foreground">
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="glass rounded-xl px-2.5 py-2">
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {pickLang(language, "Sort", "Sortierung")}
+                </span>
+                <select
+                  value={sortBy}
+                  onChange={(event) => setSortBy(event.target.value as HomeSortKey)}
+                  className="mt-1 w-full bg-transparent text-xs font-semibold text-foreground outline-none"
+                  aria-label={pickLang(language, "Sort services", "Services sortieren")}
+                >
+                  {sortOptions.map((option) => (
+                    <option key={option.key} value={option.key} className="bg-[#0B1324] text-foreground">
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
             <p className="mt-2 text-[11px] text-muted-foreground">
               {pickLang(
@@ -770,8 +771,8 @@ const Index = () => {
               <p className="mt-1 text-xs text-muted-foreground">
                 {pickLang(
                   language,
-                  "Adjust the search or filter chips to show cards again.",
-                  "Passe Suche oder Filter-Chips an, um Karten wieder anzuzeigen."
+                  "Adjust search, filter, or sort to show cards again.",
+                  "Passe Suche, Filter oder Sortierung an, um Karten wieder anzuzeigen."
                 )}
               </p>
             </div>
