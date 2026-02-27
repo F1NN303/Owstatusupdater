@@ -608,9 +608,9 @@ const Index = () => {
         </div>
 
         {cards.length === 0 && isRefreshing ? (
-          <div className="glass glass-specular h-[84px] animate-fade-in-up rounded-2xl" />
+          <div className="glass glass-specular h-[84px] rounded-2xl" />
         ) : cards.length > 0 ? (
-          <div className="animate-fade-in-up">
+          <div>
             <OverallStatus
               state={overallState}
               onlineCount={onlineCount}
@@ -618,7 +618,7 @@ const Index = () => {
             />
           </div>
         ) : (
-          <div className="glass glass-specular rounded-2xl p-4 animate-fade-in-up">
+          <div className="glass glass-specular rounded-2xl p-4">
             <div className="relative z-10">
               <p className="text-sm font-semibold text-foreground">
                 {pickLang(language, "No live service data loaded", "Keine Live-Service-Daten geladen")}
@@ -635,7 +635,7 @@ const Index = () => {
         )}
 
         {cards.length > 0 ? (
-          <div className="mt-4 animate-fade-in-up">
+          <div className="mt-4">
             <div className="glass rounded-2xl px-3 py-2.5">
               <label className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 {pickLang(language, "Search services", "Services suchen")}
@@ -711,7 +711,7 @@ const Index = () => {
             </div>
           ) : null
         ) : filteredCards.length === 0 ? (
-          <div className="glass glass-specular mt-4 rounded-2xl p-4 animate-fade-in-up">
+          <div className="glass glass-specular mt-4 rounded-2xl p-4">
             <div className="relative z-10">
               <p className="text-sm font-semibold text-foreground">
                 {pickLang(language, "No services match the current filters", "Keine Services passen zu den Filtern")}
@@ -727,13 +727,9 @@ const Index = () => {
           </div>
         ) : (
           <div className="mt-4 space-y-4">
-            {filteredCards.map((card, index) => (
-              <div
-                key={card.serviceId}
-                className="animate-fade-in-up"
-                style={{ animationDelay: `${(index + 1) * 60}ms` }}
-              >
-                <ServerCard server={card.server} index={index} />
+            {filteredCards.map((card) => (
+              <div key={card.serviceId}>
+                <ServerCard server={card.server} />
               </div>
             ))}
           </div>

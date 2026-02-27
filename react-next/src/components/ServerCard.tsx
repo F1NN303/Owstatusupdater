@@ -9,10 +9,9 @@ import { pickLang, useAppShell } from "@/lib/appShell";
 
 interface ServerCardProps {
   server: ServerService;
-  index: number;
 }
 
-const ServerCard = ({ server, index }: ServerCardProps) => {
+const ServerCard = ({ server }: ServerCardProps) => {
   const { language } = useAppShell();
   const navigate = useNavigate();
   const IconComp = getIconComponent(server.icon);
@@ -32,7 +31,6 @@ const ServerCard = ({ server, index }: ServerCardProps) => {
       type="button"
       onClick={() => navigate(`/status/${server.id}`)}
       className="glass glass-specular w-full rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.98] active:brightness-90"
-      style={{ animationDelay: `${index * 60}ms` }}
     >
       <div className="relative z-10">
         <div className="flex items-center justify-between">
