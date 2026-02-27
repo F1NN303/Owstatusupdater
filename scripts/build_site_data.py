@@ -21,20 +21,24 @@ VALID_SEVERITY_KEYS = {"stable", "minor", "degraded", "major", "unknown"}
 SERVICE_CONFIG_DIR = ROOT / "config" / "services"
 SERVICE_CONFIG_GLOBS = ("*.yaml", "*.yml")
 SERVICE_CONFIG_REQUIRED_KEYS = {"label", "builder", "site_url", "data_dir", "state_path"}
-BUILDER_IMPORT_TARGETS = {
-    "overwatch": "services.ow_aggregator:build_dashboard_payload",
-    "sony": "services.sony_aggregator:build_dashboard_payload",
-    "m365": "services.m365_aggregator:build_dashboard_payload",
-    "openai": "services.openai_aggregator:build_dashboard_payload",
-}
 DEFAULT_SERVICE_PREFERRED = "overwatch"
 
 
-def _resolve_builder(builder_key: str):
-    target = BUILDER_IMPORT_TARGETS.get(str(builder_key or "").strip().lower())
-    if not target:
-        raise ValueError(f"Unknown builder key '{builder_key}'")
+def _resolve_builder(builder_target: str):
+    target = str(builder_target or "").strip()
+    if ":" not in target:
+        raise ValueError(
+            f"Invalid builder target '{builder_target}'. "
+            "Expected format 'module.path:function_name'."
+        )
     module_name, attr_name = target.split(":", 1)
+    module_name = module_name.strip()
+    attr_name = attr_name.strip()
+    if not module_name or not attr_name:
+        raise ValueError(
+            f"Invalid builder target '{builder_target}'. "
+            "Expected format 'module.path:function_name'."
+        )
     module = importlib.import_module(module_name)
     builder = getattr(module, attr_name, None)
     if not callable(builder):
@@ -98,6 +102,13 @@ def _parse_int(value: object, default: int | None = None) -> int | None:
         return default
 
 
+def _service_sort_key(service_id: str) -> tuple[int, str]:
+    return (
+        _parse_int(SERVICE_CONFIGS.get(service_id, {}).get("home_order"), default=9999),
+        service_id,
+    )
+
+
 def _data_dir_to_status_path(data_dir: Path) -> str:
     normalized = data_dir.as_posix().strip("/")
     if normalized.startswith("site/"):
@@ -110,13 +121,7 @@ def _data_dir_to_status_path(data_dir: Path) -> str:
 
 def _build_services_manifest_payload() -> dict:
     services: list[dict[str, object]] = []
-    service_keys = sorted(
-        SERVICE_CONFIGS.keys(),
-        key=lambda key: (
-            _parse_int(SERVICE_CONFIGS[key].get("home_order"), default=9999),
-            key,
-        ),
-    )
+    service_keys = sorted(SERVICE_CONFIGS.keys(), key=_service_sort_key)
     for service_id in service_keys:
         config = SERVICE_CONFIGS[service_id]
         if _parse_bool(config.get("home_enabled"), default=True) is False:
@@ -261,11 +266,20 @@ SERVICE_SITE_URL = SERVICE_CONFIGS[ACTIVE_SERVICE_KEY]["site_url"]
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build static dashboard JSON data.")
+    service_choices = sorted(SERVICE_CONFIGS.keys()) + ["all"]
     parser.add_argument(
         "--service",
-        choices=sorted(SERVICE_CONFIGS.keys()),
+        choices=service_choices,
         default=ACTIVE_SERVICE_KEY,
-        help=f"Service dataset to build (default: {ACTIVE_SERVICE_KEY}).",
+        help=f"Service dataset to build, or 'all' (default: {ACTIVE_SERVICE_KEY}).",
+    )
+    parser.add_argument(
+        "--allow-partial-success",
+        action="store_true",
+        help=(
+            "When used with '--service all', continue if one service fails and exit 0. "
+            "Without this flag, any failed service returns exit code 1."
+        ),
     )
     return parser.parse_args()
 
@@ -881,12 +895,19 @@ def _build_rss(payload: dict) -> str:
     )
 
 
-def main(service_key: str = "overwatch") -> None:
+def _service_keys_for_build(service_key: str) -> list[str]:
+    normalized = str(service_key or "").strip().lower()
+    if normalized == "all":
+        return sorted(SERVICE_CONFIGS.keys(), key=_service_sort_key)
+    if normalized in SERVICE_CONFIGS:
+        return [normalized]
+    raise ValueError(f"Unsupported service: {service_key}")
+
+
+def _build_single_service(service_key: str, manifest_path: Path) -> None:
     config = SERVICE_CONFIGS.get(service_key)
     if not config:
-        raise SystemExit(f"Unsupported service: {service_key}")
-
-    manifest_path = _write_services_manifest()
+        raise ValueError(f"Unsupported service: {service_key}")
 
     global ACTIVE_SERVICE_KEY
     global SERVICE_LABEL
@@ -963,6 +984,29 @@ def main(service_key: str = "overwatch") -> None:
     print(f"[{service_key}] wrote {manifest_path.relative_to(ROOT)}")
 
 
+def main(service_key: str = ACTIVE_SERVICE_KEY, allow_partial_success: bool = False) -> int:
+    service_keys = _service_keys_for_build(service_key)
+    manifest_path = _write_services_manifest()
+
+    failures: list[tuple[str, str]] = []
+    for key in service_keys:
+        try:
+            _build_single_service(key, manifest_path)
+        except Exception as exc:
+            failures.append((key, str(exc)))
+            print(f"[{key}] build failed: {exc}")
+
+    if failures:
+        print("[build] one or more services failed:")
+        for failed_key, reason in failures:
+            print(f"[build] - {failed_key}: {reason}")
+        if allow_partial_success and str(service_key or "").strip().lower() == "all":
+            print("[build] partial success enabled; continuing with exit code 0")
+            return 0
+        return 1
+    return 0
+
+
 if __name__ == "__main__":
     args = _parse_args()
-    main(args.service)
+    raise SystemExit(main(args.service, allow_partial_success=args.allow_partial_success))

@@ -60,7 +60,7 @@ class ValidateServicesTests(unittest.TestCase):
                 _service_yaml(
                     service_id="alpha",
                     label="Alpha",
-                    builder="alpha",
+                    builder="json:dumps",
                     site_url="https://example.test/alpha/",
                     data_dir="site/alpha/data",
                     state_path=".bot_state/alpha_state.json",
@@ -78,7 +78,7 @@ class ValidateServicesTests(unittest.TestCase):
                 _service_yaml(
                     service_id="beta",
                     label="Beta",
-                    builder="beta",
+                    builder="json:dumps",
                     site_url="https://example.test/beta/",
                     data_dir="site/beta/data",
                     state_path=".bot_state/beta_state.json",
@@ -104,7 +104,7 @@ class ValidateServicesTests(unittest.TestCase):
                 _service_yaml(
                     service_id="first",
                     label="First",
-                    builder="first",
+                    builder="json:dumps",
                     site_url="https://example.test/first/",
                     data_dir="site/first/data",
                     state_path=".bot_state/first_state.json",
@@ -122,7 +122,7 @@ class ValidateServicesTests(unittest.TestCase):
                 _service_yaml(
                     service_id="second",
                     label="Second",
-                    builder="second",
+                    builder="json:dumps",
                     site_url="https://example.test/second/",
                     data_dir="site/second/data",
                     state_path=".bot_state/second_state.json",
@@ -147,7 +147,7 @@ class ValidateServicesTests(unittest.TestCase):
                 _service_yaml(
                     service_id="broken",
                     label="Broken",
-                    builder="broken",
+                    builder="missing.module:builder",
                     site_url="not-a-url",
                     data_dir="bad/data",
                     state_path="state.json",
@@ -163,6 +163,7 @@ class ValidateServicesTests(unittest.TestCase):
 
             errors = validate_service_configs(config_dir)
             self.assertTrue(any("invalid site_url" in error for error in errors))
+            self.assertTrue(any("invalid builder" in error for error in errors))
             self.assertTrue(any("data_dir must be under site/" in error for error in errors))
             self.assertTrue(any("state_path must be under .bot_state/" in error for error in errors))
             self.assertTrue(any("unsupported icon 'Rocket'" in error for error in errors))

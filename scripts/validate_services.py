@@ -1,12 +1,17 @@
 from __future__ import annotations
 
 import argparse
+import importlib
 import re
+import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 SERVICE_CONFIG_DIR = ROOT / "config" / "services"
 SERVICE_CONFIG_GLOBS = ("*.yaml", "*.yml")
 
@@ -99,6 +104,28 @@ def _parse_csv(value: object) -> list[str]:
     return [item.strip() for item in text.split(",") if item.strip()]
 
 
+def _validate_builder_target(value: str) -> tuple[bool, str]:
+    target = str(value or "").strip()
+    if ":" not in target:
+        return False, "expected format 'module.path:function_name'"
+
+    module_name, attr_name = target.split(":", 1)
+    module_name = module_name.strip()
+    attr_name = attr_name.strip()
+    if not module_name or not attr_name:
+        return False, "expected format 'module.path:function_name'"
+
+    try:
+        module = importlib.import_module(module_name)
+    except Exception as exc:
+        return False, f"module import failed ({exc})"
+
+    builder = getattr(module, attr_name, None)
+    if not callable(builder):
+        return False, f"attribute '{attr_name}' is not callable"
+    return True, ""
+
+
 def _validate_url(value: str) -> bool:
     parsed = urlparse(value)
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
@@ -186,6 +213,10 @@ def validate_service_configs(config_dir: Path) -> list[str]:
         builder_key = str(raw.get("builder") or "").strip()
         if not builder_key:
             errors.append(f"{rel}: builder must not be empty")
+        else:
+            is_valid_builder, builder_reason = _validate_builder_target(builder_key)
+            if not is_valid_builder:
+                errors.append(f"{rel}: invalid builder '{builder_key}' ({builder_reason})")
 
         site_url = str(raw.get("site_url") or "").strip()
         if not _validate_url(site_url):
