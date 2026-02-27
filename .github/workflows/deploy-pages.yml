@@ -33,6 +33,14 @@ jobs:
         with:
           ref: main
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: python3 -m pip install -r requirements.site.txt
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
