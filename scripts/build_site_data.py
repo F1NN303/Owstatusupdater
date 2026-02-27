@@ -2,6 +2,7 @@ import argparse
 import datetime as dt
 import hashlib
 import importlib
+import inspect
 import json
 import sys
 from email.utils import format_datetime
@@ -96,9 +97,24 @@ def _load_service_configs() -> dict[str, dict[str, object]]:
             "site_url": str(raw["site_url"]).strip(),
             "data_dir": Path(str(raw["data_dir"]).strip()),
             "state_path": Path(str(raw["state_path"]).strip()),
+            "scoring_profile": str(raw.get("scoring_profile") or "").strip() or None,
             "source": str(config_path.relative_to(ROOT)).replace("\\", "/"),
         }
     return loaded
+
+
+def _invoke_builder(builder, kwargs: dict[str, object]) -> dict:
+    signature = inspect.signature(builder)
+    params = signature.parameters
+    accepts_kwargs = any(param.kind == inspect.Parameter.VAR_KEYWORD for param in params.values())
+    if accepts_kwargs:
+        return builder(**kwargs)
+
+    filtered_kwargs: dict[str, object] = {}
+    for key, value in kwargs.items():
+        if key in params:
+            filtered_kwargs[key] = value
+    return builder(**filtered_kwargs)
 
 SERVICE_CONFIGS = _load_service_configs()
 if not SERVICE_CONFIGS:
@@ -760,8 +776,11 @@ def main(service_key: str = "overwatch") -> None:
     builder_kwargs: dict = {"force_refresh": True}
     if service_key == "overwatch" and previous_state.get("last_good_outage_snapshot"):
         builder_kwargs["previous_outage_fallback"] = previous_state.get("last_good_outage_snapshot")
+    scoring_profile = config.get("scoring_profile")
+    if isinstance(scoring_profile, str) and scoring_profile.strip():
+        builder_kwargs["scoring_profile"] = scoring_profile.strip()
 
-    payload = config["builder"](**builder_kwargs)
+    payload = _invoke_builder(config["builder"], builder_kwargs)
 
     changes, incident_index, report_index = _build_changes(previous_state, payload)
     payload["changes"] = changes

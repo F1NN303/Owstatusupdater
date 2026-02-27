@@ -8,6 +8,7 @@ import re
 from typing import Any
 
 from bs4 import BeautifulSoup
+from services.profiles.scoring_profiles import apply_scoring_profile
 
 SEVERITY_CRITICAL_KEYWORDS = (
     "service down",
@@ -401,6 +402,8 @@ def _calculate_severity(
     reports: list[dict[str, Any]],
     news: list[dict[str, Any]],
     social: list[dict[str, Any]],
+    scoring_profile: str | None = None,
+    scoring_profile_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     score = 0.0
     reports_24h = int(outage.get("reports_24h") or 0)
@@ -535,7 +538,31 @@ def _calculate_severity(
         score = min(score, SEVERITY_SCORE_THRESHOLDS["minor_max"] - 0.05)
         false_positive_cap_applied = True
 
-    score = max(score, 0.0)
+    profile_context = dict(scoring_profile_context or {})
+    profile_context.setdefault("reports_24h", reports_24h)
+    profile_context.setdefault("recent_incidents_6h", recent_incidents_6h)
+    profile_context.setdefault("support_score", support_score)
+    profile_context.setdefault("stable_max", SEVERITY_SCORE_THRESHOLDS["stable_max"])
+    profile_context.setdefault("minor_max", SEVERITY_SCORE_THRESHOLDS["minor_max"])
+    profile_context.setdefault("degraded_max", SEVERITY_SCORE_THRESHOLDS["degraded_max"])
+    profile_result = apply_scoring_profile(
+        scoring_profile,
+        score=score,
+        context=profile_context,
+    )
+    score = max(float(profile_result.get("score", score)), 0.0)
+    profile_adjustment = float(profile_result.get("score_adjustment") or 0.0)
+    profile_safeguards = profile_result.get("safeguards")
+    if isinstance(profile_safeguards, dict):
+        for key, value in profile_safeguards.items():
+            safeguards_value = bool(value)
+            if key in ("official_operational_cap_applied", "official_active_incident_floor_applied", "profile_unrecognized"):
+                # merged into final safeguards map below
+                pass
+            profile_safeguards[key] = safeguards_value
+    else:
+        profile_safeguards = {}
+
     severity_key = _score_to_severity(score, source_total_count)
 
     return {
@@ -544,12 +571,14 @@ def _calculate_severity(
         "source_ok_count": source_ok_count,
         "source_total_count": source_total_count,
         "model_version": SEVERITY_MODEL_VERSION,
+        "scoring_profile": str(scoring_profile or "default"),
         "score_breakdown": {
             "reports": round(report_contribution, 3),
             "incidents": round(incident_contribution, 3),
             "source_health": round(health_contribution, 3),
             "corroboration_bonus": round(corroboration_bonus, 3),
             "support_score": round(support_score, 3),
+            "profile_adjustment": round(profile_adjustment, 3),
         },
         "signal_metrics": {
             "reports_24h": reports_24h,
@@ -564,6 +593,9 @@ def _calculate_severity(
             "major_cap_applied": major_cap_applied,
             "false_positive_cap_applied": false_positive_cap_applied,
             "recency_decay": True,
+            "official_operational_cap_applied": bool(profile_safeguards.get("official_operational_cap_applied", False)),
+            "official_active_incident_floor_applied": bool(profile_safeguards.get("official_active_incident_floor_applied", False)),
+            "profile_unrecognized": bool(profile_safeguards.get("profile_unrecognized", False)),
         },
     }
 
