@@ -87,6 +87,35 @@ const TermsPage = () => {
         <section className="glass glass-specular mt-3 rounded-2xl p-4">
           <div className="relative z-10 space-y-3">
             <div className="flex items-center gap-2">
+              <Scale size={14} className="text-primary/80" />
+              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {t("Imprint Notice (DE)", "Impressum-Hinweis (DE)")}
+              </h2>
+            </div>
+            <p className="text-[12px] leading-relaxed text-muted-foreground">
+              {t(
+                "This is a non-commercial hobby project. No business services or commercial offers are provided on this website.",
+                "Dies ist ein nicht-kommerzielles Hobbyprojekt. Auf dieser Website werden keine gewerblichen Leistungen oder kommerziellen Angebote bereitgestellt."
+              )}
+            </p>
+            <p className="text-[12px] leading-relaxed text-muted-foreground">
+              {t(
+                "Current operator assessment: under this non-commercial setup, no separate legal imprint details are published here.",
+                "Aktuelle Betreiber-Einschaetzung: Bei dieser nicht-kommerziellen Ausgestaltung werden hier keine separaten Impressumsangaben veroeffentlicht."
+              )}
+            </p>
+            <p className="text-[11px] leading-relaxed text-muted-foreground/90">
+              {t(
+                "Legal note only, no legal advice. If use or project scope changes, legal obligations (including imprint requirements) may change.",
+                "Nur Hinweis, keine Rechtsberatung. Wenn sich Nutzung oder Projektumfang aendern, koennen sich rechtliche Pflichten (einschliesslich Impressumspflicht) aendern."
+              )}
+            </p>
+          </div>
+        </section>
+
+        <section className="glass glass-specular mt-3 rounded-2xl p-4">
+          <div className="relative z-10 space-y-3">
+            <div className="flex items-center gap-2">
               <ShieldCheck size={14} className="text-primary/80" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                 {t("Security & Privacy", "Sicherheit & Privatsphäre")}
