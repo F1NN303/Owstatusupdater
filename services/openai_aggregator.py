@@ -32,6 +32,9 @@ from services.core.source_runner import (
 UA = {"User-Agent": "OpenAI-Service-Radar/1.0 (+github-actions)"}
 REQUEST_TIMEOUT = 20
 CACHE_TTL_SECONDS = 120
+SEVERITY_STABLE_MAX = 2.4
+SEVERITY_MINOR_MAX = 4.8
+SEVERITY_DEGRADED_MAX = 8.0
 
 OPENAI_STATUS_PAGE_URL = "https://status.openai.com/"
 OPENAI_STATUS_API_STATUS_URL = "https://status.openai.com/api/v2/status.json"
@@ -313,6 +316,7 @@ def _statuspage_top_issue_labels(components: list[dict[str, Any]], *, limit: int
 def _build_openai_official_summary(
     *,
     description: str,
+    current_status: str,
     active_incidents: list[dict[str, Any]],
     recent_incidents: list[dict[str, Any]],
 ) -> str:
@@ -323,21 +327,17 @@ def _build_openai_official_summary(
             return f"OpenAI Statuspage reports an active incident: {latest_title}."
         return f"OpenAI Statuspage reports {len(active_incidents)} active incidents. Latest: {latest_title}."
 
-    latest_started_at = (
-        _clean(recent_incidents[0].get("started_at")) if recent_incidents else None
-    )
+    normalized_status = _normalize_outage_status_text(current_status)
+    if normalized_status == "operational" and description:
+        return f"OpenAI Statuspage reports {description}. No active incidents are listed."
+
+    latest_started_at = _clean(recent_incidents[0].get("started_at")) if recent_incidents else None
     latest_age_h = _hours_since(latest_started_at)
     if description and isinstance(latest_age_h, float):
         rounded = max(1, int(round(latest_age_h)))
         if latest_age_h <= 24:
-            return (
-                f"OpenAI Statuspage reports {description}. "
-                f"Latest listed incident started about {rounded}h ago."
-            )
-        return (
-            f"OpenAI Statuspage reports {description}. "
-            f"Latest listed incident was about {rounded}h ago."
-        )
+            return f"OpenAI Statuspage reports {description}. Latest listed incident started about {rounded}h ago."
+        return f"OpenAI Statuspage reports {description}. Latest listed incident was about {rounded}h ago."
     if description:
         return f"OpenAI Statuspage reports {description}."
     if recent_incidents:
@@ -396,6 +396,7 @@ def fetch_openai_statuspage_bundle() -> dict[str, Any]:
     top_issues = _statuspage_top_issue_labels(component_rows)
     summary = _build_openai_official_summary(
         description=description,
+        current_status=current_status,
         active_incidents=active_incidents,
         recent_incidents=official_incidents,
     )
@@ -558,9 +559,92 @@ def _build_official_block(official_updates: list[dict[str, Any]]) -> dict[str, A
     }
 
 
+def _severity_key_from_score(score: float) -> str:
+    if score < SEVERITY_STABLE_MAX:
+        return "stable"
+    if score < SEVERITY_MINOR_MAX:
+        return "minor"
+    if score < SEVERITY_DEGRADED_MAX:
+        return "degraded"
+    return "major"
+
+
+def _tune_openai_analytics(
+    analytics: dict[str, Any],
+    *,
+    official_status: dict[str, Any] | None,
+    official_source: dict[str, Any] | None,
+    outage: dict[str, Any],
+) -> dict[str, Any]:
+    tuned = dict(analytics)
+    score = float(tuned.get("severity_score") or 0.0)
+    signal_metrics = (
+        dict(tuned.get("signal_metrics"))
+        if isinstance(tuned.get("signal_metrics"), dict)
+        else {}
+    )
+    safeguards = (
+        dict(tuned.get("safeguards"))
+        if isinstance(tuned.get("safeguards"), dict)
+        else {}
+    )
+    score_breakdown = (
+        dict(tuned.get("score_breakdown"))
+        if isinstance(tuned.get("score_breakdown"), dict)
+        else {}
+    )
+
+    official_adjustment = 0.0
+    official_status_key = _normalize_outage_status_text(
+        official_status.get("current_status") if isinstance(official_status, dict) else None
+    )
+    active_incident_count = int(official_status.get("active_incident_count") or 0) if isinstance(official_status, dict) else 0
+    official_freshness = str((official_source or {}).get("freshness") or "").lower()
+    source_is_recent = official_freshness in {"fresh", "warm"}
+
+    reports_24h = int(signal_metrics.get("reports_24h") or outage.get("reports_24h") or 0)
+    recent_incidents_6h = int(signal_metrics.get("recent_incidents_6h") or 0)
+    support_score = float(score_breakdown.get("support_score") or 0.0)
+
+    if official_status_key == "operational" and active_incident_count == 0 and source_is_recent:
+        if reports_24h < 2200 and recent_incidents_6h == 0 and support_score < 2.2:
+            capped_score = min(score, SEVERITY_STABLE_MAX - 0.05)
+        else:
+            capped_score = min(score, SEVERITY_MINOR_MAX - 0.05)
+        official_adjustment += capped_score - score
+        score = capped_score
+        safeguards["official_operational_cap_applied"] = True
+    else:
+        safeguards["official_operational_cap_applied"] = False
+
+    if source_is_recent and active_incident_count > 0:
+        if official_status_key == "major outage":
+            floor_score = SEVERITY_DEGRADED_MAX + 0.05
+        else:
+            floor_score = SEVERITY_MINOR_MAX + 0.05
+        if score < floor_score:
+            official_adjustment += floor_score - score
+            score = floor_score
+            safeguards["official_active_incident_floor_applied"] = True
+        else:
+            safeguards["official_active_incident_floor_applied"] = False
+    else:
+        safeguards["official_active_incident_floor_applied"] = False
+
+    score = max(score, 0.0)
+    tuned["severity_score"] = int(round(score))
+    tuned["severity_key"] = _severity_key_from_score(score)
+    score_breakdown["official_signal_adjustment"] = round(official_adjustment, 3)
+    tuned["score_breakdown"] = score_breakdown
+    tuned["signal_metrics"] = signal_metrics
+    tuned["safeguards"] = safeguards
+    return tuned
+
+
 def _collect_payload() -> dict[str, Any]:
     sources: list[dict[str, Any]] = []
     official_status: dict[str, Any] | None = None
+    official_source_entry: dict[str, Any] | None = None
     isdown_outage: dict[str, Any] | None = None
 
     statusgator_run = _run_openai_source(
@@ -612,6 +696,7 @@ def _collect_payload() -> dict[str, Any]:
         last_item_at_fn=_official_last_item_at,
     )
     sources.append(official_run.source)
+    official_source_entry = official_run.source
     if official_run.ok and isinstance(official_run.data, dict):
         official_status = official_run.data
 
@@ -637,18 +722,33 @@ def _collect_payload() -> dict[str, Any]:
                 limit=8,
             )
 
-        if (
-            not isinstance(outage.get("top_reported_issues"), list)
-            or not outage.get("top_reported_issues")
-        ):
-            top_component_issues = official_status.get("top_component_issues")
-            if isinstance(top_component_issues, list) and top_component_issues:
-                outage["top_reported_issues"] = top_component_issues
-                outage["top_reported_issues_meta"] = {
-                    "source": "OpenAI Statuspage API",
-                    "kind": "degraded-components",
-                    "mode": "active" if int(official_status.get("active_incident_count") or 0) > 0 else "snapshot",
-                }
+        provider_top_issues = (
+            list(outage.get("top_reported_issues"))
+            if isinstance(outage.get("top_reported_issues"), list)
+            else []
+        )
+        official_source_freshness = str((official_source_entry or {}).get("freshness") or "").lower()
+        top_component_issues = official_status.get("top_component_issues")
+        if isinstance(top_component_issues, list) and top_component_issues:
+            outage["top_reported_issues"] = top_component_issues
+            outage["top_reported_issues_meta"] = {
+                "source": "OpenAI Statuspage API",
+                "kind": "degraded-components",
+                "mode": "active" if int(official_status.get("active_incident_count") or 0) > 0 else "snapshot",
+            }
+            if provider_top_issues:
+                outage["top_reported_issues_provider"] = provider_top_issues
+        elif official_status_text == "operational" and official_source_freshness in {"fresh", "warm"}:
+            outage["top_reported_issues"] = []
+            outage["top_reported_issues_meta"] = {
+                "source": "OpenAI Statuspage API",
+                "kind": "degraded-components",
+                "mode": "none",
+            }
+            if provider_top_issues:
+                outage["top_reported_issues_provider"] = provider_top_issues
+        elif provider_top_issues:
+            outage["top_reported_issues"] = provider_top_issues
 
     successful_sources = sum(1 for source in sources if source.get("ok"))
     if successful_sources == 0:
@@ -684,7 +784,13 @@ def _collect_payload() -> dict[str, Any]:
 
     social: list[dict[str, Any]] = []
     analytics = _calculate_severity(outage, sources, health, reports, news, social)
-    analytics["model_version"] = "openai-1.0"
+    analytics = _tune_openai_analytics(
+        analytics,
+        official_status=official_status,
+        official_source=official_source_entry,
+        outage=outage,
+    )
+    analytics["model_version"] = "openai-1.1"
     regions = _build_region_signals(analytics, outage, reports, news)
 
     generated_at = _utc_now_iso()

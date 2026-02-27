@@ -1,6 +1,7 @@
 import argparse
 import datetime as dt
 import hashlib
+import importlib
 import json
 import sys
 from email.utils import format_datetime
@@ -14,13 +15,93 @@ if str(ROOT) not in sys.path:
 from services.ow_aggregator import build_dashboard_payload as build_overwatch_dashboard_payload
 from services.sony_aggregator import build_dashboard_payload as build_sony_dashboard_payload
 from services.m365_aggregator import build_dashboard_payload as build_m365_dashboard_payload
-from services.openai_aggregator import build_dashboard_payload as build_openai_dashboard_payload
 
 CADENCE_MINUTES = 30
 RETENTION_DAYS = 30
 RSS_ITEM_LIMIT = 20
 ALERT_EVENT_LIMIT = 25
 VALID_SEVERITY_KEYS = {"stable", "minor", "degraded", "major", "unknown"}
+SERVICE_CONFIG_DIR = ROOT / "config" / "services"
+SERVICE_CONFIG_GLOBS = ("*.yaml", "*.yml")
+SERVICE_CONFIG_REQUIRED_KEYS = {"label", "builder", "site_url", "data_dir", "state_path"}
+BUILDER_IMPORT_TARGETS = {
+    "overwatch": "services.ow_aggregator:build_dashboard_payload",
+    "sony": "services.sony_aggregator:build_dashboard_payload",
+    "m365": "services.m365_aggregator:build_dashboard_payload",
+    "openai": "services.openai_aggregator:build_dashboard_payload",
+}
+
+
+def _resolve_builder(builder_key: str):
+    target = BUILDER_IMPORT_TARGETS.get(str(builder_key or "").strip().lower())
+    if not target:
+        raise ValueError(f"Unknown builder key '{builder_key}'")
+    module_name, attr_name = target.split(":", 1)
+    module = importlib.import_module(module_name)
+    builder = getattr(module, attr_name, None)
+    if not callable(builder):
+        raise TypeError(f"Builder target '{target}' is not callable")
+    return builder
+
+
+def _parse_flat_yaml(path: Path) -> dict[str, object]:
+    parsed: dict[str, object] = {}
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if ":" not in line:
+            raise ValueError(f"Invalid line in {path}: '{raw_line}'")
+        key, value_raw = line.split(":", 1)
+        key = key.strip()
+        value_text = value_raw.strip()
+        if not key:
+            raise ValueError(f"Missing key in {path}: '{raw_line}'")
+        if value_text.lower() in {"true", "false"}:
+            parsed[key] = value_text.lower() == "true"
+            continue
+        if (value_text.startswith('"') and value_text.endswith('"')) or (
+            value_text.startswith("'") and value_text.endswith("'")
+        ):
+            parsed[key] = value_text[1:-1]
+            continue
+        parsed[key] = value_text
+    return parsed
+
+
+def _load_external_service_configs() -> dict[str, dict[str, object]]:
+    loaded: dict[str, dict[str, object]] = {}
+    if not SERVICE_CONFIG_DIR.exists():
+        return loaded
+
+    files: list[Path] = []
+    for pattern in SERVICE_CONFIG_GLOBS:
+        files.extend(sorted(SERVICE_CONFIG_DIR.glob(pattern)))
+
+    for config_path in files:
+        raw = _parse_flat_yaml(config_path)
+        enabled = raw.get("enabled", True)
+        if isinstance(enabled, str):
+            enabled = enabled.strip().lower() not in {"0", "false", "no", "off"}
+        if not bool(enabled):
+            continue
+
+        service_key = str(raw.get("id") or config_path.stem).strip().lower()
+        missing = sorted(key for key in SERVICE_CONFIG_REQUIRED_KEYS if not str(raw.get(key) or "").strip())
+        if missing:
+            raise ValueError(
+                f"Service config '{config_path}' is missing required keys: {', '.join(missing)}"
+            )
+
+        loaded[service_key] = {
+            "label": str(raw["label"]).strip(),
+            "builder": _resolve_builder(str(raw["builder"]).strip()),
+            "site_url": str(raw["site_url"]).strip(),
+            "data_dir": Path(str(raw["data_dir"]).strip()),
+            "state_path": Path(str(raw["state_path"]).strip()),
+            "source": str(config_path.relative_to(ROOT)).replace("\\", "/"),
+        }
+    return loaded
 
 SERVICE_CONFIGS = {
     "overwatch": {
@@ -44,14 +125,8 @@ SERVICE_CONFIGS = {
         "data_dir": Path("site/m365/data"),
         "state_path": Path(".bot_state/m365_state.json"),
     },
-    "openai": {
-        "label": "OpenAI (ChatGPT)",
-        "builder": build_openai_dashboard_payload,
-        "site_url": "https://f1nn303.github.io/Owstatusupdater/openai/",
-        "data_dir": Path("site/openai/data"),
-        "state_path": Path(".bot_state/openai_state.json"),
-    },
 }
+SERVICE_CONFIGS.update(_load_external_service_configs())
 
 ACTIVE_SERVICE_KEY = "overwatch"
 SERVICE_LABEL = SERVICE_CONFIGS[ACTIVE_SERVICE_KEY]["label"]
