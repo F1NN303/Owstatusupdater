@@ -7,7 +7,7 @@ const navItems = [
     icon: Home,
     labelKey: "home",
     path: "/",
-    matches: ["/", "/status/overwatch", "/status/sony", "/status/m365", "/status/openai"],
+    matches: ["/", "/status"],
   },
   { icon: Star, labelKey: "favorites", path: "/favorites", matches: ["/favorites"] },
   { icon: Bell, labelKey: "alerts", path: "/alerts", matches: ["/alerts", "/email-alerts"] },

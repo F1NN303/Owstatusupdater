@@ -5,10 +5,10 @@ import type { ServerService, Status } from "@/data/servers";
 import { pickLang, useAppShell } from "@/lib/appShell";
 import {
   fetchLegacyServiceDetail,
-  type LegacyDetailServiceId,
   type LegacyOutageIncident,
   type LegacyServiceDetailResult,
 } from "@/lib/legacyServiceDetail";
+import { getLegacyLiveStatusServices } from "@/lib/legacyStatus";
 import { Bell, ChevronRight, RefreshCw, TriangleAlert } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -16,13 +16,12 @@ import { Link } from "react-router-dom";
 type OverallState = "all-good" | "some-issues" | "major-outage";
 
 interface HomeServiceCard {
-  serviceId: LegacyDetailServiceId;
+  serviceId: string;
   server: ServerService;
   generatedAt: string | null;
   error?: string;
 }
 
-const LIVE_SERVICE_IDS: LegacyDetailServiceId[] = ["overwatch", "sony", "m365", "openai"];
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
@@ -205,22 +204,16 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
   const responseHistory = buildActivitySparkline(detail);
   const status = toneToStatus(detail.tone);
 
-  const name =
-    detail.service.id === "sony"
-      ? "PlayStation Network"
-      : detail.service.id === "m365"
-        ? "Microsoft 365"
-        : detail.service.id === "openai"
-          ? "OpenAI / ChatGPT"
-          : "Overwatch";
+  const name = detail.service.name || detail.service.id;
   const icon =
-    detail.service.id === "sony"
+    detail.service.iconName ||
+    (detail.service.id === "sony"
       ? "Tv"
       : detail.service.id === "m365"
         ? "Globe"
         : detail.service.id === "openai"
           ? "Cpu"
-          : "Gamepad2";
+          : "Gamepad2");
   const sourceOk = detail.payload.analytics?.source_ok_count;
   const sourceTotal = detail.payload.analytics?.source_total_count;
   const sourceUnavailableCount =
@@ -330,15 +323,16 @@ const Index = () => {
     setIsRefreshing(true);
 
     try {
+      const liveServices = await getLegacyLiveStatusServices();
       const results = await Promise.allSettled(
-        LIVE_SERVICE_IDS.map((serviceId) => fetchLegacyServiceDetail(serviceId))
+        liveServices.map((service) => fetchLegacyServiceDetail(service.id))
       );
 
       const nextCards: HomeServiceCard[] = [];
       const nextErrors: string[] = [];
 
       for (let i = 0; i < results.length; i += 1) {
-        const serviceId = LIVE_SERVICE_IDS[i];
+        const serviceId = liveServices[i]?.id || `service-${i}`;
         const result = results[i];
 
         if (result.status === "fulfilled") {

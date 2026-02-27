@@ -67,6 +67,103 @@ def _parse_flat_yaml(path: Path) -> dict[str, object]:
     return parsed
 
 
+def _parse_bool(value: object, default: bool = False) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        lowered = value.strip().lower()
+        if lowered in {"1", "true", "yes", "on"}:
+            return True
+        if lowered in {"0", "false", "no", "off"}:
+            return False
+    return default
+
+
+def _parse_csv_list(value: object) -> list[str]:
+    if isinstance(value, (list, tuple)):
+        out = [str(item).strip() for item in value if str(item).strip()]
+        return out
+    text = str(value or "").strip()
+    if not text:
+        return []
+    return [part.strip() for part in text.split(",") if part.strip()]
+
+
+def _parse_int(value: object, default: int | None = None) -> int | None:
+    if value is None:
+        return default
+    try:
+        return int(str(value).strip())
+    except Exception:
+        return default
+
+
+def _data_dir_to_status_path(data_dir: Path) -> str:
+    normalized = data_dir.as_posix().strip("/")
+    if normalized.startswith("site/"):
+        normalized = normalized[len("site/") :]
+    normalized = normalized.strip("/")
+    if not normalized:
+        return "/status.json"
+    return f"/{normalized}/status.json"
+
+
+def _build_services_manifest_payload() -> dict:
+    services: list[dict[str, object]] = []
+    service_keys = sorted(
+        SERVICE_CONFIGS.keys(),
+        key=lambda key: (
+            _parse_int(SERVICE_CONFIGS[key].get("home_order"), default=9999),
+            key,
+        ),
+    )
+    for service_id in service_keys:
+        config = SERVICE_CONFIGS[service_id]
+        if _parse_bool(config.get("home_enabled"), default=True) is False:
+            continue
+        detail_path = str(config.get("detail_path") or f"/status/{service_id}").strip() or f"/status/{service_id}"
+        status_path = str(config.get("status_path") or _data_dir_to_status_path(Path(config["data_dir"]))).strip()
+        aliases = _parse_csv_list(config.get("aliases"))
+        aliases_lower: list[str] = []
+        seen_aliases: set[str] = set()
+        for alias in [service_id, *aliases]:
+            lowered = str(alias).strip().lower()
+            if not lowered or lowered in seen_aliases:
+                continue
+            seen_aliases.add(lowered)
+            aliases_lower.append(lowered)
+
+        services.append(
+            {
+                "id": service_id,
+                "label": str(config.get("label") or service_id),
+                "name": str(config.get("display_name") or config.get("label") or service_id),
+                "detail_path": detail_path,
+                "status_path": status_path,
+                "legacy_href": str(config.get("legacy_href") or "").strip() or None,
+                "note": str(config.get("note") or "").strip() or None,
+                "icon": str(config.get("icon") or "").strip() or None,
+                "aliases": aliases_lower,
+            }
+        )
+
+    return {
+        "schema_version": 1,
+        "services": services,
+    }
+
+
+def _write_services_manifest() -> Path:
+    manifest_path = ROOT / "site" / "data" / "services-manifest.json"
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_payload = _build_services_manifest_payload()
+    manifest_path.write_text(
+        json.dumps(manifest_payload, ensure_ascii=False, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    return manifest_path
+
+
 def _load_service_configs() -> dict[str, dict[str, object]]:
     loaded: dict[str, dict[str, object]] = {}
     if not SERVICE_CONFIG_DIR.exists():
@@ -98,6 +195,15 @@ def _load_service_configs() -> dict[str, dict[str, object]]:
             "data_dir": Path(str(raw["data_dir"]).strip()),
             "state_path": Path(str(raw["state_path"]).strip()),
             "scoring_profile": str(raw.get("scoring_profile") or "").strip() or None,
+            "display_name": str(raw.get("display_name") or "").strip() or None,
+            "legacy_href": str(raw.get("legacy_href") or "").strip() or None,
+            "detail_path": str(raw.get("detail_path") or "").strip() or None,
+            "status_path": str(raw.get("status_path") or "").strip() or None,
+            "icon": str(raw.get("icon") or "").strip() or None,
+            "aliases": _parse_csv_list(raw.get("aliases")),
+            "note": str(raw.get("note") or "").strip() or None,
+            "home_enabled": _parse_bool(raw.get("home_enabled"), default=True),
+            "home_order": _parse_int(raw.get("home_order"), default=None),
             "source": str(config_path.relative_to(ROOT)).replace("\\", "/"),
         }
     return loaded
@@ -759,6 +865,8 @@ def main(service_key: str = "overwatch") -> None:
     if not config:
         raise SystemExit(f"Unsupported service: {service_key}")
 
+    manifest_path = _write_services_manifest()
+
     global ACTIVE_SERVICE_KEY
     global SERVICE_LABEL
     global SERVICE_SITE_URL
@@ -831,6 +939,7 @@ def main(service_key: str = "overwatch") -> None:
     print(f"[{service_key}] wrote {rss_path}")
     print(f"[{service_key}] wrote {alerts_path} with events={len(alerts.get('events', []))}")
     print(f"[{service_key}] wrote {state_path}")
+    print(f"[{service_key}] wrote {manifest_path.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

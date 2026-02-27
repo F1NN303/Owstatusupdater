@@ -1,14 +1,13 @@
 import { resolveLegacyUrl } from "@/lib/legacySite";
 import {
-  HOME_SERVICES,
+  getLegacyLiveStatusServices,
   legacySeverityToTone,
   normalizeLegacySeverity,
-  type LegacyHomeServiceConfig,
   type LegacySeverity,
   type LegacyTone,
 } from "@/lib/legacyStatus";
 
-export type LegacyDetailServiceId = "overwatch" | "sony" | "m365" | "openai";
+export type LegacyDetailServiceId = string;
 
 export interface LegacyLinkItem {
   title?: string;
@@ -144,18 +143,37 @@ export interface LegacyStatusDetailPayload {
 }
 
 export interface LegacyServiceDetailResult {
-  service: LegacyHomeServiceConfig & { statusPath: string };
+  service: {
+    id: string;
+    name: string;
+    href: string;
+    legacyHref?: string;
+    note: string;
+    statusPath: string;
+    iconName?: string;
+    aliases?: string[];
+  };
   payload: LegacyStatusDetailPayload;
   severity: LegacySeverity;
   tone: LegacyTone;
   sourceConfidenceText: string;
 }
 
-function getDetailServiceConfig(id: LegacyDetailServiceId) {
-  const service = HOME_SERVICES.find(
-    (item): item is LegacyHomeServiceConfig & { statusPath: string } =>
-      item.id === id && typeof item.statusPath === "string"
-  );
+async function getDetailServiceConfig(id: LegacyDetailServiceId) {
+  const services = await getLegacyLiveStatusServices();
+  const requestedId = String(id || "").trim().toLowerCase();
+  if (!requestedId) {
+    return null;
+  }
+  const service = services.find((item) => {
+    if (item.id === requestedId) {
+      return true;
+    }
+    if (Array.isArray(item.aliases) && item.aliases.some((alias) => alias === requestedId)) {
+      return true;
+    }
+    return false;
+  });
   return service ?? null;
 }
 
@@ -171,7 +189,7 @@ function formatConfidence(payload: LegacyStatusDetailPayload) {
 export async function fetchLegacyServiceDetail(
   id: LegacyDetailServiceId
 ): Promise<LegacyServiceDetailResult> {
-  const service = getDetailServiceConfig(id);
+  const service = await getDetailServiceConfig(id);
   if (!service) {
     throw new Error(`Unsupported service id: ${id}`);
   }

@@ -315,6 +315,9 @@ function shortMetricLabel(detail: LegacyServiceDetailResult, language: AppLangua
 
 function normalizeDetailId(id?: string): LegacyDetailServiceId | null {
   const key = String(id || "").toLowerCase();
+  if (!key) {
+    return null;
+  }
   if (key === "overwatch" || key === "ow") {
     return "overwatch";
   }
@@ -327,7 +330,7 @@ function normalizeDetailId(id?: string): LegacyDetailServiceId | null {
   if (key === "openai" || key === "chatgpt" || key === "open-ai") {
     return "openai";
   }
-  return null;
+  return key;
 }
 
 function formatDateTime(value?: string | null) {
@@ -1423,7 +1426,8 @@ const ServerDetail = () => {
   const changeSummary = detail?.payload.changes?.summary;
   const serviceStatus = detail ? toneToStatus(detail.tone) : "degraded";
   const serviceIconName =
-    serviceId === "sony" ? "Tv" : serviceId === "m365" ? "Globe" : serviceId === "openai" ? "Cpu" : "Gamepad2";
+    detail?.service.iconName ||
+    (serviceId === "sony" ? "Tv" : serviceId === "m365" ? "Globe" : serviceId === "openai" ? "Cpu" : "Gamepad2");
   const ServiceIcon = getIconComponent(serviceIconName);
   const trendHistory = detail ? buildSignalTrend(detail) : Array.from({ length: 30 }, () => 0.5);
   const sparklineData = detail
@@ -1682,14 +1686,7 @@ const ServerDetail = () => {
                 {pickLang(language, "Live Service Detail", "Live-Service-Detail")}
               </p>
               <p className="text-sm font-medium text-foreground">
-                {detail?.service.name ||
-                  (serviceId === "overwatch"
-                    ? "Overwatch"
-                    : serviceId === "m365"
-                      ? "Microsoft 365"
-                      : serviceId === "openai"
-                        ? "OpenAI / ChatGPT"
-                        : "Sony PSN")}
+                {detail?.service.name || serviceId}
               </p>
             </div>
           </div>

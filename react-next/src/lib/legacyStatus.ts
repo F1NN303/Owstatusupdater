@@ -1,15 +1,22 @@
 import { resolveLegacyUrl } from "@/lib/legacySite";
+import {
+  fetchServiceManifestEntries,
+  getFallbackServiceManifestEntries,
+  type ServiceManifestEntry,
+} from "@/lib/serviceManifest";
 
 export type LegacySeverity = "stable" | "minor" | "degraded" | "major" | "unknown";
 export type LegacyTone = "good" | "warn" | "bad" | "unknown";
 
 export interface LegacyHomeServiceConfig {
-  id: "overwatch" | "sony" | "m365" | "openai" | "email";
+  id: string;
   name: string;
   href: string;
   legacyHref?: string;
   note: string;
   statusPath?: string;
+  iconName?: string;
+  aliases?: string[];
 }
 
 export interface LegacyServiceSummary {
@@ -32,46 +39,30 @@ interface LegacyStatusPayload {
   };
 }
 
+const EMAIL_SERVICE: LegacyHomeServiceConfig = {
+  id: "email",
+  name: "E-Mail Alerts",
+  href: "/email-alerts.html",
+  legacyHref: "/email-alerts.html",
+  note: "Brevo signup page for outage notifications with captcha and double opt-in.",
+};
+
+function mapManifestToLegacyHomeService(entry: ServiceManifestEntry): LegacyHomeServiceConfig {
+  return {
+    id: entry.id,
+    name: entry.name,
+    href: entry.detailPath,
+    legacyHref: entry.legacyHref,
+    note: entry.note || "Live service status and incident summary.",
+    statusPath: entry.statusPath,
+    iconName: entry.iconName,
+    aliases: entry.aliases,
+  };
+}
+
 export const HOME_SERVICES: LegacyHomeServiceConfig[] = [
-  {
-    id: "overwatch",
-    name: "Overwatch",
-    href: "/status/overwatch",
-    legacyHref: "/legacy-overwatch.html",
-    note: "Full live dashboard with incidents, analytics, and status summary.",
-    statusPath: "/data/status.json",
-  },
-  {
-    id: "sony",
-    name: "Sony PSN",
-    href: "/status/sony",
-    legacyHref: "/sony/legacy-index.html",
-    note: "PlayStation Network live signals, service trend, and incident data.",
-    statusPath: "/sony/data/status.json",
-  },
-  {
-    id: "m365",
-    name: "Microsoft 365",
-    href: "/status/m365",
-    legacyHref: "/m365/",
-    note: "Microsoft 365 live service health signals with official and provider sources.",
-    statusPath: "/m365/data/status.json",
-  },
-  {
-    id: "openai",
-    name: "OpenAI / ChatGPT",
-    href: "/status/openai",
-    legacyHref: "/openai/",
-    note: "OpenAI and ChatGPT live status signals with official Statuspage API and provider corroboration.",
-    statusPath: "/openai/data/status.json",
-  },
-  {
-    id: "email",
-    name: "E-Mail Alerts",
-    href: "/email-alerts.html",
-    legacyHref: "/email-alerts.html",
-    note: "Brevo signup page for outage notifications with captcha and double opt-in.",
-  },
+  ...getFallbackServiceManifestEntries().map(mapManifestToLegacyHomeService),
+  EMAIL_SERVICE,
 ];
 
 const SEVERITY_LABELS: Record<LegacySeverity, string> = {
@@ -118,6 +109,20 @@ function formatUpdated(isoString?: string) {
     return "Updated: unknown";
   }
   return `Updated: ${parsed.toLocaleString()}`;
+}
+
+export async function getLegacyLiveStatusServices(): Promise<Array<LegacyHomeServiceConfig & { statusPath: string }>> {
+  const manifest = await fetchServiceManifestEntries();
+  return manifest
+    .map(mapManifestToLegacyHomeService)
+    .filter((service): service is LegacyHomeServiceConfig & { statusPath: string } => {
+      return typeof service.statusPath === "string" && service.statusPath.length > 0;
+    });
+}
+
+export async function getLegacyHomeServices(): Promise<LegacyHomeServiceConfig[]> {
+  const liveServices = await getLegacyLiveStatusServices();
+  return [...liveServices, EMAIL_SERVICE];
 }
 
 export async function fetchLegacyServiceSummary(
@@ -168,5 +173,7 @@ export async function fetchLegacyServiceSummary(
 }
 
 export async function fetchLegacyHomeSummaries() {
-  return Promise.all(HOME_SERVICES.map((service) => fetchLegacyServiceSummary(service)));
+  const services = await getLegacyHomeServices();
+  return Promise.all(services.map((service) => fetchLegacyServiceSummary(service)));
 }
+
