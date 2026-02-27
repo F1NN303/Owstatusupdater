@@ -360,22 +360,6 @@ function parseFilterParam(rawValue: string | null): HomeFilterKey {
   return "all";
 }
 
-function encodeFilterParam(value: HomeFilterKey): string | null {
-  if (value === "all") {
-    return null;
-  }
-  if (value === "issues" || value === "healthy") {
-    return value;
-  }
-  if (value.startsWith("category:")) {
-    const category = value.slice("category:".length).trim();
-    if (category) {
-      return `cat:${category}`;
-    }
-  }
-  return null;
-}
-
 function parseSortParam(rawValue: string | null): HomeSortKey {
   const value = String(rawValue || "").trim().toLowerCase();
   if (value === "name" || value === "updated") {
@@ -406,7 +390,7 @@ function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): Ov
 
 const Index = () => {
   const { language } = useAppShell();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [cards, setCards] = useState<HomeServiceCard[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefreshAt, setLastRefreshAt] = useState<string | null>(null);
@@ -599,42 +583,6 @@ const Index = () => {
       setActiveFilter("all");
     }
   }, [activeFilter, categoryFilters]);
-
-  useEffect(() => {
-    const queryFromUrl = searchParams.get("q") || "";
-    const filterFromUrl = parseFilterParam(searchParams.get("filter"));
-    const sortFromUrl = parseSortParam(searchParams.get("sort"));
-
-    if (queryFromUrl !== searchQuery) {
-      setSearchQuery(queryFromUrl);
-    }
-    if (filterFromUrl !== activeFilter) {
-      setActiveFilter(filterFromUrl);
-    }
-    if (sortFromUrl !== sortBy) {
-      setSortBy(sortFromUrl);
-    }
-  }, [searchParams, searchQuery, activeFilter, sortBy]);
-
-  useEffect(() => {
-    const nextParams = new URLSearchParams();
-    const trimmedQuery = searchQuery.trim();
-    if (trimmedQuery) {
-      nextParams.set("q", trimmedQuery);
-    }
-
-    const encodedFilter = encodeFilterParam(activeFilter);
-    if (encodedFilter) {
-      nextParams.set("filter", encodedFilter);
-    }
-    if (sortBy !== "impact") {
-      nextParams.set("sort", sortBy);
-    }
-
-    if (nextParams.toString() !== searchParams.toString()) {
-      setSearchParams(nextParams, { replace: true });
-    }
-  }, [searchQuery, activeFilter, sortBy, searchParams, setSearchParams]);
 
   return (
     <AppLayout>
