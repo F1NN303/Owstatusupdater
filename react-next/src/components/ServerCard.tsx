@@ -3,8 +3,8 @@ import { ChevronRight } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 import UptimeBar from "./UptimeBar";
 import MiniSparkline from "./MiniSparkline";
+import ServiceIdentityIcon from "./ServiceIdentityIcon";
 import type { ServerService } from "@/data/servers";
-import { getIconComponent } from "@/data/servers";
 import { pickLang, useAppShell } from "@/lib/appShell";
 
 interface ServerCardProps {
@@ -15,7 +15,6 @@ interface ServerCardProps {
 const ServerCard = ({ server, compact = false }: ServerCardProps) => {
   const { language } = useAppShell();
   const navigate = useNavigate();
-  const IconComp = getIconComponent(server.icon);
   const trendLabel = server.trendLabel || pickLang(language, "30-day uptime", "30-Tage-Uptime");
   const trendValueLabel = server.trendValueLabel || `${server.uptime}%`;
   const sourceUnavailableCount =
@@ -38,13 +37,12 @@ const ServerCard = ({ server, compact = false }: ServerCardProps) => {
       <div className="relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div
-              className={`flex items-center justify-center rounded-xl bg-secondary ${
-                compact ? "h-9 w-9" : "h-10 w-10"
-              }`}
-            >
-              <IconComp size={compact ? 16 : 18} className="text-primary" />
-            </div>
+            <ServiceIdentityIcon
+              serviceId={server.id}
+              iconName={server.icon}
+              size={compact ? 16 : 18}
+              containerClassName={compact ? "h-9 w-9" : "h-10 w-10"}
+            />
             <div>
               <h3 className={`font-semibold text-foreground ${compact ? "text-[13px]" : "text-sm"}`}>
                 {server.name}

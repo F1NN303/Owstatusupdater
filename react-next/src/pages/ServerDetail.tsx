@@ -1,8 +1,9 @@
 import AppLayout from "@/components/AppLayout";
 import MiniSparkline from "@/components/MiniSparkline";
+import ServiceIdentityIcon from "@/components/ServiceIdentityIcon";
 import StatusBadge from "@/components/StatusBadge";
 import UptimeBar from "@/components/UptimeBar";
-import { getIconComponent, type Status } from "@/data/servers";
+import { type Status } from "@/data/servers";
 import { pickLang, useAppShell, type AppLanguage } from "@/lib/appShell";
 import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
@@ -1478,7 +1479,6 @@ const ServerDetail = () => {
   const serviceIconName =
     detail?.service.iconName ||
     (serviceId === "sony" ? "Tv" : serviceId === "m365" ? "Globe" : serviceId === "openai" ? "Cpu" : "Gamepad2");
-  const ServiceIcon = getIconComponent(serviceIconName);
   const trendHistory = detail ? buildSignalTrend(detail) : Array.from({ length: 30 }, () => 0.5);
   const sparklineData = detail
     ? buildSignalSparkline(detail)
@@ -1852,9 +1852,12 @@ const ServerDetail = () => {
               <div className="relative z-10">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-start gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary">
-                      <ServiceIcon size={18} className="text-primary" />
-                    </div>
+                    <ServiceIdentityIcon
+                      serviceId={detail?.service.id || serviceId}
+                      iconName={serviceIconName}
+                      size={18}
+                      containerClassName="h-9 w-9 shrink-0"
+                    />
                     <div className="min-w-0">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80 sm:text-[11px] sm:tracking-[0.18em]">
                         {pickLang(language, "Live Status Monitor", "Live-Status-Monitor")}
