@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-03-01T17:48:09.293533Z",
+  "generated_at": "2026-03-01T17:52:51.673721Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 6,
     "source_total_count": 6,
     "model_version": "steam-1.0",
-    "scoring_profile": "baseline_v1",
+    "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.0,
+      "incidents": 2.2,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.65
     },
     "signal_metrics": {
       "reports_24h": 131,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 1,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,49 +29,49 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": true,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Steam Community: HTTP 200 in 256ms.",
+    "summary": "Steam Community: HTTP 200 in 685ms.",
     "updates": [
       {
-        "title": "Steam Community: HTTP 200 in 256ms.",
+        "title": "Steam Community: HTTP 200 in 685ms.",
         "url": "https://steamcommunity.com/",
-        "published_at": "2026-03-01T17:48:08.503120Z",
+        "published_at": "2026-03-01T17:52:50.758181Z",
         "source": "Steam Community",
         "channel": "official-probe",
         "meta": "operational"
       },
       {
-        "title": "Steam Store: HTTP 200 in 249ms.",
+        "title": "Steam Store: HTTP 200 in 819ms.",
         "url": "https://store.steampowered.com/",
-        "published_at": "2026-03-01T17:48:08.245944Z",
+        "published_at": "2026-03-01T17:52:50.071119Z",
         "source": "Steam Store",
         "channel": "official-probe",
         "meta": "operational"
@@ -79,53 +79,67 @@
       {
         "title": "Steam CM Directory: 100 CM endpoints listed.",
         "url": "https://api.steampowered.com/ISteamDirectory/GetCMList/v1/?cellid=0&maxcount=50",
-        "published_at": "2026-03-01T17:48:07.995963Z",
+        "published_at": "2026-03-01T17:52:49.251471Z",
         "source": "Valve Directory API",
         "channel": "official-probe",
         "meta": "operational"
       },
       {
-        "title": "Steam Connection Managers: CM load stable (avg 38.3% / max 53.9%).",
+        "title": "Steam Connection Managers: Elevated CM load (avg 55.4% / max 94.6%).",
         "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
-        "published_at": "2026-03-01T17:48:07.824857Z",
+        "published_at": "2026-03-01T17:52:48.552886Z",
         "source": "Valve Directory API",
         "channel": "official-probe",
-        "meta": "operational"
+        "meta": "degraded"
       },
       {
-        "title": "Steam Web API: API reachable (Sun Mar 1 09:48:06 2026).",
+        "title": "Steam Web API: API reachable (Sun Mar 1 09:52:47 2026).",
         "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/",
-        "published_at": "2026-03-01T17:48:06.738152Z",
+        "published_at": "2026-03-01T17:52:47.861626Z",
         "source": "Valve Web API",
         "channel": "official-probe",
         "meta": "operational"
       }
     ],
-    "last_statement_at": "2026-03-01T17:48:08.503120Z"
+    "last_statement_at": "2026-03-01T17:52:50.758181Z"
   },
   "outage": {
     "source": "Valve probes",
     "source_type": "Official API/Web probe",
     "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/",
-    "summary": "Valve API probes indicate Steam services are operational. CM average load is 38.3% across 50 sampled endpoints.",
+    "summary": "Valve probes indicate partial Steam issues affecting Steam Connection Managers.",
     "summary_origin": "Valve probes",
-    "current_status": "operational",
+    "current_status": "degraded",
     "current_status_origin": "Valve probes",
     "reports_24h": 131,
-    "incidents": [],
-    "top_reported_issues": [],
+    "incidents": [
+      {
+        "title": "Steam Connection Managers: Elevated CM load (avg 55.4% / max 94.6%).",
+        "started_at": "2026-03-01T17:52:48.552886Z",
+        "duration": "ongoing",
+        "acknowledgement": "Valve probe signal",
+        "source": "Valve probes",
+        "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50"
+      }
+    ],
+    "top_reported_issues": [
+      {
+        "label": "Steam Connection Managers",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Valve probes",
       "kind": "component-status",
-      "mode": "none"
+      "mode": "active"
     },
     "components": [
       {
         "name": "Steam Store",
         "service": "Steam Store",
         "status": "operational",
-        "health": "HTTP 200 in 249ms.",
-        "updated_at": "2026-03-01T17:48:08.245944Z",
+        "health": "HTTP 200 in 819ms.",
+        "updated_at": "2026-03-01T17:52:50.071119Z",
         "source": "Steam Store",
         "url": "https://store.steampowered.com/"
       },
@@ -133,8 +147,8 @@
         "name": "Steam Community",
         "service": "Steam Community",
         "status": "operational",
-        "health": "HTTP 200 in 256ms.",
-        "updated_at": "2026-03-01T17:48:08.503120Z",
+        "health": "HTTP 200 in 685ms.",
+        "updated_at": "2026-03-01T17:52:50.758181Z",
         "source": "Steam Community",
         "url": "https://steamcommunity.com/"
       },
@@ -142,17 +156,17 @@
         "name": "Steam Web API",
         "service": "Steam Web API",
         "status": "operational",
-        "health": "API reachable (Sun Mar 1 09:48:06 2026).",
-        "updated_at": "2026-03-01T17:48:06.738152Z",
+        "health": "API reachable (Sun Mar 1 09:52:47 2026).",
+        "updated_at": "2026-03-01T17:52:47.861626Z",
         "source": "Valve Web API",
         "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/"
       },
       {
         "name": "Steam Connection Managers",
         "service": "Steam Connection Managers",
-        "status": "operational",
-        "health": "CM load stable (avg 38.3% / max 53.9%).",
-        "updated_at": "2026-03-01T17:48:07.824857Z",
+        "status": "degraded",
+        "health": "Elevated CM load (avg 55.4% / max 94.6%).",
+        "updated_at": "2026-03-01T17:52:48.552886Z",
         "source": "Valve Directory API",
         "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50"
       },
@@ -161,7 +175,7 @@
         "service": "Steam CM Directory",
         "status": "operational",
         "health": "100 CM endpoints listed.",
-        "updated_at": "2026-03-01T17:48:07.995963Z",
+        "updated_at": "2026-03-01T17:52:49.251471Z",
         "source": "Valve Directory API",
         "url": "https://api.steampowered.com/ISteamDirectory/GetCMList/v1/?cellid=0&maxcount=50"
       }
@@ -463,14 +477,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-01T17:48:08Z"
+      "last_reviewed_at": "2026-03-01T19:52:51+02:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 131,
-        "last_reviewed_at": "2026-03-01T17:48:08Z"
+        "last_reviewed_at": "2026-03-01T19:52:51+02:00"
       }
     ]
   },
@@ -478,9 +492,16 @@
     {
       "title": "IsDown indicates Steam is working normally.",
       "url": "https://isdown.app/status/steam",
-      "published_at": "2026-03-01T17:48:08Z",
+      "published_at": "2026-03-01T19:52:51+02:00",
       "source": "IsDown (Steam)",
       "meta": "131 user reports in 24h"
+    },
+    {
+      "title": "Steam Connection Managers: Elevated CM load (avg 55.4% / max 94.6%).",
+      "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
+      "published_at": "2026-03-01T17:52:48.552886Z",
+      "source": "Valve probes",
+      "meta": "Valve probe signal"
     }
   ],
   "known_resources": [
@@ -489,77 +510,77 @@
       "url": "https://steamcommunity.com/dev",
       "source": "Official",
       "meta": "Valve Developer",
-      "published_at": "2026-03-01T17:48:09.293533Z"
+      "published_at": "2026-03-01T17:52:51.673721Z"
     },
     {
       "title": "Steam API GetServerInfo",
       "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-01T17:48:09.293533Z"
+      "published_at": "2026-03-01T17:52:51.673721Z"
     },
     {
       "title": "Steam API GetCMListForConnect",
       "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-01T17:48:09.293533Z"
+      "published_at": "2026-03-01T17:52:51.673721Z"
     },
     {
       "title": "Steam API GetCMList",
       "url": "https://api.steampowered.com/ISteamDirectory/GetCMList/v1/?cellid=0&maxcount=50",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-01T17:48:09.293533Z"
+      "published_at": "2026-03-01T17:52:51.673721Z"
     },
     {
       "title": "Steam planned maintenance FAQ",
       "url": "https://help.steampowered.com/en/faqs/view/5814-D9A3-BE42-62DF",
       "source": "Official",
       "meta": "Steam Support",
-      "published_at": "2026-03-01T17:48:09.293533Z"
+      "published_at": "2026-03-01T17:52:51.673721Z"
     },
     {
       "title": "Steamstat.us community monitor",
       "url": "https://steamstat.us/",
       "source": "Community",
       "meta": "Third-party monitor",
-      "published_at": "2026-03-01T17:48:09.293533Z"
+      "published_at": "2026-03-01T17:52:51.673721Z"
     }
   ],
   "news": [
     {
-      "title": "Steam Community: HTTP 200 in 256ms.",
+      "title": "Steam Community: HTTP 200 in 685ms.",
       "url": "https://steamcommunity.com/",
-      "published_at": "2026-03-01T17:48:08.503120Z",
+      "published_at": "2026-03-01T17:52:50.758181Z",
       "source": "Steam Community",
       "meta": "operational"
     },
     {
-      "title": "Steam Store: HTTP 200 in 249ms.",
+      "title": "Steam Store: HTTP 200 in 819ms.",
       "url": "https://store.steampowered.com/",
-      "published_at": "2026-03-01T17:48:08.245944Z",
+      "published_at": "2026-03-01T17:52:50.071119Z",
       "source": "Steam Store",
       "meta": "operational"
     },
     {
       "title": "Steam CM Directory: 100 CM endpoints listed.",
       "url": "https://api.steampowered.com/ISteamDirectory/GetCMList/v1/?cellid=0&maxcount=50",
-      "published_at": "2026-03-01T17:48:07.995963Z",
+      "published_at": "2026-03-01T17:52:49.251471Z",
       "source": "Valve Directory API",
       "meta": "operational"
     },
     {
-      "title": "Steam Connection Managers: CM load stable (avg 38.3% / max 53.9%).",
+      "title": "Steam Connection Managers: Elevated CM load (avg 55.4% / max 94.6%).",
       "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
-      "published_at": "2026-03-01T17:48:07.824857Z",
+      "published_at": "2026-03-01T17:52:48.552886Z",
       "source": "Valve Directory API",
-      "meta": "operational"
+      "meta": "degraded"
     },
     {
-      "title": "Steam Web API: API reachable (Sun Mar 1 09:48:06 2026).",
+      "title": "Steam Web API: API reachable (Sun Mar 1 09:52:47 2026).",
       "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/",
-      "published_at": "2026-03-01T17:48:06.738152Z",
+      "published_at": "2026-03-01T17:52:47.861626Z",
       "source": "Valve Web API",
       "meta": "operational"
     }
@@ -573,11 +594,11 @@
       "ok": true,
       "error": null,
       "item_count": 1,
-      "last_item_at": "2026-03-01T17:48:06.738152Z",
+      "last_item_at": "2026-03-01T17:52:47.861626Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 196,
-      "fetched_at": "2026-03-01T17:48:06.738435Z"
+      "duration_ms": 834,
+      "fetched_at": "2026-03-01T17:52:47.861714Z"
     },
     {
       "name": "Steam Directory API (GetCMListForConnect)",
@@ -586,11 +607,11 @@
       "ok": true,
       "error": null,
       "item_count": 50,
-      "last_item_at": "2026-03-01T17:48:07.824857Z",
+      "last_item_at": "2026-03-01T17:52:48.552886Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1086,
-      "fetched_at": "2026-03-01T17:48:07.824918Z"
+      "duration_ms": 691,
+      "fetched_at": "2026-03-01T17:52:48.552947Z"
     },
     {
       "name": "Steam Directory API (GetCMList)",
@@ -599,11 +620,11 @@
       "ok": true,
       "error": null,
       "item_count": 100,
-      "last_item_at": "2026-03-01T17:48:07.995963Z",
+      "last_item_at": "2026-03-01T17:52:49.251471Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 171,
-      "fetched_at": "2026-03-01T17:48:07.996007Z"
+      "duration_ms": 698,
+      "fetched_at": "2026-03-01T17:52:49.251513Z"
     },
     {
       "name": "Steam Store",
@@ -612,11 +633,11 @@
       "ok": true,
       "error": null,
       "item_count": 1,
-      "last_item_at": "2026-03-01T17:48:08.245944Z",
+      "last_item_at": "2026-03-01T17:52:50.071119Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 250,
-      "fetched_at": "2026-03-01T17:48:08.246825Z"
+      "duration_ms": 820,
+      "fetched_at": "2026-03-01T17:52:50.072329Z"
     },
     {
       "name": "Steam Community",
@@ -625,11 +646,11 @@
       "ok": true,
       "error": null,
       "item_count": 1,
-      "last_item_at": "2026-03-01T17:48:08.503120Z",
+      "last_item_at": "2026-03-01T17:52:50.758181Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 257,
-      "fetched_at": "2026-03-01T17:48:08.504032Z"
+      "duration_ms": 687,
+      "fetched_at": "2026-03-01T17:52:50.759362Z"
     },
     {
       "name": "IsDown (Steam)",
@@ -638,28 +659,46 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-01T17:48:08Z",
+      "last_item_at": "2026-03-01T19:52:51+02:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 788,
-      "fetched_at": "2026-03-01T17:48:09.292595Z"
+      "duration_ms": 912,
+      "fetched_at": "2026-03-01T17:52:51.671595Z"
     }
   ],
   "changes": {
-    "generated_at": "2026-03-01T17:48:09.293533Z",
+    "generated_at": "2026-03-01T17:52:51.673721Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "2970c397b5f5b00c",
+          "title": "Steam Connection Managers: Elevated CM load (avg 55.4% / max 94.6%).",
+          "started_at": "2026-03-01T17:52:48.552886Z",
+          "duration": "ongoing",
+          "acknowledgement": "Valve probe signal",
+          "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/"
+        }
+      ],
       "updated": [],
       "resolved": []
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "9f9cd271812b6f63",
+          "title": "Steam Connection Managers: Elevated CM load (avg 55.4% / max 94.6%).",
+          "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
+          "published_at": "2026-03-01T17:52:48.552886Z",
+          "source": "Valve probes",
+          "meta": "Valve probe signal"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
       "resolved_incidents": 0,
-      "new_reports": 0
+      "new_reports": 1
     }
   }
 }
