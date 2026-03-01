@@ -1575,14 +1575,45 @@ const ServerDetail = () => {
   const sourceAgreementLatestLabel = sourceAgreementLatest
     ? `${(sourceAgreementLatest.ratio * 100).toFixed(1)}%`
     : "n/a";
+  const fallbackSourceOk = sourceOkCountNum !== null ? sourceOkCountNum : 0;
+  const fallbackSourceTotal = sourceTotalCountNum !== null ? sourceTotalCountNum : 0;
   const sourceConfidenceScore =
     typeof sourceTransparencyOverview?.confidence_score === "number"
       ? sourceTransparencyOverview.confidence_score
-      : null;
-  const sourceConfidenceTier = String(sourceTransparencyOverview?.confidence_tier || "unknown").toLowerCase();
+      : fallbackSourceTotal > 0
+        ? Math.round((fallbackSourceOk / fallbackSourceTotal) * 1000) / 10
+        : null;
+  const sourceConfidenceTier = String(
+    sourceTransparencyOverview?.confidence_tier ||
+      (sourceConfidenceScore === null
+        ? "unknown"
+        : sourceConfidenceScore >= 85
+          ? "high"
+          : sourceConfidenceScore >= 65
+            ? "medium"
+            : "low")
+  ).toLowerCase();
+  const sourceRequiredOk =
+    typeof sourceTransparencyOverview?.required_ok === "number"
+      ? sourceTransparencyOverview.required_ok
+      : fallbackSourceOk;
+  const sourceRequiredTotal =
+    typeof sourceTransparencyOverview?.required_total === "number"
+      ? sourceTransparencyOverview.required_total
+      : fallbackSourceTotal;
+  const sourceScoringOk =
+    typeof sourceTransparencyOverview?.scoring_ok === "number"
+      ? sourceTransparencyOverview.scoring_ok
+      : fallbackSourceOk;
+  const sourceScoringTotal =
+    typeof sourceTransparencyOverview?.scoring_total === "number"
+      ? sourceTransparencyOverview.scoring_total
+      : fallbackSourceTotal;
   const sourceReliabilityReasons = Array.isArray(sourceTransparencyOverview?.degraded_reasons)
     ? sourceTransparencyOverview.degraded_reasons.slice(0, 4)
-    : [];
+    : hasSourceUnavailable
+      ? ["partial_source_failure"]
+      : [];
   const sourceReliabilityToneClass =
     sourceConfidenceTier === "high"
       ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-300"
@@ -2273,11 +2304,11 @@ const ServerDetail = () => {
                     </span>
                     <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-muted-foreground">
                       {t("Required quorum", "Pflicht-Quorum")}:{" "}
-                      {`${sourceTransparencyOverview?.required_ok ?? 0}/${sourceTransparencyOverview?.required_total ?? 0}`}
+                      {`${sourceRequiredOk}/${sourceRequiredTotal}`}
                     </span>
                     <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-muted-foreground">
                       {t("Scoring quorum", "Scoring-Quorum")}:{" "}
-                      {`${sourceTransparencyOverview?.scoring_ok ?? 0}/${sourceTransparencyOverview?.scoring_total ?? 0}`}
+                      {`${sourceScoringOk}/${sourceScoringTotal}`}
                     </span>
                   </div>
                   {sourceTransparencyDecision?.explanation ? (
