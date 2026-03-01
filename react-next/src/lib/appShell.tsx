@@ -12,6 +12,7 @@ export type AppHomeSortKey = "impact" | "name" | "updated";
 export type AppTimeDisplayMode = "relative" | "absolute" | "both";
 export type AppHomeDefaultFilter = "all" | "issues" | "healthy" | `category:${string}`;
 export type AppHomeRefreshIntervalSec = 30 | 60 | 120;
+export type AppFavoriteServiceId = string;
 
 const LANGUAGE_STORAGE_KEY = "owstatusupdater.react.lang";
 const REDUCED_MOTION_STORAGE_KEY = "owstatusupdater.react.reduceMotion";
@@ -21,6 +22,7 @@ interface AppSettingsV2 {
   schemaVersion: 2;
   language: AppLanguage;
   reduceMotion: boolean;
+  favorites: AppFavoriteServiceId[];
   home: {
     defaultFilter: AppHomeDefaultFilter;
     defaultSort: AppHomeSortKey;
@@ -36,6 +38,7 @@ interface AppSettingsV2Payload {
   schemaVersion?: unknown;
   language?: unknown;
   reduceMotion?: unknown;
+  favorites?: unknown;
   home?: {
     defaultFilter?: unknown;
     defaultSort?: unknown;
@@ -54,6 +57,10 @@ interface AppShellContextValue {
   toggleLanguage: () => void;
   reduceMotion: boolean;
   setReduceMotion: (next: boolean) => void;
+  favoriteServiceIds: AppFavoriteServiceId[];
+  isFavoriteService: (serviceId: string) => boolean;
+  setFavoriteService: (serviceId: string, next: boolean) => void;
+  toggleFavoriteService: (serviceId: string) => void;
   homeDefaultFilter: AppHomeDefaultFilter;
   setHomeDefaultFilter: (next: AppHomeDefaultFilter) => void;
   homeDefaultSort: AppHomeSortKey;
@@ -140,11 +147,41 @@ function normalizeTimeDisplayMode(value: unknown, fallback: AppTimeDisplayMode) 
   return fallback;
 }
 
+function normalizeFavoriteServiceId(value: unknown) {
+  const normalized = String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]/g, "");
+  if (!normalized) {
+    return "";
+  }
+  return normalized.slice(0, 64);
+}
+
+function normalizeFavoriteServiceIds(value: unknown, fallback: AppFavoriteServiceId[]) {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+  const next: AppFavoriteServiceId[] = [];
+  for (const item of value) {
+    const normalized = normalizeFavoriteServiceId(item);
+    if (!normalized || next.includes(normalized)) {
+      continue;
+    }
+    next.push(normalized);
+    if (next.length >= 64) {
+      break;
+    }
+  }
+  return next;
+}
+
 function buildDefaultSettings(): AppSettingsV2 {
   return {
     schemaVersion: 2,
     language: detectBrowserLanguage(),
     reduceMotion: detectSystemReducedMotion(),
+    favorites: [],
     home: {
       defaultFilter: "all",
       defaultSort: "impact",
@@ -169,6 +206,7 @@ function migrateLegacySettings(defaults: AppSettingsV2): AppSettingsV2 {
     ...defaults,
     language: normalizeLanguage(legacyLanguage, defaults.language),
     reduceMotion: normalizeBoolean(legacyReducedMotion, defaults.reduceMotion),
+    favorites: [...defaults.favorites],
   };
 }
 
@@ -177,6 +215,7 @@ function sanitizeSettings(raw: AppSettingsV2Payload | null, fallback: AppSetting
     schemaVersion: 2,
     language: normalizeLanguage(raw?.language, fallback.language),
     reduceMotion: normalizeBoolean(raw?.reduceMotion, fallback.reduceMotion),
+    favorites: normalizeFavoriteServiceIds(raw?.favorites, fallback.favorites),
     home: {
       defaultFilter: normalizeHomeFilter(raw?.home?.defaultFilter, fallback.home.defaultFilter),
       defaultSort: normalizeHomeSort(raw?.home?.defaultSort, fallback.home.defaultSort),
@@ -245,6 +284,50 @@ export function AppShellProvider({ children }: { children: ReactNode }) {
           ...prev,
           reduceMotion: Boolean(next),
         })),
+      favoriteServiceIds: settings.favorites,
+      isFavoriteService: (serviceId) => {
+        const normalized = normalizeFavoriteServiceId(serviceId);
+        if (!normalized) {
+          return false;
+        }
+        return settings.favorites.includes(normalized);
+      },
+      setFavoriteService: (serviceId, next) =>
+        setSettings((prev) => {
+          const normalized = normalizeFavoriteServiceId(serviceId);
+          if (!normalized) {
+            return prev;
+          }
+          const alreadyFavorite = prev.favorites.includes(normalized);
+          if (next && alreadyFavorite) {
+            return prev;
+          }
+          if (!next && !alreadyFavorite) {
+            return prev;
+          }
+          const favorites = next
+            ? [normalized, ...prev.favorites.filter((item) => item !== normalized)]
+            : prev.favorites.filter((item) => item !== normalized);
+          return {
+            ...prev,
+            favorites,
+          };
+        }),
+      toggleFavoriteService: (serviceId) =>
+        setSettings((prev) => {
+          const normalized = normalizeFavoriteServiceId(serviceId);
+          if (!normalized) {
+            return prev;
+          }
+          const alreadyFavorite = prev.favorites.includes(normalized);
+          const favorites = alreadyFavorite
+            ? prev.favorites.filter((item) => item !== normalized)
+            : [normalized, ...prev.favorites.filter((item) => item !== normalized)];
+          return {
+            ...prev,
+            favorites,
+          };
+        }),
       homeDefaultFilter: settings.home.defaultFilter,
       setHomeDefaultFilter: (next) =>
         setSettings((prev) => ({

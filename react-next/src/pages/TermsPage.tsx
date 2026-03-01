@@ -89,6 +89,29 @@ const TermsPage = () => {
             <div className="flex items-center gap-2">
               <Scale size={14} className="text-primary/80" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {t("Third-Party Marks", "Drittmarken")}
+              </h2>
+            </div>
+            <p className="text-[12px] leading-relaxed text-muted-foreground">
+              {t(
+                "Service names and logos shown in this app (for example OpenAI, Microsoft 365, PlayStation, Steam, Overwatch) are trademarks of their respective owners.",
+                "In dieser App angezeigte Servicenamen und Logos (z. B. OpenAI, Microsoft 365, PlayStation, Steam, Overwatch) sind Marken der jeweiligen Inhaber."
+              )}
+            </p>
+            <p className="text-[12px] leading-relaxed text-muted-foreground">
+              {t(
+                "They are used only for service identification and status reference. No affiliation, endorsement, or ownership claim is made.",
+                "Sie werden ausschliesslich zur Service-Identifikation und Statusreferenz genutzt. Es wird keine Verbindung, Billigung oder Inhaberschaft behauptet."
+              )}
+            </p>
+          </div>
+        </section>
+
+        <section className="glass glass-specular mt-3 rounded-2xl p-4">
+          <div className="relative z-10 space-y-3">
+            <div className="flex items-center gap-2">
+              <Scale size={14} className="text-primary/80" />
+              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                 {t("Imprint Notice (DE)", "Impressum-Hinweis (DE)")}
               </h2>
             </div>

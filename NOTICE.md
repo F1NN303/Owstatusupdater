@@ -8,6 +8,11 @@ open source.
 - Copying or re-hosting the site/code without permission is not allowed.
 - Public availability on GitHub/GitHub Pages does **not** grant reuse rights.
 
+## Third-Party Trademarks and Logos
+- Service names and logos shown in this project remain the property of their respective trademark owners.
+- They are used only for identification/reference in status monitoring views.
+- No affiliation, sponsorship, endorsement, or ownership claim is implied.
+
 ## Security / Privacy Policy for This Repo
 - Treat **all committed files** as public.
 - Treat **all files in `site/`** as public web output.

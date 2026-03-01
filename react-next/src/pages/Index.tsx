@@ -10,7 +10,7 @@ import {
   type LegacyServiceDetailResult,
 } from "@/lib/legacyServiceDetail";
 import { getLegacyLiveStatusServices } from "@/lib/legacyStatus";
-import { Bell, ChevronRight, RefreshCw, TriangleAlert } from "lucide-react";
+import { Bell, ChevronRight, RefreshCw, Star, TriangleAlert } from "lucide-react";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
@@ -384,6 +384,8 @@ function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): Ov
 const Index = () => {
   const {
     language,
+    isFavoriteService,
+    toggleFavoriteService,
     homeDefaultFilter,
     homeDefaultSort,
     homeRefreshIntervalSec,
@@ -748,11 +750,33 @@ const Index = () => {
           </div>
         ) : (
           <div className={`mt-4 ${homeCompactCards ? "space-y-2.5" : "space-y-4"}`}>
-            {filteredCards.map((card) => (
-              <div key={card.serviceId}>
+            {filteredCards.map((card) => {
+              const isFavorite = isFavoriteService(card.serviceId);
+              return (
+              <div key={card.serviceId} className="relative">
                 <ServerCard server={card.server} compact={homeCompactCards} />
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    toggleFavoriteService(card.serviceId);
+                  }}
+                  className={`absolute right-2 top-2 z-20 inline-flex h-8 w-8 items-center justify-center rounded-lg border transition-colors ${
+                    isFavorite
+                      ? "border-amber-300/35 bg-amber-300/15 text-amber-200"
+                      : "border-white/15 bg-black/20 text-muted-foreground hover:bg-white/10"
+                  }`}
+                  aria-label={
+                    isFavorite
+                      ? pickLang(language, "Remove from favorites", "Aus Favoriten entfernen")
+                      : pickLang(language, "Add to favorites", "Zu Favoriten hinzufügen")
+                  }
+                >
+                  <Star size={14} className={isFavorite ? "fill-current" : ""} />
+                </button>
               </div>
-            ))}
+            )})}
           </div>
         )}
 

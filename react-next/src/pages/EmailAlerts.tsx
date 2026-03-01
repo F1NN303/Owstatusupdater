@@ -11,10 +11,6 @@ import { useEffect, useState } from "react";
 
 type NoticeTone = "neutral" | "good" | "warn" | "bad";
 
-function formatHost(url: URL | null) {
-  return url ? url.hostname : "-";
-}
-
 function statusTone(result: LegacySubscriptionLoadResult | null): NoticeTone {
   if (!result || result.status === "loading") {
     return "neutral";
@@ -229,7 +225,10 @@ const EmailAlerts = () => {
               </div>
             ) : (
               <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground">
-                {configResult?.message || t("Subscription form is not available right now.", "Abo-Formular ist aktuell nicht verfügbar.")}
+                {t(
+                  "Subscription form is not available right now. Please try again later.",
+                  "Abo-Formular ist aktuell nicht verfügbar. Bitte versuche es später erneut."
+                )}
               </div>
             )}
           </div>
@@ -239,24 +238,12 @@ const EmailAlerts = () => {
           <div className="glass glass-specular rounded-2xl p-4">
             <div className="relative z-10">
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {t("Config Details", "Konfigurationsdetails")}
+                {t("Signup Safety", "Anmeldesicherheit")}
               </h2>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Provider</p>
                   <p className="mt-1 text-sm font-semibold text-foreground">{provider}</p>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Host</p>
-                  <p className="mt-1 truncate text-sm font-semibold text-foreground">
-                    {formatHost(configResult?.parsedUrl || null)}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Source", "Quelle")}
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-foreground">/data/subscription.json</p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
@@ -265,9 +252,12 @@ const EmailAlerts = () => {
                   <p className="mt-1 text-xs font-medium text-foreground">{checkedLabel}</p>
                 </div>
               </div>
-              {configResult?.message ? (
-                <p className="mt-3 text-[11px] text-muted-foreground">{configResult.message}</p>
-              ) : null}
+              <p className="mt-3 text-[11px] text-muted-foreground">
+                {t(
+                  "Endpoint and config-file details are intentionally hidden in the UI. Validation remains active in the app and CI checks.",
+                  "Endpunkt- und Konfigurationsdatei-Details werden absichtlich in der UI ausgeblendet. Die Validierung bleibt in der App und in CI-Prüfungen aktiv."
+                )}
+              </p>
             </div>
           </div>
 
