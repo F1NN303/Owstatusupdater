@@ -1,12 +1,13 @@
 ﻿import AppLayout from "@/components/AppLayout";
 import { pickLang, useAppShell } from "@/lib/appShell";
+import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
   fetchLegacySubscriptionConfig,
   providerLabel,
   type LegacySubscriptionLoadResult,
 } from "@/lib/legacySubscription";
 import { ExternalLink, Mail, RefreshCw, ShieldCheck } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type NoticeTone = "neutral" | "good" | "warn" | "bad";
 
@@ -35,7 +36,7 @@ const STATUS_CLASS: Record<NoticeTone, string> = {
 };
 
 const EmailAlerts = () => {
-  const { language } = useAppShell();
+  const { language, timeDisplayMode } = useAppShell();
   const [configResult, setConfigResult] = useState<LegacySubscriptionLoadResult | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastCheckedAt, setLastCheckedAt] = useState<string | null>(null);
@@ -94,16 +95,17 @@ const EmailAlerts = () => {
   const provider = providerLabel(configResult?.config?.provider);
   const currentTone = statusTone(configResult);
 
-  const checkedLabel = useMemo(() => {
-    if (!lastCheckedAt) {
-      return t("Pending", "Ausstehend");
-    }
-    const date = new Date(lastCheckedAt);
-    if (!Number.isFinite(date.getTime())) {
-      return t("Pending", "Ausstehend");
-    }
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  }, [lastCheckedAt, language]);
+  const checkedLabel = lastCheckedAt
+    ? formatTimestampByMode(lastCheckedAt, {
+        language,
+        mode: timeDisplayMode,
+        absoluteFormat: {
+          hour: "2-digit",
+          minute: "2-digit",
+        },
+        fallbackText: t("Pending", "Ausstehend"),
+      })
+    : t("Pending", "Ausstehend");
 
   return (
     <AppLayout>
@@ -189,6 +191,8 @@ const EmailAlerts = () => {
                     title={t("Brevo newsletter signup", "Brevo-Newsletter-Anmeldung")}
                     className="block h-[720px] w-full bg-white"
                     loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"
                     onLoad={() => {
                       setEmbedLoaded(true);
                       setEmbedTimedOut(false);

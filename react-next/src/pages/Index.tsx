@@ -1,8 +1,9 @@
-import AppLayout from "@/components/AppLayout";
+﻿import AppLayout from "@/components/AppLayout";
 import OverallStatus from "@/components/OverallStatus";
 import ServerCard from "@/components/ServerCard";
 import type { ServerService, Status } from "@/data/servers";
 import { pickLang, useAppShell } from "@/lib/appShell";
+import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
   fetchLegacyServiceDetail,
   type LegacyOutageIncident,
@@ -260,36 +261,28 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
   };
 }
 
-function formatHeaderSubtitle(lastRefreshAt: string | null, language: "en" | "de") {
+function formatHeaderSubtitle(
+  lastRefreshAt: string | null,
+  language: "en" | "de",
+  timeDisplayMode: "relative" | "absolute" | "both"
+) {
   if (!lastRefreshAt) {
     return pickLang(language, "Live monitoring · Fetching live status", "Live-Monitoring · Lade Live-Status");
   }
 
-  const refreshed = parseDate(lastRefreshAt);
-  if (!refreshed) {
-    return pickLang(language, "Live monitoring", "Live-Monitoring");
-  }
-
-  const diffSeconds = Math.max(0, Math.round((Date.now() - refreshed.getTime()) / 1000));
-  if (diffSeconds < 15) {
-    return pickLang(language, "Live monitoring · Updated just now", "Live-Monitoring · Gerade aktualisiert");
-  }
-  if (diffSeconds < 60) {
-    return pickLang(
-      language,
-      `Live monitoring · Updated ${diffSeconds}s ago`,
-      `Live-Monitoring · Vor ${diffSeconds}s aktualisiert`
-    );
-  }
-
-  const timeLabel = refreshed.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
+  const updatedLabel = formatTimestampByMode(lastRefreshAt, {
+    language,
+    mode: timeDisplayMode,
+    absoluteFormat: {
+      hour: "2-digit",
+      minute: "2-digit",
+    },
   });
+
   return pickLang(
     language,
-    `Live monitoring · Updated ${timeLabel}`,
-    `Live-Monitoring · Aktualisiert ${timeLabel}`
+    `Live monitoring · Updated ${updatedLabel}`,
+    `Live-Monitoring · Aktualisiert ${updatedLabel}`
   );
 }
 
@@ -389,18 +382,46 @@ function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): Ov
 }
 
 const Index = () => {
-  const { language } = useAppShell();
+  const {
+    language,
+    homeDefaultFilter,
+    homeDefaultSort,
+    homeRefreshIntervalSec,
+    homeCompactCards,
+    timeDisplayMode,
+  } = useAppShell();
   const [searchParams] = useSearchParams();
+  const urlQueryParam = searchParams.get("q");
+  const urlFilterParam = searchParams.get("filter");
+  const urlSortParam = searchParams.get("sort");
   const [cards, setCards] = useState<HomeServiceCard[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefreshAt, setLastRefreshAt] = useState<string | null>(null);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState(() => searchParams.get("q") || "");
+  const [searchQuery, setSearchQuery] = useState(() => urlQueryParam || "");
   const deferredSearchQuery = useDeferredValue(searchQuery);
   const [activeFilter, setActiveFilter] = useState<HomeFilterKey>(
-    () => parseFilterParam(searchParams.get("filter"))
+    () => parseFilterParam(urlFilterParam || homeDefaultFilter)
   );
-  const [sortBy, setSortBy] = useState<HomeSortKey>(() => parseSortParam(searchParams.get("sort")));
+  const [sortBy, setSortBy] = useState<HomeSortKey>(() => parseSortParam(urlSortParam || homeDefaultSort));
+
+  useEffect(() => {
+    setSearchQuery(urlQueryParam || "");
+  }, [urlQueryParam]);
+
+  useEffect(() => {
+    if (!urlFilterParam) {
+      return;
+    }
+    setActiveFilter(parseFilterParam(urlFilterParam));
+  }, [urlFilterParam]);
+
+  useEffect(() => {
+    if (!urlSortParam) {
+      return;
+    }
+    setSortBy(parseSortParam(urlSortParam));
+  }, [urlSortParam]);
 
   const loadCards = async () => {
     setIsRefreshing(true);
@@ -447,10 +468,10 @@ const Index = () => {
     void loadCards();
     const timer = window.setInterval(() => {
       void loadCards();
-    }, 60_000);
+    }, homeRefreshIntervalSec * 1000);
 
     return () => window.clearInterval(timer);
-  }, [language]);
+  }, [homeRefreshIntervalSec, language]);
 
   const overallState = useMemo(
     () => overallStateFromCards(cards, errorMessages.length > 0),
@@ -461,8 +482,8 @@ const Index = () => {
     [cards]
   );
   const subtitle = useMemo(
-    () => formatHeaderSubtitle(lastRefreshAt, language),
-    [lastRefreshAt, language]
+    () => formatHeaderSubtitle(lastRefreshAt, language, timeDisplayMode),
+    [lastRefreshAt, language, timeDisplayMode]
   );
   const dataAgeMinutes = useMemo(() => ageMinutesSince(lastRefreshAt), [lastRefreshAt]);
   const isDataStale =
@@ -726,10 +747,10 @@ const Index = () => {
             </div>
           </div>
         ) : (
-          <div className="mt-4 space-y-4">
+          <div className={`mt-4 ${homeCompactCards ? "space-y-2.5" : "space-y-4"}`}>
             {filteredCards.map((card) => (
               <div key={card.serviceId}>
-                <ServerCard server={card.server} />
+                <ServerCard server={card.server} compact={homeCompactCards} />
               </div>
             ))}
           </div>
@@ -800,7 +821,13 @@ const Index = () => {
                 "Einige Live-Quellen konnten nicht geladen werden. Es werden nur erfolgreich geladene API-Daten angezeigt. Automatische Wiederholungen bleiben aktiv."
               )}
             </p>
-            <p className="mt-1 opacity-90">{errorMessages.join(" | ")}</p>
+            <p className="mt-1 opacity-90">
+              {pickLang(
+                language,
+                `${errorMessages.length} source requests failed during the latest refresh.`,
+                `${errorMessages.length} Quellenanfragen sind bei der letzten Aktualisierung fehlgeschlagen.`
+              )}
+            </p>
           </div>
         ) : null}
       </main>

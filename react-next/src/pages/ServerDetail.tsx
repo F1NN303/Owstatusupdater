@@ -1,9 +1,10 @@
-﻿import AppLayout from "@/components/AppLayout";
+import AppLayout from "@/components/AppLayout";
 import MiniSparkline from "@/components/MiniSparkline";
 import StatusBadge from "@/components/StatusBadge";
 import UptimeBar from "@/components/UptimeBar";
 import { getIconComponent, type Status } from "@/data/servers";
 import { pickLang, useAppShell, type AppLanguage } from "@/lib/appShell";
+import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
   fetchLegacyServiceDetail,
   type LegacyDetailServiceId,
@@ -333,31 +334,21 @@ function normalizeDetailId(id?: string): LegacyDetailServiceId | null {
   return key;
 }
 
-function formatDateTime(value?: string | null) {
-  if (!value) {
-    return "Unknown";
-  }
-  const parsed = new Date(value);
-  if (!Number.isFinite(parsed.getTime())) {
-    return "Unknown";
-  }
-  return parsed.toLocaleString();
-}
-
-function formatCompactDateTime(value?: string | null) {
-  if (!value) {
-    return "Unknown";
-  }
-  const parsed = new Date(value);
-  if (!Number.isFinite(parsed.getTime())) {
-    return "Unknown";
-  }
-  return parsed.toLocaleString(undefined, {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
+function formatDateTime(
+  value: string | null | undefined,
+  language: AppLanguage,
+  mode: "relative" | "absolute" | "both"
+) {
+  return formatTimestampByMode(value, {
+    language,
+    mode,
+    absoluteFormat: {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
   });
 }
 
@@ -1152,7 +1143,7 @@ function LinkListSection({
   emptyText: string;
   badgeLabel?: string;
 }) {
-  const { language } = useAppShell();
+  const { language, timeDisplayMode } = useAppShell();
   return (
     <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
       <div className="relative z-10">
@@ -1181,7 +1172,7 @@ function LinkListSection({
                 </p>
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-muted-foreground sm:text-[11px]">
                   {item.source ? <span>{item.source}</span> : null}
-                  {item.published_at ? <span>{formatDateTime(item.published_at)}</span> : null}
+                  {item.published_at ? <span>{formatDateTime(item.published_at, language, timeDisplayMode)}</span> : null}
                   {item.meta ? <span>{item.meta}</span> : null}
                 </div>
               </a>
@@ -1194,7 +1185,7 @@ function LinkListSection({
 }
 
 const ServerDetail = () => {
-  const { language } = useAppShell();
+  const { language, timeDisplayMode } = useAppShell();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const serviceId = normalizeDetailId(id);
@@ -1392,10 +1383,7 @@ const ServerDetail = () => {
               {pickLang(language, "Service not found", "Service nicht gefunden")}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {pickLang(language, "Supported routes:", "Unterstützte Routen:")}{" "}
-              <code>/status/overwatch</code> {pickLang(language, "and", "und")}{" "}
-              <code>/status/sony</code>, <code>/status/m365</code> {pickLang(language, "and", "und")}{" "}
-              <code>/status/openai</code>
+              {pickLang(language, "The requested service route is not available in this build.", "Die angeforderte Service-Route ist in diesem Build nicht verfügbar.")}
             </p>
           </div>
         </main>
@@ -1407,7 +1395,6 @@ const ServerDetail = () => {
   const reports24h =
     detail?.payload.analytics?.signal_metrics?.reports_24h ?? detail?.payload.outage?.reports_24h ?? "--";
   const severityScore = detail?.payload.analytics?.severity_score ?? "--";
-  const modelVersion = detail?.payload.analytics?.model_version ?? "--";
   const sourceOkCountNum =
     typeof detail?.payload.analytics?.source_ok_count === "number"
       ? detail.payload.analytics.source_ok_count
@@ -1507,7 +1494,7 @@ const ServerDetail = () => {
           : `${sourceUnavailableCount} Quellen nicht verfügbar`
       )
     : null;
-  const topUpdatedLabel = `${t("Updated", "Aktualisiert")}: ${formatCompactDateTime(detail?.payload.generated_at)}`;
+  const topUpdatedLabel = `${t("Updated", "Aktualisiert")}: ${formatDateTime(detail?.payload.generated_at, language, timeDisplayMode)}`;
   const topSourceLabel =
     sourceOkCountNum !== null && sourceTotalCountNum !== null
       ? t(`${sourceOkCountNum}/${sourceTotalCountNum} sources`, `${sourceOkCountNum}/${sourceTotalCountNum} Quellen`)
@@ -2168,7 +2155,6 @@ const ServerDetail = () => {
               <MetricTile label={t("Severity Score", "Schweregrad-Score")} value={String(severityScore)} badgeLabel={apiBadge} />
               <MetricTile label={t("Reports (24h)", "Meldungen (24h)")} value={String(reports24h)} badgeLabel={apiBadge} />
               <MetricTile label={t("Sources", "Quellen")} value={`${sourceOkCount}/${sourceTotalCount}`} badgeLabel={apiBadge} />
-              <MetricTile label={t("Model", "Modell")} value={String(modelVersion)} badgeLabel={apiBadge} />
             </section>
 
             <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
@@ -2292,4 +2278,3 @@ const ServerDetail = () => {
 };
 
 export default ServerDetail;
-
