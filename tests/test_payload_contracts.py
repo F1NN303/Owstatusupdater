@@ -65,6 +65,14 @@ class PayloadContractTests(unittest.TestCase):
                     self.assertIsInstance(source.get("name"), str)
                     self.assertIn("ok", source)
                     self.assertIsInstance(source.get("url"), str)
+                    if "source_id" in source:
+                        self.assertIsInstance(source.get("source_id"), str)
+                    if "role" in source:
+                        self.assertIsInstance(source.get("role"), str)
+                    if "criticality" in source:
+                        self.assertIsInstance(source.get("criticality"), str)
+                    if "used_for_scoring" in source:
+                        self.assertIsInstance(source.get("used_for_scoring"), bool)
 
                 outage = status["outage"]
                 self.assertIsInstance(outage, dict)
@@ -75,6 +83,15 @@ class PayloadContractTests(unittest.TestCase):
                 self.assertIsInstance(official, dict)
                 self.assertIn("updates", official)
                 self.assertIsInstance(official.get("updates"), list)
+
+                source_transparency = status.get("source_transparency")
+                if source_transparency is not None:
+                    self.assertIsInstance(source_transparency, dict)
+                    overview = source_transparency.get("overview")
+                    self.assertIsInstance(overview, dict)
+                    self.assertIsInstance(overview.get("source_ok"), int)
+                    self.assertIsInstance(overview.get("source_total"), int)
+                    self.assertIsInstance(source_transparency.get("sources"), list)
 
     def test_companion_artifacts_contract(self) -> None:
         for service, data_dir in SERVICE_DATA_DIRS.items():

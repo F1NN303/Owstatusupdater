@@ -67,9 +67,13 @@ export interface LegacyUserReports24hMeta {
 }
 
 export interface LegacySourceHealth {
+  source_id?: string;
   name?: string;
   kind?: string;
   url?: string;
+  role?: string | null;
+  criticality?: string | null;
+  used_for_scoring?: boolean | null;
   ok?: boolean;
   error?: string | null;
   item_count?: number | null;
@@ -78,6 +82,69 @@ export interface LegacySourceHealth {
   age_minutes?: number | null;
   duration_ms?: number | null;
   fetched_at?: string | null;
+  cache_hit?: boolean | null;
+}
+
+export interface LegacySourceTransparencySourceMetrics {
+  runs?: number | null;
+  ok?: number | null;
+  stale?: number | null;
+  success_rate?: number | null;
+  stale_rate?: number | null;
+  cache_hit_rate?: number | null;
+  avg_duration_ms?: number | null;
+}
+
+export interface LegacySourceTransparencySourceEntry {
+  source_id?: string;
+  name?: string;
+  kind?: string;
+  url?: string;
+  role?: string | null;
+  criticality?: string | null;
+  used_for_scoring?: boolean | null;
+  latest?: {
+    ok?: boolean | null;
+    freshness?: string | null;
+    duration_ms?: number | null;
+    cache_hit?: boolean | null;
+    at?: string | null;
+  };
+  metrics_24h?: LegacySourceTransparencySourceMetrics;
+  metrics_7d?: LegacySourceTransparencySourceMetrics;
+  consecutive_failures?: number | null;
+  last_success_at?: string | null;
+  last_failure_at?: string | null;
+}
+
+export interface LegacySourceTransparency {
+  schema_version?: number | null;
+  generated_at?: string | null;
+  overview?: {
+    confidence_score?: number | null;
+    confidence_tier?: string | null;
+    source_ok?: number | null;
+    source_total?: number | null;
+    required_ok?: number | null;
+    required_total?: number | null;
+    required_met?: boolean | null;
+    scoring_ok?: number | null;
+    scoring_total?: number | null;
+    scoring_met?: boolean | null;
+    degraded_reasons?: string[] | null;
+    ratios?: {
+      required_ratio?: number | null;
+      scoring_ratio?: number | null;
+      recent_success_ratio?: number | null;
+      freshness_ratio?: number | null;
+    };
+  };
+  decision?: {
+    health?: string | null;
+    severity_key?: string | null;
+    explanation?: string | null;
+  };
+  sources?: LegacySourceTransparencySourceEntry[];
 }
 
 export interface LegacyStatusDetailPayload {
@@ -132,6 +199,7 @@ export interface LegacyStatusDetailPayload {
   social?: LegacyLinkItem[];
   known_resources?: LegacyLinkItem[];
   sources?: LegacySourceHealth[];
+  source_transparency?: LegacySourceTransparency;
   changes?: {
     summary?: {
       new_incidents?: number;

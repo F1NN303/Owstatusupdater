@@ -4,6 +4,7 @@ import hashlib
 import importlib
 import inspect
 import json
+import re
 import sys
 from email.utils import format_datetime
 from pathlib import Path
@@ -22,6 +23,12 @@ SERVICE_CONFIG_DIR = ROOT / "config" / "services"
 SERVICE_CONFIG_GLOBS = ("*.yaml", "*.yml")
 SERVICE_CONFIG_REQUIRED_KEYS = {"label", "builder", "site_url", "data_dir", "state_path"}
 DEFAULT_SERVICE_PREFERRED = "overwatch"
+SOURCE_RELIABILITY_RETENTION_HOURS = 7 * 24
+SOURCE_RELIABILITY_WINDOW_HOURS = 24
+SOURCE_RELIABILITY_MAX_RUNS = 500
+SOURCE_FRESHNESS_OK = {"fresh", "warm"}
+SOURCE_ROLE_VALUES = {"official", "provider", "community", "social", "probe"}
+SOURCE_CRITICALITY_VALUES = {"required", "supporting", "optional"}
 
 
 def _resolve_builder(builder_target: str):
@@ -331,6 +338,7 @@ def _read_state(path: Path) -> dict:
             "report_index": {},
             "last_alert_id": None,
             "last_good_outage_snapshot": None,
+            "source_reliability": {},
         }
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -343,6 +351,345 @@ def _read_state(path: Path) -> dict:
         "report_index": dict(data.get("report_index", {})),
         "last_alert_id": data.get("last_alert_id"),
         "last_good_outage_snapshot": data.get("last_good_outage_snapshot"),
+        "source_reliability": dict(data.get("source_reliability", {})),
+    }
+
+
+def _slugify_source_id(value: str | None) -> str:
+    normalized = re.sub(r"[^a-z0-9]+", "-", str(value or "").strip().lower()).strip("-")
+    return normalized[:64]
+
+
+def _normalize_source_role(value: object) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized in SOURCE_ROLE_VALUES:
+        return normalized
+    return "provider"
+
+
+def _normalize_source_criticality(value: object) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized in SOURCE_CRITICALITY_VALUES:
+        return normalized
+    return "supporting"
+
+
+def _normalize_source_freshness(value: object) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized in {"fresh", "warm", "stale", "unknown"}:
+        return normalized
+    return "unknown"
+
+
+def _prune_source_runs(raw_runs: object, now: dt.datetime) -> list[dict[str, object]]:
+    if not isinstance(raw_runs, list):
+        return []
+
+    cutoff = now - dt.timedelta(hours=SOURCE_RELIABILITY_RETENTION_HOURS)
+    runs: list[dict[str, object]] = []
+    for run in raw_runs:
+        if not isinstance(run, dict):
+            continue
+        at_text = str(run.get("at") or "").strip()
+        parsed_at = _parse_iso8601(at_text)
+        if not parsed_at or parsed_at < cutoff:
+            continue
+        duration_ms = _parse_int(run.get("duration_ms"), default=None)
+        if isinstance(duration_ms, int):
+            duration_ms = max(duration_ms, 0)
+        runs.append(
+            {
+                "at": _iso_utc(parsed_at),
+                "ok": bool(run.get("ok")),
+                "freshness": _normalize_source_freshness(run.get("freshness")),
+                "duration_ms": duration_ms,
+                "cache_hit": bool(run.get("cache_hit")),
+            }
+        )
+
+    runs.sort(key=lambda item: _parse_iso8601(item.get("at")) or dt.datetime.min.replace(tzinfo=dt.UTC))
+    if len(runs) > SOURCE_RELIABILITY_MAX_RUNS:
+        runs = runs[-SOURCE_RELIABILITY_MAX_RUNS:]
+    return runs
+
+
+def _source_window_metrics(runs: list[dict[str, object]], now: dt.datetime, window_hours: int) -> dict[str, object]:
+    cutoff = now - dt.timedelta(hours=max(window_hours, 1))
+    selected = [
+        run
+        for run in runs
+        if (_parse_iso8601(run.get("at")) or dt.datetime.min.replace(tzinfo=dt.UTC)) >= cutoff
+    ]
+    total = len(selected)
+    ok_count = sum(1 for run in selected if bool(run.get("ok")))
+    stale_count = sum(1 for run in selected if _normalize_source_freshness(run.get("freshness")) not in SOURCE_FRESHNESS_OK)
+    cache_hit_count = sum(1 for run in selected if bool(run.get("cache_hit")))
+
+    durations: list[int] = []
+    for run in selected:
+        duration_ms = _parse_int(run.get("duration_ms"), default=None)
+        if isinstance(duration_ms, int) and duration_ms >= 0:
+            durations.append(duration_ms)
+
+    return {
+        "runs": total,
+        "ok": ok_count,
+        "stale": stale_count,
+        "success_rate": round((ok_count / total) * 100, 1) if total > 0 else None,
+        "stale_rate": round((stale_count / total) * 100, 1) if total > 0 else None,
+        "cache_hit_rate": round((cache_hit_count / total) * 100, 1) if total > 0 else None,
+        "avg_duration_ms": round(sum(durations) / len(durations), 1) if durations else None,
+    }
+
+
+def _source_consecutive_failures(runs: list[dict[str, object]]) -> int:
+    count = 0
+    for run in reversed(runs):
+        if bool(run.get("ok")):
+            break
+        count += 1
+    return count
+
+
+def _build_source_reliability_state(
+    previous_state: dict[str, object],
+    sources: object,
+    now: dt.datetime,
+) -> tuple[dict[str, dict[str, object]], list[str]]:
+    previous_map = previous_state.get("source_reliability")
+    previous_reliability = previous_map if isinstance(previous_map, dict) else {}
+    now_iso = _iso_utc(now)
+    output: dict[str, dict[str, object]] = {}
+    ordered_ids: list[str] = []
+    seen_ids: set[str] = set()
+
+    rows = sources if isinstance(sources, list) else []
+    for index, raw_source in enumerate(rows):
+        if not isinstance(raw_source, dict):
+            continue
+
+        source_name = str(raw_source.get("name") or "").strip() or f"Source {index + 1}"
+        source_id = _slugify_source_id(raw_source.get("source_id") or source_name) or f"source-{index + 1}"
+        base_source_id = source_id
+        suffix = 2
+        while source_id in seen_ids:
+            source_id = f"{base_source_id}-{suffix}"
+            suffix += 1
+        seen_ids.add(source_id)
+        ordered_ids.append(source_id)
+
+        previous_entry = previous_reliability.get(source_id)
+        previous_runs = _prune_source_runs(
+            previous_entry.get("runs") if isinstance(previous_entry, dict) else None,
+            now,
+        )
+
+        duration_ms = _parse_int(raw_source.get("duration_ms"), default=None)
+        if isinstance(duration_ms, int):
+            duration_ms = max(duration_ms, 0)
+        previous_runs.append(
+            {
+                "at": now_iso,
+                "ok": bool(raw_source.get("ok")),
+                "freshness": _normalize_source_freshness(raw_source.get("freshness")),
+                "duration_ms": duration_ms,
+                "cache_hit": bool(raw_source.get("cache_hit")),
+            }
+        )
+        runs = _prune_source_runs(previous_runs, now)
+
+        last_success_at = None
+        last_failure_at = None
+        for run in reversed(runs):
+            if last_success_at is None and bool(run.get("ok")):
+                last_success_at = run.get("at")
+            if last_failure_at is None and not bool(run.get("ok")):
+                last_failure_at = run.get("at")
+            if last_success_at and last_failure_at:
+                break
+
+        output[source_id] = {
+            "source_id": source_id,
+            "name": source_name,
+            "kind": str(raw_source.get("kind") or "unknown"),
+            "url": str(raw_source.get("url") or ""),
+            "role": _normalize_source_role(raw_source.get("role")),
+            "criticality": _normalize_source_criticality(raw_source.get("criticality")),
+            "used_for_scoring": bool(raw_source.get("used_for_scoring", True)),
+            "runs": runs,
+            "last_success_at": last_success_at,
+            "last_failure_at": last_failure_at,
+            "updated_at": now_iso,
+        }
+
+    return output, ordered_ids
+
+
+def _build_source_transparency(
+    payload: dict[str, object],
+    source_reliability: dict[str, dict[str, object]],
+    source_order: list[str],
+    now: dt.datetime,
+) -> dict[str, object]:
+    analytics = payload.get("analytics") if isinstance(payload.get("analytics"), dict) else {}
+    total_sources = 0
+    ok_sources = 0
+    fresh_sources = 0
+    required_total = 0
+    required_ok = 0
+    required_fresh = 0
+    scoring_total = 0
+    scoring_ok = 0
+    recent_success_ratios: list[float] = []
+    max_consecutive_failures = 0
+    source_rows: list[dict[str, object]] = []
+
+    for source_id in source_order:
+        entry = source_reliability.get(source_id)
+        if not isinstance(entry, dict):
+            continue
+        runs = entry.get("runs") if isinstance(entry.get("runs"), list) else []
+        latest = runs[-1] if runs else {}
+        latest_ok = bool(latest.get("ok"))
+        latest_freshness = _normalize_source_freshness(latest.get("freshness"))
+        latest_fresh = latest_freshness in SOURCE_FRESHNESS_OK
+
+        total_sources += 1
+        if latest_ok:
+            ok_sources += 1
+        if latest_fresh:
+            fresh_sources += 1
+
+        role = _normalize_source_role(entry.get("role"))
+        criticality = _normalize_source_criticality(entry.get("criticality"))
+        used_for_scoring = bool(entry.get("used_for_scoring", True))
+        if criticality == "required":
+            required_total += 1
+            if latest_ok:
+                required_ok += 1
+            if latest_fresh:
+                required_fresh += 1
+        if used_for_scoring:
+            scoring_total += 1
+            if latest_ok:
+                scoring_ok += 1
+
+        metrics_24h = _source_window_metrics(runs, now, SOURCE_RELIABILITY_WINDOW_HOURS)
+        metrics_7d = _source_window_metrics(runs, now, SOURCE_RELIABILITY_RETENTION_HOURS)
+        success_24h = metrics_24h.get("success_rate")
+        if isinstance(success_24h, (int, float)):
+            recent_success_ratios.append(float(success_24h) / 100.0)
+        else:
+            recent_success_ratios.append(1.0 if latest_ok else 0.0)
+
+        consecutive_failures = _source_consecutive_failures(runs)
+        max_consecutive_failures = max(max_consecutive_failures, consecutive_failures)
+
+        source_rows.append(
+            {
+                "source_id": source_id,
+                "name": str(entry.get("name") or source_id),
+                "kind": str(entry.get("kind") or "unknown"),
+                "url": str(entry.get("url") or ""),
+                "role": role,
+                "criticality": criticality,
+                "used_for_scoring": used_for_scoring,
+                "latest": {
+                    "ok": latest_ok,
+                    "freshness": latest_freshness,
+                    "duration_ms": _parse_int(latest.get("duration_ms"), default=None),
+                    "cache_hit": bool(latest.get("cache_hit")),
+                    "at": latest.get("at"),
+                },
+                "metrics_24h": metrics_24h,
+                "metrics_7d": metrics_7d,
+                "consecutive_failures": consecutive_failures,
+                "last_success_at": entry.get("last_success_at"),
+                "last_failure_at": entry.get("last_failure_at"),
+            }
+        )
+
+    if total_sources > 0:
+        required_ratio = (required_ok / required_total) if required_total > 0 else (ok_sources / total_sources)
+        scoring_ratio = (scoring_ok / scoring_total) if scoring_total > 0 else required_ratio
+        recent_success_ratio = sum(recent_success_ratios) / max(len(recent_success_ratios), 1)
+        freshness_ratio = fresh_sources / total_sources
+        confidence_score = round(
+            (required_ratio * 0.45 + scoring_ratio * 0.25 + recent_success_ratio * 0.20 + freshness_ratio * 0.10)
+            * 100.0,
+            1,
+        )
+    else:
+        required_ratio = 0.0
+        scoring_ratio = 0.0
+        recent_success_ratio = 0.0
+        freshness_ratio = 0.0
+        confidence_score = 0.0
+
+    if confidence_score >= 85:
+        confidence_tier = "high"
+    elif confidence_score >= 65:
+        confidence_tier = "medium"
+    else:
+        confidence_tier = "low"
+
+    required_met = required_total == 0 or required_ok == required_total
+    scoring_required_min = max(1, int((scoring_total * 0.6) + 0.999)) if scoring_total > 0 else 0
+    scoring_met = scoring_total == 0 or scoring_ok >= scoring_required_min
+
+    degraded_reasons: list[str] = []
+    if total_sources == 0:
+        degraded_reasons.append("no_sources_configured")
+    if required_total > 0 and required_ok < required_total:
+        degraded_reasons.append("required_source_failure")
+    if ok_sources < total_sources:
+        degraded_reasons.append("partial_source_failure")
+    if required_total > 0 and required_fresh < required_total:
+        degraded_reasons.append("required_source_stale")
+    if freshness_ratio < 0.7 and total_sources > 0:
+        degraded_reasons.append("stale_source_data")
+    if recent_success_ratio < 0.7 and total_sources > 0:
+        degraded_reasons.append("low_recent_success_rate")
+    if max_consecutive_failures >= 3:
+        degraded_reasons.append("repeated_source_failures")
+
+    if degraded_reasons:
+        explanation = (
+            "Reliability constraints detected: "
+            + ", ".join(reason.replace("_", " ") for reason in degraded_reasons[:3])
+            + "."
+        )
+    else:
+        explanation = "All configured sources are healthy and recently refreshed."
+
+    return {
+        "schema_version": 1,
+        "generated_at": payload.get("generated_at") or _iso_utc(now),
+        "overview": {
+            "confidence_score": confidence_score,
+            "confidence_tier": confidence_tier,
+            "source_ok": ok_sources,
+            "source_total": total_sources,
+            "required_ok": required_ok,
+            "required_total": required_total,
+            "required_met": required_met,
+            "scoring_ok": scoring_ok,
+            "scoring_total": scoring_total,
+            "scoring_met": scoring_met,
+            "degraded_reasons": degraded_reasons,
+            "ratios": {
+                "required_ratio": round(required_ratio, 3),
+                "scoring_ratio": round(scoring_ratio, 3),
+                "recent_success_ratio": round(recent_success_ratio, 3),
+                "freshness_ratio": round(freshness_ratio, 3),
+            },
+        },
+        "decision": {
+            "health": str(payload.get("health") or "error"),
+            "severity_key": str(analytics.get("severity_key") or "unknown"),
+            "explanation": explanation,
+        },
+        "sources": source_rows,
     }
 
 
@@ -639,14 +986,20 @@ def _build_point(payload: dict, point_time: dt.datetime) -> dict:
     for source in sources:
         if not isinstance(source, dict):
             continue
-        name = str(source.get("name") or "").strip()
-        if not name:
+        source_id = _slugify_source_id(source.get("source_id") or source.get("name"))
+        name = str(source.get("name") or source_id or "").strip()
+        if not source_id:
             continue
-        source_states[name] = {
+        source_states[source_id] = {
+            "name": name,
+            "source_id": source_id,
             "ok": bool(source.get("ok")),
-            "freshness": str(source.get("freshness") or "unknown"),
+            "freshness": _normalize_source_freshness(source.get("freshness")),
             "item_count": int(source.get("item_count") or 0),
             "kind": str(source.get("kind") or "unknown"),
+            "role": _normalize_source_role(source.get("role")),
+            "criticality": _normalize_source_criticality(source.get("criticality")),
+            "used_for_scoring": bool(source.get("used_for_scoring", True)),
         }
 
     return {
@@ -708,14 +1061,20 @@ def _normalize_history_point(point: dict) -> dict | None:
     for source_name, source_state in raw_source_states.items():
         if not isinstance(source_name, str) or not isinstance(source_state, dict):
             continue
-        freshness = str(source_state.get("freshness") or "unknown")
-        if freshness not in {"fresh", "warm", "stale", "unknown"}:
-            freshness = "unknown"
-        source_states[source_name] = {
+        source_id = _slugify_source_id(source_state.get("source_id") or source_name)
+        if not source_id:
+            continue
+        freshness = _normalize_source_freshness(source_state.get("freshness"))
+        source_states[source_id] = {
+            "name": str(source_state.get("name") or source_name),
+            "source_id": source_id,
             "ok": bool(source_state.get("ok")),
             "freshness": freshness,
             "item_count": max(int(source_state.get("item_count") or 0), 0),
             "kind": str(source_state.get("kind") or "unknown"),
+            "role": _normalize_source_role(source_state.get("role")),
+            "criticality": _normalize_source_criticality(source_state.get("criticality")),
+            "used_for_scoring": bool(source_state.get("used_for_scoring", True)),
         }
 
     return {
@@ -931,6 +1290,17 @@ def _build_single_service(service_key: str, manifest_path: Path) -> None:
         builder_kwargs["scoring_profile"] = scoring_profile.strip()
 
     payload = _invoke_builder(config["builder"], builder_kwargs)
+    source_reliability, source_reliability_order = _build_source_reliability_state(
+        previous_state,
+        payload.get("sources"),
+        now,
+    )
+    payload["source_transparency"] = _build_source_transparency(
+        payload,
+        source_reliability,
+        source_reliability_order,
+        now,
+    )
 
     changes, incident_index, report_index = _build_changes(previous_state, payload)
     payload["changes"] = changes
@@ -972,6 +1342,7 @@ def _build_single_service(service_key: str, manifest_path: Path) -> None:
         "report_index": report_index,
         "last_alert_id": alerts.get("events", [{}])[0].get("id") if alerts.get("events") else previous_state.get("last_alert_id"),
         "last_good_outage_snapshot": next_last_good_outage_snapshot,
+        "source_reliability": source_reliability,
     }
     state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 

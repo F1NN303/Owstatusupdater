@@ -10,6 +10,8 @@ from typing import Any, Callable, Generic, Protocol, TypeVar
 T = TypeVar("T")
 
 LOGGER = logging.getLogger("services.core.source_runner")
+SOURCE_ROLES = {"official", "provider", "community", "social", "probe"}
+SOURCE_CRITICALITIES = {"required", "supporting", "optional"}
 
 
 @dataclass(frozen=True)
@@ -19,6 +21,9 @@ class SourceAdapterSpec:
     name: str
     kind: str
     url: str
+    role: str = "provider"
+    criticality: str = "supporting"
+    used_for_scoring: bool = True
     cache_ttl_seconds: int = 0
 
 
@@ -62,6 +67,20 @@ _CACHE_LOCK = threading.Lock()
 _CACHE: dict[str, tuple[float, Any]] = {}
 
 
+def _normalize_source_role(value: Any) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized in SOURCE_ROLES:
+        return normalized
+    return "provider"
+
+
+def _normalize_source_criticality(value: Any) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized in SOURCE_CRITICALITIES:
+        return normalized
+    return "supporting"
+
+
 def _cache_get(key: str, ttl_seconds: int) -> tuple[bool, Any]:
     if ttl_seconds <= 0:
         return False, None
@@ -90,6 +109,9 @@ def run_source_adapter(
     safe_error_message: Callable[[Exception], str],
 ) -> SourceRunResult[T]:
     spec = adapter.spec
+    role = _normalize_source_role(spec.role)
+    criticality = _normalize_source_criticality(spec.criticality)
+    used_for_scoring = bool(spec.used_for_scoring)
     started = time.perf_counter()
     cache_key = f"{spec.service_id}:{spec.adapter_id}"
 
@@ -111,9 +133,13 @@ def run_source_adapter(
         freshness, age_minutes = source_freshness(last_item_at)
         duration_ms = int((time.perf_counter() - started) * 1000)
         source_entry = {
+            "source_id": spec.adapter_id,
             "name": spec.name,
             "kind": spec.kind,
             "url": spec.url,
+            "role": role,
+            "criticality": criticality,
+            "used_for_scoring": used_for_scoring,
             "ok": True,
             "error": None,
             "item_count": item_count if isinstance(item_count, int) else None,
@@ -122,6 +148,7 @@ def run_source_adapter(
             "age_minutes": age_minutes,
             "duration_ms": duration_ms,
             "fetched_at": utc_now_iso(),
+            "cache_hit": cache_hit,
         }
         LOGGER.info(
             "source_run service=%s adapter=%s ok=true cache_hit=%s duration_ms=%s items=%s freshness=%s",
@@ -137,9 +164,13 @@ def run_source_adapter(
         duration_ms = int((time.perf_counter() - started) * 1000)
         error = safe_error_message(exc)
         source_entry = {
+            "source_id": spec.adapter_id,
             "name": spec.name,
             "kind": spec.kind,
             "url": spec.url,
+            "role": role,
+            "criticality": criticality,
+            "used_for_scoring": used_for_scoring,
             "ok": False,
             "error": error,
             "item_count": 0,
@@ -148,6 +179,7 @@ def run_source_adapter(
             "age_minutes": None,
             "duration_ms": duration_ms,
             "fetched_at": utc_now_iso(),
+            "cache_hit": cache_hit,
         }
         LOGGER.warning(
             "source_run service=%s adapter=%s ok=false cache_hit=%s duration_ms=%s error=%s",

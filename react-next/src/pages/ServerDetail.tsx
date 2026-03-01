@@ -1501,6 +1501,34 @@ const ServerDetail = () => {
       : null;
   const apiBadge = t("API", "API");
   const derivedBadge = t("Derived", "Abgeleitet");
+  const sourceTransparencyOverview = detail?.payload.source_transparency?.overview;
+  const sourceTransparencyDecision = detail?.payload.source_transparency?.decision;
+  const sourceTransparencySources = clampList(detail?.payload.source_transparency?.sources || [], 8);
+  const sourceConfidenceScore =
+    typeof sourceTransparencyOverview?.confidence_score === "number"
+      ? sourceTransparencyOverview.confidence_score
+      : null;
+  const sourceConfidenceTier = String(sourceTransparencyOverview?.confidence_tier || "unknown").toLowerCase();
+  const sourceReliabilityReasons = Array.isArray(sourceTransparencyOverview?.degraded_reasons)
+    ? sourceTransparencyOverview.degraded_reasons.slice(0, 4)
+    : [];
+  const sourceReliabilityToneClass =
+    sourceConfidenceTier === "high"
+      ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-300"
+      : sourceConfidenceTier === "medium"
+        ? "border-amber-300/20 bg-amber-300/10 text-amber-200"
+        : "border-rose-300/20 bg-rose-300/10 text-rose-200";
+  const formatReliabilityReasonLabel = (value?: string | null) => {
+    const key = String(value || "").toLowerCase();
+    if (key === "required_source_failure") return t("Required source failure", "Pflichtquelle fehlgeschlagen");
+    if (key === "partial_source_failure") return t("Partial source failure", "Teilweiser Quellenausfall");
+    if (key === "required_source_stale") return t("Required source stale", "Pflichtquelle veraltet");
+    if (key === "stale_source_data") return t("Stale source data", "Veraltete Quelldaten");
+    if (key === "low_recent_success_rate") return t("Low recent success rate", "Niedrige Erfolgsrate");
+    if (key === "repeated_source_failures") return t("Repeated source failures", "Wiederholte Quellenausfalle");
+    if (key === "no_sources_configured") return t("No sources configured", "Keine Quellen konfiguriert");
+    return key.replace(/_/g, " ");
+  };
   const formatRegionSeverityLabel = (value?: string | null) => {
     const key = String(value || "").toLowerCase();
     if (key === "stable") return t("Stable", "Stabil");
@@ -2155,6 +2183,86 @@ const ServerDetail = () => {
               <MetricTile label={t("Severity Score", "Schweregrad-Score")} value={String(severityScore)} badgeLabel={apiBadge} />
               <MetricTile label={t("Reports (24h)", "Meldungen (24h)")} value={String(reports24h)} badgeLabel={apiBadge} />
               <MetricTile label={t("Sources", "Quellen")} value={`${sourceOkCount}/${sourceTotalCount}`} badgeLabel={apiBadge} />
+            </section>
+
+            <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
+              <div className="relative z-10">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {t("Source Reliability", "Quellenzuverlassigkeit")}
+                  </h2>
+                  <DataOriginBadge label={apiBadge} tone="api" />
+                </div>
+                <div className="mt-3 space-y-2.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`rounded-full border px-2 py-0.5 text-[11px] ${sourceReliabilityToneClass}`}>
+                      {t("Confidence", "Vertrauen")}{" "}
+                      {sourceConfidenceScore !== null ? `${sourceConfidenceScore.toFixed(1)}%` : "n/a"} (
+                      {sourceConfidenceTier})
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-muted-foreground">
+                      {t("Required quorum", "Pflicht-Quorum")}:{" "}
+                      {`${sourceTransparencyOverview?.required_ok ?? 0}/${sourceTransparencyOverview?.required_total ?? 0}`}
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-muted-foreground">
+                      {t("Scoring quorum", "Scoring-Quorum")}:{" "}
+                      {`${sourceTransparencyOverview?.scoring_ok ?? 0}/${sourceTransparencyOverview?.scoring_total ?? 0}`}
+                    </span>
+                  </div>
+                  {sourceTransparencyDecision?.explanation ? (
+                    <p className="text-[11px] text-muted-foreground">{sourceTransparencyDecision.explanation}</p>
+                  ) : null}
+                  {sourceReliabilityReasons.length > 0 ? (
+                    <div className="flex flex-wrap gap-1.5">
+                      {sourceReliabilityReasons.map((reason) => (
+                        <span
+                          key={reason}
+                          className="rounded-full border border-amber-300/20 bg-amber-300/10 px-2 py-0.5 text-[10px] text-amber-200"
+                        >
+                          {formatReliabilityReasonLabel(reason)}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+                  {sourceTransparencySources.length > 0 ? (
+                    <div className="space-y-2">
+                      {sourceTransparencySources.map((source, index) => (
+                        <div
+                          key={`${source.source_id || source.name || "source"}-${index}`}
+                          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="truncate text-sm font-medium text-foreground">
+                              {source.name || source.source_id || t("Unknown source", "Unbekannte Quelle")}
+                            </p>
+                            <span
+                              className={`rounded-full border px-2 py-0.5 text-[10px] ${
+                                source.latest?.ok
+                                  ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-300"
+                                  : "border-rose-300/20 bg-rose-300/10 text-rose-200"
+                              }`}
+                            >
+                              {source.latest?.ok ? "OK" : t("Error", "Fehler")}
+                            </span>
+                          </div>
+                          <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
+                            <span>{t("role", "Rolle")}: {String(source.role || "unknown")}</span>
+                            <span>{t("criticality", "Kritikalitat")}: {String(source.criticality || "supporting")}</span>
+                            <span>{t("freshness", "Aktualitat")}: {formatSourceFreshnessLabel(source.latest?.freshness)}</span>
+                            <span>
+                              {t("24h success", "24h Erfolg")}:{" "}
+                              {typeof source.metrics_24h?.success_rate === "number"
+                                ? `${source.metrics_24h.success_rate}%`
+                                : "n/a"}
+                            </span>
+                            <span>{t("fail streak", "Fehler-Serie")}: {source.consecutive_failures ?? 0}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
             </section>
 
             <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
