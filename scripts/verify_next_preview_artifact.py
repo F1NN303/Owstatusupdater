@@ -12,6 +12,7 @@ ROOT_INDEX_HTML = SITE_ROOT / "index.html"
 INDEX_HTML = SITE_NEXT / "index.html"
 EXPECTED_BASE = "/Owstatusupdater/next/"
 EXPECTED_ROOT_BASE = "/Owstatusupdater/"
+SERVICE_BRANDING_TS = ROOT / "react-next" / "src" / "lib" / "serviceBranding.ts"
 
 
 def fail(message: str) -> None:
@@ -67,6 +68,24 @@ def assert_favicon(html: str, expected_href: str, site_dir: Path) -> None:
         fail(f"Missing {site_dir / 'favicon.ico'}")
 
 
+def extract_service_brand_assets(source: str) -> list[str]:
+    return re.findall(r'assetPath:\s*"([^"]+)"', source)
+
+
+def assert_service_brand_assets() -> None:
+    source = read_text(SERVICE_BRANDING_TS)
+    assets = sorted(set(extract_service_brand_assets(source)))
+    if not assets:
+        return
+    for rel in assets:
+        root_path = SITE_ROOT / rel
+        next_path = SITE_NEXT / rel
+        if not root_path.is_file():
+            fail(f"Missing root brand asset from build output: {root_path}")
+        if not next_path.is_file():
+            fail(f"Missing preview brand asset from build output: {next_path}")
+
+
 def assert_root_artifact() -> None:
     html = read_text(ROOT_INDEX_HTML)
     if 'http-equiv="refresh"' in html.lower():
@@ -117,6 +136,7 @@ def assert_source_contracts() -> None:
 def main() -> None:
     assert_root_artifact()
     assert_next_preview_artifact()
+    assert_service_brand_assets()
     assert_source_contracts()
 
     print("[verify-next] OK: root + /next artifact paths and preview routing/data path contracts look valid.")

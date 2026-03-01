@@ -12,7 +12,6 @@ REACT_DIR = ROOT / "react-next"
 DIST_DIR = REACT_DIR / "dist"
 SITE_DIR = ROOT / "site"
 SITE_NEXT_DIR = SITE_DIR / "next"
-ROOT_STATIC_FILES = ("index.html", "favicon.ico", "placeholder.svg", "robots.txt")
 
 
 def run(cmd: list[str], cwd: Path, extra_env: dict[str, str] | None = None) -> None:
@@ -43,25 +42,25 @@ def ensure_dist() -> None:
         raise FileNotFoundError(f"Missing dist assets: {DIST_DIR / 'assets'}")
 
 
-def sync_root_site() -> None:
+def sync_dist_public_entries(target_dir: Path) -> None:
     ensure_dist()
-    replace_dir(DIST_DIR / "assets", SITE_DIR / "assets")
-    for name in ROOT_STATIC_FILES:
-        src = DIST_DIR / name
-        if src.exists():
-            copy_file(src, SITE_DIR / name)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    for entry in DIST_DIR.iterdir():
+        destination = target_dir / entry.name
+        if entry.is_dir():
+            replace_dir(entry, destination)
+        else:
+            copy_file(entry, destination)
+
+
+def sync_root_site() -> None:
+    sync_dist_public_entries(SITE_DIR)
 
 
 def sync_preview_site() -> None:
-    ensure_dist()
     if SITE_NEXT_DIR.exists():
         shutil.rmtree(SITE_NEXT_DIR)
-    SITE_NEXT_DIR.mkdir(parents=True, exist_ok=True)
-    replace_dir(DIST_DIR / "assets", SITE_NEXT_DIR / "assets")
-    for name in ROOT_STATIC_FILES:
-        src = DIST_DIR / name
-        if src.exists():
-            copy_file(src, SITE_NEXT_DIR / name)
+    sync_dist_public_entries(SITE_NEXT_DIR)
 
 
 def build(base_path: str) -> None:
