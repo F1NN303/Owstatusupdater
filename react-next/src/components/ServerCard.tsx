@@ -10,9 +10,10 @@ import { pickLang, useAppShell } from "@/lib/appShell";
 interface ServerCardProps {
   server: ServerService;
   compact?: boolean;
+  reserveTopRightSpace?: boolean;
 }
 
-const ServerCard = ({ server, compact = false }: ServerCardProps) => {
+const ServerCard = ({ server, compact = false, reserveTopRightSpace = false }: ServerCardProps) => {
   const { language } = useAppShell();
   const navigate = useNavigate();
   const trendLabel = server.trendLabel || pickLang(language, "30-day uptime", "30-Tage-Uptime");
@@ -71,7 +72,11 @@ const ServerCard = ({ server, compact = false }: ServerCardProps) => {
               </div>
             </div>
           </div>
-          <div className={`flex items-center ${compact ? "gap-1.5" : "gap-2"}`}>
+          <div
+            className={`flex items-center ${compact ? "gap-1.5" : "gap-2"} ${
+              reserveTopRightSpace ? "mr-10" : ""
+            }`}
+          >
             <MiniSparkline data={server.responseHistory} />
             <ChevronRight size={16} className="text-muted-foreground" />
           </div>
