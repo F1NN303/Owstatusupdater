@@ -147,6 +147,36 @@ export interface LegacySourceTransparency {
   sources?: LegacySourceTransparencySourceEntry[];
 }
 
+export interface LegacyHistorySourceState {
+  source_id?: string;
+  name?: string;
+  ok?: boolean;
+  freshness?: string | null;
+  item_count?: number | null;
+  kind?: string | null;
+  role?: string | null;
+  criticality?: string | null;
+  used_for_scoring?: boolean | null;
+}
+
+export interface LegacyHistoryPoint {
+  t?: string | null;
+  health?: string | null;
+  reports_24h?: number | null;
+  severity_key?: string | null;
+  severity_score?: number | null;
+  source_ok?: number | null;
+  source_total?: number | null;
+  source_states?: Record<string, LegacyHistorySourceState>;
+}
+
+export interface LegacyHistoryPayload {
+  updated_at?: string | null;
+  cadence_minutes?: number | null;
+  retention_days?: number | null;
+  points?: LegacyHistoryPoint[];
+}
+
 export interface LegacyStatusDetailPayload {
   generated_at?: string;
   health?: string;
@@ -225,6 +255,7 @@ export interface LegacyServiceDetailResult {
     aliases?: string[];
   };
   payload: LegacyStatusDetailPayload;
+  history?: LegacyHistoryPayload | null;
   severity: LegacySeverity;
   tone: LegacyTone;
   sourceConfidenceText: string;
@@ -257,6 +288,22 @@ function formatConfidence(payload: LegacyStatusDetailPayload) {
   return "Source confidence unavailable";
 }
 
+function deriveHistoryPath(statusPath: string) {
+  const normalized = String(statusPath || "").trim();
+  if (!normalized) {
+    return "/data/history.json";
+  }
+  const withSlash = "/status.json";
+  if (normalized.endsWith(withSlash)) {
+    return `${normalized.slice(0, normalized.length - withSlash.length)}/history.json`;
+  }
+  const plain = "status.json";
+  if (normalized.endsWith(plain)) {
+    return `${normalized.slice(0, normalized.length - plain.length)}history.json`;
+  }
+  return normalized.replace(/\/?$/, "/history.json");
+}
+
 export async function fetchLegacyServiceDetail(
   id: LegacyDetailServiceId
 ): Promise<LegacyServiceDetailResult> {
@@ -265,14 +312,26 @@ export async function fetchLegacyServiceDetail(
     throw new Error(`Unsupported service id: ${id}`);
   }
 
-  const response = await fetch(`${resolveLegacyUrl(service.statusPath)}?t=${Date.now()}`, {
-    cache: "no-store",
-  });
+  const timestamp = Date.now();
+  const statusUrl = `${resolveLegacyUrl(service.statusPath)}?t=${timestamp}`;
+  const historyPath = deriveHistoryPath(service.statusPath);
+  const historyUrl = `${resolveLegacyUrl(historyPath)}?t=${timestamp}`;
+  const response = await fetch(statusUrl, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`Failed to load ${service.statusPath}: ${response.status}`);
   }
 
   const payload = (await response.json()) as LegacyStatusDetailPayload;
+  let history: LegacyHistoryPayload | null = null;
+  try {
+    const historyResponse = await fetch(historyUrl, { cache: "no-store" });
+    if (historyResponse.ok) {
+      history = (await historyResponse.json()) as LegacyHistoryPayload;
+    }
+  } catch {
+    history = null;
+  }
+
   const severity = normalizeLegacySeverity(
     payload.analytics?.severity_key || payload.outage?.current_status || payload.health
   );
@@ -280,6 +339,7 @@ export async function fetchLegacyServiceDetail(
   return {
     service,
     payload,
+    history,
     severity,
     tone: legacySeverityToTone(severity),
     sourceConfidenceText: formatConfidence(payload),

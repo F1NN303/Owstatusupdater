@@ -284,6 +284,69 @@ function extractUserReports24h(detail: LegacyServiceDetailResult): UserReport24h
     .slice(-120);
 }
 
+type SourceAgreementPoint = {
+  timestamp: string;
+  ok: number;
+  total: number;
+  ratio: number;
+};
+
+function extractSourceAgreement24h(detail: LegacyServiceDetailResult): SourceAgreementPoint[] {
+  const rows = detail.history?.points;
+  if (!Array.isArray(rows) || rows.length === 0) {
+    return [];
+  }
+
+  const normalized = rows
+    .map((row) => {
+      const timestamp = String(row?.t ?? "").trim();
+      const ok =
+        typeof row?.source_ok === "number" && Number.isFinite(row.source_ok)
+          ? Math.max(0, Math.round(row.source_ok))
+          : null;
+      const total =
+        typeof row?.source_total === "number" && Number.isFinite(row.source_total)
+          ? Math.max(0, Math.round(row.source_total))
+          : null;
+      if (!timestamp || ok === null || total === null || total <= 0) {
+        return null;
+      }
+      return {
+        timestamp,
+        ok,
+        total,
+        ratio: Math.max(0, Math.min(1, ok / total)),
+      };
+    })
+    .filter((point): point is SourceAgreementPoint => Boolean(point))
+    .sort((a, b) => {
+      const aTs = parseMaybeDate(a.timestamp)?.getTime() ?? 0;
+      const bTs = parseMaybeDate(b.timestamp)?.getTime() ?? 0;
+      return aTs - bTs;
+    });
+
+  if (normalized.length === 0) {
+    return [];
+  }
+
+  const latestTs = parseMaybeDate(normalized[normalized.length - 1].timestamp)?.getTime() ?? Date.now();
+  const cutoffTs = latestTs - 24 * 60 * 60 * 1000;
+  return normalized.filter((point) => {
+    const ts = parseMaybeDate(point.timestamp)?.getTime();
+    return typeof ts === "number" && ts >= cutoffTs;
+  });
+}
+
+function sourceAgreementLevel(ratio: number): 1 | 0.5 | 0 {
+  if (ratio >= 0.85) {
+    return 1;
+  }
+  if (ratio >= 0.6) {
+    return 0.5;
+  }
+  return 0;
+}
+
 function signalPercent(history: number[]) {
   if (!history.length) {
     return null;
@@ -1504,6 +1567,14 @@ const ServerDetail = () => {
   const sourceTransparencyOverview = detail?.payload.source_transparency?.overview;
   const sourceTransparencyDecision = detail?.payload.source_transparency?.decision;
   const sourceTransparencySources = clampList(detail?.payload.source_transparency?.sources || [], 8);
+  const sourceAgreement24h = detail ? extractSourceAgreement24h(detail) : [];
+  const sourceAgreementTrend = sourceAgreement24h.map((point) => sourceAgreementLevel(point.ratio));
+  const sourceAgreementLatest = sourceAgreement24h.length
+    ? sourceAgreement24h[sourceAgreement24h.length - 1]
+    : null;
+  const sourceAgreementLatestLabel = sourceAgreementLatest
+    ? `${(sourceAgreementLatest.ratio * 100).toFixed(1)}%`
+    : "n/a";
   const sourceConfidenceScore =
     typeof sourceTransparencyOverview?.confidence_score === "number"
       ? sourceTransparencyOverview.confidence_score
@@ -2222,6 +2293,23 @@ const ServerDetail = () => {
                           {formatReliabilityReasonLabel(reason)}
                         </span>
                       ))}
+                    </div>
+                  ) : null}
+                  {sourceAgreementTrend.length >= 4 ? (
+                    <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
+                      <div className="mb-2 flex items-center justify-between gap-2">
+                        <p className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+                          {t("Source Agreement (24h)", "Quellenabgleich (24h)")}
+                        </p>
+                        <p className="text-xs font-semibold text-foreground">
+                          {sourceAgreementLatestLabel}
+                        </p>
+                      </div>
+                      <UptimeBar data={sourceAgreementTrend} />
+                      <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground">
+                        <span>{t("24h ago", "Vor 24h")}</span>
+                        <span>{t("Now", "Jetzt")}</span>
+                      </div>
                     </div>
                   ) : null}
                   {sourceTransparencySources.length > 0 ? (
