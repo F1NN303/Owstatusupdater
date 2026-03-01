@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 import scripts.build_site_data as build_site_data
 import services.openai_aggregator as openai_aggregator
+import services.steam_aggregator as steam_aggregator
 from services.core.source_runner import CallableSourceAdapter, SourceAdapterSpec, SourceRunResult, run_source_adapter
 
 
@@ -159,6 +160,119 @@ class OpenAIAggregatorResilienceTests(unittest.TestCase):
         self.assertIsInstance(payload.get("sources"), list)
 
 
+class SteamAggregatorResilienceTests(unittest.TestCase):
+    def test_collect_payload_with_partial_source_failures(self) -> None:
+        server_info_data = {
+            "checked_at": "2026-02-27T00:00:00Z",
+            "servertime": 1772150400,
+            "servertimestring": "Fri Feb 27 00:00:00 2026",
+        }
+        cm_connect_data = {
+            "checked_at": "2026-02-27T00:00:00Z",
+            "sample_count": 50,
+            "load_sample_count": 50,
+            "avg_load": 38.2,
+            "max_load": 71.5,
+            "high_load_count": 0,
+            "critical_load_count": 0,
+            "top_datacenters": [{"dc": "iad", "count": 8}],
+        }
+        cm_list_data = {
+            "checked_at": "2026-02-27T00:00:00Z",
+            "tcp_count": 50,
+            "websocket_count": 50,
+            "total_endpoints": 100,
+        }
+        store_probe_data = {
+            "checked_at": "2026-02-27T00:00:00Z",
+            "name": "Steam Store",
+            "url": "https://store.steampowered.com/",
+            "status_code": 200,
+            "latency_ms": 620,
+            "content_length": 1000,
+        }
+        community_probe_data = {
+            "checked_at": "2026-02-27T00:00:00Z",
+            "name": "Steam Community",
+            "url": "https://steamcommunity.com/",
+            "status_code": 200,
+            "latency_ms": 540,
+            "content_length": 1000,
+        }
+
+        def _run_side_effect(**kwargs):
+            adapter_id = kwargs.get("adapter_id")
+            if adapter_id == "steam_server_info_api":
+                return SourceRunResult(
+                    ok=True,
+                    data=server_info_data,
+                    source=_source_entry("Steam Web API (GetServerInfo)", True),
+                )
+            if adapter_id == "steam_cm_list_connect_api":
+                return SourceRunResult(
+                    ok=True,
+                    data=cm_connect_data,
+                    source=_source_entry("Steam Directory API (GetCMListForConnect)", True),
+                )
+            if adapter_id == "steam_cm_list_api":
+                return SourceRunResult(
+                    ok=True,
+                    data=cm_list_data,
+                    source=_source_entry("Steam Directory API (GetCMList)", True),
+                )
+            if adapter_id == "steam_store_probe":
+                return SourceRunResult(
+                    ok=True,
+                    data=store_probe_data,
+                    source=_source_entry("Steam Store", True),
+                )
+            if adapter_id == "steam_community_probe":
+                return SourceRunResult(
+                    ok=True,
+                    data=community_probe_data,
+                    source=_source_entry("Steam Community", True),
+                )
+            if adapter_id == "isdown_steam":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("IsDown (Steam)", False),
+                    error="simulated failure",
+                )
+            raise AssertionError(f"Unexpected adapter_id: {adapter_id}")
+
+        with patch("services.steam_aggregator._run_steam_source", side_effect=_run_side_effect):
+            payload = steam_aggregator._collect_payload(scoring_profile="baseline_v1")
+
+        self.assertEqual(payload.get("health"), "degraded")
+        self.assertEqual(len(payload.get("sources") or []), 6)
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 5)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 6)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("outage", {}).get("components"), list)
+        self.assertIsInstance(payload.get("official", {}).get("summary"), str)
+
+    def test_collect_payload_when_all_sources_fail_returns_error_health(self) -> None:
+        def _run_side_effect(**kwargs):
+            name = str(kwargs.get("name") or kwargs.get("adapter_id") or "source")
+            return SourceRunResult(
+                ok=False,
+                data=None,
+                source=_source_entry(name, False),
+                error="simulated failure",
+            )
+
+        with patch("services.steam_aggregator._run_steam_source", side_effect=_run_side_effect):
+            payload = steam_aggregator._collect_payload(scoring_profile="baseline_v1")
+
+        self.assertEqual(payload.get("health"), "error")
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 6)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("sources"), list)
+
+
 if __name__ == "__main__":
     unittest.main()
-
