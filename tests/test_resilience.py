@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import patch
 
 import scripts.build_site_data as build_site_data
+import services.claude_aggregator as claude_aggregator
 import services.openai_aggregator as openai_aggregator
 import services.steam_aggregator as steam_aggregator
 from services.core.source_runner import CallableSourceAdapter, SourceAdapterSpec, SourceRunResult, run_source_adapter
@@ -151,6 +152,83 @@ class OpenAIAggregatorResilienceTests(unittest.TestCase):
 
         with patch("services.openai_aggregator._run_openai_source", side_effect=_run_side_effect):
             payload = openai_aggregator._collect_payload(scoring_profile="official_first_v1")
+
+        self.assertEqual(payload.get("health"), "error")
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 3)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("sources"), list)
+
+
+class ClaudeAggregatorResilienceTests(unittest.TestCase):
+    def test_collect_payload_with_partial_source_failures(self) -> None:
+        statusgator_data = {
+            "source": "StatusGator",
+            "source_type": "Downdetector-like",
+            "url": "https://statusgator.com/services/anthropic",
+            "summary": "StatusGator indicates Claude / Anthropic is currently degraded.",
+            "current_status": "degraded",
+            "reports_24h": 75,
+            "incidents": [
+                {
+                    "title": "Test incident",
+                    "started_at": "2026-02-27T00:00:00Z",
+                    "duration": "30m",
+                    "acknowledgement": "simulated",
+                }
+            ],
+            "top_reported_issues": [{"label": "Elevated errors", "count": 4}],
+        }
+
+        def _run_side_effect(**kwargs):
+            adapter_id = kwargs.get("adapter_id")
+            if adapter_id == "statusgator":
+                return SourceRunResult(
+                    ok=True,
+                    data=statusgator_data,
+                    source=_source_entry("StatusGator", True),
+                )
+            if adapter_id == "isdown_anthropic":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("IsDown (Anthropic)", False),
+                    error="simulated failure",
+                )
+            if adapter_id == "anthropic_statuspage_api":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("Claude Statuspage API", False),
+                    error="simulated failure",
+                )
+            raise AssertionError(f"Unexpected adapter_id: {adapter_id}")
+
+        with patch("services.claude_aggregator._run_claude_source", side_effect=_run_side_effect):
+            payload = claude_aggregator._collect_payload(scoring_profile="official_first_v1")
+
+        self.assertEqual(payload.get("health"), "degraded")
+        self.assertEqual(len(payload.get("sources") or []), 3)
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 1)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 3)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("outage", {}).get("incidents"), list)
+        self.assertIsInstance(payload.get("official", {}).get("summary"), str)
+
+    def test_collect_payload_when_all_sources_fail_returns_error_health(self) -> None:
+        def _run_side_effect(**kwargs):
+            name = str(kwargs.get("name") or kwargs.get("adapter_id") or "source")
+            return SourceRunResult(
+                ok=False,
+                data=None,
+                source=_source_entry(name, False),
+                error="simulated failure",
+            )
+
+        with patch("services.claude_aggregator._run_claude_source", side_effect=_run_side_effect):
+            payload = claude_aggregator._collect_payload(scoring_profile="official_first_v1")
 
         self.assertEqual(payload.get("health"), "error")
         self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)

@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-02
 Current branch: `main`
-Latest known commit at handoff update: `6f2ad53`
+Latest known commit at handoff update: `453d1c1`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -25,6 +25,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/sony/index.html`
   - `site/m365/index.html`
   - `site/openai/index.html`
+  - `site/claude/index.html`
   - `site/steam/index.html`
   - `site/legacy-home.html`
   - `site/legacy-overwatch.html`
@@ -51,6 +52,9 @@ Key files:
 - `scripts/build_site_data.py`
 - `react-next/src/lib/legacyServiceDetail.ts`
 - `react-next/src/pages/ServerDetail.tsx`
+- `services/claude_aggregator.py`
+- `config/services/claude.yaml`
+- `site/claude/data/*`
 
 ## UI State (Current)
 
@@ -67,6 +71,26 @@ Key files:
   - detail header (`react-next/src/pages/ServerDetail.tsx`)
 - Sources/trademark note doc:
   - `docs/brand-assets.md`
+
+### Claude Service (Anthropic) - Added
+- New service id: `claude`
+- New detail route: `/status/claude`
+- New legacy wrapper: `site/claude/index.html`
+- New generated data path: `site/claude/data/*`
+- Source strategy:
+  - official required: Anthropic Statuspage API (`/api/v2/status.json`, `/components.json`, `/incidents.json`)
+  - supporting corroboration: StatusGator + IsDown
+- Freshness monitor now includes `claude` endpoint.
+
+Key files:
+- `services/claude_aggregator.py`
+- `config/services/claude.yaml`
+- `react-next/src/lib/serviceManifest.ts`
+- `react-next/src/lib/serviceBranding.ts`
+- `react-next/public/brands/claude.svg`
+- `scripts/watch_data_freshness.py`
+- `tests/test_payload_contracts.py`
+- `tests/test_resilience.py`
 
 ### Favorites (Now Functional)
 - Favorites are no longer static shortcuts.

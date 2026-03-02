@@ -21,6 +21,10 @@ const BRAND_ASSETS: Record<string, ServiceBrandAsset> = {
     assetPath: "brands/openai.svg",
     label: "OpenAI / ChatGPT",
   },
+  claude: {
+    assetPath: "brands/claude.svg",
+    label: "Claude / Anthropic",
+  },
   steam: {
     assetPath: "brands/steam.svg",
     label: "Steam",
@@ -38,6 +42,8 @@ const SERVICE_ALIASES: Record<string, string> = {
   "microsoft-365": "m365",
   chatgpt: "openai",
   "open-ai": "openai",
+  anthropic: "claude",
+  "claude-ai": "claude",
   valve: "steam",
   "steam-platform": "steam",
 };

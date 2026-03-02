@@ -12,6 +12,8 @@ Current asset files and source references:
   - Source: https://upload.wikimedia.org/wikipedia/commons/0/0e/Microsoft_365_%282022%29.svg
 - `react-next/public/brands/openai.svg`
   - Source: https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg
+- `react-next/public/brands/claude.svg`
+  - Source: https://cdn.simpleicons.org/claude
 - `react-next/public/brands/steam.svg`
   - Source: https://cdn.simpleicons.org/steam
 
