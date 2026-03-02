@@ -1476,6 +1476,9 @@ const ServerDetail = () => {
   const sourceTotalCount = detail?.payload.analytics?.source_total_count ?? "--";
   const changeSummary = detail?.payload.changes?.summary;
   const serviceStatus = detail ? toneToStatus(detail.tone) : "degraded";
+  const serviceStatusLabel = detail?.severity === "minor"
+    ? pickLang(language, "Warning", "Warnung")
+    : undefined;
   const serviceIconName =
     detail?.service.iconName ||
     (serviceId === "sony" ? "Tv" : serviceId === "m365" ? "Globe" : serviceId === "openai" ? "Cpu" : "Gamepad2");
@@ -1898,7 +1901,7 @@ const ServerDetail = () => {
                 <div className="mt-2 rounded-2xl border border-white/10 bg-white/5 p-2.5 sm:p-3">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex min-w-0 flex-wrap items-center gap-2">
-                      <StatusBadge status={serviceStatus} size="md" />
+                      <StatusBadge status={serviceStatus} size="md" label={serviceStatusLabel} />
                       <span className="truncate text-[10px] text-muted-foreground sm:text-[11px]">
                         {quickMetricLabel}
                       </span>

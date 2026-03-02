@@ -227,12 +227,16 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
     typeof sourceOk === "number" && typeof sourceTotal === "number" && sourceTotal > sourceOk
       ? Math.max(sourceTotal - sourceOk, 0)
       : 0;
+  const statusLabel = detail.severity === "minor"
+    ? pickLang(language, "Warning", "Warnung")
+    : undefined;
 
   const server: ServerService = {
     id: detail.service.id,
     name,
     icon,
     status,
+    statusLabel,
     uptime: Number(score.toFixed(2)),
     metricLabel: deriveMetricLabel(detail, language),
     sourceUnavailableCount,

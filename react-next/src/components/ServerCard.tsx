@@ -49,7 +49,7 @@ const ServerCard = ({ server, compact = false, reserveTopRightSpace = false }: S
                 {server.name}
               </h3>
               <div className={`mt-0.5 flex flex-wrap items-center ${compact ? "gap-1.5" : "gap-2"}`}>
-                <StatusBadge status={server.status} />
+                <StatusBadge status={server.status} label={server.statusLabel} />
                 {server.metricLabel ? (
                   <span className={`text-muted-foreground ${compact ? "text-[10px]" : "text-[11px]"}`}>
                     {server.metricLabel}

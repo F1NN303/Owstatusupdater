@@ -7,6 +7,7 @@ export interface ServerService {
   name: string;
   icon: string; // lucide icon name
   status: Status;
+  statusLabel?: string;
   uptime: number; // percentage
   latency?: number;
   metricLabel?: string;
