@@ -1,193 +1,134 @@
 # Agent Handoff
 
-Last updated: 2026-02-25
+Last updated: 2026-03-02
 Current branch: `main`
-Latest known commit at handoff update: `3246472`
+Latest known commit at handoff update: `6f2ad53`
 
 ## Purpose
-This file is the persistent handoff for future agents. It captures the current project state, recent major changes, deployment behavior, known issues, and the recommended next steps.
+This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
 
-## Current Live Architecture (Important)
-- Public site is now React-first at project root:
+## Current Live Architecture
+- Public site root (React-first):
   - `https://f1nn303.github.io/Owstatusupdater/`
-- React preview copy is still published at:
+- React preview copy:
   - `https://f1nn303.github.io/Owstatusupdater/next/`
-- Legacy pages are preserved as fallbacks (not primary UI):
+- React routes in use:
+  - `/`
+  - `/favorites`
+  - `/status/:id`
+  - `/alerts` (canonical)
+  - `/email-alerts` (compat alias to Alerts page)
+  - `/settings`
+  - `/terms`
+- Legacy wrappers/fallbacks still exist for direct service entry points:
+  - `site/overwatch.html`
+  - `site/sony/index.html`
+  - `site/m365/index.html`
+  - `site/openai/index.html`
+  - `site/steam/index.html`
   - `site/legacy-home.html`
   - `site/legacy-overwatch.html`
   - `site/sony/legacy-index.html`
-- Public entry pages route into React:
-  - `site/index.html` -> React app
-  - `site/overwatch.html` -> React route wrapper
-  - `site/sony/index.html` -> React route wrapper
-  - `site/m365/index.html` -> React route wrapper
 
-## Build / Deploy Model (Changed)
-- React artifacts for root and `/next` are built in CI, not manually committed as part of normal UI work.
-- CI injects build metadata (commit SHA) so footer version should match deployed commit.
-- Relevant files:
-  - `.github/workflows/deploy-pages.yml`
-  - `scripts/build_react_artifacts.py`
-  - `scripts/verify_next_preview_artifact.py`
-  - `react-next/vite.config.ts`
+## Build and Deploy Model
+- React artifacts are built in CI and copied into:
+  - `site/` (root app)
+  - `site/next/` (preview app)
+- Build metadata (commit SHA) is injected for Settings version display.
+- Important fix shipped:
+  - `scripts/build_react_artifacts.py` now syncs all top-level `dist/` public entries (not only `assets` + a small static file list).
+  - This ensures `public/brands/*` files are deployed to both root and preview artifacts.
+- Guardrail shipped:
+  - `scripts/verify_next_preview_artifact.py` now verifies service brand assets declared in `react-next/src/lib/serviceBranding.ts` exist in both `site/` and `site/next/`.
 
-## Data Pipeline / Reliability State
-
-### Runtime State Privacy (Important)
-- Runtime workflow state is intended to persist via GitHub Actions cache (`.bot_state` path), not via tracked files in the public repo.
-- `.bot_state/*` should not be committed.
-- Public exposure checks are enforced in workflows via `scripts/check_public_exposure.py`.
-
-### Overwatch
-- Primary outage source: StatusGator
-- Secondary outage/report fallback: IsDown
-- Cached outage fallback is implemented to preserve outage data if StatusGator fails temporarily.
-- `StatusGator top reported issues` are parsed and shown in UI.
-- `StatusGator service health (24h)` series is parsed and shown as a real source-backed chart (not fake latency).
-- Fallback source unavailability is shown in UI with a red marker/badge.
+## Data Pipeline and Reliability
+- Source transparency and reliability ledger are active in payload and detail analysis UI.
+- 24h source agreement trend is shown in detail analysis.
+- Existing outage/status data contracts stay compatible with current frontend.
 
 Key files:
-- `services/ow_aggregator.py`
+- `services/core/source_runner.py`
 - `scripts/build_site_data.py`
-- `react-next/src/pages/ServerDetail.tsx`
 - `react-next/src/lib/legacyServiceDetail.ts`
-
-### Sony PSN
-- Fixed stale historical Sony rows being counted as active incidents.
-- Sony issue labels now have improved visibility using official feed-derived top issue labels (historical/active context aware).
-
-Key file:
-- `services/sony_aggregator.py`
-
-### Microsoft 365 (Phase 1 / Public-Safe)
-- New public-safe service using Microsoft public status page + `@MSFT365Status` mirror + StatusGator + IsDown.
-- Uses the same `status.json` / `history.json` / `summary.json` / `rss.xml` / `alerts.json` pipeline contract and React detail page.
-- `StatusGator service health (24h)` and `IsDown user reports (24h)` series are exposed for the existing chart UI.
-
-Key files:
-- `services/m365_aggregator.py`
-- `scripts/build_site_data.py`
-- `site/m365/index.html`
-
-### Freshness / Scheduling
-- UI shows stale-data warning if payload age exceeds threshold.
-- Watchdog workflow auto-triggers data refresh if data gets stale.
-
-Key files:
-- `scripts/watch_data_freshness.py`
-- `.github/workflows/watch-data-freshness.yml`
-
-## Security State (Recent Audit)
-- Public internal state files were removed from public site paths and moved to `.bot_state/`.
-- `.bot_state` persistence is now workflow-cache based and should not be tracked in Git.
-- Public `state.json` endpoints should no longer be exposed.
-- React runtime dependency vulnerabilities were cleaned up (runtime `npm audit --omit=dev` was brought to zero at the time of fix).
-
-Key files:
-- `scripts/build_site_data.py`
-- `scripts/send_brevo_major_alert.py`
-- `.github/workflows/update-site-data.yml`
-- `.github/workflows/send-test-email.yml`
-- `react-next/package.json`
-
-## UI State (React)
-
-### Mobile / Detail Pages
-- Detail pages use compact tabbed sections:
-  - `Overview`, `Incidents`, `Analysis`, `Sources`
-- Liquid-glass style tab switcher is implemented with swipe support and pixel-measured indicator positioning.
-- Multiple mobile spacing passes were applied to reduce wasted space.
-- Source unavailable markers (red badge) are shown when source health is partial.
-- `API` vs `Derived` badges are shown on metrics/charts for data transparency.
-
-Key file:
 - `react-next/src/pages/ServerDetail.tsx`
 
-### Home
-- Uses uploaded design style + live JSON-backed status cards for Overwatch / Sony / Microsoft 365.
-- No fake fallback cards are shown on API failure.
+## UI State (Current)
 
-Key file:
-- `react-next/src/pages/Index.tsx`
+### Service Icons (Brand Logos)
+- Real brand logos are used for key services with fallback to Lucide icons.
+- Brand assets live in:
+  - `react-next/public/brands/`
+- Mapping and resolver:
+  - `react-next/src/lib/serviceBranding.ts`
+- Shared renderer:
+  - `react-next/src/components/ServiceIdentityIcon.tsx`
+- Wired in:
+  - home cards (`react-next/src/components/ServerCard.tsx`)
+  - detail header (`react-next/src/pages/ServerDetail.tsx`)
+- Sources/trademark note doc:
+  - `docs/brand-assets.md`
 
-### Settings
-- Cleaned up to user-facing controls only:
-  - language
-  - reduced motion
-  - notifications shortcut
-  - about/version
-- Internal migration/planning/legacy links removed from user-facing settings UI.
-- Added public-facing `Terms & Ownership` link.
-
-Key file:
-- `react-next/src/pages/SettingsPage.tsx`
-
-### Alerts / Newsletter
-- React Alerts page now embeds the Brevo signup form inline (iframe) using `subscription.json`.
-- Includes config validation and fallback direct-link button if embed loading is slow or blocked.
+### Favorites (Now Functional)
+- Favorites are no longer static shortcuts.
+- Users can star/unstar services on home cards.
+- Starred services are persisted in browser-local settings state.
+- `/favorites` now renders starred services dynamically with live summary status and unstar action.
 
 Key files:
-- `react-next/src/pages/EmailAlerts.tsx`
-- `react-next/src/lib/legacySubscription.ts`
-- `site/data/subscription.json`
+- `react-next/src/lib/appShell.tsx`
+- `react-next/src/pages/Index.tsx`
+- `react-next/src/pages/Favorites.tsx`
+- `react-next/src/components/ServerCard.tsx`
 
-### Legal / Ownership UI
-- Public in-app legal page is available at `/terms`.
-- Shared footer link to `Terms & Ownership` is visible across React pages.
+### Alerts Exposure Hardening
+- Alerts page no longer displays internal-looking config details to end users (for example raw host/source path or raw technical error detail).
+- User-facing status/capability messaging remains.
 
 Key file:
+- `react-next/src/pages/EmailAlerts.tsx`
+
+### Legal Text
+- Terms page includes third-party trademark/logo clarification.
+- `NOTICE.md` includes matching third-party marks statement.
+
+Key files:
 - `react-next/src/pages/TermsPage.tsx`
+- `NOTICE.md`
 
-## Recent Important Commits (Context)
-- `3246472` - Add public terms page and legal footer link
-- `78dc269` - Harden public repo privacy and stop tracking runtime state
-- `404be53` - Simplified settings page and embedded Brevo alerts form
-- `223232d` - Tightened mobile detail layout spacing and labels
-- `0fcd008` - CI builds React artifacts + version SHA injection improvements
-- `4bc5b9a` - Security audit fixes (public state file exposure + dependency updates)
+## Recent Important Commits
+- `6f2ad53` - `fix(ui): uncramp favorite star on service cards`
+- `4749029` - `feat(favorites): add persistent service starring and harden alerts info exposure`
+- `bf6581b` - `fix(deploy): include public brand assets in root and preview artifacts`
+- `f987ec4` - `feat(ui): use real brand logos for service icons`
+- `f443dc0` - `feat(meta): add ios icon and social preview image with reliability fallback`
+- `e9ff19e` - `feat(reliability): add 24h source agreement trend to detail view`
+- `8582b6e` - `feat(reliability): add source transparency and rolling reliability ledger`
+- `37f8de4` - `feat(settings): ship settings v2 and tighten public exposure guards`
 
-## Known Operational Issue (Git Push Rejections)
-This repo frequently gets `git push` non-fast-forward rejections because scheduled GitHub Actions commit refreshed data to `main` while UI work is in progress.
+## Known Operational Reality
+- Push races with scheduled data refreshes are normal.
+- Standard recovery flow:
+  1. `git fetch origin`
+  2. `git rebase origin/main`
+  3. `git push origin main`
 
-Why:
-- Multiple writers push to `main`:
-  - auto data refresh workflow
-  - freshness watchdog-triggered refreshes
-  - manual UI commits
+## Ownership / Policy
+- Repo is public but proprietary (not open source).
+- See:
+  - `LICENSE`
+  - `NOTICE.md`
+  - in-app `/terms`
 
-Expected workflow for agents:
-1. Commit local work
-2. `git fetch origin`
-3. `git rebase origin/main`
-4. `git push origin main`
+## Validation Checklist (Before Shipping)
+- React UI changes: `npm.cmd run build` in `react-next`
+- Optional sanity tests: `npm.cmd run test` in `react-next`
+- Security-sensitive/data/deploy changes: `py -3 scripts/check_public_exposure.py`
+- Confirm in-app Settings version matches deployed commit SHA.
+- Confirm `/next` and root both load brand icons without `404`.
+- Confirm new changes are documented here before push.
 
-This is normal with current workflow design.
-
-## Ownership / Reuse Policy (Repo)
-- Repository is public but proprietary (not open source).
-- See `LICENSE` and `NOTICE.md` for usage restrictions and ownership notice.
-- Public app also exposes a visible `/terms` page for users.
-
-## Local Workspace Note (Do Not Accidentally Commit)
-There may be leftover untracked built artifacts from local builds. Example:
-- `site/assets/index-C7y6_Lob.js`
-- `site/assets/index-CC7hTBnL.css`
-- `site/next/assets/index-CC7hTBnL.css`
-- `site/next/assets/index-QCvhW3mY.js`
-
-These are local leftovers and should not be committed unless intentionally rebuilding/publishing artifacts manually.
-
-## Recommended Next Steps (UI / Product)
-1. Optional sticky mini header on detail pages (status + last update while scrolling)
-2. More aggressive mobile-only typography compaction in `Overview`
-3. Further simplify `Analysis` / `Sources` wording for non-technical users
-4. (Larger feature) real response-time/latency time-series pipeline if true latency graphs are desired
-5. Optional stronger freshness alerting to humans (webhook/email) if watchdog auto-recovery fails repeatedly
-
-## Quick Validation Checklist For Any Future UI Change
-- `npm.cmd run build` in `react-next`
-- confirm no fake/example data was reintroduced
-- confirm source unavailable red marker still appears for partial source failures
-- confirm mobile layout does not overlap bottom nav/tab switcher
-- push and allow CI to rebuild root + `/next`
-
+## Recommended Next Steps
+1. Add a small visual "starred" indicator in service detail header for favorited services.
+2. Add a quick "show favorites only" filter chip on home.
+3. Add lightweight tests for favorites persistence and star toggle behavior.
+4. Add one screenshot-based QA checklist entry for `/next` preview path regressions.

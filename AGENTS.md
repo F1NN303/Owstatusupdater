@@ -1,6 +1,6 @@
 ﻿# AGENTS.md - Owstatusupdater (Public-Safe Agent Guide)
 
-Last updated: 2026-02-25
+Last updated: 2026-03-02
 
 ## 0) Public Repo Hard Rule (Do Not Violate)
 - This repository is public. Treat all committed files as public.
@@ -14,6 +14,13 @@ Read these first, in order:
 1. `docs/AGENT_HANDOFF.md` (current project state, recent changes, backlog)
 2. `AGENTS.md` (this file - rules + workflow expectations)
 3. `git log --oneline -20`
+
+Documentation hard rule:
+- Every code/config/deploy change must be documented in `docs/AGENT_HANDOFF.md` before push.
+- Update at minimum:
+  - `Last updated` date
+  - `Latest known commit at handoff update`
+  - concise summary of what changed + affected files/routes
 
 ## 2) Canonical Repo / Paths
 - Repo root (local): `Owstatusupdater-main/project/mc-regeln-main`
