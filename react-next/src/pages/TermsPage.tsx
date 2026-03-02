@@ -1,4 +1,4 @@
-import AppLayout from "@/components/AppLayout";
+﻿import AppLayout from "@/components/AppLayout";
 import { pickLang, useAppShell } from "@/lib/appShell";
 import { ArrowLeft, ExternalLink, ShieldCheck, Scale } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ const TermsPage = () => {
             <Link
               to="/settings"
               className="glass flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90"
-              aria-label={t("Back to settings", "Zurück zu Einstellungen")}
+              aria-label={t("Back to settings", "Zurueck zu Einstellungen")}
             >
               <ArrowLeft size={16} className="text-foreground" />
             </Link>
@@ -41,7 +41,7 @@ const TermsPage = () => {
             <p className="text-[12px] leading-relaxed text-muted-foreground">
               {t(
                 "This project is public for deployment and collaboration, but it is proprietary and not open source.",
-                "Dieses Projekt ist für Deployment und Zusammenarbeit öffentlich, ist aber proprietär und nicht Open Source."
+                "Dieses Projekt ist fuer Deployment und Zusammenarbeit oeffentlich, ist aber proprietaer und nicht Open Source."
               )}
             </p>
             <p className="text-[12px] leading-relaxed text-muted-foreground">
@@ -65,7 +65,7 @@ const TermsPage = () => {
               <li>
                 {t(
                   "You may view and use the live website in a browser for normal personal use.",
-                  "Du darfst die Live-Website im Browser für normale persönliche Nutzung ansehen und verwenden."
+                  "Du darfst die Live-Website im Browser fuer normale persoenliche Nutzung ansehen und verwenden."
                 )}
               </li>
               <li>
@@ -77,7 +77,7 @@ const TermsPage = () => {
               <li>
                 {t(
                   "Public availability on GitHub/GitHub Pages does not grant reuse rights.",
-                  "Die öffentliche Verfügbarkeit auf GitHub/GitHub Pages gewährt keine Wiederverwendungsrechte."
+                  "Die oeffentliche Verfuegbarkeit auf GitHub/GitHub Pages gewaehrt keine Wiederverwendungsrechte."
                 )}
               </li>
             </ul>
@@ -110,50 +110,21 @@ const TermsPage = () => {
         <section className="glass glass-specular mt-3 rounded-2xl p-4">
           <div className="relative z-10 space-y-3">
             <div className="flex items-center gap-2">
-              <Scale size={14} className="text-primary/80" />
-              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {t("Imprint Notice (DE)", "Impressum-Hinweis (DE)")}
-              </h2>
-            </div>
-            <p className="text-[12px] leading-relaxed text-muted-foreground">
-              {t(
-                "This is a non-commercial hobby project. No business services or commercial offers are provided on this website.",
-                "Dies ist ein nicht-kommerzielles Hobbyprojekt. Auf dieser Website werden keine gewerblichen Leistungen oder kommerziellen Angebote bereitgestellt."
-              )}
-            </p>
-            <p className="text-[12px] leading-relaxed text-muted-foreground">
-              {t(
-                "Current operator assessment: under this non-commercial setup, no separate legal imprint details are published here.",
-                "Aktuelle Betreiber-Einschaetzung: Bei dieser nicht-kommerziellen Ausgestaltung werden hier keine separaten Impressumsangaben veroeffentlicht."
-              )}
-            </p>
-            <p className="text-[11px] leading-relaxed text-muted-foreground/90">
-              {t(
-                "Legal note only, no legal advice. If use or project scope changes, legal obligations (including imprint requirements) may change.",
-                "Nur Hinweis, keine Rechtsberatung. Wenn sich Nutzung oder Projektumfang aendern, koennen sich rechtliche Pflichten (einschliesslich Impressumspflicht) aendern."
-              )}
-            </p>
-          </div>
-        </section>
-
-        <section className="glass glass-specular mt-3 rounded-2xl p-4">
-          <div className="relative z-10 space-y-3">
-            <div className="flex items-center gap-2">
               <ShieldCheck size={14} className="text-primary/80" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {t("Security & Privacy", "Sicherheit & Privatsphäre")}
+                {t("Security & Privacy", "Sicherheit & Privatsphaere")}
               </h2>
             </div>
             <p className="text-[12px] leading-relaxed text-muted-foreground">
               {t(
-                "This site only uses public status data and public signup configuration. Secrets and internal runtime state should not be exposed in public outputs.",
-                "Diese Website verwendet nur öffentliche Statusdaten und öffentliche Anmeldekonfiguration. Geheimnisse und interne Laufzeitdaten dürfen nicht in öffentlichen Ausgaben erscheinen."
+                "This website is designed for a simple, secure, and transparent status experience.",
+                "Diese Website ist fuer ein einfaches, sicheres und transparentes Status-Erlebnis gestaltet."
               )}
             </p>
             <p className="text-[12px] leading-relaxed text-muted-foreground">
               {t(
-                "If you discover an accidental exposure, report it privately to the repository owner instead of posting sensitive details publicly.",
-                "Wenn du eine versehentliche Offenlegung entdeckst, melde sie bitte privat an den Repository-Inhaber statt sensible Details öffentlich zu posten."
+                "If you have questions about content or ownership, contact the repository owner.",
+                "Wenn du Fragen zu Inhalten oder Eigentum hast, kontaktiere den Repository-Inhaber."
               )}
             </p>
           </div>
@@ -166,7 +137,7 @@ const TermsPage = () => {
             rel="noreferrer"
             className="glass glass-specular flex items-center justify-between rounded-2xl px-4 py-3 text-sm text-foreground transition-colors hover:bg-white/5"
           >
-            <span>{t("Open LICENSE", "LICENSE öffnen")}</span>
+            <span>{t("Open LICENSE", "LICENSE oeffnen")}</span>
             <ExternalLink size={14} className="text-muted-foreground" />
           </a>
           <a
@@ -175,7 +146,7 @@ const TermsPage = () => {
             rel="noreferrer"
             className="glass glass-specular flex items-center justify-between rounded-2xl px-4 py-3 text-sm text-foreground transition-colors hover:bg-white/5"
           >
-            <span>{t("Open NOTICE", "NOTICE öffnen")}</span>
+            <span>{t("Open NOTICE", "NOTICE oeffnen")}</span>
             <ExternalLink size={14} className="text-muted-foreground" />
           </a>
         </section>

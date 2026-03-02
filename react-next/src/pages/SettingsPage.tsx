@@ -336,8 +336,8 @@ const SettingsPage = () => {
               <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] leading-relaxed text-muted-foreground">
                 {pickLang(
                   language,
-                  "Manage outage e-mail alerts in the Alerts tab. The signup form is embedded directly in the app.",
-                  "Verwalte Störungs-E-Mail-Alarme im Tab \"Alarme\". Das Anmeldeformular ist direkt in die App eingebettet."
+                  "Manage your outage e-mail alerts in the Alerts tab and stay updated instantly.",
+                  "Verwalte deine Störungs-E-Mail-Alarme im Tab \"Alarme\" und bleibe sofort informiert."
                 )}
               </p>
               <Link
@@ -388,8 +388,8 @@ const SettingsPage = () => {
                 <p className="text-[11px] leading-relaxed text-muted-foreground">
                   {pickLang(
                     language,
-                    "Status and outage data are loaded from the public JSON APIs used by the site.",
-                    "Status- und Störungsdaten werden aus den öffentlichen JSON-APIs der Website geladen."
+                    "Live service updates are refreshed continuously for a clear status overview.",
+                    "Live-Service-Updates werden laufend aktualisiert und bieten einen klaren Statusüberblick."
                   )}
                 </p>
               </div>

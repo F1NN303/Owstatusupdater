@@ -43,18 +43,18 @@ const EmailAlerts = () => {
 
   const statusText = (result: LegacySubscriptionLoadResult | null) => {
     if (!result || result.status === "loading") {
-      return t("Loading subscription config...", "Lade Abo-Konfiguration...");
+      return t("Preparing alert signup...", "Alarm-Anmeldung wird vorbereitet...");
     }
     if (result.status === "ready") {
-      return `${t("Ready", "Bereit")} · ${providerLabel(result.config?.provider)} ${t("form verified", "Formular geprüft")}`;
+      return `${t("Ready", "Bereit")} · ${providerLabel(result.config?.provider)} ${t("signup active", "Anmeldung aktiv")}`;
     }
     if (result.status === "missing") {
-      return t("Subscription form is not configured", "Abo-Formular ist nicht konfiguriert");
+      return t("Alert signup is currently unavailable", "Alarm-Anmeldung ist aktuell nicht verfügbar");
     }
     if (result.status === "invalid") {
-      return t("Subscription config is invalid", "Abo-Konfiguration ist ungültig");
+      return t("Alert signup is currently unavailable", "Alarm-Anmeldung ist aktuell nicht verfügbar");
     }
-    return t("Could not load subscription config", "Abo-Konfiguration konnte nicht geladen werden");
+    return t("Could not load alert signup right now", "Alarm-Anmeldung konnte aktuell nicht geladen werden");
   };
 
   const loadConfig = async () => {
@@ -113,8 +113,8 @@ const EmailAlerts = () => {
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">
               {t(
-                "Secure outage notifications via Brevo with captcha and double opt-in",
-                "Sichere Störungs-Benachrichtigungen via Brevo mit Captcha und Double-Opt-In"
+                "Stay ahead of outages with secure e-mail alerts powered by Brevo.",
+                "Bleibe Ausfällen voraus mit sicheren E-Mail-Alarmen powered by Brevo."
               )}
             </p>
           </div>
@@ -122,7 +122,7 @@ const EmailAlerts = () => {
             type="button"
             onClick={() => void loadConfig()}
             className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all active:scale-95"
-            aria-label={t("Refresh subscription config", "Abo-Konfiguration aktualisieren")}
+            aria-label={t("Refresh alert setup", "Alarm-Einrichtung aktualisieren")}
           >
             <RefreshCw
               size={18}
@@ -140,7 +140,7 @@ const EmailAlerts = () => {
                 </div>
                 <div className="min-w-0">
                   <h2 className="truncate text-sm font-bold text-foreground">
-                    {t("Subscription Configuration", "Abo-Konfiguration")}
+                    {t("Alert Setup", "Alarm-Einrichtung")}
                   </h2>
                   <p className="mt-0.5 text-xs text-muted-foreground">{statusText(configResult)}</p>
                 </div>
@@ -160,12 +160,12 @@ const EmailAlerts = () => {
               </div>
               <div>
                 <h2 className="text-sm font-semibold text-foreground">
-                  {t("Newsletter Signup", "Newsletter-Anmeldung")}
+                  {t("Alert Signup", "Alarm-Anmeldung")}
                 </h2>
                 <p className="text-[11px] text-muted-foreground">
                   {t(
-                    "Embedded Brevo form using the same subscription.json config",
-                    "Eingebettetes Brevo-Formular mit derselben subscription.json-Konfiguration"
+                    "Complete your secure Brevo signup directly in the form below.",
+                    "Schließe deine sichere Brevo-Anmeldung direkt im Formular unten ab."
                   )}
                 </p>
               </div>
@@ -184,7 +184,7 @@ const EmailAlerts = () => {
                   <iframe
                     key={embedUrl}
                     src={embedUrl}
-                    title={t("Brevo newsletter signup", "Brevo-Newsletter-Anmeldung")}
+                    title={t("Brevo alert signup", "Brevo-Alarm-Anmeldung")}
                     className="block h-[720px] w-full bg-white"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
@@ -198,8 +198,8 @@ const EmailAlerts = () => {
 
                 <p className="text-[11px] leading-relaxed text-muted-foreground">
                   {t(
-                    "Captcha and double opt-in are handled inside the embedded Brevo form.",
-                    "Captcha und Double-Opt-In werden direkt im eingebetteten Brevo-Formular verarbeitet."
+                    "Brevo handles captcha and double opt-in directly in the signup flow.",
+                    "Brevo verarbeitet Captcha und Double-Opt-In direkt im Anmeldeablauf."
                   )}
                 </p>
 
@@ -254,8 +254,8 @@ const EmailAlerts = () => {
               </div>
               <p className="mt-3 text-[11px] text-muted-foreground">
                 {t(
-                  "Endpoint and config-file details are intentionally hidden in the UI. Validation remains active in the app and CI checks.",
-                  "Endpunkt- und Konfigurationsdatei-Details werden absichtlich in der UI ausgeblendet. Die Validierung bleibt in der App und in CI-Prüfungen aktiv."
+                  "Your signup is handled through Brevo with secure standards and regular reliability checks.",
+                  "Deine Anmeldung läuft über Brevo mit sicheren Standards und regelmäßigen Zuverlässigkeitsprüfungen."
                 )}
               </p>
             </div>
@@ -265,7 +265,7 @@ const EmailAlerts = () => {
             <div className="glass glass-specular rounded-2xl p-4">
               <div className="relative z-10 space-y-2">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Fallback", "Fallback")}
+                  {t("Alternative", "Alternative")}
                 </h2>
                 <a
                   href={configResult.parsedUrl.toString()}
