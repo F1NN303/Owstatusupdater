@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-02
 Current branch: `main`
-Latest known commit at handoff update: `f2ba18c`
+Latest known commit at handoff update: `265fa2b`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
