@@ -26,6 +26,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/m365/index.html`
   - `site/openai/index.html`
   - `site/claude/index.html`
+  - `site/discord/index.html`
   - `site/steam/index.html`
   - `site/legacy-home.html`
   - `site/legacy-overwatch.html`
@@ -92,6 +93,27 @@ Key files:
 - `tests/test_payload_contracts.py`
 - `tests/test_resilience.py`
 
+### Discord Service - Added
+- New service id: `discord`
+- New detail route: `/status/discord`
+- New legacy wrapper: `site/discord/index.html`
+- New generated data path: `site/discord/data/*`
+- Source strategy:
+  - official required: Discord Statuspage API (`/api/v2/status.json`, `/components.json`, `/incidents.json`)
+  - supporting corroboration: StatusGator + IsDown
+- Freshness monitor now includes `discord` endpoint.
+
+Key files:
+- `services/discord_aggregator.py`
+- `config/services/discord.yaml`
+- `site/discord/data/*`
+- `react-next/src/lib/serviceManifest.ts`
+- `react-next/src/lib/serviceBranding.ts`
+- `react-next/public/brands/discord.svg`
+- `scripts/watch_data_freshness.py`
+- `tests/test_payload_contracts.py`
+- `tests/test_resilience.py`
+
 ### Favorites (Now Functional)
 - Favorites are no longer static shortcuts.
 - Users can star/unstar services on home cards.
@@ -150,6 +172,14 @@ Key files:
 - Confirm in-app Settings version matches deployed commit SHA.
 - Confirm `/next` and root both load brand icons without `404`.
 - Confirm new changes are documented here before push.
+
+## Latest Validation Snapshot (Discord Service)
+- `py -3 scripts/validate_services.py` -> passed
+- `py -3 scripts/check_public_exposure.py` -> passed
+- `py -3 scripts/build_site_data.py --service discord` -> passed
+- `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (22 tests)
+- `npm.cmd run build` in `react-next` -> passed
+- `py -3 scripts/verify_next_preview_artifact.py` -> passed
 
 ## Recommended Next Steps
 1. Add a small visual "starred" indicator in service detail header for favorited services.

@@ -13,6 +13,7 @@ SERVICE_DATA_DIRS = {
     "m365": ROOT / "site" / "m365" / "data",
     "openai": ROOT / "site" / "openai" / "data",
     "claude": ROOT / "site" / "claude" / "data",
+    "discord": ROOT / "site" / "discord" / "data",
     "steam": ROOT / "site" / "steam" / "data",
 }
 VALID_HEALTH = {"ok", "degraded", "error"}

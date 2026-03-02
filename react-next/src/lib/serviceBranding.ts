@@ -25,6 +25,10 @@ const BRAND_ASSETS: Record<string, ServiceBrandAsset> = {
     assetPath: "brands/claude.svg",
     label: "Claude / Anthropic",
   },
+  discord: {
+    assetPath: "brands/discord.svg",
+    label: "Discord",
+  },
   steam: {
     assetPath: "brands/steam.svg",
     label: "Steam",
@@ -44,6 +48,8 @@ const SERVICE_ALIASES: Record<string, string> = {
   "open-ai": "openai",
   anthropic: "claude",
   "claude-ai": "claude",
+  discordapp: "discord",
+  "discord-status": "discord",
   valve: "steam",
   "steam-platform": "steam",
 };
