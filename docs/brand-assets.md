@@ -16,6 +16,8 @@ Current asset files and source references:
   - Source: https://cdn.simpleicons.org/claude
 - `react-next/public/brands/discord.svg`
   - Source: https://cdn.simpleicons.org/discord
+- `react-next/public/brands/github.svg`
+  - Source: https://cdn.simpleicons.org/github
 - `react-next/public/brands/steam.svg`
   - Source: https://cdn.simpleicons.org/steam
 

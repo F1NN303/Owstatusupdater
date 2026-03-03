@@ -18,6 +18,7 @@ DEFAULT_ENDPOINTS = [
     ("openai", "https://f1nn303.github.io/Owstatusupdater/openai/data/status.json"),
     ("claude", "https://f1nn303.github.io/Owstatusupdater/claude/data/status.json"),
     ("discord", "https://f1nn303.github.io/Owstatusupdater/discord/data/status.json"),
+    ("github", "https://f1nn303.github.io/Owstatusupdater/github/data/status.json"),
 ]
 DEFAULT_REPO = "F1NN303/Owstatusupdater"
 DEFAULT_WORKFLOW_ID = "update-site-data.yml"

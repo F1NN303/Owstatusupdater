@@ -14,6 +14,7 @@ SERVICE_DATA_DIRS = {
     "openai": ROOT / "site" / "openai" / "data",
     "claude": ROOT / "site" / "claude" / "data",
     "discord": ROOT / "site" / "discord" / "data",
+    "github": ROOT / "site" / "github" / "data",
     "steam": ROOT / "site" / "steam" / "data",
 }
 VALID_HEALTH = {"ok", "degraded", "error"}

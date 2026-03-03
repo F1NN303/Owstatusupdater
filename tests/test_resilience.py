@@ -6,6 +6,7 @@ from unittest.mock import patch
 import scripts.build_site_data as build_site_data
 import services.claude_aggregator as claude_aggregator
 import services.discord_aggregator as discord_aggregator
+import services.github_aggregator as github_aggregator
 import services.openai_aggregator as openai_aggregator
 import services.steam_aggregator as steam_aggregator
 from services.core.source_runner import CallableSourceAdapter, SourceAdapterSpec, SourceRunResult, run_source_adapter
@@ -329,6 +330,83 @@ class DiscordAggregatorResilienceTests(unittest.TestCase):
 
         with patch("services.discord_aggregator._run_discord_source", side_effect=_run_side_effect):
             payload = discord_aggregator._collect_payload(scoring_profile="official_first_v1")
+
+        self.assertEqual(payload.get("health"), "error")
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 3)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("sources"), list)
+
+
+class GitHubAggregatorResilienceTests(unittest.TestCase):
+    def test_collect_payload_with_partial_source_failures(self) -> None:
+        statusgator_data = {
+            "source": "StatusGator",
+            "source_type": "Downdetector-like",
+            "url": "https://statusgator.com/services/github",
+            "summary": "StatusGator indicates GitHub is currently degraded.",
+            "current_status": "degraded",
+            "reports_24h": 42,
+            "incidents": [
+                {
+                    "title": "Test incident",
+                    "started_at": "2026-02-27T00:00:00Z",
+                    "duration": "25m",
+                    "acknowledgement": "simulated",
+                }
+            ],
+            "top_reported_issues": [{"label": "Actions degraded", "count": 3}],
+        }
+
+        def _run_side_effect(**kwargs):
+            adapter_id = kwargs.get("adapter_id")
+            if adapter_id == "statusgator":
+                return SourceRunResult(
+                    ok=True,
+                    data=statusgator_data,
+                    source=_source_entry("StatusGator", True),
+                )
+            if adapter_id == "isdown_github":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("IsDown (GitHub)", False),
+                    error="simulated failure",
+                )
+            if adapter_id == "github_statuspage_api":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("GitHub Statuspage API", False),
+                    error="simulated failure",
+                )
+            raise AssertionError(f"Unexpected adapter_id: {adapter_id}")
+
+        with patch("services.github_aggregator._run_github_source", side_effect=_run_side_effect):
+            payload = github_aggregator._collect_payload(scoring_profile="official_first_v1")
+
+        self.assertEqual(payload.get("health"), "degraded")
+        self.assertEqual(len(payload.get("sources") or []), 3)
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 1)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 3)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("outage", {}).get("incidents"), list)
+        self.assertIsInstance(payload.get("official", {}).get("summary"), str)
+
+    def test_collect_payload_when_all_sources_fail_returns_error_health(self) -> None:
+        def _run_side_effect(**kwargs):
+            name = str(kwargs.get("name") or kwargs.get("adapter_id") or "source")
+            return SourceRunResult(
+                ok=False,
+                data=None,
+                source=_source_entry(name, False),
+                error="simulated failure",
+            )
+
+        with patch("services.github_aggregator._run_github_source", side_effect=_run_side_effect):
+            payload = github_aggregator._collect_payload(scoring_profile="official_first_v1")
 
         self.assertEqual(payload.get("health"), "error")
         self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)
