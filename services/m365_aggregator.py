@@ -270,6 +270,20 @@ def _graph_issue_is_active(issue: dict[str, Any]) -> bool:
     return True
 
 
+def _graph_issue_is_nonimpact(issue: dict[str, Any]) -> bool:
+    classification_token = _graph_status_token(issue.get("classification"))
+    status_token = _graph_status_token(issue.get("status"))
+    if classification_token in {"advisory", "information", "informational"}:
+        return True
+    if status_token in {"advisory", "servicewarning", "informationavailable"}:
+        return True
+    return False
+
+
+def _graph_overview_is_nonimpact(overview: dict[str, Any]) -> bool:
+    return _graph_status_token(overview.get("status")) in {"advisory", "servicewarning", "informationavailable"}
+
+
 def _format_human_duration(started_at: str | None, ended_at: str | None) -> str | None:
     start_dt = _parse_iso8601(started_at)
     end_dt = _parse_iso8601(ended_at)
@@ -446,35 +460,42 @@ def fetch_microsoft_graph_service_health() -> dict[str, Any]:
         reverse=True,
     )
     active_issues = [item for item in sorted_issues if _graph_issue_is_active(item)]
+    impactful_active_issues = [item for item in active_issues if not _graph_issue_is_nonimpact(item)]
 
     impacted_overviews = [
         item
         for item in valid_health
         if _graph_status_to_outage_status(item.get("status")) != "operational"
+        and not _graph_overview_is_nonimpact(item)
     ]
 
     worst_status = "operational" if valid_health else "unknown"
-    for item in [*impacted_overviews, *active_issues]:
+    for item in [*impacted_overviews, *impactful_active_issues]:
         candidate = _graph_status_to_outage_status(item.get("status"))
         if candidate == "major outage":
             worst_status = "major outage"
             break
         if candidate == "degraded" and worst_status != "major outage":
             worst_status = "degraded"
-    if active_issues and worst_status == "operational":
+    if impactful_active_issues and worst_status == "operational":
         worst_status = "degraded"
 
-    top_services = _graph_top_impacted_services(active_issues or sorted_issues[:12])
+    top_services = _graph_top_impacted_services(impactful_active_issues or sorted_issues[:12])
     service_names = [entry.get("label") for entry in top_services if isinstance(entry.get("label"), str)]
     services_preview = ", ".join(service_names[:3])
-    if active_issues:
+    if impactful_active_issues:
         summary = (
-            f"Microsoft Graph reports {len(active_issues)} active Microsoft 365 service "
-            f"{'issue' if len(active_issues) == 1 else 'issues'}"
+            f"Microsoft Graph reports {len(impactful_active_issues)} active Microsoft 365 service "
+            f"{'issue' if len(impactful_active_issues) == 1 else 'issues'}"
         )
         if services_preview:
             summary += f" affecting {services_preview}"
         summary += "."
+    elif active_issues:
+        summary = (
+            "Microsoft Graph currently lists advisory-only notices with no active "
+            "service-impacting incidents."
+        )
     elif impacted_overviews:
         impacted_services = [
             _clean(item.get("service"))
@@ -514,7 +535,7 @@ def fetch_microsoft_graph_service_health() -> dict[str, Any]:
         ]
 
     incidents = [_graph_issue_to_incident(item) for item in sorted_issues[:12]]
-    active_incidents = [_graph_issue_to_incident(item) for item in active_issues[:8]]
+    active_incidents = [_graph_issue_to_incident(item) for item in impactful_active_issues[:8]]
 
     return {
         "source": "Microsoft Graph Service Communications",
@@ -526,7 +547,8 @@ def fetch_microsoft_graph_service_health() -> dict[str, Any]:
         "issues": sorted_issues[:20],
         "incidents": incidents,
         "active_incidents": active_incidents,
-        "active_issue_count": len(active_issues),
+        "active_issue_count": len(impactful_active_issues),
+        "active_issue_count_raw": len(active_issues),
         "issue_count": len(sorted_issues),
         "health_overview_count": len(valid_health),
         "impacted_overview_count": len(impacted_overviews),
@@ -600,11 +622,11 @@ def _extract_isdown_status_text(page_text: str) -> tuple[str, str]:
     status_phrase = _clean(summary_match.group(1))
     summary = f"IsDown indicates Microsoft 365 is {status_phrase}."
     lowered = status_phrase.lower()
-    if "operational" in lowered:
+    if any(token in lowered for token in ("working normally", "operational", "online")):
         current_status = "operational"
     elif any(token in lowered for token in ("outage", "down", "offline")):
         current_status = "major outage"
-    elif any(token in lowered for token in ("degraded", "issue", "maintenance")):
+    elif any(token in lowered for token in ("partial outage", "minor outage", "degraded", "issue", "maintenance")):
         current_status = "degraded"
     else:
         current_status = lowered or "unknown"
@@ -734,6 +756,23 @@ def _graph_last_item_at(payload: Any) -> str | None:
     return str(last_item_at or "") or None
 
 
+def _select_best_official_freshness(source_entries: list[dict[str, Any] | None]) -> str:
+    rank = {"unknown": 0, "stale": 1, "warm": 2, "fresh": 3}
+    best = "unknown"
+    for source in source_entries:
+        if not isinstance(source, dict):
+            continue
+        if not bool(source.get("ok")):
+            continue
+        role = str(source.get("role") or "").strip().lower()
+        if role != "official":
+            continue
+        freshness = str(source.get("freshness") or "unknown").strip().lower()
+        if rank.get(freshness, 0) > rank.get(best, 0):
+            best = freshness
+    return best
+
+
 def _social_item_count(payload: Any) -> int | None:
     return len(payload) if isinstance(payload, list) else 0
 
@@ -789,10 +828,12 @@ def _build_official_block(
     }
 
 
-def _collect_payload() -> dict[str, Any]:
+def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
     sources: list[dict[str, Any]] = []
     official_status: dict[str, Any] | None = None
     graph_official: dict[str, Any] | None = None
+    official_status_source: dict[str, Any] | None = None
+    graph_source: dict[str, Any] | None = None
     social: list[dict[str, Any]] = []
     isdown_outage: dict[str, Any] | None = None
 
@@ -854,6 +895,7 @@ def _collect_payload() -> dict[str, Any]:
         last_item_at_fn=_official_public_last_item_at,
     )
     sources.append(official_status_run.source)
+    official_status_source = official_status_run.source
     if official_status_run.ok and isinstance(official_status_run.data, dict):
         official_status = official_status_run.data
 
@@ -872,6 +914,7 @@ def _collect_payload() -> dict[str, Any]:
             last_item_at_fn=_graph_last_item_at,
         )
         sources.append(graph_run.source)
+        graph_source = graph_run.source
         if graph_run.ok and isinstance(graph_run.data, dict):
             graph_official = graph_run.data
 
@@ -935,6 +978,33 @@ def _collect_payload() -> dict[str, Any]:
             outage["summary_origin"] = "Microsoft Graph"
             outage["url"] = MICROSOFT_PUBLIC_STATUS_URL
 
+    official_status_key = _normalize_outage_status_text(
+        graph_official.get("current_status") if isinstance(graph_official, dict) else (
+            official_status.get("current_status") if isinstance(official_status, dict) else None
+        )
+    )
+    official_active_incident_count = int(graph_official.get("active_issue_count") or 0) if isinstance(graph_official, dict) else 0
+    official_source_freshness = _select_best_official_freshness([official_status_source, graph_source])
+
+    provider_top_issues = (
+        list(outage.get("top_reported_issues"))
+        if isinstance(outage.get("top_reported_issues"), list)
+        else []
+    )
+    if (
+        official_status_key == "operational"
+        and official_active_incident_count == 0
+        and official_source_freshness in {"fresh", "warm"}
+    ):
+        outage["top_reported_issues"] = []
+        outage["top_reported_issues_meta"] = {
+            "source": "Microsoft official sources",
+            "kind": "degraded-components",
+            "mode": "none",
+        }
+        if provider_top_issues:
+            outage["top_reported_issues_provider"] = provider_top_issues
+
     successful_sources = sum(1 for source in sources if source.get("ok"))
     if successful_sources == 0:
         health = "error"
@@ -988,8 +1058,21 @@ def _collect_payload() -> dict[str, Any]:
     news = _sort_by_datetime(_dedupe_by_url(official_status_updates), field="published_at")[:6]
     official = _build_official_block(official_status_updates, social)
 
-    analytics = _calculate_severity(outage, sources, health, reports, news, social)
-    analytics["model_version"] = "m365-1.0"
+    analytics = _calculate_severity(
+        outage,
+        sources,
+        health,
+        reports,
+        news,
+        social,
+        scoring_profile=scoring_profile,
+        scoring_profile_context={
+            "official_status_key": official_status_key,
+            "official_active_incident_count": official_active_incident_count,
+            "official_source_freshness": official_source_freshness,
+        },
+    )
+    analytics["model_version"] = "m365-1.1"
     regions = _build_region_signals(analytics, outage, reports, news)
 
     generated_at = _utc_now_iso()
@@ -1032,7 +1115,7 @@ def _collect_payload() -> dict[str, Any]:
     }
 
 
-def build_dashboard_payload(force_refresh: bool = False) -> dict[str, Any]:
+def build_dashboard_payload(force_refresh: bool = False, scoring_profile: str | None = None) -> dict[str, Any]:
     global _CACHE_TS
     global _CACHE_PAYLOAD
 
@@ -1041,7 +1124,7 @@ def build_dashboard_payload(force_refresh: bool = False) -> dict[str, Any]:
         if not force_refresh and _CACHE_PAYLOAD and (now - _CACHE_TS) < CACHE_TTL_SECONDS:
             return _CACHE_PAYLOAD
 
-    payload = _collect_payload()
+    payload = _collect_payload(scoring_profile=scoring_profile)
     with _CACHE_LOCK:
         _CACHE_PAYLOAD = payload
         _CACHE_TS = time.time()

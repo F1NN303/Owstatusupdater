@@ -249,7 +249,7 @@ def _extract_isdown_status_text(page_text: str) -> tuple[str, str]:
         current_status = "operational"
     elif any(token in lowered for token in ("major outage", "outage", "down", "offline")):
         current_status = "major outage"
-    elif any(token in lowered for token in ("partial outage", "degraded", "issue", "maintenance")):
+    elif any(token in lowered for token in ("partial outage", "minor outage", "degraded", "issue", "maintenance")):
         current_status = "degraded"
     else:
         current_status = lowered or "unknown"

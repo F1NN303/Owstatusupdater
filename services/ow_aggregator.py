@@ -475,11 +475,11 @@ def _extract_isdown_status_text(page_text: str) -> tuple[str, str]:
     status_phrase = _clean(summary_match.group(1))
     summary = f"IsDown indicates Overwatch 2 is {status_phrase}."
     lowered = status_phrase.lower()
-    if "operational" in lowered:
+    if any(token in lowered for token in ("working normally", "operational", "online")):
         current_status = "operational"
     elif any(token in lowered for token in ("outage", "down", "offline")):
         current_status = "major outage"
-    elif any(token in lowered for token in ("degraded", "issue", "maintenance")):
+    elif any(token in lowered for token in ("partial outage", "minor outage", "degraded", "issue", "maintenance")):
         current_status = "degraded"
     else:
         current_status = lowered or "unknown"
