@@ -148,18 +148,43 @@ def _merge_incidents(
     return _sort_by_datetime(out, field="started_at")[:limit]
 
 
+def _is_nonimpact_monitoring_incident(incident: dict[str, Any]) -> bool:
+    acknowledgement = _clean(incident.get("acknowledgement")).lower()
+    if not acknowledgement:
+        return False
+    return "none / monitoring" in acknowledgement
+
+
+def _effective_active_incident_count(official_status: dict[str, Any] | None) -> int:
+    if not isinstance(official_status, dict):
+        return 0
+    active_incidents = official_status.get("active_incidents")
+    if isinstance(active_incidents, list):
+        impactful = [
+            incident
+            for incident in active_incidents
+            if isinstance(incident, dict) and not _is_nonimpact_monitoring_incident(incident)
+        ]
+        return len(impactful)
+    return int(official_status.get("active_incident_count") or 0)
+
+
 def _build_openai_official_summary(
     description: str,
     current_status: str,
     active_incidents: list[dict[str, Any]],
     recent_incidents: list[dict[str, Any]],
 ) -> str:
-    if active_incidents:
-        latest = active_incidents[0]
+    impactful_active_incidents = [
+        incident for incident in active_incidents if not _is_nonimpact_monitoring_incident(incident)
+    ]
+
+    if impactful_active_incidents:
+        latest = impactful_active_incidents[0]
         latest_title = _clean(latest.get("title")) or "OpenAI incident"
-        if len(active_incidents) == 1:
+        if len(impactful_active_incidents) == 1:
             return f"OpenAI Statuspage reports an active incident: {latest_title}."
-        return f"OpenAI Statuspage reports {len(active_incidents)} active incidents. Latest: {latest_title}."
+        return f"OpenAI Statuspage reports {len(impactful_active_incidents)} active incidents. Latest: {latest_title}."
 
     normalized_status = _normalize_outage_status_text(current_status)
     if normalized_status == "operational" and description:
@@ -432,12 +457,13 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
         )
         official_source_freshness = str((official_source_entry or {}).get("freshness") or "").lower()
         top_component_issues = official_status.get("top_component_issues")
+        effective_active_incident_count = _effective_active_incident_count(official_status)
         if isinstance(top_component_issues, list) and top_component_issues:
             outage["top_reported_issues"] = top_component_issues
             outage["top_reported_issues_meta"] = {
                 "source": "OpenAI Statuspage API",
                 "kind": "degraded-components",
-                "mode": "active" if int(official_status.get("active_incident_count") or 0) > 0 else "snapshot",
+                "mode": "active" if effective_active_incident_count > 0 else "snapshot",
             }
             if provider_top_issues:
                 outage["top_reported_issues_provider"] = provider_top_issues
@@ -489,11 +515,7 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
     official_status_key = _normalize_outage_status_text(
         official_status.get("current_status") if isinstance(official_status, dict) else None
     )
-    official_active_incident_count = (
-        int(official_status.get("active_incident_count") or 0)
-        if isinstance(official_status, dict)
-        else 0
-    )
+    official_active_incident_count = _effective_active_incident_count(official_status)
     official_source_freshness = str((official_source_entry or {}).get("freshness") or "").lower()
     analytics = _calculate_severity(
         outage,

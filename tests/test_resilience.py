@@ -86,6 +86,17 @@ class BuilderInvocationTests(unittest.TestCase):
 
 
 class OpenAIAggregatorResilienceTests(unittest.TestCase):
+    def test_effective_active_incident_count_ignores_nonimpact_monitoring(self) -> None:
+        official_status = {
+            "active_incidents": [
+                {"acknowledgement": "None / Monitoring"},
+                {"acknowledgement": "Minor / Monitoring"},
+                {"acknowledgement": "Major / Investigating"},
+            ],
+            "active_incident_count": 3,
+        }
+        self.assertEqual(openai_aggregator._effective_active_incident_count(official_status), 2)
+
     def test_collect_payload_with_partial_source_failures(self) -> None:
         statusgator_data = {
             "source": "StatusGator",
@@ -163,6 +174,17 @@ class OpenAIAggregatorResilienceTests(unittest.TestCase):
 
 
 class ClaudeAggregatorResilienceTests(unittest.TestCase):
+    def test_effective_active_incident_count_ignores_nonimpact_monitoring(self) -> None:
+        official_status = {
+            "active_incidents": [
+                {"acknowledgement": "None / Monitoring"},
+                {"acknowledgement": "Minor / Monitoring"},
+                {"acknowledgement": "Major / Investigating"},
+            ],
+            "active_incident_count": 3,
+        }
+        self.assertEqual(claude_aggregator._effective_active_incident_count(official_status), 2)
+
     def test_collect_payload_with_partial_source_failures(self) -> None:
         statusgator_data = {
             "source": "StatusGator",
