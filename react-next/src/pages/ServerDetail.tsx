@@ -849,7 +849,7 @@ function StatusServiceHealth24hChart({
           </span>
           <span className="inline-flex items-center gap-1">
             <span className="h-2.5 w-2.5 rounded-full bg-status-degraded" />
-            {pickLang(language, "Possible outage", "Moeglicher Ausfall")}
+            {pickLang(language, "Possible outage", "Möglicher Ausfall")}
           </span>
           <span className="inline-flex items-center gap-1">
             <span className="h-2.5 w-2.5 rounded-full bg-status-offline" />
@@ -1630,7 +1630,7 @@ const ServerDetail = () => {
     if (key === "required_source_stale") return t("Required source stale", "Pflichtquelle veraltet");
     if (key === "stale_source_data") return t("Stale source data", "Veraltete Quelldaten");
     if (key === "low_recent_success_rate") return t("Low recent success rate", "Niedrige Erfolgsrate");
-    if (key === "repeated_source_failures") return t("Repeated source failures", "Wiederholte Quellenausfalle");
+    if (key === "repeated_source_failures") return t("Repeated source failures", "Wiederholte Quellenausfälle");
     if (key === "no_sources_configured") return t("No sources configured", "Keine Quellen konfiguriert");
     return key.replace(/_/g, " ");
   };
@@ -2297,7 +2297,7 @@ const ServerDetail = () => {
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Source Reliability", "Quellenzuverlassigkeit")}
+                    {t("Source Reliability", "Quellenzuverlässigkeit")}
                   </h2>
                   <DataOriginBadge label={apiBadge} tone="api" />
                 </div>

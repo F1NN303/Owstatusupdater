@@ -15,7 +15,7 @@ const TermsPage = () => {
             <Link
               to="/settings"
               className="glass flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90"
-              aria-label={t("Back to settings", "Zurueck zu Einstellungen")}
+              aria-label={t("Back to settings", "Zurück zu Einstellungen")}
             >
               <ArrowLeft size={16} className="text-foreground" />
             </Link>
@@ -41,7 +41,7 @@ const TermsPage = () => {
             <p className="text-[12px] leading-relaxed text-muted-foreground">
               {t(
                 "This project is public for deployment and collaboration, but it is proprietary and not open source.",
-                "Dieses Projekt ist fuer Deployment und Zusammenarbeit oeffentlich, ist aber proprietaer und nicht Open Source."
+                "Dieses Projekt ist für Deployment und Zusammenarbeit öffentlich, ist aber proprietär und nicht Open Source."
               )}
             </p>
             <p className="text-[12px] leading-relaxed text-muted-foreground">
@@ -65,7 +65,7 @@ const TermsPage = () => {
               <li>
                 {t(
                   "You may view and use the live website in a browser for normal personal use.",
-                  "Du darfst die Live-Website im Browser fuer normale persoenliche Nutzung ansehen und verwenden."
+                  "Du darfst die Live-Website im Browser für normale persönliche Nutzung ansehen und verwenden."
                 )}
               </li>
               <li>
@@ -77,7 +77,7 @@ const TermsPage = () => {
               <li>
                 {t(
                   "Public availability on GitHub/GitHub Pages does not grant reuse rights.",
-                  "Die oeffentliche Verfuegbarkeit auf GitHub/GitHub Pages gewaehrt keine Wiederverwendungsrechte."
+                  "Die öffentliche Verfügbarkeit auf GitHub/GitHub Pages gewährt keine Wiederverwendungsrechte."
                 )}
               </li>
             </ul>
@@ -101,7 +101,7 @@ const TermsPage = () => {
             <p className="text-[12px] leading-relaxed text-muted-foreground">
               {t(
                 "They are used only for service identification and status reference. No affiliation, endorsement, or ownership claim is made.",
-                "Sie werden ausschliesslich zur Service-Identifikation und Statusreferenz genutzt. Es wird keine Verbindung, Billigung oder Inhaberschaft behauptet."
+                "Sie werden ausschließlich zur Service-Identifikation und Statusreferenz genutzt. Es wird keine Verbindung, Billigung oder Inhaberschaft behauptet."
               )}
             </p>
           </div>
@@ -112,13 +112,13 @@ const TermsPage = () => {
             <div className="flex items-center gap-2">
               <ShieldCheck size={14} className="text-primary/80" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {t("Security & Privacy", "Sicherheit & Privatsphaere")}
+                {t("Security & Privacy", "Sicherheit & Privatsphäre")}
               </h2>
             </div>
             <p className="text-[12px] leading-relaxed text-muted-foreground">
               {t(
                 "This website is designed for a simple, secure, and transparent status experience.",
-                "Diese Website ist fuer ein einfaches, sicheres und transparentes Status-Erlebnis gestaltet."
+                "Diese Website ist für ein einfaches, sicheres und transparentes Status-Erlebnis gestaltet."
               )}
             </p>
             <p className="text-[12px] leading-relaxed text-muted-foreground">
@@ -137,7 +137,7 @@ const TermsPage = () => {
             rel="noreferrer"
             className="glass glass-specular flex items-center justify-between rounded-2xl px-4 py-3 text-sm text-foreground transition-colors hover:bg-white/5"
           >
-            <span>{t("Open LICENSE", "LICENSE oeffnen")}</span>
+            <span>{t("Open LICENSE", "LICENSE öffnen")}</span>
             <ExternalLink size={14} className="text-muted-foreground" />
           </a>
           <a
@@ -146,7 +146,7 @@ const TermsPage = () => {
             rel="noreferrer"
             className="glass glass-specular flex items-center justify-between rounded-2xl px-4 py-3 text-sm text-foreground transition-colors hover:bg-white/5"
           >
-            <span>{t("Open NOTICE", "NOTICE oeffnen")}</span>
+            <span>{t("Open NOTICE", "NOTICE öffnen")}</span>
             <ExternalLink size={14} className="text-muted-foreground" />
           </a>
         </section>
