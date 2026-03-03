@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-03
 Current branch: `main`
-Latest known commit at handoff update: `084d161`
+Latest known commit at handoff update: `391bcc3`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -208,6 +208,21 @@ Key files:
 - `py -3 scripts/validate_services.py` -> passed
 - `py -3 scripts/check_public_exposure.py` -> passed
 - `py -3 scripts/build_site_data.py --service github` -> passed
+- `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (26 tests)
+- `npm.cmd run build` in `react-next` -> passed
+- `py -3 scripts/build_react_artifacts.py` -> passed
+- `py -3 scripts/verify_next_preview_artifact.py` -> passed
+
+## Latest Validation Snapshot (Reliability Tuning)
+- Implementation commit: `391bcc3`
+- Scope:
+  - Applied official-first scoring safeguards to Microsoft 365 (`scoring_profile=official_first_v1`).
+  - Added non-impact filtering for Microsoft Graph advisory-style issues before active incident counting.
+  - Aligned IsDown parsing for `minor outage` on `m365`, `steam`, and `overwatch`.
+- `py -3 -m py_compile services/m365_aggregator.py services/steam_aggregator.py services/ow_aggregator.py` -> passed
+- `py -3 scripts/validate_services.py` -> passed
+- `py -3 scripts/check_public_exposure.py` -> passed
+- `py -3 scripts/build_site_data.py --service all` -> passed
 - `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (26 tests)
 - `npm.cmd run build` in `react-next` -> passed
 - `py -3 scripts/build_react_artifacts.py` -> passed
