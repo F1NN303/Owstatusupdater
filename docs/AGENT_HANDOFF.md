@@ -1,8 +1,8 @@
 # Agent Handoff
 
-Last updated: 2026-03-02
+Last updated: 2026-03-03
 Current branch: `main`
-Latest known commit at handoff update: `265fa2b`
+Latest known commit at handoff update: `084d161`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -27,6 +27,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/openai/index.html`
   - `site/claude/index.html`
   - `site/discord/index.html`
+  - `site/github/index.html`
   - `site/steam/index.html`
   - `site/legacy-home.html`
   - `site/legacy-overwatch.html`
@@ -114,6 +115,27 @@ Key files:
 - `tests/test_payload_contracts.py`
 - `tests/test_resilience.py`
 
+### GitHub Service - Added
+- New service id: `github`
+- New detail route: `/status/github`
+- New legacy wrapper: `site/github/index.html`
+- New generated data path: `site/github/data/*`
+- Source strategy:
+  - official required: GitHub Statuspage API (`/api/v2/status.json`, `/components.json`, `/incidents.json`)
+  - supporting corroboration: StatusGator + IsDown
+- Freshness monitor now includes `github` endpoint.
+
+Key files:
+- `services/github_aggregator.py`
+- `config/services/github.yaml`
+- `site/github/data/*`
+- `react-next/src/lib/serviceManifest.ts`
+- `react-next/src/lib/serviceBranding.ts`
+- `react-next/public/brands/github.svg`
+- `scripts/watch_data_freshness.py`
+- `tests/test_payload_contracts.py`
+- `tests/test_resilience.py`
+
 ### Favorites (Now Functional)
 - Favorites are no longer static shortcuts.
 - Users can star/unstar services on home cards.
@@ -179,6 +201,16 @@ Key files:
 - `py -3 scripts/build_site_data.py --service discord` -> passed
 - `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (22 tests)
 - `npm.cmd run build` in `react-next` -> passed
+- `py -3 scripts/verify_next_preview_artifact.py` -> passed
+
+## Latest Validation Snapshot (GitHub Service)
+- Implementation commit: `084d161`
+- `py -3 scripts/validate_services.py` -> passed
+- `py -3 scripts/check_public_exposure.py` -> passed
+- `py -3 scripts/build_site_data.py --service github` -> passed
+- `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (26 tests)
+- `npm.cmd run build` in `react-next` -> passed
+- `py -3 scripts/build_react_artifacts.py` -> passed
 - `py -3 scripts/verify_next_preview_artifact.py` -> passed
 
 ## Recommended Next Steps
