@@ -260,7 +260,6 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
     name,
     icon,
     status,
-    statusLabel,
     uptime: Number(score.toFixed(2)),
     metricLabel: deriveMetricLabel(detail, language),
     sourceUnavailableCount,
