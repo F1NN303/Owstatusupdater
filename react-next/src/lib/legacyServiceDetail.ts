@@ -159,6 +159,12 @@ export interface LegacyHistorySourceState {
   used_for_scoring?: boolean | null;
 }
 
+export interface LegacyHistoryComponentState {
+  component_id?: string;
+  name?: string;
+  status?: string | null;
+}
+
 export interface LegacyHistoryPoint {
   t?: string | null;
   health?: string | null;
@@ -168,6 +174,7 @@ export interface LegacyHistoryPoint {
   source_ok?: number | null;
   source_total?: number | null;
   source_states?: Record<string, LegacyHistorySourceState>;
+  component_states?: Record<string, LegacyHistoryComponentState>;
 }
 
 export interface LegacyHistoryPayload {
@@ -195,6 +202,16 @@ export interface LegacyStatusDetailPayload {
       };
     };
     safeguards?: Record<string, boolean>;
+    source_conflict?: {
+      has_conflict?: boolean | null;
+      level?: string | null;
+      reason?: string | null;
+      official_status?: string | null;
+      derived_severity?: string | null;
+      source_ok?: number | null;
+      source_total?: number | null;
+      summary?: string | null;
+    };
   };
   regions?: Record<
     string,

@@ -12,6 +12,7 @@ export interface ServerService {
   latency?: number;
   metricLabel?: string;
   sourceUnavailableCount?: number;
+  staleSourceCount?: number;
   trendLabel?: string;
   trendValueLabel?: string;
   lastIncident?: string;

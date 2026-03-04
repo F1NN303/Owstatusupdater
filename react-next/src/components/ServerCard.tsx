@@ -21,10 +21,18 @@ const ServerCard = ({ server, compact = false, reserveTopRightSpace = false }: S
   const sourceUnavailableCount =
     typeof server.sourceUnavailableCount === "number" ? Math.max(server.sourceUnavailableCount, 0) : 0;
   const hasSourceUnavailable = sourceUnavailableCount > 0;
+  const staleSourceCount =
+    typeof server.staleSourceCount === "number" ? Math.max(server.staleSourceCount, 0) : 0;
+  const hasStaleSources = staleSourceCount > 0;
   const sourceUnavailableLabel = pickLang(
     language,
     sourceUnavailableCount === 1 ? "1 source unavailable" : `${sourceUnavailableCount} sources unavailable`,
     sourceUnavailableCount === 1 ? "1 Quelle nicht verfügbar" : `${sourceUnavailableCount} Quellen nicht verfügbar`
+  );
+  const staleSourcesLabel = pickLang(
+    language,
+    staleSourceCount === 1 ? "1 stale source" : `${staleSourceCount} stale sources`,
+    staleSourceCount === 1 ? "1 veraltete Quelle" : `${staleSourceCount} veraltete Quellen`
   );
 
   return (
@@ -67,6 +75,16 @@ const ServerCard = ({ server, compact = false, reserveTopRightSpace = false }: S
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
                     {sourceUnavailableLabel}
+                  </span>
+                ) : null}
+                {hasStaleSources ? (
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full border border-amber-300/30 bg-amber-300/10 font-medium text-amber-200 ${
+                      compact ? "px-1 py-0.5 text-[9px]" : "px-1.5 py-0.5 text-[10px]"
+                    }`}
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-300" />
+                    {staleSourcesLabel}
                   </span>
                 ) : null}
               </div>

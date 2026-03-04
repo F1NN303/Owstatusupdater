@@ -68,20 +68,38 @@ function parseDurationToMs(value?: string | null) {
   return totalMs > 0 ? totalMs : null;
 }
 
-function toneToStatus(tone: LegacyServiceDetailResult["tone"]): Status {
-  if (tone === "good") {
+function severityToStatus(severity: LegacyServiceDetailResult["severity"], tone: LegacyServiceDetailResult["tone"]): Status {
+  if (severity === "stable" || severity === "minor") {
     return "online";
   }
-  if (tone === "bad") {
+  if (severity === "major" || tone === "bad") {
     return "offline";
   }
+  if (severity === "degraded") {
+    return "degraded";
+  }
   return "degraded";
+}
+
+function isNonImpactIncident(incident: LegacyOutageIncident) {
+  const text = `${incident.title || ""} ${incident.acknowledgement || ""}`.toLowerCase();
+  return (
+    text.includes("none / monitoring") ||
+    text.includes("none / resolved") ||
+    text.includes("informational") ||
+    text.includes("information available") ||
+    text.includes("service warning") ||
+    text.includes("advisory")
+  );
 }
 
 function severityWordToLevel(
   detail: LegacyServiceDetailResult,
   incident: LegacyOutageIncident
-): 0 | 0.5 {
+): number {
+  if (isNonImpactIncident(incident)) {
+    return 1;
+  }
   const haystack = `${incident.title || ""} ${incident.acknowledgement || ""}`.toLowerCase();
   if (detail.tone === "bad" || haystack.includes("outage") || haystack.includes("offline")) {
     return 0;
@@ -101,6 +119,9 @@ function buildTrendHistory(detail: LegacyServiceDetailResult) {
   const incidents = Array.isArray(detail.payload.outage?.incidents) ? detail.payload.outage?.incidents : [];
 
   for (const incident of incidents) {
+    if (isNonImpactIncident(incident)) {
+      continue;
+    }
     const startDate = parseDate(incident.started_at);
     if (!startDate) {
       continue;
@@ -209,7 +230,7 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
   const uptimeHistory = buildTrendHistory(detail);
   const score = trendPercent(uptimeHistory);
   const responseHistory = buildActivitySparkline(detail);
-  const status = toneToStatus(detail.tone);
+  const status = severityToStatus(detail.severity, detail.tone);
 
   const name = detail.service.name || detail.service.id;
   const icon =
@@ -227,9 +248,12 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
     typeof sourceOk === "number" && typeof sourceTotal === "number" && sourceTotal > sourceOk
       ? Math.max(sourceTotal - sourceOk, 0)
       : 0;
-  const statusLabel = detail.severity === "minor"
-    ? pickLang(language, "Warning", "Warnung")
-    : undefined;
+  const staleSourceCount = Array.isArray(detail.payload.sources)
+    ? detail.payload.sources.filter((source) => {
+        const freshness = String(source?.freshness || "").toLowerCase();
+        return freshness && freshness !== "fresh" && freshness !== "warm";
+      }).length
+    : 0;
 
   const server: ServerService = {
     id: detail.service.id,
@@ -240,6 +264,7 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
     uptime: Number(score.toFixed(2)),
     metricLabel: deriveMetricLabel(detail, language),
     sourceUnavailableCount,
+    staleSourceCount,
     trendLabel: pickLang(language, "30-day signal trend", "30-Tage-Signaltrend"),
     trendValueLabel: formatPercent(score),
     lastIncident: detail.payload.outage?.incidents?.[0]?.title || undefined,

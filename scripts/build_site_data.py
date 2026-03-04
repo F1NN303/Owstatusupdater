@@ -29,6 +29,7 @@ SOURCE_RELIABILITY_MAX_RUNS = 500
 SOURCE_FRESHNESS_OK = {"fresh", "warm"}
 SOURCE_ROLE_VALUES = {"official", "provider", "community", "social", "probe"}
 SOURCE_CRITICALITY_VALUES = {"required", "supporting", "optional"}
+COMPONENT_STATUS_VALUES = {"online", "degraded", "offline", "unknown"}
 
 
 def _resolve_builder(builder_target: str):
@@ -379,6 +380,97 @@ def _normalize_source_freshness(value: object) -> str:
     if normalized in {"fresh", "warm", "stale", "unknown"}:
         return normalized
     return "unknown"
+
+
+def _normalize_outage_status_token(value: object) -> str:
+    text = str(value or "").strip().lower()
+    if not text:
+        return "unknown"
+    if "operational" in text or text == "none":
+        return "operational"
+    if "major" in text or "outage" in text or "down" in text or "offline" in text:
+        return "major outage"
+    if (
+        "degraded" in text
+        or "partial" in text
+        or "minor" in text
+        or "maintenance" in text
+        or "issue" in text
+        or "warn" in text
+    ):
+        return "degraded"
+    return "unknown"
+
+
+def _normalize_component_status(value: object) -> str:
+    text = str(value or "").strip().lower()
+    if not text:
+        return "unknown"
+    if (
+        "up" in text
+        or "ok" in text
+        or "operational" in text
+        or "online" in text
+        or "none" == text
+    ):
+        return "online"
+    if "major" in text or "outage" in text or "down" in text or "offline" in text:
+        return "offline"
+    if (
+        "degraded" in text
+        or "partial" in text
+        or "minor" in text
+        or "maintenance" in text
+        or "issue" in text
+        or "warn" in text
+    ):
+        return "degraded"
+    return "unknown"
+
+
+def _derive_source_conflict(payload: dict) -> dict[str, object]:
+    analytics = payload.get("analytics") if isinstance(payload.get("analytics"), dict) else {}
+    outage = payload.get("outage") if isinstance(payload.get("outage"), dict) else {}
+    derived_severity = str(analytics.get("severity_key") or "unknown").strip().lower()
+    official_status = _normalize_outage_status_token(outage.get("current_status"))
+    source_ok = int(analytics.get("source_ok_count") or 0)
+    source_total = int(analytics.get("source_total_count") or 0)
+
+    has_conflict = False
+    level = "none"
+    reason = "aligned"
+    summary = "Official and aggregate status signals are aligned."
+
+    if official_status == "operational" and derived_severity in {"degraded", "major"}:
+        has_conflict = True
+        level = "high" if derived_severity == "major" else "medium"
+        reason = "official_operational_vs_aggregate_issue"
+        summary = "Official status is operational while aggregate signals indicate active issues."
+    elif official_status == "degraded" and derived_severity in {"stable", "minor"}:
+        has_conflict = True
+        level = "medium"
+        reason = "official_degraded_vs_aggregate_normal"
+        summary = "Official status indicates degradation while aggregate severity is low."
+    elif official_status == "major outage" and derived_severity in {"stable", "minor", "degraded"}:
+        has_conflict = True
+        level = "high"
+        reason = "official_major_vs_aggregate_lower"
+        summary = "Official status reports a major outage while aggregate severity is lower."
+    elif official_status == "unknown" or derived_severity == "unknown":
+        level = "unknown"
+        reason = "insufficient_signal"
+        summary = "Insufficient signal quality to determine source conflict."
+
+    return {
+        "has_conflict": has_conflict,
+        "level": level,
+        "reason": reason,
+        "official_status": official_status,
+        "derived_severity": derived_severity,
+        "source_ok": max(source_ok, 0),
+        "source_total": max(source_total, 0),
+        "summary": summary,
+    }
 
 
 def _prune_source_runs(raw_runs: object, now: dt.datetime) -> list[dict[str, object]]:
@@ -1002,6 +1094,31 @@ def _build_point(payload: dict, point_time: dt.datetime) -> dict:
             "used_for_scoring": bool(source.get("used_for_scoring", True)),
         }
 
+    outage = payload.get("outage") if isinstance(payload.get("outage"), dict) else {}
+    raw_components = outage.get("components") if isinstance(outage.get("components"), list) else []
+    component_states: dict[str, dict] = {}
+    for index, component in enumerate(raw_components):
+        if not isinstance(component, dict):
+            continue
+        name = str(component.get("name") or component.get("component") or component.get("service") or "").strip()
+        if not name:
+            continue
+        component_id = _slugify_source_id(name)
+        if not component_id:
+            continue
+        if component_id in component_states:
+            component_id = f"{component_id}-{index}"
+        status = _normalize_component_status(
+            component.get("status") or component.get("health") or component.get("state")
+        )
+        if status not in COMPONENT_STATUS_VALUES:
+            status = "unknown"
+        component_states[component_id] = {
+            "component_id": component_id,
+            "name": name,
+            "status": status,
+        }
+
     return {
         "t": _iso_utc(point_time),
         "health": payload.get("health", "error"),
@@ -1012,6 +1129,7 @@ def _build_point(payload: dict, point_time: dt.datetime) -> dict:
         "source_total": int(analytics.get("source_total_count", 0)),
         "regions": region_snapshot,
         "source_states": source_states,
+        "component_states": component_states,
     }
 
 
@@ -1077,6 +1195,25 @@ def _normalize_history_point(point: dict) -> dict | None:
             "used_for_scoring": bool(source_state.get("used_for_scoring", True)),
         }
 
+    raw_component_states = (
+        point.get("component_states") if isinstance(point.get("component_states"), dict) else {}
+    )
+    component_states: dict[str, dict] = {}
+    for component_name, component_state in raw_component_states.items():
+        if not isinstance(component_name, str) or not isinstance(component_state, dict):
+            continue
+        component_id = _slugify_source_id(component_state.get("component_id") or component_name)
+        if not component_id:
+            continue
+        status = _normalize_component_status(component_state.get("status"))
+        if status not in COMPONENT_STATUS_VALUES:
+            status = "unknown"
+        component_states[component_id] = {
+            "component_id": component_id,
+            "name": str(component_state.get("name") or component_name),
+            "status": status,
+        }
+
     return {
         "t": _iso_utc(parsed),
         "health": str(point.get("health") or "error"),
@@ -1087,6 +1224,7 @@ def _normalize_history_point(point: dict) -> dict | None:
         "source_total": max(source_total, 0),
         "regions": regions,
         "source_states": source_states,
+        "component_states": component_states,
     }
 
 
@@ -1137,6 +1275,7 @@ def _build_summary(payload: dict, history: dict) -> dict:
             "ok": int(analytics.get("source_ok_count", 0) or 0),
             "total": int(analytics.get("source_total_count", 0) or 0),
         },
+        "source_conflict": analytics.get("source_conflict") or {},
         "regions": payload.get("regions") or {},
         "official_last_statement_at": official.get("last_statement_at"),
         "change_summary": {
@@ -1301,6 +1440,9 @@ def _build_single_service(service_key: str, manifest_path: Path) -> None:
         source_reliability_order,
         now,
     )
+    analytics = payload.get("analytics")
+    if isinstance(analytics, dict):
+        analytics["source_conflict"] = _derive_source_conflict(payload)
 
     changes, incident_index, report_index = _build_changes(previous_state, payload)
     payload["changes"] = changes

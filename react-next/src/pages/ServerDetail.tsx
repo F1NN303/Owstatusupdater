@@ -76,14 +76,51 @@ interface TabIndicatorMeasure {
   width: number;
 }
 
-function toneToStatus(tone: LegacyServiceDetailResult["tone"]): Status {
-  if (tone === "good") {
+function severityToStatus(
+  severity: LegacyServiceDetailResult["severity"],
+  tone: LegacyServiceDetailResult["tone"]
+): Status {
+  if (severity === "stable" || severity === "minor") {
     return "online";
   }
-  if (tone === "bad") {
+  if (severity === "major" || tone === "bad") {
     return "offline";
   }
+  if (severity === "degraded") {
+    return "degraded";
+  }
   return "degraded";
+}
+
+function normalizeSourceFreshnessKey(value?: string | null): "fresh" | "warm" | "stale" | "unknown" {
+  const key = String(value || "").trim().toLowerCase();
+  if (key === "fresh" || key === "warm" || key === "stale" || key === "unknown") {
+    return key;
+  }
+  return "unknown";
+}
+
+function sourceFreshnessWithinSla(source: LegacySourceHealth) {
+  const freshness = normalizeSourceFreshnessKey(source.freshness);
+  if (freshness === "stale" || freshness === "unknown") {
+    return false;
+  }
+  if (typeof source.age_minutes === "number" && Number.isFinite(source.age_minutes)) {
+    return source.age_minutes <= DATA_STALE_CRITICAL_MINUTES;
+  }
+  return true;
+}
+
+function isNonImpactIncident(incident: LegacyOutageIncident) {
+  const text = `${incident.title || ""} ${incident.acknowledgement || ""}`.toLowerCase();
+  return (
+    text.includes("none / monitoring") ||
+    text.includes("none / resolved") ||
+    text.includes("informational") ||
+    text.includes("information available") ||
+    text.includes("service warning") ||
+    text.includes("advisory")
+  );
 }
 
 function parseMaybeDate(value?: string | null) {
@@ -136,7 +173,10 @@ function startOfDay(date: Date) {
 function incidentLevel(
   detail: LegacyServiceDetailResult,
   incident: LegacyOutageIncident
-): 0 | 0.5 {
+): number {
+  if (isNonImpactIncident(incident)) {
+    return 1;
+  }
   const text = `${incident.title || ""} ${incident.acknowledgement || ""}`.toLowerCase();
   if (detail.tone === "bad" || text.includes("outage") || text.includes("offline")) {
     return 0;
@@ -154,6 +194,9 @@ function buildSignalTrend(detail: LegacyServiceDetailResult) {
     : [];
 
   for (const incident of incidents) {
+    if (isNonImpactIncident(incident)) {
+      continue;
+    }
     const startedAt = parseMaybeDate(incident.started_at);
     if (!startedAt) {
       continue;
@@ -346,6 +389,155 @@ function sourceAgreementLevel(ratio: number): 1 | 0.5 | 0 {
     return 0.5;
   }
   return 0;
+}
+
+function slugifyKey(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 64);
+}
+
+function normalizeComponentTrendStatus(value?: string | null): Status | null {
+  const text = String(value || "").toLowerCase();
+  if (!text) {
+    return null;
+  }
+  if (text.includes("online") || text.includes("operational") || text.includes("stable")) {
+    return "online";
+  }
+  if (text.includes("major") || text.includes("outage") || text.includes("offline") || text.includes("down")) {
+    return "offline";
+  }
+  if (text.includes("degraded") || text.includes("minor") || text.includes("warn") || text.includes("issue")) {
+    return "degraded";
+  }
+  return null;
+}
+
+function statusToTrendLevel(status: Status): 1 | 0.5 | 0 {
+  if (status === "online") {
+    return 1;
+  }
+  if (status === "degraded") {
+    return 0.5;
+  }
+  return 0;
+}
+
+type ComponentTrendRow = {
+  componentId: string;
+  name: string;
+  latestStatus: Status;
+  history: Array<1 | 0.5 | 0>;
+  uptimePercent: number;
+};
+
+function buildComponentTrendRows(
+  detail: LegacyServiceDetailResult,
+  components: Array<{ name: string; status: Status }>
+): ComponentTrendRow[] {
+  if (!Array.isArray(detail.history?.points) || detail.history.points.length === 0 || components.length === 0) {
+    return [];
+  }
+
+  const latestHistoryTs =
+    parseMaybeDate(detail.history.points[detail.history.points.length - 1]?.t)?.getTime() ??
+    parseMaybeDate(detail.payload.generated_at)?.getTime() ??
+    Date.now();
+  const windowStart = startOfDay(new Date(latestHistoryTs - 29 * DAY_MS)).getTime();
+  const selected = components.slice(0, 8).map((component) => ({
+    componentId: slugifyKey(component.name),
+    name: component.name,
+    latestStatus: component.status,
+    history: Array.from({ length: 30 }, () => statusToTrendLevel(component.status)),
+    hasHistorySample: false,
+  }));
+
+  for (const point of detail.history.points) {
+    const pointTs = parseMaybeDate(point?.t)?.getTime();
+    if (typeof pointTs !== "number" || pointTs < windowStart || pointTs > latestHistoryTs + DAY_MS) {
+      continue;
+    }
+    const dayIndex = Math.floor((pointTs - windowStart) / DAY_MS);
+    if (dayIndex < 0 || dayIndex >= 30) {
+      continue;
+    }
+    const componentStates =
+      point?.component_states && typeof point.component_states === "object"
+        ? point.component_states
+        : {};
+
+    for (const row of selected) {
+      const stateById = componentStates[row.componentId];
+      const stateByName = componentStates[slugifyKey(row.name)];
+      const state = stateById || stateByName;
+      const status = normalizeComponentTrendStatus(state?.status);
+      if (!status) {
+        continue;
+      }
+      row.history[dayIndex] = Math.min(row.history[dayIndex], statusToTrendLevel(status)) as 1 | 0.5 | 0;
+      row.hasHistorySample = true;
+    }
+  }
+
+  return selected
+    .filter((row) => row.hasHistorySample)
+    .map((row) => {
+      const uptimePercent = Math.round((row.history.reduce((sum, value) => sum + value, 0) / row.history.length) * 1000) / 10;
+      return {
+        componentId: row.componentId,
+        name: row.name,
+        latestStatus: row.latestStatus,
+        history: row.history,
+        uptimePercent,
+      };
+    });
+}
+
+type SourceConflictSnapshot = {
+  hasConflict: boolean;
+  level: "none" | "low" | "medium" | "high" | "unknown";
+  summary: string;
+  officialStatus: string;
+  derivedSeverity: string;
+};
+
+function deriveSourceConflictSnapshot(detail: LegacyServiceDetailResult): SourceConflictSnapshot {
+  const payloadConflict = detail.payload.analytics?.source_conflict;
+  if (payloadConflict && typeof payloadConflict === "object") {
+    const levelRaw = String(payloadConflict.level || "none").toLowerCase();
+    const normalizedLevel =
+      levelRaw === "high" || levelRaw === "medium" || levelRaw === "low" || levelRaw === "unknown"
+        ? levelRaw
+        : "none";
+    return {
+      hasConflict: Boolean(payloadConflict.has_conflict),
+      level: normalizedLevel,
+      summary:
+        String(payloadConflict.summary || "").trim() ||
+        "Official and aggregate status signals are aligned.",
+      officialStatus: String(payloadConflict.official_status || detail.payload.outage?.current_status || "unknown"),
+      derivedSeverity: String(payloadConflict.derived_severity || detail.payload.analytics?.severity_key || "unknown"),
+    };
+  }
+
+  const officialStatus = String(detail.payload.outage?.current_status || "unknown").toLowerCase();
+  const derivedSeverity = String(detail.payload.analytics?.severity_key || detail.severity || "unknown").toLowerCase();
+  const hasConflict =
+    (officialStatus.includes("operational") && (derivedSeverity === "degraded" || derivedSeverity === "major")) ||
+    (officialStatus.includes("major") && (derivedSeverity === "stable" || derivedSeverity === "minor"));
+
+  return {
+    hasConflict,
+    level: hasConflict ? "medium" : "none",
+    summary: hasConflict
+      ? "Official and aggregate status signals diverge."
+      : "Official and aggregate status signals are aligned.",
+    officialStatus,
+    derivedSeverity,
+  };
 }
 
 function signalPercent(history: number[]) {
@@ -1174,6 +1366,9 @@ function extractTopReportedIssues(
 }
 
 function incidentToneClass(incident: LegacyOutageIncident) {
+  if (isNonImpactIncident(incident)) {
+    return "bg-status-online";
+  }
   const text = `${incident.title || ""} ${incident.acknowledgement || ""}`.toLowerCase();
   if (text.includes("outage") || text.includes("offline")) {
     return "bg-status-offline";
@@ -1475,10 +1670,7 @@ const ServerDetail = () => {
   const sourceOkCount = detail?.payload.analytics?.source_ok_count ?? "--";
   const sourceTotalCount = detail?.payload.analytics?.source_total_count ?? "--";
   const changeSummary = detail?.payload.changes?.summary;
-  const serviceStatus = detail ? toneToStatus(detail.tone) : "degraded";
-  const serviceStatusLabel = detail?.severity === "minor"
-    ? pickLang(language, "Warning", "Warnung")
-    : undefined;
+  const serviceStatus = detail ? severityToStatus(detail.severity, detail.tone) : "degraded";
   const serviceIconName =
     detail?.service.iconName ||
     (serviceId === "sony" ? "Tv" : serviceId === "m365" ? "Globe" : serviceId === "openai" ? "Cpu" : "Gamepad2");
@@ -1509,8 +1701,38 @@ const ServerDetail = () => {
   const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? extractApiServiceComponents(detail) : [];
+  const componentTrendRows = detail ? buildComponentTrendRows(detail, componentRows) : [];
   const topReportedIssues = detail ? extractTopReportedIssues(detail) : [];
   const topReportedIssuesMeta = detail?.payload.outage?.top_reported_issues_meta;
+  const sourceConflict = detail ? deriveSourceConflictSnapshot(detail) : null;
+  const sourceConflictToneClass =
+    sourceConflict?.level === "high"
+      ? "border-rose-300/30 bg-rose-300/12 text-rose-200"
+      : sourceConflict?.level === "medium"
+        ? "border-amber-300/30 bg-amber-300/12 text-amber-200"
+        : sourceConflict?.level === "low"
+          ? "border-sky-300/30 bg-sky-300/12 text-sky-200"
+          : sourceConflict?.level === "unknown"
+            ? "border-white/15 bg-white/5 text-muted-foreground"
+            : "border-emerald-300/30 bg-emerald-400/10 text-emerald-300";
+
+  const freshnessSummary = sources.reduce(
+    (acc, source) => {
+      const key = normalizeSourceFreshnessKey(source.freshness);
+      acc[key] += 1;
+      if (!sourceFreshnessWithinSla(source)) {
+        acc.slaBreached += 1;
+      }
+      return acc;
+    },
+    { fresh: 0, warm: 0, stale: 0, unknown: 0, slaBreached: 0 }
+  );
+  const hasFreshnessBreach = freshnessSummary.slaBreached > 0;
+  const staleSourceNames = sources
+    .filter((source) => !sourceFreshnessWithinSla(source))
+    .map((source) => source.name || "unknown")
+    .slice(0, 3);
+
   const dataAgeMinutes = detail ? ageMinutesSince(detail.payload.generated_at) : null;
   const isDataStale = typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_WARNING_MINUTES;
   const isDataVeryStale = typeof dataAgeMinutes === "number" && dataAgeMinutes >= DATA_STALE_CRITICAL_MINUTES;
@@ -1901,7 +2123,7 @@ const ServerDetail = () => {
                 <div className="mt-2 rounded-2xl border border-white/10 bg-white/5 p-2.5 sm:p-3">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex min-w-0 flex-wrap items-center gap-2">
-                      <StatusBadge status={serviceStatus} size="md" label={serviceStatusLabel} />
+                      <StatusBadge status={serviceStatus} size="md" />
                       <span className="truncate text-[10px] text-muted-foreground sm:text-[11px]">
                         {quickMetricLabel}
                       </span>
@@ -2297,6 +2519,45 @@ const ServerDetail = () => {
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {t("Component Trend (30d)", "Komponenten-Trend (30 Tage)")}
+                  </h2>
+                  <DataOriginBadge label={derivedBadge} tone="derived" />
+                </div>
+                <div className="mt-3 space-y-2.5">
+                  {componentTrendRows.length === 0 ? (
+                    <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
+                      {t(
+                        "No component trend history available yet for this service.",
+                        "Für diesen Service ist noch kein Komponenten-Trendverlauf verfügbar."
+                      )}
+                    </p>
+                  ) : (
+                    componentTrendRows.map((component) => (
+                      <div
+                        key={component.componentId}
+                        className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
+                      >
+                        <div className="mb-2 flex items-center justify-between gap-2">
+                          <p className="truncate text-sm font-medium text-foreground">{component.name}</p>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-foreground">
+                              {formatPercent(component.uptimePercent)}
+                            </span>
+                            <StatusBadge status={component.latestStatus} />
+                          </div>
+                        </div>
+                        <UptimeBar data={component.history} />
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </section>
+
+            <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
+              <div className="relative z-10">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                     {t("Source Reliability", "Quellenzuverlässigkeit")}
                   </h2>
                   <DataOriginBadge label={apiBadge} tone="api" />
@@ -2316,7 +2577,23 @@ const ServerDetail = () => {
                       {t("Scoring quorum", "Scoring-Quorum")}:{" "}
                       {`${sourceScoringOk}/${sourceScoringTotal}`}
                     </span>
+                    {sourceConflict ? (
+                      <span className={`rounded-full border px-2 py-0.5 text-[11px] ${sourceConflictToneClass}`}>
+                        {sourceConflict.hasConflict
+                          ? t("Source conflict detected", "Quellenkonflikt erkannt")
+                          : t("No source conflict", "Kein Quellenkonflikt")}
+                      </span>
+                    ) : null}
                   </div>
+                  {sourceConflict ? (
+                    <p className="text-[11px] text-muted-foreground">
+                      {sourceConflict.summary}{" "}
+                      <span className="opacity-80">
+                        {t("Official", "Offiziell")}: {sourceConflict.officialStatus} ·{" "}
+                        {t("Aggregate", "Aggregat")}: {sourceConflict.derivedSeverity}
+                      </span>
+                    </p>
+                  ) : null}
                   {sourceTransparencyDecision?.explanation ? (
                     <p className="text-[11px] text-muted-foreground">{sourceTransparencyDecision.explanation}</p>
                   ) : null}
@@ -2349,6 +2626,47 @@ const ServerDetail = () => {
                       </div>
                     </div>
                   ) : null}
+                  <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <p className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+                        {t("Freshness SLA", "Frische-SLA")}
+                      </p>
+                      <span
+                        className={`rounded-full border px-2 py-0.5 text-[10px] ${
+                          hasFreshnessBreach
+                            ? "border-amber-300/30 bg-amber-300/12 text-amber-200"
+                            : "border-emerald-300/30 bg-emerald-400/10 text-emerald-300"
+                        }`}
+                      >
+                        {hasFreshnessBreach
+                          ? t("SLA breached", "SLA verletzt")
+                          : t("SLA met", "SLA erfüllt")}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 text-[11px]">
+                      <span className="rounded-full border border-emerald-300/25 bg-emerald-400/10 px-2 py-0.5 text-emerald-300">
+                        {t("fresh", "frisch")}: {freshnessSummary.fresh}
+                      </span>
+                      <span className="rounded-full border border-sky-300/25 bg-sky-300/10 px-2 py-0.5 text-sky-200">
+                        {t("warm", "aktuell")}: {freshnessSummary.warm}
+                      </span>
+                      <span className="rounded-full border border-amber-300/25 bg-amber-300/10 px-2 py-0.5 text-amber-200">
+                        {t("stale", "veraltet")}: {freshnessSummary.stale}
+                      </span>
+                      <span className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-muted-foreground">
+                        {t("unknown", "unbekannt")}: {freshnessSummary.unknown}
+                      </span>
+                    </div>
+                    {hasFreshnessBreach ? (
+                      <p className="mt-1.5 text-[11px] text-amber-200">
+                        {t(
+                          "At least one source exceeded the freshness SLA.",
+                          "Mindestens eine Quelle hat die Frische-SLA überschritten."
+                        )}{" "}
+                        {staleSourceNames.length > 0 ? staleSourceNames.join(", ") : ""}
+                      </p>
+                    ) : null}
+                  </div>
                   {sourceTransparencySources.length > 0 ? (
                     <div className="space-y-2">
                       {sourceTransparencySources.map((source, index) => (
@@ -2381,6 +2699,11 @@ const ServerDetail = () => {
                                 : "n/a"}
                             </span>
                             <span>{t("fail streak", "Fehler-Serie")}: {source.consecutive_failures ?? 0}</span>
+                            {normalizeSourceFreshnessKey(source.latest?.freshness) === "stale" ? (
+                              <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-1.5 py-0.5 text-[10px] text-amber-200">
+                                {t("SLA breached", "SLA verletzt")}
+                              </span>
+                            ) : null}
                           </div>
                         </div>
                       ))}
@@ -2451,11 +2774,18 @@ const ServerDetail = () => {
                       {t("No source status details available.", "Keine Quellenprüfungen im Payload.")}
                     </p>
                   ) : (
-                    sources.map((source, index) => (
-                      <div
-                        key={`${source.name || "source"}-${index}`}
-                        className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
-                      >
+                    sources.map((source, index) => {
+                      const slaOk = sourceFreshnessWithinSla(source);
+                      const freshnessKey = normalizeSourceFreshnessKey(source.freshness);
+                      return (
+                        <div
+                          key={`${source.name || "source"}-${index}`}
+                          className={`rounded-xl border px-3 py-2.5 ${
+                            slaOk
+                              ? "border-white/10 bg-white/5"
+                              : "border-amber-300/25 bg-amber-300/10"
+                          }`}
+                        >
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <p className="truncate text-sm font-medium text-foreground">
@@ -2465,18 +2795,25 @@ const ServerDetail = () => {
                               {String(source.kind || t("unknown", "unbekannt")).replace(/-/g, " ")}
                             </p>
                           </div>
-                          <span
-                            className={`rounded-full border px-2 py-0.5 text-[11px] ${
-                              source.ok
-                                ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-300"
-                                : "border-rose-300/20 bg-rose-300/10 text-rose-200"
-                            }`}
-                          >
-                            {source.ok ? "OK" : t("Error", "Fehler")}
-                          </span>
+                          <div className="flex items-center gap-1.5">
+                            {!slaOk ? (
+                              <span className="rounded-full border border-amber-300/30 bg-amber-300/12 px-2 py-0.5 text-[10px] text-amber-200">
+                                {t("SLA breached", "SLA verletzt")}
+                              </span>
+                            ) : null}
+                            <span
+                              className={`rounded-full border px-2 py-0.5 text-[11px] ${
+                                source.ok
+                                  ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-300"
+                                  : "border-rose-300/20 bg-rose-300/10 text-rose-200"
+                              }`}
+                            >
+                              {source.ok ? "OK" : t("Error", "Fehler")}
+                            </span>
+                          </div>
                         </div>
                         <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
-                          <span>{t("freshness", "Aktualität")}: {formatSourceFreshnessLabel(source.freshness)}</span>
+                          <span>{t("freshness", "Aktualität")}: {formatSourceFreshnessLabel(freshnessKey)}</span>
                           <span>{t("age", "Alter")}: {formatAgeMinutes(source.age_minutes)}</span>
                           {typeof source.item_count === "number" ? <span>{t("items", "Einträge")}: {source.item_count}</span> : null}
                           {typeof source.duration_ms === "number" ? <span>{t("fetch", "Abrufzeit")}: {source.duration_ms}ms</span> : null}
@@ -2485,7 +2822,8 @@ const ServerDetail = () => {
                           <p className="mt-1 text-[11px] text-rose-200">{source.error}</p>
                         ) : null}
                       </div>
-                    ))
+                      );
+                    })
                   )}
                 </div>
               </div>
@@ -2511,3 +2849,4 @@ const ServerDetail = () => {
 };
 
 export default ServerDetail;
+
