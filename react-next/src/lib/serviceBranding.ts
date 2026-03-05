@@ -33,6 +33,10 @@ const BRAND_ASSETS: Record<string, ServiceBrandAsset> = {
     assetPath: "brands/github.svg",
     label: "GitHub",
   },
+  cloudflare: {
+    assetPath: "brands/cloudflare.svg",
+    label: "Cloudflare",
+  },
   steam: {
     assetPath: "brands/steam.svg",
     label: "Steam",
@@ -56,6 +60,8 @@ const SERVICE_ALIASES: Record<string, string> = {
   "discord-status": "discord",
   "github-status": "github",
   githubstatus: "github",
+  "cloudflare-status": "cloudflare",
+  cf: "cloudflare",
   valve: "steam",
   "steam-platform": "steam",
 };

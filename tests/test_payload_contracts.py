@@ -15,6 +15,7 @@ SERVICE_DATA_DIRS = {
     "claude": ROOT / "site" / "claude" / "data",
     "discord": ROOT / "site" / "discord" / "data",
     "github": ROOT / "site" / "github" / "data",
+    "cloudflare": ROOT / "site" / "cloudflare" / "data",
     "steam": ROOT / "site" / "steam" / "data",
 }
 VALID_HEALTH = {"ok", "degraded", "error"}

@@ -28,6 +28,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/claude/index.html`
   - `site/discord/index.html`
   - `site/github/index.html`
+  - `site/cloudflare/index.html`
   - `site/steam/index.html`
   - `site/legacy-home.html`
   - `site/legacy-overwatch.html`
@@ -132,6 +133,27 @@ Key files:
 - `react-next/src/lib/serviceManifest.ts`
 - `react-next/src/lib/serviceBranding.ts`
 - `react-next/public/brands/github.svg`
+- `scripts/watch_data_freshness.py`
+- `tests/test_payload_contracts.py`
+- `tests/test_resilience.py`
+
+### Cloudflare Service - Added
+- New service id: `cloudflare`
+- New detail route: `/status/cloudflare`
+- New legacy wrapper: `site/cloudflare/index.html`
+- New generated data path: `site/cloudflare/data/*`
+- Source strategy:
+  - official required: Cloudflare Statuspage API (`/api/v2/status.json`, `/components.json`, `/incidents.json`)
+  - supporting corroboration: StatusGator + IsDown
+- Freshness monitor now includes `cloudflare` endpoint.
+
+Key files:
+- `services/cloudflare_aggregator.py`
+- `config/services/cloudflare.yaml`
+- `site/cloudflare/data/*`
+- `react-next/src/lib/serviceManifest.ts`
+- `react-next/src/lib/serviceBranding.ts`
+- `react-next/public/brands/cloudflare.svg`
 - `scripts/watch_data_freshness.py`
 - `tests/test_payload_contracts.py`
 - `tests/test_resilience.py`
@@ -312,5 +334,25 @@ Key files:
   - `py -3 scripts/build_react_artifacts.py` -> passed
   - `py -3 scripts/verify_next_preview_artifact.py` -> passed
   - `py -3 scripts/watch_data_freshness.py --dry-run` -> passed (all monitored endpoints fresh)
-  - `py -3 scripts/audit_source_endpoints.py` -> passed (33/33 endpoints OK)
+- `py -3 scripts/audit_source_endpoints.py` -> passed (33/33 endpoints OK)
 - Implementation commit: `9f40c11`
+
+## Latest Validation Snapshot (Cloudflare Service)
+- Scope:
+  - Added new service `cloudflare` using official-first architecture:
+    - Python aggregator with required official Statuspage API + supporting provider corroboration.
+    - Config-driven registration + generated static artifacts.
+    - React fallback manifest, branding, alias routing, and legacy wrapper route.
+  - Added Cloudflare to freshness watchdog endpoint list.
+  - Added Cloudflare resilience tests and payload contract coverage.
+- Validation:
+  - `py -3 scripts/validate_services.py` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+  - `py -3 scripts/build_site_data.py --service cloudflare` -> passed
+  - `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (38 tests)
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/build_react_artifacts.py` -> passed
+  - `py -3 scripts/verify_next_preview_artifact.py` -> passed
+  - `py -3 scripts/audit_source_endpoints.py --service cloudflare` -> passed
+  - `py -3 scripts/watch_data_freshness.py --dry-run` -> cloudflare endpoint reported `HTTP 404` pre-deploy (expected until GitHub Pages publish completes)
+- Implementation commit: pending

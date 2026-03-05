@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 import scripts.build_site_data as build_site_data
 import services.claude_aggregator as claude_aggregator
+import services.cloudflare_aggregator as cloudflare_aggregator
 import services.discord_aggregator as discord_aggregator
 import services.github_aggregator as github_aggregator
 import services.m365_aggregator as m365_aggregator
@@ -100,6 +101,7 @@ class SnapshotFreshnessSemanticsTests(unittest.TestCase):
             (discord_aggregator, "2026-03-05T18:00:02Z"),
             (github_aggregator, "2026-03-05T18:00:03Z"),
             (m365_aggregator, "2026-03-05T18:00:04Z"),
+            (cloudflare_aggregator, "2026-03-05T18:00:05Z"),
         ]
         for module, expected in cases:
             with self.subTest(module=module.__name__):
@@ -429,6 +431,94 @@ class GitHubAggregatorResilienceTests(unittest.TestCase):
 
         with patch("services.github_aggregator._run_github_source", side_effect=_run_side_effect):
             payload = github_aggregator._collect_payload(scoring_profile="official_first_v1")
+
+        self.assertEqual(payload.get("health"), "error")
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 3)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("sources"), list)
+
+
+class CloudflareAggregatorResilienceTests(unittest.TestCase):
+    def test_effective_active_incident_count_ignores_nonimpact_monitoring(self) -> None:
+        official_status = {
+            "active_incidents": [
+                {"acknowledgement": "None / Monitoring"},
+                {"acknowledgement": "Minor / Monitoring"},
+                {"acknowledgement": "Major / Investigating"},
+            ],
+            "active_incident_count": 3,
+        }
+        self.assertEqual(cloudflare_aggregator._effective_active_incident_count(official_status), 2)
+
+    def test_collect_payload_with_partial_source_failures(self) -> None:
+        statusgator_data = {
+            "source": "StatusGator",
+            "source_type": "Downdetector-like",
+            "url": "https://statusgator.com/services/cloudflare",
+            "summary": "StatusGator indicates Cloudflare is currently degraded.",
+            "current_status": "degraded",
+            "reports_24h": 48,
+            "incidents": [
+                {
+                    "title": "Test incident",
+                    "started_at": "2026-02-27T00:00:00Z",
+                    "duration": "22m",
+                    "acknowledgement": "simulated",
+                }
+            ],
+            "top_reported_issues": [{"label": "DNS resolution delays", "count": 4}],
+        }
+
+        def _run_side_effect(**kwargs):
+            adapter_id = kwargs.get("adapter_id")
+            if adapter_id == "statusgator":
+                return SourceRunResult(
+                    ok=True,
+                    data=statusgator_data,
+                    source=_source_entry("StatusGator", True),
+                )
+            if adapter_id == "isdown_cloudflare":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("IsDown (Cloudflare)", False),
+                    error="simulated failure",
+                )
+            if adapter_id == "cloudflare_statuspage_api":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("Cloudflare Statuspage API", False),
+                    error="simulated failure",
+                )
+            raise AssertionError(f"Unexpected adapter_id: {adapter_id}")
+
+        with patch("services.cloudflare_aggregator._run_cloudflare_source", side_effect=_run_side_effect):
+            payload = cloudflare_aggregator._collect_payload(scoring_profile="official_first_v1")
+
+        self.assertEqual(payload.get("health"), "degraded")
+        self.assertEqual(len(payload.get("sources") or []), 3)
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 1)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 3)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("outage", {}).get("incidents"), list)
+        self.assertIsInstance(payload.get("official", {}).get("summary"), str)
+
+    def test_collect_payload_when_all_sources_fail_returns_error_health(self) -> None:
+        def _run_side_effect(**kwargs):
+            name = str(kwargs.get("name") or kwargs.get("adapter_id") or "source")
+            return SourceRunResult(
+                ok=False,
+                data=None,
+                source=_source_entry(name, False),
+                error="simulated failure",
+            )
+
+        with patch("services.cloudflare_aggregator._run_cloudflare_source", side_effect=_run_side_effect):
+            payload = cloudflare_aggregator._collect_payload(scoring_profile="official_first_v1")
 
         self.assertEqual(payload.get("health"), "error")
         self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)
