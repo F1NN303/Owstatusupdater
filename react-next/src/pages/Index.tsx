@@ -14,7 +14,7 @@ import { Bell, ChevronRight, RefreshCw, Star, TriangleAlert } from "lucide-react
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
-type OverallState = "all-good" | "some-issues" | "major-outage";
+type OverallState = "all-good" | "minor-issues" | "some-issues" | "major-outage";
 type HomeFilterKey = "all" | "issues" | "healthy" | `category:${string}`;
 type HomeSortKey = "impact" | "name" | "updated";
 
@@ -400,11 +400,24 @@ function impactRank(status: Status): number {
 }
 
 function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): OverallState {
-  if (cards.some((card) => card.server.status === "offline")) {
+  if (cards.length === 0) {
+    return hasErrors ? "minor-issues" : "all-good";
+  }
+
+  const offlineCount = cards.filter((card) => card.server.status === "offline").length;
+  const degradedCount = cards.filter((card) => card.server.status === "degraded").length;
+  const impactedCount = offlineCount + degradedCount;
+  const offlineRatio = offlineCount / cards.length;
+  const impactedRatio = impactedCount / cards.length;
+
+  if (offlineCount >= 2 || offlineRatio >= 0.25) {
     return "major-outage";
   }
-  if (hasErrors || cards.some((card) => card.server.status === "degraded")) {
+  if (offlineCount === 1 || degradedCount >= 3 || impactedRatio >= 0.5) {
     return "some-issues";
+  }
+  if (degradedCount >= 1 || hasErrors) {
+    return "minor-issues";
   }
   return "all-good";
 }
@@ -507,10 +520,18 @@ const Index = () => {
     () => overallStateFromCards(cards, errorMessages.length > 0),
     [cards, errorMessages.length]
   );
-  const onlineCount = useMemo(
-    () => cards.filter((card) => card.server.status === "online").length,
-    [cards]
-  );
+  const statusCounts = useMemo(() => {
+    const onlineCount = cards.filter((card) => card.server.status === "online").length;
+    const degradedCount = cards.filter((card) => card.server.status === "degraded").length;
+    const offlineCount = cards.filter((card) => card.server.status === "offline").length;
+    return {
+      onlineCount,
+      degradedCount,
+      offlineCount,
+      impactedCount: degradedCount + offlineCount,
+    };
+  }, [cards]);
+  const { onlineCount, degradedCount, offlineCount, impactedCount } = statusCounts;
   const subtitle = useMemo(
     () => formatHeaderSubtitle(lastRefreshAt, language, timeDisplayMode),
     [lastRefreshAt, language, timeDisplayMode]
@@ -665,7 +686,11 @@ const Index = () => {
             <OverallStatus
               state={overallState}
               onlineCount={onlineCount}
+              degradedCount={degradedCount}
+              offlineCount={offlineCount}
+              impactedCount={impactedCount}
               totalCount={cards.length}
+              onShowImpacted={() => setActiveFilter("issues")}
             />
           </div>
         ) : (
