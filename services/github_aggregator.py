@@ -361,6 +361,32 @@ def _build_official_block(official_updates: list[dict[str, Any]]) -> dict[str, A
     }
 
 
+def _is_limited_partial_outage_scope(official_status: dict[str, Any] | None) -> bool:
+    if not isinstance(official_status, dict):
+        return False
+    description = _clean(official_status.get("description")).lower()
+    if "partial system outage" not in description and "partial outage" not in description:
+        return False
+
+    components = [item for item in (official_status.get("components") or []) if isinstance(item, dict)]
+    if not components:
+        return False
+
+    leaf_components = [item for item in components if not bool(item.get("group"))]
+    tracked_components = leaf_components or components
+
+    impacted_count = 0
+    for component in tracked_components:
+        status_key = _normalize_outage_status_text(component.get("status"))
+        if status_key in {"degraded", "major outage"}:
+            impacted_count += 1
+
+    if impacted_count == 0:
+        return False
+    impact_ratio = impacted_count / max(len(tracked_components), 1)
+    return impacted_count <= 2 and impact_ratio <= 0.35
+
+
 def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
     sources: list[dict[str, Any]] = []
     official_status: dict[str, Any] | None = None
@@ -516,6 +542,11 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
     official_status_key = _normalize_outage_status_text(
         official_status.get("current_status") if isinstance(official_status, dict) else None
     )
+    partial_scope_guard_applied = False
+    if official_status_key == "major outage" and _is_limited_partial_outage_scope(official_status):
+        # GitHub often marks partial outages with indicator "major"; cap this to degraded for service-level UX.
+        official_status_key = "degraded"
+        partial_scope_guard_applied = True
     official_active_incident_count = _effective_active_incident_count(official_status)
     official_source_freshness = str((official_source_entry or {}).get("freshness") or "").lower()
     analytics = _calculate_severity(
@@ -533,6 +564,8 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
         },
     )
     analytics["model_version"] = "github-1.0"
+    if isinstance(analytics.get("safeguards"), dict):
+        analytics["safeguards"]["official_partial_scope_cap_applied"] = partial_scope_guard_applied
     regions = _build_region_signals(analytics, outage, reports, news)
 
     generated_at = _utc_now_iso()

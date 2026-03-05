@@ -257,3 +257,13 @@ Key files:
 - `py -3 scripts/build_react_artifacts.py` -> passed
 - `py -3 scripts/verify_next_preview_artifact.py` -> passed
 - `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (26 tests)
+
+## Latest Validation Snapshot (GitHub Partial-Outage Severity Guard)
+- Scope:
+  - Adjusted GitHub severity scoring context so a limited-scope "Partial System Outage" does not force service-level `major/offline`.
+  - Condition: official status resolves to `major outage` but description indicates partial outage and only a small component subset is impacted.
+  - Added safeguard marker in analytics: `official_partial_scope_cap_applied`.
+- `py -3 scripts/build_site_data.py --service github` -> passed
+- `py -3 scripts/validate_services.py` -> passed
+- `py -3 -m py_compile services/github_aggregator.py` -> passed
+- `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (26 tests)
