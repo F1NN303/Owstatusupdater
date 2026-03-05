@@ -714,12 +714,8 @@ def _statusgator_item_count(payload: Any) -> int | None:
 
 
 def _statusgator_last_item_at(payload: Any) -> str | None:
-    if not isinstance(payload, dict):
-        return None
-    last_item_at = _latest_timestamp(payload.get("incidents") or [], "started_at")
-    if not last_item_at and isinstance(payload.get("service_health_24h_meta"), dict):
-        last_item_at = payload["service_health_24h_meta"].get("last_sample_at")
-    return last_item_at
+    # Status index freshness is based on successful fetch time, not incident recency.
+    return _utc_now_iso() if isinstance(payload, dict) else None
 
 
 def _isdown_item_count(payload: Any) -> int | None:

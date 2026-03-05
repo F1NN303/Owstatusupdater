@@ -7,6 +7,7 @@ import scripts.build_site_data as build_site_data
 import services.claude_aggregator as claude_aggregator
 import services.discord_aggregator as discord_aggregator
 import services.github_aggregator as github_aggregator
+import services.m365_aggregator as m365_aggregator
 import services.openai_aggregator as openai_aggregator
 import services.steam_aggregator as steam_aggregator
 from services.core.source_runner import CallableSourceAdapter, SourceAdapterSpec, SourceRunResult, run_source_adapter
@@ -84,6 +85,26 @@ class BuilderInvocationTests(unittest.TestCase):
         self.assertEqual(payload.get("generated_at"), "2026-02-27T00:00:00Z")
         self.assertEqual(called.get("force_refresh"), True)
         self.assertEqual(called.get("args_count"), 1)
+
+
+class SnapshotFreshnessSemanticsTests(unittest.TestCase):
+    def test_statusgator_last_item_at_uses_fetch_time_for_snapshot_sources(self) -> None:
+        payload = {
+            "incidents": [{"started_at": "2026-02-01T00:00:00Z"}],
+            "service_health_24h_meta": {"last_sample_at": "2026-02-01T00:05:00Z"},
+        }
+        cases = [
+            (openai_aggregator, "2026-03-05T18:00:00Z"),
+            (claude_aggregator, "2026-03-05T18:00:01Z"),
+            (discord_aggregator, "2026-03-05T18:00:02Z"),
+            (github_aggregator, "2026-03-05T18:00:03Z"),
+            (m365_aggregator, "2026-03-05T18:00:04Z"),
+        ]
+        for module, expected in cases:
+            with self.subTest(module=module.__name__):
+                with patch.object(module, "_utc_now_iso", return_value=expected):
+                    self.assertEqual(module._statusgator_last_item_at(payload), expected)
+                    self.assertIsNone(module._statusgator_last_item_at(None))
 
 
 class OpenAIAggregatorResilienceTests(unittest.TestCase):

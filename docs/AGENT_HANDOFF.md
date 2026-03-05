@@ -267,3 +267,22 @@ Key files:
 - `py -3 scripts/validate_services.py` -> passed
 - `py -3 -m py_compile services/github_aggregator.py` -> passed
 - `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (26 tests)
+
+## Latest Validation Snapshot (Cross-Service Reliability Hardening)
+- Scope:
+  - Ran full end-to-end validation across all services and artifacts.
+  - Hardened snapshot freshness semantics for StatusGator in:
+    - `openai`, `claude`, `discord`, `github`, `m365`
+  - Change: freshness for those StatusGator adapters now uses successful fetch time (snapshot semantics), not latest incident timestamp, to prevent false stale reliability degradation during quiet periods.
+  - Added regression tests:
+    - `SnapshotFreshnessSemanticsTests` in `tests/test_resilience.py`
+    - Verifies `_statusgator_last_item_at` uses `_utc_now_iso()` across all five services.
+- Result impact:
+  - Removed false `stale_source_data` reliability warnings for healthy services (`claude`, `m365`) caused by old incident timestamps despite fresh fetches.
+- `py -3 scripts/validate_services.py` -> passed
+- `py -3 scripts/check_public_exposure.py` -> passed
+- `py -3 scripts/build_site_data.py --service all` -> passed
+- `py -3 -m py_compile services/openai_aggregator.py services/claude_aggregator.py services/discord_aggregator.py services/github_aggregator.py services/m365_aggregator.py tests/test_resilience.py` -> passed
+- `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (27 tests)
+- `npm.cmd run build` in `react-next` -> passed
+- `py -3 scripts/verify_next_preview_artifact.py` -> passed
