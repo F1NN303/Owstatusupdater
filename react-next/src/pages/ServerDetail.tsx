@@ -61,6 +61,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const DATA_STALE_WARNING_MINUTES = 75;
 const DATA_STALE_CRITICAL_MINUTES = 180;
 const RECENT_INCIDENT_SUBTITLE_MAX_MINUTES = 24 * 60;
+const COMPONENT_ROWS_COLLAPSED_COUNT = 12;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
 type SwipeAxisLock = "x" | "y" | null;
 
@@ -1453,6 +1454,8 @@ const ServerDetail = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<DetailTabKey>("overview");
+  const [componentSearch, setComponentSearch] = useState("");
+  const [showAllComponents, setShowAllComponents] = useState(false);
   const [tabDragOffset, setTabDragOffset] = useState(0);
   const [isTabDragging, setIsTabDragging] = useState(false);
   const tabSwipeSessionRef = useRef<TabSwipeSession | null>(null);
@@ -1493,6 +1496,11 @@ const ServerDetail = () => {
       void loadDetail("refresh");
     }, 60_000);
     return () => window.clearInterval(timer);
+  }, [serviceId]);
+
+  useEffect(() => {
+    setComponentSearch("");
+    setShowAllComponents(false);
   }, [serviceId]);
 
   const refreshTabIndicatorMeasures = useCallback(() => {
@@ -1772,6 +1780,21 @@ const ServerDetail = () => {
   );
   const indicatorWidth = Math.max(0, unclampedIndicatorWidth);
   const t = (en: string, de: string) => pickLang(language, en, de);
+  const normalizedComponentSearch = componentSearch.trim().toLowerCase();
+  const filteredComponentRows = normalizedComponentSearch
+    ? componentRows.filter((item) => item.name.toLowerCase().includes(normalizedComponentSearch))
+    : componentRows;
+  const shouldCapComponentRows = filteredComponentRows.length > COMPONENT_ROWS_COLLAPSED_COUNT;
+  const visibleComponentRows =
+    showAllComponents || !shouldCapComponentRows
+      ? filteredComponentRows
+      : filteredComponentRows.slice(0, COMPONENT_ROWS_COLLAPSED_COUNT);
+  const hiddenComponentRowsCount = Math.max(
+    0,
+    filteredComponentRows.length - visibleComponentRows.length
+  );
+  const shouldShowComponentSearch =
+    componentRows.length > COMPONENT_ROWS_COLLAPSED_COUNT || normalizedComponentSearch.length > 0;
   const sourceUnavailableLabel = hasSourceUnavailable
     ? t(
         sourceUnavailableCount === 1
@@ -2271,6 +2294,17 @@ const ServerDetail = () => {
                   </h2>
                   <DataOriginBadge label={apiBadge} tone="api" />
                 </div>
+                {shouldShowComponentSearch ? (
+                  <div className="mt-2">
+                    <input
+                      type="search"
+                      value={componentSearch}
+                      onChange={(event) => setComponentSearch(event.target.value)}
+                      placeholder={t("Search components...", "Komponenten durchsuchen...")}
+                      className="h-9 w-full rounded-xl border border-white/10 bg-white/5 px-3 text-[12px] text-foreground outline-none transition-colors placeholder:text-muted-foreground/80 focus:border-primary/40 sm:text-[13px]"
+                    />
+                  </div>
+                ) : null}
                 <div className="mt-2 space-y-1.5">
                   {componentRows.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground sm:text-[13px]">
@@ -2279,8 +2313,15 @@ const ServerDetail = () => {
                         "Im aktuellen API-Payload wird kein Komponentenstatus bereitgestellt."
                       )}
                     </p>
+                  ) : filteredComponentRows.length === 0 ? (
+                    <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground sm:text-[13px]">
+                      {t(
+                        "No components match your search.",
+                        "Keine Komponenten passen zur Suche."
+                      )}
+                    </p>
                   ) : (
-                    componentRows.map((item) => (
+                    visibleComponentRows.map((item) => (
                       <div
                         key={item.name}
                         className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2"
@@ -2291,6 +2332,26 @@ const ServerDetail = () => {
                     ))
                   )}
                 </div>
+                {shouldCapComponentRows ? (
+                  <div className="mt-2 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setShowAllComponents((prev) => !prev)}
+                      className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] text-foreground transition-colors hover:bg-white/10 sm:text-[12px]"
+                    >
+                      {showAllComponents
+                        ? t("Show less", "Weniger anzeigen")
+                        : t(
+                            hiddenComponentRowsCount > 0
+                              ? `Show all (${filteredComponentRows.length})`
+                              : "Show all",
+                            hiddenComponentRowsCount > 0
+                              ? `Alle anzeigen (${filteredComponentRows.length})`
+                              : "Alle anzeigen"
+                          )}
+                    </button>
+                  </div>
+                ) : null}
               </div>
             </section>
 
