@@ -40,7 +40,7 @@ jobs:
           M365_GRAPH_TENANT_ID: ${{ secrets.M365_GRAPH_TENANT_ID }}
           M365_GRAPH_CLIENT_ID: ${{ secrets.M365_GRAPH_CLIENT_ID }}
           M365_GRAPH_CLIENT_SECRET: ${{ secrets.M365_GRAPH_CLIENT_SECRET }}
-        run: python scripts/build_site_data.py --service all
+        run: python scripts/build_site_data.py --service all --allow-partial-success
 
       - name: Send major outage email via Brevo
         env:

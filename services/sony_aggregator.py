@@ -168,8 +168,8 @@ def _sony_region_item_count(bundle: dict[str, Any]) -> int | None:
 
 
 def _sony_region_last_item_at(bundle: dict[str, Any]) -> str | None:
-    latest_item = bundle.get("latest_item")
-    return str(latest_item) if latest_item else None
+    # Region status JSON is a snapshot endpoint; freshness follows fetch time, not incident recency.
+    return _utc_now_iso() if isinstance(bundle, dict) else None
 
 
 def _run_sony_region_source(*, region_key: str, region_code: str) -> SourceRunResult[dict[str, Any]]:

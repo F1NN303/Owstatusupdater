@@ -767,7 +767,8 @@ def _ow_statusgator_item_count(payload: Any) -> int | None:
 
 
 def _ow_statusgator_last_item_at(payload: Any) -> str | None:
-    return _latest_timestamp(payload.get("incidents") or [], "started_at") if isinstance(payload, dict) else None
+    # Status index feeds are freshness-checked by successful fetch time, not by incident recency.
+    return _utc_now_iso() if isinstance(payload, dict) else None
 
 
 def _ow_isdown_item_count(payload: Any) -> int | None:
@@ -797,7 +798,8 @@ def _ow_news_item_count(payload: Any) -> int | None:
 
 
 def _ow_news_last_item_at(payload: Any) -> str | None:
-    return _latest_timestamp(payload, "published_at") if isinstance(payload, list) else None
+    # News can be quiet for long periods; treat successful fetch as fresh snapshot data.
+    return _utc_now_iso() if isinstance(payload, list) else None
 
 
 def _ow_social_item_count(payload: Any) -> int | None:
@@ -805,7 +807,8 @@ def _ow_social_item_count(payload: Any) -> int | None:
 
 
 def _ow_social_last_item_at(payload: Any) -> str | None:
-    return _latest_timestamp(payload, "published_at") if isinstance(payload, list) else None
+    # Mirror feeds may omit publish timestamps; use fetch-time freshness for reliability scoring.
+    return _utc_now_iso() if isinstance(payload, list) else None
 
 
 def _calculate_severity(
@@ -1075,7 +1078,7 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
         kind="outage-index",
         url=STATUSGATOR_URL,
         role="provider",
-        criticality="required",
+        criticality="supporting",
         used_for_scoring=True,
         fetch_fn=fetch_statusgator_outages,
         item_count_fn=_ow_statusgator_item_count,

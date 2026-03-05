@@ -2691,7 +2691,7 @@ const ServerDetail = () => {
                           <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
                             <span>{t("role", "Rolle")}: {String(source.role || "unknown")}</span>
                             <span>{t("criticality", "Kritikalitat")}: {String(source.criticality || "supporting")}</span>
-                            <span>{t("freshness", "Aktualitat")}: {formatSourceFreshnessLabel(source.latest?.freshness)}</span>
+                            <span>{t("freshness", "Aktualität")}: {formatSourceFreshnessLabel(source.latest?.freshness)}</span>
                             <span>
                               {t("24h success", "24h Erfolg")}:{" "}
                               {typeof source.metrics_24h?.success_rate === "number"

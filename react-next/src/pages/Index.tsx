@@ -251,7 +251,7 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
   const staleSourceCount = Array.isArray(detail.payload.sources)
     ? detail.payload.sources.filter((source) => {
         const freshness = String(source?.freshness || "").toLowerCase();
-        return freshness && freshness !== "fresh" && freshness !== "warm";
+        return freshness === "stale";
       }).length
     : 0;
 

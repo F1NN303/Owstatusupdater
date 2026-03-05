@@ -233,3 +233,27 @@ Key files:
 2. Add a quick "show favorites only" filter chip on home.
 3. Add lightweight tests for favorites persistence and star toggle behavior.
 4. Add one screenshot-based QA checklist entry for `/next` preview path regressions.
+
+## Latest Validation Snapshot (Freshness + Degraded Signal Fix)
+- Scope:
+  - Home cards now count stale-source warning chips only for sources explicitly marked `freshness=stale` (no longer for `unknown` freshness).
+  - Overwatch source tuning:
+    - StatusGator criticality changed from `required` to `supporting`.
+    - Snapshot freshness for StatusGator, Overwatch News, and X mirror feed now uses successful fetch time, not latest post/incident recency.
+  - Sony source tuning:
+    - Region status snapshot freshness now uses successful fetch time, not latest incident recency.
+  - Pipeline hardening:
+    - Scheduled `update-site-data` workflow now runs `build_site_data.py --service all --allow-partial-success` to avoid full refresh stalls when one service build fails.
+  - German copy correction:
+    - `Aktualität` fixed in source freshness label.
+- Root cause identified for "not updated":
+  - Local workspace was behind `origin/main` by 18 commits.
+  - Scheduled full-build workflow previously failed hard on any single service build error.
+- `git pull --ff-only` -> passed (workspace synced to latest upstream)
+- `py -3 scripts/build_site_data.py --service all` -> passed
+- `npm.cmd run build` in `react-next` -> passed
+- `py -3 scripts/validate_services.py` -> passed
+- `py -3 scripts/check_public_exposure.py` -> passed
+- `py -3 scripts/build_react_artifacts.py` -> passed
+- `py -3 scripts/verify_next_preview_artifact.py` -> passed
+- `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (26 tests)
