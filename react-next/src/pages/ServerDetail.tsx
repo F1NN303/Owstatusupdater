@@ -63,6 +63,7 @@ const DATA_STALE_CRITICAL_MINUTES = 180;
 const RECENT_INCIDENT_SUBTITLE_MAX_MINUTES = 24 * 60;
 const COMPONENT_ROWS_COLLAPSED_COUNT = 12;
 type DetailTabKey = "overview" | "incidents" | "analysis" | "sources";
+type ReplayWindowKey = "24h" | "7d";
 type SwipeAxisLock = "x" | "y" | null;
 
 interface TabSwipeSession {
@@ -75,6 +76,15 @@ interface TabSwipeSession {
 interface TabIndicatorMeasure {
   left: number;
   width: number;
+}
+
+interface IncidentReplayEvent {
+  id: string;
+  timestamp: string;
+  status: Status;
+  title: string;
+  detail: string;
+  source: "history" | "incident";
 }
 
 function severityToStatus(
@@ -1265,6 +1275,254 @@ function DailySignalBars({ values, dayLabel }: { values: number[]; dayLabel: str
   );
 }
 
+function IncidentReplay({
+  events,
+  windowKey,
+  onWindowChange,
+  language,
+  timeDisplayMode,
+}: {
+  events: IncidentReplayEvent[];
+  windowKey: ReplayWindowKey;
+  onWindowChange: (window: ReplayWindowKey) => void;
+  language: AppLanguage;
+  timeDisplayMode: "relative" | "absolute" | "both";
+}) {
+  const [cursor, setCursor] = useState(() => Math.max(0, events.length - 1));
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    setCursor(Math.max(0, events.length - 1));
+    setIsPlaying(false);
+  }, [events, windowKey]);
+
+  useEffect(() => {
+    if (!isPlaying || events.length <= 1) {
+      return;
+    }
+    const timer = window.setInterval(() => {
+      setCursor((previous) => {
+        if (previous >= events.length - 1) {
+          setIsPlaying(false);
+          return previous;
+        }
+        return previous + 1;
+      });
+    }, 900);
+
+    return () => window.clearInterval(timer);
+  }, [events.length, isPlaying]);
+
+  const safeCursor = Math.max(0, Math.min(cursor, events.length - 1));
+  const activeEvent = events[safeCursor] ?? null;
+  const recentEvents = events.slice(Math.max(0, safeCursor - 5), safeCursor + 1).reverse();
+  const statusLabel = (status: Status) => {
+    if (status === "online") {
+      return pickLang(language, "Operational", "Stabil");
+    }
+    if (status === "offline") {
+      return pickLang(language, "Offline", "Offline");
+    }
+    return pickLang(language, "Degraded", "Beeinträchtigt");
+  };
+  const statusToneClass = (status: Status) => {
+    if (status === "online") {
+      return "bg-status-online/85";
+    }
+    if (status === "offline") {
+      return "bg-status-offline/90";
+    }
+    return "bg-status-degraded/90";
+  };
+  const incidentDetailLabel = (value: string) => {
+    if (value === "started") {
+      return pickLang(language, "Incident detected", "Vorfall erkannt");
+    }
+    if (value === "resolved") {
+      return pickLang(language, "Recovery confirmed", "Wiederherstellung bestätigt");
+    }
+    return value;
+  };
+  const historyDetailLabel = (value: string) => {
+    if (value === "no_transitions") {
+      return pickLang(
+        language,
+        "No transitions detected in this window.",
+        "In diesem Zeitraum wurden keine Wechsel erkannt."
+      );
+    }
+    return pickLang(language, `History sample: ${value}`, `Historischer Wert: ${value}`);
+  };
+
+  return (
+    <section className="glass glass-specular rounded-2xl p-3 sm:p-4">
+      <div className="relative z-10">
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {pickLang(language, "Incident Replay", "Vorfall-Replay")}
+              </h2>
+              <DataOriginBadge label={pickLang(language, "Derived", "Abgeleitet")} tone="derived" />
+            </div>
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              {pickLang(
+                language,
+                "Replays status transitions for postmortem context.",
+                "Spielt Statuswechsel für Postmortem-Kontext nach."
+              )}
+            </p>
+          </div>
+          <div className="flex items-center gap-1.5">
+            {(["24h", "7d"] as ReplayWindowKey[]).map((key) => {
+              const selected = windowKey === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => onWindowChange(key)}
+                  className={`rounded-full border px-2 py-1 text-[11px] font-semibold transition-colors ${
+                    selected
+                      ? "border-sky-300/35 bg-sky-300/15 text-sky-100"
+                      : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
+                  }`}
+                >
+                  {key}
+                </button>
+              );
+            })}
+            <button
+              type="button"
+              onClick={() => {
+                if (safeCursor >= events.length - 1) {
+                  setCursor(0);
+                }
+                setIsPlaying((previous) => !previous);
+              }}
+              className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] font-semibold text-foreground transition-colors hover:bg-white/10"
+            >
+              {isPlaying
+                ? pickLang(language, "Pause", "Pause")
+                : pickLang(language, "Play", "Abspielen")}
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <p className="text-[11px] text-muted-foreground">
+              {activeEvent ? formatDateTime(activeEvent.timestamp, language, timeDisplayMode) : "--"}
+            </p>
+            <StatusBadge status={activeEvent?.status || "online"} label={activeEvent ? statusLabel(activeEvent.status) : "--"} />
+          </div>
+          <p className="text-sm font-semibold text-foreground">
+            {activeEvent
+              ? activeEvent.source === "history"
+                ? pickLang(language, "Status snapshot transition", "Status-Snapshot-Wechsel")
+                : activeEvent.title
+              : pickLang(language, "No replay data", "Keine Replay-Daten")}
+          </p>
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            {activeEvent
+              ? activeEvent.source === "history"
+                ? `${historyDetailLabel(activeEvent.detail)} (${statusLabel(activeEvent.status)})`
+                : `${activeEvent.title} - ${incidentDetailLabel(activeEvent.detail)}`
+              : pickLang(
+                  language,
+                  "No transitions detected in this window.",
+                  "In diesem Zeitraum wurden keine Wechsel erkannt."
+                )}
+          </p>
+        </div>
+
+        <div className="mt-3">
+          <div className="relative flex h-10 items-end gap-1">
+            {events.map((event, index) => {
+              const isActive = index === safeCursor;
+              const isPassed = index <= safeCursor;
+              const barHeight = event.source === "incident" ? "100%" : "74%";
+              return (
+                <button
+                  key={event.id}
+                  type="button"
+                  onClick={() => {
+                    setCursor(index);
+                    setIsPlaying(false);
+                  }}
+                  className={`relative flex-1 rounded-sm transition-all ${statusToneClass(event.status)} ${
+                    isActive
+                      ? "ring-2 ring-white/45 brightness-110"
+                      : isPassed
+                        ? "opacity-100"
+                        : "opacity-45 hover:opacity-75"
+                  } ${isPlaying && isPassed ? "animate-pulse" : ""}`}
+                  style={{
+                    height: barHeight,
+                    transform: isActive ? "scaleY(1.06)" : undefined,
+                  }}
+                  title={`${formatDateTime(event.timestamp, language, timeDisplayMode)} - ${event.title}`}
+                  aria-label={event.title}
+                />
+              );
+            })}
+          </div>
+          <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
+            <span>{pickLang(language, "Start", "Start")}</span>
+            <span>{windowKey}</span>
+            <span>{pickLang(language, "Now", "Jetzt")}</span>
+          </div>
+        </div>
+
+        <div className="mt-3 space-y-1.5">
+          {recentEvents.length === 0 ? (
+            <p className="text-[11px] text-muted-foreground">
+              {pickLang(
+                language,
+                "No replay events in this window.",
+                "Keine Replay-Ereignisse in diesem Zeitraum."
+              )}
+            </p>
+          ) : (
+            recentEvents.map((event) => (
+              <button
+                key={`feed-${event.id}`}
+                type="button"
+                onClick={() => {
+                  const index = events.findIndex((row) => row.id === event.id);
+                  if (index >= 0) {
+                    setCursor(index);
+                    setIsPlaying(false);
+                  }
+                }}
+                className="flex w-full items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-left transition-colors hover:bg-white/10"
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-[12px] font-medium text-foreground">
+                    {event.source === "history"
+                      ? pickLang(language, "Snapshot transition", "Snapshot-Wechsel")
+                      : event.title}
+                  </p>
+                  <p className="truncate text-[10px] text-muted-foreground">
+                    {event.source === "history"
+                      ? historyDetailLabel(event.detail)
+                      : incidentDetailLabel(event.detail)}
+                  </p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-[10px] text-muted-foreground">
+                    {formatDateTime(event.timestamp, language, timeDisplayMode)}
+                  </p>
+                  <p className="text-[10px] font-semibold text-foreground">{statusLabel(event.status)}</p>
+                </div>
+              </button>
+            ))
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function normalizeComponentStatus(value: unknown): Status | null {
   const text = String(value ?? "").toLowerCase();
   if (!text) {
@@ -1385,6 +1643,190 @@ function incidentToneClass(incident: LegacyOutageIncident) {
   return "bg-status-online";
 }
 
+function normalizeStatusFromText(value?: string | null): Status | null {
+  const text = String(value || "").toLowerCase();
+  if (!text) {
+    return null;
+  }
+  if (
+    text.includes("stable") ||
+    text.includes("operational") ||
+    text.includes("ok") ||
+    text.includes("online")
+  ) {
+    return "online";
+  }
+  if (
+    text.includes("major") ||
+    text.includes("outage") ||
+    text.includes("offline") ||
+    text.includes("down") ||
+    text.includes("error")
+  ) {
+    return "offline";
+  }
+  if (
+    text.includes("degraded") ||
+    text.includes("minor") ||
+    text.includes("warn") ||
+    text.includes("issue")
+  ) {
+    return "degraded";
+  }
+  return null;
+}
+
+function statusLabelFromKey(value: Status) {
+  if (value === "online") {
+    return "operational";
+  }
+  if (value === "offline") {
+    return "offline";
+  }
+  return "degraded";
+}
+
+function statusFromIncident(incident: LegacyOutageIncident): Status | null {
+  if (isNonImpactIncident(incident)) {
+    return null;
+  }
+  const text = `${incident.title || ""} ${incident.acknowledgement || ""}`.toLowerCase();
+  if (text.includes("outage") || text.includes("offline") || text.includes("down")) {
+    return "offline";
+  }
+  return "degraded";
+}
+
+function buildIncidentReplayEvents(
+  detail: LegacyServiceDetailResult,
+  window: ReplayWindowKey
+): IncidentReplayEvent[] {
+  const windowMs = window === "24h" ? DAY_MS : 7 * DAY_MS;
+  const endMs = parseMaybeDate(detail.payload.generated_at)?.getTime() ?? Date.now();
+  const startMs = endMs - windowMs;
+  const events: IncidentReplayEvent[] = [];
+
+  const historyPoints = Array.isArray(detail.history?.points) ? detail.history.points : [];
+  let lastHistoryStatus: Status | null = null;
+  let seedStatus: Status | null = null;
+
+  for (const point of historyPoints) {
+    const pointMs = parseMaybeDate(point?.t)?.getTime();
+    if (typeof pointMs !== "number" || pointMs < startMs || pointMs > endMs) {
+      continue;
+    }
+    const status =
+      normalizeStatusFromText(point?.severity_key) ||
+      normalizeStatusFromText(point?.health);
+    if (!status) {
+      continue;
+    }
+    if (seedStatus === null) {
+      seedStatus = status;
+    }
+    if (lastHistoryStatus !== status) {
+      const statusKey = String(point?.severity_key || point?.health || statusLabelFromKey(status));
+      events.push({
+        id: `history-${point?.t || pointMs}-${status}-${events.length}`,
+        timestamp: new Date(pointMs).toISOString(),
+        status,
+        title: `Snapshot changed to ${statusLabelFromKey(status)}`,
+        detail: statusKey,
+        source: "history",
+      });
+      lastHistoryStatus = status;
+    }
+  }
+
+  const incidents = Array.isArray(detail.payload.outage?.incidents)
+    ? detail.payload.outage.incidents
+    : [];
+  for (let index = 0; index < incidents.length; index += 1) {
+    const incident = incidents[index];
+    const startedAt = parseMaybeDate(incident.started_at);
+    if (!startedAt) {
+      continue;
+    }
+    const startedMs = startedAt.getTime();
+    if (startedMs >= startMs && startedMs <= endMs) {
+      const incidentStatus = statusFromIncident(incident);
+      if (incidentStatus) {
+        const title = String(incident.title || "Incident");
+        events.push({
+          id: `incident-start-${index}-${startedAt.toISOString()}`,
+          timestamp: startedAt.toISOString(),
+          status: incidentStatus,
+          title,
+          detail: "started",
+          source: "incident",
+        });
+      }
+    }
+
+    const durationMs = parseDurationToMs(incident.duration);
+    if (durationMs === null) {
+      continue;
+    }
+    const resolvedMs = startedMs + durationMs;
+    if (resolvedMs >= startMs && resolvedMs <= endMs) {
+      events.push({
+        id: `incident-end-${index}-${resolvedMs}`,
+        timestamp: new Date(resolvedMs).toISOString(),
+        status: "online",
+        title: String(incident.title || "Incident"),
+        detail: "resolved",
+        source: "incident",
+      });
+    }
+  }
+
+  events.sort((left, right) => {
+    const byTime = new Date(left.timestamp).getTime() - new Date(right.timestamp).getTime();
+    if (byTime !== 0) {
+      return byTime;
+    }
+    if (left.source !== right.source) {
+      return left.source === "incident" ? 1 : -1;
+    }
+    return left.id.localeCompare(right.id);
+  });
+
+  const compacted: IncidentReplayEvent[] = [];
+  for (const event of events) {
+    const previous = compacted[compacted.length - 1];
+    if (
+      previous &&
+      previous.status === event.status &&
+      previous.source === "history" &&
+      event.source === "history"
+    ) {
+      continue;
+    }
+    compacted.push(event);
+  }
+
+  if (compacted.length > 0) {
+    return compacted.slice(-96);
+  }
+
+  const fallbackStatus =
+    normalizeStatusFromText(detail.payload.analytics?.severity_key) ||
+    normalizeStatusFromText(detail.payload.health) ||
+    normalizeStatusFromText(detail.payload.outage?.current_status) ||
+    seedStatus ||
+    "online";
+  return [
+    {
+      id: "replay-fallback",
+      timestamp: new Date(endMs).toISOString(),
+      status: fallbackStatus,
+      title: "Current snapshot",
+      detail: "no_transitions",
+      source: "history",
+    },
+  ];
+}
+
 const DETAIL_TABS: Array<{ key: DetailTabKey }> = [
   { key: "overview" },
   { key: "incidents" },
@@ -1454,6 +1896,7 @@ const ServerDetail = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<DetailTabKey>("overview");
+  const [replayWindow, setReplayWindow] = useState<ReplayWindowKey>("24h");
   const [componentSearch, setComponentSearch] = useState("");
   const [showAllComponents, setShowAllComponents] = useState(false);
   const [tabDragOffset, setTabDragOffset] = useState(0);
@@ -1601,6 +2044,10 @@ const ServerDetail = () => {
   const outageIncidents = useMemo(
     () => clampList<LegacyOutageIncident>(detail?.payload.outage?.incidents, 8),
     [detail]
+  );
+  const incidentReplayEvents = useMemo(
+    () => (detail ? buildIncidentReplayEvents(detail, replayWindow) : []),
+    [detail, replayWindow]
   );
   const reportItems = useMemo(
     () => clampList<LegacyLinkItem>(detail?.payload.reports, 6),
@@ -2427,6 +2874,13 @@ const ServerDetail = () => {
 
             {activeTab === "incidents" ? (
               <>
+            <IncidentReplay
+              events={incidentReplayEvents}
+              windowKey={replayWindow}
+              onWindowChange={setReplayWindow}
+              language={language}
+              timeDisplayMode={timeDisplayMode}
+            />
             <section className="glass glass-specular rounded-2xl p-2.5 sm:p-4">
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
