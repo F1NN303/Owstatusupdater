@@ -1,6 +1,6 @@
 # Agent Handoff
 
-Last updated: 2026-03-03
+Last updated: 2026-03-05
 Current branch: `main`
 Latest known commit at handoff update: `391bcc3`
 
@@ -286,3 +286,31 @@ Key files:
 - `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (27 tests)
 - `npm.cmd run build` in `react-next` -> passed
 - `py -3 scripts/verify_next_preview_artifact.py` -> passed
+
+## Latest Validation Snapshot (Source Reliability Hardening + Sony Expansion)
+- Scope:
+  - Added Sony provider corroboration sources (supporting, scoring-enabled):
+    - `statusgator_playstation` -> `https://statusgator.com/services/playstation`
+    - `isdown_playstation_network` -> `https://isdown.app/status/playstation-network`
+  - Kept Sony official regional feeds as primary truth; provider signals merge as corroboration/fallback.
+  - Added Steam endpoint to freshness monitor:
+    - `https://f1nn303.github.io/Owstatusupdater/steam/data/status.json`
+  - Added new source reliability audit script:
+    - `scripts/audit_source_endpoints.py`
+    - checks HTTP status, latency bucket, StatusGator canonical mismatch fallback.
+    - default exit policy: fail only on required/official endpoint failures.
+  - Added reliability tests:
+    - `tests/test_audit_source_endpoints.py`
+    - `SonyAggregatorResilienceTests` in `tests/test_resilience.py`
+    - Sony provider source-id assertion in `tests/test_payload_contracts.py`
+- Validation:
+  - `py -3 scripts/validate_services.py` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+  - `py -3 scripts/build_site_data.py --service all` -> passed
+  - `py -3 -m unittest discover -s tests -p "test_*.py" -v` -> passed (35 tests)
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/build_react_artifacts.py` -> passed
+  - `py -3 scripts/verify_next_preview_artifact.py` -> passed
+  - `py -3 scripts/watch_data_freshness.py --dry-run` -> passed (all monitored endpoints fresh)
+  - `py -3 scripts/audit_source_endpoints.py` -> passed (33/33 endpoints OK)
+- Implementation commit: pending

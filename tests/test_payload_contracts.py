@@ -122,6 +122,16 @@ class PayloadContractTests(unittest.TestCase):
                 rss_root = ET.fromstring(rss_path.read_text(encoding="utf-8"))
                 self.assertEqual(rss_root.tag, "rss")
 
+    def test_sony_sources_include_provider_corroboration(self) -> None:
+        status = self._load_json(SERVICE_DATA_DIRS["sony"] / "status.json")
+        source_ids = {
+            str(source.get("source_id"))
+            for source in (status.get("sources") or [])
+            if isinstance(source, dict) and source.get("source_id")
+        }
+        self.assertIn("statusgator_playstation", source_ids)
+        self.assertIn("isdown_playstation_network", source_ids)
+
 
 if __name__ == "__main__":
     unittest.main()

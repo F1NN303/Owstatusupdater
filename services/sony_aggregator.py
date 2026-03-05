@@ -6,10 +6,13 @@ import math
 import re
 import threading
 import time
-from typing import Any
+from typing import Any, Callable
 
 import requests
+from services.adapters.isdown import parse_isdown_outage_html
+from services.adapters.statusgator import parse_statusgator_outage_html
 from services.adapters.sony_psn import parse_playstation_region_events
+from services.core.shared import _merge_secondary_outage_signal, _normalize_outage_status_text
 from services.core.source_runner import (
     CallableSourceAdapter,
     SourceAdapterSpec,
@@ -24,6 +27,8 @@ CACHE_TTL_SECONDS = 120
 SONY_STATUS_ROOT = "https://status.playstation.com"
 SONY_STATUS_URL = f"{SONY_STATUS_ROOT}/"
 SONY_REGION_URL = f"{SONY_STATUS_ROOT}/data/statuses/region"
+STATUSGATOR_URL = "https://statusgator.com/services/playstation"
+ISDOWN_STATUS_URL = "https://isdown.app/status/playstation-network"
 
 REGION_ENDPOINTS = {
     "na": "SCEA",
@@ -102,6 +107,12 @@ def _request_json(url: str) -> dict[str, Any]:
     return response.json()
 
 
+def _request_text(url: str) -> str:
+    response = requests.get(url, timeout=REQUEST_TIMEOUT, headers=UA)
+    response.raise_for_status()
+    return response.text
+
+
 def _safe_error_message(exc: Exception) -> str:
     return (_clean(str(exc)) or "request failed")[:220]
 
@@ -141,6 +152,135 @@ def _source_freshness(last_item_at: str | None) -> tuple[str, int | None]:
     if age_minutes <= SOURCE_FRESH_MINUTES_WARM:
         return "warm", age_minutes
     return "stale", age_minutes
+
+
+def _run_sony_provider_source(
+    *,
+    adapter_id: str,
+    name: str,
+    kind: str,
+    url: str,
+    role: str = "provider",
+    criticality: str = "supporting",
+    used_for_scoring: bool = True,
+    fetch_fn: Callable[[], Any],
+    item_count_fn: Callable[[Any], int | None],
+    last_item_at_fn: Callable[[Any], str | None],
+) -> SourceRunResult[Any]:
+    return run_source_adapter(
+        CallableSourceAdapter(
+            spec=SourceAdapterSpec(
+                service_id="sony",
+                adapter_id=adapter_id,
+                name=name,
+                kind=kind,
+                url=url,
+                role=role,
+                criticality=criticality,
+                used_for_scoring=used_for_scoring,
+                cache_ttl_seconds=CACHE_TTL_SECONDS,
+            ),
+            fetch_fn=fetch_fn,
+            item_count_fn=item_count_fn,
+            last_item_at_fn=last_item_at_fn,
+        ),
+        utc_now_iso=_utc_now_iso,
+        source_freshness=_source_freshness,
+        safe_error_message=_safe_error_message,
+    )
+
+
+def _synthesize_statusgator_summary(
+    current_status: str,
+    reports_24h: int | None,
+    incidents: list[dict[str, Any]],
+    top_reported_issues: list[dict[str, Any]],
+) -> str:
+    normalized_status = _normalize_outage_status_text(current_status)
+    latest_incident_age_hours = _hours_since(str(incidents[0].get("started_at")) if incidents else None)
+    if normalized_status != "unknown" and isinstance(reports_24h, int):
+        return (
+            f"StatusGator indicates PlayStation Network is currently {normalized_status} "
+            f"with {reports_24h} user-submitted reports in the past 24 hours."
+        )
+    if normalized_status != "unknown":
+        if isinstance(latest_incident_age_hours, float):
+            rounded_age_hours = max(1, int(round(latest_incident_age_hours)))
+            if latest_incident_age_hours <= 24:
+                return (
+                    f"StatusGator indicates PlayStation Network is currently {normalized_status}. "
+                    f"Most recent listed incident started about {rounded_age_hours}h ago."
+                )
+            return (
+                f"StatusGator indicates PlayStation Network is currently {normalized_status}. "
+                f"Latest listed incident was about {rounded_age_hours}h ago."
+            )
+        return f"StatusGator indicates PlayStation Network is currently {normalized_status}."
+    if incidents:
+        latest_title = _clean(str(incidents[0].get("title") or "Recent incident listed"))
+        return f"StatusGator incident table is available. Latest listed incident: {latest_title}."
+    if top_reported_issues:
+        top_label = _clean(str(top_reported_issues[0].get("label") or "Community issue signal"))
+        return f"StatusGator community issue labels are available (top label: {top_label})."
+    return "Status summary unavailable."
+
+
+def fetch_statusgator_outages() -> dict[str, Any]:
+    html = _request_text(STATUSGATOR_URL)
+    return parse_statusgator_outage_html(
+        html,
+        source_url=STATUSGATOR_URL,
+        summary_regex=r"StatusGator reports that .*? is currently .*?past 24 hours\.",
+        synthesize_summary=_synthesize_statusgator_summary,
+    )
+
+
+def _extract_isdown_status_text(page_text: str) -> tuple[str, str]:
+    summary_match = re.search(
+        r"What is .*? status right now\?\s+.*? is (.+?)\s+IsDown last checked",
+        page_text,
+        flags=re.IGNORECASE,
+    )
+    if not summary_match:
+        return "Status summary unavailable.", "unknown"
+    status_phrase = _clean(summary_match.group(1))
+    summary = f"IsDown indicates PlayStation Network is {status_phrase}."
+    lowered = status_phrase.lower()
+    if any(token in lowered for token in ("working normally", "operational", "online")):
+        current_status = "operational"
+    elif any(token in lowered for token in ("major outage", "outage", "down", "offline")):
+        current_status = "major outage"
+    elif any(token in lowered for token in ("partial outage", "minor outage", "degraded", "issue", "maintenance")):
+        current_status = "degraded"
+    else:
+        current_status = lowered or "unknown"
+    return summary, current_status
+
+
+def fetch_isdown_outages() -> dict[str, Any]:
+    html = _request_text(ISDOWN_STATUS_URL)
+    return parse_isdown_outage_html(
+        html,
+        source_url=ISDOWN_STATUS_URL,
+        extract_status_text=_extract_isdown_status_text,
+    )
+
+
+def _sony_statusgator_item_count(payload: Any) -> int | None:
+    return len(payload.get("incidents") or []) if isinstance(payload, dict) else 0
+
+
+def _sony_statusgator_last_item_at(payload: Any) -> str | None:
+    # Status index freshness is based on successful fetch time, not incident recency.
+    return _utc_now_iso() if isinstance(payload, dict) else None
+
+
+def _sony_isdown_item_count(payload: Any) -> int | None:
+    return len(payload.get("user_reports_24h") or []) if isinstance(payload, dict) else 0
+
+
+def _sony_isdown_last_item_at(payload: Any) -> str | None:
+    return str(payload.get("last_reviewed_at") or "") or None if isinstance(payload, dict) else None
 
 
 def _sony_region_source_bundle(region_key: str, payload: dict[str, Any]) -> dict[str, Any]:
@@ -419,6 +559,7 @@ def _collect_payload() -> dict[str, Any]:
     all_raw_events: list[dict[str, Any]] = []
     region_events: dict[str, list[dict[str, Any]]] = {key: [] for key in REGION_ENDPOINTS}
     sources: list[dict[str, Any]] = []
+    provider_outage: dict[str, Any] | None = None
 
     for region_key, region_code in REGION_ENDPOINTS.items():
         result = _run_sony_region_source(region_key=region_key, region_code=region_code)
@@ -446,10 +587,49 @@ def _collect_payload() -> dict[str, Any]:
             region_events[region_key] = []
         sources.append(source_entry)
 
+    statusgator_run = _run_sony_provider_source(
+        adapter_id="statusgator_playstation",
+        name="StatusGator",
+        kind="outage-index",
+        url=STATUSGATOR_URL,
+        role="provider",
+        criticality="supporting",
+        used_for_scoring=True,
+        fetch_fn=fetch_statusgator_outages,
+        item_count_fn=_sony_statusgator_item_count,
+        last_item_at_fn=_sony_statusgator_last_item_at,
+    )
+    sources.append(statusgator_run.source)
+    if statusgator_run.ok and isinstance(statusgator_run.data, dict):
+        provider_outage = statusgator_run.data
+
+    isdown_run = _run_sony_provider_source(
+        adapter_id="isdown_playstation_network",
+        name="IsDown (PlayStation Network)",
+        kind="outage-index-alt",
+        url=ISDOWN_STATUS_URL,
+        role="provider",
+        criticality="supporting",
+        used_for_scoring=True,
+        fetch_fn=fetch_isdown_outages,
+        item_count_fn=_sony_isdown_item_count,
+        last_item_at_fn=_sony_isdown_last_item_at,
+    )
+    sources.append(isdown_run.source)
+    isdown_outage = isdown_run.data if isdown_run.ok and isinstance(isdown_run.data, dict) else None
+    provider_outage = _merge_secondary_outage_signal(provider_outage, isdown_outage)
+
     all_events.sort(key=lambda item: _parse_iso8601(item.get("started_at")) or dt.datetime.min.replace(tzinfo=dt.UTC), reverse=True)
     all_raw_events.sort(key=lambda item: _parse_iso8601(item.get("started_at")) or dt.datetime.min.replace(tzinfo=dt.UTC), reverse=True)
     source_total = len(sources)
     source_ok = sum(1 for source in sources if source.get("ok"))
+    required_total = sum(1 for source in sources if str(source.get("criticality") or "").lower() == "required")
+    required_ok = sum(
+        1
+        for source in sources
+        if str(source.get("criticality") or "").lower() == "required" and bool(source.get("ok"))
+    )
+    official_unavailable = required_total > 0 and required_ok == 0
 
     if source_ok <= 0:
         health = "error"
@@ -463,10 +643,31 @@ def _collect_payload() -> dict[str, Any]:
     if len(all_events) <= 1 and not recent_events:
         global_score = min(global_score, 2.4)
     global_reports_24h = _estimate_reports_24h(all_events)
+    provider_reports_24h = (
+        int(provider_outage.get("reports_24h"))
+        if isinstance(provider_outage, dict) and isinstance(provider_outage.get("reports_24h"), int)
+        else None
+    )
+    if global_reports_24h <= 0 and provider_reports_24h is not None:
+        global_reports_24h = provider_reports_24h
+
     severity_key = _severity_from_score(global_score, source_total)
     if source_ok <= 0:
         severity_key = "unknown"
         global_score = 0.0
+    elif official_unavailable:
+        provider_status = _normalize_outage_status_text(
+            provider_outage.get("current_status") if isinstance(provider_outage, dict) else None
+        )
+        if provider_status == "major outage":
+            severity_key = "major"
+            global_score = max(global_score, 9.1)
+        elif provider_status == "degraded":
+            severity_key = "degraded"
+            global_score = max(global_score, 5.1)
+        elif severity_key == "stable":
+            severity_key = "minor"
+            global_score = max(global_score, 2.6)
 
     incidents = []
     for event in all_events[:25]:
@@ -513,12 +714,39 @@ def _collect_payload() -> dict[str, Any]:
             "meta": "Social support",
             "published_at": now_iso,
         },
+        {
+            "title": "PlayStation status corroboration (StatusGator)",
+            "url": STATUSGATOR_URL,
+            "source": "Provider",
+            "meta": "Corroboration",
+            "published_at": now_iso,
+        },
+        {
+            "title": "PlayStation status corroboration (IsDown)",
+            "url": ISDOWN_STATUS_URL,
+            "source": "Provider",
+            "meta": "Corroboration",
+            "published_at": now_iso,
+        },
     ]
 
     updates = _build_official_updates(incidents)
     top_reported_issues, top_reported_issues_meta = _build_top_reported_issues(
         all_events, all_raw_events
     )
+    provider_top_issues = (
+        [item for item in (provider_outage.get("top_reported_issues") or []) if isinstance(item, dict)]
+        if isinstance(provider_outage, dict)
+        else []
+    )
+    if not top_reported_issues and provider_top_issues:
+        top_reported_issues = provider_top_issues[:TOP_REPORTED_ISSUES_LIMIT]
+        top_reported_issues_meta = {
+            "source": str(provider_outage.get("source") or "Provider corroboration"),
+            "kind": "provider-derived",
+            "mode": "fallback",
+        }
+
     if not incidents:
         outage_summary = "PlayStation Network currently reports no widespread service issues across monitored regions."
     else:
@@ -527,6 +755,13 @@ def _collect_payload() -> dict[str, Any]:
             f"PlayStation Network shows {len(incidents)} active status event(s) across monitored regions. "
             f"Affected region scope: {', '.join(affected_regions)}."
         )
+    if official_unavailable and isinstance(provider_outage, dict):
+        provider_summary = _clean(provider_outage.get("summary"))
+        if provider_summary:
+            outage_summary = (
+                "Official PlayStation regional feeds are temporarily unavailable. "
+                f"{provider_summary}"
+            )
 
     regions = _build_regions(region_events, global_reports_24h)
     safeguards = {
@@ -536,7 +771,13 @@ def _collect_payload() -> dict[str, Any]:
         "operational_dampening": not incidents,
         "active_event_max_age_hours": ACTIVE_EVENT_MAX_AGE_HOURS,
         "archived_events_ignored": max(len(all_raw_events) - len(all_events), 0),
+        "official_feed_unavailable": official_unavailable,
     }
+    outage_current_status = "operational" if not incidents else ("major outage" if severity_key == "major" else "degraded")
+    if official_unavailable and isinstance(provider_outage, dict):
+        provider_status = _normalize_outage_status_text(provider_outage.get("current_status"))
+        if provider_status != "unknown":
+            outage_current_status = provider_status
 
     return {
         "generated_at": now_iso,
@@ -560,10 +801,12 @@ def _collect_payload() -> dict[str, Any]:
             "source": "PlayStation Status",
             "url": SONY_STATUS_URL,
             "summary": outage_summary,
+            "current_status": outage_current_status,
             "reports_24h": global_reports_24h,
             "incidents": incidents,
             "top_reported_issues": top_reported_issues,
             "top_reported_issues_meta": top_reported_issues_meta,
+            "secondary_sources": provider_outage.get("secondary_sources", []) if isinstance(provider_outage, dict) else [],
         },
         "reports": reports,
         "known_resources": known_resources,
