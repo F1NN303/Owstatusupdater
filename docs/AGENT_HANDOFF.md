@@ -313,4 +313,4 @@ Key files:
   - `py -3 scripts/verify_next_preview_artifact.py` -> passed
   - `py -3 scripts/watch_data_freshness.py --dry-run` -> passed (all monitored endpoints fresh)
   - `py -3 scripts/audit_source_endpoints.py` -> passed (33/33 endpoints OK)
-- Implementation commit: pending
+- Implementation commit: `b2aa203`
