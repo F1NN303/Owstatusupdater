@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-03-08T15:48:37.330671Z",
+  "generated_at": "2026-03-08T16:32:40.835142Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 0,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
@@ -14,10 +14,10 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 4.85
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 6,
+      "reports_24h": 114,
       "recent_incidents_6h": 0,
       "recent_incidents_24h": 1,
       "cross_source": {
@@ -35,35 +35,35 @@
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_operational_cap_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_operational_vs_aggregate_issue",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "operational",
-      "derived_severity": "degraded",
+      "derived_severity": "stable",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status is operational while aggregate signals indicate active issues."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Claude Statuspage API: All Systems Operational",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-03-08T15:48:36.553945Z",
+        "published_at": "2026-03-08T16:32:39.610181Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Filesystem connector missing from Claude Desktop",
+        "url": "https://status.anthropic.com/incidents/jbc4ybjk83c6#t3d4zm5lfrgt",
+        "published_at": "2026-03-08T15:49:03.990Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / Filesystem extension has been restored to allowlists"
       },
       {
         "title": "Elevated errors on Claude Haiku 4.5",
@@ -100,7 +108,7 @@
         "published_at": "2026-03-06T17:16:12.267Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Minor / Identified / The issue has been identified and a fix has been implemented. Users may need to re-add the Filesystem connector to their organization allowlist in order to reactivate it."
+        "meta": "Identified / Minor / Resolved / The issue has been identified and a fix has been implemented. Users may need to re-add the Filesystem connector to their organization allowlist in order to reactivate it."
       },
       {
         "title": "Elevated TCP three-way handshake failures on api.anthropic.com",
@@ -141,30 +149,22 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
-      },
-      {
-        "title": "Elevated errors on Claude Haiku 4.5",
-        "url": "https://status.anthropic.com/incidents/5dbf8slk8mhr#jlzfs9hr32s6",
-        "published_at": "2026-03-04T15:58:24.395Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / The earlier issues with Haiku 4.5 have reappeared."
       }
     ],
-    "last_statement_at": "2026-03-08T15:48:36.553945Z"
+    "last_statement_at": "2026-03-08T16:32:39.610181Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports an active incident: Filesystem connector missing from Claude Desktop.",
+    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
     "current_status": "operational",
-    "reports_24h": 6,
+    "reports_24h": 114,
     "incidents": [
       {
         "title": "Filesystem connector missing from Claude Desktop",
         "started_at": "2026-03-07T16:58:31Z",
-        "duration": "2m",
+        "duration": "22h 55m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -184,8 +184,8 @@
       {
         "title": "Filesystem connector missing from Claude Desktop",
         "started_at": "2026-03-06T17:16:12.220Z",
-        "duration": "1d 22h 32m ongoing",
-        "acknowledgement": "Minor / Identified",
+        "duration": "1d 22h 32m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/jbc4ybjk83c6"
       },
@@ -229,24 +229,6 @@
       "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-03-07T16:00:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-07T16:15:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-07T16:30:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-03-07T16:45:00Z",
         "signal_value": 1.0,
@@ -801,7 +783,25 @@
       },
       {
         "timestamp": "2026-03-08T15:45:00Z",
-        "signal_value": 11.0,
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-08T16:00:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-08T16:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-08T16:30:00Z",
+        "signal_value": 9.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -812,17 +812,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-03-08T15:45:00Z"
+      "last_sample_at": "2026-03-08T16:30:00Z"
     },
+    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "16:00",
-        "count": 0
-      },
-      {
-        "label": "16:20",
-        "count": 2
-      },
       {
         "label": "16:40",
         "count": 0
@@ -1102,6 +1095,14 @@
       {
         "label": "15:40",
         "count": 0
+      },
+      {
+        "label": "16:00",
+        "count": 1
+      },
+      {
+        "label": "16:20",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1110,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-08T16:48:36+01:00"
+      "last_reviewed_at": "2026-03-08T16:32:38+00:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 112,
-        "last_reviewed_at": "2026-03-08T16:48:36+01:00"
+        "reports_24h": 114,
+        "last_reviewed_at": "2026-03-08T16:32:38+00:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -1221,7 +1222,7 @@
       "url": "https://status.anthropic.com/incidents/jbc4ybjk83c6",
       "published_at": "2026-03-06T17:16:12.220Z",
       "source": "Claude Statuspage API",
-      "meta": "Minor / Identified"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Elevated TCP three-way handshake failures on api.anthropic.com",
@@ -1258,45 +1259,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-03-08T15:48:37.330671Z"
+      "published_at": "2026-03-08T16:32:40.835142Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-08T15:48:37.330671Z"
+      "published_at": "2026-03-08T16:32:40.835142Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-03-08T15:48:37.330671Z"
+      "published_at": "2026-03-08T16:32:40.835142Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-03-08T15:48:37.330671Z"
+      "published_at": "2026-03-08T16:32:40.835142Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-03-08T15:48:37.330671Z"
+      "published_at": "2026-03-08T16:32:40.835142Z"
     }
   ],
   "news": [
     {
       "title": "Claude Statuspage API: All Systems Operational",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-03-08T15:48:36.553945Z",
+      "published_at": "2026-03-08T16:32:39.610181Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Filesystem connector missing from Claude Desktop",
+      "url": "https://status.anthropic.com/incidents/jbc4ybjk83c6#t3d4zm5lfrgt",
+      "published_at": "2026-03-08T15:49:03.990Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / Filesystem extension has been restored to allowlists"
     },
     {
       "title": "Elevated errors on Claude Haiku 4.5",
@@ -1320,7 +1329,7 @@
       "published_at": "2026-03-06T17:16:12.267Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Minor / Identified / The issue has been identified and a fix has been implemented. Users may need to re-add the Filesystem connector to their organization allowlist in order to reactivate it."
+      "meta": "Identified / Minor / Resolved / The issue has been identified and a fix has been implemented. Users may need to re-add the Filesystem connector to their organization allowlist in order to reactivate it."
     },
     {
       "title": "Elevated TCP three-way handshake failures on api.anthropic.com",
@@ -1345,14 +1354,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / Some API requests to api.anthropic.com are experiencing connection timeouts due to network degradation at an upstream peering point. Requests that successfully connect are unaffected. We are working with our upstream providers to resolve th"
-    },
-    {
-      "title": "Elevated errors on Claude Haiku 4.5",
-      "url": "https://status.anthropic.com/incidents/5dbf8slk8mhr#9np67dgf8d3m",
-      "published_at": "2026-03-04T17:01:30.032Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / Errors have returned to the baseline as of 8:08 PT / 16:08 UTC."
     }
   ],
   "social": [],
@@ -1368,11 +1369,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-03-08T15:48:35.798859Z",
+      "last_item_at": "2026-03-08T16:32:38.546920Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1092,
-      "fetched_at": "2026-03-08T15:48:35.798878Z",
+      "duration_ms": 937,
+      "fetched_at": "2026-03-08T16:32:38.546937Z",
       "cache_hit": false
     },
     {
@@ -1386,11 +1387,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-08T16:48:36+01:00",
+      "last_item_at": "2026-03-08T16:32:38+00:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 754,
-      "fetched_at": "2026-03-08T15:48:36.553350Z",
+      "duration_ms": 1062,
+      "fetched_at": "2026-03-08T16:32:39.609683Z",
       "cache_hit": false
     },
     {
@@ -1404,17 +1405,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-03-08T15:48:36.553945Z",
+      "last_item_at": "2026-03-08T16:32:39.610181Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 775,
-      "fetched_at": "2026-03-08T15:48:37.329043Z",
+      "duration_ms": 1223,
+      "fetched_at": "2026-03-08T16:32:40.833678Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-03-08T15:48:37.330671Z",
+    "generated_at": "2026-03-08T16:32:40.835142Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1436,7 +1437,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1451,9 +1452,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1092,
+          "duration_ms": 937,
           "cache_hit": false,
-          "at": "2026-03-08T15:48:34Z"
+          "at": "2026-03-08T16:32:37Z"
         },
         "metrics_24h": {
           "runs": 33,
@@ -1462,19 +1463,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 852.0
+          "avg_duration_ms": 854.4
         },
         "metrics_7d": {
-          "runs": 149,
-          "ok": 149,
+          "runs": 150,
+          "ok": 150,
           "stale": 2,
           "success_rate": 100.0,
           "stale_rate": 1.3,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 911.3
+          "avg_duration_ms": 911.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-08T15:48:34Z",
+        "last_success_at": "2026-03-08T16:32:37Z",
         "last_failure_at": null
       },
       {
@@ -1488,9 +1489,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 754,
+          "duration_ms": 1062,
           "cache_hit": false,
-          "at": "2026-03-08T15:48:34Z"
+          "at": "2026-03-08T16:32:37Z"
         },
         "metrics_24h": {
           "runs": 33,
@@ -1499,19 +1500,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 908.5
+          "avg_duration_ms": 905.2
         },
         "metrics_7d": {
-          "runs": 149,
-          "ok": 149,
+          "runs": 150,
+          "ok": 150,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1021.4
+          "avg_duration_ms": 1021.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-08T15:48:34Z",
+        "last_success_at": "2026-03-08T16:32:37Z",
         "last_failure_at": null
       },
       {
@@ -1525,9 +1526,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 775,
+          "duration_ms": 1223,
           "cache_hit": false,
-          "at": "2026-03-08T15:48:34Z"
+          "at": "2026-03-08T16:32:37Z"
         },
         "metrics_24h": {
           "runs": 33,
@@ -1536,34 +1537,42 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1095.5
+          "avg_duration_ms": 1103.0
         },
         "metrics_7d": {
-          "runs": 149,
-          "ok": 149,
+          "runs": 150,
+          "ok": 150,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1052.2
+          "avg_duration_ms": 1053.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-08T15:48:34Z",
+        "last_success_at": "2026-03-08T16:32:37Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-03-08T15:48:37.330671Z",
+    "generated_at": "2026-03-08T16:32:40.835142Z",
     "incidents": {
       "new": [],
       "updated": [
         {
+          "id": "6415c5fa7d78f9ed",
+          "title": "Filesystem connector missing from Claude Desktop",
+          "started_at": "2026-03-07T16:58:31Z",
+          "duration": "22h 55m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.anthropic.com/"
+        },
+        {
           "id": "3104c79fd71b5abe",
           "title": "Filesystem connector missing from Claude Desktop",
           "started_at": "2026-03-06T17:16:12.220Z",
-          "duration": "1d 22h 32m ongoing",
-          "acknowledgement": "Minor / Identified",
+          "duration": "1d 22h 32m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://status.anthropic.com/"
         }
       ],
@@ -1574,7 +1583,7 @@
     },
     "summary": {
       "new_incidents": 0,
-      "updated_incidents": 1,
+      "updated_incidents": 2,
       "resolved_incidents": 0,
       "new_reports": 0
     }
