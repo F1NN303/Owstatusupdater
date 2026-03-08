@@ -5,6 +5,7 @@ import StatusBadge from "@/components/StatusBadge";
 import UptimeBar from "@/components/UptimeBar";
 import { type Status } from "@/data/servers";
 import { pickLang, useAppShell, type AppLanguage } from "@/lib/appShell";
+import { safeExternalHref } from "@/lib/safeUrl";
 import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
   fetchLegacyServiceDetail,
@@ -1834,6 +1835,26 @@ const DETAIL_TABS: Array<{ key: DetailTabKey }> = [
   { key: "sources" },
 ];
 
+function ExternalHref({
+  href,
+  className,
+  children,
+}: {
+  href?: string | null;
+  className: string;
+  children: ReactNode;
+}) {
+  const resolvedHref = safeExternalHref(href);
+  if (!resolvedHref) {
+    return <span className={className}>{children}</span>;
+  }
+  return (
+    <a href={resolvedHref} target="_blank" rel="noopener noreferrer" className={className}>
+      {children}
+    </a>
+  );
+}
+
 function LinkListSection({
   title,
   items,
@@ -1862,11 +1883,9 @@ function LinkListSection({
             </p>
           ) : (
             items.map((item, index) => (
-              <a
+              <ExternalHref
                 key={`${item.url || item.title || "item"}-${index}`}
-                href={item.url || "#"}
-                target="_blank"
-                rel="noreferrer"
+                href={item.url}
                 className="block rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-colors hover:bg-white/10 sm:py-2.5"
               >
                 <p className="line-clamp-2 text-[13px] font-medium leading-snug text-foreground sm:text-sm">
@@ -1877,7 +1896,7 @@ function LinkListSection({
                   {item.published_at ? <span>{formatDateTime(item.published_at, language, timeDisplayMode)}</span> : null}
                   {item.meta ? <span>{item.meta}</span> : null}
                 </div>
-              </a>
+              </ExternalHref>
             ))
           )}
         </div>
@@ -2635,15 +2654,13 @@ const ServerDetail = () => {
 
                 {detail.payload.outage?.url ? (
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <a
+                    <ExternalHref
                       href={detail.payload.outage.url}
-                      target="_blank"
-                      rel="noreferrer"
                       className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:bg-white/10 sm:px-3 sm:py-2 sm:text-xs"
                     >
                       {t("Open source", "Quelle öffnen")}
                       <ExternalLink size={13} />
-                    </a>
+                    </ExternalHref>
                   </div>
                 ) : null}
               </div>
@@ -2931,15 +2948,13 @@ const ServerDetail = () => {
                       </p>
                     </div>
                     {detail.payload.outage?.url ? (
-                      <a
+                      <ExternalHref
                         href={detail.payload.outage.url}
-                        target="_blank"
-                        rel="noreferrer"
                         className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-foreground hover:bg-white/10"
                       >
                         {t("Source", "Quelle")}
                         <ExternalLink size={12} />
-                      </a>
+                      </ExternalHref>
                     ) : null}
                   </div>
                   <div className="mt-3 space-y-2">

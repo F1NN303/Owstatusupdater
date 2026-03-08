@@ -6,6 +6,7 @@ import html as html_lib
 import json
 import re
 from typing import Any
+from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
 from services.profiles.scoring_profiles import apply_scoring_profile
@@ -87,6 +88,19 @@ def _clean(text: str | None) -> str:
     cleaned = _repair_text_encoding(cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned).strip()
     return cleaned
+
+
+def _safe_http_url(value: str | None) -> str | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    try:
+        parsed = urlparse(text)
+    except Exception:
+        return None
+    if parsed.scheme.lower() not in {"http", "https"} or not parsed.netloc:
+        return None
+    return parsed.geturl()
 
 
 def _sort_by_datetime(items: list[dict[str, Any]], field: str = "published_at") -> list[dict[str, Any]]:
@@ -648,6 +662,7 @@ __all__ = [
     "_parse_statusgator_service_health_series",
     "_parse_statusgator_top_reported_issues",
     "_safe_error_message",
+    "_safe_http_url",
     "_sort_by_datetime",
     "_source_freshness",
 ]

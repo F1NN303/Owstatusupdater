@@ -18,6 +18,7 @@ DEFAULT_ENDPOINTS = [
     ("openai", "https://f1nn303.github.io/Owstatusupdater/openai/data/status.json"),
     ("claude", "https://f1nn303.github.io/Owstatusupdater/claude/data/status.json"),
     ("discord", "https://f1nn303.github.io/Owstatusupdater/discord/data/status.json"),
+    ("slack", "https://f1nn303.github.io/Owstatusupdater/slack/data/status.json"),
     ("github", "https://f1nn303.github.io/Owstatusupdater/github/data/status.json"),
     ("cloudflare", "https://f1nn303.github.io/Owstatusupdater/cloudflare/data/status.json"),
     ("steam", "https://f1nn303.github.io/Owstatusupdater/steam/data/status.json"),

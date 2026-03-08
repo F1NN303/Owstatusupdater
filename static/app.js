@@ -23,6 +23,18 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+function safeExternalHref(value) {
+  try {
+    const parsed = new URL(String(value || "").trim());
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return null;
+    }
+    return parsed.toString();
+  } catch (error) {
+    return null;
+  }
+}
+
 function formatDateTime(iso) {
   if (!iso) {
     return "No timestamp";
@@ -84,14 +96,17 @@ function renderFeedList(target, items, emptyLabel) {
   target.innerHTML = items
     .map((item) => {
       const title = escapeHtml(item.title || "Untitled");
-      const url = escapeHtml(item.url || "#");
+      const safeUrl = safeExternalHref(item.url);
       const metaParts = [item.source, item.meta, relativeFromNow(item.published_at)]
         .filter(Boolean)
         .map((part) => escapeHtml(part));
+      const linkMarkup = safeUrl
+        ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${title}</a>`
+        : `<span class="feed-item-title">${title}</span>`;
 
       return `
         <li class="feed-item">
-          <a href="${url}" target="_blank" rel="noreferrer">${title}</a>
+          ${linkMarkup}
           <p class="feed-meta">${metaParts.join(" | ")}</p>
         </li>
       `;
@@ -113,7 +128,7 @@ function renderIncidents(incidents) {
       const ack = incident.acknowledgement ? ` | ${escapeHtml(incident.acknowledgement)}` : "";
       return `
         <li class="feed-item">
-          <a href="javascript:void(0)">${title}</a>
+          <span class="feed-item-title">${title}</span>
           <p class="feed-meta">${escapeHtml(startedAt)} | ${duration}${ack}</p>
         </li>
       `;
@@ -144,7 +159,16 @@ function render(data) {
   els.outageSummary.textContent = outage.summary || "Outage summary unavailable.";
   els.reports24h.textContent =
     typeof outage.reports_24h === "number" ? outage.reports_24h.toLocaleString() : "--";
-  els.outageSourceLink.href = outage.url || "#";
+  const safeOutageUrl = safeExternalHref(outage.url);
+  if (safeOutageUrl) {
+    els.outageSourceLink.href = safeOutageUrl;
+    els.outageSourceLink.target = "_blank";
+    els.outageSourceLink.rel = "noopener noreferrer";
+  } else {
+    els.outageSourceLink.removeAttribute("href");
+    els.outageSourceLink.removeAttribute("target");
+    els.outageSourceLink.removeAttribute("rel");
+  }
   els.outageSourceLink.textContent = `Source: ${outage.source || "N/A"}`;
 
   renderIncidents(outage.incidents || []);

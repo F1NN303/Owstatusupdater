@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-08
 Current branch: `main`
-Latest known commit at handoff update: `5eb8e6c`
+Latest known commit at handoff update: `b6d22c5`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -27,6 +27,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/openai/index.html`
   - `site/claude/index.html`
   - `site/discord/index.html`
+  - `site/slack/index.html`
   - `site/github/index.html`
   - `site/cloudflare/index.html`
   - `site/steam/index.html`
@@ -112,6 +113,25 @@ Key files:
 - `react-next/src/lib/serviceManifest.ts`
 - `react-next/src/lib/serviceBranding.ts`
 - `react-next/public/brands/discord.svg`
+- `scripts/watch_data_freshness.py`
+- `tests/test_payload_contracts.py`
+- `tests/test_resilience.py`
+
+### Slack Service - Added
+- New service id: `slack`
+- New detail route: `/status/slack`
+- New legacy wrapper: `site/slack/index.html`
+- New generated data path: `site/slack/data/*`
+- Source strategy:
+  - official required: Slack Status API (`/api/v2.0.0/current`, `/api/v2.0.0/history`) plus official status page component snapshot
+  - supporting corroboration: StatusGator + IsDown
+- Freshness monitor now includes `slack` endpoint.
+
+Key files:
+- `services/slack_aggregator.py`
+- `config/services/slack.yaml`
+- `site/slack/data/*`
+- `react-next/src/lib/serviceManifest.ts`
 - `scripts/watch_data_freshness.py`
 - `tests/test_payload_contracts.py`
 - `tests/test_resilience.py`
@@ -356,6 +376,24 @@ Key files:
   - `py -3 scripts/audit_source_endpoints.py --service cloudflare` -> passed
 - `py -3 scripts/watch_data_freshness.py --dry-run` -> cloudflare endpoint reported `HTTP 404` pre-deploy (expected until GitHub Pages publish completes)
 - Implementation commit: `9418895`
+
+## Latest Validation Snapshot (Slack Service)
+- Scope:
+  - Added new service `slack` using official-first architecture:
+    - Python aggregator with required official Slack Status API plus official component snapshot from the Slack status page.
+    - Supporting provider corroboration from StatusGator and IsDown.
+    - Config-driven registration, generated static artifacts, React fallback manifest entry, and legacy wrapper route.
+  - Added Slack to freshness watchdog endpoint list.
+  - Added Slack payload contract coverage and resilience tests.
+- Validation:
+  - `py -3 -m py_compile services/slack_aggregator.py tests/test_resilience.py tests/test_payload_contracts.py scripts/watch_data_freshness.py` -> passed
+  - `py -3 -m unittest tests.test_resilience.SlackAggregatorResilienceTests -v` -> passed
+  - `py -3 -m unittest tests.test_resilience.SnapshotFreshnessSemanticsTests -v` -> passed
+  - `py -3 scripts/build_site_data.py --service slack` -> passed
+  - `py -3 scripts/validate_services.py` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+  - `py -3 -m unittest tests.test_payload_contracts tests.test_services_manifest -v` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
 
 ## Latest Validation Snapshot (Home/Detail UX Refinements)
 - Scope:

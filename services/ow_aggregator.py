@@ -14,6 +14,7 @@ import requests
 from bs4 import BeautifulSoup
 from services.adapters.isdown import parse_isdown_outage_html
 from services.adapters.statusgator import parse_statusgator_outage_html
+from services.core.shared import _safe_http_url
 from services.core.source_runner import (
     CallableSourceAdapter,
     SourceAdapterSpec,
@@ -678,7 +679,9 @@ def fetch_overwatch_news(limit: int = 8) -> list[dict[str, Any]]:
         href = anchor.get("href")
         if not href:
             continue
-        full_url = urljoin(OVERWATCH_NEWS_URL, href)
+        full_url = _safe_http_url(urljoin(OVERWATCH_NEWS_URL, href))
+        if not full_url:
+            continue
         if full_url in seen_links:
             continue
         seen_links.add(full_url)

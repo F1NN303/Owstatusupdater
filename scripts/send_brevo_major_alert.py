@@ -1,9 +1,11 @@
 import datetime as dt
 import json
 import os
+from html import escape as html_escape
 from pathlib import Path
 
 import requests
+from services.core.shared import _safe_http_url
 
 ROOT = Path(__file__).resolve().parent.parent
 STATUS_PATH = ROOT / "site" / "data" / "status.json"
@@ -65,18 +67,23 @@ def _parse_recipients(raw: str | None) -> list[str]:
     return deduped
 
 
+def _escape_html(value: str | None) -> str:
+    return html_escape(str(value or ""), quote=True)
+
+
 def _build_email_payload(
     status: dict, site_url: str, sender_name: str, sender_email: str, recipients: list[str], force_send: bool
 ) -> dict:
     analytics = status.get("analytics") or {}
     outage = status.get("outage") or {}
+    safe_site_url = _safe_http_url(site_url) or DEFAULT_SITE_URL
     generated_at = str(status.get("generated_at") or _iso_utc(_now()))
     severity = str(analytics.get("severity_key") or "unknown")
     reports_24h = int(outage.get("reports_24h") or 0)
     source_ok = int(analytics.get("source_ok_count") or 0)
     source_total = int(analytics.get("source_total_count") or 0)
     summary = str(outage.get("summary") or "No summary available.")
-    source_url = str(outage.get("url") or site_url)
+    source_url = _safe_http_url(outage.get("url")) or safe_site_url
 
     if force_send:
         subject = f"[Overwatch Radar] Test alert - {generated_at}"
@@ -95,19 +102,19 @@ def _build_email_payload(
             f"Source agreement: {source_ok}/{source_total}",
             f"Outage summary: {summary}",
             "",
-            f"Dashboard: {site_url}",
+            f"Dashboard: {safe_site_url}",
             f"Outage source: {source_url}",
         ]
     )
     html = (
         f"<h2>Overwatch Radar: {'Test alert' if force_send else 'Major outage detected'}</h2>"
-        f"<p><strong>Generated at:</strong> {generated_at}<br>"
-        f"<strong>Severity:</strong> {severity}<br>"
+        f"<p><strong>Generated at:</strong> {_escape_html(generated_at)}<br>"
+        f"<strong>Severity:</strong> {_escape_html(severity)}<br>"
         f"<strong>Reports (24h):</strong> {reports_24h}<br>"
         f"<strong>Source agreement:</strong> {source_ok}/{source_total}</p>"
-        f"<p>{summary}</p>"
-        f"<p><a href=\"{site_url}\">Open dashboard</a><br>"
-        f"<a href=\"{source_url}\">Open outage source</a></p>"
+        f"<p>{_escape_html(summary)}</p>"
+        f"<p><a href=\"{_escape_html(safe_site_url)}\">Open dashboard</a><br>"
+        f"<a href=\"{_escape_html(source_url)}\">Open outage source</a></p>"
     )
 
     return {
@@ -168,7 +175,7 @@ def main() -> None:
     sender_name = os.getenv("ALERT_EMAIL_SENDER_NAME", "Overwatch Service Radar").strip() or "Overwatch Service Radar"
     recipients = _parse_recipients(os.getenv("ALERT_EMAIL_TO"))
     api_key = os.getenv("BREVO_API_KEY", "").strip()
-    site_url = os.getenv("ALERT_SITE_URL", DEFAULT_SITE_URL).strip() or DEFAULT_SITE_URL
+    site_url = _safe_http_url(os.getenv("ALERT_SITE_URL", DEFAULT_SITE_URL).strip()) or DEFAULT_SITE_URL
 
     previous_severity = str(state.get("last_seen_severity") or "unknown")
     just_entered_major = previous_severity != "major" and severity == "major"

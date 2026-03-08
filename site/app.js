@@ -1416,12 +1416,16 @@ function parseHttpsUrl(value) {
   }
 }
 
-function isLikelyEmail(value) {
-  const text = String(value || "").trim();
-  if (!text || text.length > 320) {
-    return false;
+function safeExternalHref(value) {
+  try {
+    const parsed = new URL(String(value || "").trim());
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return null;
+    }
+    return parsed.toString();
+  } catch (error) {
+    return null;
   }
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
 }
 
 function isAllowedSubscriptionHost(parsedUrl, config) {
@@ -1507,23 +1511,8 @@ function renderSubscribeWidget(config = latestSubscriptionConfig) {
     return;
   }
 
-  const form = document.createElement("form");
-  form.className = "newsletter-shell";
-  form.noValidate = true;
-
-  const label = document.createElement("label");
-  label.className = "newsletter-label";
-  label.setAttribute("for", "subscribeEmailInput");
-  label.textContent = t("ui.subscribe.emailLabel");
-
-  const input = document.createElement("input");
-  input.className = "newsletter-input";
-  input.type = "email";
-  input.id = "subscribeEmailInput";
-  input.name = "email";
-  input.placeholder = t("ui.subscribe.emailPlaceholder");
-  input.required = true;
-  input.autocomplete = "email";
+  const panel = document.createElement("div");
+  panel.className = "newsletter-shell";
 
   const help = document.createElement("p");
   help.className = "newsletter-help";
@@ -1535,33 +1524,22 @@ function renderSubscribeWidget(config = latestSubscriptionConfig) {
 
   const button = document.createElement("button");
   button.className = "newsletter-submit";
-  button.type = "submit";
+  button.type = "button";
   button.textContent = t("ui.subscribe.cta");
 
-  form.appendChild(label);
-  form.appendChild(input);
-  form.appendChild(help);
-  form.appendChild(captcha);
-  form.appendChild(button);
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const email = String(input.value || "").trim();
-    if (!isLikelyEmail(email)) {
-      els.subscribeStateText.textContent = t("ui.subscribe.invalidEmail");
-      input.focus();
-      return;
-    }
-    const targetUrl = new URL(parsedUrl.toString());
-    targetUrl.searchParams.set("email", email);
-    window.open(targetUrl.toString(), "_blank", "noopener,noreferrer");
+  panel.appendChild(help);
+  panel.appendChild(captcha);
+  panel.appendChild(button);
+  button.addEventListener("click", () => {
+    window.open(parsedUrl.toString(), "_blank", "noopener,noreferrer");
     els.subscribeStateText.textContent = t("ui.subscribe.opening");
   });
-  els.subscribeWidget.appendChild(form);
+  els.subscribeWidget.appendChild(panel);
 
   els.subscribeStateText.textContent = t("ui.subscribe.ready", { provider });
   els.subscribeActionLink.href = parsedUrl.toString();
   els.subscribeActionLink.target = "_blank";
-  els.subscribeActionLink.rel = "noreferrer";
+  els.subscribeActionLink.rel = "noopener noreferrer";
   els.subscribeActionLink.textContent = t("ui.subscribe.openExternal");
 }
 
@@ -1846,14 +1824,17 @@ function renderFeedList(target, items, emptyLabel) {
   target.innerHTML = items
     .map((item) => {
       const title = escapeHtml(normalizeText(item.title || "Untitled"));
-      const url = escapeHtml(item.url || "#");
+      const safeUrl = safeExternalHref(item.url);
       const metaParts = [normalizeText(item.source || ""), normalizeText(item.meta || ""), relativeFromNow(item.published_at || item.started_at)]
         .filter(Boolean)
         .map((part) => escapeHtml(part));
+      const linkMarkup = safeUrl
+        ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${title}</a>`
+        : `<span class="feed-item-title">${title}</span>`;
 
       return `
         <li class="feed-item">
-          <a href="${url}" target="_blank" rel="noreferrer">${title}</a>
+          ${linkMarkup}
           <p class="feed-meta">${metaParts.join(" | ")}</p>
         </li>
       `;
@@ -1913,13 +1894,16 @@ function renderKnownResources(resources) {
   els.knownList.innerHTML = resources
     .map((item) => {
       const title = escapeHtml(normalizeText(item.title || "Resource"));
-      const url = escapeHtml(item.url || "#");
+      const safeUrl = safeExternalHref(item.url);
       const metaParts = [normalizeText(item.source || ""), normalizeText(item.meta || ""), relativeFromNow(item.published_at)]
         .filter(Boolean)
         .map((part) => escapeHtml(part));
+      const linkMarkup = safeUrl
+        ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${title}</a>`
+        : `<span class="feed-item-title">${title}</span>`;
       return `
         <li class="feed-item">
-          <a href="${url}" target="_blank" rel="noreferrer">${title}</a>
+          ${linkMarkup}
           <p class="feed-meta">${metaParts.join(" | ")}</p>
         </li>
       `;
@@ -2545,7 +2529,16 @@ function render(data) {
     typeof outage.reports_24h === "number" ? formatNumber(outage.reports_24h) : "--";
 
   const sourceName = normalizeText(outage.source || "N/A");
-  els.outageSourceLink.href = outage.url || "#";
+  const safeOutageUrl = safeExternalHref(outage.url);
+  if (safeOutageUrl) {
+    els.outageSourceLink.href = safeOutageUrl;
+    els.outageSourceLink.target = "_blank";
+    els.outageSourceLink.rel = "noopener noreferrer";
+  } else {
+    els.outageSourceLink.removeAttribute("href");
+    els.outageSourceLink.removeAttribute("target");
+    els.outageSourceLink.removeAttribute("rel");
+  }
   els.outageSourceLink.textContent = t("ui.labels.source", { source: sourceName });
 
   renderIncidents(sortCollection(outage.incidents || [], "started_at"));
