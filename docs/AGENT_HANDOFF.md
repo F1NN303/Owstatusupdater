@@ -1,8 +1,8 @@
 # Agent Handoff
 
-Last updated: 2026-03-05
+Last updated: 2026-03-08
 Current branch: `main`
-Latest known commit at handoff update: `9418895`
+Latest known commit at handoff update: `5eb8e6c`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -354,5 +354,24 @@ Key files:
   - `py -3 scripts/build_react_artifacts.py` -> passed
   - `py -3 scripts/verify_next_preview_artifact.py` -> passed
   - `py -3 scripts/audit_source_endpoints.py --service cloudflare` -> passed
-  - `py -3 scripts/watch_data_freshness.py --dry-run` -> cloudflare endpoint reported `HTTP 404` pre-deploy (expected until GitHub Pages publish completes)
+- `py -3 scripts/watch_data_freshness.py --dry-run` -> cloudflare endpoint reported `HTTP 404` pre-deploy (expected until GitHub Pages publish completes)
 - Implementation commit: `9418895`
+
+## Latest Validation Snapshot (Home/Detail UX Refinements)
+- Scope:
+  - Fixed iOS Safari input auto-zoom behavior:
+    - Ensured search/form input font-size does not trigger Safari focus zoom.
+    - Implementation commit: `bfbe33a`
+  - Softened home banner severity behavior to reduce alert fatigue:
+    - Replaced binary warning escalation with threshold-based global-state logic.
+    - Added `minor-issues` state and neutral "Monitoring Active" banner treatment.
+    - Added "View impacted" quick action in top banner.
+    - Implementation commit: `5226dac`
+  - Added Incident Replay in service detail `Incidents` tab:
+    - 24h/7d replay window switch.
+    - Play/Pause timeline playback and manual scrub.
+    - Event synthesis from history snapshots + outage incident start/recovery timestamps.
+    - Compact replay event feed for recent transitions.
+    - Implementation commit: `5eb8e6c`
+- Validation:
+  - `npm.cmd run build` in `react-next` -> passed (for each of the above commits)
