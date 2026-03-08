@@ -16,6 +16,10 @@ Current asset files and source references:
   - Source: https://cdn.simpleicons.org/claude
 - `react-next/public/brands/discord.svg`
   - Source: https://cdn.simpleicons.org/discord
+- `react-next/public/brands/slack.svg`
+  - Source: https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/slack.svg
+- `react-next/public/brands/reddit.svg`
+  - Source: https://cdn.simpleicons.org/reddit
 - `react-next/public/brands/github.svg`
   - Source: https://cdn.simpleicons.org/github
 - `react-next/public/brands/cloudflare.svg`

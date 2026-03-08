@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-08
 Current branch: `main`
-Latest known commit at handoff update: `b6d22c5`
+Latest known commit at handoff update: `c25b37d`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -74,6 +74,9 @@ Key files:
 - Wired in:
   - home cards (`react-next/src/components/ServerCard.tsx`)
   - detail header (`react-next/src/pages/ServerDetail.tsx`)
+- Added service brand assets for:
+  - `slack`
+  - `reddit`
 - Sources/trademark note doc:
   - `docs/brand-assets.md`
 
@@ -427,6 +430,16 @@ Key files:
   - `py -3 -m unittest tests.test_resilience.RedditAggregatorResilienceTests -v` -> passed
   - `py -3 -m unittest tests.test_resilience.SnapshotFreshnessSemanticsTests -v` -> passed
   - `py -3 scripts/build_site_data.py --service reddit` -> passed
+
+## Latest Validation Snapshot (Slack + Reddit Brand Assets)
+- Scope:
+  - Added brand SVG assets for `slack` and `reddit`.
+  - Wired new brand asset mappings and aliases through `react-next/src/lib/serviceBranding.ts`.
+  - Updated `docs/brand-assets.md` with the new asset sources.
+- Validation:
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/build_react_artifacts.py` -> passed
+  - `py -3 scripts/verify_next_preview_artifact.py` -> passed
 
 ## Latest Validation Snapshot (Home/Detail UX Refinements)
 - Scope:
