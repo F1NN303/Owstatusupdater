@@ -28,6 +28,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/claude/index.html`
   - `site/discord/index.html`
   - `site/slack/index.html`
+  - `site/reddit/index.html`
   - `site/github/index.html`
   - `site/cloudflare/index.html`
   - `site/steam/index.html`
@@ -131,6 +132,25 @@ Key files:
 - `services/slack_aggregator.py`
 - `config/services/slack.yaml`
 - `site/slack/data/*`
+- `react-next/src/lib/serviceManifest.ts`
+- `scripts/watch_data_freshness.py`
+- `tests/test_payload_contracts.py`
+- `tests/test_resilience.py`
+
+### Reddit Service - Added
+- New service id: `reddit`
+- New detail route: `/status/reddit`
+- New legacy wrapper: `site/reddit/index.html`
+- New generated data path: `site/reddit/data/*`
+- Source strategy:
+  - official required: Reddit Statuspage API (`/api/v2/status.json`, `/components.json`, `/incidents.json`)
+  - supporting corroboration: StatusGator + IsDown
+- Freshness monitor now includes `reddit` endpoint.
+
+Key files:
+- `services/reddit_aggregator.py`
+- `config/services/reddit.yaml`
+- `site/reddit/data/*`
 - `react-next/src/lib/serviceManifest.ts`
 - `scripts/watch_data_freshness.py`
 - `tests/test_payload_contracts.py`
@@ -394,6 +414,19 @@ Key files:
   - `py -3 scripts/check_public_exposure.py` -> passed
   - `py -3 -m unittest tests.test_payload_contracts tests.test_services_manifest -v` -> passed
   - `npm.cmd run build` in `react-next` -> passed
+
+## Latest Validation Snapshot (Reddit Service)
+- Scope:
+  - Added new service `reddit` using official-first architecture:
+    - Python aggregator with required official Reddit Statuspage API and supporting provider corroboration.
+    - Config-driven registration, generated static artifacts, React fallback manifest entry, and legacy wrapper route.
+  - Added Reddit to freshness watchdog endpoint list.
+  - Added Reddit payload contract coverage and resilience tests.
+- Validation:
+  - `py -3 -m py_compile services/reddit_aggregator.py tests/test_resilience.py tests/test_payload_contracts.py scripts/watch_data_freshness.py` -> passed
+  - `py -3 -m unittest tests.test_resilience.RedditAggregatorResilienceTests -v` -> passed
+  - `py -3 -m unittest tests.test_resilience.SnapshotFreshnessSemanticsTests -v` -> passed
+  - `py -3 scripts/build_site_data.py --service reddit` -> passed
 
 ## Latest Validation Snapshot (Home/Detail UX Refinements)
 - Scope:

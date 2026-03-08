@@ -10,6 +10,7 @@ import services.discord_aggregator as discord_aggregator
 import services.github_aggregator as github_aggregator
 import services.m365_aggregator as m365_aggregator
 import services.openai_aggregator as openai_aggregator
+import services.reddit_aggregator as reddit_aggregator
 import services.slack_aggregator as slack_aggregator
 import services.sony_aggregator as sony_aggregator
 import services.steam_aggregator as steam_aggregator
@@ -101,6 +102,7 @@ class SnapshotFreshnessSemanticsTests(unittest.TestCase):
             (claude_aggregator, "2026-03-05T18:00:01Z"),
             (discord_aggregator, "2026-03-05T18:00:02Z"),
             (slack_aggregator, "2026-03-05T18:00:02Z"),
+            (reddit_aggregator, "2026-03-05T18:00:03Z"),
             (github_aggregator, "2026-03-05T18:00:03Z"),
             (m365_aggregator, "2026-03-05T18:00:04Z"),
             (cloudflare_aggregator, "2026-03-05T18:00:05Z"),
@@ -510,6 +512,83 @@ class SlackAggregatorResilienceTests(unittest.TestCase):
 
         with patch("services.slack_aggregator._run_slack_source", side_effect=_run_side_effect):
             payload = slack_aggregator._collect_payload(scoring_profile="official_first_v1")
+
+        self.assertEqual(payload.get("health"), "error")
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 3)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("sources"), list)
+
+
+class RedditAggregatorResilienceTests(unittest.TestCase):
+    def test_collect_payload_with_partial_source_failures(self) -> None:
+        statusgator_data = {
+            "source": "StatusGator",
+            "source_type": "Downdetector-like",
+            "url": "https://statusgator.com/services/reddit",
+            "summary": "StatusGator indicates Reddit is currently degraded.",
+            "current_status": "degraded",
+            "reports_24h": 31,
+            "incidents": [
+                {
+                    "title": "Test incident",
+                    "started_at": "2026-02-27T00:00:00Z",
+                    "duration": "18m",
+                    "acknowledgement": "simulated",
+                }
+            ],
+            "top_reported_issues": [{"label": "Comment posting", "count": 3}],
+        }
+
+        def _run_side_effect(**kwargs):
+            adapter_id = kwargs.get("adapter_id")
+            if adapter_id == "statusgator":
+                return SourceRunResult(
+                    ok=True,
+                    data=statusgator_data,
+                    source=_source_entry("StatusGator", True),
+                )
+            if adapter_id == "isdown_reddit":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("IsDown (Reddit)", False),
+                    error="simulated failure",
+                )
+            if adapter_id == "reddit_statuspage_api":
+                return SourceRunResult(
+                    ok=False,
+                    data=None,
+                    source=_source_entry("Reddit Statuspage API", False),
+                    error="simulated failure",
+                )
+            raise AssertionError(f"Unexpected adapter_id: {adapter_id}")
+
+        with patch("services.reddit_aggregator._run_reddit_source", side_effect=_run_side_effect):
+            payload = reddit_aggregator._collect_payload(scoring_profile="official_first_v1")
+
+        self.assertEqual(payload.get("health"), "degraded")
+        self.assertEqual(len(payload.get("sources") or []), 3)
+        self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 1)
+        self.assertEqual(payload.get("analytics", {}).get("source_total_count"), 3)
+        self.assertIn(payload.get("analytics", {}).get("severity_key"), VALID_SEVERITY)
+        self.assertIsInstance(payload.get("outage", {}).get("summary"), str)
+        self.assertIsInstance(payload.get("outage", {}).get("incidents"), list)
+        self.assertIsInstance(payload.get("official", {}).get("summary"), str)
+
+    def test_collect_payload_when_all_sources_fail_returns_error_health(self) -> None:
+        def _run_side_effect(**kwargs):
+            name = str(kwargs.get("name") or kwargs.get("adapter_id") or "source")
+            return SourceRunResult(
+                ok=False,
+                data=None,
+                source=_source_entry(name, False),
+                error="simulated failure",
+            )
+
+        with patch("services.reddit_aggregator._run_reddit_source", side_effect=_run_side_effect):
+            payload = reddit_aggregator._collect_payload(scoring_profile="official_first_v1")
 
         self.assertEqual(payload.get("health"), "error")
         self.assertEqual(payload.get("analytics", {}).get("source_ok_count"), 0)
