@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `1f05194`
+Latest known commit at handoff update: `8c08c98`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -60,6 +60,10 @@ This file is the persistent handoff for future agents. It captures the current p
 - UI behavior fix shipped in working tree:
   - `Favorites First` is now the default home behavior for fresh installs, resets, and a one-time migration for pre-v3 stored settings
   - API component lists now sort impacted components ahead of healthy ones so degraded/offline entries stay visible without forcing `Show all`
+- iOS/mobile UX fix shipped in working tree:
+  - root React HTML viewport now uses `viewport-fit=cover` so the app fully respects iPhone safe-area insets
+  - home and service detail now support pull-to-refresh using a shared mobile touch hook + top refresh indicator
+  - service detail header now includes native share with clipboard fallback when `navigator.share` is unavailable
 
 Key files:
 - `services/core/source_runner.py`

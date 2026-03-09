@@ -1,9 +1,12 @@
 import AppLayout from "@/components/AppLayout";
 import MiniSparkline from "@/components/MiniSparkline";
+import PullToRefreshIndicator from "@/components/PullToRefreshIndicator";
 import ServiceIdentityIcon from "@/components/ServiceIdentityIcon";
 import StatusBadge from "@/components/StatusBadge";
 import UptimeBar from "@/components/UptimeBar";
 import { type Status } from "@/data/servers";
+import { toast } from "@/components/ui/use-toast";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import { pickLang, useAppShell, type AppLanguage } from "@/lib/appShell";
 import { safeExternalHref } from "@/lib/safeUrl";
 import { formatTimestampByMode } from "@/lib/timeDisplay";
@@ -22,6 +25,7 @@ import {
   ArrowLeft,
   ExternalLink,
   RefreshCw,
+  Share2,
   ShieldCheck,
   TriangleAlert,
 } from "lucide-react";
@@ -1936,7 +1940,7 @@ const ServerDetail = () => {
   const [tabIndicatorMeasures, setTabIndicatorMeasures] = useState<TabIndicatorMeasure[]>([]);
   const [tabTrackWidth, setTabTrackWidth] = useState(0);
 
-  const loadDetail = async (mode: "initial" | "refresh" = "initial") => {
+  const loadDetail = useCallback(async (mode: "initial" | "refresh" = "initial") => {
     if (!serviceId) {
       return;
     }
@@ -1956,7 +1960,13 @@ const ServerDetail = () => {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  };
+  }, [serviceId]);
+
+  const pullToRefresh = usePullToRefresh({
+    disabled: !serviceId || isLoading,
+    isRefreshing,
+    onRefresh: () => loadDetail("refresh"),
+  });
 
   useEffect(() => {
     if (!serviceId) {
@@ -1968,7 +1978,7 @@ const ServerDetail = () => {
       void loadDetail("refresh");
     }, 60_000);
     return () => window.clearInterval(timer);
-  }, [serviceId]);
+  }, [loadDetail, serviceId]);
 
   useEffect(() => {
     setComponentSearch("");
@@ -2256,6 +2266,12 @@ const ServerDetail = () => {
   );
   const indicatorWidth = Math.max(0, unclampedIndicatorWidth);
   const t = (en: string, de: string) => pickLang(language, en, de);
+  const serviceStatusLabel =
+    serviceStatus === "online"
+      ? t("Operational", "Stabil")
+      : serviceStatus === "offline"
+        ? t("Offline", "Offline")
+        : t("Degraded", "Beeinträchtigt");
   const normalizedComponentSearch = componentSearch.trim().toLowerCase();
   const filteredComponentRows = normalizedComponentSearch
     ? componentRows.filter((item) => item.name.toLowerCase().includes(normalizedComponentSearch))
@@ -2291,6 +2307,65 @@ const ServerDetail = () => {
   const sourceTransparencyOverview = detail?.payload.source_transparency?.overview;
   const sourceTransparencyDecision = detail?.payload.source_transparency?.decision;
   const sourceTransparencySources = clampList(detail?.payload.source_transparency?.sources || [], 8);
+  const handleShareDetail = async () => {
+    if (!detail || typeof window === "undefined") {
+      return;
+    }
+
+    const shareUrl = new URL(window.location.href);
+    if (shareUrl.hash.startsWith("#/")) {
+      shareUrl.hash = `/status/${serviceId}`;
+    }
+
+    const summary =
+      detail.payload.outage?.summary ||
+      detail.payload.official?.summary ||
+      latestIncidentTitle ||
+      "";
+    const shareText = summary
+      ? `${detail.service.name} · ${serviceStatusLabel}\n${summary}`
+      : `${detail.service.name} · ${serviceStatusLabel}`;
+
+    if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+      try {
+        await navigator.share({
+          title: detail.service.name,
+          text: shareText,
+          url: shareUrl.toString(),
+        });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+      }
+    }
+
+    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(shareUrl.toString());
+        toast({
+          title: t("Link copied", "Link kopiert"),
+          description: t(
+            "The service detail link was copied to your clipboard.",
+            "Der Service-Detail-Link wurde in die Zwischenablage kopiert."
+          ),
+        });
+        return;
+      } catch {
+        // Fall through to unavailable state below.
+      }
+    }
+
+    toast({
+      title: t("Share unavailable", "Teilen nicht verfügbar"),
+      description: t(
+        "Native share is not available on this device right now.",
+        "Native Teilen ist auf diesem Gerät gerade nicht verfügbar."
+      ),
+      variant: "destructive",
+    });
+  };
   const sourceAgreement24h = detail ? extractSourceAgreement24h(detail) : [];
   const sourceAgreementTrend = sourceAgreement24h.map((point) => sourceAgreementLevel(point.ratio));
   const sourceAgreementLatest = sourceAgreement24h.length
@@ -2536,7 +2611,15 @@ const ServerDetail = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-6 pt-4">
+      <PullToRefreshIndicator
+        distance={pullToRefresh.distance}
+        isPullReady={pullToRefresh.isPullReady}
+        isRefreshing={pullToRefresh.isPullRefreshing}
+        pullLabel={t("Pull to refresh", "Zum Aktualisieren ziehen")}
+        releaseLabel={t("Release to refresh", "Loslassen zum Aktualisieren")}
+        refreshingLabel={t("Refreshing detail...", "Detail wird aktualisiert...")}
+      />
+      <main className="mx-auto max-w-md px-4 pb-6 pt-4" {...pullToRefresh.bind}>
         <div className="flex items-center justify-between gap-3 pb-2.5 pt-1">
           <div className="flex items-center gap-3">
             <button
@@ -2556,17 +2639,27 @@ const ServerDetail = () => {
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => void loadDetail("refresh")}
-            className="glass flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90"
-            aria-label={t("Refresh detail", "Detail aktualisieren")}
-          >
-            <RefreshCw
-              size={15}
-              className={`text-muted-foreground transition-transform ${isRefreshing ? "animate-spin" : ""}`}
-            />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => void handleShareDetail()}
+              className="glass flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90"
+              aria-label={t("Share service detail", "Service-Detail teilen")}
+            >
+              <Share2 size={15} className="text-muted-foreground" />
+            </button>
+            <button
+              type="button"
+              onClick={() => void loadDetail("refresh")}
+              className="glass flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90"
+              aria-label={t("Refresh detail", "Detail aktualisieren")}
+            >
+              <RefreshCw
+                size={15}
+                className={`text-muted-foreground transition-transform ${isRefreshing ? "animate-spin" : ""}`}
+              />
+            </button>
+          </div>
         </div>
 
         {isLoading && !detail ? (

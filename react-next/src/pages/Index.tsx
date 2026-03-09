@@ -1,7 +1,9 @@
 ﻿import AppLayout from "@/components/AppLayout";
 import OverallStatus from "@/components/OverallStatus";
+import PullToRefreshIndicator from "@/components/PullToRefreshIndicator";
 import ServerCard from "@/components/ServerCard";
 import type { ServerService, Status } from "@/data/servers";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import { pickLang, useAppShell } from "@/lib/appShell";
 import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
@@ -11,7 +13,7 @@ import {
 } from "@/lib/legacyServiceDetail";
 import { getLegacyLiveStatusServices } from "@/lib/legacyStatus";
 import { Bell, ChevronRight, RefreshCw, Star, TriangleAlert } from "lucide-react";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
 type OverallState = "all-good" | "minor-issues" | "some-issues" | "major-outage";
@@ -469,7 +471,7 @@ const Index = () => {
     setSortBy(parseSortParam(urlSortParam));
   }, [urlSortParam]);
 
-  const loadCards = async () => {
+  const loadCards = useCallback(async () => {
     setIsRefreshing(true);
 
     try {
@@ -508,7 +510,12 @@ const Index = () => {
     } finally {
       setIsRefreshing(false);
     }
-  };
+  }, [language]);
+
+  const pullToRefresh = usePullToRefresh({
+    isRefreshing,
+    onRefresh: loadCards,
+  });
 
   useEffect(() => {
     void loadCards();
@@ -517,7 +524,7 @@ const Index = () => {
     }, homeRefreshIntervalSec * 1000);
 
     return () => window.clearInterval(timer);
-  }, [homeRefreshIntervalSec, language]);
+  }, [homeRefreshIntervalSec, loadCards]);
 
   const overallState = useMemo(
     () => overallStateFromCards(cards, errorMessages.length > 0),
@@ -669,7 +676,15 @@ const Index = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-6 pt-8">
+      <PullToRefreshIndicator
+        distance={pullToRefresh.distance}
+        isPullReady={pullToRefresh.isPullReady}
+        isRefreshing={pullToRefresh.isPullRefreshing}
+        pullLabel={pickLang(language, "Pull to refresh", "Zum Aktualisieren ziehen")}
+        releaseLabel={pickLang(language, "Release to refresh", "Loslassen zum Aktualisieren")}
+        refreshingLabel={pickLang(language, "Refreshing live status...", "Live-Status wird aktualisiert...")}
+      />
+      <main className="mx-auto max-w-md px-4 pb-6 pt-8" {...pullToRefresh.bind}>
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
