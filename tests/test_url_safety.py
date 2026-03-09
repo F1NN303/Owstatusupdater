@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import datetime as dt
 import unittest
 from unittest.mock import patch
 
 import services.ow_aggregator as ow_aggregator
-from scripts.send_brevo_major_alert import _build_email_payload
+from scripts.send_brevo_major_alert import _build_email_payload, _parse_cooldown_minutes, _should_send_major_alert
 from services.core.shared import _safe_http_url
 
 
@@ -62,6 +63,71 @@ class UrlSafetyTests(unittest.TestCase):
         self.assertEqual(len(items), 1)
         self.assertEqual(items[0]["title"], "Safe item")
         self.assertTrue(items[0]["url"].startswith("https://"))
+
+    def test_major_alert_repeat_with_new_snapshot_stays_blocked_during_cooldown(self) -> None:
+        now = dt.datetime(2026, 3, 9, 18, 0, tzinfo=dt.UTC)
+        should_send, reason = _should_send_major_alert(
+            {
+                "generated_at": "2026-03-09T18:00:00Z",
+                "analytics": {"severity_key": "major"},
+            },
+            {
+                "last_seen_severity": "major",
+                "last_major_email_at": "2026-03-09T17:59:55Z",
+                "last_major_status_generated_at": "2026-03-09T17:55:00Z",
+            },
+            now,
+            cooldown_minutes=360,
+            force_send=False,
+        )
+
+        self.assertFalse(should_send)
+        self.assertEqual(reason, "cooldown_active")
+
+    def test_major_alert_duplicate_snapshot_is_skipped(self) -> None:
+        now = dt.datetime(2026, 3, 9, 18, 0, tzinfo=dt.UTC)
+        should_send, reason = _should_send_major_alert(
+            {
+                "generated_at": "2026-03-09T18:00:00Z",
+                "analytics": {"severity_key": "major"},
+            },
+            {
+                "last_seen_severity": "major",
+                "last_major_email_at": "2026-03-09T10:00:00Z",
+                "last_major_status_generated_at": "2026-03-09T18:00:00Z",
+            },
+            now,
+            cooldown_minutes=360,
+            force_send=False,
+        )
+
+        self.assertFalse(should_send)
+        self.assertEqual(reason, "duplicate_snapshot")
+
+    def test_major_alert_force_send_bypasses_cooldown(self) -> None:
+        now = dt.datetime(2026, 3, 9, 18, 0, tzinfo=dt.UTC)
+        should_send, reason = _should_send_major_alert(
+            {
+                "generated_at": "2026-03-09T18:00:00Z",
+                "analytics": {"severity_key": "stable"},
+            },
+            {
+                "last_seen_severity": "major",
+                "last_major_email_at": "2026-03-09T17:59:55Z",
+                "last_major_status_generated_at": "2026-03-09T17:55:00Z",
+            },
+            now,
+            cooldown_minutes=360,
+            force_send=True,
+        )
+
+        self.assertTrue(should_send)
+        self.assertEqual(reason, "force_send")
+
+    def test_parse_cooldown_minutes_falls_back_for_invalid_values(self) -> None:
+        self.assertEqual(_parse_cooldown_minutes(""), 360)
+        self.assertEqual(_parse_cooldown_minutes("bad"), 360)
+        self.assertEqual(_parse_cooldown_minutes("0"), 1)
 
 
 if __name__ == "__main__":

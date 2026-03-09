@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `14f0474`
+Latest known commit at handoff update: `dc1ecca`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -471,3 +471,16 @@ Key files:
   - `python -m unittest tests.test_url_safety -v` -> passed
   - `npm.cmd run build` in `react-next` -> passed
   - `python scripts/check_public_exposure.py` -> passed
+
+## Latest Validation Snapshot (Major Alert Cooldown Guard)
+- Scope:
+  - Extracted the major-alert send decision into a dedicated helper in `scripts/send_brevo_major_alert.py`.
+  - Added test coverage for duplicate snapshots, cooldown-active repeats, forced test sends, and invalid cooldown parsing.
+  - Current automatic send behavior remains:
+    - only for `major` severity
+    - only for a new status snapshot
+    - only when entering `major` or after cooldown expiry
+    - forced test send still requires explicit `ALERT_FORCE_SEND`
+- Validation:
+  - `python -m unittest tests.test_url_safety -v` -> passed
+  - `python scripts/send_brevo_major_alert.py` -> passed (`[brevo] skip send (not_major) severity=stable`)

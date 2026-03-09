@@ -153,6 +153,40 @@ def _send_via_brevo(api_key: str, payload: dict) -> tuple[bool, str]:
     return True, message_id
 
 
+def _parse_cooldown_minutes(raw: str | None) -> int:
+    try:
+        parsed = int(str(raw or "").strip())
+    except (TypeError, ValueError):
+        return DEFAULT_COOLDOWN_MINUTES
+    return max(parsed, 1)
+
+
+def _should_send_major_alert(
+    status: dict, state: dict, now: dt.datetime, cooldown_minutes: int, force_send: bool
+) -> tuple[bool, str]:
+    severity = str((status.get("analytics") or {}).get("severity_key") or "unknown")
+    generated_at = str(status.get("generated_at") or "")
+
+    if force_send:
+        return True, "force_send"
+    if severity != "major":
+        return False, "not_major"
+
+    last_major_snapshot = str(state.get("last_major_status_generated_at") or "")
+    if not generated_at or generated_at == last_major_snapshot:
+        return False, "duplicate_snapshot"
+
+    previous_severity = str(state.get("last_seen_severity") or "unknown")
+    if previous_severity != "major":
+        return True, "new_major"
+
+    last_major_email_at = _parse_iso(state.get("last_major_email_at"))
+    if last_major_email_at and (now - last_major_email_at) < dt.timedelta(minutes=max(cooldown_minutes, 1)):
+        return False, "cooldown_active"
+
+    return True, "cooldown_elapsed"
+
+
 def main() -> None:
     now = _now()
     status = _read_json(STATUS_PATH, {})
@@ -173,7 +207,7 @@ def main() -> None:
 
     severity = str((status.get("analytics") or {}).get("severity_key") or "unknown")
     generated_at = str(status.get("generated_at") or "")
-    cooldown_minutes = int(os.getenv("ALERT_MAJOR_COOLDOWN_MINUTES", str(DEFAULT_COOLDOWN_MINUTES)))
+    cooldown_minutes = _parse_cooldown_minutes(os.getenv("ALERT_MAJOR_COOLDOWN_MINUTES"))
     force_send = os.getenv("ALERT_FORCE_SEND", "").strip().lower() in {"1", "true", "yes", "on"}
 
     sender_email = os.getenv("ALERT_EMAIL_FROM", "").strip()
@@ -182,30 +216,17 @@ def main() -> None:
     api_key = os.getenv("BREVO_API_KEY", "").strip()
     site_url = _safe_http_url(os.getenv("ALERT_SITE_URL", DEFAULT_SITE_URL).strip()) or DEFAULT_SITE_URL
 
-    previous_severity = str(state.get("last_seen_severity") or "unknown")
-    just_entered_major = previous_severity != "major" and severity == "major"
-    cooldown_elapsed = True
-    last_major_email_at = _parse_iso(state.get("last_major_email_at"))
-    if last_major_email_at:
-        cooldown_elapsed = (now - last_major_email_at) >= dt.timedelta(minutes=max(cooldown_minutes, 1))
-    new_major_snapshot = generated_at and generated_at != str(state.get("last_major_status_generated_at") or "")
-    should_send = force_send or (severity == "major" and new_major_snapshot and (just_entered_major or cooldown_elapsed))
+    should_send, decision_reason = _should_send_major_alert(status, state, now, cooldown_minutes, force_send)
 
     state["updated_at"] = _iso_utc(now)
     state["last_seen_severity"] = severity
     state["last_seen_status_generated_at"] = generated_at or state.get("last_seen_status_generated_at")
 
     if not should_send:
-        reason = "not_major"
-        if severity == "major" and not force_send:
-            if not new_major_snapshot:
-                reason = "duplicate_snapshot"
-            elif not just_entered_major and not cooldown_elapsed:
-                reason = "cooldown_active"
         state["last_email_result"] = "skipped"
-        state["last_email_reason"] = reason
+        state["last_email_reason"] = decision_reason
         _write_json(STATE_PATH, state)
-        print(f"[brevo] skip send ({reason}) severity={severity}")
+        print(f"[brevo] skip send ({decision_reason}) severity={severity}")
         return
 
     if not api_key or not sender_email or not recipients:
