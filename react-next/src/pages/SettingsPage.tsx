@@ -1,5 +1,7 @@
 ﻿import AppLayout from "@/components/AppLayout";
+import { useAlertAccount } from "@/lib/alertAccount";
 import { appBuildMeta, formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
+import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
   ExternalLink,
   Info,
@@ -45,10 +47,35 @@ const SettingsPage = () => {
     reopenHomeHints,
     resetSettings,
   } = useAppShell();
+  const {
+    isConnected: alertAccountConnected,
+    profile: alertAccountProfile,
+    sessionEmail,
+    savedPreferences,
+  } = useAlertAccount();
   const buildMeta = appBuildMeta();
   const versionLabel = formatBuildLabel(language);
   const compactBuildId = buildMeta.id ? buildMeta.id.slice(0, 7) : pickLang(language, "unknown", "unbekannt");
   const buildTimeLabel = buildMeta.stamp || pickLang(language, "Unknown", "Unbekannt");
+  const savedAlertLabel = savedPreferences?.updatedAt
+    ? formatTimestampByMode(savedPreferences.updatedAt, {
+        language,
+        mode: timeDisplayMode,
+        absoluteFormat: {
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        },
+        fallbackText: pickLang(language, "Never", "Nie"),
+      })
+    : pickLang(language, "Never", "Nie");
+  const syncStatusLabel =
+    alertAccountProfile?.brevoSyncStatus === "synced"
+      ? pickLang(language, "Synced", "Synchronisiert")
+      : alertAccountProfile?.brevoSyncStatus === "error"
+        ? pickLang(language, "Sync issue", "Sync-Problem")
+        : pickLang(language, "Not connected", "Nicht verbunden");
 
   const initialCategory = useMemo(() => {
     if (!homeDefaultFilter.startsWith("category:")) {
@@ -374,12 +401,16 @@ const SettingsPage = () => {
               <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] leading-relaxed text-muted-foreground">
                 {pickLang(
                   language,
-                  `Watching ${alertServiceIds.length} services locally. Threshold: ${
-                    alertSeverityThreshold === "degraded" ? "degraded+" : "major only"
-                  }.`,
-                  `${alertServiceIds.length} Services werden lokal beobachtet. Schwelle: ${
-                    alertSeverityThreshold === "degraded" ? "beeintrachtigt+" : "nur groere"
-                  }.`
+                  alertAccountConnected
+                    ? `Connected as ${sessionEmail || "unknown"}. Watching ${alertServiceIds.length} services. Saved: ${savedAlertLabel}. Sync: ${syncStatusLabel}.`
+                    : `Watching ${alertServiceIds.length} services locally. Threshold: ${
+                        alertSeverityThreshold === "degraded" ? "degraded+" : "major only"
+                      }.`,
+                  alertAccountConnected
+                    ? `Verbunden als ${sessionEmail || "unbekannt"}. ${alertServiceIds.length} Services werden beobachtet. Gespeichert: ${savedAlertLabel}. Sync: ${syncStatusLabel}.`
+                    : `${alertServiceIds.length} Services werden lokal beobachtet. Schwelle: ${
+                        alertSeverityThreshold === "degraded" ? "beeintrachtigt+" : "nur groere"
+                      }.`
                 )}
               </p>
               <Link

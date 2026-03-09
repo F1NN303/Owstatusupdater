@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `78f8705`
+Latest known commit at handoff update: `ff1f8b6`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -102,6 +102,28 @@ Key files:
   - severity threshold (`major` only vs `degraded + major`)
   - quick import from favorites
 - The Brevo signup remains global; the new watchlist controls are explicitly local UI preferences until provider-side filtering exists.
+- New alert-account phase is now wired in the working tree:
+  - Supabase browser auth via magic-link sign-in
+  - account/session bootstrap in `react-next/src/lib/alertAccount.tsx`
+  - alert preference save/load against `profiles` + `alert_preferences`
+  - Alerts page now shows connected e-mail, account status, delivery-sync status, last saved/synced timestamps, and save/sign-out actions
+  - Settings now surfaces the connected alert-account summary instead of describing alerts as local-only when a session exists
+- Subscriber-aware outbound mail dispatch is now wired in the working tree:
+  - `scripts/send_brevo_major_alert.py` now loads all configured service `status.json` files instead of targeting a single hard-coded service
+  - the sender now fetches `profiles` + `alert_preferences` from Supabase and filters deliveries per subscriber by watched services plus severity threshold
+  - subscriber mail state is tracked in `.bot_state/email_alert_state.json` so duplicate snapshots and cooldown spam are suppressed per user and per service
+  - successful sends update `brevo_sync_status`, `last_synced_at`, and `last_delivery_at` in Supabase; failures mark the subscriber as `error`
+  - `ALERT_EMAIL_TO` remains only as a legacy/manual fallback path for direct test sends
+- Required local/frontend env for the new alert-account flow:
+  - `VITE_SUPABASE_URL`
+  - `VITE_SUPABASE_ANON_KEY`
+- Required GitHub Actions secrets for subscriber-aware dispatch:
+  - `BREVO_API_KEY`
+  - `ALERT_EMAIL_FROM`
+  - `ALERT_SUPABASE_URL`
+  - `SUPABASE_SERVICE_ROLE_KEY`
+- Current limitation:
+  - subscriber filtering now works server-side, but it sends transactional Brevo mail directly per recipient instead of managing Brevo contact lists or provider-side segment state
 - First-launch onboarding now appears on home as a dismissible hint layer covering:
   - favorites
   - pull-to-refresh
@@ -109,12 +131,20 @@ Key files:
 - Settings now shows alert-watchlist summary and exposes a "show onboarding again" action.
 
 Key files:
+- `react-next/src/lib/supabase.ts`
+- `react-next/src/lib/alertAccount.tsx`
 - `react-next/src/lib/appShell.tsx`
 - `react-next/src/pages/EmailAlerts.tsx`
 - `react-next/src/pages/Index.tsx`
 - `react-next/src/pages/ServerDetail.tsx`
 - `react-next/src/pages/SettingsPage.tsx`
 - `react-next/src/components/OnboardingHints.tsx`
+- `react-next/src/main.tsx`
+- `react-next/package.json`
+- `scripts/send_brevo_major_alert.py`
+- `.github/workflows/update-site-data.yml`
+- `.github/workflows/send-test-email.yml`
+- `tests/test_url_safety.py`
 
 ### Service Icons (Brand Logos)
 - Real brand logos are used for key services with fallback to Lucide icons.

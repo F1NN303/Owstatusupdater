@@ -5,7 +5,12 @@ import unittest
 from unittest.mock import patch
 
 import services.ow_aggregator as ow_aggregator
-from scripts.send_brevo_major_alert import _build_email_payload, _parse_cooldown_minutes, _should_send_major_alert
+from scripts.send_brevo_major_alert import (
+    _build_email_payload,
+    _parse_cooldown_minutes,
+    _severity_matches_threshold,
+    _should_send_service_alert,
+)
 from services.core.shared import _safe_http_url
 
 
@@ -17,6 +22,11 @@ class UrlSafetyTests(unittest.TestCase):
 
     def test_build_email_payload_escapes_html_summary_and_invalid_source_url(self) -> None:
         payload = _build_email_payload(
+            {
+                "service_id": "openai",
+                "display_name": "OpenAI / ChatGPT",
+                "detail_url": "https://status.example.com/status/openai",
+            },
             {
                 "generated_at": "2026-03-08T00:00:00Z",
                 "analytics": {
@@ -30,10 +40,9 @@ class UrlSafetyTests(unittest.TestCase):
                     "url": "javascript:alert(1)",
                 },
             },
-            "https://status.example.com/",
             "Radar Sender",
             "sender@example.com",
-            ["recipient@example.com"],
+            "recipient@example.com",
             False,
         )
 
@@ -41,7 +50,15 @@ class UrlSafetyTests(unittest.TestCase):
         self.assertIn("&lt;img src=x onerror=alert(1)&gt;", html)
         self.assertNotIn('<img src=x onerror=alert(1)>', html)
         self.assertNotIn("javascript:alert(1)", html)
-        self.assertIn('href="https://status.example.com/"', html)
+        self.assertIn('href="https://status.example.com/status/openai"', html)
+
+    def test_severity_threshold_matches_expected_levels(self) -> None:
+        self.assertFalse(_severity_matches_threshold("stable", "degraded"))
+        self.assertFalse(_severity_matches_threshold("minor", "degraded"))
+        self.assertTrue(_severity_matches_threshold("degraded", "degraded"))
+        self.assertTrue(_severity_matches_threshold("major", "degraded"))
+        self.assertFalse(_severity_matches_threshold("degraded", "major"))
+        self.assertTrue(_severity_matches_threshold("major", "major"))
 
     @patch.object(ow_aggregator, "_request_text")
     def test_fetch_overwatch_news_skips_non_http_urls(self, mock_request_text) -> None:
@@ -64,65 +81,89 @@ class UrlSafetyTests(unittest.TestCase):
         self.assertEqual(items[0]["title"], "Safe item")
         self.assertTrue(items[0]["url"].startswith("https://"))
 
-    def test_major_alert_repeat_with_new_snapshot_stays_blocked_during_cooldown(self) -> None:
+    def test_service_alert_repeat_with_new_snapshot_stays_blocked_during_cooldown(self) -> None:
         now = dt.datetime(2026, 3, 9, 18, 0, tzinfo=dt.UTC)
-        should_send, reason = _should_send_major_alert(
+        should_send, reason = _should_send_service_alert(
             {
                 "generated_at": "2026-03-09T18:00:00Z",
-                "analytics": {"severity_key": "major"},
+                "analytics": {"severity_key": "degraded"},
             },
             {
-                "last_seen_severity": "major",
-                "last_major_email_at": "2026-03-09T17:59:55Z",
-                "last_major_status_generated_at": "2026-03-09T17:55:00Z",
+                "last_sent_severity": "degraded",
+                "last_sent_at": "2026-03-09T17:59:55Z",
+                "last_sent_status_generated_at": "2026-03-09T17:55:00Z",
             },
             now,
             cooldown_minutes=360,
             force_send=False,
+            threshold="degraded",
         )
 
         self.assertFalse(should_send)
         self.assertEqual(reason, "cooldown_active")
 
-    def test_major_alert_duplicate_snapshot_is_skipped(self) -> None:
+    def test_service_alert_duplicate_snapshot_is_skipped(self) -> None:
         now = dt.datetime(2026, 3, 9, 18, 0, tzinfo=dt.UTC)
-        should_send, reason = _should_send_major_alert(
+        should_send, reason = _should_send_service_alert(
             {
                 "generated_at": "2026-03-09T18:00:00Z",
-                "analytics": {"severity_key": "major"},
+                "analytics": {"severity_key": "degraded"},
             },
             {
-                "last_seen_severity": "major",
-                "last_major_email_at": "2026-03-09T10:00:00Z",
-                "last_major_status_generated_at": "2026-03-09T18:00:00Z",
+                "last_sent_severity": "degraded",
+                "last_sent_at": "2026-03-09T10:00:00Z",
+                "last_sent_status_generated_at": "2026-03-09T18:00:00Z",
             },
             now,
             cooldown_minutes=360,
             force_send=False,
+            threshold="degraded",
         )
 
         self.assertFalse(should_send)
         self.assertEqual(reason, "duplicate_snapshot")
 
-    def test_major_alert_force_send_bypasses_cooldown(self) -> None:
+    def test_service_alert_force_send_bypasses_cooldown(self) -> None:
         now = dt.datetime(2026, 3, 9, 18, 0, tzinfo=dt.UTC)
-        should_send, reason = _should_send_major_alert(
+        should_send, reason = _should_send_service_alert(
             {
                 "generated_at": "2026-03-09T18:00:00Z",
                 "analytics": {"severity_key": "stable"},
             },
             {
-                "last_seen_severity": "major",
-                "last_major_email_at": "2026-03-09T17:59:55Z",
-                "last_major_status_generated_at": "2026-03-09T17:55:00Z",
+                "last_sent_severity": "major",
+                "last_sent_at": "2026-03-09T17:59:55Z",
+                "last_sent_status_generated_at": "2026-03-09T17:55:00Z",
             },
             now,
             cooldown_minutes=360,
             force_send=True,
+            threshold="major",
         )
 
         self.assertTrue(should_send)
         self.assertEqual(reason, "force_send")
+
+    def test_service_alert_escalation_to_major_sends_inside_cooldown(self) -> None:
+        now = dt.datetime(2026, 3, 9, 18, 0, tzinfo=dt.UTC)
+        should_send, reason = _should_send_service_alert(
+            {
+                "generated_at": "2026-03-09T18:00:00Z",
+                "analytics": {"severity_key": "major"},
+            },
+            {
+                "last_sent_severity": "degraded",
+                "last_sent_at": "2026-03-09T17:59:55Z",
+                "last_sent_status_generated_at": "2026-03-09T17:55:00Z",
+            },
+            now,
+            cooldown_minutes=360,
+            force_send=False,
+            threshold="degraded",
+        )
+
+        self.assertTrue(should_send)
+        self.assertEqual(reason, "severity_change")
 
     def test_parse_cooldown_minutes_falls_back_for_invalid_values(self) -> None:
         self.assertEqual(_parse_cooldown_minutes(""), 360)

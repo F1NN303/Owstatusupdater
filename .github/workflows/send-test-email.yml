@@ -45,8 +45,11 @@ jobs:
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
           ALERT_EMAIL_FROM: ${{ secrets.ALERT_EMAIL_FROM }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
-          ALERT_EMAIL_SENDER_NAME: Overwatch Service Radar Test
+          ALERT_EMAIL_SENDER_NAME: StatusChecker Alerts Test
           ALERT_SITE_URL: https://f1nn303.github.io/Owstatusupdater/
+          ALERT_TEST_SERVICE_ID: openai
+          ALERT_SUPABASE_URL: ${{ secrets.ALERT_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           ALERT_FORCE_SEND: "1"
         run: python scripts/send_brevo_major_alert.py
 
