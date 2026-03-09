@@ -446,6 +446,9 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
                 outage.get("incidents") or [],
                 limit=8,
             )
+        official_maintenances = official_status.get("scheduled_maintenances")
+        if isinstance(official_maintenances, list):
+            outage["scheduled_maintenances"] = official_maintenances[:8]
 
         provider_top_issues = (
             list(outage.get("top_reported_issues"))

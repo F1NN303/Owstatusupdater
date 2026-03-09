@@ -9,6 +9,7 @@ import { toast } from "@/components/ui/use-toast";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import { pickLang, useAppShell, type AppLanguage } from "@/lib/appShell";
 import { safeExternalHref } from "@/lib/safeUrl";
+import { shareServiceDetail } from "@/lib/shareServiceDetail";
 import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
   fetchLegacyServiceDetail,
@@ -23,6 +24,7 @@ import {
 } from "@/lib/legacyServiceDetail";
 import {
   ArrowLeft,
+  BellRing,
   ExternalLink,
   RefreshCw,
   Share2,
@@ -1920,7 +1922,13 @@ function LinkListSection({
 }
 
 const ServerDetail = () => {
-  const { language, timeDisplayMode } = useAppShell();
+  const {
+    language,
+    timeDisplayMode,
+    isAlertService,
+    toggleAlertService,
+    alertSeverityThreshold,
+  } = useAppShell();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const serviceId = normalizeDetailId(id);
@@ -2307,14 +2315,21 @@ const ServerDetail = () => {
   const sourceTransparencyOverview = detail?.payload.source_transparency?.overview;
   const sourceTransparencyDecision = detail?.payload.source_transparency?.decision;
   const sourceTransparencySources = clampList(detail?.payload.source_transparency?.sources || [], 8);
+  const isAlertEnabled = detail ? isAlertService(detail.service.id) : false;
+  const cachedDetailLabel = detail?.cache.statusCachedAt
+    ? formatTimestampByMode(detail.cache.statusCachedAt, {
+        language,
+        mode: timeDisplayMode,
+        absoluteFormat: {
+          hour: "2-digit",
+          minute: "2-digit",
+        },
+        fallbackText: t("stored", "gespeichert"),
+      })
+    : null;
   const handleShareDetail = async () => {
     if (!detail || typeof window === "undefined") {
       return;
-    }
-
-    const shareUrl = new URL(window.location.href);
-    if (shareUrl.hash.startsWith("#/")) {
-      shareUrl.hash = `/status/${serviceId}`;
     }
 
     const summary =
@@ -2322,6 +2337,41 @@ const ServerDetail = () => {
       detail.payload.official?.summary ||
       latestIncidentTitle ||
       "";
+    const shareUrl = new URL(window.location.href);
+    const shareResult = await shareServiceDetail({
+      currentUrl: window.location.href,
+      serviceId: detail.service.id,
+      serviceName: detail.service.name,
+      statusLabel: serviceStatusLabel,
+      summary,
+      share: typeof navigator !== "undefined" ? navigator.share?.bind(navigator) : undefined,
+      clipboard: typeof navigator !== "undefined" ? navigator.clipboard : null,
+    });
+
+    if (shareResult === "cancelled" || shareResult === "shared") {
+      return;
+    }
+
+    if (shareResult === "copied") {
+      toast({
+        title: t("Link copied", "Link kopiert"),
+        description: t(
+          "The service detail link was copied to your clipboard.",
+          "Der Service-Detail-Link wurde in die Zwischenablage kopiert."
+        ),
+      });
+      return;
+    }
+
+    toast({
+      title: t("Share unavailable", "Teilen nicht verfugbar"),
+      description: t(
+        "Native share is not available on this device right now.",
+        "Native Teilen ist auf diesem Gerat gerade nicht verfugbar."
+      ),
+      variant: "destructive",
+    });
+    return;
     const shareText = summary
       ? `${detail.service.name} · ${serviceStatusLabel}\n${summary}`
       : `${detail.service.name} · ${serviceStatusLabel}`;
@@ -2640,6 +2690,22 @@ const ServerDetail = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            {detail ? (
+              <button
+                type="button"
+                onClick={() => toggleAlertService(detail.service.id)}
+                className={`glass flex h-8 min-w-8 items-center justify-center rounded-xl px-2 transition-all active:scale-90 ${
+                  isAlertEnabled ? "border-primary/30 bg-primary/15 text-primary" : ""
+                }`}
+                aria-label={
+                  isAlertEnabled
+                    ? t("Disable alerts for this service", "Alarme für diesen Service deaktivieren")
+                    : t("Enable alerts for this service", "Alarme für diesen Service aktivieren")
+                }
+              >
+                <BellRing size={15} className={isAlertEnabled ? "text-primary" : "text-muted-foreground"} />
+              </button>
+            ) : null}
             <button
               type="button"
               onClick={() => void handleShareDetail()}
@@ -2778,6 +2844,19 @@ const ServerDetail = () => {
                       `${stableRegionCount} stabil / ${impactedRegionCount} betroffen`
                     )}
                   </span>
+                  <span
+                    className={`rounded-full border px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-[11px] ${
+                      isAlertEnabled
+                        ? "border-primary/25 bg-primary/12 text-primary"
+                        : "border-white/10 bg-white/5 text-muted-foreground"
+                    }`}
+                  >
+                    {isAlertEnabled
+                      ? alertSeverityThreshold === "degraded"
+                        ? t("Watchlist: degraded+", "Watchlist: beeintrachtigt+")
+                        : t("Watchlist: major", "Watchlist: groserer Ausfall")
+                      : t("Watchlist off", "Watchlist aus")}
+                  </span>
                 </div>
 
                 {detail.payload.outage?.url ? (
@@ -2793,6 +2872,25 @@ const ServerDetail = () => {
                 ) : null}
               </div>
             </section>
+
+            {detail.cache.statusSource === "cache" ? (
+              <div className="rounded-2xl border border-sky-300/20 bg-sky-300/10 px-3 py-2.5 text-[11px] text-sky-100">
+                <p className="font-semibold">
+                  {t("Showing last known service data", "Letzte bekannte Servicedaten werden angezeigt")}
+                </p>
+                <p className="mt-0.5 opacity-90">
+                  {cachedDetailLabel
+                    ? t(
+                        `Stored status from ${cachedDetailLabel} is being used while the connection recovers.`,
+                        `Gespeicherter Status von ${cachedDetailLabel} wird verwendet, wahrend sich die Verbindung erholt.`
+                      )
+                    : t(
+                        "Stored status data is being used while the connection recovers.",
+                        "Gespeicherte Statusdaten werden verwendet, wahrend sich die Verbindung erholt."
+                      )}
+                </p>
+              </div>
+            ) : null}
 
             {errorText ? (
               <div className="glass rounded-2xl p-3 text-xs text-amber-300">

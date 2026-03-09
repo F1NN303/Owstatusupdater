@@ -1,3 +1,4 @@
+import { fetchCachedJson } from "@/lib/cachedJson";
 import { resolveLegacyUrl } from "@/lib/legacySite";
 
 export interface ServiceManifestEntry {
@@ -66,6 +67,20 @@ const FALLBACK_SERVICE_MANIFEST: ServiceManifestEntry[] = [
     priority: 110,
     tags: ["sony", "psn", "playstation", "console"],
     aliases: ["sony", "psn", "playstation", "playstation-network"],
+  },
+  {
+    id: "epic",
+    label: "Epic Games",
+    name: "Epic Games",
+    detailPath: "/status/epic",
+    statusPath: "/epic/data/status.json",
+    legacyHref: "/epic/",
+    note: "Epic Games live status signals with official Statuspage API and provider corroboration.",
+    iconName: "Gamepad2",
+    category: "gaming",
+    priority: 115,
+    tags: ["epic", "epic-games", "fortnite", "launcher", "unreal-engine", "gaming"],
+    aliases: ["epic", "epic-games", "epicgames"],
   },
   {
     id: "m365",
@@ -332,14 +347,15 @@ export async function fetchServiceManifestEntries(forceRefresh = false): Promise
 
   manifestInFlight = (async () => {
     try {
-      const response = await fetch(`${resolveLegacyUrl("/data/services-manifest.json")}?t=${Date.now()}`, {
-        cache: "no-store",
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-      const payload = (await response.json()) as RawServiceManifestPayload;
-      const parsed = parseManifestPayload(payload);
+      const result = await fetchCachedJson(
+        "services-manifest",
+        `${resolveLegacyUrl("/data/services-manifest.json")}?t=${Date.now()}`,
+        {
+          requestInit: { cache: "no-store" },
+          sanitize: parseManifestPayload,
+        }
+      );
+      const parsed = result.data;
       manifestCache = parsed.length > 0 ? parsed : getFallbackServiceManifestEntries();
       return manifestCache;
     } catch {

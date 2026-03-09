@@ -1,7 +1,9 @@
 ﻿import AppLayout from "@/components/AppLayout";
+import OnboardingHints from "@/components/OnboardingHints";
 import OverallStatus from "@/components/OverallStatus";
 import PullToRefreshIndicator from "@/components/PullToRefreshIndicator";
 import ServerCard from "@/components/ServerCard";
+import ServiceIdentityIcon from "@/components/ServiceIdentityIcon";
 import type { ServerService, Status } from "@/data/servers";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import { pickLang, useAppShell } from "@/lib/appShell";
@@ -9,12 +11,13 @@ import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
   fetchLegacyServiceDetail,
   type LegacyOutageIncident,
+  type LegacyScheduledMaintenance,
   type LegacyServiceDetailResult,
 } from "@/lib/legacyServiceDetail";
 import { getLegacyLiveStatusServices } from "@/lib/legacyStatus";
-import { Bell, ChevronRight, RefreshCw, Star, TriangleAlert } from "lucide-react";
+import { Bell, ChevronRight, RefreshCw, Star, TriangleAlert, Wrench } from "lucide-react";
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 type OverallState = "all-good" | "minor-issues" | "some-issues" | "major-outage";
 type HomeFilterKey = "all" | "issues" | "healthy" | `category:${string}`;
@@ -24,11 +27,27 @@ interface HomeServiceCard {
   serviceId: string;
   server: ServerService;
   generatedAt: string | null;
+  dataSource: "network" | "cache";
+  cachedAt: string | null;
+  scheduledMaintenances: LegacyScheduledMaintenance[];
   serviceNote?: string;
   serviceCategory: string;
   servicePriority: number;
   serviceTags: string[];
   error?: string;
+}
+
+interface HomeMaintenanceEntry {
+  key: string;
+  serviceId: string;
+  serviceName: string;
+  iconName?: string;
+  title: string;
+  startsAt: string | null;
+  endsAt: string | null;
+  summary?: string;
+  source?: string;
+  state: "active" | "scheduled";
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -212,6 +231,127 @@ function formatPercent(value: number) {
   return `${value >= 99 ? value.toFixed(2) : value.toFixed(1)}%`;
 }
 
+function formatFutureRelative(date: Date, language: "en" | "de") {
+  const diffMs = Math.max(date.getTime() - Date.now(), 0);
+  const totalMin = Math.round(diffMs / (60 * 1000));
+  if (totalMin < 1) {
+    return pickLang(language, "soon", "bald");
+  }
+  if (totalMin < 60) {
+    return pickLang(language, `in ${totalMin}m`, `in ${totalMin}m`);
+  }
+
+  const hours = Math.floor(totalMin / 60);
+  const mins = totalMin % 60;
+  if (hours < 24) {
+    if (mins > 0) {
+      return pickLang(language, `in ${hours}h ${mins}m`, `in ${hours}h ${mins}m`);
+    }
+    return pickLang(language, `in ${hours}h`, `in ${hours}h`);
+  }
+
+  const days = Math.floor(hours / 24);
+  const remHours = hours % 24;
+  if (remHours > 0) {
+    return pickLang(language, `in ${days}d ${remHours}h`, `in ${days}d ${remHours}h`);
+  }
+  return pickLang(language, `in ${days}d`, `in ${days}d`);
+}
+
+function formatScheduledTimestamp(
+  value: string | null | undefined,
+  language: "en" | "de",
+  timeDisplayMode: "relative" | "absolute" | "both"
+) {
+  const parsed = parseDate(value);
+  if (!parsed) {
+    return pickLang(language, "Unknown", "Unbekannt");
+  }
+  const absolute = parsed.toLocaleString(language === "de" ? "de-DE" : "en-US", {
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const isFuture = parsed.getTime() > Date.now();
+  const relative = isFuture
+    ? formatFutureRelative(parsed, language)
+    : formatTimestampByMode(value, {
+        language,
+        mode: "relative",
+        absoluteFormat: {
+          month: "short",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        },
+      });
+
+  if (timeDisplayMode === "absolute") {
+    return absolute;
+  }
+  if (timeDisplayMode === "relative") {
+    return relative;
+  }
+  return `${absolute} (${relative})`;
+}
+
+function maintenanceStateFromItem(item: LegacyScheduledMaintenance): "active" | "scheduled" {
+  const statusText = String(item.status || "").trim().toLowerCase();
+  if (statusText.includes("progress") || statusText.includes("verifying") || statusText.includes("active")) {
+    return "active";
+  }
+  const now = Date.now();
+  const startsAt = parseDate(item.starts_at);
+  const endsAt = parseDate(item.ends_at);
+  if (startsAt && startsAt.getTime() <= now && (!endsAt || endsAt.getTime() >= now)) {
+    return "active";
+  }
+  return "scheduled";
+}
+
+function maintenanceSortRank(item: HomeMaintenanceEntry) {
+  return item.state === "active" ? 0 : 1;
+}
+
+function formatMaintenanceWindow(
+  item: HomeMaintenanceEntry,
+  language: "en" | "de",
+  timeDisplayMode: "relative" | "absolute" | "both"
+) {
+  const startsLabel = item.startsAt ? formatScheduledTimestamp(item.startsAt, language, timeDisplayMode) : null;
+  const endsLabel = item.endsAt ? formatScheduledTimestamp(item.endsAt, language, timeDisplayMode) : null;
+
+  if (item.state === "active") {
+    if (endsLabel) {
+      return pickLang(language, `Active until ${endsLabel}`, `Aktiv bis ${endsLabel}`);
+    }
+    if (startsLabel) {
+      return pickLang(language, `Active since ${startsLabel}`, `Aktiv seit ${startsLabel}`);
+    }
+    return pickLang(language, "Maintenance in progress", "Wartung aktiv");
+  }
+
+  if (startsLabel && endsLabel) {
+    return pickLang(language, `Starts ${startsLabel} · ends ${endsLabel}`, `Startet ${startsLabel} · endet ${endsLabel}`);
+  }
+  if (startsLabel) {
+    return pickLang(language, `Starts ${startsLabel}`, `Startet ${startsLabel}`);
+  }
+  return pickLang(language, "Scheduled maintenance window", "Geplantes Wartungsfenster");
+}
+
+function trimMaintenanceSummary(title: string, summary?: string | null) {
+  const text = String(summary || "").trim();
+  if (!text) {
+    return undefined;
+  }
+  if (text.toLowerCase() === title.trim().toLowerCase()) {
+    return undefined;
+  }
+  return text.length > 180 ? `${text.slice(0, 177)}...` : text;
+}
+
 function deriveMetricLabel(detail: LegacyServiceDetailResult, language: "en" | "de") {
   const ok = detail.payload.analytics?.source_ok_count;
   const total = detail.payload.analytics?.source_total_count;
@@ -279,6 +419,11 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
     serviceId: detail.service.id,
     server,
     generatedAt: detail.payload.generated_at ?? null,
+    dataSource: detail.cache.statusSource,
+    cachedAt: detail.cache.statusCachedAt,
+    scheduledMaintenances: Array.isArray(detail.payload.outage?.scheduled_maintenances)
+      ? detail.payload.outage.scheduled_maintenances
+      : [],
     serviceNote: detail.service.note,
     serviceCategory: String(detail.service.category || "general").toLowerCase(),
     servicePriority:
@@ -435,8 +580,11 @@ const Index = () => {
     homeRefreshIntervalSec,
     homeCompactCards,
     homeFavoritesFirst,
+    homeHintsDismissed,
+    dismissHomeHints,
     timeDisplayMode,
   } = useAppShell();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const urlQueryParam = searchParams.get("q");
   const urlFilterParam = searchParams.get("filter");
@@ -502,11 +650,12 @@ const Index = () => {
         .filter((value): value is Date => Boolean(value))
         .sort((a, b) => b.getTime() - a.getTime());
 
-      setCards(nextCards);
+      setCards((previous) => (nextCards.length > 0 ? nextCards : previous));
       setErrorMessages(nextErrors);
-      setLastRefreshAt(
-        generatedTimes[0]?.toISOString() || new Date().toISOString()
-      );
+      setLastRefreshAt((previous) => generatedTimes[0]?.toISOString() || previous || new Date().toISOString());
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown fetch error";
+      setErrorMessages([message]);
     } finally {
       setIsRefreshing(false);
     }
@@ -542,6 +691,17 @@ const Index = () => {
     };
   }, [cards]);
   const { onlineCount, degradedCount, offlineCount, impactedCount } = statusCounts;
+  const cachedCardCount = useMemo(
+    () => cards.filter((card) => card.dataSource === "cache").length,
+    [cards]
+  );
+  const latestCachedAt = useMemo(() => {
+    const timestamps = cards
+      .map((card) => parseDate(card.cachedAt))
+      .filter((value): value is Date => Boolean(value))
+      .sort((a, b) => b.getTime() - a.getTime());
+    return timestamps[0]?.toISOString() ?? null;
+  }, [cards]);
   const subtitle = useMemo(
     () => formatHeaderSubtitle(lastRefreshAt, language, timeDisplayMode),
     [lastRefreshAt, language, timeDisplayMode]
@@ -597,6 +757,52 @@ const Index = () => {
     ],
     [language]
   );
+  const maintenanceEntries = useMemo(() => {
+    const seen = new Set<string>();
+    const entries: HomeMaintenanceEntry[] = [];
+
+    for (const card of cards) {
+      for (const item of card.scheduledMaintenances) {
+        const title = String(item.title || "").trim();
+        const startsAt = item.starts_at ?? null;
+        if (!title && !startsAt) {
+          continue;
+        }
+        const key = `${card.serviceId}:${title}:${startsAt || "unknown"}`;
+        if (seen.has(key)) {
+          continue;
+        }
+        seen.add(key);
+        entries.push({
+          key,
+          serviceId: card.serviceId,
+          serviceName: card.server.name,
+          iconName: card.server.icon,
+          title: title || pickLang(language, "Scheduled maintenance", "Geplante Wartung"),
+          startsAt,
+          endsAt: item.ends_at ?? null,
+          summary: trimMaintenanceSummary(title, item.summary),
+          source: item.source ?? undefined,
+          state: maintenanceStateFromItem(item),
+        });
+      }
+    }
+
+    return entries
+      .sort((left, right) => {
+        const byState = maintenanceSortRank(left) - maintenanceSortRank(right);
+        if (byState !== 0) {
+          return byState;
+        }
+        const leftStart = parseDate(left.startsAt)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const rightStart = parseDate(right.startsAt)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        if (leftStart !== rightStart) {
+          return leftStart - rightStart;
+        }
+        return left.serviceName.localeCompare(right.serviceName);
+      })
+      .slice(0, 4);
+  }, [cards, language]);
   const filteredCards = useMemo(() => {
     const query = deferredSearchQuery.trim().toLowerCase();
 
@@ -676,6 +882,15 @@ const Index = () => {
 
   return (
     <AppLayout>
+      <OnboardingHints
+        language={language}
+        open={!homeHintsDismissed}
+        onDismiss={dismissHomeHints}
+        onOpenFavorites={() => {
+          dismissHomeHints();
+          navigate("/favorites");
+        }}
+      />
       <PullToRefreshIndicator
         distance={pullToRefresh.distance}
         isPullReady={pullToRefresh.isPullReady}
@@ -735,6 +950,133 @@ const Index = () => {
             </div>
           </div>
         )}
+
+        {cachedCardCount > 0 ? (
+          <div className="mt-4 rounded-2xl border border-sky-300/20 bg-sky-300/10 px-3 py-2.5 text-[11px] text-sky-100">
+            <p className="font-semibold">
+              {pickLang(
+                language,
+                "Showing last known service data",
+                "Letzte bekannte Servicedaten werden angezeigt"
+              )}
+            </p>
+            <p className="mt-0.5 opacity-90">
+              {latestCachedAt
+                ? pickLang(
+                    language,
+                    `${cachedCardCount} services are currently using cached data from ${formatTimestampByMode(
+                      latestCachedAt,
+                      {
+                        language,
+                        mode: timeDisplayMode,
+                        absoluteFormat: {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        },
+                        fallbackText: "stored",
+                      }
+                    )} while live refresh retries continue.`,
+                    `${cachedCardCount} Services verwenden aktuell zwischengespeicherte Daten von ${formatTimestampByMode(
+                      latestCachedAt,
+                      {
+                        language,
+                        mode: timeDisplayMode,
+                        absoluteFormat: {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        },
+                        fallbackText: "gespeichert",
+                      }
+                    )}, während Live-Aktualisierungen weiter versuchen nachzuladen.`
+                  )
+                : pickLang(
+                    language,
+                    "Cached service data is being used while live refresh retries continue.",
+                    "Zwischengespeicherte Servicedaten werden verwendet, während Live-Aktualisierungen weiter versuchen nachzuladen."
+                  )}
+            </p>
+          </div>
+        ) : null}
+
+        {maintenanceEntries.length > 0 ? (
+          <section className="mt-4">
+            <div className="mb-2 px-1">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary text-primary">
+                  <Wrench size={15} />
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {pickLang(language, "Scheduled maintenance", "Geplante Wartungen")}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {pickLang(
+                      language,
+                      "Upcoming or active provider maintenance windows",
+                      "Bevorstehende oder aktive Wartungsfenster der Anbieter"
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2.5">
+              {maintenanceEntries.map((entry) => (
+                <Link
+                  key={entry.key}
+                  to={`/status/${entry.serviceId}`}
+                  className="glass glass-specular block rounded-2xl p-3 transition-all duration-300 hover:scale-[1.01] active:scale-[0.98]"
+                >
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex min-w-0 items-center gap-3">
+                        <ServiceIdentityIcon
+                          serviceId={entry.serviceId}
+                          iconName={entry.iconName}
+                          size={16}
+                          containerClassName="h-10 w-10 shrink-0"
+                        />
+                        <div className="min-w-0">
+                          <p className="text-[12px] font-semibold text-foreground">{entry.serviceName}</p>
+                          <p className="mt-0.5 text-[13px] font-medium text-foreground/90">{entry.title}</p>
+                        </div>
+                      </div>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <span
+                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-semibold ${
+                            entry.state === "active"
+                              ? "border-status-degraded/30 bg-status-degraded/10 text-status-degraded"
+                              : "border-sky-300/25 bg-sky-300/10 text-sky-100"
+                          }`}
+                        >
+                          <span
+                            className={`h-1.5 w-1.5 rounded-full ${
+                              entry.state === "active" ? "bg-status-degraded" : "bg-sky-200"
+                            }`}
+                          />
+                          {entry.state === "active"
+                            ? pickLang(language, "Active", "Aktiv")
+                            : pickLang(language, "Scheduled", "Geplant")}
+                        </span>
+                        <ChevronRight size={15} className="text-muted-foreground" />
+                      </div>
+                    </div>
+                    <p className="mt-3 text-[11px] font-medium text-muted-foreground">
+                      {formatMaintenanceWindow(entry, language, timeDisplayMode)}
+                    </p>
+                    {entry.summary ? (
+                      <p className="mt-1 text-[11px] text-muted-foreground/90">{entry.summary}</p>
+                    ) : null}
+                    {entry.source ? (
+                      <p className="mt-2 text-[10px] uppercase tracking-[0.12em] text-muted-foreground/80">
+                        {entry.source}
+                      </p>
+                    ) : null}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         {cards.length > 0 ? (
           <div className="mt-4">

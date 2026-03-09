@@ -288,6 +288,52 @@ def _slack_incident_to_outage_incident(
     }
 
 
+def _slack_incident_is_scheduled_maintenance(incident: dict[str, Any]) -> bool:
+    incident_type = _clean(str(incident.get("type") or "")).lower()
+    incident_status = _clean(str(incident.get("status") or "")).lower()
+    title = _clean(incident.get("title")).lower()
+    note_text = " ".join(
+        _slack_note_text(note.get("body"))
+        for note in (incident.get("notes") or [])
+        if isinstance(note, dict)
+    ).lower()
+    if incident_type == "maintenance":
+        return True
+    if incident_status in {"scheduled", "in_progress", "monitoring", "verifying"} and "maintenance" in f"{title} {note_text}":
+        return True
+    return "maintenance" in title or "scheduled maintenance" in note_text
+
+
+def _slack_incident_to_scheduled_maintenance(
+    incident: dict[str, Any],
+    *,
+    source_name: str,
+) -> dict[str, Any]:
+    title = _clean(incident.get("title")) or "Scheduled maintenance"
+    starts_at = _clean(incident.get("date_created")) or _clean(incident.get("date_updated")) or None
+    status = _slack_incident_status_label(incident.get("status")) or "Scheduled"
+    url = _safe_http_url(incident.get("url")) or SLACK_STATUS_PAGE_URL
+    notes = incident.get("notes")
+    summary = None
+    if isinstance(notes, list):
+        for note in notes:
+            if not isinstance(note, dict):
+                continue
+            summary = _slack_note_text(note.get("body"))
+            if summary:
+                summary = summary[:320]
+                break
+    return {
+        "title": title,
+        "starts_at": starts_at,
+        "ends_at": None,
+        "status": status,
+        "summary": summary,
+        "source": source_name,
+        "url": url,
+    }
+
+
 def _slack_incident_update_rows(
     incident: dict[str, Any],
     *,
@@ -455,6 +501,23 @@ def fetch_slack_status_bundle() -> dict[str, Any]:
         _slack_incident_to_outage_incident(item, source_name=source_name)
         for item in current_items[:8]
     ]
+    scheduled_maintenances = [
+        _slack_incident_to_scheduled_maintenance(item, source_name=source_name)
+        for item in [*current_items[:8], *history_items[:12]]
+        if _slack_incident_is_scheduled_maintenance(item)
+    ]
+    seen_maintenance_keys: set[tuple[str, str | None]] = set()
+    deduped_maintenances: list[dict[str, Any]] = []
+    for item in scheduled_maintenances:
+        key = (_clean(item.get("title")), _clean(item.get("starts_at")) or None)
+        if not key[0] or key in seen_maintenance_keys:
+            continue
+        seen_maintenance_keys.add(key)
+        deduped_maintenances.append(item)
+    scheduled_maintenances = sorted(
+        deduped_maintenances,
+        key=lambda item: _parse_iso8601(_clean(item.get("starts_at"))) or dt.datetime.max.replace(tzinfo=dt.UTC),
+    )[:8]
     recent_incidents = [
         _slack_incident_to_outage_incident(item, source_name=source_name)
         for item in history_items[:12]
@@ -504,6 +567,7 @@ def fetch_slack_status_bundle() -> dict[str, Any]:
         "active_incidents": active_incidents,
         "updates": official_updates,
         "top_component_issues": top_issues,
+        "scheduled_maintenances": scheduled_maintenances,
         "active_incident_count": len(active_incidents),
         "incident_count": len(official_incidents),
     }
@@ -743,6 +807,9 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
                 outage.get("incidents") or [],
                 limit=8,
             )
+        official_maintenances = official_status.get("scheduled_maintenances")
+        if isinstance(official_maintenances, list):
+            outage["scheduled_maintenances"] = official_maintenances[:8]
 
         provider_top_issues = (
             list(outage.get("top_reported_issues"))

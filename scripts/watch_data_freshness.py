@@ -14,6 +14,7 @@ from typing import Any
 DEFAULT_ENDPOINTS = [
     ("overwatch", "https://f1nn303.github.io/Owstatusupdater/data/status.json"),
     ("sony", "https://f1nn303.github.io/Owstatusupdater/sony/data/status.json"),
+    ("epic", "https://f1nn303.github.io/Owstatusupdater/epic/data/status.json"),
     ("m365", "https://f1nn303.github.io/Owstatusupdater/m365/data/status.json"),
     ("openai", "https://f1nn303.github.io/Owstatusupdater/openai/data/status.json"),
     ("claude", "https://f1nn303.github.io/Owstatusupdater/claude/data/status.json"),

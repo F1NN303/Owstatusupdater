@@ -1,3 +1,4 @@
+import { fetchCachedJson, type CachedJsonSource } from "@/lib/cachedJson";
 import { resolveLegacyUrl } from "@/lib/legacySite";
 import { safeExternalHref } from "@/lib/safeUrl";
 import {
@@ -28,6 +29,16 @@ export interface LegacyOutageIncident {
 export interface LegacyTopReportedIssue {
   label?: string | null;
   count?: number | null;
+}
+
+export interface LegacyScheduledMaintenance {
+  title?: string | null;
+  starts_at?: string | null;
+  ends_at?: string | null;
+  status?: string | null;
+  summary?: string | null;
+  source?: string | null;
+  url?: string;
 }
 
 export interface LegacyTopReportedIssuesMeta {
@@ -250,6 +261,7 @@ export interface LegacyStatusDetailPayload {
     components?: LegacyComponentStatusItem[];
     services?: LegacyComponentStatusItem[];
     incidents?: LegacyOutageIncident[];
+    scheduled_maintenances?: LegacyScheduledMaintenance[];
     top_reported_issues?: LegacyTopReportedIssue[];
     top_reported_issues_meta?: LegacyTopReportedIssuesMeta;
     service_health_24h?: LegacyServiceHealth24hPoint[];
@@ -297,6 +309,12 @@ export interface LegacyServiceDetailResult {
   severity: LegacySeverity;
   tone: LegacyTone;
   sourceConfidenceText: string;
+  cache: {
+    statusSource: CachedJsonSource;
+    statusCachedAt: string | null;
+    historySource: CachedJsonSource | null;
+    historyCachedAt: string | null;
+  };
 }
 
 const MAX_LINK_ITEMS = 200;
@@ -577,6 +595,24 @@ function sanitizeLegacySourceTransparencyMetrics(value: unknown): LegacySourceTr
   return Object.values(metrics).some((item) => item !== undefined) ? metrics : undefined;
 }
 
+function sanitizeLegacyScheduledMaintenance(value: unknown): LegacyScheduledMaintenance | null {
+  const record = asRecord(value);
+  if (!record) {
+    return null;
+  }
+  const title = asTrimmedString(record.title, 240);
+  const starts_at = asTimestamp(record.starts_at);
+  const ends_at = asTimestamp(record.ends_at);
+  const status = asTrimmedString(record.status, 120);
+  const summary = asTrimmedString(record.summary, 500);
+  const source = asTrimmedString(record.source, 160);
+  const url = safeExternalHref(record.url) ?? undefined;
+  if (!title && !starts_at && !ends_at && !status && !summary && !source && !url) {
+    return null;
+  }
+  return { title, starts_at, ends_at, status, summary, source, url };
+}
+
 function sanitizeLegacySourceTransparencyEntry(value: unknown): LegacySourceTransparencySourceEntry | null {
   const record = asRecord(value);
   if (!record) {
@@ -789,6 +825,12 @@ export function sanitizeLegacyStatusDetailPayload(value: unknown): LegacyStatusD
         .filter((item): item is LegacyTopReportedIssue => Boolean(item))
         .slice(0, MAX_TOP_ISSUES)
     : [];
+  const scheduled_maintenances = Array.isArray(outageRecord.scheduled_maintenances)
+    ? outageRecord.scheduled_maintenances
+        .map((item) => sanitizeLegacyScheduledMaintenance(item))
+        .filter((item): item is LegacyScheduledMaintenance => Boolean(item))
+        .slice(0, MAX_TOP_ISSUES)
+    : [];
 
   const service_health_24h = Array.isArray(outageRecord.service_health_24h)
     ? outageRecord.service_health_24h
@@ -898,6 +940,7 @@ export function sanitizeLegacyStatusDetailPayload(value: unknown): LegacyStatusD
       components: outageComponents,
       services: outageServices,
       incidents,
+      scheduled_maintenances,
       top_reported_issues,
       top_reported_issues_meta: {
         source: asTrimmedString(asRecord(outageRecord.top_reported_issues_meta)?.source, 160),
@@ -1096,18 +1139,30 @@ export async function fetchLegacyServiceDetail(
   const statusUrl = `${resolveLegacyUrl(service.statusPath)}?t=${timestamp}`;
   const historyPath = deriveHistoryPath(service.statusPath);
   const historyUrl = `${resolveLegacyUrl(historyPath)}?t=${timestamp}`;
-  const response = await fetch(statusUrl, { cache: "no-store" });
-  if (!response.ok) {
-    throw new Error(`Failed to load ${service.statusPath}: ${response.status}`);
-  }
-
-  const payload = sanitizeLegacyStatusDetailPayload(await response.json());
-  let history: LegacyHistoryPayload | null = null;
-  try {
-    const historyResponse = await fetch(historyUrl, { cache: "no-store" });
-    if (historyResponse.ok) {
-      history = sanitizeLegacyHistoryPayload(await historyResponse.json());
+  const statusResult = await fetchCachedJson(
+    `service-detail:${service.id}:status`,
+    statusUrl,
+    {
+      requestInit: { cache: "no-store" },
+      sanitize: sanitizeLegacyStatusDetailPayload,
     }
+  );
+  const payload = statusResult.data;
+  let history: LegacyHistoryPayload | null = null;
+  let historySource: CachedJsonSource | null = null;
+  let historyCachedAt: string | null = null;
+  try {
+    const historyResult = await fetchCachedJson(
+      `service-detail:${service.id}:history`,
+      historyUrl,
+      {
+        requestInit: { cache: "no-store" },
+        sanitize: sanitizeLegacyHistoryPayload,
+      }
+    );
+    history = historyResult.data;
+    historySource = historyResult.source;
+    historyCachedAt = historyResult.cachedAt;
   } catch {
     history = null;
   }
@@ -1123,5 +1178,11 @@ export async function fetchLegacyServiceDetail(
     severity,
     tone: legacySeverityToTone(severity),
     sourceConfidenceText: formatConfidence(payload),
+    cache: {
+      statusSource: statusResult.source,
+      statusCachedAt: statusResult.cachedAt,
+      historySource,
+      historyCachedAt,
+    },
   };
 }

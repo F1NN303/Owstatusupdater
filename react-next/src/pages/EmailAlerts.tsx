@@ -1,15 +1,24 @@
-﻿import AppLayout from "@/components/AppLayout";
+import AppLayout from "@/components/AppLayout";
+import ServiceIdentityIcon from "@/components/ServiceIdentityIcon";
 import { pickLang, useAppShell } from "@/lib/appShell";
-import { formatTimestampByMode } from "@/lib/timeDisplay";
+import { getLegacyLiveStatusServices, type LegacyHomeServiceConfig } from "@/lib/legacyStatus";
 import {
   fetchLegacySubscriptionConfig,
   providerLabel,
   type LegacySubscriptionLoadResult,
 } from "@/lib/legacySubscription";
-import { ExternalLink, Mail, RefreshCw, ShieldCheck } from "lucide-react";
-import { useEffect, useState } from "react";
+import { formatTimestampByMode } from "@/lib/timeDisplay";
+import { BellRing, ExternalLink, Mail, RefreshCw, ShieldCheck, Star } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 type NoticeTone = "neutral" | "good" | "warn" | "bad";
+
+const STATUS_CLASS: Record<NoticeTone, string> = {
+  neutral: "border-white/10 bg-white/5 text-muted-foreground",
+  good: "border-emerald-300/20 bg-emerald-400/10 text-emerald-200",
+  warn: "border-amber-300/20 bg-amber-300/10 text-amber-200",
+  bad: "border-rose-300/20 bg-rose-300/10 text-rose-200",
+};
 
 function statusTone(result: LegacySubscriptionLoadResult | null): NoticeTone {
   if (!result || result.status === "loading") {
@@ -24,34 +33,46 @@ function statusTone(result: LegacySubscriptionLoadResult | null): NoticeTone {
   return "bad";
 }
 
-const STATUS_CLASS: Record<NoticeTone, string> = {
-  neutral: "border-white/10 bg-white/5 text-muted-foreground",
-  good: "border-emerald-300/20 bg-emerald-400/10 text-emerald-200",
-  warn: "border-amber-300/20 bg-amber-300/10 text-amber-200",
-  bad: "border-rose-300/20 bg-rose-300/10 text-rose-200",
-};
+function compareServices(a: LegacyHomeServiceConfig, b: LegacyHomeServiceConfig) {
+  const aPriority = typeof a.priority === "number" ? a.priority : 1000;
+  const bPriority = typeof b.priority === "number" ? b.priority : 1000;
+  if (aPriority !== bPriority) {
+    return aPriority - bPriority;
+  }
+  return a.name.localeCompare(b.name);
+}
 
 const EmailAlerts = () => {
-  const { language, timeDisplayMode } = useAppShell();
+  const {
+    language,
+    timeDisplayMode,
+    favoriteServiceIds,
+    alertServiceIds,
+    isAlertService,
+    toggleAlertService,
+    replaceAlertServices,
+    alertSeverityThreshold,
+    setAlertSeverityThreshold,
+  } = useAppShell();
   const [configResult, setConfigResult] = useState<LegacySubscriptionLoadResult | null>(null);
+  const [availableServices, setAvailableServices] = useState<LegacyHomeServiceConfig[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastCheckedAt, setLastCheckedAt] = useState<string | null>(null);
   const [embedLoaded, setEmbedLoaded] = useState(false);
   const [embedTimedOut, setEmbedTimedOut] = useState(false);
 
   const t = (en: string, de: string) => pickLang(language, en, de);
+  const favoriteServiceIdSet = useMemo(() => new Set(favoriteServiceIds), [favoriteServiceIds]);
+  const alertServiceIdSet = useMemo(() => new Set(alertServiceIds), [alertServiceIds]);
 
   const statusText = (result: LegacySubscriptionLoadResult | null) => {
     if (!result || result.status === "loading") {
       return t("Preparing alert signup...", "Alarm-Anmeldung wird vorbereitet...");
     }
     if (result.status === "ready") {
-      return `${t("Ready", "Bereit")} · ${providerLabel(result.config?.provider)} ${t("signup active", "Anmeldung aktiv")}`;
+      return `${t("Ready", "Bereit")} | ${providerLabel(result.config?.provider)} ${t("signup active", "Anmeldung aktiv")}`;
     }
-    if (result.status === "missing") {
-      return t("Alert signup is currently unavailable", "Alarm-Anmeldung ist aktuell nicht verfügbar");
-    }
-    if (result.status === "invalid") {
+    if (result.status === "missing" || result.status === "invalid") {
       return t("Alert signup is currently unavailable", "Alarm-Anmeldung ist aktuell nicht verfügbar");
     }
     return t("Could not load alert signup right now", "Alarm-Anmeldung konnte aktuell nicht geladen werden");
@@ -59,7 +80,16 @@ const EmailAlerts = () => {
 
   const loadConfig = async () => {
     setIsRefreshing(true);
-    setConfigResult((previous) => previous ?? { status: "loading", config: null, parsedUrl: null });
+    setConfigResult(
+      (previous) =>
+        previous ?? {
+          status: "loading",
+          config: null,
+          parsedUrl: null,
+          source: "network",
+          cachedAt: null,
+        }
+    );
     const result = await fetchLegacySubscriptionConfig();
     setConfigResult(result);
     setLastCheckedAt(new Date().toISOString());
@@ -68,6 +98,26 @@ const EmailAlerts = () => {
 
   useEffect(() => {
     void loadConfig();
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    void getLegacyLiveStatusServices()
+      .then((services) => {
+        if (cancelled) {
+          return;
+        }
+        setAvailableServices([...services].sort(compareServices));
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setAvailableServices([]);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const embedUrl = configResult?.status === "ready" ? configResult.parsedUrl?.toString() ?? "" : "";
@@ -90,6 +140,25 @@ const EmailAlerts = () => {
 
   const provider = providerLabel(configResult?.config?.provider);
   const currentTone = statusTone(configResult);
+  const usingCachedConfig = configResult?.source === "cache";
+  const selectedServiceCount = alertServiceIds.length;
+  const sortedServices = useMemo(() => {
+    return [...availableServices].sort((left, right) => {
+      const leftAlert = alertServiceIdSet.has(left.id);
+      const rightAlert = alertServiceIdSet.has(right.id);
+      if (leftAlert !== rightAlert) {
+        return leftAlert ? -1 : 1;
+      }
+
+      const leftFavorite = favoriteServiceIdSet.has(left.id);
+      const rightFavorite = favoriteServiceIdSet.has(right.id);
+      if (leftFavorite !== rightFavorite) {
+        return leftFavorite ? -1 : 1;
+      }
+
+      return compareServices(left, right);
+    });
+  }, [alertServiceIdSet, availableServices, favoriteServiceIdSet]);
 
   const checkedLabel = lastCheckedAt
     ? formatTimestampByMode(lastCheckedAt, {
@@ -102,6 +171,17 @@ const EmailAlerts = () => {
         fallbackText: t("Pending", "Ausstehend"),
       })
     : t("Pending", "Ausstehend");
+  const cachedConfigLabel = configResult?.cachedAt
+    ? formatTimestampByMode(configResult.cachedAt, {
+        language,
+        mode: timeDisplayMode,
+        absoluteFormat: {
+          hour: "2-digit",
+          minute: "2-digit",
+        },
+        fallbackText: t("Stored", "Gespeichert"),
+      })
+    : null;
 
   return (
     <AppLayout>
@@ -113,8 +193,8 @@ const EmailAlerts = () => {
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">
               {t(
-                "Stay ahead of outages with secure e-mail alerts powered by Brevo.",
-                "Bleibe Ausfällen voraus mit sicheren E-Mail-Alarmen powered by Brevo."
+                "Keep a simple outage signup, plus a local watchlist for the services that matter most to you.",
+                "Behalte eine einfache Störungs-Anmeldung und zusätzlich eine lokale Watchlist für die Services, die dir am wichtigsten sind."
               )}
             </p>
           </div>
@@ -148,6 +228,190 @@ const EmailAlerts = () => {
               <span className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${STATUS_CLASS[currentTone]}`}>
                 {provider}
               </span>
+            </div>
+          </div>
+        </section>
+
+        {usingCachedConfig ? (
+          <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-3 py-2.5 text-[11px] text-amber-200">
+            <p className="font-semibold">
+              {t("Showing last known signup settings", "Letzte bekannte Anmelde-Einstellungen werden angezeigt")}
+            </p>
+            <p className="mt-0.5 opacity-90">
+              {cachedConfigLabel
+                ? t(
+                    `Stored configuration from ${cachedConfigLabel} is being used while the connection recovers.`,
+                    `Gespeicherte Konfiguration von ${cachedConfigLabel} wird verwendet, während sich die Verbindung erholt.`
+                  )
+                : t(
+                    "A previously saved configuration is being used while the connection recovers.",
+                    "Eine zuvor gespeicherte Konfiguration wird verwendet, während sich die Verbindung erholt."
+                  )}
+            </p>
+          </div>
+        ) : null}
+
+        <section className="glass glass-specular mt-4 rounded-2xl p-4">
+          <div className="relative z-10">
+            <div className="mb-3 flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary">
+                <BellRing size={16} className="text-primary" />
+              </div>
+              <div>
+                <h2 className="text-sm font-semibold text-foreground">
+                  {t("Alert Watchlist", "Alarm-Watchlist")}
+                </h2>
+                <p className="text-[11px] text-muted-foreground">
+                  {t(
+                    "Choose the services you care about on this device. Your provider signup remains global for now.",
+                    "Wähle die Services, die dir auf diesem Gerät wichtig sind. Deine Anbieter-Anmeldung bleibt vorerst global."
+                  )}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                  {t("Watching", "Beobachtet")}
+                </p>
+                <p className="mt-1 text-lg font-semibold text-foreground">{selectedServiceCount}</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                  {t("Favorites", "Favoriten")}
+                </p>
+                <p className="mt-1 text-lg font-semibold text-foreground">{favoriteServiceIds.length}</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                  {t("Threshold", "Schwelle")}
+                </p>
+                <p className="mt-1 text-sm font-semibold text-foreground">
+                  {alertSeverityThreshold === "degraded"
+                    ? t("Degraded+", "Beeinträchtigt+")
+                    : t("Major only", "Nur größere")}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-3 rounded-xl border border-white/10 bg-white/5 p-3">
+              <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                {t("Alert threshold", "Alarm-Schwelle")}
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {[
+                  {
+                    key: "major" as const,
+                    label: t("Major only", "Nur größere"),
+                    note: t("Only larger outages should stand out.", "Nur größere Ausfälle sollen hervorstechen."),
+                  },
+                  {
+                    key: "degraded" as const,
+                    label: t("Degraded + major", "Beeinträchtigt + größer"),
+                    note: t("Also flag smaller degraded states.", "Auch kleinere Beeinträchtigungen hervorheben."),
+                  },
+                ].map((option) => {
+                  const active = alertSeverityThreshold === option.key;
+                  return (
+                    <button
+                      key={option.key}
+                      type="button"
+                      onClick={() => setAlertSeverityThreshold(option.key)}
+                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                        active
+                          ? "border-primary/35 bg-primary/15 text-primary"
+                          : "border-white/10 bg-black/20 text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                {alertSeverityThreshold === "degraded"
+                  ? t(
+                      "Smaller degraded states will be treated as watchlist-worthy in the UI.",
+                      "Kleinere Beeinträchtigungen gelten in der UI ebenfalls als watchlist-relevant."
+                    )
+                  : t(
+                      "The watchlist stays focused on the most severe outages.",
+                      "Die Watchlist konzentriert sich auf die schwerwiegendsten Ausfälle."
+                    )}
+              </p>
+            </div>
+
+            <div className="mt-3 flex gap-2">
+              <button
+                type="button"
+                onClick={() => replaceAlertServices(favoriteServiceIds)}
+                className="flex-1 rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
+              >
+                {t("Use favorites", "Favoriten übernehmen")}
+              </button>
+              <button
+                type="button"
+                onClick={() => replaceAlertServices([])}
+                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10"
+              >
+                {t("Clear", "Leeren")}
+              </button>
+            </div>
+
+            <div className="mt-3 space-y-2">
+              {sortedServices.length === 0 ? (
+                <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground">
+                  {t(
+                    "Service watchlist controls will appear as soon as the live service catalog loads.",
+                    "Die Service-Watchlist erscheint, sobald der Live-Servicekatalog geladen ist."
+                  )}
+                </div>
+              ) : (
+                sortedServices.map((service) => {
+                  const selected = isAlertService(service.id);
+                  const favorite = favoriteServiceIdSet.has(service.id);
+                  return (
+                    <button
+                      key={service.id}
+                      type="button"
+                      onClick={() => toggleAlertService(service.id)}
+                      className={`flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors ${
+                        selected
+                          ? "border-primary/25 bg-primary/12"
+                          : "border-white/10 bg-white/5 hover:bg-white/10"
+                      }`}
+                    >
+                      <div className="flex min-w-0 items-center gap-3">
+                        <ServiceIdentityIcon
+                          serviceId={service.id}
+                          iconName={service.iconName}
+                          size={16}
+                          containerClassName="h-9 w-9 shrink-0"
+                        />
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <p className="truncate text-sm font-semibold text-foreground">{service.name}</p>
+                            {favorite ? <Star size={12} className="text-amber-200" /> : null}
+                          </div>
+                          <p className="truncate text-[11px] text-muted-foreground">
+                            {service.note || t("Live service status and incident summary.", "Live-Service-Status und Vorfallübersicht.")}
+                          </p>
+                        </div>
+                      </div>
+                      <span
+                        className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                          selected
+                            ? "border-primary/30 bg-primary/15 text-primary"
+                            : "border-white/10 bg-black/20 text-muted-foreground"
+                        }`}
+                      >
+                        {selected ? t("Watching", "Beobachtet") : t("Off", "Aus")}
+                      </span>
+                    </button>
+                  );
+                })
+              )}
             </div>
           </div>
         </section>

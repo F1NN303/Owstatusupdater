@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `8c08c98`
+Latest known commit at handoff update: `ad90778`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -23,6 +23,7 @@ This file is the persistent handoff for future agents. It captures the current p
 - Legacy wrappers/fallbacks still exist for direct service entry points:
   - `site/overwatch.html`
   - `site/sony/index.html`
+  - `site/epic/index.html`
   - `site/m365/index.html`
   - `site/openai/index.html`
   - `site/claude/index.html`
@@ -41,6 +42,14 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/` (root app)
   - `site/next/` (preview app)
 - Build metadata (commit SHA) is injected for Settings version display.
+- Route UX hardening shipped in working tree:
+  - production React router now prefers clean browser routes instead of defaulting to hash routes
+  - `react-next/public/404.html` now captures GitHub Pages deep-link misses and redirects them back into the app
+  - app boot recovers redirected deep links and also migrates legacy `#/status/...` links into clean paths
+- Offline resilience shipped in working tree:
+  - a lightweight service worker now caches the app shell and last-known JSON responses
+  - React data fetchers now fall back to cached manifest/status/subscription payloads when live fetches fail
+  - home and detail pages now surface a visible "last known data" banner when cached payloads are being used
 - Important fix shipped:
   - `scripts/build_react_artifacts.py` now syncs all top-level `dist/` public entries (not only `assets` + a small static file list).
   - This ensures `public/brands/*` files are deployed to both root and preview artifacts.
@@ -64,17 +73,44 @@ This file is the persistent handoff for future agents. It captures the current p
   - root React HTML viewport now uses `viewport-fit=cover` so the app fully respects iPhone safe-area insets
   - home and service detail now support pull-to-refresh using a shared mobile touch hook + top refresh indicator
   - service detail header now includes native share with clipboard fallback when `navigator.share` is unavailable
+- Scheduled maintenance surfacing shipped in working tree:
+  - Statuspage-based providers now extract future or active scheduled maintenance incidents into `outage.scheduled_maintenances`
+  - Slack's custom official parser now exposes the same normalized maintenance rows
+  - the home screen now shows compact scheduled-maintenance cards near the top when at least one provider publishes an active or upcoming maintenance window
+  - current local verification builds for GitHub and Slack returned empty maintenance arrays, so the new home section is working but not expected to appear unless live provider data includes maintenance entries
 
 Key files:
 - `services/core/source_runner.py`
 - `scripts/build_site_data.py`
 - `react-next/src/lib/legacyServiceDetail.ts`
 - `react-next/src/pages/ServerDetail.tsx`
+- `react-next/src/pages/Index.tsx`
+- `services/adapters/statuspage_json.py`
 - `services/claude_aggregator.py`
 - `config/services/claude.yaml`
 - `site/claude/data/*`
 
 ## UI State (Current)
+
+### Alerts + Onboarding (Working Tree)
+- Alerts now include device-local watchlist controls:
+  - per-service watchlist selection
+  - severity threshold (`major` only vs `degraded + major`)
+  - quick import from favorites
+- The Brevo signup remains global; the new watchlist controls are explicitly local UI preferences until provider-side filtering exists.
+- First-launch onboarding now appears on home as a dismissible hint layer covering:
+  - favorites
+  - pull-to-refresh
+  - share on detail pages
+- Settings now shows alert-watchlist summary and exposes a "show onboarding again" action.
+
+Key files:
+- `react-next/src/lib/appShell.tsx`
+- `react-next/src/pages/EmailAlerts.tsx`
+- `react-next/src/pages/Index.tsx`
+- `react-next/src/pages/ServerDetail.tsx`
+- `react-next/src/pages/SettingsPage.tsx`
+- `react-next/src/components/OnboardingHints.tsx`
 
 ### Service Icons (Brand Logos)
 - Real brand logos are used for key services with fallback to Lucide icons.
@@ -130,6 +166,25 @@ Key files:
 - `react-next/src/lib/serviceManifest.ts`
 - `react-next/src/lib/serviceBranding.ts`
 - `react-next/public/brands/discord.svg`
+- `scripts/watch_data_freshness.py`
+- `tests/test_payload_contracts.py`
+- `tests/test_resilience.py`
+
+### Epic Games Service - Added
+- New service id: `epic`
+- New detail route: `/status/epic`
+- New legacy wrapper: `site/epic/index.html`
+- New generated data path: `site/epic/data/*`
+- Source strategy:
+  - official required: Epic Games Statuspage API (`/api/v2/status.json`, `/components.json`, `/incidents.json`)
+  - supporting corroboration: StatusGator + IsDown
+- Freshness monitor now includes `epic` endpoint.
+
+Key files:
+- `services/epic_aggregator.py`
+- `config/services/epic.yaml`
+- `site/epic/data/*`
+- `react-next/src/lib/serviceManifest.ts`
 - `scripts/watch_data_freshness.py`
 - `tests/test_payload_contracts.py`
 - `tests/test_resilience.py`
@@ -242,6 +297,9 @@ Key files:
 - `NOTICE.md`
 
 ## Recent Important Commits
+- `working tree` - `feat(routes/offline): recover clean deep links on GitHub Pages and cache last-known status payloads`
+- `working tree` - `feat(alerts): add per-service local watchlist controls and first-launch onboarding hints`
+- `working tree` - `test(mobile): add pull-to-refresh, share, and router recovery regression coverage`
 - `working tree` - `fix(ui): correct source transparency percentage scaling and localize source confidence labels`
 - `working tree` - `fix(ui): preserve sanitized component lists so detail API component status renders`
 - `6f2ad53` - `fix(ui): uncramp favorite star on service cards`

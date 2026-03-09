@@ -94,6 +94,91 @@ def statuspage_incident_url(page_url: str, incident_id: str, update_id: str | No
     return base
 
 
+def _incident_started_at(incident: dict[str, Any]) -> str | None:
+    return (
+        _clean(incident.get("scheduled_for"))
+        or _clean(incident.get("created_at"))
+        or _clean(incident.get("updated_at"))
+        or None
+    )
+
+
+def _incident_ended_at(incident: dict[str, Any]) -> str | None:
+    return (
+        _clean(incident.get("scheduled_until"))
+        or _clean(incident.get("resolved_at"))
+        or None
+    )
+
+
+def _incident_latest_body(incident: dict[str, Any]) -> str | None:
+    updates = incident.get("incident_updates")
+    if not isinstance(updates, list):
+        return None
+    valid_updates = [item for item in updates if isinstance(item, dict)]
+    valid_updates = sorted(
+        valid_updates,
+        key=lambda item: _parse_iso8601(
+            _clean(item.get("display_at")) or _clean(item.get("updated_at")) or _clean(item.get("created_at"))
+        )
+        or dt.datetime.min.replace(tzinfo=dt.UTC),
+        reverse=True,
+    )
+    for update in valid_updates:
+        body = _clean(update.get("body"))
+        if body:
+            return body[:320]
+    return None
+
+
+def statuspage_incident_is_scheduled_maintenance(incident: dict[str, Any]) -> bool:
+    impact_token = _clean(str(incident.get("impact") or "")).lower()
+    status_token = _clean(str(incident.get("status") or "")).lower()
+    scheduled_for = _clean(incident.get("scheduled_for"))
+    scheduled_until = _clean(incident.get("scheduled_until"))
+    title = _clean(incident.get("name")).lower()
+    latest_body = (_incident_latest_body(incident) or "").lower()
+
+    if impact_token == "maintenance":
+        return True
+    if scheduled_for or scheduled_until:
+        return True
+    if status_token in {"scheduled", "in_progress", "verifying"} and "maintenance" in f"{title} {latest_body}":
+        return True
+    return "maintenance" in title or "scheduled maintenance" in latest_body
+
+
+def statuspage_incident_is_relevant_maintenance(incident: dict[str, Any]) -> bool:
+    if not statuspage_incident_is_scheduled_maintenance(incident):
+        return False
+    status_token = _clean(str(incident.get("status") or "")).lower()
+    if status_token in {"resolved", "postmortem", "completed"}:
+        return False
+    ended_at = _parse_iso8601(_incident_ended_at(incident))
+    if ended_at and ended_at < _utc_now():
+        return False
+    return True
+
+
+def _incident_to_scheduled_maintenance(
+    incident: dict[str, Any],
+    *,
+    page_url: str,
+    source_name: str,
+) -> dict[str, Any]:
+    title = _clean(incident.get("name")) or "Scheduled maintenance"
+    incident_id = _clean(incident.get("id"))
+    return {
+        "title": title,
+        "starts_at": _incident_started_at(incident),
+        "ends_at": _incident_ended_at(incident),
+        "status": _humanize_status_token(incident.get("status")) or "Scheduled",
+        "summary": _incident_latest_body(incident),
+        "source": source_name,
+        "url": statuspage_incident_url(page_url, incident_id) if incident_id else page_url,
+    }
+
+
 def _incident_to_outage_incident(
     incident: dict[str, Any],
     *,
@@ -101,7 +186,7 @@ def _incident_to_outage_incident(
     source_name: str,
 ) -> dict[str, Any]:
     title = _clean(incident.get("name")) or "Statuspage incident"
-    started_at = _clean(incident.get("created_at")) or _clean(incident.get("updated_at")) or None
+    started_at = _incident_started_at(incident)
     resolved_at = _clean(incident.get("resolved_at")) or None
     impact = _humanize_status_token(incident.get("impact"))
     status_label = _humanize_status_token(incident.get("status"))
@@ -240,6 +325,15 @@ def parse_statuspage_official_payloads(
         _incident_to_outage_incident(item, page_url=page_url, source_name=source_name)
         for item in valid_incidents
     ][:12]
+    scheduled_maintenances = [
+        _incident_to_scheduled_maintenance(item, page_url=page_url, source_name=source_name)
+        for item in valid_incidents
+        if statuspage_incident_is_relevant_maintenance(item)
+    ]
+    scheduled_maintenances = sorted(
+        [item for item in scheduled_maintenances if item.get("starts_at")],
+        key=lambda item: _parse_iso8601(item.get("starts_at")) or dt.datetime.max.replace(tzinfo=dt.UTC),
+    )[:8]
     active_incidents = [
         _incident_to_outage_incident(item, page_url=page_url, source_name=source_name)
         for item in valid_incidents
@@ -290,6 +384,7 @@ def parse_statuspage_official_payloads(
         "active_incidents": active_incidents,
         "updates": official_updates,
         "top_component_issues": top_issues,
+        "scheduled_maintenances": scheduled_maintenances,
         "active_incident_count": len(active_incidents),
         "incident_count": len(official_incidents),
     }

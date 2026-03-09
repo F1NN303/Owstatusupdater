@@ -1,3 +1,4 @@
+import { fetchCachedJson, type CachedJsonSource } from "@/lib/cachedJson";
 import { resolveLegacyUrl } from "@/lib/legacySite";
 
 export interface LegacySubscriptionConfig {
@@ -18,6 +19,8 @@ export interface LegacySubscriptionLoadResult {
   config: LegacySubscriptionConfig | null;
   parsedUrl: URL | null;
   message?: string;
+  source: CachedJsonSource;
+  cachedAt: string | null;
 }
 
 export function parseHttpsUrl(value: unknown) {
@@ -82,21 +85,16 @@ export function providerLabel(providerKey: unknown) {
 
 export async function fetchLegacySubscriptionConfig(): Promise<LegacySubscriptionLoadResult> {
   try {
-    const response = await fetch(
+    const result = await fetchCachedJson(
+      "subscription-config",
       `${resolveLegacyUrl("/data/subscription.json")}?t=${Date.now()}`,
-      { cache: "no-store" }
+      {
+        requestInit: { cache: "no-store" },
+        sanitize: (raw) => (raw && typeof raw === "object" ? (raw as LegacySubscriptionConfig) : {}),
+      }
     );
 
-    if (!response.ok) {
-      return {
-        status: "error",
-        config: null,
-        parsedUrl: null,
-        message: `HTTP ${response.status}`,
-      };
-    }
-
-    const config = (await response.json()) as LegacySubscriptionConfig;
+    const config = result.data;
     const rawUrl = String(config?.form_url || "").trim();
 
     if (!rawUrl) {
@@ -105,6 +103,8 @@ export async function fetchLegacySubscriptionConfig(): Promise<LegacySubscriptio
         config,
         parsedUrl: null,
         message: "subscription.json is missing form_url",
+        source: result.source,
+        cachedAt: result.cachedAt,
       };
     }
 
@@ -115,6 +115,8 @@ export async function fetchLegacySubscriptionConfig(): Promise<LegacySubscriptio
         config,
         parsedUrl: null,
         message: "form_url must be a valid https URL",
+        source: result.source,
+        cachedAt: result.cachedAt,
       };
     }
 
@@ -124,6 +126,8 @@ export async function fetchLegacySubscriptionConfig(): Promise<LegacySubscriptio
         config,
         parsedUrl: null,
         message: "form_url host is not allowed by allowed_hosts",
+        source: result.source,
+        cachedAt: result.cachedAt,
       };
     }
 
@@ -131,6 +135,8 @@ export async function fetchLegacySubscriptionConfig(): Promise<LegacySubscriptio
       status: "ready",
       config,
       parsedUrl,
+      source: result.source,
+      cachedAt: result.cachedAt,
     };
   } catch (error) {
     return {
@@ -138,6 +144,8 @@ export async function fetchLegacySubscriptionConfig(): Promise<LegacySubscriptio
       config: null,
       parsedUrl: null,
       message: error instanceof Error ? error.message : "Unknown error",
+      source: "network",
+      cachedAt: null,
     };
   }
 }

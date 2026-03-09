@@ -13,13 +13,14 @@ export type AppTimeDisplayMode = "relative" | "absolute" | "both";
 export type AppHomeDefaultFilter = "all" | "issues" | "healthy" | `category:${string}`;
 export type AppHomeRefreshIntervalSec = 30 | 60 | 120;
 export type AppFavoriteServiceId = string;
+export type AppAlertSeverityThreshold = "degraded" | "major";
 
 const LANGUAGE_STORAGE_KEY = "owstatusupdater.react.lang";
 const REDUCED_MOTION_STORAGE_KEY = "owstatusupdater.react.reduceMotion";
 const SETTINGS_STORAGE_KEY = "owstatusupdater.react.settings.v2";
 
-interface AppSettingsV2 {
-  schemaVersion: 3;
+interface AppSettings {
+  schemaVersion: 4;
   language: AppLanguage;
   reduceMotion: boolean;
   favorites: AppFavoriteServiceId[];
@@ -33,9 +34,16 @@ interface AppSettingsV2 {
   time: {
     displayMode: AppTimeDisplayMode;
   };
+  alerts: {
+    watchedServiceIds: AppFavoriteServiceId[];
+    severityThreshold: AppAlertSeverityThreshold;
+  };
+  onboarding: {
+    homeHintsDismissed: boolean;
+  };
 }
 
-interface AppSettingsV2Payload {
+interface AppSettingsPayload {
   schemaVersion?: unknown;
   language?: unknown;
   reduceMotion?: unknown;
@@ -50,10 +58,17 @@ interface AppSettingsV2Payload {
   time?: {
     displayMode?: unknown;
   } | null;
+  alerts?: {
+    watchedServiceIds?: unknown;
+    severityThreshold?: unknown;
+  } | null;
+  onboarding?: {
+    homeHintsDismissed?: unknown;
+  } | null;
 }
 
 interface AppShellContextValue {
-  settings: AppSettingsV2;
+  settings: AppSettings;
   language: AppLanguage;
   setLanguage: (next: AppLanguage) => void;
   toggleLanguage: () => void;
@@ -75,6 +90,16 @@ interface AppShellContextValue {
   setHomeFavoritesFirst: (next: boolean) => void;
   timeDisplayMode: AppTimeDisplayMode;
   setTimeDisplayMode: (next: AppTimeDisplayMode) => void;
+  alertServiceIds: AppFavoriteServiceId[];
+  isAlertService: (serviceId: string) => boolean;
+  setAlertService: (serviceId: string, next: boolean) => void;
+  toggleAlertService: (serviceId: string) => void;
+  replaceAlertServices: (serviceIds: string[]) => void;
+  alertSeverityThreshold: AppAlertSeverityThreshold;
+  setAlertSeverityThreshold: (next: AppAlertSeverityThreshold) => void;
+  homeHintsDismissed: boolean;
+  dismissHomeHints: () => void;
+  reopenHomeHints: () => void;
   resetSettings: () => void;
 }
 
@@ -151,6 +176,17 @@ function normalizeTimeDisplayMode(value: unknown, fallback: AppTimeDisplayMode) 
   return fallback;
 }
 
+function normalizeAlertSeverityThreshold(
+  value: unknown,
+  fallback: AppAlertSeverityThreshold
+) {
+  const normalized = String(value || "").trim().toLowerCase();
+  if (normalized === "degraded" || normalized === "major") {
+    return normalized;
+  }
+  return fallback;
+}
+
 function normalizeFavoriteServiceId(value: unknown) {
   const normalized = String(value || "")
     .trim()
@@ -180,9 +216,9 @@ function normalizeFavoriteServiceIds(value: unknown, fallback: AppFavoriteServic
   return next;
 }
 
-function buildDefaultSettings(): AppSettingsV2 {
+function buildDefaultSettings(): AppSettings {
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     language: detectBrowserLanguage(),
     reduceMotion: detectSystemReducedMotion(),
     favorites: [],
@@ -196,10 +232,17 @@ function buildDefaultSettings(): AppSettingsV2 {
     time: {
       displayMode: "both",
     },
+    alerts: {
+      watchedServiceIds: [],
+      severityThreshold: "major",
+    },
+    onboarding: {
+      homeHintsDismissed: false,
+    },
   };
 }
 
-function migrateLegacySettings(defaults: AppSettingsV2): AppSettingsV2 {
+function migrateLegacySettings(defaults: AppSettings): AppSettings {
   if (typeof window === "undefined") {
     return defaults;
   }
@@ -215,11 +258,12 @@ function migrateLegacySettings(defaults: AppSettingsV2): AppSettingsV2 {
   };
 }
 
-function sanitizeSettings(raw: AppSettingsV2Payload | null, fallback: AppSettingsV2): AppSettingsV2 {
+function sanitizeSettings(raw: AppSettingsPayload | null, fallback: AppSettings): AppSettings {
   const rawSchemaVersion = Number.parseInt(String(raw?.schemaVersion ?? "").trim(), 10);
   const shouldMigrateFavoritesFirst = !Number.isFinite(rawSchemaVersion) || rawSchemaVersion < 3;
+  const shouldMigrateAlertPreferences = !Number.isFinite(rawSchemaVersion) || rawSchemaVersion < 4;
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     language: normalizeLanguage(raw?.language, fallback.language),
     reduceMotion: normalizeBoolean(raw?.reduceMotion, fallback.reduceMotion),
     favorites: normalizeFavoriteServiceIds(raw?.favorites, fallback.favorites),
@@ -238,10 +282,25 @@ function sanitizeSettings(raw: AppSettingsV2Payload | null, fallback: AppSetting
     time: {
       displayMode: normalizeTimeDisplayMode(raw?.time?.displayMode, fallback.time.displayMode),
     },
+    alerts: {
+      watchedServiceIds: shouldMigrateAlertPreferences
+        ? fallback.alerts.watchedServiceIds
+        : normalizeFavoriteServiceIds(raw?.alerts?.watchedServiceIds, fallback.alerts.watchedServiceIds),
+      severityThreshold: normalizeAlertSeverityThreshold(
+        raw?.alerts?.severityThreshold,
+        fallback.alerts.severityThreshold
+      ),
+    },
+    onboarding: {
+      homeHintsDismissed: normalizeBoolean(
+        raw?.onboarding?.homeHintsDismissed,
+        fallback.onboarding.homeHintsDismissed
+      ),
+    },
   };
 }
 
-function detectInitialSettings(): AppSettingsV2 {
+function detectInitialSettings(): AppSettings {
   const defaults = migrateLegacySettings(buildDefaultSettings());
   if (typeof window === "undefined") {
     return defaults;
@@ -253,7 +312,7 @@ function detectInitialSettings(): AppSettingsV2 {
   }
 
   try {
-    const parsed = JSON.parse(stored) as AppSettingsV2Payload;
+    const parsed = JSON.parse(stored) as AppSettingsPayload;
     return sanitizeSettings(parsed, defaults);
   } catch {
     return defaults;
@@ -261,7 +320,7 @@ function detectInitialSettings(): AppSettingsV2 {
 }
 
 export function AppShellProvider({ children }: { children: ReactNode }) {
-  const [settings, setSettings] = useState<AppSettingsV2>(detectInitialSettings);
+  const [settings, setSettings] = useState<AppSettings>(detectInitialSettings);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -390,6 +449,93 @@ export function AppShellProvider({ children }: { children: ReactNode }) {
           time: {
             ...prev.time,
             displayMode: normalizeTimeDisplayMode(next, prev.time.displayMode),
+          },
+        })),
+      alertServiceIds: settings.alerts.watchedServiceIds,
+      isAlertService: (serviceId) => {
+        const normalized = normalizeFavoriteServiceId(serviceId);
+        if (!normalized) {
+          return false;
+        }
+        return settings.alerts.watchedServiceIds.includes(normalized);
+      },
+      setAlertService: (serviceId, next) =>
+        setSettings((prev) => {
+          const normalized = normalizeFavoriteServiceId(serviceId);
+          if (!normalized) {
+            return prev;
+          }
+          const alreadyEnabled = prev.alerts.watchedServiceIds.includes(normalized);
+          if (next && alreadyEnabled) {
+            return prev;
+          }
+          if (!next && !alreadyEnabled) {
+            return prev;
+          }
+          const watchedServiceIds = next
+            ? [normalized, ...prev.alerts.watchedServiceIds.filter((item) => item !== normalized)]
+            : prev.alerts.watchedServiceIds.filter((item) => item !== normalized);
+          return {
+            ...prev,
+            alerts: {
+              ...prev.alerts,
+              watchedServiceIds,
+            },
+          };
+        }),
+      toggleAlertService: (serviceId) =>
+        setSettings((prev) => {
+          const normalized = normalizeFavoriteServiceId(serviceId);
+          if (!normalized) {
+            return prev;
+          }
+          const alreadyEnabled = prev.alerts.watchedServiceIds.includes(normalized);
+          const watchedServiceIds = alreadyEnabled
+            ? prev.alerts.watchedServiceIds.filter((item) => item !== normalized)
+            : [normalized, ...prev.alerts.watchedServiceIds.filter((item) => item !== normalized)];
+          return {
+            ...prev,
+            alerts: {
+              ...prev.alerts,
+              watchedServiceIds,
+            },
+          };
+        }),
+      replaceAlertServices: (serviceIds) =>
+        setSettings((prev) => ({
+          ...prev,
+          alerts: {
+            ...prev.alerts,
+            watchedServiceIds: normalizeFavoriteServiceIds(
+              serviceIds,
+              prev.alerts.watchedServiceIds
+            ),
+          },
+        })),
+      alertSeverityThreshold: settings.alerts.severityThreshold,
+      setAlertSeverityThreshold: (next) =>
+        setSettings((prev) => ({
+          ...prev,
+          alerts: {
+            ...prev.alerts,
+            severityThreshold: normalizeAlertSeverityThreshold(next, prev.alerts.severityThreshold),
+          },
+        })),
+      homeHintsDismissed: settings.onboarding.homeHintsDismissed,
+      dismissHomeHints: () =>
+        setSettings((prev) => ({
+          ...prev,
+          onboarding: {
+            ...prev.onboarding,
+            homeHintsDismissed: true,
+          },
+        })),
+      reopenHomeHints: () =>
+        setSettings((prev) => ({
+          ...prev,
+          onboarding: {
+            ...prev.onboarding,
+            homeHintsDismissed: false,
           },
         })),
       resetSettings: () => setSettings(buildDefaultSettings()),

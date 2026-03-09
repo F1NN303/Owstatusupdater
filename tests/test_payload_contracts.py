@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SERVICE_DATA_DIRS = {
     "overwatch": ROOT / "site" / "data",
     "sony": ROOT / "site" / "sony" / "data",
+    "epic": ROOT / "site" / "epic" / "data",
     "m365": ROOT / "site" / "m365" / "data",
     "openai": ROOT / "site" / "openai" / "data",
     "claude": ROOT / "site" / "claude" / "data",
@@ -84,6 +85,25 @@ class PayloadContractTests(unittest.TestCase):
                 self.assertIsInstance(outage, dict)
                 self.assertIsInstance(outage.get("summary"), str)
                 self.assertIsInstance(outage.get("incidents"), list)
+                scheduled_maintenances = outage.get("scheduled_maintenances")
+                if scheduled_maintenances is not None:
+                    self.assertIsInstance(scheduled_maintenances, list)
+                    for item in scheduled_maintenances:
+                        self.assertIsInstance(item, dict)
+                        if "title" in item:
+                            self.assertIsInstance(item.get("title"), str)
+                        if "starts_at" in item:
+                            self.assertIsInstance(item.get("starts_at"), str)
+                        if "ends_at" in item:
+                            self.assertTrue(item.get("ends_at") is None or isinstance(item.get("ends_at"), str))
+                        if "status" in item:
+                            self.assertIsInstance(item.get("status"), str)
+                        if "summary" in item:
+                            self.assertIsInstance(item.get("summary"), str)
+                        if "source" in item:
+                            self.assertIsInstance(item.get("source"), str)
+                        if "url" in item:
+                            self.assertIsInstance(item.get("url"), str)
 
                 official = status["official"]
                 self.assertIsInstance(official, dict)

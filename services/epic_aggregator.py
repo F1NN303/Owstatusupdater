@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import datetime as dt
 import re
@@ -30,22 +30,22 @@ from services.core.source_runner import (
     run_source_adapter,
 )
 
-UA = {"User-Agent": "GitHub-Service-Radar/1.0 (+github-actions)"}
+UA = {"User-Agent": "EpicGames-Service-Radar/1.0 (+github-actions)"}
 REQUEST_TIMEOUT = 20
 CACHE_TTL_SECONDS = 120
 
-GITHUB_STATUS_PAGE_URL = "https://www.githubstatus.com/"
-GITHUB_STATUS_API_STATUS_URL = "https://www.githubstatus.com/api/v2/status.json"
-GITHUB_STATUS_API_COMPONENTS_URL = "https://www.githubstatus.com/api/v2/components.json"
-GITHUB_STATUS_API_INCIDENTS_URL = "https://www.githubstatus.com/api/v2/incidents.json"
-GITHUB_STATUS_HISTORY_RSS_URL = "https://www.githubstatus.com/history.rss"
+EPIC_STATUS_PAGE_URL = "https://status.epicgames.com/"
+EPIC_STATUS_API_STATUS_URL = "https://status.epicgames.com/api/v2/status.json"
+EPIC_STATUS_API_COMPONENTS_URL = "https://status.epicgames.com/api/v2/components.json"
+EPIC_STATUS_API_INCIDENTS_URL = "https://status.epicgames.com/api/v2/incidents.json"
+EPIC_STATUS_HISTORY_RSS_URL = "https://status.epicgames.com/history.rss"
 
-STATUSGATOR_URL = "https://statusgator.com/services/github"
-ISDOWN_STATUS_URL = "https://isdown.app/status/github"
+STATUSGATOR_URL = "https://statusgator.com/services/epic-games"
+ISDOWN_STATUS_URL = "https://isdown.app/status/epic-games"
 
 STATUSPAGE_API_DOCS_URL = "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/"
-GITHUB_STATUS_API_DOCS_URL = "https://www.githubstatus.com/api"
-GITHUB_HELP_STATUS_URL = "https://support.github.com/"
+EPIC_STATUS_API_DOCS_URL = "https://status.epicgames.com/api"
+EPIC_HELP_STATUS_URL = "https://www.epicgames.com/help/"
 
 _CACHE_LOCK = threading.Lock()
 _CACHE_TS = 0.0
@@ -60,7 +60,7 @@ def _utc_now_iso() -> str:
     return _utc_now().isoformat().replace("+00:00", "Z")
 
 
-def _run_github_source(
+def _run_epic_source(
     *,
     adapter_id: str,
     name: str,
@@ -77,7 +77,7 @@ def _run_github_source(
     return run_source_adapter(
         CallableSourceAdapter(
             spec=SourceAdapterSpec(
-                service_id="github",
+                service_id="epic",
                 adapter_id=adapter_id,
                 name=name,
                 kind=kind,
@@ -170,7 +170,7 @@ def _effective_active_incident_count(official_status: dict[str, Any] | None) -> 
     return int(official_status.get("active_incident_count") or 0)
 
 
-def _build_github_official_summary(
+def _build_epic_official_summary(
     description: str,
     current_status: str,
     active_incidents: list[dict[str, Any]],
@@ -182,41 +182,41 @@ def _build_github_official_summary(
 
     if impactful_active_incidents:
         latest = impactful_active_incidents[0]
-        latest_title = _clean(latest.get("title")) or "GitHub incident"
+        latest_title = _clean(latest.get("title")) or "Epic Games incident"
         if len(impactful_active_incidents) == 1:
-            return f"GitHub Statuspage reports an active incident: {latest_title}."
-        return f"GitHub Statuspage reports {len(impactful_active_incidents)} active incidents. Latest: {latest_title}."
+            return f"Epic Games Statuspage reports an active incident: {latest_title}."
+        return f"Epic Games Statuspage reports {len(impactful_active_incidents)} active incidents. Latest: {latest_title}."
 
     normalized_status = _normalize_outage_status_text(current_status)
     if normalized_status == "operational" and description:
-        return f"GitHub Statuspage reports {description}. No active incidents are listed."
+        return f"Epic Games Statuspage reports {description}. No active incidents are listed."
 
     latest_started_at = _clean(recent_incidents[0].get("started_at")) if recent_incidents else None
     latest_age_h = _hours_since(latest_started_at)
     if description and isinstance(latest_age_h, float):
         rounded = max(1, int(round(latest_age_h)))
         if latest_age_h <= 24:
-            return f"GitHub Statuspage reports {description}. Latest listed incident started about {rounded}h ago."
-        return f"GitHub Statuspage reports {description}. Latest listed incident was about {rounded}h ago."
+            return f"Epic Games Statuspage reports {description}. Latest listed incident started about {rounded}h ago."
+        return f"Epic Games Statuspage reports {description}. Latest listed incident was about {rounded}h ago."
     if description:
-        return f"GitHub Statuspage reports {description}."
+        return f"Epic Games Statuspage reports {description}."
     if recent_incidents:
-        return f"GitHub Statuspage incident history is available. Latest listed incident: {recent_incidents[0].get('title')}."
-    return "Official GitHub status information is currently unavailable."
+        return f"Epic Games Statuspage incident history is available. Latest listed incident: {recent_incidents[0].get('title')}."
+    return "Official Epic Games status information is currently unavailable."
 
 
-def fetch_github_statuspage_bundle() -> dict[str, Any]:
+def fetch_epic_statuspage_bundle() -> dict[str, Any]:
     checked_at = _utc_now_iso()
-    status_payload = _request_json(GITHUB_STATUS_API_STATUS_URL)
-    components_payload = _request_json(GITHUB_STATUS_API_COMPONENTS_URL)
-    incidents_payload = _request_json(GITHUB_STATUS_API_INCIDENTS_URL)
+    status_payload = _request_json(EPIC_STATUS_API_STATUS_URL)
+    components_payload = _request_json(EPIC_STATUS_API_COMPONENTS_URL)
+    incidents_payload = _request_json(EPIC_STATUS_API_INCIDENTS_URL)
     return parse_statuspage_official_payloads(
         status_payload=status_payload,
         components_payload=components_payload,
         incidents_payload=incidents_payload,
-        page_url=GITHUB_STATUS_PAGE_URL,
-        source_name="GitHub Statuspage API",
-        summary_builder=_build_github_official_summary,
+        page_url=EPIC_STATUS_PAGE_URL,
+        source_name="Epic Games Statuspage API",
+        summary_builder=_build_epic_official_summary,
         checked_at=checked_at,
     )
 
@@ -233,7 +233,7 @@ def _synthesize_statusgator_summary(
     )
     if normalized_status != "unknown" and isinstance(reports_24h, int):
         return (
-            f"StatusGator indicates GitHub is currently {normalized_status} "
+            f"StatusGator indicates Epic Games is currently {normalized_status} "
             f"with {reports_24h} user-submitted reports in the past 24 hours."
         )
     if normalized_status != "unknown":
@@ -241,14 +241,14 @@ def _synthesize_statusgator_summary(
             rounded_age_hours = max(1, int(round(latest_incident_age_hours)))
             if latest_incident_age_hours <= 24:
                 return (
-                    f"StatusGator indicates GitHub is currently {normalized_status}. "
+                    f"StatusGator indicates Epic Games is currently {normalized_status}. "
                     f"Most recent listed incident started about {rounded_age_hours}h ago."
                 )
             return (
-                f"StatusGator indicates GitHub is currently {normalized_status}. "
+                f"StatusGator indicates Epic Games is currently {normalized_status}. "
                 f"Latest listed incident was about {rounded_age_hours}h ago."
             )
-        return f"StatusGator indicates GitHub is currently {normalized_status}."
+        return f"StatusGator indicates Epic Games is currently {normalized_status}."
     if incidents:
         latest_title = _clean(str(incidents[0].get("title") or "Recent incident listed"))
         return f"StatusGator incident table is available. Latest listed incident: {latest_title}."
@@ -277,7 +277,7 @@ def _extract_isdown_status_text(page_text: str) -> tuple[str, str]:
     if not summary_match:
         return "Status summary unavailable.", "unknown"
     status_phrase = _clean(summary_match.group(1))
-    summary = f"IsDown indicates GitHub is {status_phrase}."
+    summary = f"IsDown indicates Epic Games is {status_phrase}."
     lowered = status_phrase.lower()
     if any(token in lowered for token in ("working normally", "operational", "online")):
         current_status = "operational"
@@ -341,46 +341,20 @@ def _build_official_block(official_updates: list[dict[str, Any]]) -> dict[str, A
         seen_urls.add(url)
         updates.append(
             {
-                "title": _clean(item.get("title")) or "GitHub status update",
+                "title": _clean(item.get("title")) or "Epic Games status update",
                 "url": url,
                 "published_at": item.get("published_at"),
-                "source": _clean(item.get("source")) or "GitHub Statuspage API",
+                "source": _clean(item.get("source")) or "Epic Games Statuspage API",
                 "channel": "official-status-page",
                 "meta": item.get("meta"),
             }
         )
     updates = updates[:10]
     return {
-        "summary": updates[0].get("title") if updates else "Official GitHub status updates unavailable.",
+        "summary": updates[0].get("title") if updates else "Official Epic Games status updates unavailable.",
         "updates": updates,
         "last_statement_at": updates[0].get("published_at") if updates else None,
     }
-
-
-def _is_limited_partial_outage_scope(official_status: dict[str, Any] | None) -> bool:
-    if not isinstance(official_status, dict):
-        return False
-    description = _clean(official_status.get("description")).lower()
-    if "partial system outage" not in description and "partial outage" not in description:
-        return False
-
-    components = [item for item in (official_status.get("components") or []) if isinstance(item, dict)]
-    if not components:
-        return False
-
-    leaf_components = [item for item in components if not bool(item.get("group"))]
-    tracked_components = leaf_components or components
-
-    impacted_count = 0
-    for component in tracked_components:
-        status_key = _normalize_outage_status_text(component.get("status"))
-        if status_key in {"degraded", "major outage"}:
-            impacted_count += 1
-
-    if impacted_count == 0:
-        return False
-    impact_ratio = impacted_count / max(len(tracked_components), 1)
-    return impacted_count <= 2 and impact_ratio <= 0.35
 
 
 def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
@@ -389,7 +363,7 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
     official_source_entry: dict[str, Any] | None = None
     isdown_outage: dict[str, Any] | None = None
 
-    statusgator_run = _run_github_source(
+    statusgator_run = _run_epic_source(
         adapter_id="statusgator",
         name="StatusGator",
         kind="outage-index",
@@ -416,9 +390,9 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
             "top_reported_issues": [],
         }
 
-    isdown_run = _run_github_source(
-        adapter_id="isdown_github",
-        name="IsDown (GitHub)",
+    isdown_run = _run_epic_source(
+        adapter_id="isdown_epic_games",
+        name="IsDown (Epic Games)",
         kind="outage-index-alt",
         url=ISDOWN_STATUS_URL,
         role="provider",
@@ -434,15 +408,15 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
 
     outage = _merge_secondary_outage_signal(outage, isdown_outage)
 
-    official_run = _run_github_source(
-        adapter_id="github_statuspage_api",
-        name="GitHub Statuspage API",
+    official_run = _run_epic_source(
+        adapter_id="epic_games_statuspage_api",
+        name="Epic Games Statuspage API",
         kind="official-api",
-        url=GITHUB_STATUS_API_STATUS_URL,
+        url=EPIC_STATUS_API_STATUS_URL,
         role="official",
         criticality="required",
         used_for_scoring=True,
-        fetch_fn=fetch_github_statuspage_bundle,
+        fetch_fn=fetch_epic_statuspage_bundle,
         item_count_fn=_official_item_count,
         last_item_at_fn=_official_last_item_at,
     )
@@ -455,11 +429,11 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
         official_status_text = _normalize_outage_status_text(official_status.get("current_status"))
         if official_status_text != "unknown":
             outage["current_status"] = official_status_text
-            outage["current_status_origin"] = "GitHub Statuspage API"
+            outage["current_status_origin"] = "Epic Games Statuspage API"
         if official_status.get("summary"):
             outage["summary"] = official_status.get("summary")
-            outage["summary_origin"] = "GitHub Statuspage API"
-        outage["url"] = GITHUB_STATUS_PAGE_URL
+            outage["summary_origin"] = "Epic Games Statuspage API"
+        outage["url"] = EPIC_STATUS_PAGE_URL
 
         official_components = official_status.get("components")
         if isinstance(official_components, list) and official_components:
@@ -487,7 +461,7 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
         if isinstance(top_component_issues, list) and top_component_issues:
             outage["top_reported_issues"] = top_component_issues
             outage["top_reported_issues_meta"] = {
-                "source": "GitHub Statuspage API",
+                "source": "Epic Games Statuspage API",
                 "kind": "degraded-components",
                 "mode": "active" if effective_active_incident_count > 0 else "snapshot",
             }
@@ -496,7 +470,7 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
         elif official_status_text == "operational" and official_source_freshness in {"fresh", "warm"}:
             outage["top_reported_issues"] = []
             outage["top_reported_issues_meta"] = {
-                "source": "GitHub Statuspage API",
+                "source": "Epic Games Statuspage API",
                 "kind": "degraded-components",
                 "mode": "none",
             }
@@ -541,11 +515,6 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
     official_status_key = _normalize_outage_status_text(
         official_status.get("current_status") if isinstance(official_status, dict) else None
     )
-    partial_scope_guard_applied = False
-    if official_status_key == "major outage" and _is_limited_partial_outage_scope(official_status):
-        # GitHub often marks partial outages with indicator "major"; cap this to degraded for service-level UX.
-        official_status_key = "degraded"
-        partial_scope_guard_applied = True
     official_active_incident_count = _effective_active_incident_count(official_status)
     official_source_freshness = str((official_source_entry or {}).get("freshness") or "").lower()
     analytics = _calculate_severity(
@@ -562,37 +531,35 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
             "official_source_freshness": official_source_freshness,
         },
     )
-    analytics["model_version"] = "github-1.0"
-    if isinstance(analytics.get("safeguards"), dict):
-        analytics["safeguards"]["official_partial_scope_cap_applied"] = partial_scope_guard_applied
+    analytics["model_version"] = "epic-1.0"
     regions = _build_region_signals(analytics, outage, reports, news)
 
     generated_at = _utc_now_iso()
     known_resources = [
         {
-            "title": "GitHub Status page",
-            "url": GITHUB_STATUS_PAGE_URL,
+            "title": "Epic Games Status page",
+            "url": EPIC_STATUS_PAGE_URL,
             "source": "Official",
             "meta": "Statuspage",
             "published_at": generated_at,
         },
         {
-            "title": "GitHub Status API (Statuspage v2)",
-            "url": GITHUB_STATUS_API_STATUS_URL,
+            "title": "Epic Games Status API (Statuspage v2)",
+            "url": EPIC_STATUS_API_STATUS_URL,
             "source": "Official",
             "meta": "JSON endpoint",
             "published_at": generated_at,
         },
         {
-            "title": "GitHub Status history RSS",
-            "url": GITHUB_STATUS_HISTORY_RSS_URL,
+            "title": "Epic Games Status history RSS",
+            "url": EPIC_STATUS_HISTORY_RSS_URL,
             "source": "Official",
             "meta": "RSS feed",
             "published_at": generated_at,
         },
         {
-            "title": "GitHub Status API docs",
-            "url": GITHUB_STATUS_API_DOCS_URL,
+            "title": "Epic Games Status API docs",
+            "url": EPIC_STATUS_API_DOCS_URL,
             "source": "Official",
             "meta": "Status API docs",
             "published_at": generated_at,
@@ -605,8 +572,8 @@ def _collect_payload(scoring_profile: str | None = None) -> dict[str, Any]:
             "published_at": generated_at,
         },
         {
-            "title": "GitHub Support",
-            "url": GITHUB_HELP_STATUS_URL,
+            "title": "Epic Games Player Support",
+            "url": EPIC_HELP_STATUS_URL,
             "source": "Official",
             "meta": "Support",
             "published_at": generated_at,
@@ -645,5 +612,3 @@ def build_dashboard_payload(force_refresh: bool = False, scoring_profile: str | 
 
 
 __all__ = ["build_dashboard_payload"]
-
-

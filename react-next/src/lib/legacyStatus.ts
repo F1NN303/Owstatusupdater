@@ -1,3 +1,4 @@
+import { fetchCachedJson, type CachedJsonSource } from "@/lib/cachedJson";
 import { resolveLegacyUrl } from "@/lib/legacySite";
 import {
   fetchServiceManifestEntries,
@@ -30,6 +31,8 @@ export interface LegacyServiceSummary {
   updatedText: string;
   generatedAt: string | null;
   error: boolean;
+  source: CachedJsonSource;
+  cachedAt: string | null;
 }
 
 interface LegacyStatusPayload {
@@ -39,6 +42,28 @@ interface LegacyStatusPayload {
   health?: string;
   analytics?: {
     severity_key?: string;
+  };
+}
+
+function sanitizeLegacyStatusPayload(value: unknown): LegacyStatusPayload {
+  if (!value || typeof value !== "object") {
+    return {};
+  }
+  const payload = value as LegacyStatusPayload;
+  return {
+    generated_at: typeof payload.generated_at === "string" ? payload.generated_at : undefined,
+    severity_key: typeof payload.severity_key === "string" ? payload.severity_key : undefined,
+    status: typeof payload.status === "string" ? payload.status : undefined,
+    health: typeof payload.health === "string" ? payload.health : undefined,
+    analytics:
+      payload.analytics && typeof payload.analytics === "object"
+        ? {
+            severity_key:
+              typeof payload.analytics.severity_key === "string"
+                ? payload.analytics.severity_key
+                : undefined,
+          }
+        : undefined,
   };
 }
 
@@ -146,18 +171,21 @@ export async function fetchLegacyServiceSummary(
       updatedText: "Updated: n/a",
       generatedAt: null,
       error: false,
+      source: "network",
+      cachedAt: null,
     };
   }
 
   try {
-    const response = await fetch(`${resolveLegacyUrl(service.statusPath)}?t=${Date.now()}`, {
-      cache: "no-store",
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const payload = (await response.json()) as LegacyStatusPayload;
+    const result = await fetchCachedJson(
+      `service-summary:${service.id}:status`,
+      `${resolveLegacyUrl(service.statusPath)}?t=${Date.now()}`,
+      {
+        requestInit: { cache: "no-store" },
+        sanitize: sanitizeLegacyStatusPayload,
+      }
+    );
+    const payload = result.data;
     const severity = getSeverityFromPayload(payload);
     return {
       service,
@@ -167,6 +195,8 @@ export async function fetchLegacyServiceSummary(
       updatedText: formatUpdated(payload.generated_at),
       generatedAt: payload.generated_at ?? null,
       error: false,
+      source: result.source,
+      cachedAt: result.cachedAt,
     };
   } catch {
     return {
@@ -177,6 +207,8 @@ export async function fetchLegacyServiceSummary(
       updatedText: "Updated: unknown",
       generatedAt: null,
       error: true,
+      source: "network",
+      cachedAt: null,
     };
   }
 }

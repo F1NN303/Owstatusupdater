@@ -39,6 +39,10 @@ const SettingsPage = () => {
     setHomeFavoritesFirst,
     timeDisplayMode,
     setTimeDisplayMode,
+    alertServiceIds,
+    alertSeverityThreshold,
+    homeHintsDismissed,
+    reopenHomeHints,
     resetSettings,
   } = useAppShell();
   const buildMeta = appBuildMeta();
@@ -370,8 +374,12 @@ const SettingsPage = () => {
               <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] leading-relaxed text-muted-foreground">
                 {pickLang(
                   language,
-                  "Manage your outage e-mail alerts in the Alerts tab and stay updated instantly.",
-                  "Verwalte deine Störungs-E-Mail-Alarme im Tab \"Alarme\" und bleibe sofort informiert."
+                  `Watching ${alertServiceIds.length} services locally. Threshold: ${
+                    alertSeverityThreshold === "degraded" ? "degraded+" : "major only"
+                  }.`,
+                  `${alertServiceIds.length} Services werden lokal beobachtet. Schwelle: ${
+                    alertSeverityThreshold === "degraded" ? "beeintrachtigt+" : "nur groere"
+                  }.`
                 )}
               </p>
               <Link
@@ -427,6 +435,19 @@ const SettingsPage = () => {
                   )}
                 </p>
               </div>
+
+              <button
+                type="button"
+                onClick={reopenHomeHints}
+                className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
+              >
+                <span>
+                  {homeHintsDismissed
+                    ? pickLang(language, "Show onboarding tips again", "Hinweise erneut anzeigen")
+                    : pickLang(language, "Onboarding tips are active", "Hinweise sind aktiv")}
+                </span>
+                <Sparkles size={14} className="text-muted-foreground" />
+              </button>
 
               <button
                 type="button"

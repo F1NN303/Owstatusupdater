@@ -24,6 +24,20 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
         summary: "  Active incident  ",
         reports_24h: -5,
         incidents: [{ title: "Login issue", started_at: "2026-03-08T10:00:00Z" }],
+        scheduled_maintenances: [
+          {
+            title: "API database maintenance",
+            starts_at: "2026-03-10T02:00:00Z",
+            ends_at: "2026-03-10T03:30:00Z",
+            status: "scheduled",
+            summary: "Planned maintenance window for core API storage.",
+            url: "https://status.example.com/incidents/maintenance-1",
+          },
+          {
+            title: "Unsafe maintenance",
+            url: "javascript:alert(1)",
+          },
+        ],
         components: [
           {
             name: "Chat Completions",
@@ -100,6 +114,20 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
         service: "Platform API",
         health: "degraded",
         url: "https://status.example.com/components/api",
+      },
+    ]);
+    expect(sanitized.outage?.scheduled_maintenances).toMatchObject([
+      {
+        title: "API database maintenance",
+        starts_at: "2026-03-10T02:00:00Z",
+        ends_at: "2026-03-10T03:30:00Z",
+        status: "scheduled",
+        summary: "Planned maintenance window for core API storage.",
+        url: "https://status.example.com/incidents/maintenance-1",
+      },
+      {
+        title: "Unsafe maintenance",
+        url: undefined,
       },
     ]);
     expect(sanitized.reports).toHaveLength(1);
