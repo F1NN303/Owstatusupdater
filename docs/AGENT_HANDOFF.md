@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `c8ba7fd`
+Latest known commit at handoff update: `0a7d996`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -51,6 +51,8 @@ This file is the persistent handoff for future agents. It captures the current p
 - Source transparency and reliability ledger are active in payload and detail analysis UI.
 - 24h source agreement trend is shown in detail analysis.
 - Existing outage/status data contracts stay compatible with current frontend.
+- Detail payload sanitization now preserves component/service breakdown arrays on both the top-level payload and `outage`.
+- This fixes missing API component rows on service detail pages for providers like OpenAI and Claude where the live JSON already includes `outage.components`.
 
 Key files:
 - `services/core/source_runner.py`
@@ -229,6 +231,7 @@ Key files:
 - `NOTICE.md`
 
 ## Recent Important Commits
+- `working tree` - `fix(ui): preserve sanitized component lists so detail API component status renders`
 - `6f2ad53` - `fix(ui): uncramp favorite star on service cards`
 - `4749029` - `feat(favorites): add persistent service starring and harden alerts info exposure`
 - `bf6581b` - `fix(deploy): include public brand assets in root and preview artifacts`

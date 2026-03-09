@@ -10,6 +10,10 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
     const sanitized = sanitizeLegacyStatusDetailPayload({
       generated_at: "2026-03-08T12:00:00Z",
       health: "degraded",
+      components: [
+        { name: "API", status: "operational", url: "javascript:alert(1)" },
+        {},
+      ],
       analytics: {
         severity_key: "major",
         source_ok_count: "2",
@@ -20,6 +24,22 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
         summary: "  Active incident  ",
         reports_24h: -5,
         incidents: [{ title: "Login issue", started_at: "2026-03-08T10:00:00Z" }],
+        components: [
+          {
+            name: "Chat Completions",
+            status: "operational",
+            updated_at: "2026-03-09T17:08:54Z",
+            source: "OpenAI Statuspage API",
+          },
+          { status: "degraded" },
+        ],
+        services: [
+          {
+            service: "Platform API",
+            health: "degraded",
+            url: "https://status.example.com/components/api",
+          },
+        ],
       },
       reports: [
         { title: "Safe item", url: "https://example.com/report", source: "Forums" },
@@ -55,6 +75,25 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
     expect(sanitized.outage?.reports_24h).toBe(0);
     expect(sanitized.analytics?.source_ok_count).toBe(2);
     expect(sanitized.analytics?.source_total_count).toBe(4);
+    expect(sanitized.components).toMatchObject([{ name: "API", status: "operational", url: undefined }]);
+    expect(sanitized.outage?.components).toMatchObject([
+      {
+        name: "Chat Completions",
+        status: "operational",
+        updated_at: "2026-03-09T17:08:54Z",
+        source: "OpenAI Statuspage API",
+      },
+      {
+        status: "degraded",
+      },
+    ]);
+    expect(sanitized.outage?.services).toMatchObject([
+      {
+        service: "Platform API",
+        health: "degraded",
+        url: "https://status.example.com/components/api",
+      },
+    ]);
     expect(sanitized.reports).toHaveLength(1);
     expect(sanitized.reports?.[0].url).toBe("https://example.com/report");
     expect(sanitized.sources?.[0]).toMatchObject({

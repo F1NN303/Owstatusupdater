@@ -67,6 +67,22 @@ export interface LegacyUserReports24hMeta {
   last_reviewed_at?: string | null;
 }
 
+export interface LegacyComponentStatusItem {
+  component_id?: string | null;
+  service_id?: string | null;
+  name?: string | null;
+  component?: string | null;
+  service?: string | null;
+  label?: string | null;
+  status?: string | null;
+  state?: string | null;
+  severity_key?: string | null;
+  health?: string | null;
+  updated_at?: string | null;
+  source?: string | null;
+  url?: string;
+}
+
 export interface LegacySourceHealth {
   source_id?: string;
   name?: string;
@@ -188,6 +204,8 @@ export interface LegacyHistoryPayload {
 export interface LegacyStatusDetailPayload {
   generated_at?: string;
   health?: string;
+  components?: LegacyComponentStatusItem[];
+  services?: LegacyComponentStatusItem[];
   analytics?: {
     severity_key?: string;
     severity_score?: number;
@@ -229,6 +247,8 @@ export interface LegacyStatusDetailPayload {
     summary_origin?: string;
     current_status?: string;
     reports_24h?: number;
+    components?: LegacyComponentStatusItem[];
+    services?: LegacyComponentStatusItem[];
     incidents?: LegacyOutageIncident[];
     top_reported_issues?: LegacyTopReportedIssue[];
     top_reported_issues_meta?: LegacyTopReportedIssuesMeta;
@@ -285,6 +305,7 @@ const MAX_TOP_ISSUES = 50;
 const MAX_SERIES_POINTS = 500;
 const MAX_SOURCES = 100;
 const MAX_HISTORY_POINTS = 5000;
+const MAX_COMPONENT_ITEMS = 500;
 
 function asRecord(value: unknown): Record<string, unknown> | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
@@ -444,6 +465,60 @@ function sanitizeLegacyUserReports24hPoint(value: unknown): LegacyUserReports24h
     return null;
   }
   return { label, count };
+}
+
+function sanitizeLegacyComponentStatusItem(value: unknown): LegacyComponentStatusItem | null {
+  const record = asRecord(value);
+  if (!record) {
+    return null;
+  }
+  const component_id = asTrimmedString(record.component_id, 160);
+  const service_id = asTrimmedString(record.service_id, 160);
+  const name = asTrimmedString(record.name, 240);
+  const component = asTrimmedString(record.component, 240);
+  const service = asTrimmedString(record.service, 240);
+  const label = asTrimmedString(record.label, 240);
+  const status = asTrimmedString(record.status, 64);
+  const state = asTrimmedString(record.state, 64);
+  const severity_key = asTrimmedString(record.severity_key, 64);
+  const health = asTrimmedString(record.health, 64);
+  const updated_at = asTimestamp(record.updated_at);
+  const source = asTrimmedString(record.source, 160);
+  const url = safeExternalHref(record.url) ?? undefined;
+
+  if (
+    !component_id &&
+    !service_id &&
+    !name &&
+    !component &&
+    !service &&
+    !label &&
+    !status &&
+    !state &&
+    !severity_key &&
+    !health &&
+    !updated_at &&
+    !source &&
+    !url
+  ) {
+    return null;
+  }
+
+  return {
+    component_id,
+    service_id,
+    name,
+    component,
+    service,
+    label,
+    status,
+    state,
+    severity_key,
+    health,
+    updated_at,
+    source,
+    url,
+  };
 }
 
 function sanitizeLegacySourceHealth(value: unknown): LegacySourceHealth | null {
@@ -721,6 +796,19 @@ export function sanitizeLegacyStatusDetailPayload(value: unknown): LegacyStatusD
         .slice(0, MAX_SERIES_POINTS)
     : [];
 
+  const sanitizeComponentList = (value: unknown) =>
+    Array.isArray(value)
+      ? value
+          .map((item) => sanitizeLegacyComponentStatusItem(item))
+          .filter((item): item is LegacyComponentStatusItem => Boolean(item))
+          .slice(0, MAX_COMPONENT_ITEMS)
+      : [];
+
+  const components = sanitizeComponentList(record.components);
+  const services = sanitizeComponentList(record.services);
+  const outageComponents = sanitizeComponentList(outageRecord.components);
+  const outageServices = sanitizeComponentList(outageRecord.services);
+
   const sources = Array.isArray(record.sources)
     ? record.sources
         .map((item) => sanitizeLegacySourceHealth(item))
@@ -738,6 +826,8 @@ export function sanitizeLegacyStatusDetailPayload(value: unknown): LegacyStatusD
   return {
     generated_at: asTimestamp(record.generated_at),
     health: asTrimmedString(record.health, 64),
+    components,
+    services,
     analytics: {
       severity_key: asTrimmedString(analyticsRecord.severity_key, 64),
       severity_score: asFiniteNumber(analyticsRecord.severity_score, { min: 0, max: 1_000_000, integer: true }),
@@ -797,6 +887,8 @@ export function sanitizeLegacyStatusDetailPayload(value: unknown): LegacyStatusD
       summary_origin: asTrimmedString(outageRecord.summary_origin, 120),
       current_status: asTrimmedString(outageRecord.current_status, 64),
       reports_24h: asFiniteNumber(outageRecord.reports_24h, { min: 0, max: 1_000_000, integer: true }),
+      components: outageComponents,
+      services: outageServices,
       incidents,
       top_reported_issues,
       top_reported_issues_meta: {
