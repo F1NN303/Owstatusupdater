@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `dc1ecca`
+Latest known commit at handoff update: `c8ba7fd`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -484,3 +484,14 @@ Key files:
 - Validation:
   - `python -m unittest tests.test_url_safety -v` -> passed
   - `python scripts/send_brevo_major_alert.py` -> passed (`[brevo] skip send (not_major) severity=stable`)
+
+## Latest Validation Snapshot (Data Deploy Trigger Fix)
+- Scope:
+  - Root cause found for stale live data after successful `Send Test Email Alert` runs:
+    - the workflow pushed refreshed `site/data/*` to `main`
+    - but `Deploy GitHub Pages` only auto-ran after `Update Site Data`, not after `Send Test Email Alert`
+    - pushes made by `github-actions[bot]` did not trigger the `push` workflow path
+  - `deploy-pages.yml` now also listens to successful `Send Test Email Alert` `workflow_run` events.
+- Validation:
+  - Verified remote refresh commit `c8ba7fd` exists on `main`
+  - Verified live site was still serving older JSON before this workflow fix
