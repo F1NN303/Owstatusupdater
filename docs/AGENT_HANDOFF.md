@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `ad90778`
+Latest known commit at handoff update: `78f8705`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -55,6 +55,10 @@ This file is the persistent handoff for future agents. It captures the current p
   - This ensures `public/brands/*` files are deployed to both root and preview artifacts.
 - Guardrail shipped:
   - `scripts/verify_next_preview_artifact.py` now verifies service brand assets declared in `react-next/src/lib/serviceBranding.ts` exist in both `site/` and `site/next/`.
+- Deploy hotfix after `78f8705`:
+  - `scripts/verify_next_preview_artifact.py` was still enforcing the old `HashRouter`-only production contract.
+  - The live app now uses clean browser routes plus `404.html` + `routerRecovery.ts` for GitHub Pages recovery, so the deploy workflow failed even though the app build was valid.
+  - The verifier now checks for the current router recovery contract instead of the old hash-router default.
 
 ## Data Pipeline and Reliability
 - Source transparency and reliability ledger are active in payload and detail analysis UI.

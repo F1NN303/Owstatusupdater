@@ -13,6 +13,7 @@ INDEX_HTML = SITE_NEXT / "index.html"
 EXPECTED_BASE = "/Owstatusupdater/next/"
 EXPECTED_ROOT_BASE = "/Owstatusupdater/"
 SERVICE_BRANDING_TS = ROOT / "react-next" / "src" / "lib" / "serviceBranding.ts"
+NOT_FOUND_HTML = ROOT / "react-next" / "public" / "404.html"
 
 
 def fail(message: str) -> None:
@@ -117,10 +118,46 @@ def assert_source_contracts() -> None:
         fail("react-next/vite.config.ts is missing the production /Owstatusupdater/next/ base default")
 
     app_tsx = read_text(ROOT / "react-next" / "src" / "App.tsx")
-    if "HashRouter" not in app_tsx:
-        fail("react-next/src/App.tsx no longer imports HashRouter")
-    if "import.meta.env.PROD" not in app_tsx:
-        fail("react-next/src/App.tsx missing production router default logic")
+    required_app_markers = [
+        "BrowserRouter",
+        "HashRouter",
+        'VITE_ROUTER_MODE',
+        "basename={routerBasename}",
+    ]
+    for marker in required_app_markers:
+        if marker not in app_tsx:
+            fail(f"react-next/src/App.tsx missing expected router marker: {marker}")
+
+    main_tsx = read_text(ROOT / "react-next" / "src" / "main.tsx")
+    required_main_markers = [
+        "recoverAppRoute",
+        "navigator.serviceWorker.register",
+        "import.meta.env.PROD",
+    ]
+    for marker in required_main_markers:
+        if marker not in main_tsx:
+            fail(f"react-next/src/main.tsx missing expected startup marker: {marker}")
+
+    router_recovery = read_text(ROOT / "react-next" / "src" / "lib" / "routerRecovery.ts")
+    required_router_recovery_markers = [
+        "ROUTE_REDIRECT_STORAGE_KEY",
+        "sessionStorage.getItem",
+        'hash.startsWith("#/")',
+        "history.replaceState",
+    ]
+    for marker in required_router_recovery_markers:
+        if marker not in router_recovery:
+            fail(f"react-next/src/lib/routerRecovery.ts missing expected marker: {marker}")
+
+    not_found_html = read_text(NOT_FOUND_HTML)
+    required_404_markers = [
+        "owstatusupdater.routeRedirect",
+        "sessionStorage.setItem",
+        "window.location.replace",
+    ]
+    for marker in required_404_markers:
+        if marker not in not_found_html:
+            fail(f"react-next/public/404.html missing expected marker: {marker}")
 
     legacy_site = read_text(ROOT / "react-next" / "src" / "lib" / "legacySite.ts")
     required_markers = [
