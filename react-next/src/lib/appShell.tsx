@@ -28,6 +28,7 @@ interface AppSettingsV2 {
     defaultSort: AppHomeSortKey;
     refreshIntervalSec: AppHomeRefreshIntervalSec;
     compactCards: boolean;
+    favoritesFirst: boolean;
   };
   time: {
     displayMode: AppTimeDisplayMode;
@@ -44,6 +45,7 @@ interface AppSettingsV2Payload {
     defaultSort?: unknown;
     refreshIntervalSec?: unknown;
     compactCards?: unknown;
+    favoritesFirst?: unknown;
   } | null;
   time?: {
     displayMode?: unknown;
@@ -69,6 +71,8 @@ interface AppShellContextValue {
   setHomeRefreshIntervalSec: (next: AppHomeRefreshIntervalSec) => void;
   homeCompactCards: boolean;
   setHomeCompactCards: (next: boolean) => void;
+  homeFavoritesFirst: boolean;
+  setHomeFavoritesFirst: (next: boolean) => void;
   timeDisplayMode: AppTimeDisplayMode;
   setTimeDisplayMode: (next: AppTimeDisplayMode) => void;
   resetSettings: () => void;
@@ -187,6 +191,7 @@ function buildDefaultSettings(): AppSettingsV2 {
       defaultSort: "impact",
       refreshIntervalSec: 60,
       compactCards: false,
+      favoritesFirst: false,
     },
     time: {
       displayMode: "both",
@@ -224,6 +229,7 @@ function sanitizeSettings(raw: AppSettingsV2Payload | null, fallback: AppSetting
         fallback.home.refreshIntervalSec
       ),
       compactCards: normalizeBoolean(raw?.home?.compactCards, fallback.home.compactCards),
+      favoritesFirst: normalizeBoolean(raw?.home?.favoritesFirst, fallback.home.favoritesFirst),
     },
     time: {
       displayMode: normalizeTimeDisplayMode(raw?.time?.displayMode, fallback.time.displayMode),
@@ -362,6 +368,15 @@ export function AppShellProvider({ children }: { children: ReactNode }) {
           home: {
             ...prev.home,
             compactCards: Boolean(next),
+          },
+        })),
+      homeFavoritesFirst: settings.home.favoritesFirst,
+      setHomeFavoritesFirst: (next) =>
+        setSettings((prev) => ({
+          ...prev,
+          home: {
+            ...prev.home,
+            favoritesFirst: Boolean(next),
           },
         })),
       timeDisplayMode: settings.time.displayMode,

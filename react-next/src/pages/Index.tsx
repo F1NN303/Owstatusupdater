@@ -425,12 +425,14 @@ function overallStateFromCards(cards: HomeServiceCard[], hasErrors: boolean): Ov
 const Index = () => {
   const {
     language,
+    favoriteServiceIds,
     isFavoriteService,
     toggleFavoriteService,
     homeDefaultFilter,
     homeDefaultSort,
     homeRefreshIntervalSec,
     homeCompactCards,
+    homeFavoritesFirst,
     timeDisplayMode,
   } = useAppShell();
   const [searchParams] = useSearchParams();
@@ -447,6 +449,7 @@ const Index = () => {
     () => parseFilterParam(urlFilterParam || homeDefaultFilter)
   );
   const [sortBy, setSortBy] = useState<HomeSortKey>(() => parseSortParam(urlSortParam || homeDefaultSort));
+  const favoriteServiceIdSet = useMemo(() => new Set(favoriteServiceIds), [favoriteServiceIds]);
 
   useEffect(() => {
     setSearchQuery(urlQueryParam || "");
@@ -622,6 +625,14 @@ const Index = () => {
         return haystack.includes(query);
       })
       .sort((left, right) => {
+        if (homeFavoritesFirst) {
+          const leftFavorite = favoriteServiceIdSet.has(left.serviceId);
+          const rightFavorite = favoriteServiceIdSet.has(right.serviceId);
+          if (leftFavorite !== rightFavorite) {
+            return leftFavorite ? -1 : 1;
+          }
+        }
+
         if (sortBy === "name") {
           return left.server.name.localeCompare(right.server.name);
         }
@@ -644,7 +655,7 @@ const Index = () => {
         }
         return left.server.name.localeCompare(right.server.name);
       });
-  }, [activeFilter, cards, deferredSearchQuery, sortBy]);
+  }, [activeFilter, cards, deferredSearchQuery, favoriteServiceIdSet, homeFavoritesFirst, sortBy]);
 
   useEffect(() => {
     if (!activeFilter.startsWith("category:")) {
@@ -702,8 +713,8 @@ const Index = () => {
               <p className="mt-1 text-xs text-muted-foreground">
                 {pickLang(
                   language,
-                  "Cards are shown only when the live API/JSON response loads successfully.",
-                  "Karten werden nur angezeigt, wenn die Live-API/JSON-Antwort erfolgreich geladen wird."
+                  "Service cards appear as soon as live status updates are available.",
+                  "Service-Karten erscheinen, sobald Live-Statusupdates verfügbar sind."
                 )}
               </p>
             </div>
@@ -859,8 +870,8 @@ const Index = () => {
                 <p className="mt-0.5 opacity-90">
                   {pickLang(
                     language,
-                    `Latest successful payload is ${formatAgeMinutes(dataAgeMinutes)} old.`,
-                    `Der letzte erfolgreiche Payload ist ${formatAgeMinutes(dataAgeMinutes)} alt.`
+                    `Latest status update is ${formatAgeMinutes(dataAgeMinutes)} old.`,
+                    `Das letzte erfolgreiche Statusupdate ist ${formatAgeMinutes(dataAgeMinutes)} alt.`
                   )}
                 </p>
               </div>
@@ -899,15 +910,15 @@ const Index = () => {
             <p>
               {pickLang(
                 language,
-                "Some live sources failed to load. Only successfully loaded API data is shown. Automatic retries stay active.",
-                "Einige Live-Quellen konnten nicht geladen werden. Es werden nur erfolgreich geladene API-Daten angezeigt. Automatische Wiederholungen bleiben aktiv."
+                "Some services could not be refreshed right now. The latest available status remains visible while automatic retries continue.",
+                "Einige Services konnten gerade nicht aktualisiert werden. Der zuletzt verfügbare Status bleibt sichtbar, während automatische Wiederholungen weiterlaufen."
               )}
             </p>
             <p className="mt-1 opacity-90">
               {pickLang(
                 language,
-                `${errorMessages.length} source requests failed during the latest refresh.`,
-                `${errorMessages.length} Quellenanfragen sind bei der letzten Aktualisierung fehlgeschlagen.`
+                `${errorMessages.length} refresh requests failed during the latest update.`,
+                `${errorMessages.length} Aktualisierungsanfragen sind bei der letzten Aktualisierung fehlgeschlagen.`
               )}
             </p>
           </div>

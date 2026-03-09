@@ -35,6 +35,8 @@ const SettingsPage = () => {
     setHomeRefreshIntervalSec,
     homeCompactCards,
     setHomeCompactCards,
+    homeFavoritesFirst,
+    setHomeFavoritesFirst,
     timeDisplayMode,
     setTimeDisplayMode,
     resetSettings,
@@ -288,6 +290,38 @@ const SettingsPage = () => {
                   <span
                     className={`absolute h-5 w-5 rounded-full bg-white shadow transition-transform ${
                       homeCompactCards ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                    {pickLang(language, "Favorites First", "Favoriten zuerst")}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {pickLang(
+                      language,
+                      "Keep starred services pinned near the top of the home feed.",
+                      "Halt markierte Services oben im Home-Feed."
+                    )}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={homeFavoritesFirst}
+                  onClick={() => setHomeFavoritesFirst(!homeFavoritesFirst)}
+                  className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors ${
+                    homeFavoritesFirst ? "border-primary/40 bg-primary/20" : "border-white/10 bg-white/5"
+                  }`}
+                >
+                  <span
+                    className={`absolute h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                      homeFavoritesFirst ? "translate-x-6" : "translate-x-1"
                     }`}
                   />
                 </button>

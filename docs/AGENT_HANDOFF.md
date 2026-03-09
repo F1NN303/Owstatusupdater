@@ -1,8 +1,8 @@
 # Agent Handoff
 
-Last updated: 2026-03-08
+Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `c25b37d`
+Latest known commit at handoff update: `14f0474`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -459,3 +459,15 @@ Key files:
     - Implementation commit: `5eb8e6c`
 - Validation:
   - `npm.cmd run build` in `react-next` -> passed (for each of the above commits)
+
+## Latest Validation Snapshot (Alerts Workflow + Public Copy Cleanup)
+- Scope:
+  - Fixed `scripts/send_brevo_major_alert.py` so `python scripts/send_brevo_major_alert.py` works from the repo root in GitHub Actions.
+  - Confirmed the `Update Site Data` workflow failure was in the Brevo email step, not the status-data build step.
+  - Added a saved `Favorites First` home-feed setting.
+  - Removed public-facing detail/feed wording that exposed implementation terms like `Payload`, `API payload`, `fallback`, raw source errors, and SLA/quorum phrasing.
+- Validation:
+  - `python scripts/send_brevo_major_alert.py` -> passed (`[brevo] skip send (not_major) severity=stable`)
+  - `python -m unittest tests.test_url_safety -v` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
+  - `python scripts/check_public_exposure.py` -> passed

@@ -1,13 +1,18 @@
 import datetime as dt
 import json
 import os
+import sys
 from html import escape as html_escape
 from pathlib import Path
 
 import requests
-from services.core.shared import _safe_http_url
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from services.core.shared import _safe_http_url
+
 STATUS_PATH = ROOT / "site" / "data" / "status.json"
 STATE_PATH = ROOT / ".bot_state" / "email_alert_state.json"
 DEFAULT_SITE_URL = "https://f1nn303.github.io/Owstatusupdater/"

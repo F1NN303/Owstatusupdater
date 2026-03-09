@@ -1164,7 +1164,7 @@ function UserReports24hChart({
           {pickLang(language, "User reports", "Nutzerberichte")}
         </span>
         <span>
-          {pickLang(language, "IsDown fallback chart", "IsDown-Fallback-Chart")}
+          {pickLang(language, "IsDown report chart", "IsDown-Berichts-Chart")}
         </span>
       </div>
       <div className="flex gap-2">
@@ -2408,17 +2408,17 @@ const ServerDetail = () => {
           "Gruppiert aus offiziellen PlayStation-Regional-Statusfeeds (aktive Feed-Zeilen, keine Nutzerberichte)."
         )
     : t(
-        "StatusGator community issue labels (live source scrape)",
-        "StatusGator Community-Problemlabels (Live-Quellenabruf)"
+        "Community issue topics from StatusGator",
+        "Community-Probleme von StatusGator"
       );
   const topIssueEmptyText = isSonyDetail
     ? t(
-        "No grouped Sony status feed labels are available in the current payload window.",
-        "Im aktuellen Payload-Fenster sind keine gruppierten Sony-Statusfeed-Labels verfügbar."
+        "No grouped Sony status topics are available right now.",
+        "Zurzeit sind keine gruppierten Sony-Statusmeldungen verfügbar."
       )
     : t(
-        "No top issue labels are available in the current StatusGator page response.",
-        "In der aktuellen StatusGator-Seitenantwort sind keine Top-Problemlabels verfügbar."
+        "No top issue topics are available from StatusGator right now.",
+        "Zurzeit sind keine Top-Probleme von StatusGator verfügbar."
       );
 
   const beginTabSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
@@ -2668,7 +2668,10 @@ const ServerDetail = () => {
 
             {errorText ? (
               <div className="glass rounded-2xl p-3 text-xs text-amber-300">
-                {t("Refresh error", "Aktualisierungsfehler")}: {errorText}
+                {t(
+                  "This service could not be refreshed just now. The latest available status is still shown.",
+                  "Dieser Service konnte gerade nicht aktualisiert werden. Der zuletzt verfügbare Status wird weiterhin angezeigt."
+                )}
               </div>
             ) : null}
 
@@ -2688,8 +2691,8 @@ const ServerDetail = () => {
                     </p>
                     <p className="mt-0.5 opacity-90">
                       {t(
-                        `The latest successful payload is ${formatAgeMinutes(dataAgeMinutes)} old.`,
-                        `Der letzte erfolgreiche Payload ist ${formatAgeMinutes(dataAgeMinutes)} alt.`
+                        `The latest status update is ${formatAgeMinutes(dataAgeMinutes)} old.`,
+                        `Das letzte erfolgreiche Statusupdate ist ${formatAgeMinutes(dataAgeMinutes)} alt.`
                       )}
                     </p>
                   </div>
@@ -2773,8 +2776,8 @@ const ServerDetail = () => {
                   {componentRows.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground sm:text-[13px]">
                       {t(
-                        "No component breakdown is provided in the current API payload.",
-                        "Im aktuellen API-Payload wird kein Komponentenstatus bereitgestellt."
+                        "No component breakdown is available right now.",
+                        "Zurzeit ist keine Komponentenübersicht verfügbar."
                       )}
                     </p>
                   ) : filteredComponentRows.length === 0 ? (
@@ -2854,8 +2857,8 @@ const ServerDetail = () => {
                 badgeLabel={apiBadge}
                 badgeTone="api"
                 subtitle={t(
-                  "IsDown user-report timeline used as outage-source fallback",
-                  "IsDown-Nutzerbericht-Zeitreihe als Ausfallquellen-Fallback"
+                  "Based on recent user reports when direct service-health samples are unavailable",
+                  "Basiert auf aktuellen Nutzerberichten, wenn direkte Service-Health-Samples fehlen"
                 )}
               >
                 <UserReports24hChart points={isDown24hSeries} language={language} />
@@ -2866,8 +2869,8 @@ const ServerDetail = () => {
                 badgeLabel={derivedBadge}
                 badgeTone="derived"
                 subtitle={t(
-                  "Derived from incident/report/news timestamps (not latency)",
-                  "Aus Zeitstempeln von Vorfällen/Meldungen/News abgeleitet (keine Latenz)"
+                  "Built from recent incidents, reports, and updates",
+                  "Erstellt aus aktuellen Vorfällen, Meldungen und Updates"
                 )}
               >
                 <SignalActivityChart data={sparklineData} />
@@ -2991,8 +2994,8 @@ const ServerDetail = () => {
                   {outageIncidents.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
                       {t(
-                        "No recent incidents listed in the current outage payload.",
-                        "Keine aktuellen Vorfälle im derzeitigen Ausfall-Payload gelistet."
+                        "No recent incidents are listed right now.",
+                        "Zurzeit sind keine aktuellen Vorfälle gelistet."
                       )}
                     </p>
                   ) : (
@@ -3100,11 +3103,11 @@ const ServerDetail = () => {
                       {sourceConfidenceTier})
                     </span>
                     <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-muted-foreground">
-                      {t("Required quorum", "Pflicht-Quorum")}:{" "}
+                      {t("Core sources", "Kernquellen")}:{" "}
                       {`${sourceRequiredOk}/${sourceRequiredTotal}`}
                     </span>
                     <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-muted-foreground">
-                      {t("Scoring quorum", "Scoring-Quorum")}:{" "}
+                      {t("Signals used", "Genutzte Signale")}:{" "}
                       {`${sourceScoringOk}/${sourceScoringTotal}`}
                     </span>
                     {sourceConflict ? (
@@ -3159,7 +3162,7 @@ const ServerDetail = () => {
                   <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
                     <div className="mb-2 flex items-center justify-between gap-2">
                       <p className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-                        {t("Freshness SLA", "Frische-SLA")}
+                        {t("Update window", "Aktualisierungsfenster")}
                       </p>
                       <span
                         className={`rounded-full border px-2 py-0.5 text-[10px] ${
@@ -3169,8 +3172,8 @@ const ServerDetail = () => {
                         }`}
                       >
                         {hasFreshnessBreach
-                          ? t("SLA breached", "SLA verletzt")
-                          : t("SLA met", "SLA erfüllt")}
+                          ? t("Delayed", "Verspätet")
+                          : t("On time", "Pünktlich")}
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-1.5 text-[11px]">
@@ -3190,8 +3193,8 @@ const ServerDetail = () => {
                     {hasFreshnessBreach ? (
                       <p className="mt-1.5 text-[11px] text-amber-200">
                         {t(
-                          "At least one source exceeded the freshness SLA.",
-                          "Mindestens eine Quelle hat die Frische-SLA überschritten."
+                          "At least one source is updating later than expected.",
+                          "Mindestens eine Quelle aktualisiert sich später als erwartet."
                         )}{" "}
                         {staleSourceNames.length > 0 ? staleSourceNames.join(", ") : ""}
                       </p>
@@ -3231,7 +3234,7 @@ const ServerDetail = () => {
                             <span>{t("fail streak", "Fehler-Serie")}: {source.consecutive_failures ?? 0}</span>
                             {normalizeSourceFreshnessKey(source.latest?.freshness) === "stale" ? (
                               <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-1.5 py-0.5 text-[10px] text-amber-200">
-                                {t("SLA breached", "SLA verletzt")}
+                                {t("Delayed", "Verspätet")}
                               </span>
                             ) : null}
                           </div>
@@ -3254,7 +3257,7 @@ const ServerDetail = () => {
                 <div className="mt-3 space-y-2.5">
                   {regionEntries.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      {t("No regional data in payload.", "Keine Regionaldaten im Payload.")}
+                      {t("No regional data is available right now.", "Zurzeit sind keine Regionaldaten verfügbar.")}
                     </p>
                   ) : (
                     regionEntries.map((region) => {
@@ -3301,7 +3304,7 @@ const ServerDetail = () => {
                 <div className="mt-3 space-y-2.5">
                   {sources.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      {t("No source status details available.", "Keine Quellenprüfungen im Payload.")}
+                      {t("No source status details are available right now.", "Zurzeit sind keine Quellenstatus-Details verfügbar.")}
                     </p>
                   ) : (
                     sources.map((source, index) => {
@@ -3328,7 +3331,7 @@ const ServerDetail = () => {
                           <div className="flex items-center gap-1.5">
                             {!slaOk ? (
                               <span className="rounded-full border border-amber-300/30 bg-amber-300/12 px-2 py-0.5 text-[10px] text-amber-200">
-                                {t("SLA breached", "SLA verletzt")}
+                                {t("Delayed", "Verspätet")}
                               </span>
                             ) : null}
                             <span
@@ -3349,7 +3352,9 @@ const ServerDetail = () => {
                           {typeof source.duration_ms === "number" ? <span>{t("fetch", "Abrufzeit")}: {source.duration_ms}ms</span> : null}
                         </div>
                         {source.error ? (
-                          <p className="mt-1 text-[11px] text-rose-200">{source.error}</p>
+                          <p className="mt-1 text-[11px] text-rose-200">
+                            {t("This source is currently unavailable.", "Diese Quelle ist derzeit nicht verfügbar.")}
+                          </p>
                         ) : null}
                       </div>
                       );
@@ -3363,11 +3368,11 @@ const ServerDetail = () => {
 
             {activeTab === "sources" ? (
               <>
-                <LinkListSection title={t("Official Updates", "Offizielle Meldungen")} items={officialItems} emptyText={t("No official updates in payload.", "Keine offiziellen Meldungen im Payload.")} badgeLabel={apiBadge} />
-                <LinkListSection title={t("User Reports", "Nutzermeldungen")} items={reportItems} emptyText={t("No report entries in payload.", "Keine Nutzermeldungen im Payload.")} badgeLabel={apiBadge} />
-                <LinkListSection title={t("News", "News")} items={newsItems} emptyText={t("No news entries in payload.", "Keine News-Einträge im Payload.")} badgeLabel={apiBadge} />
-                <LinkListSection title={t("Social", "Social")} items={socialItems} emptyText={t("No social entries in payload.", "Keine Social-Einträge im Payload.")} badgeLabel={apiBadge} />
-                <LinkListSection title={t("Helpful Links", "Hilfreiche Links")} items={knownItems} emptyText={t("No known resources in payload.", "Keine hilfreichen Links im Payload.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Official Updates", "Offizielle Meldungen")} items={officialItems} emptyText={t("No official updates are available right now.", "Zurzeit sind keine offiziellen Meldungen verfügbar.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("User Reports", "Nutzermeldungen")} items={reportItems} emptyText={t("No user reports are available right now.", "Zurzeit sind keine Nutzermeldungen verfügbar.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("News", "News")} items={newsItems} emptyText={t("No news items are available right now.", "Zurzeit sind keine News verfügbar.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Social", "Social")} items={socialItems} emptyText={t("No social updates are available right now.", "Zurzeit sind keine Social-Updates verfügbar.")} badgeLabel={apiBadge} />
+                <LinkListSection title={t("Helpful Links", "Hilfreiche Links")} items={knownItems} emptyText={t("No helpful links are available right now.", "Zurzeit sind keine hilfreichen Links verfügbar.")} badgeLabel={apiBadge} />
               </>
             ) : null}
             </div>
