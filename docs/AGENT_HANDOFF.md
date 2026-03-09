@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `54482e4`
+Latest known commit at handoff update: `1f05194`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -57,6 +57,9 @@ This file is the persistent handoff for future agents. It captures the current p
   - source transparency percentage fields (`confidence_score`, `success_rate`, `stale_rate`, `cache_hit_rate`) are now sanitized as percentages, not incorrectly clamped to `0..1`
   - the detail header confidence chip no longer mixes German labels with English body text
   - source role / criticality values are rendered as user-facing labels instead of raw backend values like `provider` / `supporting`
+- UI behavior fix shipped in working tree:
+  - `Favorites First` is now the default home behavior for fresh installs, resets, and a one-time migration for pre-v3 stored settings
+  - API component lists now sort impacted components ahead of healthy ones so degraded/offline entries stay visible without forcing `Show all`
 
 Key files:
 - `services/core/source_runner.py`

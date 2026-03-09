@@ -1557,6 +1557,16 @@ function normalizeComponentStatus(value: unknown): Status | null {
   return null;
 }
 
+function componentStatusRank(status: Status) {
+  if (status === "offline") {
+    return 0;
+  }
+  if (status === "degraded") {
+    return 1;
+  }
+  return 2;
+}
+
 function extractApiServiceComponents(
   detail: LegacyServiceDetailResult
 ): Array<{ name: string; status: Status }> {
@@ -1592,7 +1602,7 @@ function extractApiServiceComponents(
       .filter((row): row is { name: string; status: Status } => Boolean(row));
 
     if (rows.length > 0) {
-      return rows;
+      return [...rows].sort((left, right) => componentStatusRank(left.status) - componentStatusRank(right.status));
     }
   }
 

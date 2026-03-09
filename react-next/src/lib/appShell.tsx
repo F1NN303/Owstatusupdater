@@ -19,7 +19,7 @@ const REDUCED_MOTION_STORAGE_KEY = "owstatusupdater.react.reduceMotion";
 const SETTINGS_STORAGE_KEY = "owstatusupdater.react.settings.v2";
 
 interface AppSettingsV2 {
-  schemaVersion: 2;
+  schemaVersion: 3;
   language: AppLanguage;
   reduceMotion: boolean;
   favorites: AppFavoriteServiceId[];
@@ -182,7 +182,7 @@ function normalizeFavoriteServiceIds(value: unknown, fallback: AppFavoriteServic
 
 function buildDefaultSettings(): AppSettingsV2 {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     language: detectBrowserLanguage(),
     reduceMotion: detectSystemReducedMotion(),
     favorites: [],
@@ -191,7 +191,7 @@ function buildDefaultSettings(): AppSettingsV2 {
       defaultSort: "impact",
       refreshIntervalSec: 60,
       compactCards: false,
-      favoritesFirst: false,
+      favoritesFirst: true,
     },
     time: {
       displayMode: "both",
@@ -216,8 +216,10 @@ function migrateLegacySettings(defaults: AppSettingsV2): AppSettingsV2 {
 }
 
 function sanitizeSettings(raw: AppSettingsV2Payload | null, fallback: AppSettingsV2): AppSettingsV2 {
+  const rawSchemaVersion = Number.parseInt(String(raw?.schemaVersion ?? "").trim(), 10);
+  const shouldMigrateFavoritesFirst = !Number.isFinite(rawSchemaVersion) || rawSchemaVersion < 3;
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     language: normalizeLanguage(raw?.language, fallback.language),
     reduceMotion: normalizeBoolean(raw?.reduceMotion, fallback.reduceMotion),
     favorites: normalizeFavoriteServiceIds(raw?.favorites, fallback.favorites),
@@ -229,7 +231,9 @@ function sanitizeSettings(raw: AppSettingsV2Payload | null, fallback: AppSetting
         fallback.home.refreshIntervalSec
       ),
       compactCards: normalizeBoolean(raw?.home?.compactCards, fallback.home.compactCards),
-      favoritesFirst: normalizeBoolean(raw?.home?.favoritesFirst, fallback.home.favoritesFirst),
+      favoritesFirst: shouldMigrateFavoritesFirst
+        ? true
+        : normalizeBoolean(raw?.home?.favoritesFirst, fallback.home.favoritesFirst),
     },
     time: {
       displayMode: normalizeTimeDisplayMode(raw?.time?.displayMode, fallback.time.displayMode),
