@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-03-09T22:32:30.310410Z",
+  "generated_at": "2026-03-09T23:31:06.544998Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "major",
+    "severity_score": 8,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 4.9,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 3.25
+      "profile_adjustment": 3.05
     },
     "signal_metrics": {
-      "reports_24h": 263,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 4,
+      "reports_24h": 260,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 5,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,7 +29,7 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
@@ -40,43 +40,51 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_operational_vs_aggregate_issue",
-      "official_status": "operational",
-      "derived_severity": "degraded",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
+      "official_status": "major outage",
+      "derived_severity": "major",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status is operational while aggregate signals indicate active issues."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Outage",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Outage",
         "url": "https://status.openai.com/",
-        "published_at": "2026-03-09T22:32:29.400612Z",
+        "published_at": "2026-03-09T23:31:05.731207Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: major"
+      },
+      {
+        "title": "Codex unresponsive",
+        "url": "https://status.openai.com/incidents/01KK9JA8JKQKDW1W24T09NHBYH#01KKAEKEYCYMXS6AB6QZMXRY62",
+        "published_at": "2026-03-09T22:30:00Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved"
       },
       {
         "title": "Codex unresponsive",
@@ -84,7 +92,15 @@
         "published_at": "2026-03-09T20:45:00Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring"
+        "meta": "Monitoring / Minor / Resolved"
+      },
+      {
+        "title": "Deep Research requests are erroring for LATAM users",
+        "url": "https://status.openai.com/incidents/01KKAD2PHFBC0DP0X6ZQTJJ4D4#01KKAD93T68DS7HG495EWYR9XG",
+        "published_at": "2026-03-09T18:58:00Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Major / Identified"
       },
       {
         "title": "Codex unresponsive",
@@ -92,7 +108,7 @@
         "published_at": "2026-03-09T17:44:00Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Minor / Monitoring"
+        "meta": "Identified / Minor / Resolved"
       },
       {
         "title": "Elevated conversation errors for Enterprise and Edu users",
@@ -124,7 +140,7 @@
         "published_at": "2026-03-09T15:09:12Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring"
+        "meta": "Investigating / Minor / Resolved"
       },
       {
         "title": "Issues with Increased Codex Usage Rate",
@@ -133,44 +149,36 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved"
-      },
-      {
-        "title": "Login Issues",
-        "url": "https://status.openai.com/incidents/01KK2T9TNTF5V3BSJ9T8D2S5CY#01KK2WS3FV0H3AKQTREZEA64J5",
-        "published_at": "2026-03-07T00:57:23Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved"
-      },
-      {
-        "title": "Login Issues",
-        "url": "https://status.openai.com/incidents/01KK2T9TNTF5V3BSJ9T8D2S5CY#01KK2V3DWEMHR5M570R7KK1A6M",
-        "published_at": "2026-03-07T00:28:04Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved"
       }
     ],
-    "last_statement_at": "2026-03-09T22:32:29.400612Z"
+    "last_statement_at": "2026-03-09T23:31:05.731207Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports an active incident: Codex unresponsive.",
-    "current_status": "operational",
-    "reports_24h": 263,
+    "summary": "OpenAI Statuspage reports an active incident: Deep Research requests are erroring for LATAM users.",
+    "current_status": "major outage",
+    "reports_24h": 260,
     "incidents": [
+      {
+        "title": "Deep Research requests are erroring for LATAM users",
+        "started_at": "2026-03-09T23:02:04Z",
+        "duration": "8m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Deep Research requests are erroring for LATAM users",
+        "started_at": "2026-03-09T22:56:55Z",
+        "duration": "34m ongoing",
+        "acknowledgement": "Major / Identified",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01KKAD2PHFBC0DP0X6ZQTJJ4D4"
+      },
       {
         "title": "Codex CLI unresponsive",
         "started_at": "2026-03-09T16:17:06Z",
         "duration": "5h 15m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Elevated conversation errors for Enterprise and Edu users",
-        "started_at": "2026-03-09T15:42:07Z",
-        "duration": "35m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -184,8 +192,8 @@
       {
         "title": "Codex unresponsive",
         "started_at": "2026-03-09T15:09:12Z",
-        "duration": "7h 23m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "7h 20m",
+        "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KK9JA8JKQKDW1W24T09NHBYH"
       },
@@ -212,47 +220,20 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KK26XE1W536H7DQV2EXM3GHE"
-      },
-      {
-        "title": "ChatGPT Issues Sending Messages",
-        "started_at": "2026-03-05T18:12:26Z",
-        "duration": "3h 37m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KJZK6XF3E5M2DRNZQ1EDDMJ4"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Deep Research",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-03-08T22:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-08T23:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-08T23:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-08T23:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-03-08T23:45:00Z",
         "signal_value": 3.0,
@@ -804,6 +785,30 @@
         "signal_value": 15.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-09T22:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-09T23:00:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-09T23:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-09T23:30:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -812,22 +817,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-03-09T22:30:00Z"
+      "last_sample_at": "2026-03-09T23:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "22:40",
-        "count": 2
-      },
-      {
-        "label": "23:00",
-        "count": 3
-      },
-      {
-        "label": "23:20",
-        "count": 5
-      },
       {
         "label": "23:40",
         "count": 3
@@ -1103,6 +1096,18 @@
       {
         "label": "22:20",
         "count": 3
+      },
+      {
+        "label": "22:40",
+        "count": 4
+      },
+      {
+        "label": "23:00",
+        "count": 0
+      },
+      {
+        "label": "23:20",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1111,14 +1116,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-09T17:32:28-05:00"
+      "last_reviewed_at": "2026-03-09T18:31:05-05:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 263,
-        "last_reviewed_at": "2026-03-09T17:32:28-05:00"
+        "reports_24h": 260,
+        "last_reviewed_at": "2026-03-09T18:31:05-05:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1128,210 +1133,217 @@
         "name": "Batch",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "File uploads",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Search",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Agent",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Chat Completions",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:38Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Realtime",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Files",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Login",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Sora",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Image Generation",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Login",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Video generation",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Video viewing",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Feed",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Responses",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:38Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Codex",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
-        "name": "Audio",
+        "name": "Chat Completions",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
-        "name": "Embeddings",
+        "name": "Realtime",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:38Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
-        "name": "Fine-tuning",
+        "name": "Files",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:38Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Moderations",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Image Generation",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Images",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Conversations",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "GPTs",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Connectors/Apps",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Deep Research",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Login",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Sora",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Image Generation",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Agent",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Login",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Video generation",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Video viewing",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Feed",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Image Generation",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "FedRAMP",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Audio",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Embeddings",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Fine-tuning",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Moderations",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Images",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Conversations",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "GPTs",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Connectors/Apps",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Deep Research",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-03-09T22:59:29Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Login",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Compliance API",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "ChatGPT Atlas",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Voice mode",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-01-30T19:04:39Z",
+        "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       }
     ],
@@ -1362,27 +1374,34 @@
         "count": 1
       },
       {
-        "label": "Connectivity issue",
-        "count": 0
+        "label": "Other",
+        "count": 1
       },
       {
-        "label": "Unable to download",
+        "label": "Connectivity issue",
         "count": 0
       }
     ]
   },
   "reports": [
     {
-      "title": "Codex CLI unresponsive",
-      "url": "https://status.openai.com/#2026-03-09T16:17:06Z",
-      "published_at": "2026-03-09T16:17:06Z",
+      "title": "Deep Research requests are erroring for LATAM users",
+      "url": "https://status.openai.com/#2026-03-09T23:02:04Z",
+      "published_at": "2026-03-09T23:02:04Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
     {
-      "title": "Elevated conversation errors for Enterprise and Edu users",
-      "url": "https://status.openai.com/#2026-03-09T15:42:07Z",
-      "published_at": "2026-03-09T15:42:07Z",
+      "title": "Deep Research requests are erroring for LATAM users",
+      "url": "https://status.openai.com/incidents/01KKAD2PHFBC0DP0X6ZQTJJ4D4",
+      "published_at": "2026-03-09T22:56:55Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Major / Identified"
+    },
+    {
+      "title": "Codex CLI unresponsive",
+      "url": "https://status.openai.com/#2026-03-09T16:17:06Z",
+      "published_at": "2026-03-09T16:17:06Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
@@ -1398,7 +1417,7 @@
       "url": "https://status.openai.com/incidents/01KK9JA8JKQKDW1W24T09NHBYH",
       "published_at": "2026-03-09T15:09:12Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Login Issues",
@@ -1420,13 +1439,6 @@
       "published_at": "2026-03-06T18:35:16Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "ChatGPT Issues Sending Messages",
-      "url": "https://status.openai.com/incidents/01KJZK6XF3E5M2DRNZQ1EDDMJ4",
-      "published_at": "2026-03-05T18:12:26Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1435,45 +1447,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-03-09T22:32:30.310410Z"
+      "published_at": "2026-03-09T23:31:06.544998Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-09T22:32:30.310410Z"
+      "published_at": "2026-03-09T23:31:06.544998Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-03-09T22:32:30.310410Z"
+      "published_at": "2026-03-09T23:31:06.544998Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-03-09T22:32:30.310410Z"
+      "published_at": "2026-03-09T23:31:06.544998Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-03-09T22:32:30.310410Z"
+      "published_at": "2026-03-09T23:31:06.544998Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Outage",
       "url": "https://status.openai.com/",
-      "published_at": "2026-03-09T22:32:29.400612Z",
+      "published_at": "2026-03-09T23:31:05.731207Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: major"
+    },
+    {
+      "title": "Codex unresponsive",
+      "url": "https://status.openai.com/incidents/01KK9JA8JKQKDW1W24T09NHBYH#01KKAEKEYCYMXS6AB6QZMXRY62",
+      "published_at": "2026-03-09T22:30:00Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved"
     },
     {
       "title": "Codex unresponsive",
@@ -1481,7 +1501,15 @@
       "published_at": "2026-03-09T20:45:00Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring"
+      "meta": "Monitoring / Minor / Resolved"
+    },
+    {
+      "title": "Deep Research requests are erroring for LATAM users",
+      "url": "https://status.openai.com/incidents/01KKAD2PHFBC0DP0X6ZQTJJ4D4#01KKAD93T68DS7HG495EWYR9XG",
+      "published_at": "2026-03-09T18:58:00Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Major / Identified"
     },
     {
       "title": "Codex unresponsive",
@@ -1489,7 +1517,7 @@
       "published_at": "2026-03-09T17:44:00Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Minor / Monitoring"
+      "meta": "Identified / Minor / Resolved"
     },
     {
       "title": "Elevated conversation errors for Enterprise and Edu users",
@@ -1514,22 +1542,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Identified / Minor / Resolved"
-    },
-    {
-      "title": "Codex unresponsive",
-      "url": "https://status.openai.com/incidents/01KK9JA8JKQKDW1W24T09NHBYH#01KK9JA8JKM9NR4P1F4PRS1F1B",
-      "published_at": "2026-03-09T15:09:12Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring"
-    },
-    {
-      "title": "Issues with Increased Codex Usage Rate",
-      "url": "https://status.openai.com/incidents/01KK26XE1W536H7DQV2EXM3GHE#01KK2WZ52WVKMC7XRHPCHEM6MZ",
-      "published_at": "2026-03-07T01:00:41Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved"
     }
   ],
   "social": [],
@@ -1545,11 +1557,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-03-09T22:32:28.194372Z",
+      "last_item_at": "2026-03-09T23:31:04.817134Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1295,
-      "fetched_at": "2026-03-09T22:32:28.194388Z",
+      "duration_ms": 830,
+      "fetched_at": "2026-03-09T23:31:04.817150Z",
       "cache_hit": false
     },
     {
@@ -1563,11 +1575,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-09T17:32:28-05:00",
+      "last_item_at": "2026-03-09T18:31:05-05:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1205,
-      "fetched_at": "2026-03-09T22:32:29.400053Z",
+      "duration_ms": 913,
+      "fetched_at": "2026-03-09T23:31:05.730625Z",
       "cache_hit": false
     },
     {
@@ -1581,17 +1593,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-03-09T22:32:29.400612Z",
+      "last_item_at": "2026-03-09T23:31:05.731207Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 908,
-      "fetched_at": "2026-03-09T22:32:30.308929Z",
+      "duration_ms": 812,
+      "fetched_at": "2026-03-09T23:31:06.543463Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-03-09T22:32:30.310410Z",
+    "generated_at": "2026-03-09T23:31:06.544998Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1613,7 +1625,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "major",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1628,18 +1640,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1295,
+          "duration_ms": 830,
           "cache_hit": false,
-          "at": "2026-03-09T22:32:26Z"
+          "at": "2026-03-09T23:31:03Z"
         },
         "metrics_24h": {
-          "runs": 36,
-          "ok": 36,
+          "runs": 34,
+          "ok": 34,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 926.5
+          "avg_duration_ms": 919.8
         },
         "metrics_7d": {
           "runs": 193,
@@ -1648,10 +1660,10 @@
           "success_rate": 100.0,
           "stale_rate": 4.1,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 986.9
+          "avg_duration_ms": 987.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-09T22:32:26Z",
+        "last_success_at": "2026-03-09T23:31:03Z",
         "last_failure_at": null
       },
       {
@@ -1665,18 +1677,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1205,
+          "duration_ms": 913,
           "cache_hit": false,
-          "at": "2026-03-09T22:32:26Z"
+          "at": "2026-03-09T23:31:03Z"
         },
         "metrics_24h": {
-          "runs": 36,
-          "ok": 36,
+          "runs": 34,
+          "ok": 34,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1232.6
+          "avg_duration_ms": 1234.7
         },
         "metrics_7d": {
           "runs": 193,
@@ -1685,10 +1697,10 @@
           "success_rate": 99.5,
           "stale_rate": 0.5,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1067.7
+          "avg_duration_ms": 1066.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-09T22:32:26Z",
+        "last_success_at": "2026-03-09T23:31:03Z",
         "last_failure_at": "2026-03-03T23:30:27Z"
       },
       {
@@ -1702,18 +1714,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 908,
+          "duration_ms": 812,
           "cache_hit": false,
-          "at": "2026-03-09T22:32:26Z"
+          "at": "2026-03-09T23:31:03Z"
         },
         "metrics_24h": {
-          "runs": 36,
-          "ok": 36,
+          "runs": 34,
+          "ok": 34,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 708.2
+          "avg_duration_ms": 715.2
         },
         "metrics_7d": {
           "runs": 193,
@@ -1722,35 +1734,60 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 705.7
+          "avg_duration_ms": 705.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-09T22:32:26Z",
+        "last_success_at": "2026-03-09T23:31:03Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-03-09T22:32:30.310410Z",
+    "generated_at": "2026-03-09T23:31:06.544998Z",
     "incidents": {
       "new": [
+        {
+          "id": "f867b0aa30527478",
+          "title": "Deep Research requests are erroring for LATAM users",
+          "started_at": "2026-03-09T23:02:04Z",
+          "duration": "8m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "4567ca861f46c83e",
+          "title": "Deep Research requests are erroring for LATAM users",
+          "started_at": "2026-03-09T22:56:55Z",
+          "duration": "34m ongoing",
+          "acknowledgement": "Major / Identified",
+          "url": "https://status.openai.com/"
+        }
+      ],
+      "updated": [
         {
           "id": "61d8b789e1c1cc63",
           "title": "Codex unresponsive",
           "started_at": "2026-03-09T15:09:12Z",
-          "duration": "7h 23m ongoing",
-          "acknowledgement": "Minor / Monitoring",
+          "duration": "7h 20m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
       ],
-      "updated": [],
       "resolved": [
         {
-          "id": "31ee4e9ea38badc3",
-          "title": "Code unresponsive",
-          "started_at": "2026-03-09T15:09:12Z",
-          "duration": "6h 26m ongoing",
-          "acknowledgement": "Minor / Monitoring",
+          "id": "37328b6d9e5d178b",
+          "title": "Elevated conversation errors for Enterprise and Edu users",
+          "started_at": "2026-03-09T15:42:07Z",
+          "duration": "35m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "7bef986a9a5d7b3b",
+          "title": "ChatGPT Issues Sending Messages",
+          "started_at": "2026-03-05T18:12:26Z",
+          "duration": "3h 37m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
       ]
@@ -1758,20 +1795,28 @@
     "reports": {
       "new": [
         {
-          "id": "7b1fddcc821b989a",
-          "title": "Codex unresponsive",
-          "url": "https://status.openai.com/incidents/01KK9JA8JKQKDW1W24T09NHBYH",
-          "published_at": "2026-03-09T15:09:12Z",
+          "id": "b1fc22c4a10be8c6",
+          "title": "Deep Research requests are erroring for LATAM users",
+          "url": "https://status.openai.com/#2026-03-09T23:02:04Z",
+          "published_at": "2026-03-09T23:02:04Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "3d40cbc29cc3f2b7",
+          "title": "Deep Research requests are erroring for LATAM users",
+          "url": "https://status.openai.com/incidents/01KKAD2PHFBC0DP0X6ZQTJJ4D4",
+          "published_at": "2026-03-09T22:56:55Z",
           "source": "OpenAI Statuspage API",
-          "meta": "Minor / Monitoring"
+          "meta": "Major / Identified"
         }
       ]
     },
     "summary": {
-      "new_incidents": 1,
-      "updated_incidents": 0,
-      "resolved_incidents": 1,
-      "new_reports": 1
+      "new_incidents": 2,
+      "updated_incidents": 1,
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
