@@ -56,6 +56,9 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
         },
       ],
       source_transparency: {
+        overview: {
+          confidence_score: "0.875",
+        },
         sources: [
           {
             source_id: "primary",
@@ -65,6 +68,11 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
               ok: "true",
               freshness: "warm",
               duration_ms: "15",
+            },
+            metrics_24h: {
+              success_rate: "99.5",
+              stale_rate: "0.125",
+              cache_hit_rate: "0.5",
             },
           },
         ],
@@ -103,6 +111,7 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
       item_count: 7,
       freshness: "fresh",
     });
+    expect(sanitized.source_transparency?.overview?.confidence_score).toBe(87.5);
     expect(sanitized.source_transparency?.sources?.[0]).toMatchObject({
       source_id: "primary",
       url: "https://status.example.com/",
@@ -110,6 +119,11 @@ describe("sanitizeLegacyStatusDetailPayload", () => {
         ok: true,
         freshness: "warm",
         duration_ms: 15,
+      },
+      metrics_24h: {
+        success_rate: 99.5,
+        stale_rate: 12.5,
+        cache_hit_rate: 50,
       },
     });
   });

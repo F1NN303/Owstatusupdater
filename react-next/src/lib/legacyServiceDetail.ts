@@ -357,6 +357,14 @@ function asFiniteNumber(
   return options.integer ? Math.round(next) : next;
 }
 
+function asPercentage(value: unknown) {
+  const parsed = asFiniteNumber(value, { min: 0, max: 100 });
+  if (typeof parsed !== "number") {
+    return undefined;
+  }
+  return parsed <= 1 ? parsed * 100 : parsed;
+}
+
 function asBoolean(value: unknown) {
   if (typeof value === "boolean") {
     return value;
@@ -561,9 +569,9 @@ function sanitizeLegacySourceTransparencyMetrics(value: unknown): LegacySourceTr
     runs: asFiniteNumber(record.runs, { min: 0, max: 1_000_000, integer: true }),
     ok: asFiniteNumber(record.ok, { min: 0, max: 1_000_000, integer: true }),
     stale: asFiniteNumber(record.stale, { min: 0, max: 1_000_000, integer: true }),
-    success_rate: asFiniteNumber(record.success_rate, { min: 0, max: 1 }),
-    stale_rate: asFiniteNumber(record.stale_rate, { min: 0, max: 1 }),
-    cache_hit_rate: asFiniteNumber(record.cache_hit_rate, { min: 0, max: 1 }),
+    success_rate: asPercentage(record.success_rate),
+    stale_rate: asPercentage(record.stale_rate),
+    cache_hit_rate: asPercentage(record.cache_hit_rate),
     avg_duration_ms: asFiniteNumber(record.avg_duration_ms, { min: 0, max: 10_000_000, integer: true }),
   };
   return Object.values(metrics).some((item) => item !== undefined) ? metrics : undefined;
@@ -958,7 +966,7 @@ export function sanitizeLegacyStatusDetailPayload(value: unknown): LegacyStatusD
       schema_version: asFiniteNumber(transparencyRecord.schema_version, { min: 0, max: 1_000, integer: true }),
       generated_at: asTimestamp(transparencyRecord.generated_at),
       overview: {
-        confidence_score: asFiniteNumber(transparencyOverviewRecord.confidence_score, { min: 0, max: 1 }),
+        confidence_score: asPercentage(transparencyOverviewRecord.confidence_score),
         confidence_tier: asTrimmedString(transparencyOverviewRecord.confidence_tier, 64),
         source_ok: asFiniteNumber(transparencyOverviewRecord.source_ok, { min: 0, max: 1_000_000, integer: true }),
         source_total: asFiniteNumber(transparencyOverviewRecord.source_total, {
@@ -1055,9 +1063,9 @@ function formatConfidence(payload: LegacyStatusDetailPayload) {
   const ok = payload.analytics?.source_ok_count;
   const total = payload.analytics?.source_total_count;
   if (typeof ok === "number" && typeof total === "number" && total > 0) {
-    return `${ok}/${total} sources healthy`;
+    return `${ok}/${total}`;
   }
-  return "Source confidence unavailable";
+  return "n/a";
 }
 
 function deriveHistoryPath(statusPath: string) {

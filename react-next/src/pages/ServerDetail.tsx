@@ -2362,6 +2362,31 @@ const ServerDetail = () => {
     if (key === "unknown") return t("unknown", "unbekannt");
     return value || t("unknown", "unbekannt");
   };
+  const formatSourceRoleLabel = (value?: string | null) => {
+    const key = String(value || "").toLowerCase();
+    if (key === "official") return t("Official", "Offiziell");
+    if (key === "provider") return t("Provider", "Anbieter");
+    if (key === "community") return t("Community", "Community");
+    if (key === "social") return t("Social", "Social");
+    if (key === "news") return t("News", "News");
+    if (key === "unknown") return t("Unknown", "Unbekannt");
+    return value || t("Unknown", "Unbekannt");
+  };
+  const formatSourceCriticalityLabel = (value?: string | null) => {
+    const key = String(value || "").toLowerCase();
+    if (key === "required") return t("Required", "Erforderlich");
+    if (key === "supporting") return t("Supporting", "Unterstützend");
+    if (key === "optional") return t("Optional", "Optional");
+    if (key === "unknown") return t("Unknown", "Unbekannt");
+    return value || t("Unknown", "Unbekannt");
+  };
+  const confidenceChipLabel =
+    sourceOkCountNum !== null && sourceTotalCountNum !== null
+      ? t(
+          `${sourceOkCountNum}/${sourceTotalCountNum} healthy`,
+          `${sourceOkCountNum}/${sourceTotalCountNum} gesund`
+        )
+      : t("Unavailable", "Nicht verfügbar");
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
       return t("Overview", "Übersicht");
@@ -2641,7 +2666,7 @@ const ServerDetail = () => {
 
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground sm:px-2.5 sm:py-1 sm:text-[11px]">
-                    {t("Confidence", "Vertrauen")}: {detail.sourceConfidenceText}
+                    {t("Confidence", "Vertrauen")}: {confidenceChipLabel}
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground sm:px-2.5 sm:py-1 sm:text-[11px]">
                     {t("Regions", "Regionen")}:{" "}
@@ -3222,8 +3247,8 @@ const ServerDetail = () => {
                             </span>
                           </div>
                           <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
-                            <span>{t("role", "Rolle")}: {String(source.role || "unknown")}</span>
-                            <span>{t("criticality", "Kritikalitat")}: {String(source.criticality || "supporting")}</span>
+                            <span>{t("role", "Rolle")}: {formatSourceRoleLabel(source.role)}</span>
+                            <span>{t("criticality", "Kritikalität")}: {formatSourceCriticalityLabel(source.criticality)}</span>
                             <span>{t("freshness", "Aktualität")}: {formatSourceFreshnessLabel(source.latest?.freshness)}</span>
                             <span>
                               {t("24h success", "24h Erfolg")}:{" "}

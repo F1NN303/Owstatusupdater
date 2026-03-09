@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-09
 Current branch: `main`
-Latest known commit at handoff update: `0a7d996`
+Latest known commit at handoff update: `54482e4`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -53,6 +53,10 @@ This file is the persistent handoff for future agents. It captures the current p
 - Existing outage/status data contracts stay compatible with current frontend.
 - Detail payload sanitization now preserves component/service breakdown arrays on both the top-level payload and `outage`.
 - This fixes missing API component rows on service detail pages for providers like OpenAI and Claude where the live JSON already includes `outage.components`.
+- Bug-hunt fix shipped in working tree:
+  - source transparency percentage fields (`confidence_score`, `success_rate`, `stale_rate`, `cache_hit_rate`) are now sanitized as percentages, not incorrectly clamped to `0..1`
+  - the detail header confidence chip no longer mixes German labels with English body text
+  - source role / criticality values are rendered as user-facing labels instead of raw backend values like `provider` / `supporting`
 
 Key files:
 - `services/core/source_runner.py`
@@ -231,6 +235,7 @@ Key files:
 - `NOTICE.md`
 
 ## Recent Important Commits
+- `working tree` - `fix(ui): correct source transparency percentage scaling and localize source confidence labels`
 - `working tree` - `fix(ui): preserve sanitized component lists so detail API component status renders`
 - `6f2ad53` - `fix(ui): uncramp favorite star on service cards`
 - `4749029` - `feat(favorites): add persistent service starring and harden alerts info exposure`
