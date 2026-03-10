@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-03-10T15:32:53.123164Z",
+  "generated_at": "2026-03-10T16:58:06.457412Z",
   "health": "degraded",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 0,
     "source_ok_count": 2,
     "source_total_count": 3,
     "model_version": "claude-1.0",
@@ -14,7 +14,7 @@
       "source_health": 0.35,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 4.85
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
       "reports_24h": 108,
@@ -35,35 +35,35 @@
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_operational_cap_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_operational_vs_aggregate_issue",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "operational",
-      "derived_severity": "degraded",
+      "derived_severity": "stable",
       "source_ok": 2,
       "source_total": 3,
-      "summary": "Official status is operational while aggregate signals indicate active issues."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Claude Statuspage API: All Systems Operational",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-03-10T15:32:52.096656Z",
+        "published_at": "2026-03-10T16:58:05.682852Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Claude Desktop app unresponsive",
+        "url": "https://status.anthropic.com/incidents/pqpgkf52p3tg#zsk329z52075",
+        "published_at": "2026-03-10T16:52:45.249Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Major / Resolved / This incident has been resolved."
       },
       {
         "title": "Claude Desktop app unresponsive",
@@ -84,7 +92,7 @@
         "published_at": "2026-03-08T19:42:57.000Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Major / Monitoring / Root cause: Users with scheduled tasks in Claude Cowork or Claude Code who are in a timezone that observed daylight saving time last night were affected by an infinite loop. When the app tried to locate tasks scheduled during the “skipped” "
+        "meta": "Monitoring / Major / Resolved / Root cause: Users with scheduled tasks in Claude Cowork or Claude Code who are in a timezone that observed daylight saving time last night were affected by an infinite loop. When the app tried to locate tasks scheduled during the “skipped” "
       },
       {
         "title": "Claude Desktop app unresponsive",
@@ -92,7 +100,7 @@
         "published_at": "2026-03-08T19:42:42.000Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Major / Monitoring / Root cause: Users with scheduled tasks in Claude Cowork or Claude Code who are in a timezone that observed daylight saving time last night were affected by an infinite loop. When the app tried to locate tasks scheduled during the “skipped” "
+        "meta": "Identified / Major / Resolved / Root cause: Users with scheduled tasks in Claude Cowork or Claude Code who are in a timezone that observed daylight saving time last night were affected by an infinite loop. When the app tried to locate tasks scheduled during the “skipped” "
       },
       {
         "title": "Claude Desktop app unresponsive",
@@ -100,7 +108,7 @@
         "published_at": "2026-03-08T18:27:55.799Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Major / Monitoring / The issue has been identified and a fix is being implemented."
+        "meta": "Identified / Major / Resolved / The issue has been identified and a fix is being implemented."
       },
       {
         "title": "Claude Desktop app unresponsive",
@@ -108,7 +116,7 @@
         "published_at": "2026-03-08T17:57:17.000Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Major / Monitoring / We have identified the issue and are working on a mitigation. Currently, scheduled tasks are disabled for cowork and claude code desktop."
+        "meta": "Investigating / Major / Resolved / We have identified the issue and are working on a mitigation. Currently, scheduled tasks are disabled for cowork and claude code desktop."
       },
       {
         "title": "Filesystem connector missing from Claude Desktop",
@@ -141,31 +149,23 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Minor / Resolved / The issue has been identified and a fix has been implemented. Users may need to re-add the Filesystem connector to their organization allowlist in order to reactivate it."
-      },
-      {
-        "title": "Elevated TCP three-way handshake failures on api.anthropic.com",
-        "url": "https://status.anthropic.com/incidents/htjkfrfnzq12#yqxcp9yppxvm",
-        "published_at": "2026-03-06T16:23:02.355Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       }
     ],
-    "last_statement_at": "2026-03-10T15:32:52.096656Z"
+    "last_statement_at": "2026-03-10T16:58:05.682852Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports an active incident: Claude Desktop app unresponsive.",
+    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
     "current_status": "operational",
     "reports_24h": 108,
     "incidents": [
       {
         "title": "Claude Desktop app unresponsive",
         "started_at": "2026-03-08T17:57:17.000Z",
-        "duration": "1d 21h 35m ongoing",
-        "acknowledgement": "Major / Monitoring",
+        "duration": "1d 22h 55m",
+        "acknowledgement": "Major / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/pqpgkf52p3tg"
       },
@@ -229,22 +229,6 @@
     "top_reported_issues": [],
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "15:40",
-        "count": 1
-      },
-      {
-        "label": "16:00",
-        "count": 2
-      },
-      {
-        "label": "16:20",
-        "count": 0
-      },
-      {
-        "label": "16:40",
-        "count": 2
-      },
       {
         "label": "17:00",
         "count": 3
@@ -516,6 +500,22 @@
       {
         "label": "15:20",
         "count": 3
+      },
+      {
+        "label": "15:40",
+        "count": 1
+      },
+      {
+        "label": "16:00",
+        "count": 2
+      },
+      {
+        "label": "16:20",
+        "count": 0
+      },
+      {
+        "label": "16:40",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -524,14 +524,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-10T17:32:51+02:00"
+      "last_reviewed_at": "2026-03-10T11:58:05-05:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 108,
-        "last_reviewed_at": "2026-03-10T17:32:51+02:00"
+        "last_reviewed_at": "2026-03-10T11:58:05-05:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -586,7 +586,7 @@
       "url": "https://status.anthropic.com/incidents/pqpgkf52p3tg",
       "published_at": "2026-03-08T17:57:17.000Z",
       "source": "Claude Statuspage API",
-      "meta": "Major / Monitoring"
+      "meta": "Major / Resolved"
     },
     {
       "title": "Elevated errors on Claude Haiku 4.5",
@@ -644,45 +644,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-03-10T15:32:53.123164Z"
+      "published_at": "2026-03-10T16:58:06.457412Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-10T15:32:53.123164Z"
+      "published_at": "2026-03-10T16:58:06.457412Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-03-10T15:32:53.123164Z"
+      "published_at": "2026-03-10T16:58:06.457412Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-03-10T15:32:53.123164Z"
+      "published_at": "2026-03-10T16:58:06.457412Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-03-10T15:32:53.123164Z"
+      "published_at": "2026-03-10T16:58:06.457412Z"
     }
   ],
   "news": [
     {
       "title": "Claude Statuspage API: All Systems Operational",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-03-10T15:32:52.096656Z",
+      "published_at": "2026-03-10T16:58:05.682852Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Claude Desktop app unresponsive",
+      "url": "https://status.anthropic.com/incidents/pqpgkf52p3tg#zsk329z52075",
+      "published_at": "2026-03-10T16:52:45.249Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Major / Resolved / This incident has been resolved."
     },
     {
       "title": "Claude Desktop app unresponsive",
@@ -690,7 +698,7 @@
       "published_at": "2026-03-08T19:42:57.000Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Major / Monitoring / Root cause: Users with scheduled tasks in Claude Cowork or Claude Code who are in a timezone that observed daylight saving time last night were affected by an infinite loop. When the app tried to locate tasks scheduled during the “skipped” "
+      "meta": "Monitoring / Major / Resolved / Root cause: Users with scheduled tasks in Claude Cowork or Claude Code who are in a timezone that observed daylight saving time last night were affected by an infinite loop. When the app tried to locate tasks scheduled during the “skipped” "
     },
     {
       "title": "Claude Desktop app unresponsive",
@@ -698,7 +706,7 @@
       "published_at": "2026-03-08T19:42:42.000Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Major / Monitoring / Root cause: Users with scheduled tasks in Claude Cowork or Claude Code who are in a timezone that observed daylight saving time last night were affected by an infinite loop. When the app tried to locate tasks scheduled during the “skipped” "
+      "meta": "Identified / Major / Resolved / Root cause: Users with scheduled tasks in Claude Cowork or Claude Code who are in a timezone that observed daylight saving time last night were affected by an infinite loop. When the app tried to locate tasks scheduled during the “skipped” "
     },
     {
       "title": "Claude Desktop app unresponsive",
@@ -706,7 +714,7 @@
       "published_at": "2026-03-08T18:27:55.799Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Major / Monitoring / The issue has been identified and a fix is being implemented."
+      "meta": "Identified / Major / Resolved / The issue has been identified and a fix is being implemented."
     },
     {
       "title": "Claude Desktop app unresponsive",
@@ -714,7 +722,7 @@
       "published_at": "2026-03-08T17:57:17.000Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Major / Monitoring / We have identified the issue and are working on a mitigation. Currently, scheduled tasks are disabled for cowork and claude code desktop."
+      "meta": "Investigating / Major / Resolved / We have identified the issue and are working on a mitigation. Currently, scheduled tasks are disabled for cowork and claude code desktop."
     },
     {
       "title": "Filesystem connector missing from Claude Desktop",
@@ -731,14 +739,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / Today between 5:35 PT / 13:35 UTC and 6:44 PT / 14:44 UTC Haiku 4.5 had an elevated error rate. We are now at the baseline error rate."
-    },
-    {
-      "title": "Elevated errors on Claude Haiku 4.5",
-      "url": "https://status.anthropic.com/incidents/qy1zsq4wwp1q#4y6v1gy60xv8",
-      "published_at": "2026-03-07T13:58:19.975Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are currently investigating this issue."
     }
   ],
   "social": [],
@@ -757,8 +757,8 @@
       "last_item_at": null,
       "freshness": "unknown",
       "age_minutes": null,
-      "duration_ms": 44,
-      "fetched_at": "2026-03-10T15:32:50.517560Z",
+      "duration_ms": 36,
+      "fetched_at": "2026-03-10T16:58:04.919088Z",
       "cache_hit": false
     },
     {
@@ -772,11 +772,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-10T17:32:51+02:00",
+      "last_item_at": "2026-03-10T11:58:05-05:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1578,
-      "fetched_at": "2026-03-10T15:32:52.096441Z",
+      "duration_ms": 762,
+      "fetched_at": "2026-03-10T16:58:05.682632Z",
       "cache_hit": false
     },
     {
@@ -790,19 +790,19 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-03-10T15:32:52.096656Z",
+      "last_item_at": "2026-03-10T16:58:05.682852Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1025,
-      "fetched_at": "2026-03-10T15:32:53.121924Z",
+      "duration_ms": 773,
+      "fetched_at": "2026-03-10T16:58:06.456216Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-03-10T15:32:53.123164Z",
+    "generated_at": "2026-03-10T16:58:06.457412Z",
     "overview": {
-      "confidence_score": 88.1,
+      "confidence_score": 87.8,
       "confidence_tier": "high",
       "source_ok": 2,
       "source_total": 3,
@@ -819,13 +819,13 @@
       "ratios": {
         "required_ratio": 1.0,
         "scoring_ratio": 0.667,
-        "recent_success_ratio": 0.987,
+        "recent_success_ratio": 0.971,
         "freshness_ratio": 0.667
       }
     },
     "decision": {
       "health": "degraded",
-      "severity_key": "degraded",
+      "severity_key": "stable",
       "explanation": "Reliability constraints detected: partial source failure, stale source data."
     },
     "sources": [
@@ -840,31 +840,31 @@
         "latest": {
           "ok": false,
           "freshness": "unknown",
-          "duration_ms": 44,
+          "duration_ms": 36,
           "cache_hit": false,
-          "at": "2026-03-10T15:32:50Z"
+          "at": "2026-03-10T16:58:04Z"
         },
         "metrics_24h": {
-          "runs": 25,
-          "ok": 24,
-          "stale": 1,
-          "success_rate": 96.0,
-          "stale_rate": 4.0,
+          "runs": 23,
+          "ok": 21,
+          "stale": 2,
+          "success_rate": 91.3,
+          "stale_rate": 8.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 965.6
+          "avg_duration_ms": 869.7
         },
         "metrics_7d": {
           "runs": 190,
-          "ok": 189,
-          "stale": 3,
-          "success_rate": 99.5,
-          "stale_rate": 1.6,
+          "ok": 188,
+          "stale": 4,
+          "success_rate": 98.9,
+          "stale_rate": 2.1,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 938.2
+          "avg_duration_ms": 933.3
         },
-        "consecutive_failures": 1,
+        "consecutive_failures": 2,
         "last_success_at": "2026-03-10T14:13:36Z",
-        "last_failure_at": "2026-03-10T15:32:50Z"
+        "last_failure_at": "2026-03-10T16:58:04Z"
       },
       {
         "source_id": "isdown-anthropic",
@@ -877,18 +877,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1578,
+          "duration_ms": 762,
           "cache_hit": false,
-          "at": "2026-03-10T15:32:50Z"
+          "at": "2026-03-10T16:58:04Z"
         },
         "metrics_24h": {
-          "runs": 25,
-          "ok": 25,
+          "runs": 23,
+          "ok": 23,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1106.2
+          "avg_duration_ms": 1085.7
         },
         "metrics_7d": {
           "runs": 190,
@@ -897,10 +897,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1043.0
+          "avg_duration_ms": 1042.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-10T15:32:50Z",
+        "last_success_at": "2026-03-10T16:58:04Z",
         "last_failure_at": null
       },
       {
@@ -914,18 +914,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1025,
+          "duration_ms": 773,
           "cache_hit": false,
-          "at": "2026-03-10T15:32:50Z"
+          "at": "2026-03-10T16:58:04Z"
         },
         "metrics_24h": {
-          "runs": 25,
-          "ok": 25,
+          "runs": 23,
+          "ok": 23,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 909.9
+          "avg_duration_ms": 913.9
         },
         "metrics_7d": {
           "runs": 190,
@@ -934,89 +934,38 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1010.1
+          "avg_duration_ms": 1008.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-10T15:32:50Z",
+        "last_success_at": "2026-03-10T16:58:04Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-03-10T15:32:53.123164Z",
+    "generated_at": "2026-03-10T16:58:06.457412Z",
     "incidents": {
-      "new": [
-        {
-          "id": "7929a375406a443d",
-          "title": "Elevated errors on Claude Opus 4.6",
-          "started_at": "2026-03-04T14:14:17.364Z",
-          "duration": "1h 43m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "c0af79c840599ba2",
-          "title": "Outage in Usage Reporting",
-          "started_at": "2026-03-03T16:49:50.656Z",
-          "duration": "15h 42m",
-          "acknowledgement": "Major / Resolved",
-          "url": "https://status.anthropic.com/"
-        }
-      ],
+      "new": [],
       "updated": [
         {
           "id": "3884eec2a01a8821",
           "title": "Claude Desktop app unresponsive",
           "started_at": "2026-03-08T17:57:17.000Z",
-          "duration": "1d 21h 35m ongoing",
-          "acknowledgement": "Major / Monitoring",
+          "duration": "1d 22h 55m",
+          "acknowledgement": "Major / Resolved",
           "url": "https://status.anthropic.com/"
         }
       ],
-      "resolved": [
-        {
-          "id": "ea63c0670faf3674",
-          "title": "Claude Desktop app unresponsive",
-          "started_at": "2026-03-08T17:58:23Z",
-          "duration": "6m",
-          "acknowledgement": "down icon Down",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "6415c5fa7d78f9ed",
-          "title": "Filesystem connector missing from Claude Desktop",
-          "started_at": "2026-03-07T16:58:31Z",
-          "duration": "22h 55m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.anthropic.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "c808422d40d94c32",
-          "title": "Elevated errors on Claude Opus 4.6",
-          "url": "https://status.anthropic.com/incidents/cvh0kqnmzjks",
-          "published_at": "2026-03-04T14:14:17.364Z",
-          "source": "Claude Statuspage API",
-          "meta": "Minor / Resolved"
-        },
-        {
-          "id": "bcbd65760bbd5400",
-          "title": "Outage in Usage Reporting",
-          "url": "https://status.anthropic.com/incidents/p7nq2jdg4zwj",
-          "published_at": "2026-03-03T16:49:50.656Z",
-          "source": "Claude Statuspage API",
-          "meta": "Major / Resolved"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 2,
+      "new_incidents": 0,
       "updated_incidents": 1,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
