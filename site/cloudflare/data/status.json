@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-03-12T13:06:53.130505Z",
+  "generated_at": "2026-03-12T14:27:53.523053Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -18,7 +18,7 @@
     },
     "signal_metrics": {
       "reports_24h": 116,
-      "recent_incidents_6h": 0,
+      "recent_incidents_6h": 3,
       "recent_incidents_24h": 8,
       "cross_source": {
         "report_score": 0.0,
@@ -40,30 +40,30 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-03-12T13:06:52.691167Z",
+        "published_at": "2026-03-12T14:27:53.206651Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Cloudchamber Service Degradation",
+        "url": "https://www.cloudflarestatus.com/incidents/xg4spbjxrhgt#sjs4c6pkyj81",
+        "published_at": "2026-03-12T14:22:41.915Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are currently investigating an issue causing a degradation in the Cloudchamber service, which is preventing some customers from provisioning new containers. Our engineering team is focused on immediate mitigation and root cause resolutio"
+      },
+      {
+        "title": "Elevated number of HTTP errors in PDX",
+        "url": "https://www.cloudflarestatus.com/incidents/0lhtz7lbbm7c#nnybm8pgxw70",
+        "published_at": "2026-03-12T12:42:00.000Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / None / Resolved / Between 12:42 – 12:44 UTC on March 12, 2026, customers reaching Portland, OR (PDX) would have experienced an elevated number of HTTP errors due to a brief network disruption."
       },
       {
         "title": "Increased Errors in the Budapest region",
@@ -133,38 +149,44 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Major / Resolved / We are continuing to work on a fix for this issue."
-      },
-      {
-        "title": "issues with Cloudflare Dashboard",
-        "url": "https://www.cloudflarestatus.com/incidents/hymt4phl3dks#ydwsvx7726f3",
-        "published_at": "2026-03-11T19:01:28.128Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / We are continuing to investigate this issue."
-      },
-      {
-        "title": "issues with Cloudflare Dashboard",
-        "url": "https://www.cloudflarestatus.com/incidents/hymt4phl3dks#g9jd1xkkz0pt",
-        "published_at": "2026-03-11T19:01:13.158Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / Cloudflare is investigating issues with Cloudflare Dashboard and related APIs. These issues do not affect the serving of cached files via the Cloudflare CDN or other security features at the Cloudflare Edge. Customers using the Dashboard / "
       }
     ],
-    "last_statement_at": "2026-03-12T13:06:52.691167Z"
+    "last_statement_at": "2026-03-12T14:27:53.206651Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 20h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: Cloudchamber Service Degradation.",
     "current_status": "degraded",
     "reports_24h": 116,
     "incidents": [
       {
+        "title": "Cloudchamber Service Degradation",
+        "started_at": "2026-03-12T14:25:21Z",
+        "duration": "3m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Cloudchamber Service Degradation",
+        "started_at": "2026-03-12T14:22:41.810Z",
+        "duration": "5m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/xg4spbjxrhgt"
+      },
+      {
+        "title": "Elevated number of HTTP errors in PDX",
+        "started_at": "2026-03-12T12:42:00.000Z",
+        "duration": "0m",
+        "acknowledgement": "None / Resolved",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/0lhtz7lbbm7c"
+      },
+      {
         "title": "LHR (London) on 2026-03-12",
         "started_at": "2026-03-12T00:05:16Z",
-        "duration": "32m",
+        "duration": "14h 20m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -192,31 +214,13 @@
         "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/wrzzm1vzdbzq"
-      },
-      {
-        "title": "Network Connectivity/52X errors in KUL",
-        "started_at": "2026-03-11T19:15:18.271Z",
-        "duration": "0m",
-        "acknowledgement": "None / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/cl1hd88p3v74"
-      },
-      {
-        "title": "issues with Cloudflare Dashboard",
-        "started_at": "2026-03-11T19:05:26Z",
-        "duration": "1h 55m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "issues with Cloudflare Dashboard",
-        "started_at": "2026-03-11T19:01:13.073Z",
-        "duration": "2h 54m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/hymt4phl3dks"
       }
     ],
     "top_reported_issues": [
+      {
+        "label": "Cloudflare Sites and Services",
+        "count": 1
+      },
       {
         "label": "Africa",
         "count": 1
@@ -244,48 +248,14 @@
       {
         "label": "Bandar Seri Begawan, Brunei - (BWN)",
         "count": 1
-      },
-      {
-        "label": "Middle East",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-03-11T13:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-11T13:30:00Z",
-        "signal_value": 24.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-11T13:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-11T14:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-11T14:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-03-11T14:30:00Z",
         "signal_value": 2.0,
@@ -828,7 +798,37 @@
       },
       {
         "timestamp": "2026-03-12T13:00:00Z",
-        "signal_value": 15.0,
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-12T13:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-12T13:30:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-12T13:45:00Z",
+        "signal_value": 83.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-03-12T14:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-12T14:15:00Z",
+        "signal_value": 5.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -839,26 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-03-12T13:00:00Z"
+      "last_sample_at": "2026-03-12T14:15:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "13:20",
-        "count": 2
-      },
-      {
-        "label": "13:40",
-        "count": 0
-      },
-      {
-        "label": "14:00",
-        "count": 1
-      },
-      {
-        "label": "14:20",
-        "count": 3
-      },
       {
         "label": "14:40",
         "count": 1
@@ -1130,6 +1114,22 @@
       {
         "label": "13:00",
         "count": 1
+      },
+      {
+        "label": "13:20",
+        "count": 3
+      },
+      {
+        "label": "13:40",
+        "count": 1
+      },
+      {
+        "label": "14:00",
+        "count": 2
+      },
+      {
+        "label": "14:20",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-12T09:06:51-04:00"
+      "last_reviewed_at": "2026-03-12T08:27:52-06:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 116,
-        "last_reviewed_at": "2026-03-12T09:06:51-04:00"
+        "last_reviewed_at": "2026-03-12T08:27:52-06:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,8 +1160,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -1916,9 +1916,9 @@
       },
       {
         "name": "Kigali, Rwanda - (KGL)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-03-12T09:52:17.117Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-12T13:12:32.647Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2149,7 +2149,7 @@
         "name": "Riyadh, Saudi Arabia - (RUH)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-03-12T11:25:02.757Z",
+        "updated_at": "2026-03-12T14:12:12.619Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2700,9 +2700,9 @@
       },
       {
         "name": "Containers",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.442Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-03-12T14:22:41.853Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3036,9 +3036,9 @@
       },
       {
         "name": "Portland, OR, United States - (PDX)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-10T19:37:03.757Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-03-12T13:24:27.273Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3465,7 +3465,7 @@
         "name": "Phnom Penh, Cambodia - (PNH)",
         "status": "degraded",
         "health": "under_maintenance",
-        "updated_at": "2026-03-12T07:14:56.277Z",
+        "updated_at": "2026-03-12T14:00:20.560Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4373,9 +4373,9 @@
       },
       {
         "name": "Male, Maldives - (MLE)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-03-12T09:55:38.374Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-03-12T14:06:18.843Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4460,11 +4460,11 @@
         "count": 1
       },
       {
-        "label": "Sign in problem",
-        "count": 1
+        "label": "Server not responding",
+        "count": 0
       },
       {
-        "label": "Server not responding",
+        "label": "Sign in problem",
         "count": 0
       },
       {
@@ -4486,6 +4486,27 @@
     ]
   },
   "reports": [
+    {
+      "title": "Cloudchamber Service Degradation",
+      "url": "https://www.cloudflarestatus.com/#2026-03-12T14:25:21Z",
+      "published_at": "2026-03-12T14:25:21Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Cloudchamber Service Degradation",
+      "url": "https://www.cloudflarestatus.com/incidents/xg4spbjxrhgt",
+      "published_at": "2026-03-12T14:22:41.810Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
+      "title": "Elevated number of HTTP errors in PDX",
+      "url": "https://www.cloudflarestatus.com/incidents/0lhtz7lbbm7c",
+      "published_at": "2026-03-12T12:42:00.000Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "None / Resolved"
+    },
     {
       "title": "LHR (London) on 2026-03-12",
       "url": "https://www.cloudflarestatus.com/#2026-03-12T00:05:16Z",
@@ -4520,27 +4541,6 @@
       "published_at": "2026-03-11T20:57:42.000Z",
       "source": "Cloudflare Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Network Connectivity/52X errors in KUL",
-      "url": "https://www.cloudflarestatus.com/incidents/cl1hd88p3v74",
-      "published_at": "2026-03-11T19:15:18.271Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "None / Resolved"
-    },
-    {
-      "title": "issues with Cloudflare Dashboard",
-      "url": "https://www.cloudflarestatus.com/#2026-03-11T19:05:26Z",
-      "published_at": "2026-03-11T19:05:26Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "issues with Cloudflare Dashboard",
-      "url": "https://www.cloudflarestatus.com/incidents/hymt4phl3dks",
-      "published_at": "2026-03-11T19:01:13.073Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -4549,52 +4549,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-03-12T13:06:53.130505Z"
+      "published_at": "2026-03-12T14:27:53.523053Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-12T13:06:53.130505Z"
+      "published_at": "2026-03-12T14:27:53.523053Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-03-12T13:06:53.130505Z"
+      "published_at": "2026-03-12T14:27:53.523053Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-03-12T13:06:53.130505Z"
+      "published_at": "2026-03-12T14:27:53.523053Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-03-12T13:06:53.130505Z"
+      "published_at": "2026-03-12T14:27:53.523053Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-03-12T13:06:53.130505Z"
+      "published_at": "2026-03-12T14:27:53.523053Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-03-12T13:06:52.691167Z",
+      "published_at": "2026-03-12T14:27:53.206651Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Cloudchamber Service Degradation",
+      "url": "https://www.cloudflarestatus.com/incidents/xg4spbjxrhgt#sjs4c6pkyj81",
+      "published_at": "2026-03-12T14:22:41.915Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are currently investigating an issue causing a degradation in the Cloudchamber service, which is preventing some customers from provisioning new containers. Our engineering team is focused on immediate mitigation and root cause resolutio"
+    },
+    {
+      "title": "Elevated number of HTTP errors in PDX",
+      "url": "https://www.cloudflarestatus.com/incidents/0lhtz7lbbm7c#nnybm8pgxw70",
+      "published_at": "2026-03-12T12:42:00.000Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / None / Resolved / Between 12:42 – 12:44 UTC on March 12, 2026, customers reaching Portland, OR (PDX) would have experienced an elevated number of HTTP errors due to a brief network disruption."
     },
     {
       "title": "Increased Errors in the Budapest region",
@@ -4635,22 +4651,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Identified / Major / Resolved / The issue has been identified and a fix is being implemented. A remediation has been put in place. The team is working on a long term resolution."
-    },
-    {
-      "title": "Network Connectivity/52X errors in KUL",
-      "url": "https://www.cloudflarestatus.com/incidents/cl1hd88p3v74#y90dzgt59tpd",
-      "published_at": "2026-03-11T19:15:18.362Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / None / Resolved / Customers connecting through Kuala Lumpur may have noticed degraded network connectivity and 52X errors between 18:16 and 18:25 UTC"
-    },
-    {
-      "title": "issues with Cloudflare Dashboard",
-      "url": "https://www.cloudflarestatus.com/incidents/hymt4phl3dks#6dhj8154d5zx",
-      "published_at": "2026-03-11T19:12:40.000Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Major / Resolved / We are continuing to work on a fix for this issue."
     }
   ],
   "social": [],
@@ -4666,11 +4666,11 @@
       "ok": true,
       "error": null,
       "item_count": 6,
-      "last_item_at": "2026-03-12T13:06:51.429122Z",
+      "last_item_at": "2026-03-12T14:27:52.444803Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1088,
-      "fetched_at": "2026-03-12T13:06:51.429140Z",
+      "duration_ms": 1756,
+      "fetched_at": "2026-03-12T14:27:52.444820Z",
       "cache_hit": false
     },
     {
@@ -4684,11 +4684,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-12T09:06:51-04:00",
+      "last_item_at": "2026-03-12T08:27:52-06:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1261,
-      "fetched_at": "2026-03-12T13:06:52.690631Z",
+      "duration_ms": 761,
+      "fetched_at": "2026-03-12T14:27:53.206136Z",
       "cache_hit": false
     },
     {
@@ -4702,17 +4702,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-03-12T13:06:52.691167Z",
+      "last_item_at": "2026-03-12T14:27:53.206651Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 437,
-      "fetched_at": "2026-03-12T13:06:53.128961Z",
+      "duration_ms": 314,
+      "fetched_at": "2026-03-12T14:27:53.521602Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-03-12T13:06:53.130505Z",
+    "generated_at": "2026-03-12T14:27:53.523053Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4734,7 +4734,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4749,30 +4749,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1088,
+          "duration_ms": 1756,
           "cache_hit": false,
-          "at": "2026-03-12T13:06:50Z"
+          "at": "2026-03-12T14:27:50Z"
         },
         "metrics_24h": {
-          "runs": 24,
-          "ok": 24,
+          "runs": 23,
+          "ok": 23,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 955.3
+          "avg_duration_ms": 1007.1
         },
         "metrics_7d": {
-          "runs": 183,
-          "ok": 179,
+          "runs": 184,
+          "ok": 180,
           "stale": 4,
           "success_rate": 97.8,
           "stale_rate": 2.2,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1015.9
+          "avg_duration_ms": 1019.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-12T13:06:50Z",
+        "last_success_at": "2026-03-12T14:27:50Z",
         "last_failure_at": "2026-03-10T18:54:37Z"
       },
       {
@@ -4786,30 +4786,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1261,
+          "duration_ms": 761,
           "cache_hit": false,
-          "at": "2026-03-12T13:06:50Z"
+          "at": "2026-03-12T14:27:50Z"
         },
         "metrics_24h": {
-          "runs": 24,
-          "ok": 24,
+          "runs": 23,
+          "ok": 23,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1393.2
+          "avg_duration_ms": 1367.2
         },
         "metrics_7d": {
-          "runs": 183,
-          "ok": 183,
+          "runs": 184,
+          "ok": 184,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1342.7
+          "avg_duration_ms": 1339.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-12T13:06:50Z",
+        "last_success_at": "2026-03-12T14:27:50Z",
         "last_failure_at": null
       },
       {
@@ -4823,49 +4823,133 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 437,
+          "duration_ms": 314,
           "cache_hit": false,
-          "at": "2026-03-12T13:06:50Z"
+          "at": "2026-03-12T14:27:50Z"
         },
         "metrics_24h": {
-          "runs": 24,
-          "ok": 24,
+          "runs": 23,
+          "ok": 23,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 430.5
+          "avg_duration_ms": 433.2
         },
         "metrics_7d": {
-          "runs": 183,
-          "ok": 183,
+          "runs": 184,
+          "ok": 184,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 385.1
+          "avg_duration_ms": 384.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-12T13:06:50Z",
+        "last_success_at": "2026-03-12T14:27:50Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-03-12T13:06:53.130505Z",
+    "generated_at": "2026-03-12T14:27:53.523053Z",
     "incidents": {
-      "new": [],
-      "updated": [],
-      "resolved": []
+      "new": [
+        {
+          "id": "c6ffceb251c173c3",
+          "title": "Cloudchamber Service Degradation",
+          "started_at": "2026-03-12T14:25:21Z",
+          "duration": "3m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "e49c263a283c2d9f",
+          "title": "Cloudchamber Service Degradation",
+          "started_at": "2026-03-12T14:22:41.810Z",
+          "duration": "5m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "8183b3c11394d0ad",
+          "title": "Elevated number of HTTP errors in PDX",
+          "started_at": "2026-03-12T12:42:00.000Z",
+          "duration": "0m",
+          "acknowledgement": "None / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "7eb37b9251bb6aae",
+          "title": "LHR (London) on 2026-03-12",
+          "started_at": "2026-03-12T00:05:16Z",
+          "duration": "14h 20m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "resolved": [
+        {
+          "id": "c2e3fe15a1c773fc",
+          "title": "Network Connectivity/52X errors in KUL",
+          "started_at": "2026-03-11T19:15:18.271Z",
+          "duration": "0m",
+          "acknowledgement": "None / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "d64e5c66c5d6505a",
+          "title": "issues with Cloudflare Dashboard",
+          "started_at": "2026-03-11T19:05:26Z",
+          "duration": "1h 55m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "d72a0bbb4200169d",
+          "title": "issues with Cloudflare Dashboard",
+          "started_at": "2026-03-11T19:01:13.073Z",
+          "duration": "2h 54m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "db4e5b16289930dc",
+          "title": "Cloudchamber Service Degradation",
+          "url": "https://www.cloudflarestatus.com/#2026-03-12T14:25:21Z",
+          "published_at": "2026-03-12T14:25:21Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "722b12e74abb900b",
+          "title": "Cloudchamber Service Degradation",
+          "url": "https://www.cloudflarestatus.com/incidents/xg4spbjxrhgt",
+          "published_at": "2026-03-12T14:22:41.810Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Investigating"
+        },
+        {
+          "id": "666d04a4548f7a0c",
+          "title": "Elevated number of HTTP errors in PDX",
+          "url": "https://www.cloudflarestatus.com/incidents/0lhtz7lbbm7c",
+          "published_at": "2026-03-12T12:42:00.000Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "None / Resolved"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 3,
+      "updated_incidents": 1,
+      "resolved_incidents": 3,
+      "new_reports": 3
     }
   }
 }
