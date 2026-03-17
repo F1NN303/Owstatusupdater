@@ -59,6 +59,8 @@ jobs:
       - name: Build React root + preview artifacts
         env:
           VITE_GIT_SHA: ${{ github.sha }}
+          VITE_SUPABASE_URL: ${{ secrets.ALERT_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: python3 scripts/build_react_artifacts.py
 
       - name: Setup Pages

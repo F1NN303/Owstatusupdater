@@ -122,6 +122,9 @@ Key files:
   - `ALERT_EMAIL_FROM`
   - `ALERT_SUPABASE_URL`
   - `SUPABASE_SERVICE_ROLE_KEY`
+- Required GitHub Actions secret for the Pages React build:
+  - `VITE_SUPABASE_ANON_KEY`
+  - `ALERT_SUPABASE_URL` is also reused as `VITE_SUPABASE_URL` during `deploy-pages.yml`
 - Current limitation:
   - subscriber filtering now works server-side, but it sends transactional Brevo mail directly per recipient instead of managing Brevo contact lists or provider-side segment state
 - First-launch onboarding now appears on home as a dismissible hint layer covering:
