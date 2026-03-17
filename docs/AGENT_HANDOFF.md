@@ -118,14 +118,20 @@ Key files:
 - Required local/frontend env for the new alert-account flow:
   - `VITE_SUPABASE_URL`
   - `VITE_SUPABASE_ANON_KEY`
+- Browser auth now also has committed public defaults in `react-next/src/lib/supabase.ts`:
+  - `https://adijigutpkibobwczbic.supabase.co`
+  - `sb_publishable_GzehFO0uWtjYMHotTPZi-g_HzDSMwMZ`
+- Reason:
+  - the Supabase publishable URL/key are safe to ship in the frontend, and this removes fragile Pages build-time secret dependency for browser auth
 - Required GitHub Actions secrets for subscriber-aware dispatch:
   - `BREVO_API_KEY`
   - `ALERT_EMAIL_FROM`
   - `ALERT_SUPABASE_URL`
   - `SUPABASE_SERVICE_ROLE_KEY`
-- Required GitHub Actions secret for the Pages React build:
+- Optional GitHub Actions overrides for the Pages React build:
   - `VITE_SUPABASE_ANON_KEY`
-  - `ALERT_SUPABASE_URL` is also reused as `VITE_SUPABASE_URL` during `deploy-pages.yml`
+  - `ALERT_SUPABASE_URL` reused as `VITE_SUPABASE_URL` during `deploy-pages.yml`
+  - these are no longer required for browser auth because the public defaults are committed
 - Current limitation:
   - subscriber filtering now works server-side, but it sends transactional Brevo mail directly per recipient instead of managing Brevo contact lists or provider-side segment state
 - First-launch onboarding now appears on home as a dismissible hint layer covering:
