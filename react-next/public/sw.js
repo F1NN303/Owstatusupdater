@@ -1,4 +1,4 @@
-const VERSION = "2026-03-09-1";
+const VERSION = "2026-03-17-2";
 const APP_SHELL_CACHE = `owstatus-app-shell-${VERSION}`;
 const STATIC_CACHE = `owstatus-static-${VERSION}`;
 const DATA_CACHE = `owstatus-data-${VERSION}`;

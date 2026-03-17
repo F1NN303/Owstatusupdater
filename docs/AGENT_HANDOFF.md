@@ -77,6 +77,10 @@ This file is the persistent handoff for future agents. It captures the current p
   - root React HTML viewport now uses `viewport-fit=cover` so the app fully respects iPhone safe-area insets
   - home and service detail now support pull-to-refresh using a shared mobile touch hook + top refresh indicator
   - service detail header now includes native share with clipboard fallback when `navigator.share` is unavailable
+- Browser cache/deploy hardening shipped in working tree:
+  - `react-next/public/sw.js` cache version was bumped to force a cleaner service-worker asset refresh after recent deploys
+  - `react-next/src/pages/EmailAlerts.tsx` German UI copy was normalized to ASCII-safe strings to eliminate mojibake from previously corrupted literals
+  - `react-next/src/pages/SettingsPage.tsx` now shows account-aware storage text instead of always claiming only local browser storage
 - Scheduled maintenance surfacing shipped in working tree:
   - Statuspage-based providers now extract future or active scheduled maintenance incidents into `outage.scheduled_maintenances`
   - Slack's custom official parser now exposes the same normalized maintenance rows

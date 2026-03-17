@@ -1,4 +1,4 @@
-﻿import AppLayout from "@/components/AppLayout";
+import AppLayout from "@/components/AppLayout";
 import { useAlertAccount } from "@/lib/alertAccount";
 import { appBuildMeta, formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
 import { formatTimestampByMode } from "@/lib/timeDisplay";
@@ -76,6 +76,15 @@ const SettingsPage = () => {
       : alertAccountProfile?.brevoSyncStatus === "error"
         ? pickLang(language, "Sync issue", "Sync-Problem")
         : pickLang(language, "Not connected", "Nicht verbunden");
+  const storageSummary = pickLang(
+    language,
+    alertAccountConnected
+      ? "Local UI settings stay in your browser. Alert account preferences are also saved to Supabase."
+      : "Only local UI settings are stored in your browser.",
+    alertAccountConnected
+      ? "Lokale UI-Einstellungen bleiben im Browser. Alarm-Konto-Einstellungen werden zusaetzlich in Supabase gespeichert."
+      : "Es werden nur lokale UI-Einstellungen im Browser gespeichert."
+  );
 
   const initialCategory = useMemo(() => {
     if (!homeDefaultFilter.startsWith("category:")) {
@@ -110,7 +119,7 @@ const SettingsPage = () => {
               {pickLang(
                 language,
                 "Display, feed, and notification preferences for this device",
-                "Anzeige-, Feed- und Benachrichtigungseinstellungen für dieses Gerät"
+                "Anzeige-, Feed- und Benachrichtigungseinstellungen fuer dieses Geraet"
               )}
             </p>
           </div>
@@ -169,7 +178,7 @@ const SettingsPage = () => {
                       {pickLang(
                         language,
                         "Reduce UI animations and transitions across the app.",
-                        "Reduziert UI-Animationen und Übergänge in der gesamten App."
+                        "Reduziert UI-Animationen und Uebergaenge in der gesamten App."
                       )}
                     </p>
                   </div>
@@ -305,7 +314,7 @@ const SettingsPage = () => {
                     {pickLang(
                       language,
                       "Reduce card spacing in the home feed.",
-                      "Reduziert Kartenabstände im Home-Feed."
+                      "Reduziert Kartenabstaende im Home-Feed."
                     )}
                   </p>
                 </div>
@@ -409,7 +418,7 @@ const SettingsPage = () => {
                   alertAccountConnected
                     ? `Verbunden als ${sessionEmail || "unbekannt"}. ${alertServiceIds.length} Services werden beobachtet. Gespeichert: ${savedAlertLabel}. Sync: ${syncStatusLabel}.`
                     : `${alertServiceIds.length} Services werden lokal beobachtet. Schwelle: ${
-                        alertSeverityThreshold === "degraded" ? "beeintrachtigt+" : "nur groere"
+                        alertSeverityThreshold === "degraded" ? "beeintraechtigt+" : "nur groessere"
                       }.`
                 )}
               </p>
@@ -417,7 +426,7 @@ const SettingsPage = () => {
                 to="/alerts"
                 className="flex items-center justify-between rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
               >
-                <span>{pickLang(language, "Open Alerts", "Alarme öffnen")}</span>
+                <span>{pickLang(language, "Open Alerts", "Alarme oeffnen")}</span>
                 <ExternalLink size={14} />
               </Link>
             </div>
@@ -446,13 +455,7 @@ const SettingsPage = () => {
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                     {pickLang(language, "Storage", "Speicher")}
                   </p>
-                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                    {pickLang(
-                      language,
-                      "Only local UI settings are stored in your browser.",
-                      "Es werden nur lokale UI-Einstellungen im Browser gespeichert."
-                    )}
-                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{storageSummary}</p>
                 </div>
               </div>
 
@@ -462,7 +465,7 @@ const SettingsPage = () => {
                   {pickLang(
                     language,
                     "Live service updates are refreshed continuously for a clear status overview.",
-                    "Live-Service-Updates werden laufend aktualisiert und bieten einen klaren Statusüberblick."
+                    "Live-Service-Updates werden laufend aktualisiert und bieten einen klaren Statusueberblick."
                   )}
                 </p>
               </div>
@@ -495,7 +498,7 @@ const SettingsPage = () => {
                 rel="noreferrer"
                 className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
               >
-                <span>{pickLang(language, "Open GitHub repository", "GitHub-Repository öffnen")}</span>
+                <span>{pickLang(language, "Open GitHub repository", "GitHub-Repository oeffnen")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </a>
               <Link

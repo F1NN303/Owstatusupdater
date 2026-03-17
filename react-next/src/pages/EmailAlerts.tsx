@@ -104,7 +104,7 @@ const EmailAlerts = () => {
       return `${t("Ready", "Bereit")} | ${providerLabel(result.config?.provider)} ${t("signup active", "Anmeldung aktiv")}`;
     }
     if (result.status === "missing" || result.status === "invalid") {
-      return t("Alert signup is currently unavailable", "Alarm-Anmeldung ist aktuell nicht verfÃ¼gbar");
+      return t("Alert signup is currently unavailable", "Alarm-Anmeldung ist aktuell nicht verfuegbar");
     }
     return t("Could not load alert signup right now", "Alarm-Anmeldung konnte aktuell nicht geladen werden");
   };
@@ -383,7 +383,7 @@ const EmailAlerts = () => {
             <p className="mt-1 text-[13px] text-muted-foreground">
               {t(
                 "Connect an alert account, save the services you care about, and keep a secure provider signup available below.",
-                "Behalte eine einfache StÃ¶rungs-Anmeldung und zusÃ¤tzlich eine lokale Watchlist fÃ¼r die Services, die dir am wichtigsten sind."
+                "Behalte eine einfache Stoerungs-Anmeldung und zusaetzlich eine lokale Watchlist fuer die Services, die dir am wichtigsten sind."
               )}
             </p>
           </div>
@@ -581,11 +581,11 @@ const EmailAlerts = () => {
               {cachedConfigLabel
                 ? t(
                     `Stored configuration from ${cachedConfigLabel} is being used while the connection recovers.`,
-                    `Gespeicherte Konfiguration von ${cachedConfigLabel} wird verwendet, wÃ¤hrend sich die Verbindung erholt.`
+                    `Gespeicherte Konfiguration von ${cachedConfigLabel} wird verwendet, waehrend sich die Verbindung erholt.`
                   )
                 : t(
                     "A previously saved configuration is being used while the connection recovers.",
-                    "Eine zuvor gespeicherte Konfiguration wird verwendet, wÃ¤hrend sich die Verbindung erholt."
+                    "Eine zuvor gespeicherte Konfiguration wird verwendet, waehrend sich die Verbindung erholt."
                   )}
             </p>
           </div>
@@ -604,7 +604,7 @@ const EmailAlerts = () => {
                 <p className="text-[11px] text-muted-foreground">
                   {t(
                     "Choose the services you care about on this device. Your provider signup remains global for now.",
-                    "WÃ¤hle die Services, die dir auf diesem GerÃ¤t wichtig sind. Deine Anbieter-Anmeldung bleibt vorerst global."
+                    "Waehle die Services, die dir auf diesem Geraet wichtig sind. Deine Anbieter-Anmeldung bleibt vorerst global."
                   )}
                 </p>
               </div>
@@ -629,8 +629,8 @@ const EmailAlerts = () => {
                 </p>
                 <p className="mt-1 text-sm font-semibold text-foreground">
                   {alertSeverityThreshold === "degraded"
-                    ? t("Degraded+", "BeeintrÃ¤chtigt+")
-                    : t("Major only", "Nur grÃ¶ÃŸere")}
+                    ? t("Degraded+", "Beeintraechtigt+")
+                    : t("Major only", "Nur groessere")}
                 </p>
               </div>
             </div>
@@ -645,13 +645,13 @@ const EmailAlerts = () => {
                 {[
                   {
                     key: "major" as const,
-                    label: t("Major only", "Nur grÃ¶ÃŸere"),
-                    note: t("Only larger outages should stand out.", "Nur grÃ¶ÃŸere AusfÃ¤lle sollen hervorstechen."),
+                    label: t("Major only", "Nur groessere"),
+                    note: t("Only larger outages should stand out.", "Nur groessere Ausfaelle sollen hervorstechen."),
                   },
                   {
                     key: "degraded" as const,
-                    label: t("Degraded + major", "BeeintrÃ¤chtigt + grÃ¶ÃŸer"),
-                    note: t("Also flag smaller degraded states.", "Auch kleinere BeeintrÃ¤chtigungen hervorheben."),
+                    label: t("Degraded + major", "Beeintraechtigt + groesser"),
+                    note: t("Also flag smaller degraded states.", "Auch kleinere Beeintraechtigungen hervorheben."),
                   },
                 ].map((option) => {
                   const active = alertSeverityThreshold === option.key;
@@ -675,11 +675,11 @@ const EmailAlerts = () => {
                 {alertSeverityThreshold === "degraded"
                   ? t(
                       "Smaller degraded states will be treated as watchlist-worthy in the UI.",
-                      "Kleinere BeeintrÃ¤chtigungen gelten in der UI ebenfalls als watchlist-relevant."
+                      "Kleinere Beeintraechtigungen gelten in der UI ebenfalls als watchlist-relevant."
                     )
                   : t(
                       "The watchlist stays focused on the most severe outages.",
-                      "Die Watchlist konzentriert sich auf die schwerwiegendsten AusfÃ¤lle."
+                      "Die Watchlist konzentriert sich auf die schwerwiegendsten Ausfaelle."
                     )}
               </p>
             </div>
@@ -690,7 +690,7 @@ const EmailAlerts = () => {
                 onClick={() => replaceAlertServices(favoriteServiceIds)}
                 className="flex-1 rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
               >
-                {t("Use favorites", "Favoriten Ã¼bernehmen")}
+                {t("Use favorites", "Favoriten uebernehmen")}
               </button>
               <button
                 type="button"
@@ -750,7 +750,7 @@ const EmailAlerts = () => {
                             {favorite ? <Star size={12} className="text-amber-200" /> : null}
                           </div>
                           <p className="truncate text-[11px] text-muted-foreground">
-                            {service.note || t("Live service status and incident summary.", "Live-Service-Status und VorfallÃ¼bersicht.")}
+                            {service.note || t("Live service status and incident summary.", "Live-Service-Status und Vorfalluebersicht.")}
                           </p>
                         </div>
                       </div>
@@ -822,7 +822,7 @@ const EmailAlerts = () => {
                     <p>
                       {t(
                         "The embedded form is taking too long to load. You can open the secure provider form directly.",
-                        "Das eingebettete Formular lÃ¤dt zu lange. Du kannst das sichere Formular direkt beim Anbieter Ã¶ffnen."
+                        "Das eingebettete Formular laedt zu lange. Du kannst das sichere Formular direkt beim Anbieter oeffnen."
                       )}
                     </p>
                     <a
@@ -831,7 +831,7 @@ const EmailAlerts = () => {
                       rel="noreferrer"
                       className="mt-2 inline-flex items-center gap-1 rounded-lg border border-amber-200/20 bg-amber-200/10 px-2.5 py-1.5 text-[11px] font-medium text-amber-100"
                     >
-                      {t("Open Brevo form directly", "Brevo-Formular direkt Ã¶ffnen")}
+                      {t("Open Brevo form directly", "Brevo-Formular direkt oeffnen")}
                       <ExternalLink size={12} />
                     </a>
                   </div>
@@ -841,7 +841,7 @@ const EmailAlerts = () => {
               <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground">
                 {t(
                   "Subscription form is not available right now. Please try again later.",
-                  "Abo-Formular ist aktuell nicht verfÃ¼gbar. Bitte versuche es spÃ¤ter erneut."
+                  "Abo-Formular ist aktuell nicht verfuegbar. Bitte versuche es spaeter erneut."
                 )}
               </div>
             )}
@@ -861,7 +861,7 @@ const EmailAlerts = () => {
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Checked", "GeprÃ¼ft")}
+                    {t("Checked", "Geprueft")}
                   </p>
                   <p className="mt-1 text-xs font-medium text-foreground">{checkedLabel}</p>
                 </div>
@@ -869,7 +869,7 @@ const EmailAlerts = () => {
               <p className="mt-3 text-[11px] text-muted-foreground">
                 {t(
                   "Your signup is handled through Brevo with secure standards and regular reliability checks.",
-                  "Deine Anmeldung lÃ¤uft Ã¼ber Brevo mit sicheren Standards und regelmÃ¤ÃŸigen ZuverlÃ¤ssigkeitsprÃ¼fungen."
+                  "Deine Anmeldung laeuft ueber Brevo mit sicheren Standards und regelmaessigen Zuverlaessigkeitspruefungen."
                 )}
               </p>
             </div>
@@ -887,7 +887,7 @@ const EmailAlerts = () => {
                   rel="noreferrer"
                   className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
                 >
-                  <span>{t("Open Brevo form directly", "Brevo-Formular direkt Ã¶ffnen")}</span>
+                  <span>{t("Open Brevo form directly", "Brevo-Formular direkt oeffnen")}</span>
                   <ExternalLink size={14} className="text-muted-foreground" />
                 </a>
               </div>
