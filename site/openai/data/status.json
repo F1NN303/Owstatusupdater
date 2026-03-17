@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-03-17T16:39:16.796642Z",
+  "generated_at": "2026-03-17T18:00:38.132095Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 1,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 4.4,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
@@ -18,8 +18,8 @@
     },
     "signal_metrics": {
       "reports_24h": 264,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 4,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 5,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-03-17T16:39:15.947216Z",
+        "published_at": "2026-03-17T18:00:37.515415Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Excel Plugin is inaccessible for some users",
+        "url": "https://status.openai.com/incidents/01KKYDB848BK4162KR5XFYFZCV#01KKYDB8487J0ZDHC2BEAW1MV2",
+        "published_at": "2026-03-17T17:26:24Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating"
       },
       {
         "title": "Elevated errors for sign-in and account creation",
@@ -141,36 +149,36 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Minor / Resolved"
-      },
-      {
-        "title": "Elevated errors for sign-in and account creation",
-        "url": "https://status.openai.com/incidents/01KKWW47249GJZZP9ZGR1PTHV5#01KKWW47246MWB77P407EV1CBJ",
-        "published_at": "2026-03-17T02:42:00Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved"
       }
     ],
-    "last_statement_at": "2026-03-17T16:39:15.947216Z"
+    "last_statement_at": "2026-03-17T18:00:37.515415Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
+    "summary": "OpenAI Statuspage reports an active incident: Excel Plugin is inaccessible for some users.",
+    "current_status": "degraded",
     "reports_24h": 264,
     "incidents": [
+      {
+        "title": "Excel Plugin is inaccessible for some users",
+        "started_at": "2026-03-17T17:27:00Z",
+        "duration": "4m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Excel Plugin is inaccessible for some users",
+        "started_at": "2026-03-17T17:26:24Z",
+        "duration": "34m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01KKYDB848BK4162KR5XFYFZCV"
+      },
       {
         "title": "Elevated Errors Affecting ChatGPT Free and Guest Plan Users",
         "started_at": "2026-03-17T04:11:53Z",
         "duration": "1h 10m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Elevated errors for sign-in and account creation",
-        "started_at": "2026-03-17T03:07:02Z",
-        "duration": "1h 5m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -212,59 +220,20 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KKHQ47FEZ3WT1MW8T8PGGF2J"
-      },
-      {
-        "title": "Increased errors with ChatGPT file downloads",
-        "started_at": "2026-03-10T23:10:02Z",
-        "duration": "1d 23h 5m",
-        "acknowledgement": "None / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KKD07DNHFKAWK5JCAMAASYGZ"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Connectors/Apps",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-03-16T16:45:00Z",
-        "signal_value": 26.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-16T17:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-16T17:15:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-16T17:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-16T17:45:00Z",
-        "signal_value": 21.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-16T18:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-03-16T18:15:00Z",
         "signal_value": 20.0,
@@ -801,7 +770,43 @@
       },
       {
         "timestamp": "2026-03-17T16:30:00Z",
-        "signal_value": 12.0,
+        "signal_value": 27.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-17T16:45:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-17T17:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-17T17:15:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-17T17:30:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-17T17:45:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-17T18:00:00Z",
+        "signal_value": 11.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -812,30 +817,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-03-17T16:30:00Z"
+      "last_sample_at": "2026-03-17T18:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "16:40",
-        "count": 1
-      },
-      {
-        "label": "17:00",
-        "count": 6
-      },
-      {
-        "label": "17:20",
-        "count": 5
-      },
-      {
-        "label": "17:40",
-        "count": 2
-      },
-      {
-        "label": "18:00",
-        "count": 4
-      },
       {
         "label": "18:20",
         "count": 0
@@ -1103,6 +1088,26 @@
       {
         "label": "16:20",
         "count": 3
+      },
+      {
+        "label": "16:40",
+        "count": 2
+      },
+      {
+        "label": "17:00",
+        "count": 5
+      },
+      {
+        "label": "17:20",
+        "count": 3
+      },
+      {
+        "label": "17:40",
+        "count": 5
+      },
+      {
+        "label": "18:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1111,14 +1116,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-17T12:39:15-04:00"
+      "last_reviewed_at": "2026-03-17T14:00:37-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 264,
-        "last_reviewed_at": "2026-03-17T12:39:15-04:00"
+        "last_reviewed_at": "2026-03-17T14:00:37-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1301,8 +1306,8 @@
       },
       {
         "name": "Connectors/Apps",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-09T22:59:29Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1346,7 +1351,7 @@
     "top_reported_issues_provider": [
       {
         "label": "Error message",
-        "count": 28
+        "count": 27
       },
       {
         "label": "Server not responding",
@@ -1362,7 +1367,7 @@
       },
       {
         "label": "App not loading",
-        "count": 1
+        "count": 2
       },
       {
         "label": "Other",
@@ -1380,16 +1385,23 @@
   },
   "reports": [
     {
-      "title": "Elevated Errors Affecting ChatGPT Free and Guest Plan Users",
-      "url": "https://status.openai.com/#2026-03-17T04:11:53Z",
-      "published_at": "2026-03-17T04:11:53Z",
+      "title": "Excel Plugin is inaccessible for some users",
+      "url": "https://status.openai.com/#2026-03-17T17:27:00Z",
+      "published_at": "2026-03-17T17:27:00Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
     {
-      "title": "Elevated errors for sign-in and account creation",
-      "url": "https://status.openai.com/#2026-03-17T03:07:02Z",
-      "published_at": "2026-03-17T03:07:02Z",
+      "title": "Excel Plugin is inaccessible for some users",
+      "url": "https://status.openai.com/incidents/01KKYDB848BK4162KR5XFYFZCV",
+      "published_at": "2026-03-17T17:26:24Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
+      "title": "Elevated Errors Affecting ChatGPT Free and Guest Plan Users",
+      "url": "https://status.openai.com/#2026-03-17T04:11:53Z",
+      "published_at": "2026-03-17T04:11:53Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
@@ -1427,13 +1439,6 @@
       "published_at": "2026-03-12T19:07:12Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Increased errors with ChatGPT file downloads",
-      "url": "https://status.openai.com/incidents/01KKD07DNHFKAWK5JCAMAASYGZ",
-      "published_at": "2026-03-10T23:10:02Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "None / Resolved"
     }
   ],
   "known_resources": [
@@ -1442,45 +1447,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-03-17T16:39:16.796642Z"
+      "published_at": "2026-03-17T18:00:38.132095Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-17T16:39:16.796642Z"
+      "published_at": "2026-03-17T18:00:38.132095Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-03-17T16:39:16.796642Z"
+      "published_at": "2026-03-17T18:00:38.132095Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-03-17T16:39:16.796642Z"
+      "published_at": "2026-03-17T18:00:38.132095Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-03-17T16:39:16.796642Z"
+      "published_at": "2026-03-17T18:00:38.132095Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-03-17T16:39:15.947216Z",
+      "published_at": "2026-03-17T18:00:37.515415Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Excel Plugin is inaccessible for some users",
+      "url": "https://status.openai.com/incidents/01KKYDB848BK4162KR5XFYFZCV#01KKYDB8487J0ZDHC2BEAW1MV2",
+      "published_at": "2026-03-17T17:26:24Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating"
     },
     {
       "title": "Elevated errors for sign-in and account creation",
@@ -1529,14 +1542,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Minor / Resolved"
-    },
-    {
-      "title": "Elevated errors for sign-in and account creation",
-      "url": "https://status.openai.com/incidents/01KKWW47249GJZZP9ZGR1PTHV5#01KKWWCPBZX8PF61920107KEEK",
-      "published_at": "2026-03-17T03:17:00Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved"
     }
   ],
   "social": [],
@@ -1552,11 +1557,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-03-17T16:39:14.654816Z",
+      "last_item_at": "2026-03-17T18:00:36.714242Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 320,
-      "fetched_at": "2026-03-17T16:39:14.654833Z",
+      "duration_ms": 830,
+      "fetched_at": "2026-03-17T18:00:36.714261Z",
       "cache_hit": false
     },
     {
@@ -1570,11 +1575,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-17T12:39:15-04:00",
+      "last_item_at": "2026-03-17T14:00:37-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1291,
-      "fetched_at": "2026-03-17T16:39:15.946665Z",
+      "duration_ms": 800,
+      "fetched_at": "2026-03-17T18:00:37.514814Z",
       "cache_hit": false
     },
     {
@@ -1588,17 +1593,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-03-17T16:39:15.947216Z",
+      "last_item_at": "2026-03-17T18:00:37.515415Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 847,
-      "fetched_at": "2026-03-17T16:39:16.795123Z",
+      "duration_ms": 615,
+      "fetched_at": "2026-03-17T18:00:38.130469Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-03-17T16:39:16.796642Z",
+    "generated_at": "2026-03-17T18:00:38.132095Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1620,7 +1625,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1635,9 +1640,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 320,
+          "duration_ms": 830,
           "cache_hit": false,
-          "at": "2026-03-17T16:39:14Z"
+          "at": "2026-03-17T18:00:35Z"
         },
         "metrics_24h": {
           "runs": 22,
@@ -1646,19 +1651,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 649.6
+          "avg_duration_ms": 650.1
         },
         "metrics_7d": {
-          "runs": 162,
-          "ok": 159,
-          "stale": 3,
-          "success_rate": 98.1,
-          "stale_rate": 1.9,
+          "runs": 161,
+          "ok": 160,
+          "stale": 1,
+          "success_rate": 99.4,
+          "stale_rate": 0.6,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 831.8
+          "avg_duration_ms": 841.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-17T16:39:14Z",
+        "last_success_at": "2026-03-17T18:00:35Z",
         "last_failure_at": "2026-03-10T18:54:27Z"
       },
       {
@@ -1672,9 +1677,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1291,
+          "duration_ms": 800,
           "cache_hit": false,
-          "at": "2026-03-17T16:39:14Z"
+          "at": "2026-03-17T18:00:35Z"
         },
         "metrics_24h": {
           "runs": 22,
@@ -1683,19 +1688,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 913.8
+          "avg_duration_ms": 896.3
         },
         "metrics_7d": {
-          "runs": 162,
-          "ok": 162,
+          "runs": 161,
+          "ok": 161,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 899.4
+          "avg_duration_ms": 904.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-17T16:39:14Z",
+        "last_success_at": "2026-03-17T18:00:35Z",
         "last_failure_at": null
       },
       {
@@ -1709,9 +1714,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 847,
+          "duration_ms": 615,
           "cache_hit": false,
-          "at": "2026-03-17T16:39:14Z"
+          "at": "2026-03-17T18:00:35Z"
         },
         "metrics_24h": {
           "runs": 22,
@@ -1720,38 +1725,89 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 728.0
+          "avg_duration_ms": 710.8
         },
         "metrics_7d": {
-          "runs": 162,
-          "ok": 162,
+          "runs": 161,
+          "ok": 161,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 750.8
+          "avg_duration_ms": 745.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-17T16:39:14Z",
+        "last_success_at": "2026-03-17T18:00:35Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-03-17T16:39:16.796642Z",
+    "generated_at": "2026-03-17T18:00:38.132095Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "7ed33de744a1dfa2",
+          "title": "Excel Plugin is inaccessible for some users",
+          "started_at": "2026-03-17T17:27:00Z",
+          "duration": "4m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "a23e5b9cb4e99f5b",
+          "title": "Excel Plugin is inaccessible for some users",
+          "started_at": "2026-03-17T17:26:24Z",
+          "duration": "34m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "dd1c641ab8939310",
+          "title": "Elevated errors for sign-in and account creation",
+          "started_at": "2026-03-17T03:07:02Z",
+          "duration": "1h 5m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "cc73e28e99f72793",
+          "title": "Increased errors with ChatGPT file downloads",
+          "started_at": "2026-03-10T23:10:02Z",
+          "duration": "1d 23h 5m",
+          "acknowledgement": "None / Resolved",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "f86fadf1e154e280",
+          "title": "Excel Plugin is inaccessible for some users",
+          "url": "https://status.openai.com/#2026-03-17T17:27:00Z",
+          "published_at": "2026-03-17T17:27:00Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "087eb9c49911c2e0",
+          "title": "Excel Plugin is inaccessible for some users",
+          "url": "https://status.openai.com/incidents/01KKYDB848BK4162KR5XFYFZCV",
+          "published_at": "2026-03-17T17:26:24Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
