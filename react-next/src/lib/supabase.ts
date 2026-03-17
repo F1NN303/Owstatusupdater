@@ -2,8 +2,13 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 let supabaseClient: SupabaseClient | null | undefined;
 
-function readEnv(name: string) {
-  return String((import.meta.env as Record<string, string | undefined>)[name] || "").trim();
+const ENV_VALUES = {
+  VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
+  VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
+} as const;
+
+function readEnv(name: keyof typeof ENV_VALUES) {
+  return String(ENV_VALUES[name] || "").trim();
 }
 
 export const supabaseUrl = readEnv("VITE_SUPABASE_URL");

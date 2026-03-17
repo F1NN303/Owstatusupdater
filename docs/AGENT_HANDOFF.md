@@ -108,6 +108,7 @@ Key files:
   - alert preference save/load against `profiles` + `alert_preferences`
   - Alerts page now shows connected e-mail, account status, delivery-sync status, last saved/synced timestamps, and save/sign-out actions
   - Settings now surfaces the connected alert-account summary instead of describing alerts as local-only when a session exists
+  - `react-next/src/lib/supabase.ts` must use explicit `import.meta.env.VITE_SUPABASE_*` access for production builds; dynamic key access does not survive Vite env replacement
 - Subscriber-aware outbound mail dispatch is now wired in the working tree:
   - `scripts/send_brevo_major_alert.py` now loads all configured service `status.json` files instead of targeting a single hard-coded service
   - the sender now fetches `profiles` + `alert_preferences` from Supabase and filters deliveries per subscriber by watched services plus severity threshold
