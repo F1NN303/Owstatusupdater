@@ -69,10 +69,10 @@ function sanitizeLegacyStatusPayload(value: unknown): LegacyStatusPayload {
 
 const EMAIL_SERVICE: LegacyHomeServiceConfig = {
   id: "email",
-  name: "E-Mail Alerts",
+  name: "Alerts",
   href: "/email-alerts.html",
   legacyHref: "/email-alerts.html",
-  note: "Brevo signup page for outage notifications with captcha and double opt-in.",
+  note: "Alert account and e-mail delivery setup with secure provider opt-in.",
   category: "notifications",
   priority: 9000,
   tags: ["email", "alerts"],

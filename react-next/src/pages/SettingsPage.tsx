@@ -1,7 +1,6 @@
 import AppLayout from "@/components/AppLayout";
 import { useAlertAccount } from "@/lib/alertAccount";
 import { appBuildMeta, formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
-import { formatTimestampByMode } from "@/lib/timeDisplay";
 import {
   ExternalLink,
   Info,
@@ -51,31 +50,30 @@ const SettingsPage = () => {
     isConnected: alertAccountConnected,
     profile: alertAccountProfile,
     sessionEmail,
-    savedPreferences,
   } = useAlertAccount();
   const buildMeta = appBuildMeta();
   const versionLabel = formatBuildLabel(language);
   const compactBuildId = buildMeta.id ? buildMeta.id.slice(0, 7) : pickLang(language, "unknown", "unbekannt");
   const buildTimeLabel = buildMeta.stamp || pickLang(language, "Unknown", "Unbekannt");
-  const savedAlertLabel = savedPreferences?.updatedAt
-    ? formatTimestampByMode(savedPreferences.updatedAt, {
-        language,
-        mode: timeDisplayMode,
-        absoluteFormat: {
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        },
-        fallbackText: pickLang(language, "Never", "Nie"),
-      })
-    : pickLang(language, "Never", "Nie");
   const syncStatusLabel =
     alertAccountProfile?.brevoSyncStatus === "synced"
       ? pickLang(language, "Synced", "Synchronisiert")
       : alertAccountProfile?.brevoSyncStatus === "error"
         ? pickLang(language, "Sync issue", "Sync-Problem")
         : pickLang(language, "Not connected", "Nicht verbunden");
+  const alertsSummary = pickLang(
+    language,
+    alertAccountConnected
+      ? `Alerts are managed on the Alerts page. Connected as ${sessionEmail || "unknown"}, watching ${alertServiceIds.length} services. Sync: ${syncStatusLabel}.`
+      : `Alerts are managed on the Alerts page. ${alertServiceIds.length} services are currently selected only on this device. Threshold: ${
+          alertSeverityThreshold === "degraded" ? "degraded+" : "major only"
+        }.`,
+    alertAccountConnected
+      ? `Alarme werden auf der Alarm-Seite verwaltet. Verbunden als ${sessionEmail || "unbekannt"}, ${alertServiceIds.length} Services werden beobachtet. Sync: ${syncStatusLabel}.`
+      : `Alarme werden auf der Alarm-Seite verwaltet. ${alertServiceIds.length} Services sind aktuell nur auf diesem Geraet ausgewaehlt. Schwelle: ${
+          alertSeverityThreshold === "degraded" ? "beeintraechtigt+" : "nur groessere"
+        }.`
+  );
   const storageSummary = pickLang(
     language,
     alertAccountConnected
@@ -404,29 +402,17 @@ const SettingsPage = () => {
               <div className="flex items-center gap-2">
                 <Mail size={14} className="text-primary/80" />
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Notifications", "Benachrichtigungen")}
+                  {pickLang(language, "Alerts", "Alarme")}
                 </h2>
               </div>
               <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] leading-relaxed text-muted-foreground">
-                {pickLang(
-                  language,
-                  alertAccountConnected
-                    ? `Connected as ${sessionEmail || "unknown"}. Watching ${alertServiceIds.length} services. Saved: ${savedAlertLabel}. Sync: ${syncStatusLabel}.`
-                    : `Watching ${alertServiceIds.length} services locally. Threshold: ${
-                        alertSeverityThreshold === "degraded" ? "degraded+" : "major only"
-                      }.`,
-                  alertAccountConnected
-                    ? `Verbunden als ${sessionEmail || "unbekannt"}. ${alertServiceIds.length} Services werden beobachtet. Gespeichert: ${savedAlertLabel}. Sync: ${syncStatusLabel}.`
-                    : `${alertServiceIds.length} Services werden lokal beobachtet. Schwelle: ${
-                        alertSeverityThreshold === "degraded" ? "beeintraechtigt+" : "nur groessere"
-                      }.`
-                )}
+                {alertsSummary}
               </p>
               <Link
                 to="/alerts"
                 className="flex items-center justify-between rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
               >
-                <span>{pickLang(language, "Open Alerts", "Alarme oeffnen")}</span>
+                <span>{pickLang(language, "Manage Alerts", "Alarme verwalten")}</span>
                 <ExternalLink size={14} />
               </Link>
             </div>

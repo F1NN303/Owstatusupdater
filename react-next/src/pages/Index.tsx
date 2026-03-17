@@ -1247,13 +1247,13 @@ const Index = () => {
               </div>
               <div>
                 <p className="text-sm font-semibold text-foreground">
-                  {pickLang(language, "E-Mail Alerts", "E-Mail-Alarme")}
+                  {pickLang(language, "Alerts", "Alarme")}
                 </p>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">
                   {pickLang(
                     language,
-                    "Open the current signup page for outage notifications",
-                    "Aktuelle Anmeldeseite für Störungs-Benachrichtigungen öffnen"
+                    "Manage your alert account, watchlist, and e-mail delivery",
+                    "Alarm-Konto, Watchlist und E-Mail-Zustellung verwalten"
                   )}
                 </p>
               </div>

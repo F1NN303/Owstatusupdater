@@ -17,10 +17,11 @@ import {
   LogOut,
   Mail,
   RefreshCw,
+  Search,
   ShieldCheck,
   Star,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent, type ReactNode } from "react";
 
 type NoticeTone = "neutral" | "good" | "warn" | "bad";
 
@@ -51,6 +52,50 @@ function compareServices(a: LegacyHomeServiceConfig, b: LegacyHomeServiceConfig)
     return aPriority - bPriority;
   }
   return a.name.localeCompare(b.name);
+}
+
+function AlertsSectionHeader({
+  icon,
+  title,
+  description,
+}: {
+  icon: ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="mb-3 flex items-center gap-2">
+      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary">{icon}</div>
+      <div>
+        <h2 className="text-sm font-semibold text-foreground">{title}</h2>
+        <p className="text-[11px] text-muted-foreground">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+function AlertsStatusMetric({
+  label,
+  value,
+  tone,
+  caption,
+}: {
+  label: string;
+  value: string;
+  tone: NoticeTone;
+  caption: string;
+}) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+      <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+      <div
+        className={`mt-2 inline-flex rounded-full border px-2 py-0.5 text-[10px] font-medium ${STATUS_CLASS[tone]}`}
+      >
+        {value}
+      </div>
+      <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">{caption}</p>
+    </div>
+  );
 }
 
 const EmailAlerts = () => {
@@ -91,6 +136,10 @@ const EmailAlerts = () => {
     null
   );
   const [magicLinkPending, setMagicLinkPending] = useState(false);
+  const [magicLinkSentEmail, setMagicLinkSentEmail] = useState("");
+  const [showProviderEmbed, setShowProviderEmbed] = useState(false);
+  const [serviceQuery, setServiceQuery] = useState("");
+  const [showSelectedOnly, setShowSelectedOnly] = useState(false);
 
   const t = (en: string, de: string) => pickLang(language, en, de);
   const favoriteServiceIdSet = useMemo(() => new Set(favoriteServiceIds), [favoriteServiceIds]);
@@ -154,6 +203,7 @@ const EmailAlerts = () => {
   useEffect(() => {
     if (alertAccountConnected && sessionEmail) {
       setEmailDraft(sessionEmail);
+      setMagicLinkSentEmail("");
     }
   }, [alertAccountConnected, sessionEmail]);
 
@@ -175,8 +225,13 @@ const EmailAlerts = () => {
     return () => window.clearTimeout(timeout);
   }, [canEmbed, embedUrl]);
 
+  useEffect(() => {
+    if (!canEmbed) {
+      setShowProviderEmbed(false);
+    }
+  }, [canEmbed]);
+
   const provider = providerLabel(configResult?.config?.provider);
-  const currentTone = statusTone(configResult);
   const usingCachedConfig = configResult?.source === "cache";
   const selectedServiceCount = alertServiceIds.length;
   const sortedServices = useMemo(() => {
@@ -196,6 +251,27 @@ const EmailAlerts = () => {
       return compareServices(left, right);
     });
   }, [alertServiceIdSet, availableServices, favoriteServiceIdSet]);
+  const normalizedServiceQuery = serviceQuery.trim().toLowerCase();
+  const visibleServices = useMemo(() => {
+    return sortedServices.filter((service) => {
+      if (showSelectedOnly && !alertServiceIdSet.has(service.id)) {
+        return false;
+      }
+      if (!normalizedServiceQuery) {
+        return true;
+      }
+      const haystack = [
+        service.name,
+        service.note,
+        service.category,
+        ...(service.tags || []),
+        ...(service.aliases || []),
+      ]
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(normalizedServiceQuery);
+    });
+  }, [alertServiceIdSet, normalizedServiceQuery, showSelectedOnly, sortedServices]);
 
   const checkedLabel = lastCheckedAt
     ? formatTimestampByMode(lastCheckedAt, {
@@ -219,19 +295,6 @@ const EmailAlerts = () => {
         fallbackText: t("Stored", "Gespeichert"),
       })
     : null;
-  const savedPreferencesLabel = savedPreferences?.updatedAt
-    ? formatTimestampByMode(savedPreferences.updatedAt, {
-        language,
-        mode: timeDisplayMode,
-        absoluteFormat: {
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        },
-        fallbackText: t("Never", "Nie"),
-      })
-    : t("Never", "Nie");
   const profileLastSyncedLabel = alertAccountProfile?.lastSyncedAt
     ? formatTimestampByMode(alertAccountProfile.lastSyncedAt, {
         language,
@@ -298,12 +361,100 @@ const EmailAlerts = () => {
         return t("Not connected", "Nicht verbunden");
     }
   })();
-  const deliverySyncTone: NoticeTone =
-    alertAccountProfile?.brevoSyncStatus === "synced"
-      ? "good"
-      : alertAccountProfile?.brevoSyncStatus === "error"
-        ? "bad"
-        : "warn";
+  const preferencesTone: NoticeTone = alertAccountConnected
+    ? alertAccountDirty
+      ? "warn"
+      : "good"
+    : "neutral";
+  const deliveryReady = alertAccountProfile?.brevoSyncStatus === "synced";
+  const providerTone = deliveryReady ? "good" : canEmbed ? "warn" : statusTone(configResult);
+  const preferencesStatusLabel = alertAccountConnected
+    ? alertAccountDirty
+      ? t("Needs save", "Speichern")
+      : t("Saved", "Gespeichert")
+    : t("Local only", "Nur lokal");
+  const providerStatusLabel = deliveryReady
+    ? t("Active", "Aktiv")
+    : canEmbed
+      ? t("Setup pending", "Setup offen")
+      : t("Unavailable", "Nicht verfuegbar");
+  const setupTone: NoticeTone = (() => {
+    if (!alertsBackendConfigured) {
+      return "warn";
+    }
+    if (!alertAccountConnected) {
+      return "warn";
+    }
+    if (alertAccountDirty || !deliveryReady) {
+      return "neutral";
+    }
+    return "good";
+  })();
+  const setupBadgeLabel = (() => {
+    if (!alertsBackendConfigured) {
+      return t("Unavailable", "Nicht verfuegbar");
+    }
+    if (!alertAccountConnected) {
+      return t("Step 1", "Schritt 1");
+    }
+    if (alertAccountDirty) {
+      return t("Step 2", "Schritt 2");
+    }
+    if (!deliveryReady) {
+      return t("Step 3", "Schritt 3");
+    }
+    return t("Ready", "Bereit");
+  })();
+  const setupTitle = (() => {
+    if (!alertsBackendConfigured) {
+      return t("Alerts account unavailable", "Alarm-Konto nicht verfuegbar");
+    }
+    if (!alertAccountConnected) {
+      return t("Connect your alert account", "Verbinde dein Alarm-Konto");
+    }
+    if (alertAccountDirty) {
+      return t("Save what should trigger alerts", "Speichere, was Alarme ausloesen soll");
+    }
+    if (!deliveryReady) {
+      return t("Finish e-mail delivery", "Aktiviere die E-Mail-Zustellung");
+    }
+    return t("Alerts are ready", "Alarme sind bereit");
+  })();
+  const setupDescription = (() => {
+    if (!alertsBackendConfigured) {
+      return t(
+        "Browser alerts are not configured in this build yet.",
+        "Browser-Alarme sind in diesem Build noch nicht konfiguriert."
+      );
+    }
+    if (!alertAccountConnected) {
+      return magicLinkSentEmail
+        ? t(
+            `We sent a magic link to ${magicLinkSentEmail}. Open it on this device to continue.`,
+            `Wir haben einen Magic Link an ${magicLinkSentEmail} gesendet. Oeffne ihn auf diesem Geraet, um fortzufahren.`
+          )
+        : t(
+            "Step 1 is account access. After that, your watchlist can sync across devices.",
+            "Schritt 1 ist der Kontozugang. Danach kann deine Watchlist ueber Geraete hinweg synchronisiert werden."
+          );
+    }
+    if (alertAccountDirty) {
+      return t(
+        "Your current watchlist differs from the saved account version.",
+        "Deine aktuelle Watchlist unterscheidet sich von der gespeicherten Konto-Version."
+      );
+    }
+    if (!deliveryReady) {
+      return t(
+        "Preferences are saved. Finish the delivery step if you also want inbox alerts.",
+        "Die Einstellungen sind gespeichert. Schliesse den Zustellungs-Schritt ab, wenn du auch E-Mail-Alarme im Postfach moechtest."
+      );
+    }
+    return t(
+      "Account, preferences, and delivery are all active.",
+      "Konto, Einstellungen und Zustellung sind alle aktiv."
+    );
+  })();
   const watchlistModeText = alertAccountConnected
     ? alertAccountDirty
       ? t(
@@ -318,42 +469,35 @@ const EmailAlerts = () => {
         "This watchlist still lives only on this device until you connect an alert account.",
         "Diese Watchlist lebt noch nur auf diesem Geraet, bis du ein Alarm-Konto verbindest."
       );
-  const accountSummaryText = (() => {
-    if (!alertsBackendConfigured) {
-      return t(
-        "Supabase is not configured in this build yet, so account-based alert sync is unavailable.",
-        "Supabase ist in diesem Build noch nicht konfiguriert, daher ist kontobasierte Alarm-Synchronisierung nicht verfuegbar."
-      );
-    }
-    if (alertAccountConnected) {
-      return t(
-        "Your watchlist and threshold can now be stored server-side instead of only in local device settings.",
-        "Deine Watchlist und Schwelle koennen jetzt serverseitig statt nur in lokalen Geraeteeinstellungen gespeichert werden."
-      );
-    }
-    return t(
-      "Sign in with e-mail to save alert preferences to your account and manage them across devices.",
-      "Melde dich per E-Mail an, um Alarm-Einstellungen im Konto zu speichern und geraeteuebergreifend zu verwalten."
-    );
-  })();
   const providerConnectionText = alertAccountConnected
     ? t(
-        "Your account settings are saved here, but provider delivery sync is still a separate step until the sending backend is fully connected.",
-        "Deine Konto-Einstellungen werden hier gespeichert, aber die Provider-Auslieferung bleibt vorerst ein separater Schritt, bis das Sende-Backend voll verbunden ist."
+        "Account preferences are already handled above. Use this provider step only for inbox delivery.",
+        "Die Konto-Einstellungen werden bereits oben verwaltet. Nutze diesen Provider-Schritt nur fuer die Zustellung ins Postfach."
       )
     : t(
-        "This secure form is still the provider opt-in step. Account-based preference sync is managed above.",
-        "Dieses sichere Formular bleibt vorerst der Provider-Opt-in-Schritt. Die kontobasierte Einstellungs-Synchronisierung wird oben verwaltet."
+        "This is the final delivery step. Connect your alert account first if you want one clearer setup flow.",
+        "Das ist der letzte Zustellungs-Schritt. Verbinde zuerst dein Alarm-Konto, wenn du einen klaren Setup-Ablauf moechtest."
       );
 
   const handleRequestMagicLink = async () => {
     setMagicLinkPending(true);
     const result = await requestMagicLink(emailDraft);
     setMagicLinkPending(false);
+    if (result.ok) {
+      setMagicLinkSentEmail(emailDraft.trim());
+    }
     setAccountNotice({
       tone: result.ok ? "good" : "bad",
       message: result.message,
     });
+  };
+
+  const handleEmailDraftKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== "Enter" || magicLinkPending || !alertsBackendConfigured) {
+      return;
+    }
+    event.preventDefault();
+    void handleRequestMagicLink();
   };
 
   const handleSavePreferences = async () => {
@@ -366,6 +510,10 @@ const EmailAlerts = () => {
 
   const handleSignOut = async () => {
     const result = await signOut();
+    if (result.ok) {
+      setMagicLinkSentEmail("");
+      setShowProviderEmbed(false);
+    }
     setAccountNotice({
       tone: result.ok ? "neutral" : "bad",
       message: result.message,
@@ -378,12 +526,12 @@ const EmailAlerts = () => {
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              {t("E-Mail Alerts", "E-Mail-Alarme")}
+              {t("Alerts", "Alarme")}
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">
               {t(
-                "Connect an alert account, save the services you care about, and keep a secure provider signup available below.",
-                "Behalte eine einfache Stoerungs-Anmeldung und zusaetzlich eine lokale Watchlist fuer die Services, die dir am wichtigsten sind."
+                "Connect your account, choose what matters, then finish e-mail delivery if you want inbox alerts.",
+                "Verbinde dein Konto, waehle die wichtigen Services und aktiviere danach bei Bedarf die E-Mail-Zustellung."
               )}
             </p>
           </div>
@@ -407,67 +555,76 @@ const EmailAlerts = () => {
 
         <section className="glass glass-specular overflow-hidden rounded-2xl">
           <div className="bg-gradient-to-r from-primary/15 to-transparent p-4">
-            <div className="relative z-10 flex items-center justify-between gap-3">
+            <div className="relative z-10 flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary">
                   <ShieldCheck size={18} className="text-primary" />
                 </div>
                 <div className="min-w-0">
-                  <h2 className="truncate text-sm font-bold text-foreground">
-                    {t("Alert Account", "Alarm-Konto")}
-                  </h2>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{accountSummaryText}</p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-primary/80">
+                    {t("Alerts flow", "Alarm-Ablauf")}
+                  </p>
+                  <h2 className="truncate text-sm font-bold text-foreground">{setupTitle}</h2>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{setupDescription}</p>
                 </div>
               </div>
-              <span className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${STATUS_CLASS[accountTone]}`}>
-                {connectionStatusLabel}
+              <span
+                className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${STATUS_CLASS[setupTone]}`}
+              >
+                {setupBadgeLabel}
               </span>
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              <AlertsStatusMetric
+                label={t("Account", "Konto")}
+                value={connectionStatusLabel}
+                tone={accountTone}
+                caption={
+                  alertAccountConnected
+                    ? sessionEmail || t("Unknown", "Unbekannt")
+                    : t("Use the magic link to connect.", "Nutze den Magic Link zum Verbinden.")
+                }
+              />
+              <AlertsStatusMetric
+                label={t("Preferences", "Einstellungen")}
+                value={preferencesStatusLabel}
+                tone={preferencesTone}
+                caption={
+                  alertAccountConnected
+                    ? t(
+                        `${selectedServiceCount} services currently selected.`,
+                        `${selectedServiceCount} Services sind aktuell ausgewaehlt.`
+                      )
+                    : t(
+                        `${selectedServiceCount} services are only stored on this device right now.`,
+                        `${selectedServiceCount} Services sind aktuell nur auf diesem Geraet gespeichert.`
+                      )
+                }
+              />
+              <AlertsStatusMetric
+                label={t("Delivery", "Zustellung")}
+                value={providerStatusLabel}
+                tone={providerTone}
+                caption={deliveryReady ? provider : t("Brevo delivery step still open.", "Brevo-Zustellung ist noch offen.")}
+              />
             </div>
           </div>
         </section>
 
         <section className="glass glass-specular mt-4 rounded-2xl p-4">
           <div className="relative z-10">
-            <div className="mb-3 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary">
-                <Cloud size={16} className="text-primary" />
-              </div>
-              <div>
-                <h2 className="text-sm font-semibold text-foreground">
-                  {t("Connection Status", "Verbindungsstatus")}
-                </h2>
-                <p className="text-[11px] text-muted-foreground">
-                  {t(
-                    "This decides whether your watchlist is only local or also saved to your account.",
-                    "Das entscheidet, ob deine Watchlist nur lokal oder auch in deinem Konto gespeichert wird."
-                  )}
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Account", "Konto")}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-foreground">{connectionStatusLabel}</p>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Delivery sync", "Delivery-Sync")}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-foreground">{deliverySyncLabel}</p>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Saved", "Gespeichert")}
-                </p>
-                <p className="mt-1 text-xs font-semibold text-foreground">{savedPreferencesLabel}</p>
-              </div>
-            </div>
+            <AlertsSectionHeader
+              icon={<Cloud size={16} className="text-primary" />}
+              title={t("1. Account access", "1. Kontozugang")}
+              description={t(
+                "Connect once with a magic link, then this account can keep your alert preferences.",
+                "Verbinde dich einmal per Magic Link, dann kann dieses Konto deine Alarm-Einstellungen speichern."
+              )}
+            />
 
             {alertAccountConnected ? (
-              <div className="mt-3 space-y-3">
+              <div className="space-y-3">
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                     {t("Connected e-mail", "Verbundene E-Mail")}
@@ -477,8 +634,8 @@ const EmailAlerts = () => {
                   </p>
                   <p className="mt-2 text-[11px] text-muted-foreground">
                     {t(
-                      "Use Save to push the current device watchlist into this account.",
-                      "Nutze Speichern, um die aktuelle Geraete-Watchlist in dieses Konto zu uebernehmen."
+                      "This account is now the source of truth for saved alert preferences.",
+                      "Dieses Konto ist jetzt die Quelle fuer gespeicherte Alarm-Einstellungen."
                     )}
                   </p>
                 </div>
@@ -501,18 +658,6 @@ const EmailAlerts = () => {
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
-                    onClick={handleSavePreferences}
-                    disabled={alertAccountSaving || !alertAccountDirty}
-                    className="flex-1 rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15 disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {alertAccountSaving
-                      ? t("Saving...", "Speichert...")
-                      : alertAccountDirty
-                        ? t("Save account settings", "Kontoeinstellungen speichern")
-                        : t("Already saved", "Bereits gespeichert")}
-                  </button>
-                  <button
-                    type="button"
                     onClick={handleSignOut}
                     className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10"
                   >
@@ -524,7 +669,7 @@ const EmailAlerts = () => {
                 </div>
               </div>
             ) : (
-              <div className="mt-3 space-y-3">
+              <div className="space-y-3">
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                     {t("Sign in with e-mail", "Mit E-Mail anmelden")}
@@ -533,8 +678,12 @@ const EmailAlerts = () => {
                     <input
                       type="email"
                       autoComplete="email"
+                      inputMode="email"
+                      autoCapitalize="none"
+                      spellCheck={false}
                       value={emailDraft}
                       onChange={(event) => setEmailDraft(event.target.value)}
+                      onKeyDown={handleEmailDraftKeyDown}
                       placeholder={t("name@example.com", "name@example.com")}
                       className="min-w-0 flex-1 rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-foreground outline-none focus:border-primary/40"
                     />
@@ -554,15 +703,17 @@ const EmailAlerts = () => {
                     )}
                   </p>
                 </div>
+
+                {magicLinkSentEmail ? (
+                  <div className="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-3 py-2 text-[11px] text-emerald-200">
+                    {t(
+                      `Magic link sent to ${magicLinkSentEmail}. Open it on this device, then return here.`,
+                      `Magic Link an ${magicLinkSentEmail} gesendet. Oeffne ihn auf diesem Geraet und kehre dann hierher zurueck.`
+                    )}
+                  </div>
+                ) : null}
               </div>
             )}
-
-            <div className="mt-3 rounded-xl border px-3 py-2 text-[11px] leading-relaxed text-muted-foreground">
-              <div className={`inline-flex rounded-full border px-2 py-0.5 font-medium ${STATUS_CLASS[deliverySyncTone]}`}>
-                {deliverySyncLabel}
-              </div>
-              <p className="mt-2">{providerConnectionText}</p>
-            </div>
 
             {accountNotice ? (
               <div className={`mt-3 rounded-xl border px-3 py-2 text-[11px] ${STATUS_CLASS[accountNotice.tone]}`}>
@@ -593,22 +744,21 @@ const EmailAlerts = () => {
 
         <section className="glass glass-specular mt-4 rounded-2xl p-4">
           <div className="relative z-10">
-            <div className="mb-3 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary">
-                <BellRing size={16} className="text-primary" />
-              </div>
-              <div>
-                <h2 className="text-sm font-semibold text-foreground">
-                  {t("Alert Watchlist", "Alarm-Watchlist")}
-                </h2>
-                <p className="text-[11px] text-muted-foreground">
-                  {t(
-                    "Choose the services you care about on this device. Your provider signup remains global for now.",
-                    "Waehle die Services, die dir auf diesem Geraet wichtig sind. Deine Anbieter-Anmeldung bleibt vorerst global."
-                  )}
-                </p>
-              </div>
-            </div>
+            <AlertsSectionHeader
+              icon={<BellRing size={16} className="text-primary" />}
+              title={t("2. Choose alerts", "2. Alarme auswaehlen")}
+              description={
+                alertAccountConnected
+                  ? t(
+                      "Pick the services and threshold you want to save into your account.",
+                      "Waehle die Services und die Schwelle, die in deinem Konto gespeichert werden sollen."
+                    )
+                  : t(
+                      "You can prepare this before sign-in. Until then, it stays only on this device.",
+                      "Du kannst das vor der Anmeldung vorbereiten. Bis dahin bleibt es nur auf diesem Geraet."
+                    )
+              }
+            />
 
             <div className="grid grid-cols-3 gap-2">
               <div className="rounded-xl border border-white/10 bg-white/5 p-3">
@@ -690,7 +840,7 @@ const EmailAlerts = () => {
                 onClick={() => replaceAlertServices(favoriteServiceIds)}
                 className="flex-1 rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
               >
-                {t("Use favorites", "Favoriten uebernehmen")}
+                {t("Import favorites", "Favoriten uebernehmen")}
               </button>
               <button
                 type="button"
@@ -703,15 +853,56 @@ const EmailAlerts = () => {
                 <button
                   type="button"
                   onClick={handleSavePreferences}
-                  disabled={alertAccountSaving}
+                  disabled={alertAccountSaving || (!alertAccountDirty && Boolean(savedPreferences))}
                   className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <span className="inline-flex items-center gap-1.5">
                     <CheckCheck size={14} />
-                    {alertAccountSaving ? t("Saving...", "Speichert...") : t("Save", "Speichern")}
+                    {alertAccountSaving
+                      ? t("Saving...", "Speichert...")
+                      : alertAccountDirty
+                        ? t("Save to account", "Im Konto speichern")
+                        : t("Saved", "Gespeichert")}
                   </span>
                 </button>
               ) : null}
+            </div>
+
+            <div className="mt-3 space-y-2">
+              <div className="flex flex-wrap gap-2">
+                <label className="flex min-w-[220px] flex-1 items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground focus-within:border-primary/30 focus-within:text-foreground">
+                  <Search size={14} className="shrink-0" />
+                  <input
+                    type="text"
+                    value={serviceQuery}
+                    onChange={(event) => setServiceQuery(event.target.value)}
+                    placeholder={t("Search services", "Services suchen")}
+                    className="w-full bg-transparent text-foreground outline-none placeholder:text-muted-foreground"
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowSelectedOnly((previous) => !previous)}
+                  className={`rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
+                    showSelectedOnly
+                      ? "border-primary/25 bg-primary/12 text-primary"
+                      : "border-white/10 bg-white/5 text-foreground hover:bg-white/10"
+                  }`}
+                >
+                  {showSelectedOnly ? t("Selected only", "Nur ausgewaehlte") : t("Show all", "Alle zeigen")}
+                </button>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                {visibleServices.length === sortedServices.length
+                  ? t(
+                      `${visibleServices.length} services are currently visible.`,
+                      `${visibleServices.length} Services sind aktuell sichtbar.`
+                    )
+                  : t(
+                      `Showing ${visibleServices.length} of ${sortedServices.length} services.`,
+                      `${visibleServices.length} von ${sortedServices.length} Services werden angezeigt.`
+                    )}
+              </p>
             </div>
 
             <div className="mt-3 space-y-2">
@@ -722,8 +913,15 @@ const EmailAlerts = () => {
                     "Die Service-Watchlist erscheint, sobald der Live-Servicekatalog geladen ist."
                   )}
                 </div>
+              ) : visibleServices.length === 0 ? (
+                <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground">
+                  {t(
+                    "No services match the current filter yet. Clear the search or show all services again.",
+                    "Keine Services passen aktuell zum Filter. Leere die Suche oder zeige wieder alle Services an."
+                  )}
+                </div>
               ) : (
-                sortedServices.map((service) => {
+                visibleServices.map((service) => {
                   const selected = isAlertService(service.id);
                   const favorite = favoriteServiceIdSet.has(service.id);
                   return (
@@ -773,69 +971,116 @@ const EmailAlerts = () => {
 
         <section className="glass glass-specular mt-4 rounded-2xl p-4">
           <div className="relative z-10">
-            <div className="mb-3 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary">
-                <Mail size={16} className="text-primary" />
-              </div>
-              <div>
-                <h2 className="text-sm font-semibold text-foreground">
-                  {t("Delivery Provider", "Delivery-Provider")}
-                </h2>
-                <p className="text-[11px] text-muted-foreground">{providerConnectionText}</p>
-              </div>
+            <AlertsSectionHeader
+              icon={<Mail size={16} className="text-primary" />}
+              title={t("3. Activate e-mail delivery", "3. E-Mail-Zustellung aktivieren")}
+              description={providerConnectionText}
+            />
+
+            <div className="grid grid-cols-3 gap-2">
+              <AlertsStatusMetric
+                label={t("Provider", "Provider")}
+                value={provider}
+                tone="neutral"
+                caption={statusText(configResult)}
+              />
+              <AlertsStatusMetric
+                label={t("Status", "Status")}
+                value={providerStatusLabel}
+                tone={providerTone}
+                caption={
+                  deliveryReady
+                    ? t("Inbox delivery looks active.", "Die Postfach-Zustellung wirkt aktiv.")
+                    : t(
+                        "Finish the provider opt-in if you still want e-mail delivery.",
+                        "Schliesse den Provider-Opt-in ab, wenn du weiter E-Mail-Zustellung moechtest."
+                      )
+                }
+              />
+              <AlertsStatusMetric
+                label={t("Checked", "Geprueft")}
+                value={checkedLabel}
+                tone={usingCachedConfig ? "warn" : "neutral"}
+                caption={
+                  usingCachedConfig
+                    ? t("Using cached signup metadata.", "Es werden zwischengespeicherte Anmelde-Metadaten verwendet.")
+                    : t(
+                        "Brevo handles captcha and double opt-in.",
+                        "Brevo verarbeitet Captcha und Double-Opt-In."
+                      )
+                }
+              />
             </div>
 
             {canEmbed ? (
-              <div className="space-y-3">
-                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-                  {!embedLoaded ? (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-                      <p className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-[11px] text-muted-foreground">
-                        {t("Loading secure signup form...", "Lade sicheres Anmeldeformular...")}
-                      </p>
-                    </div>
-                  ) : null}
-                  <iframe
-                    key={embedUrl}
-                    src={embedUrl}
-                    title={t("Brevo alert signup", "Brevo-Alarm-Anmeldung")}
-                    className="block h-[720px] w-full bg-white"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"
-                    onLoad={() => {
-                      setEmbedLoaded(true);
-                      setEmbedTimedOut(false);
-                    }}
-                  />
+              <div className="mt-3 space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href={embedUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      {t("Open secure delivery form", "Sicheres Zustellungsformular oeffnen")}
+                      <ExternalLink size={14} />
+                    </span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setShowProviderEmbed((previous) => !previous)}
+                    className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10"
+                  >
+                    {showProviderEmbed
+                      ? t("Hide embedded form", "Eingebettetes Formular ausblenden")
+                      : t("Show embedded form here", "Formular hier einblenden")}
+                  </button>
                 </div>
 
-                <p className="text-[11px] leading-relaxed text-muted-foreground">
-                  {t(
-                    "Brevo handles captcha and double opt-in directly in the signup flow.",
-                    "Brevo verarbeitet Captcha und Double-Opt-In direkt im Anmeldeablauf."
-                  )}
-                </p>
+                {showProviderEmbed ? (
+                  <div className="space-y-3">
+                    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                      {!embedLoaded ? (
+                        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+                          <p className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-[11px] text-muted-foreground">
+                            {t("Loading secure signup form...", "Lade sicheres Anmeldeformular...")}
+                          </p>
+                        </div>
+                      ) : null}
+                      <iframe
+                        key={embedUrl}
+                        src={embedUrl}
+                        title={t("Brevo alert signup", "Brevo-Alarm-Anmeldung")}
+                        className="block h-[720px] w-full bg-white"
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"
+                        onLoad={() => {
+                          setEmbedLoaded(true);
+                          setEmbedTimedOut(false);
+                        }}
+                      />
+                    </div>
 
-                {embedTimedOut && !embedLoaded ? (
-                  <div className="rounded-xl border border-amber-300/20 bg-amber-300/10 px-3 py-2 text-[11px] text-amber-200">
-                    <p>
-                      {t(
-                        "The embedded form is taking too long to load. You can open the secure provider form directly.",
-                        "Das eingebettete Formular laedt zu lange. Du kannst das sichere Formular direkt beim Anbieter oeffnen."
-                      )}
-                    </p>
-                    <a
-                      href={embedUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-2 inline-flex items-center gap-1 rounded-lg border border-amber-200/20 bg-amber-200/10 px-2.5 py-1.5 text-[11px] font-medium text-amber-100"
-                    >
-                      {t("Open Brevo form directly", "Brevo-Formular direkt oeffnen")}
-                      <ExternalLink size={12} />
-                    </a>
+                    {embedTimedOut && !embedLoaded ? (
+                      <div className="rounded-xl border border-amber-300/20 bg-amber-300/10 px-3 py-2 text-[11px] text-amber-200">
+                        <p>
+                          {t(
+                            "The embedded form is taking too long to load. Open the secure provider form directly instead.",
+                            "Das eingebettete Formular braucht zu lange. Oeffne stattdessen direkt das sichere Provider-Formular."
+                          )}
+                        </p>
+                      </div>
+                    ) : null}
                   </div>
-                ) : null}
+                ) : (
+                  <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] leading-relaxed text-muted-foreground">
+                    {t(
+                      "Keep this collapsed if you only need the external secure signup. Open it here only when you want to complete the provider step inside the app.",
+                      "Lass diesen Bereich eingeklappt, wenn du nur das externe sichere Formular brauchst. Oeffne ihn hier nur, wenn du den Provider-Schritt direkt in der App abschliessen willst."
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground">
@@ -846,53 +1091,6 @@ const EmailAlerts = () => {
               </div>
             )}
           </div>
-        </section>
-
-        <section className="mt-4 grid gap-4">
-          <div className="glass glass-specular rounded-2xl p-4">
-            <div className="relative z-10">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {t("Signup Safety", "Anmeldesicherheit")}
-              </h2>
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Provider</p>
-                  <p className="mt-1 text-sm font-semibold text-foreground">{provider}</p>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Checked", "Geprueft")}
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-foreground">{checkedLabel}</p>
-                </div>
-              </div>
-              <p className="mt-3 text-[11px] text-muted-foreground">
-                {t(
-                  "Your signup is handled through Brevo with secure standards and regular reliability checks.",
-                  "Deine Anmeldung laeuft ueber Brevo mit sicheren Standards und regelmaessigen Zuverlaessigkeitspruefungen."
-                )}
-              </p>
-            </div>
-          </div>
-
-          {configResult?.parsedUrl ? (
-            <div className="glass glass-specular rounded-2xl p-4">
-              <div className="relative z-10 space-y-2">
-                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("Alternative", "Alternative")}
-                </h2>
-                <a
-                  href={configResult.parsedUrl.toString()}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-white/10"
-                >
-                  <span>{t("Open Brevo form directly", "Brevo-Formular direkt oeffnen")}</span>
-                  <ExternalLink size={14} className="text-muted-foreground" />
-                </a>
-              </div>
-            </div>
-          ) : null}
         </section>
       </main>
     </AppLayout>

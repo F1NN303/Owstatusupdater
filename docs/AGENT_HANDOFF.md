@@ -111,6 +111,9 @@ Key files:
   - account/session bootstrap in `react-next/src/lib/alertAccount.tsx`
   - alert preference save/load against `profiles` + `alert_preferences`
   - Alerts page now shows connected e-mail, account status, delivery-sync status, last saved/synced timestamps, and save/sign-out actions
+  - the Alerts screen now follows a 3-step flow (`account -> choose alerts -> delivery`) instead of mixing account, watchlist, and provider details into repeated blocks
+  - `/alerts` is now the canonical route and `/email-alerts` is only a redirect for backwards compatibility
+  - the long service watchlist now has search plus a selected-only filter to make large lists easier to manage
   - Settings now surfaces the connected alert-account summary instead of describing alerts as local-only when a session exists
   - `react-next/src/lib/supabase.ts` must use explicit `import.meta.env.VITE_SUPABASE_*` access for production builds; dynamic key access does not survive Vite env replacement
 - Subscriber-aware outbound mail dispatch is now wired in the working tree:
@@ -143,6 +146,7 @@ Key files:
   - pull-to-refresh
   - share on detail pages
 - Settings now shows alert-watchlist summary and exposes a "show onboarding again" action.
+- Home now links to the broader Alerts flow rather than describing the screen as only a newsletter signup page.
 
 Key files:
 - `react-next/src/lib/supabase.ts`
