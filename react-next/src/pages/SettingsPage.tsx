@@ -126,7 +126,7 @@ const SettingsPage = () => {
           </div>
         </div>
 
-        <section className="grid gap-3 sm:grid-cols-2">
+        <section className="grid gap-3">
           <div className="glass glass-specular rounded-2xl p-4">
             <div className="relative z-10">
               <div className="flex items-center gap-2">

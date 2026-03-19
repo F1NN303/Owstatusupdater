@@ -678,3 +678,15 @@ Key files:
 - Notes:
   - `npm.cmd run build` still reports the existing Vite chunk-size warning for the main bundle.
   - Vitest still reports the existing React Router v7 future-flag warnings during route tests.
+
+## Latest Validation Snapshot (Settings Layout + Nav Glass Follow-Up)
+- Scope:
+  - Fixed the settings intro summary cards in `react-next/src/pages/SettingsPage.tsx` so they stack again inside the existing `max-w-md` shell instead of forcing a cramped two-column split.
+  - Restored the old liquid-glass bottom-nav appearance in `react-next/src/index.css` by removing the nav-specific coarse-pointer/iOS flattening fallback while keeping the heavier mobile fallback on general glass cards.
+  - Regenerated `site/` and `site/next/` artifacts after the CSS/layout correction.
+- Validation:
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/build_react_artifacts.py` -> passed
+  - `py -3 scripts/verify_next_preview_artifact.py` -> passed
+- Notes:
+  - This follow-up was triggered by a post-push visual regression report on the live settings page and bottom nav.
