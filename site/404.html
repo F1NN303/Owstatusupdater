@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Redirecting…</title>
+    <script>
+      (function () {
+        var key = "owstatusupdater.routeRedirect";
+        var pathname = window.location.pathname || "/";
+        var parts = pathname.split("/").filter(Boolean);
+        var basePath = "";
+
+        if (parts[0] === "Owstatusupdater") {
+          basePath = "/Owstatusupdater";
+          if (parts[1] === "next") {
+            basePath += "/next";
+          }
+        }
+
+        try {
+          window.sessionStorage.setItem(
+            key,
+            pathname + (window.location.search || "") + (window.location.hash || "")
+          );
+        } catch (error) {
+          void error;
+        }
+
+        var destination = (basePath || "/").replace(/\/+$/, "") + "/";
+        window.location.replace(destination);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

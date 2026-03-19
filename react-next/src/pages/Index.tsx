@@ -20,7 +20,7 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "rea
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 type OverallState = "all-good" | "minor-issues" | "some-issues" | "major-outage";
-type HomeFilterKey = "all" | "issues" | "healthy" | `category:${string}`;
+type HomeFilterKey = "all" | "issues" | "healthy" | "favorites" | `category:${string}`;
 type HomeSortKey = "impact" | "name" | "updated";
 
 interface HomeServiceCard {
@@ -510,7 +510,7 @@ function parseFilterParam(rawValue: string | null): HomeFilterKey {
   if (!value || value === "all") {
     return "all";
   }
-  if (value === "issues" || value === "healthy") {
+  if (value === "issues" || value === "healthy" || value === "favorites" || value === "starred") {
     return value;
   }
   if (value.startsWith("category:")) {
@@ -600,6 +600,7 @@ const Index = () => {
   );
   const [sortBy, setSortBy] = useState<HomeSortKey>(() => parseSortParam(urlSortParam || homeDefaultSort));
   const favoriteServiceIdSet = useMemo(() => new Set(favoriteServiceIds), [favoriteServiceIds]);
+  const hasFavoriteServices = favoriteServiceIds.length > 0;
 
   useEffect(() => {
     setSearchQuery(urlQueryParam || "");
@@ -733,12 +734,20 @@ const Index = () => {
         key: "healthy" as HomeFilterKey,
         label: pickLang(language, "Healthy", "Stabil"),
       },
+      ...(hasFavoriteServices
+        ? [
+            {
+              key: "favorites" as HomeFilterKey,
+              label: pickLang(language, "Favorites", "Favoriten"),
+            },
+          ]
+        : []),
       ...categoryFilters.map((category) => ({
         key: `category:${category}` as HomeFilterKey,
         label: categoryLabel(category, language),
       })),
     ],
-    [categoryFilters, language]
+    [categoryFilters, hasFavoriteServices, language]
   );
   const sortOptions = useMemo(
     () => [
@@ -757,6 +766,19 @@ const Index = () => {
     ],
     [language]
   );
+  const activeFilterLabel = useMemo(() => {
+    if (activeFilter === "all") {
+      return null;
+    }
+    return (
+      filterOptions.find((option) => option.key === activeFilter)?.label ||
+      (activeFilter.startsWith("category:")
+        ? categoryLabel(activeFilter.replace("category:", ""), language)
+        : activeFilter)
+    );
+  }, [activeFilter, filterOptions, language]);
+  const hasActiveSearch = deferredSearchQuery.trim().length > 0;
+  const hasActiveRefinements = activeFilter !== "all" || hasActiveSearch;
   const maintenanceEntries = useMemo(() => {
     const seen = new Set<string>();
     const entries: HomeMaintenanceEntry[] = [];
@@ -817,6 +839,9 @@ const Index = () => {
         if (activeFilter === "healthy") {
           return card.server.status === "online";
         }
+        if (activeFilter === "favorites") {
+          return favoriteServiceIdSet.has(card.serviceId);
+        }
         if (activeFilter.startsWith("category:")) {
           return card.serviceCategory === activeFilter.replace("category:", "");
         }
@@ -871,6 +896,10 @@ const Index = () => {
   }, [activeFilter, cards, deferredSearchQuery, favoriteServiceIdSet, homeFavoritesFirst, sortBy]);
 
   useEffect(() => {
+    if (activeFilter === "favorites" && !hasFavoriteServices) {
+      setActiveFilter("all");
+      return;
+    }
     if (!activeFilter.startsWith("category:")) {
       return;
     }
@@ -878,7 +907,7 @@ const Index = () => {
     if (!categoryFilters.includes(activeCategory)) {
       setActiveFilter("all");
     }
-  }, [activeFilter, categoryFilters]);
+  }, [activeFilter, categoryFilters, hasFavoriteServices]);
 
   return (
     <AppLayout>
@@ -1137,6 +1166,59 @@ const Index = () => {
                 </select>
               </label>
             </div>
+            {hasFavoriteServices ? (
+              <div className="mt-2 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveFilter((previous) => (previous === "favorites" ? "all" : "favorites"))}
+                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[11px] font-semibold transition-colors ${
+                    activeFilter === "favorites"
+                      ? "border-amber-300/40 bg-amber-300/16 text-amber-200"
+                      : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                  }`}
+                  aria-pressed={activeFilter === "favorites"}
+                >
+                  <Star size={13} className={activeFilter === "favorites" ? "fill-current" : ""} />
+                  <span>{pickLang(language, "Favorites only", "Nur Favoriten")}</span>
+                  <span className="rounded-full border border-current/20 px-1.5 py-0.5 text-[10px]">
+                    {favoriteServiceIds.length}
+                  </span>
+                </button>
+              </div>
+            ) : null}
+            {hasActiveRefinements ? (
+              <div className="mt-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                      {pickLang(language, "Active view", "Aktive Ansicht")}
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {activeFilterLabel ? (
+                        <span className="rounded-full border border-primary/25 bg-primary/12 px-2 py-0.5 text-[10px] font-medium text-primary">
+                          {pickLang(language, "Filter", "Filter")}: {activeFilterLabel}
+                        </span>
+                      ) : null}
+                      {hasActiveSearch ? (
+                        <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground">
+                          {pickLang(language, "Search", "Suche")}: {deferredSearchQuery.trim()}
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveFilter("all");
+                      setSearchQuery("");
+                    }}
+                    className="shrink-0 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-[11px] font-semibold text-foreground transition-colors hover:bg-white/10"
+                  >
+                    {pickLang(language, "Reset", "Zuruecksetzen")}
+                  </button>
+                </div>
+              </div>
+            ) : null}
             <p className="mt-2 text-[11px] text-muted-foreground">
               {pickLang(
                 language,
@@ -1158,15 +1240,27 @@ const Index = () => {
           <div className="glass glass-specular mt-4 rounded-2xl p-4">
             <div className="relative z-10">
               <p className="text-sm font-semibold text-foreground">
-                {pickLang(language, "No services match the current filters", "Keine Services passen zu den Filtern")}
+                {pickLang(language, "No services match the current view", "Keine Services passen zur aktuellen Ansicht")}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {pickLang(
                   language,
-                  "Adjust search, filter, or sort to show cards again.",
-                  "Passe Suche, Filter oder Sortierung an, um Karten wieder anzuzeigen."
+                  "Reset the current search or filter to bring cards back into the feed.",
+                  "Setze die aktuelle Suche oder den Filter zurueck, damit wieder Karten im Feed erscheinen."
                 )}
               </p>
+              {hasActiveRefinements ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveFilter("all");
+                    setSearchQuery("");
+                  }}
+                  className="mt-3 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-white/10"
+                >
+                  {pickLang(language, "Clear search and filters", "Suche und Filter loeschen")}
+                </button>
+              ) : null}
             </div>
           </div>
         ) : (

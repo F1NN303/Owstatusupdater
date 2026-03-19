@@ -116,8 +116,8 @@ const SettingsPage = () => {
             <p className="mt-1 text-[13px] text-muted-foreground">
               {pickLang(
                 language,
-                "Display, feed, and notification preferences for this device",
-                "Anzeige-, Feed- und Benachrichtigungseinstellungen fuer dieses Geraet"
+                "Device display defaults, feed behavior, and alert account links",
+                "Anzeige-Standards, Feed-Verhalten und Alarm-Konto-Verknuepfungen fuer dieses Geraet"
               )}
             </p>
           </div>
@@ -125,6 +125,40 @@ const SettingsPage = () => {
             <Settings size={18} className="text-primary" />
           </div>
         </div>
+
+        <section className="grid gap-3 sm:grid-cols-2">
+          <div className="glass glass-specular rounded-2xl p-4">
+            <div className="relative z-10">
+              <div className="flex items-center gap-2">
+                <MonitorSmartphone size={14} className="text-primary/80" />
+                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {pickLang(language, "This Device", "Dieses Geraet")}
+                </h2>
+              </div>
+              <p className="mt-2 text-sm font-semibold text-foreground">
+                {pickLang(language, "Local UI defaults", "Lokale UI-Standards")}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{storageSummary}</p>
+            </div>
+          </div>
+
+          <div className="glass glass-specular rounded-2xl p-4">
+            <div className="relative z-10">
+              <div className="flex items-center gap-2">
+                <Mail size={14} className="text-primary/80" />
+                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {pickLang(language, "Alerts Account", "Alarm-Konto")}
+                </h2>
+              </div>
+              <p className="mt-2 text-sm font-semibold text-foreground">
+                {alertAccountConnected
+                  ? pickLang(language, "Connected and syncing", "Verbunden und synchronisiert")
+                  : pickLang(language, "Optional account link", "Optionale Konto-Verknuepfung")}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{alertsSummary}</p>
+            </div>
+          </div>
+        </section>
 
         <section className="glass glass-specular rounded-2xl p-4">
           <div className="relative z-10">

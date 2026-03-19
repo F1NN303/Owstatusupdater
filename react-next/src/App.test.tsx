@@ -1,6 +1,7 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { AppShellProvider } from "@/lib/appShell";
 
 vi.mock("@/components/ui/toaster", () => ({
   Toaster: () => null,
@@ -55,14 +56,22 @@ describe("App routes", () => {
 
   it("renders the canonical alerts route", async () => {
     window.history.replaceState({}, "", "/alerts");
-    render(<App />);
+    render(
+      <AppShellProvider>
+        <App />
+      </AppShellProvider>
+    );
     expect(await screen.findByText("Alerts Page")).toBeInTheDocument();
     expect(window.location.pathname).toBe("/alerts");
   });
 
   it("redirects the legacy email alerts route to alerts", async () => {
     window.history.replaceState({}, "", "/email-alerts");
-    render(<App />);
+    render(
+      <AppShellProvider>
+        <App />
+      </AppShellProvider>
+    );
     expect(await screen.findByText("Alerts Page")).toBeInTheDocument();
     await waitFor(() => {
       expect(window.location.pathname).toBe("/alerts");

@@ -25,10 +25,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         </style>
       ) : null}
       <div
-        className="fixed inset-0 bg-cover bg-center opacity-30"
+        className="absolute inset-0 bg-cover bg-center opacity-30 md:fixed"
         style={{ backgroundImage: `url(${bgGradient})` }}
       />
-      <div className="fixed inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background md:fixed" />
       <div className="relative z-10 pb-[calc(6.1rem+env(safe-area-inset-bottom,8px))]">
         {children}
         <footer className="mx-auto max-w-md px-4 pt-1 text-center">

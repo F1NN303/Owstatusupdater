@@ -29,6 +29,7 @@ import {
   RefreshCw,
   Share2,
   ShieldCheck,
+  Star,
   TriangleAlert,
 } from "lucide-react";
 import {
@@ -1925,6 +1926,8 @@ const ServerDetail = () => {
   const {
     language,
     timeDisplayMode,
+    isFavoriteService,
+    toggleFavoriteService,
     isAlertService,
     toggleAlertService,
     alertSeverityThreshold,
@@ -2315,6 +2318,7 @@ const ServerDetail = () => {
   const sourceTransparencyOverview = detail?.payload.source_transparency?.overview;
   const sourceTransparencyDecision = detail?.payload.source_transparency?.decision;
   const sourceTransparencySources = clampList(detail?.payload.source_transparency?.sources || [], 8);
+  const isFavoriteEnabled = serviceId ? isFavoriteService(serviceId) : false;
   const isAlertEnabled = detail ? isAlertService(detail.service.id) : false;
   const cachedDetailLabel = detail?.cache.statusCachedAt
     ? formatTimestampByMode(detail.cache.statusCachedAt, {
@@ -2690,6 +2694,22 @@ const ServerDetail = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            {serviceId ? (
+              <button
+                type="button"
+                onClick={() => toggleFavoriteService(serviceId)}
+                className={`glass flex h-8 min-w-8 items-center justify-center rounded-xl px-2 transition-all active:scale-90 ${
+                  isFavoriteEnabled ? "border-amber-300/35 bg-amber-300/16 text-amber-200" : ""
+                }`}
+                aria-label={
+                  isFavoriteEnabled
+                    ? t("Remove this service from favorites", "Diesen Service aus den Favoriten entfernen")
+                    : t("Add this service to favorites", "Diesen Service zu den Favoriten hinzufugen")
+                }
+              >
+                <Star size={15} className={isFavoriteEnabled ? "fill-current text-amber-200" : "text-muted-foreground"} />
+              </button>
+            ) : null}
             {detail ? (
               <button
                 type="button"
@@ -2834,15 +2854,14 @@ const ServerDetail = () => {
                 </p>
 
                 <div className="mt-2 flex flex-wrap gap-1.5">
-                  <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground sm:px-2.5 sm:py-1 sm:text-[11px]">
-                    {t("Confidence", "Vertrauen")}: {confidenceChipLabel}
-                  </span>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground sm:px-2.5 sm:py-1 sm:text-[11px]">
-                    {t("Regions", "Regionen")}:{" "}
-                    {t(
-                      `${stableRegionCount} stable / ${impactedRegionCount} impacted`,
-                      `${stableRegionCount} stabil / ${impactedRegionCount} betroffen`
-                    )}
+                  <span
+                    className={`rounded-full border px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-[11px] ${
+                      isFavoriteEnabled
+                        ? "border-amber-300/35 bg-amber-300/16 text-amber-200"
+                        : "border-white/10 bg-white/5 text-muted-foreground"
+                    }`}
+                  >
+                    {isFavoriteEnabled ? t("Favorite pinned", "Favorit angeheftet") : t("Not favorited", "Nicht favorisiert")}
                   </span>
                   <span
                     className={`rounded-full border px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-[11px] ${
@@ -2858,6 +2877,35 @@ const ServerDetail = () => {
                       : t("Watchlist off", "Watchlist aus")}
                   </span>
                 </div>
+
+                <details className="mt-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                  <summary className="cursor-pointer list-none text-[11px] font-semibold text-foreground">
+                    {t("Signal context and source reliability", "Signal-Kontext und Quellenzuverlassigkeit")}
+                  </summary>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                      {t("Confidence", "Vertrauen")}: {confidenceChipLabel}
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                      {t("Regions", "Regionen")}:{" "}
+                      {t(
+                        `${stableRegionCount} stable / ${impactedRegionCount} impacted`,
+                        `${stableRegionCount} stabil / ${impactedRegionCount} betroffen`
+                      )}
+                    </span>
+                    {topSourceLabel ? (
+                      <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                        {topSourceLabel}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground sm:text-[12px]">
+                    {t(
+                      "Keep the first screen focused on status, then expand this block for confidence and source spread.",
+                      "Der erste Bildschirm bleibt auf Status fokussiert; Vertrauens- und Quellenhinweise lassen sich hier aufklappen."
+                    )}
+                  </p>
+                </details>
 
                 {detail.payload.outage?.url ? (
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -2958,8 +3006,9 @@ const ServerDetail = () => {
                       }}
                       type="button"
                       onClick={() => setActiveTab(tab.key)}
-                      className={`relative z-10 rounded-xl px-1.5 py-1 text-[10px] font-medium transition-colors duration-200 sm:px-2 sm:py-1.5 sm:text-[11px] ${
-                        isActive ? "text-foreground" : "text-muted-foreground"
+                      aria-pressed={isActive}
+                      className={`relative z-10 rounded-xl px-1.5 py-1.5 text-[10px] transition-colors duration-200 sm:px-2 sm:py-2 sm:text-[11px] ${
+                        isActive ? "font-semibold text-foreground" : "font-medium text-muted-foreground"
                       }`}
                     >
                       {detailTabLabel(tab.key)}

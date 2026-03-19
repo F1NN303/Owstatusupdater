@@ -9,6 +9,7 @@ import {
   type LegacySubscriptionLoadResult,
 } from "@/lib/legacySubscription";
 import { formatTimestampByMode } from "@/lib/timeDisplay";
+import { cn } from "@/lib/utils";
 import {
   BellRing,
   CheckCheck,
@@ -79,17 +80,25 @@ function AlertsStatusMetric({
   value,
   tone,
   caption,
+  className,
+  valueClassName,
 }: {
   label: string;
   value: string;
   tone: NoticeTone;
   caption: string;
+  className?: string;
+  valueClassName?: string;
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+    <div className={cn("rounded-xl border border-white/10 bg-white/5 p-3", className)}>
       <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
       <div
-        className={`mt-2 inline-flex rounded-full border px-2 py-0.5 text-[10px] font-medium ${STATUS_CLASS[tone]}`}
+        className={cn(
+          "mt-2 inline-flex max-w-full whitespace-normal rounded-full border px-2 py-0.5 text-left text-[10px] font-medium leading-tight",
+          STATUS_CLASS[tone],
+          valueClassName
+        )}
       >
         {value}
       </div>
@@ -575,7 +584,7 @@ const EmailAlerts = () => {
               </span>
             </div>
 
-            <div className="mt-4 grid grid-cols-3 gap-2">
+            <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
               <AlertsStatusMetric
                 label={t("Account", "Konto")}
                 value={connectionStatusLabel}
@@ -977,7 +986,7 @@ const EmailAlerts = () => {
               description={providerConnectionText}
             />
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <AlertsStatusMetric
                 label={t("Provider", "Provider")}
                 value={provider}
@@ -1014,12 +1023,12 @@ const EmailAlerts = () => {
 
             {canEmbed ? (
               <div className="mt-3 space-y-3">
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-col gap-2 sm:flex-row">
                   <a
                     href={embedUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
+                    className="inline-flex w-full items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-center text-sm font-medium text-primary transition-colors hover:bg-primary/15 sm:w-auto"
                   >
                     <span className="inline-flex items-center gap-1.5">
                       {t("Open secure delivery form", "Sicheres Zustellungsformular oeffnen")}
@@ -1029,7 +1038,7 @@ const EmailAlerts = () => {
                   <button
                     type="button"
                     onClick={() => setShowProviderEmbed((previous) => !previous)}
-                    className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 sm:w-auto"
                   >
                     {showProviderEmbed
                       ? t("Hide embedded form", "Eingebettetes Formular ausblenden")
@@ -1051,7 +1060,7 @@ const EmailAlerts = () => {
                         key={embedUrl}
                         src={embedUrl}
                         title={t("Brevo alert signup", "Brevo-Alarm-Anmeldung")}
-                        className="block h-[720px] w-full bg-white"
+                        className="block h-[640px] w-full bg-white min-[420px]:h-[720px]"
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                         sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"
@@ -1076,8 +1085,8 @@ const EmailAlerts = () => {
                 ) : (
                   <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] leading-relaxed text-muted-foreground">
                     {t(
-                      "Keep this collapsed if you only need the external secure signup. Open it here only when you want to complete the provider step inside the app.",
-                      "Lass diesen Bereich eingeklappt, wenn du nur das externe sichere Formular brauchst. Oeffne ihn hier nur, wenn du den Provider-Schritt direkt in der App abschliessen willst."
+                      "On phones, the direct secure form is usually the smoother option. Open the embedded form only when you want to finish the provider step inside the app.",
+                      "Auf dem Handy ist das direkte sichere Formular meistens die angenehmere Option. Oeffne das eingebettete Formular nur, wenn du den Provider-Schritt direkt in der App abschliessen willst."
                     )}
                   </div>
                 )}

@@ -1,8 +1,8 @@
 # Agent Handoff
 
-Last updated: 2026-03-09
+Last updated: 2026-03-19
 Current branch: `main`
-Latest known commit at handoff update: `ff1f8b6`
+Latest known commit at handoff update: `d2273903`
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
@@ -147,16 +147,27 @@ Key files:
   - share on detail pages
 - Settings now shows alert-watchlist summary and exposes a "show onboarding again" action.
 - Home now links to the broader Alerts flow rather than describing the screen as only a newsletter signup page.
+- Mobile smoothness hardening shipped in working tree:
+  - shared app background layers now use `absolute` positioning on small screens instead of always forcing fixed full-viewport compositing
+  - coarse-pointer devices now use reduced glass blur/shadow intensity
+  - iOS coarse-pointer devices now fall back to opaque glass surfaces instead of expensive `backdrop-filter` layers for the shared cards and bottom nav
+  - intent: keep the current visual hierarchy while reducing scroll jank on the Alerts route and other mobile screens that stack many glass cards
+- Alerts mobile readability pass shipped in working tree:
+  - the Alerts flow summary and final delivery status cards now stack vertically on narrow screens instead of forcing cramped 3-column mini-cards
+  - the delivery CTAs now become full-width stacked actions on phones so the secure Brevo entry point reads as the primary action
+  - the embedded Brevo form remains available in-app, with a slightly shorter default mobile iframe height and clearer guidance that the direct secure form is usually smoother on phones
 
 Key files:
 - `react-next/src/lib/supabase.ts`
 - `react-next/src/lib/alertAccount.tsx`
 - `react-next/src/lib/appShell.tsx`
+- `react-next/src/components/AppLayout.tsx`
 - `react-next/src/pages/EmailAlerts.tsx`
 - `react-next/src/pages/Index.tsx`
 - `react-next/src/pages/ServerDetail.tsx`
 - `react-next/src/pages/SettingsPage.tsx`
 - `react-next/src/components/OnboardingHints.tsx`
+- `react-next/src/index.css`
 - `react-next/src/main.tsx`
 - `react-next/package.json`
 - `scripts/send_brevo_major_alert.py`
@@ -326,6 +337,7 @@ Key files:
 - Users can star/unstar services on home cards.
 - Starred services are persisted in browser-local settings state.
 - `/favorites` now renders starred services dynamically with live summary status and unstar action.
+- Home now exposes a quick `Favorites only` chip on `/` when at least one service is starred, so users can collapse the main feed to watched cards without opening the full filter select.
 
 Key files:
 - `react-next/src/lib/appShell.tsx`
@@ -351,6 +363,8 @@ Key files:
 ## Recent Important Commits
 - `working tree` - `feat(routes/offline): recover clean deep links on GitHub Pages and cache last-known status payloads`
 - `working tree` - `feat(alerts): add per-service local watchlist controls and first-launch onboarding hints`
+- `working tree` - `fix(alerts-ui): uncramp mobile delivery and flow status cards`
+- `working tree` - `feat(home): add quick favorites-only filter chip`
 - `working tree` - `test(mobile): add pull-to-refresh, share, and router recovery regression coverage`
 - `working tree` - `fix(ui): correct source transparency percentage scaling and localize source confidence labels`
 - `working tree` - `fix(ui): preserve sanitized component lists so detail API component status renders`
@@ -420,9 +434,8 @@ Key files:
 
 ## Recommended Next Steps
 1. Add a small visual "starred" indicator in service detail header for favorited services.
-2. Add a quick "show favorites only" filter chip on home.
-3. Add lightweight tests for favorites persistence and star toggle behavior.
-4. Add one screenshot-based QA checklist entry for `/next` preview path regressions.
+2. Add lightweight tests for favorites persistence and star toggle behavior.
+3. Add one screenshot-based QA checklist entry for `/next` preview path regressions.
 
 ## Latest Validation Snapshot (Freshness + Degraded Signal Fix)
 - Scope:
@@ -620,3 +633,48 @@ Key files:
 - Validation:
   - Verified remote refresh commit `c8ba7fd` exists on `main`
   - Verified live site was still serving older JSON before this workflow fix
+
+## Latest Validation Snapshot (Mobile-First UX Roadmap Pass)
+- Scope:
+  - Added route-level lazy loading for non-home routes in `react-next/src/App.tsx`.
+  - Added a mobile route transition shell in `react-next/src/components/RouteLoadingShell.tsx` so non-home navigation no longer flashes blank content.
+  - Extended home feed refinement UX in `react-next/src/pages/Index.tsx`:
+    - active filter/search summary with one-tap reset
+    - favorites-only chip remains available when starred services exist
+    - empty state now points users at clearing active refinements
+  - Tightened service detail mobile hierarchy in `react-next/src/pages/ServerDetail.tsx`:
+    - added header favorite toggle
+    - added visible pinned-favorite state
+    - moved confidence/region/source spread into a collapsible signal-context block
+    - made tab active state more obvious on small screens
+  - Clarified settings ownership/storage copy in `react-next/src/pages/SettingsPage.tsx` with explicit `This Device` and `Alerts Account` summary cards.
+  - Added UI regression coverage:
+    - `react-next/src/pages/Index.test.tsx`
+    - `react-next/src/pages/Favorites.test.tsx`
+    - `react-next/src/pages/ServerDetail.test.tsx`
+  - Regenerated checked-in React artifacts so root and `/next` stay aligned:
+    - `site/`
+    - `site/next/`
+- Validation:
+  - `npm.cmd run test` in `react-next` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/build_react_artifacts.py` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+  - `py -3 scripts/verify_next_preview_artifact.py` -> passed
+  - Manual mobile QA at ~`390x844` -> passed for:
+    - `/Owstatusupdater/` home feed, impacted filter summary/reset, favorite chip visibility
+    - `/Owstatusupdater/favorites` starred entry open/remove flow
+    - `/Owstatusupdater/status/github` favorite header action, pinned-state pill, tab readability
+    - `/Owstatusupdater/alerts` secure delivery form CTA hierarchy
+    - `/Owstatusupdater/settings` local-vs-account storage readability
+    - `/Owstatusupdater/next/` preview root render parity
+  - Saved screenshots:
+    - `output/playwright/home-root-mobile.png`
+    - `output/playwright/detail-root-mobile.png`
+    - `output/playwright/alerts-root-mobile.png`
+    - `output/playwright/settings-root-mobile.png`
+    - `output/playwright/favorites-root-mobile.png`
+    - `output/playwright/home-next-mobile.png`
+- Notes:
+  - `npm.cmd run build` still reports the existing Vite chunk-size warning for the main bundle.
+  - Vitest still reports the existing React Router v7 future-flag warnings during route tests.

@@ -2,14 +2,17 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Suspense, lazy } from "react";
 import { BrowserRouter, HashRouter, Navigate, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import ServerDetail from "./pages/ServerDetail";
-import EmailAlerts from "./pages/EmailAlerts";
-import Favorites from "./pages/Favorites";
-import SettingsPage from "./pages/SettingsPage";
-import TermsPage from "./pages/TermsPage";
-import NotFound from "./pages/NotFound";
+import RouteLoadingShell from "./components/RouteLoadingShell";
+
+const ServerDetail = lazy(() => import("./pages/ServerDetail"));
+const EmailAlerts = lazy(() => import("./pages/EmailAlerts"));
+const Favorites = lazy(() => import("./pages/Favorites"));
+const SettingsPage = lazy(() => import("./pages/SettingsPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 const routerModeEnv = (import.meta.env.VITE_ROUTER_MODE as string | undefined)?.trim().toLowerCase();
@@ -31,17 +34,19 @@ const App = () => (
       <Toaster />
       <Sonner />
       <Router basename={routerBasename}>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/status/:id" element={<ServerDetail />} />
-          <Route path="/alerts" element={<EmailAlerts />} />
-          <Route path="/email-alerts" element={<Navigate to="/alerts" replace />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<RouteLoadingShell />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/status/:id" element={<ServerDetail />} />
+            <Route path="/alerts" element={<EmailAlerts />} />
+            <Route path="/email-alerts" element={<Navigate to="/alerts" replace />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </Router>
     </TooltipProvider>
   </QueryClientProvider>
