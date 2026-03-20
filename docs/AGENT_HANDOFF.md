@@ -1038,3 +1038,32 @@ Key files:
 - Notes:
   - this is another internal cleanup only; no public changelog update was needed because the intended visible behavior stays unchanged
   - existing React Router v7 future-flag warnings still appear in the route tests and remain unchanged by this pass
+
+## Latest Validation Snapshot (Mobile Smoke Coverage)
+- Scope:
+  - Added a repeatable mobile route smoke script in `react-next/scripts/mobileSmoke.mjs`.
+  - Added `npm.cmd run qa:mobile-smoke` in `react-next/package.json`.
+  - The smoke script now:
+    - serves the built `site/` output under the real GitHub Pages base paths (`/Owstatusupdater/` and `/Owstatusupdater/next/`)
+    - derives a real detail route from `site/data/services-manifest.json`
+    - seeds one deterministic favorite/watchlist service in local storage
+    - captures mobile screenshots for:
+      - `/Owstatusupdater/`
+      - `/Owstatusupdater/favorites`
+      - `/Owstatusupdater/status/:id`
+      - `/Owstatusupdater/alerts`
+      - `/Owstatusupdater/settings`
+      - `/Owstatusupdater/next/`
+    - fails on same-origin page errors, failed requests, or 4xx/5xx asset responses
+  - `deploy-pages.yml` now installs Chromium, runs the mobile smoke command after the root + preview artifact build, and uploads `output/playwright/` as a workflow artifact.
+  - Added ignore rules for local Playwright cache/output folders in `.gitignore`.
+- Validation:
+  - `npx playwright install chromium` in `react-next` -> passed
+  - `py -3 scripts/build_react_artifacts.py` -> passed
+  - `npm.cmd run qa:mobile-smoke` in `react-next` -> passed
+  - `npm.cmd run test` in `react-next` -> passed
+  - `py -3 scripts/verify_next_preview_artifact.py` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+- Notes:
+  - Local screenshots are written to `output/playwright/` and are intentionally ignored by Git.
+  - Running `py -3 scripts/build_react_artifacts.py` before `npm.cmd run qa:mobile-smoke` remains the expected local order.

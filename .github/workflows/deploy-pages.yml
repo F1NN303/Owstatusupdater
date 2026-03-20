@@ -66,14 +66,30 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: python3 scripts/build_react_artifacts.py
 
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: react-next
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Verify React preview artifact paths
         run: python3 scripts/verify_next_preview_artifact.py
 
+      - name: Run mobile route smoke screenshots
+        run: npm run qa:mobile-smoke
+        working-directory: react-next
+
       - name: Validate public artifact exposure rules
         run: python3 scripts/check_public_exposure.py
+
+      - name: Upload mobile smoke screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-smoke-screenshots
+          path: output/playwright/
+          if-no-files-found: error
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
