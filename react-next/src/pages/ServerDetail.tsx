@@ -185,6 +185,17 @@ function parseDurationToMs(value?: string | null) {
   return totalMs > 0 ? totalMs : null;
 }
 
+function clampInlineText(value?: string | null, maxLength = 72) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) {
+    return "";
+  }
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return `${text.slice(0, Math.max(0, maxLength - 1)).trimEnd()}...`;
+}
+
 function startOfDay(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
@@ -690,6 +701,30 @@ function MetricTile({
       </div>
       <p className="mt-1 text-sm font-semibold tracking-tight text-foreground sm:text-base">{value}</p>
       {hint ? <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground sm:text-[11px]">{hint}</p> : null}
+    </div>
+  );
+}
+
+function HeroSnapshotTile({
+  label,
+  value,
+  hint,
+  valueClassName,
+}: {
+  label: string;
+  value: string | number;
+  hint?: string;
+  valueClassName?: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-black/15 px-3 py-2.5">
+      <p className="text-[10px] uppercase tracking-[0.13em] text-muted-foreground">{label}</p>
+      <p className={`mt-1 text-sm font-semibold tracking-tight sm:text-[15px] ${valueClassName || "text-foreground"}`}>
+        {value}
+      </p>
+      {hint ? (
+        <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground sm:text-[11px]">{hint}</p>
+      ) : null}
     </div>
   );
 }
@@ -2526,6 +2561,60 @@ const ServerDetail = () => {
           `${sourceOkCountNum}/${sourceTotalCountNum} gesund`
         )
       : t("Unavailable", "Nicht verfügbar");
+  const heroStatusValueClass =
+    serviceStatus === "online"
+      ? "text-emerald-300"
+      : serviceStatus === "offline"
+        ? "text-rose-200"
+        : "text-amber-200";
+  const heroSourceValueClass =
+    sourceConfidenceTier === "high"
+      ? "text-emerald-300"
+      : sourceConfidenceTier === "medium"
+        ? "text-amber-200"
+        : "text-rose-200";
+  const heroStatusHint = clampInlineText(
+    isDataVeryStale
+      ? t("Latest refresh is delayed", "Letzte Aktualisierung ist verspätet")
+      : quickMetricLabel,
+    68
+  );
+  const heroTrendHint = clampInlineText(
+    incidentCount > 0
+      ? t(
+          `${incidentCount} listed incidents across the last 30 days`,
+          `${incidentCount} gelistete Vorfälle in den letzten 30 Tagen`
+        )
+      : t(
+          "No listed incidents across the last 30 days",
+          "Keine gelisteten Vorfälle in den letzten 30 Tagen"
+        ),
+    72
+  );
+  const heroIncidentValue =
+    incidentCount === 0
+      ? t("None", "Keine")
+      : t(`${incidentCount} logged`, `${incidentCount} erfasst`);
+  const heroIncidentHint = clampInlineText(
+    incidentCount > 0
+      ? latestIncidentTitle
+      : t("No current incident headline", "Keine aktuelle Vorfallsüberschrift"),
+    72
+  );
+  const heroSourceValue =
+    sourceConfidenceScore !== null
+      ? `${sourceConfidenceScore.toFixed(1)}%`
+      : topSourceLabel || t("n/a", "k.A.");
+  const heroSourceHint = clampInlineText(
+    hasSourceUnavailable && sourceUnavailableLabel
+      ? sourceUnavailableLabel
+      : hasFreshnessBreach
+        ? staleSourceNames.length > 0
+          ? t(`Stale: ${staleSourceNames.join(", ")}`, `Veraltet: ${staleSourceNames.join(", ")}`)
+          : t("Some sources are stale", "Einige Quellen sind veraltet")
+        : topUpdatedLabel,
+    72
+  );
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
       return t("Overview", "Übersicht");
@@ -2793,21 +2882,20 @@ const ServerDetail = () => {
                       <h1 className="mt-0.5 text-lg font-bold tracking-tight text-foreground sm:text-xl">
                         {detail.service.name}
                       </h1>
-                      <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground sm:text-[12px]">
-                        {latestIncidentTitle}
+                      <p className="mt-1 max-w-[34rem] text-[11px] leading-snug text-muted-foreground sm:text-[12px]">
+                        {clampInlineText(latestIncidentTitle, 96)}
                       </p>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-1">
-                        <span className="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[9px] text-muted-foreground sm:px-2 sm:text-[10px]">
-                          {topUpdatedLabel}
+                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                        <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[9px] text-muted-foreground sm:text-[10px]">
+                          {serviceStatusLabel}
                         </span>
-                        {topSourceLabel ? (
-                          <span className="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[9px] text-muted-foreground sm:px-2 sm:text-[10px]">
-                            {topSourceLabel}
+                        {isDataStale ? (
+                          <span className="rounded-full border border-amber-300/25 bg-amber-300/10 px-2 py-0.5 text-[9px] text-amber-200 sm:text-[10px]">
+                            {t("Delayed refresh", "Aktualisierung verzögert")}
                           </span>
                         ) : null}
                         {hasSourceUnavailable && sourceUnavailableLabel ? (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-1.5 py-0.5 text-[9px] font-medium text-status-offline sm:px-2 sm:text-[10px]">
-                            <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
+                          <span className="rounded-full border border-status-offline/30 bg-status-offline/10 px-2 py-0.5 text-[9px] font-medium text-status-offline sm:text-[10px]">
                             {sourceUnavailableLabel}
                           </span>
                         ) : null}
@@ -2823,25 +2911,29 @@ const ServerDetail = () => {
                   </div>
                 </div>
 
-                <div className="mt-2 rounded-2xl border border-white/10 bg-white/5 p-2.5 sm:p-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex min-w-0 flex-wrap items-center gap-2">
-                      <StatusBadge status={serviceStatus} size="md" />
-                      <span className="truncate text-[10px] text-muted-foreground sm:text-[11px]">
-                        {quickMetricLabel}
-                      </span>
-                    </div>
-                    <span className="shrink-0 text-[10px] font-medium text-foreground sm:text-[11px]">
-                      {trendScoreLabel}
-                    </span>
-                  </div>
-                  <div className="mt-2">
-                    <div className="mb-1 flex items-center justify-between text-[9px] uppercase tracking-[0.12em] text-muted-foreground sm:text-[10px] sm:tracking-wider">
-                      <span>{t("30-day signal trend", "30-Tage-Signaltrend")}</span>
-                      <span>{t(`${incidentCount} listed incidents`, `${incidentCount} gelistete Vorfälle`)}</span>
-                    </div>
-                    <UptimeBar data={trendHistory} />
-                  </div>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <HeroSnapshotTile
+                    label={t("Status", "Status")}
+                    value={serviceStatusLabel}
+                    hint={heroStatusHint}
+                    valueClassName={heroStatusValueClass}
+                  />
+                  <HeroSnapshotTile
+                    label={t("30-day signal", "30-Tage-Signal")}
+                    value={trendScoreLabel}
+                    hint={heroTrendHint}
+                  />
+                  <HeroSnapshotTile
+                    label={t("Incidents", "Vorfälle")}
+                    value={heroIncidentValue}
+                    hint={heroIncidentHint}
+                  />
+                  <HeroSnapshotTile
+                    label={t("Source health", "Quellenstatus")}
+                    value={heroSourceValue}
+                    hint={heroSourceHint}
+                    valueClassName={heroSourceValueClass}
+                  />
                 </div>
 
                 <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground sm:text-sm">
@@ -2884,6 +2976,9 @@ const ServerDetail = () => {
                   </summary>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                      {topUpdatedLabel}
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
                       {t("Confidence", "Vertrauen")}: {confidenceChipLabel}
                     </span>
                     <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
@@ -2896,6 +2991,11 @@ const ServerDetail = () => {
                     {topSourceLabel ? (
                       <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
                         {topSourceLabel}
+                      </span>
+                    ) : null}
+                    {hasSourceUnavailable && sourceUnavailableLabel ? (
+                      <span className="rounded-full border border-status-offline/20 bg-status-offline/10 px-2 py-0.5 text-[10px] text-status-offline sm:text-[11px]">
+                        {sourceUnavailableLabel}
                       </span>
                     ) : null}
                   </div>
