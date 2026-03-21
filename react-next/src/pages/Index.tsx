@@ -932,7 +932,7 @@ const Index = () => {
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              {pickLang(language, "Server Status", "Server-Status")}
+              {pickLang(language, "Status Radar", "Status Radar")}
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">{subtitle}</p>
           </div>

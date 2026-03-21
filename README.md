@@ -1,6 +1,6 @@
-﻿# Overwatch Status Radar
+# Status Radar
 
-Public status dashboard for Overwatch and Sony PSN service health.
+Public status dashboard for monitored online services and platforms.
 
 ## Live Website
 - https://f1nn303.github.io/Owstatusupdater/
