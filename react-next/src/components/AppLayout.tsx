@@ -1,3 +1,4 @@
+import AiStatusAssistant from "@/components/AiStatusAssistant";
 import bgGradient from "@/assets/bg-gradient.jpg";
 import BottomNav from "@/components/BottomNav";
 import { pickLang, useAppShell } from "@/lib/appShell";
@@ -31,6 +32,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background md:fixed" />
       <div className="relative z-10 pb-[calc(6.1rem+env(safe-area-inset-bottom,8px))]">
         {children}
+        <AiStatusAssistant />
         <footer className="mx-auto max-w-md px-4 pt-1 text-center">
           <Link
             to="/terms"
