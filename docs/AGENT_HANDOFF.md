@@ -1067,3 +1067,29 @@ Key files:
 - Notes:
   - Local screenshots are written to `output/playwright/` and are intentionally ignored by Git.
   - Running `py -3 scripts/build_react_artifacts.py` before `npm.cmd run qa:mobile-smoke` remains the expected local order.
+
+## Latest Validation Snapshot (AI Status Assistant Merge)
+- Scope:
+  - Merged remote branch `origin/codex/ai-status-chat` into local `main`.
+  - Added grounded assistant UI and transport helpers:
+    - `react-next/src/components/AiStatusAssistant.tsx`
+    - `react-next/src/components/AiStatusAssistant.test.tsx`
+    - `react-next/src/lib/aiStatusChat.ts`
+    - `react-next/.env.example`
+  - Mounted the assistant globally in `react-next/src/components/AppLayout.tsx`.
+  - The assistant now:
+    - shows a clear `AI unavailable` state when the backend is missing or unreachable
+    - supports grounded streaming replies with page/service context
+    - exposes German and English suggestions and request payloads
+    - keeps the existing local mobile smoke coverage changes intact
+  - The merge also brought in refreshed public `site/*/data` payloads from the remote branch.
+- Validation:
+  - `npm.cmd run test` in `react-next` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+  - `py -3 scripts/build_react_artifacts.py` -> passed
+  - `py -3 scripts/verify_next_preview_artifact.py` -> passed
+  - `npm.cmd run qa:mobile-smoke` in `react-next` -> passed
+- Notes:
+  - Local validation rebuilt `site/` and `site/next/` artifacts temporarily, then restored the generated asset churn so only intended repo changes remain.
+  - Current local merge head after integration is `1c3d5585`.
