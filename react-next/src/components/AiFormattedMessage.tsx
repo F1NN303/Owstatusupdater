@@ -64,13 +64,16 @@ export default function AiFormattedMessage({ content, className }: AiFormattedMe
   const blocks = normalized.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
 
   return (
-    <div className={cn("space-y-3 break-words", className)}>
+    <div className={cn("space-y-4 break-words", className)}>
       {blocks.map((block, blockIndex) => {
         const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
 
         if (lines.length === 1 && /^#{1,6}\s+/.test(lines[0])) {
           return (
-            <h4 key={`heading-${blockIndex}`} className="text-[13px] font-semibold uppercase tracking-[0.16em] text-cyan-100/85">
+            <h4
+              key={`heading-${blockIndex}`}
+              className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-100/75"
+            >
               {renderInlineText(stripHeadingPrefix(lines[0]), `heading-${blockIndex}`)}
             </h4>
           );
@@ -78,11 +81,11 @@ export default function AiFormattedMessage({ content, className }: AiFormattedMe
 
         if (lines.length > 1 && isSectionHeadingLine(lines[0]) && lines.slice(1).every(isBulletLine)) {
           return (
-            <div key={`section-list-${blockIndex}`} className="space-y-2">
-              <p className="text-[14px] leading-6 text-slate-100">
+            <div key={`section-list-${blockIndex}`} className="space-y-2.5">
+              <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-slate-300">
                 {renderInlineText(lines[0], `section-heading-${blockIndex}`)}
               </p>
-              <ul className="space-y-2 pl-4 text-[14px] leading-6 text-slate-100 marker:text-cyan-300">
+              <ul className="space-y-2.5 pl-4 text-[15px] leading-7 text-slate-100 marker:text-cyan-300">
                 {lines.slice(1).map((line, lineIndex) => (
                   <li key={`section-item-${blockIndex}-${lineIndex}`}>
                     {renderInlineText(stripBulletPrefix(line), `section-list-${blockIndex}-${lineIndex}`)}
@@ -97,7 +100,7 @@ export default function AiFormattedMessage({ content, className }: AiFormattedMe
           return (
             <ul
               key={`list-${blockIndex}`}
-              className="space-y-2 pl-4 text-[14px] leading-6 text-slate-100 marker:text-cyan-300"
+              className="space-y-2.5 pl-4 text-[15px] leading-7 text-slate-100 marker:text-cyan-300"
             >
               {lines.map((line, lineIndex) => (
                 <li key={`item-${blockIndex}-${lineIndex}`}>
@@ -109,7 +112,7 @@ export default function AiFormattedMessage({ content, className }: AiFormattedMe
         }
 
         return (
-          <p key={`paragraph-${blockIndex}`} className="text-[14px] leading-6 text-slate-100">
+          <p key={`paragraph-${blockIndex}`} className="text-[15px] leading-7 text-slate-100">
             {lines.map((line, lineIndex) => (
               <Fragment key={`line-${blockIndex}-${lineIndex}`}>
                 {lineIndex > 0 ? <br /> : null}

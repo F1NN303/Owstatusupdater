@@ -52,7 +52,7 @@ function resolveServiceIdFromPathname(pathname: string) {
 
 function prettifyServiceId(value: string | null) {
   if (!value) {
-    return "GitHub";
+    return "Overview";
   }
 
   return value
@@ -108,6 +108,22 @@ function availabilityReasonText(language: "en" | "de", configured: boolean, reas
 }
 
 function buildSuggestions(language: "en" | "de", serviceId: string | null) {
+  if (!serviceId) {
+    if (language === "de") {
+      return [
+        "Gibt es gerade bei überwachten Diensten Probleme?",
+        "Was zeigt die Seite aktuell?",
+        "Wobei kann mir dieser Assistent helfen?",
+      ];
+    }
+
+    return [
+      "Are any monitored services currently having problems?",
+      "What is the site showing right now?",
+      "What can this assistant help me with?",
+    ];
+  }
+
   const serviceName = prettifyServiceId(serviceId);
 
   if (language === "de") {
@@ -143,11 +159,38 @@ function resolveAssistantFailureMessage(language: "en" | "de", error: unknown) {
   );
 }
 
+function publicDataLabel(language: "en" | "de") {
+  return pickLang(language, "Public data only", "Nur öffentliche Daten");
+}
+
+function publicDataDescription(language: "en" | "de") {
+  return pickLang(
+    language,
+    "Uses public status JSON and public site help only.",
+    "Nutzt nur öffentliche Status-JSON-Daten und öffentliche Seitenhilfen.",
+  );
+}
+
+function TypingDots() {
+  return (
+    <span className="inline-flex items-center gap-1" aria-hidden="true">
+      {[0, 1, 2].map((index) => (
+        <span
+          key={index}
+          className="h-1.5 w-1.5 rounded-full bg-cyan-300 motion-safe:animate-[ai-dot_1.1s_ease-in-out_infinite]"
+          style={{ animationDelay: `${index * 140}ms` }}
+        />
+      ))}
+    </span>
+  );
+}
+
 const AiStatusAssistant = () => {
   const { language } = useAppShell();
   const location = useLocation();
   const isMobile = useIsMobile();
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const activeRequestRef = useRef<AbortController | null>(null);
   const configured = isAiConfigured();
   const routeServiceId = resolveServiceIdFromPathname(location.pathname);
@@ -161,6 +204,7 @@ const AiStatusAssistant = () => {
   const [sending, setSending] = useState(false);
   const [assistantDraft, setAssistantDraft] = useState("");
   const [draftCitations, setDraftCitations] = useState<AiCitation[]>([]);
+  const [keyboardInset, setKeyboardInset] = useState(0);
 
   useEffect(() => {
     let active = true;
@@ -188,6 +232,54 @@ const AiStatusAssistant = () => {
   }, [messages, assistantDraft, open]);
 
   useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) {
+      return;
+    }
+
+    textarea.style.height = "0px";
+    textarea.style.height = `${Math.min(Math.max(textarea.scrollHeight, 56), 164)}px`;
+  }, [input]);
+
+  useEffect(() => {
+    if (!open || availability !== "available") {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      textareaRef.current?.focus();
+    }, 160);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [open, availability]);
+
+  useEffect(() => {
+    if (!open || typeof window === "undefined" || !window.visualViewport) {
+      setKeyboardInset(0);
+      return;
+    }
+
+    const viewport = window.visualViewport;
+
+    const updateKeyboardInset = () => {
+      const overlap = Math.max(0, window.innerHeight - Math.round(viewport.height + viewport.offsetTop));
+      setKeyboardInset(overlap > 20 ? overlap : 0);
+    };
+
+    updateKeyboardInset();
+    viewport.addEventListener("resize", updateKeyboardInset);
+    viewport.addEventListener("scroll", updateKeyboardInset);
+
+    return () => {
+      viewport.removeEventListener("resize", updateKeyboardInset);
+      viewport.removeEventListener("scroll", updateKeyboardInset);
+      setKeyboardInset(0);
+    };
+  }, [open]);
+
+  useEffect(() => {
     return () => {
       activeRequestRef.current?.abort();
     };
@@ -199,6 +291,11 @@ const AiStatusAssistant = () => {
     setAvailability(next.available ? "available" : "unavailable");
     setAvailabilityReason(next.reason);
     return next;
+  }
+
+  function handleSuggestionSelect(suggestion: string) {
+    setInput(suggestion);
+    textareaRef.current?.focus();
   }
 
   async function handleSubmit(event?: FormEvent<HTMLFormElement>) {
@@ -311,7 +408,7 @@ const AiStatusAssistant = () => {
       <SheetTrigger asChild>
         <button
           type="button"
-          className="fixed bottom-[calc(7rem+env(safe-area-inset-bottom,8px))] right-4 z-40 flex items-center gap-2 rounded-full border border-cyan-400/15 bg-slate-950/80 px-4 py-3 text-sm font-semibold text-foreground shadow-[0_20px_60px_rgba(2,8,23,0.48)] backdrop-blur-xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
+          className="fixed bottom-[calc(6.25rem+env(safe-area-inset-bottom,0px))] right-4 z-40 flex items-center gap-2 rounded-full border border-cyan-300/15 bg-slate-950/82 px-4 py-3 text-sm font-semibold text-foreground shadow-[0_18px_46px_rgba(2,8,23,0.48)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.015] active:scale-[0.985] sm:bottom-6 sm:right-6"
         >
           <span
             className={cn(
@@ -326,27 +423,29 @@ const AiStatusAssistant = () => {
 
       <SheetContent
         side={isMobile ? "bottom" : "right"}
-        className="h-[calc(100dvh-0.75rem)] border-x border-t border-cyan-400/10 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),_transparent_34%),linear-gradient(180deg,_rgba(7,12,24,0.98),_rgba(5,10,20,0.98))] p-0 text-foreground sm:h-full sm:max-w-[460px] sm:border-x-0 sm:border-t-0 sm:border-l"
+        className="h-[min(88dvh,860px)] rounded-t-[30px] border-x border-t border-cyan-300/10 bg-[radial-gradient(circle_at_top,_rgba(52,211,153,0.1),_transparent_28%),radial-gradient(circle_at_85%_12%,_rgba(59,130,246,0.12),_transparent_24%),linear-gradient(180deg,_rgba(4,9,20,0.98),_rgba(6,12,24,0.98))] p-0 text-foreground shadow-[0_-24px_70px_rgba(2,8,23,0.56)] motion-safe:data-[state=open]:animate-[ai-sheet-rise_320ms_cubic-bezier(0.22,1,0.36,1)] sm:h-full sm:max-w-[430px] sm:rounded-none sm:border-x-0 sm:border-t-0 sm:border-l sm:shadow-[-18px_0_70px_rgba(2,8,23,0.36)]"
       >
-        <div className="flex h-full max-h-[100dvh] flex-col">
-          <SheetHeader className="border-b border-white/10 px-5 py-4">
-            <div className="flex items-center justify-between gap-3">
+        <div className="flex h-full min-h-0 max-h-[100dvh] flex-col">
+          {isMobile ? <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-white/15" /> : null}
+
+          <SheetHeader className="border-b border-white/8 px-5 pb-4 pt-4 sm:px-6 sm:pt-5">
+            <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <SheetTitle className="flex items-center gap-2 text-base sm:text-lg">
-                  <MessageSquareText size={16} />
+                <SheetTitle className="flex items-center gap-2 text-[15px] font-semibold sm:text-[17px]">
+                  <MessageSquareText size={16} className="text-cyan-100/90" />
                   {pickLang(language, "Status Assistant", "Status-Assistent")}
                 </SheetTitle>
-                <SheetDescription className="mt-1 text-xs leading-5">
+                <SheetDescription className="mt-1 max-w-[28rem] text-[12px] leading-5 text-slate-400">
                   {pickLang(
                     language,
-                    "Grounded only in the site’s public status data. No private/admin data.",
-                    "Nur auf den öffentlichen Statusdaten der Seite basiert. Keine privaten Admin-Daten.",
+                    "Answers from public status data and public site help only.",
+                    "Antworten nur aus öffentlichen Statusdaten und öffentlichen Seitenhilfen.",
                   )}
                 </SheetDescription>
               </div>
               <div
                 className={cn(
-                  "rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em]",
+                  "min-w-[112px] whitespace-nowrap rounded-full border px-3 py-1.5 text-center text-[10px] font-semibold uppercase tracking-[0.18em]",
                   availability === "available"
                     ? "border-emerald-300/25 bg-emerald-400/10 text-emerald-300"
                     : availability === "checking"
@@ -359,47 +458,58 @@ const AiStatusAssistant = () => {
             </div>
 
             {routeServiceId ? (
-              <div className="mt-3 flex items-center gap-2 rounded-2xl border border-cyan-400/10 bg-cyan-400/5 px-3 py-2 text-xs text-slate-300">
+              <div className="mt-3 inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-300/12 bg-cyan-300/6 px-3 py-1.5 text-[11px] text-slate-300">
                 <ShieldCheck size={14} className="shrink-0 text-cyan-300" />
                 <span>
-                  {pickLang(language, "Current page context:", "Aktueller Seitenkontext:")}{" "}
+                  {pickLang(language, "Context", "Kontext")}{" "}
                   <span className="font-semibold text-slate-50">{prettifyServiceId(routeServiceId)}</span>
                 </span>
               </div>
             ) : null}
           </SheetHeader>
 
-          <div ref={chatScrollRef} className="flex-1 overflow-y-auto px-4 py-4 sm:px-5">
+          <div
+            ref={chatScrollRef}
+            className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
             {messages.length === 0 && !assistantDraft ? (
               <div className="space-y-4">
-                <div className="rounded-[24px] border border-cyan-400/10 bg-slate-900/60 p-4 shadow-[0_18px_50px_rgba(2,8,23,0.32)]">
-                  <div className="space-y-2">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/15 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-200">
+                <div className="overflow-hidden rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.86),rgba(10,16,30,0.92))] p-5 shadow-[0_24px_60px_rgba(2,8,23,0.34)]">
+                  <div className="space-y-3">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-100/90">
                       <Sparkles size={12} />
-                      {pickLang(language, "Grounded answers", "Geerdete Antworten")}
+                      {publicDataLabel(language)}
                     </div>
-                    <p className="text-sm font-semibold text-foreground">
-                      {pickLang(language, "Ask about status, incidents, or site usage.", "Frage nach Status, Vorfällen oder der Nutzung der Seite.")}
-                    </p>
-                    <p className="text-xs leading-5 text-muted-foreground">
+                    <p className="max-w-[18rem] text-[20px] font-semibold leading-[1.15] text-slate-50">
                       {pickLang(
                         language,
-                        "The assistant only summarizes the public JSON and site content already visible here.",
-                        "Der Assistent fasst nur die öffentlichen JSON-Daten und Seiteninhalte zusammen, die hier bereits sichtbar sind.",
+                        "Ask what matters right now.",
+                        "Frage nach dem, was jetzt wichtig ist.",
+                      )}
+                    </p>
+                    <p className="max-w-[22rem] text-[13px] leading-6 text-slate-300">
+                      {pickLang(
+                        language,
+                        "Status, incidents, history, and help are summarized from the same public data already used on this site.",
+                        "Status, Vorfälle, Verlauf und Hilfetexte werden aus denselben öffentlichen Daten zusammengefasst, die diese Seite bereits nutzt.",
                       )}
                     </p>
                   </div>
                 </div>
 
-                <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+                <div className="grid gap-2.5">
                   {suggestions.map((suggestion) => (
                     <button
                       key={suggestion}
                       type="button"
-                      onClick={() => setInput(suggestion)}
-                      className="min-w-[220px] rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left text-sm text-foreground transition-colors hover:bg-white/10"
+                      onClick={() => handleSuggestionSelect(suggestion)}
+                      className="group rounded-[22px] border border-white/8 bg-white/[0.045] px-4 py-3.5 text-left text-[14px] text-slate-100 transition-all duration-200 hover:border-cyan-300/20 hover:bg-cyan-300/[0.06] hover:shadow-[0_12px_28px_rgba(8,47,73,0.2)]"
                     >
-                      {suggestion}
+                      <span className="block leading-6">{suggestion}</span>
+                      <span className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-cyan-200/75 transition-transform duration-200 group-hover:translate-x-0.5">
+                        {pickLang(language, "Use prompt", "Frage einsetzen")}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -410,33 +520,32 @@ const AiStatusAssistant = () => {
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}
+                  className={cn(
+                    "flex motion-safe:animate-[ai-message-in_240ms_cubic-bezier(0.22,1,0.36,1)]",
+                    message.role === "user" ? "justify-end" : "justify-start",
+                  )}
                 >
-                  <div className="max-w-full sm:max-w-[92%]">
+                  <div className="max-w-full sm:max-w-[90%]">
                     <div
                       className={cn(
-                        "overflow-hidden rounded-[24px] px-4 py-3 text-sm shadow-[0_18px_40px_rgba(0,0,0,0.22)]",
+                        "overflow-hidden rounded-[24px] px-4 py-3.5 text-sm shadow-[0_18px_40px_rgba(0,0,0,0.2)]",
                         message.role === "user"
-                          ? "rounded-br-md bg-[linear-gradient(135deg,_rgba(14,165,233,0.95),_rgba(37,99,235,0.92))] text-primary-foreground"
-                          : "rounded-bl-md border border-cyan-400/10 bg-slate-900/65 text-foreground",
+                          ? "rounded-br-md bg-[linear-gradient(135deg,_rgba(13,148,136,0.96),_rgba(14,116,144,0.94))] text-primary-foreground"
+                          : "rounded-bl-md border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(10,16,30,0.94))] text-foreground",
                       )}
                     >
                       {message.role === "assistant" ? (
                         <div className="space-y-3">
-                          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/10 bg-cyan-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-cyan-100">
-                            <ShieldCheck size={12} />
-                            {pickLang(language, "Grounded answer", "Geerdete Antwort")}
-                          </div>
                           <AiFormattedMessage content={message.content} />
                         </div>
                       ) : (
-                        <p className="break-words text-[14px] leading-6">{message.content}</p>
+                        <p className="break-words text-[15px] leading-7">{message.content}</p>
                       )}
                     </div>
 
                     {message.role === "assistant" && message.citations && message.citations.length > 0 ? (
-                      <div className="mt-3 space-y-2">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                      <div className="mt-3 space-y-2.5">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                           {pickLang(language, "Sources", "Quellen")}
                         </p>
                         {message.citations.map((citation) => (
@@ -445,7 +554,7 @@ const AiStatusAssistant = () => {
                             href={citation.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-950/40 px-3 py-2 text-left text-xs text-slate-200 transition-colors hover:border-cyan-300/25 hover:bg-white/10"
+                            className="flex items-center justify-between gap-3 rounded-[18px] border border-white/8 bg-slate-950/35 px-3.5 py-2.5 text-left text-xs text-slate-200 transition-all duration-200 hover:border-cyan-300/25 hover:bg-white/[0.08]"
                           >
                             <span className="min-w-0 break-words font-medium">{citation.title}</span>
                             <ExternalLink size={14} className="shrink-0 text-slate-400" />
@@ -458,28 +567,28 @@ const AiStatusAssistant = () => {
               ))}
 
               {assistantDraft ? (
-                <div className="flex justify-start">
-                  <div className="max-w-full sm:max-w-[92%]">
-                    <div className="rounded-[24px] rounded-bl-md border border-cyan-400/10 bg-slate-900/65 px-4 py-3 text-sm text-foreground shadow-[0_18px_40px_rgba(0,0,0,0.22)]">
-                      <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-400/10 bg-cyan-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-cyan-100">
-                        <Sparkles size={12} />
-                        {pickLang(language, "Preparing answer", "Antwort wird erstellt")}
+                <div className="flex justify-start motion-safe:animate-[ai-message-in_220ms_cubic-bezier(0.22,1,0.36,1)]">
+                  <div className="max-w-full sm:max-w-[90%]">
+                    <div className="rounded-[24px] rounded-bl-md border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(10,16,30,0.94))] px-4 py-3.5 text-sm text-foreground shadow-[0_18px_40px_rgba(0,0,0,0.2)]">
+                      <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/10 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-100">
+                        <TypingDots />
+                        {pickLang(language, "Answer in progress", "Antwort läuft")}
                       </div>
                       <AiFormattedMessage content={assistantDraft} />
                       <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-400">
-                        <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
-                        {pickLang(language, "Streaming grounded reply", "Geerdete Antwort wird übertragen")}
+                        <TypingDots />
+                        {pickLang(language, "Live response", "Live-Antwort")}
                       </div>
                     </div>
                     {draftCitations.length > 0 ? (
-                      <div className="mt-3 space-y-2">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                      <div className="mt-3 space-y-2.5">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                           {pickLang(language, "Sources", "Quellen")}
                         </p>
                         {draftCitations.map((citation) => (
                           <span
                             key={`draft-${citation.url}`}
-                            className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-950/40 px-3 py-2 text-xs text-slate-300"
+                            className="flex items-center justify-between gap-3 rounded-[18px] border border-white/8 bg-slate-950/35 px-3.5 py-2.5 text-xs text-slate-300"
                           >
                             <span>{citation.title}</span>
                             <ExternalLink size={14} className="shrink-0 text-slate-500" />
@@ -493,9 +602,14 @@ const AiStatusAssistant = () => {
             </div>
           </div>
 
-          <div className="border-t border-white/10 bg-slate-950/35 px-4 py-4 sm:px-5">
+          <div
+            className="border-t border-white/8 bg-[linear-gradient(180deg,rgba(4,10,20,0.72),rgba(4,10,20,0.96))] px-4 pt-4 sm:px-6"
+            style={{
+              paddingBottom: `calc(1rem + env(safe-area-inset-bottom, 0px) + ${keyboardInset}px)`,
+            }}
+          >
             {availability !== "available" ? (
-              <div className="mb-3 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-3 py-2.5 text-xs text-amber-100">
+              <div className="mb-3 rounded-[22px] border border-amber-300/20 bg-amber-300/10 px-3 py-2.5 text-xs text-amber-100">
                 <div className="flex items-start gap-2">
                   <TriangleAlert size={14} className="mt-0.5 shrink-0" />
                   <div>
@@ -521,38 +635,61 @@ const AiStatusAssistant = () => {
             ) : null}
 
             <form onSubmit={(event) => void handleSubmit(event)} className="space-y-3">
-              <textarea
-                value={input}
-                onChange={(event) => setInput(event.target.value)}
-                maxLength={600}
-                placeholder={pickLang(
-                  language,
-                  "Ask about current status, recent incidents, or how to use the site...",
-                  "Frage nach aktuellem Status, letzten Vorfällen oder der Nutzung der Seite...",
-                )}
-                disabled={availability !== "available" || sending}
-                className="min-h-[108px] w-full resize-none rounded-[22px] border border-white/10 bg-slate-900/65 px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-cyan-300/35 disabled:cursor-not-allowed disabled:opacity-60"
-              />
-              <div className="flex items-end justify-between gap-3">
-                <div className="space-y-1">
-                  <p className="text-[11px] font-medium text-muted-foreground">
-                    {pickLang(language, "Public-data mode", "Öffentlicher-Daten-Modus")}
-                  </p>
-                  <p className="max-w-[220px] text-[11px] leading-5 text-muted-foreground">
-                    {pickLang(
-                      language,
-                      "Answers stay grounded in public status JSON and public site help content only.",
-                      "Antworten bleiben nur auf öffentlichen Status-JSON-Daten und öffentlichen Seitenhilfen geerdet.",
-                    )}
-                  </p>
+              <div className="rounded-[26px] border border-white/8 bg-slate-950/55 p-2 shadow-[0_16px_36px_rgba(2,8,23,0.24)]">
+                <textarea
+                  ref={textareaRef}
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  maxLength={600}
+                  placeholder={pickLang(
+                    language,
+                    "Ask about current status, recent incidents, or how to use the site...",
+                    "Frage nach aktuellem Status, letzten Vorfällen oder der Nutzung der Seite...",
+                  )}
+                  disabled={availability !== "available" || sending}
+                  className="min-h-[56px] w-full resize-none bg-transparent px-3.5 pb-2 pt-2.5 text-[15px] leading-6 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                />
+                <div className="flex items-end justify-between gap-3 border-t border-white/6 px-2 pt-2">
+                  <div className="pr-2">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-slate-500">
+                      {publicDataLabel(language)}
+                    </p>
+                    <p className="mt-1 max-w-[14rem] text-[11px] leading-5 text-slate-400">
+                      {publicDataDescription(language)}
+                    </p>
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={availability !== "available" || sending || !input.trim()}
+                    className="h-11 rounded-full bg-[linear-gradient(135deg,_rgba(20,184,166,0.96),_rgba(2,132,199,0.96))] px-5 text-primary-foreground shadow-[0_10px_28px_rgba(6,78,99,0.34)] transition-transform duration-200 hover:translate-y-[-1px] hover:brightness-105 disabled:bg-slate-700 disabled:text-slate-300"
+                  >
+                    {sending ? <Loader2 className="animate-spin" /> : <Send size={14} />}
+                    {pickLang(language, "Send", "Senden")}
+                  </Button>
                 </div>
+              </div>
+
+              <div className="flex items-center justify-between gap-3 px-1">
+                <p className="text-[11px] leading-5 text-slate-500">
+                  {pickLang(
+                    language,
+                    "If the assistant is offline, the normal status site still works.",
+                    "Wenn der Assistent offline ist, funktioniert die normale Statusseite weiter.",
+                  )}
+                </p>
                 <Button
-                  type="submit"
-                  disabled={availability !== "available" || sending || !input.trim()}
-                  className="h-11 rounded-full px-5"
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setMessages([]);
+                    setAssistantDraft("");
+                    setDraftCitations([]);
+                    setInput("");
+                  }}
+                  className="h-8 rounded-full px-3 text-[11px] text-slate-400 hover:bg-white/5 hover:text-slate-200"
                 >
-                  {sending ? <Loader2 className="animate-spin" /> : <Send size={14} />}
-                  {pickLang(language, "Send", "Senden")}
+                  {pickLang(language, "Clear", "Leeren")}
                 </Button>
               </div>
             </form>
