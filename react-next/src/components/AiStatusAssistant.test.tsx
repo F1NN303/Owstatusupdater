@@ -109,8 +109,9 @@ describe("AiStatusAssistant", () => {
           },
         ],
       });
-      handlers.onDelta?.("GitHub currently shows ");
-      handlers.onDelta?.("stable operations.");
+      handlers.onDelta?.("GitHub currently shows stable operations.");
+      handlers.onDelta?.("\n\n**Current status:**");
+      handlers.onDelta?.("\n- All systems operational");
       handlers.onDone?.();
     });
 
@@ -130,6 +131,9 @@ describe("AiStatusAssistant", () => {
     });
 
     expect(await screen.findByText("GitHub currently shows stable operations.")).toBeInTheDocument();
+    expect(screen.getByText("Current status:")).toBeInTheDocument();
+    expect(screen.getByText("All systems operational")).toBeInTheDocument();
+    expect(screen.queryByText(/\*\*Current status:\*\*/)).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "GitHub summary" })).toHaveAttribute(
       "href",
       "https://example.com/github/summary.json"

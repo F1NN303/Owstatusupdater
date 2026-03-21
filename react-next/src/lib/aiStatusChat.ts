@@ -168,7 +168,7 @@ export async function askStatusStream(
       language: params.language,
       serviceId: params.serviceId || undefined,
       pagePath: params.pagePath || undefined,
-      maxTokens: 512,
+      maxTokens: 640,
     }),
     signal: params.signal,
   });
