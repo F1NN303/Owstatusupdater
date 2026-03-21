@@ -690,3 +690,22 @@ Key files:
   - `py -3 scripts/verify_next_preview_artifact.py` -> passed
 - Notes:
   - This follow-up was triggered by a post-push visual regression report on the live settings page and bottom nav.
+
+## Latest Validation Snapshot (Non-AI Bundle Isolation + Shared Page Shell)
+- Scope:
+  - Moved `AlertAccountProvider` out of the global app boot path and into route-scoped wrappers:
+    - `react-next/src/pages/EmailAlertsRoute.tsx`
+    - `react-next/src/pages/SettingsPageRoute.tsx`
+  - Removed the unused global `react-query` provider and the unused global `Sonner` mount from `react-next/src/App.tsx`.
+  - Added shared narrow-shell layout primitives in `react-next/src/components/PageScaffold.tsx`.
+  - Updated:
+    - `react-next/src/components/RouteLoadingShell.tsx`
+    - `react-next/src/pages/SettingsPage.tsx`
+    - `react-next/src/pages/EmailAlerts.tsx`
+    so settings/alerts/loading now share the same intro and glass-section structure.
+- Validation:
+  - `npm.cmd run build` in `react-next` -> passed
+  - `npm.cmd run test` in `react-next` -> passed
+- Notes:
+  - This intentionally avoids AI-specific files and keeps the AI integration untouched.
+  - Production build size improved from roughly `619 kB` initial JS to roughly `376 kB`, with alert-account code moved into its own lazy chunk.

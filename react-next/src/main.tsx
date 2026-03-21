@@ -1,6 +1,5 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
-import { AlertAccountProvider } from "./lib/alertAccount.tsx";
 import { AppShellProvider } from "./lib/appShell.tsx";
 import { recoverAppRoute } from "./lib/routerRecovery.ts";
 import "./index.css";
@@ -11,9 +10,7 @@ if (typeof window !== "undefined") {
 
 createRoot(document.getElementById("root")!).render(
   <AppShellProvider>
-    <AlertAccountProvider>
-      <App />
-    </AlertAccountProvider>
+    <App />
   </AppShellProvider>
 );
 

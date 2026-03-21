@@ -1,4 +1,5 @@
 import AppLayout from "@/components/AppLayout";
+import { GlassSection, PageIntro, PageShell } from "@/components/PageScaffold";
 import ServiceIdentityIcon from "@/components/ServiceIdentityIcon";
 import { useAlertAccount } from "@/lib/alertAccount";
 import { pickLang, useAppShell } from "@/lib/appShell";
@@ -531,36 +532,32 @@ const EmailAlerts = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-6 pt-8">
-        <div className="flex items-start justify-between gap-3 pb-5 pt-4">
-          <div>
-            <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              {t("Alerts", "Alarme")}
-            </h1>
-            <p className="mt-1 text-[13px] text-muted-foreground">
-              {t(
-                "Connect your account, choose what matters, then finish e-mail delivery if you want inbox alerts.",
-                "Verbinde dein Konto, waehle die wichtigen Services und aktiviere danach bei Bedarf die E-Mail-Zustellung."
-              )}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              void loadConfig();
-              reloadAlertAccount();
-            }}
-            className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all active:scale-95"
-            aria-label={t("Refresh alert setup", "Alarm-Einrichtung aktualisieren")}
-          >
-            <RefreshCw
-              size={18}
-              className={`text-muted-foreground transition-transform ${
-                isRefreshing || alertAccountLoading ? "animate-spin" : ""
-              }`}
-            />
-          </button>
-        </div>
+      <PageShell>
+        <PageIntro
+          title={t("Alerts", "Alarme")}
+          description={t(
+            "Connect your account, choose what matters, then finish e-mail delivery if you want inbox alerts.",
+            "Verbinde dein Konto, waehle die wichtigen Services und aktiviere danach bei Bedarf die E-Mail-Zustellung."
+          )}
+          action={
+            <button
+              type="button"
+              onClick={() => {
+                void loadConfig();
+                reloadAlertAccount();
+              }}
+              className="glass flex h-12 w-12 items-center justify-center rounded-2xl transition-all active:scale-95"
+              aria-label={t("Refresh alert setup", "Alarm-Einrichtung aktualisieren")}
+            >
+              <RefreshCw
+                size={18}
+                className={`text-muted-foreground transition-transform ${
+                  isRefreshing || alertAccountLoading ? "animate-spin" : ""
+                }`}
+              />
+            </button>
+          }
+        />
 
         <section className="glass glass-specular overflow-hidden rounded-2xl">
           <div className="bg-gradient-to-r from-primary/15 to-transparent p-4">
@@ -621,8 +618,7 @@ const EmailAlerts = () => {
           </div>
         </section>
 
-        <section className="glass glass-specular mt-4 rounded-2xl p-4">
-          <div className="relative z-10">
+        <GlassSection className="mt-4">
             <AlertsSectionHeader
               icon={<Cloud size={16} className="text-primary" />}
               title={t("1. Account access", "1. Kontozugang")}
@@ -729,8 +725,7 @@ const EmailAlerts = () => {
                 {accountNotice.message}
               </div>
             ) : null}
-          </div>
-        </section>
+        </GlassSection>
 
         {usingCachedConfig ? (
           <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-3 py-2.5 text-[11px] text-amber-200">
@@ -751,8 +746,7 @@ const EmailAlerts = () => {
           </div>
         ) : null}
 
-        <section className="glass glass-specular mt-4 rounded-2xl p-4">
-          <div className="relative z-10">
+        <GlassSection className="mt-4">
             <AlertsSectionHeader
               icon={<BellRing size={16} className="text-primary" />}
               title={t("2. Choose alerts", "2. Alarme auswaehlen")}
@@ -975,11 +969,9 @@ const EmailAlerts = () => {
                 })
               )}
             </div>
-          </div>
-        </section>
+        </GlassSection>
 
-        <section className="glass glass-specular mt-4 rounded-2xl p-4">
-          <div className="relative z-10">
+        <GlassSection className="mt-4">
             <AlertsSectionHeader
               icon={<Mail size={16} className="text-primary" />}
               title={t("3. Activate e-mail delivery", "3. E-Mail-Zustellung aktivieren")}
@@ -1099,9 +1091,8 @@ const EmailAlerts = () => {
                 )}
               </div>
             )}
-          </div>
-        </section>
-      </main>
+        </GlassSection>
+      </PageShell>
     </AppLayout>
   );
 };

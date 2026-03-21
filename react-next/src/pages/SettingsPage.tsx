@@ -1,4 +1,5 @@
 import AppLayout from "@/components/AppLayout";
+import { GlassSection, PageIntro, PageShell } from "@/components/PageScaffold";
 import { useAlertAccount } from "@/lib/alertAccount";
 import { appBuildMeta, formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
 import {
@@ -107,61 +108,52 @@ const SettingsPage = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-6 pt-8">
-        <div className="flex items-start justify-between gap-3 pb-5 pt-4">
-          <div>
-            <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
-              {pickLang(language, "Settings", "Einstellungen")}
-            </h1>
-            <p className="mt-1 text-[13px] text-muted-foreground">
-              {pickLang(
-                language,
-                "Device display defaults, feed behavior, and alert account links",
-                "Anzeige-Standards, Feed-Verhalten und Alarm-Konto-Verknuepfungen fuer dieses Geraet"
-              )}
-            </p>
-          </div>
-          <div className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl">
-            <Settings size={18} className="text-primary" />
-          </div>
-        </div>
+      <PageShell>
+        <PageIntro
+          title={pickLang(language, "Settings", "Einstellungen")}
+          description={pickLang(
+            language,
+            "Device display defaults, feed behavior, and alert account links",
+            "Anzeige-Standards, Feed-Verhalten und Alarm-Konto-Verknuepfungen fuer dieses Geraet"
+          )}
+          action={
+            <div className="glass flex h-12 w-12 items-center justify-center rounded-2xl">
+              <Settings size={18} className="text-primary" />
+            </div>
+          }
+        />
 
         <section className="grid gap-3">
-          <div className="glass glass-specular rounded-2xl p-4">
-            <div className="relative z-10">
-              <div className="flex items-center gap-2">
-                <MonitorSmartphone size={14} className="text-primary/80" />
-                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "This Device", "Dieses Geraet")}
-                </h2>
-              </div>
-              <p className="mt-2 text-sm font-semibold text-foreground">
-                {pickLang(language, "Local UI defaults", "Lokale UI-Standards")}
-              </p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{storageSummary}</p>
+          <GlassSection as="div">
+            <div className="flex items-center gap-2">
+              <MonitorSmartphone size={14} className="text-primary/80" />
+              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {pickLang(language, "This Device", "Dieses Geraet")}
+              </h2>
             </div>
-          </div>
+            <p className="mt-2 text-sm font-semibold text-foreground">
+              {pickLang(language, "Local UI defaults", "Lokale UI-Standards")}
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{storageSummary}</p>
+          </GlassSection>
 
-          <div className="glass glass-specular rounded-2xl p-4">
-            <div className="relative z-10">
-              <div className="flex items-center gap-2">
-                <Mail size={14} className="text-primary/80" />
-                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Alerts Account", "Alarm-Konto")}
-                </h2>
-              </div>
-              <p className="mt-2 text-sm font-semibold text-foreground">
-                {alertAccountConnected
-                  ? pickLang(language, "Connected and syncing", "Verbunden und synchronisiert")
-                  : pickLang(language, "Optional account link", "Optionale Konto-Verknuepfung")}
-              </p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{alertsSummary}</p>
+          <GlassSection as="div">
+            <div className="flex items-center gap-2">
+              <Mail size={14} className="text-primary/80" />
+              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {pickLang(language, "Alerts Account", "Alarm-Konto")}
+              </h2>
             </div>
-          </div>
+            <p className="mt-2 text-sm font-semibold text-foreground">
+              {alertAccountConnected
+                ? pickLang(language, "Connected and syncing", "Verbunden und synchronisiert")
+                : pickLang(language, "Optional account link", "Optionale Konto-Verknuepfung")}
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{alertsSummary}</p>
+          </GlassSection>
         </section>
 
-        <section className="glass glass-specular rounded-2xl p-4">
-          <div className="relative z-10">
+        <GlassSection>
             <div className="flex items-center gap-2">
               <MonitorSmartphone size={14} className="text-primary/80" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -232,11 +224,9 @@ const SettingsPage = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+        </GlassSection>
 
-        <section className="glass glass-specular mt-4 rounded-2xl p-4">
-          <div className="relative z-10 space-y-3">
+        <GlassSection className="mt-4" contentClassName="space-y-3">
             <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               {pickLang(language, "Home Feed Defaults", "Home-Feed-Standards")}
             </h2>
@@ -399,11 +389,9 @@ const SettingsPage = () => {
                 </button>
               </div>
             </div>
-          </div>
-        </section>
+        </GlassSection>
 
-        <section className="glass glass-specular mt-4 rounded-2xl p-4">
-          <div className="relative z-10 space-y-3">
+        <GlassSection className="mt-4" contentClassName="space-y-3">
             <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               {pickLang(language, "Time Format", "Zeitformat")}
             </h2>
@@ -427,12 +415,10 @@ const SettingsPage = () => {
                 </button>
               ))}
             </div>
-          </div>
-        </section>
+        </GlassSection>
 
         <section className="mt-4 grid gap-4">
-          <div className="glass glass-specular rounded-2xl p-4">
-            <div className="relative z-10 space-y-2">
+          <GlassSection as="div" contentClassName="space-y-2">
               <div className="flex items-center gap-2">
                 <Mail size={14} className="text-primary/80" />
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -449,11 +435,9 @@ const SettingsPage = () => {
                 <span>{pickLang(language, "Manage Alerts", "Alarme verwalten")}</span>
                 <ExternalLink size={14} />
               </Link>
-            </div>
-          </div>
+          </GlassSection>
 
-          <div className="glass glass-specular rounded-2xl p-4">
-            <div className="relative z-10 space-y-2">
+          <GlassSection as="div" contentClassName="space-y-2">
               <div className="flex items-center gap-2">
                 <Sparkles size={14} className="text-primary/80" />
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -528,10 +512,9 @@ const SettingsPage = () => {
                 <span>{pickLang(language, "Terms & Ownership", "Nutzung & Eigentum")}</span>
                 <ExternalLink size={14} className="text-muted-foreground" />
               </Link>
-            </div>
-          </div>
+          </GlassSection>
         </section>
-      </main>
+      </PageShell>
     </AppLayout>
   );
 };
