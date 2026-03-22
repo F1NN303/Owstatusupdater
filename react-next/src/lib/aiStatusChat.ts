@@ -39,6 +39,40 @@ function trimTrailingSlash(value: string) {
   return value.replace(/\/+$/, "");
 }
 
+function shouldRequestLocalNetworkAccess(baseUrl: string) {
+  try {
+    const url = new URL(baseUrl);
+    const hostname = url.hostname.toLowerCase();
+
+    if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1") {
+      return true;
+    }
+
+    if (hostname.endsWith(".ts.net")) {
+      return true;
+    }
+
+    if (/^10\./.test(hostname) || /^192\.168\./.test(hostname) || /^172\.(1[6-9]|2\d|3[0-1])\./.test(hostname)) {
+      return true;
+    }
+  } catch {
+    return false;
+  }
+
+  return false;
+}
+
+function withLocalNetworkAccess(init: RequestInit, baseUrl: string) {
+  if (!shouldRequestLocalNetworkAccess(baseUrl)) {
+    return init;
+  }
+
+  return {
+    ...init,
+    targetAddressSpace: "local",
+  } as RequestInit & { targetAddressSpace: "local" };
+}
+
 export function getAiApiBaseUrl() {
   const configured = String(import.meta.env.VITE_AI_API_BASE_URL || "").trim();
   if (configured) {
@@ -59,10 +93,16 @@ async function fetchWithTimeout(url: string, timeoutMs: number, init?: RequestIn
   const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    return await fetch(url, {
+    return await fetch(
+      url,
+      withLocalNetworkAccess(
+        {
       ...init,
       signal: init?.signal || controller.signal,
-    });
+        },
+        url,
+      ),
+    );
   } finally {
     window.clearTimeout(timeout);
   }
@@ -157,21 +197,27 @@ export async function askStatusStream(
     throw new Error("AI API base URL is not configured");
   }
 
-  const response = await fetch(`${baseUrl}/api/ask-status/stream`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message: params.message,
-      history: params.history,
-      language: params.language,
-      serviceId: params.serviceId || undefined,
-      pagePath: params.pagePath || undefined,
-      maxTokens: 640,
-    }),
-    signal: params.signal,
-  });
+  const response = await fetch(
+    `${baseUrl}/api/ask-status/stream`,
+    withLocalNetworkAccess(
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: params.message,
+          history: params.history,
+          language: params.language,
+          serviceId: params.serviceId || undefined,
+          pagePath: params.pagePath || undefined,
+          maxTokens: 640,
+        }),
+        signal: params.signal,
+      },
+      baseUrl,
+    ),
+  );
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
