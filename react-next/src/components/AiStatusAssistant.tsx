@@ -325,6 +325,7 @@ const AiStatusAssistant = () => {
   const [assistantDraft, setAssistantDraft] = useState("");
   const [draftCitations, setDraftCitations] = useState<AiCitation[]>([]);
   const [keyboardInset, setKeyboardInset] = useState(0);
+  const [sheetViewportHeight, setSheetViewportHeight] = useState<number | null>(null);
 
   const hasConversation = messages.length > 0 || Boolean(assistantDraft);
   const composerDisabled = availability !== "available" || sending;
@@ -380,28 +381,45 @@ const AiStatusAssistant = () => {
   }, [open, availability]);
 
   useEffect(() => {
-    if (!open || typeof window === "undefined" || !window.visualViewport) {
+    if (!open || typeof window === "undefined") {
       setKeyboardInset(0);
+      setSheetViewportHeight(null);
       return;
     }
 
     const viewport = window.visualViewport;
 
-    const updateKeyboardInset = () => {
-      const overlap = Math.max(0, window.innerHeight - Math.round(viewport.height + viewport.offsetTop));
+    const updateLayoutMetrics = () => {
+      const visibleHeight = viewport
+        ? Math.round(viewport.height + viewport.offsetTop)
+        : window.innerHeight;
+      const overlap = viewport
+        ? Math.max(0, window.innerHeight - Math.round(viewport.height + viewport.offsetTop))
+        : 0;
+
       setKeyboardInset(overlap > 20 ? overlap : 0);
+      setSheetViewportHeight(isMobile ? visibleHeight : null);
     };
 
-    updateKeyboardInset();
-    viewport.addEventListener("resize", updateKeyboardInset);
-    viewport.addEventListener("scroll", updateKeyboardInset);
+    updateLayoutMetrics();
+
+    if (!viewport) {
+      return () => {
+        setKeyboardInset(0);
+        setSheetViewportHeight(null);
+      };
+    }
+
+    viewport.addEventListener("resize", updateLayoutMetrics);
+    viewport.addEventListener("scroll", updateLayoutMetrics);
 
     return () => {
-      viewport.removeEventListener("resize", updateKeyboardInset);
-      viewport.removeEventListener("scroll", updateKeyboardInset);
+      viewport.removeEventListener("resize", updateLayoutMetrics);
+      viewport.removeEventListener("scroll", updateLayoutMetrics);
       setKeyboardInset(0);
+      setSheetViewportHeight(null);
     };
-  }, [open]);
+  }, [isMobile, open]);
 
   useEffect(() => {
     return () => {
@@ -533,7 +551,7 @@ const AiStatusAssistant = () => {
       <SheetTrigger asChild>
         <button
           type="button"
-          className="fixed bottom-[calc(6.1rem+env(safe-area-inset-bottom,0px))] right-4 z-40 flex items-center gap-2.5 rounded-full border border-white/10 bg-slate-950/78 px-4 py-3 text-sm font-medium text-foreground shadow-[0_18px_46px_rgba(2,8,23,0.42)] backdrop-blur-xl transition-all duration-300 hover:border-cyan-300/20 hover:bg-slate-900/86 hover:shadow-[0_20px_54px_rgba(2,8,23,0.5)] active:scale-[0.985] sm:bottom-6 sm:right-6"
+          className="fixed bottom-[calc(5.4rem+env(safe-area-inset-bottom,0px))] right-3.5 z-40 flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/78 px-3.5 py-2.5 text-[13px] font-medium text-foreground shadow-[0_18px_46px_rgba(2,8,23,0.42)] backdrop-blur-xl transition-all duration-300 hover:border-cyan-300/20 hover:bg-slate-900/86 hover:shadow-[0_20px_54px_rgba(2,8,23,0.5)] active:scale-[0.985] sm:bottom-6 sm:right-6 sm:gap-2.5 sm:px-4 sm:py-3 sm:text-sm"
         >
           <span
             className={cn(
@@ -552,7 +570,15 @@ const AiStatusAssistant = () => {
 
       <SheetContent
         side={isMobile ? "bottom" : "right"}
-        className="h-[min(84dvh,860px)] overflow-hidden rounded-t-[32px] border-x border-t border-white/10 bg-[linear-gradient(180deg,rgba(5,11,22,0.98),rgba(5,11,22,0.94))] p-0 text-foreground shadow-[0_-28px_72px_rgba(2,8,23,0.58)] motion-safe:data-[state=open]:animate-[ai-sheet-rise_340ms_cubic-bezier(0.22,1,0.36,1)] sm:h-full sm:max-w-[420px] sm:rounded-none sm:border-x-0 sm:border-t-0 sm:border-l sm:shadow-[-16px_0_58px_rgba(2,8,23,0.36)] [&>button]:right-4 [&>button]:top-4 [&>button]:rounded-full [&>button]:border [&>button]:border-white/10 [&>button]:bg-white/[0.04] [&>button]:p-1.5 [&>button]:text-slate-400 [&>button]:transition-colors [&>button:hover]:bg-white/[0.08] [&>button:hover]:text-slate-100 [&>button_svg]:h-4 [&>button_svg]:w-4"
+        className="h-[100dvh] max-h-[100dvh] overflow-hidden rounded-none border-t border-white/10 bg-[linear-gradient(180deg,rgba(5,11,22,0.98),rgba(5,11,22,0.94))] p-0 text-foreground shadow-[0_-28px_72px_rgba(2,8,23,0.58)] motion-safe:data-[state=open]:animate-[ai-sheet-rise_340ms_cubic-bezier(0.22,1,0.36,1)] sm:h-full sm:max-h-none sm:max-w-[420px] sm:rounded-none sm:border-t-0 sm:border-l sm:shadow-[-16px_0_58px_rgba(2,8,23,0.36)] [&>button]:right-4 [&>button]:top-[calc(env(safe-area-inset-top,0px)+0.875rem)] [&>button]:rounded-full [&>button]:border [&>button]:border-white/10 [&>button]:bg-white/[0.04] [&>button]:p-1.5 [&>button]:text-slate-400 [&>button]:transition-colors [&>button:hover]:bg-white/[0.08] [&>button:hover]:text-slate-100 sm:[&>button]:top-4 [&>button_svg]:h-4 [&>button_svg]:w-4"
+        style={
+          isMobile && sheetViewportHeight
+            ? {
+                height: `${sheetViewportHeight}px`,
+                maxHeight: `${sheetViewportHeight}px`,
+              }
+            : undefined
+        }
       >
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute left-[-14%] top-[-6%] h-52 w-52 rounded-full bg-cyan-400/10 blur-3xl motion-safe:animate-[ai-aura_16s_ease-in-out_infinite]" />
@@ -560,10 +586,13 @@ const AiStatusAssistant = () => {
           <div className="absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent)]" />
         </div>
 
-        <div className="relative flex h-full min-h-0 max-h-[100dvh] flex-col">
-          {isMobile ? <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-white/15" /> : null}
+        <div
+          className="relative flex h-full min-h-0 flex-col"
+          style={isMobile ? { paddingTop: "max(0.5rem, env(safe-area-inset-top, 0px))" } : undefined}
+        >
+          {isMobile ? <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-white/15" /> : null}
 
-          <SheetHeader className="border-b border-white/8 px-5 pb-3 pt-4 text-left sm:px-6 sm:pb-3 sm:pt-5">
+          <SheetHeader className="border-b border-white/8 px-5 pb-3 pt-3 text-left sm:px-6 sm:pb-3 sm:pt-5">
             <div className="flex items-start gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2.5">
@@ -607,7 +636,7 @@ const AiStatusAssistant = () => {
           <div
             ref={chatScrollRef}
             className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-5"
-            style={{ WebkitOverflowScrolling: "touch", scrollPaddingBottom: "7rem" }}
+            style={{ WebkitOverflowScrolling: "touch", scrollPaddingBottom: "9rem" }}
           >
             {!hasConversation ? (
               <div className="mx-auto max-w-[22rem] space-y-4">
@@ -747,7 +776,7 @@ const AiStatusAssistant = () => {
                     maxLength={600}
                     placeholder={inputPlaceholder(language)}
                     disabled={composerDisabled}
-                    className="min-h-[62px] flex-1 resize-none bg-transparent px-1 py-1 text-[15px] leading-7 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                    className="min-h-[62px] flex-1 resize-none bg-transparent px-1 py-1 text-base leading-7 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:text-[15px]"
                   />
                   <Button
                     type="submit"

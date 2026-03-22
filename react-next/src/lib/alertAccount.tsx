@@ -235,6 +235,8 @@ export function AlertAccountProvider({ children }: { children: ReactNode }) {
     watchedServiceIds: alertServiceIds,
     severityThreshold: alertSeverityThreshold,
   });
+  const replaceAlertServicesRef = useRef(replaceAlertServices);
+  const setAlertSeverityThresholdRef = useRef(setAlertSeverityThreshold);
   const [status, setStatus] = useState<AlertAccountLifecycle>(configured ? "checking" : "disabled");
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<AlertAccountProfile | null>(null);
@@ -249,6 +251,14 @@ export function AlertAccountProvider({ children }: { children: ReactNode }) {
       severityThreshold: alertSeverityThreshold,
     };
   }, [alertServiceIds, alertSeverityThreshold]);
+
+  useEffect(() => {
+    replaceAlertServicesRef.current = replaceAlertServices;
+  }, [replaceAlertServices]);
+
+  useEffect(() => {
+    setAlertSeverityThresholdRef.current = setAlertSeverityThreshold;
+  }, [setAlertSeverityThreshold]);
 
   useEffect(() => {
     if (!configured || !supabase) {
@@ -355,8 +365,8 @@ export function AlertAccountProvider({ children }: { children: ReactNode }) {
           localSnapshot.severityThreshold
         )
       ) {
-        replaceAlertServices(nextSavedPreferences.watchedServiceIds);
-        setAlertSeverityThreshold(nextSavedPreferences.severityThreshold);
+        replaceAlertServicesRef.current(nextSavedPreferences.watchedServiceIds);
+        setAlertSeverityThresholdRef.current(nextSavedPreferences.severityThreshold);
       }
     }
 
@@ -365,7 +375,7 @@ export function AlertAccountProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [configured, reloadToken, replaceAlertServices, session, setAlertSeverityThreshold, supabase]);
+  }, [configured, reloadToken, session, supabase]);
 
   const sessionEmail = normalizeEmail(profile?.email || session?.user.email);
   const isConnected = status === "connected" && Boolean(session);

@@ -171,14 +171,16 @@ function ToggleSwitch({
 function QuickStat({
   label,
   value,
+  valueClassName,
 }: {
   label: string;
   value: string;
+  valueClassName?: string;
 }) {
   return (
     <div className="rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-3">
       <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
-      <p className="mt-1 text-sm font-semibold text-foreground">{value}</p>
+      <p className={cn("mt-1 text-sm font-semibold text-foreground", valueClassName)}>{value}</p>
     </div>
   );
 }
@@ -200,17 +202,17 @@ function PublicChangelogSheet({
       <SheetTrigger asChild>
         <button
           type="button"
-          className="group flex w-full items-center justify-between rounded-[24px] border border-primary/20 bg-primary/10 px-4 py-3 text-left transition-all duration-200 hover:bg-primary/15"
+          className="group flex w-full items-center justify-between rounded-[22px] border border-primary/20 bg-primary/10 px-4 py-3 text-left transition-all duration-200 hover:bg-primary/15"
         >
           <div className="min-w-0">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary/80">
               {pickLang(language, "What's new", "Was ist neu")}
             </p>
-            <p className="mt-1 text-sm font-semibold text-foreground">
+            <p className="mt-1 truncate text-sm font-semibold text-foreground">
               {language === "de" ? latestEntry.titleDe : latestEntry.titleEn}
             </p>
-            <p className="mt-1 line-clamp-2 text-[12px] leading-5 text-muted-foreground">
-              {language === "de" ? latestEntry.summaryDe : latestEntry.summaryEn}
+            <p className="mt-1 text-[12px] leading-5 text-muted-foreground">
+              {formatPublicChangelogDate(latestEntry.updatedAt, language)}
             </p>
           </div>
           <ChevronRight size={16} className="shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
@@ -318,6 +320,7 @@ const SettingsPage = () => {
     resetSettings,
   } = useAppShell();
   const {
+    status: alertAccountStatus,
     isConnected: alertAccountConnected,
     profile: alertAccountProfile,
     sessionEmail,
@@ -336,12 +339,20 @@ const SettingsPage = () => {
 
   const alertsSummary = pickLang(
     language,
-    alertAccountConnected
+    alertAccountStatus === "checking"
+      ? "Alert account state is being checked. Local browser selections stay in place while the connection is verified."
+      : alertAccountStatus === "error"
+        ? "The alert account could not be verified right now. Local alert selections stay on this device until the connection is healthy again."
+        : alertAccountConnected
       ? `Alerts are managed on the Alerts page. Connected as ${sessionEmail || "unknown"}, watching ${alertServiceIds.length} services. Sync: ${syncStatusLabel}.`
       : `Alerts are managed on the Alerts page. ${alertServiceIds.length} services are currently selected only on this device. Threshold: ${
           alertSeverityThreshold === "degraded" ? "degraded+" : "major only"
         }.`,
-    alertAccountConnected
+    alertAccountStatus === "checking"
+      ? "Der Status des Alarm-Kontos wird gerade geprueft. Lokale Browser-Auswahlen bleiben bestehen, waehrend die Verbindung verifiziert wird."
+      : alertAccountStatus === "error"
+        ? "Das Alarm-Konto konnte gerade nicht verifiziert werden. Lokale Alarm-Auswahlen bleiben auf diesem Geraet, bis die Verbindung wieder gesund ist."
+        : alertAccountConnected
       ? `Alarme werden auf der Alarm-Seite verwaltet. Verbunden als ${sessionEmail || "unbekannt"}, ${alertServiceIds.length} Services werden beobachtet. Sync: ${syncStatusLabel}.`
       : `Alarme werden auf der Alarm-Seite verwaltet. ${alertServiceIds.length} Services sind aktuell nur auf diesem Geraet ausgewaehlt. Schwelle: ${
           alertSeverityThreshold === "degraded" ? "beeintraechtigt+" : "nur groessere"
@@ -358,22 +369,35 @@ const SettingsPage = () => {
   );
   const heroDescription = pickLang(
     language,
-    "Adjust how Status Radar feels on this browser and keep alert account links separate from local display defaults.",
-    "Passe an, wie sich Status Radar in diesem Browser anfuehlt, und halte Alarm-Konto-Verknuepfungen getrennt von lokalen Anzeige-Standards.",
+    "Adjust language, feed defaults, and alert links for this browser.",
+    "Passe Sprache, Feed-Standards und Alarm-Verknuepfungen fuer diesen Browser an.",
   );
   const heroTitle = pickLang(
     language,
-    "Calm defaults for this browser.",
+    "Quiet defaults for this browser.",
     "Ruhige Standards fuer diesen Browser.",
   );
   const heroEyebrow = pickLang(language, "This device", "Dieses Geraet");
-  const heroPatchNote = pickLang(language, "Latest update", "Letztes Update");
-  const alertStatusValue = alertAccountConnected
-    ? pickLang(language, "Connected", "Verbunden")
-    : pickLang(language, "Local only", "Nur lokal");
+  const alertStatusValue =
+    alertAccountStatus === "checking"
+      ? pickLang(language, "Checking", "Pruefe")
+      : alertAccountStatus === "error"
+        ? pickLang(language, "Issue", "Problem")
+        : alertAccountConnected
+          ? pickLang(language, "Connected", "Verbunden")
+          : pickLang(language, "Local only", "Nur lokal");
+  const alertStatusValueClassName =
+    alertAccountStatus === "checking"
+      ? "text-amber-200"
+      : alertAccountStatus === "error"
+        ? "text-rose-200"
+        : alertAccountConnected
+          ? "text-emerald-300"
+          : undefined;
   const motionValue = reduceMotion
     ? pickLang(language, "Reduced motion", "Weniger Bewegung")
     : pickLang(language, "Full motion", "Volle Bewegung");
+  const buildMetaLabel = pickLang(language, "Current build", "Aktueller Build");
 
   const initialCategory = useMemo(() => {
     if (!homeDefaultFilter.startsWith("category:")) {
@@ -398,8 +422,6 @@ const SettingsPage = () => {
     }
   };
 
-  const latestEntry = publicChangelogEntries[0];
-
   return (
     <AppLayout>
       <PageShell className="pb-8">
@@ -417,60 +439,36 @@ const SettingsPage = () => {
           }
         />
 
-        <GlassSection className="overflow-hidden border-white/12 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_34%),linear-gradient(180deg,rgba(15,23,42,0.82),rgba(8,15,29,0.92))]" contentClassName="space-y-4">
-          <div className="flex items-start justify-between gap-3">
+        <GlassSection className="overflow-hidden border-white/12 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_34%),linear-gradient(180deg,rgba(15,23,42,0.82),rgba(8,15,29,0.92))]" contentClassName="space-y-5">
+          <div className="min-w-0">
             <div className="min-w-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">{heroEyebrow}</p>
               <h2 className="mt-2 max-w-[13rem] text-[26px] font-semibold leading-[1.02] tracking-[-0.04em] text-foreground">
                 {heroTitle}
               </h2>
-              <p className="mt-3 max-w-[24rem] text-[13px] leading-6 text-muted-foreground">{heroDescription}</p>
+              <p className="mt-3 max-w-[22rem] text-[13px] leading-6 text-muted-foreground">{heroDescription}</p>
             </div>
-
-            <div className="rounded-[22px] border border-white/10 bg-white/[0.04] px-4 py-3 text-right shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                {pickLang(language, "Build", "Build")}
-              </p>
-              <p className="mt-1 text-base font-semibold text-foreground" title={versionLabel}>
+            <div
+              className="mt-4 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-3 py-2 text-[11px] text-slate-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+              title={versionLabel}
+            >
+              <span className="font-semibold uppercase tracking-[0.12em] text-slate-400">{buildMetaLabel}</span>
+              <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 font-semibold text-slate-100">
                 v {compactBuildId}
-              </p>
-              <p className="mt-1 text-[11px] text-muted-foreground">{buildTimeLabel}</p>
+              </span>
+              <span className="text-slate-500">•</span>
+              <span>{buildTimeLabel}</span>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
             <QuickStat label={pickLang(language, "Language", "Sprache")} value={language === "de" ? "Deutsch" : "English"} />
-            <QuickStat label={pickLang(language, "Alerts", "Alarme")} value={alertStatusValue} />
+            <QuickStat
+              label={pickLang(language, "Alerts", "Alarme")}
+              value={alertStatusValue}
+              valueClassName={alertStatusValueClassName}
+            />
             <QuickStat label={pickLang(language, "Motion", "Bewegung")} value={motionValue} />
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <SettingsSurface>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                {pickLang(language, "Storage", "Speicher")}
-              </p>
-              <p className="mt-2 text-sm font-semibold text-foreground">
-                {pickLang(language, "Local browser preferences", "Lokale Browser-Einstellungen")}
-              </p>
-              <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{storageSummary}</p>
-            </SettingsSurface>
-
-            <SettingsSurface>
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {heroPatchNote}
-                </p>
-                <span className="rounded-full border border-primary/15 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
-                  {formatPublicChangelogDate(latestEntry.updatedAt, language)}
-                </span>
-              </div>
-              <p className="mt-2 text-sm font-semibold text-foreground">
-                {language === "de" ? latestEntry.titleDe : latestEntry.titleEn}
-              </p>
-              <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
-                {language === "de" ? latestEntry.summaryDe : latestEntry.summaryEn}
-              </p>
-            </SettingsSurface>
           </div>
 
           <div className="grid gap-2 sm:grid-cols-2">
