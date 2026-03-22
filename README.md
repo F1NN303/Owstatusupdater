@@ -25,6 +25,11 @@ python -m http.server 8000 --directory site
 
 Open `http://127.0.0.1:8000`.
 
+## AI Assistant Deployment
+- Local frontend development can use `react-next/.env.example`, which points to `http://127.0.0.1:3000`.
+- GitHub Pages production builds must receive `VITE_AI_API_BASE_URL` from the repo variable `AI_API_BASE_URL`.
+- If `AI_API_BASE_URL` is unset, the site still deploys and the assistant shows as unavailable.
+
 ## Notes
 - Build/deploy and private workflow configuration details are intentionally minimized in this public README.
 - If you are a maintainer/agent, use `AGENTS.md` and `docs/AGENT_HANDOFF.md`.
