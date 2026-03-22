@@ -44,10 +44,6 @@ function shouldRequestLocalNetworkAccess(baseUrl: string) {
     const url = new URL(baseUrl);
     const hostname = url.hostname.toLowerCase();
 
-    if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1") {
-      return true;
-    }
-
     if (hostname.endsWith(".ts.net")) {
       return true;
     }

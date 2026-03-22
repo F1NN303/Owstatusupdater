@@ -166,9 +166,69 @@ function publicDataLabel(language: "en" | "de") {
 function publicDataDescription(language: "en" | "de") {
   return pickLang(
     language,
-    "Uses public status JSON and public site help only.",
-    "Nutzt nur öffentliche Status-JSON-Daten und öffentliche Seitenhilfen.",
+    "Public status JSON and public site help.",
+    "Öffentliche Status-JSON-Daten und öffentliche Seitenhilfen.",
   );
+}
+
+function introHeading(language: "en" | "de") {
+  return pickLang(language, "Ask what matters now.", "Frage nach dem, was jetzt wichtig ist.");
+}
+
+function introBody(language: "en" | "de") {
+  return pickLang(
+    language,
+    "Ask about status, incidents, history, or how to use the site. Answers stay tied to the same public data shown here.",
+    "Frage nach Status, Vorfällen, Verlauf oder der Nutzung der Seite. Antworten bleiben an dieselben öffentlichen Daten gebunden, die hier gezeigt werden.",
+  );
+}
+
+function introSuggestionLabel(language: "en" | "de") {
+  return pickLang(language, "Try one of these", "Probiere zum Start");
+}
+
+function inputPlaceholder(language: "en" | "de") {
+  return pickLang(
+    language,
+    "Ask about current status, recent incidents, or how to use the site...",
+    "Frage nach aktuellem Status, letzten Vorfällen oder der Nutzung der Seite...",
+  );
+}
+
+function emptyResponseText(language: "en" | "de") {
+  return pickLang(
+    language,
+    "The AI did not return a visible answer this time. Please try again.",
+    "Die KI hat diesmal keine sichtbare Antwort zurückgegeben. Bitte versuche es erneut.",
+  );
+}
+
+function footerNote(language: "en" | "de") {
+  return pickLang(
+    language,
+    "The normal status site keeps working if the assistant is offline.",
+    "Die normale Statusseite funktioniert weiter, auch wenn der Assistent offline ist.",
+  );
+}
+
+function liveAnswerLabel(language: "en" | "de") {
+  return pickLang(language, "Live response", "Live-Antwort");
+}
+
+function contextLabel(language: "en" | "de") {
+  return pickLang(language, "Context", "Kontext");
+}
+
+function sourcesLabel(language: "en" | "de") {
+  return pickLang(language, "Sources", "Quellen");
+}
+
+function citationHost(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./i, "");
+  } catch {
+    return "";
+  }
 }
 
 function TypingDots() {
@@ -182,6 +242,66 @@ function TypingDots() {
         />
       ))}
     </span>
+  );
+}
+
+function CitationList({
+  citations,
+  language,
+  pending = false,
+}: {
+  citations: AiCitation[];
+  language: "en" | "de";
+  pending?: boolean;
+}) {
+  if (!citations.length) {
+    return null;
+  }
+
+  return (
+    <div className="mt-3 space-y-2.5">
+      <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+        {sourcesLabel(language)}
+      </p>
+      <div className="grid gap-2">
+        {citations.map((citation) => {
+          const host = citationHost(citation.url);
+          const content = (
+            <>
+              <div className="min-w-0">
+                <p className="truncate text-[12px] font-medium text-slate-100">{citation.title}</p>
+                {host ? <p className="mt-1 text-[11px] text-slate-500">{host}</p> : null}
+              </div>
+              <ExternalLink size={14} className="shrink-0 text-slate-500" />
+            </>
+          );
+
+          const className =
+            "flex items-center justify-between gap-3 rounded-[18px] border border-white/8 bg-white/[0.03] px-3.5 py-3 text-left transition-all duration-200";
+
+          if (pending) {
+            return (
+              <span key={`draft-${citation.url}`} className={cn(className, "text-slate-300")}>
+                {content}
+              </span>
+            );
+          }
+
+          return (
+            <a
+              key={citation.url}
+              href={citation.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={citation.title}
+              className={cn(className, "hover:border-cyan-300/20 hover:bg-cyan-300/[0.05]")}
+            >
+              {content}
+            </a>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -205,6 +325,10 @@ const AiStatusAssistant = () => {
   const [assistantDraft, setAssistantDraft] = useState("");
   const [draftCitations, setDraftCitations] = useState<AiCitation[]>([]);
   const [keyboardInset, setKeyboardInset] = useState(0);
+
+  const hasConversation = messages.length > 0 || Boolean(assistantDraft);
+  const composerDisabled = availability !== "available" || sending;
+  const canClear = messages.length > 0 && !sending && !assistantDraft;
 
   useEffect(() => {
     let active = true;
@@ -238,7 +362,7 @@ const AiStatusAssistant = () => {
     }
 
     textarea.style.height = "0px";
-    textarea.style.height = `${Math.min(Math.max(textarea.scrollHeight, 56), 164)}px`;
+    textarea.style.height = `${Math.min(Math.max(textarea.scrollHeight, 70), 180)}px`;
   }, [input]);
 
   useEffect(() => {
@@ -296,6 +420,13 @@ const AiStatusAssistant = () => {
   function handleSuggestionSelect(suggestion: string) {
     setInput(suggestion);
     textareaRef.current?.focus();
+  }
+
+  function clearConversation() {
+    setMessages([]);
+    setAssistantDraft("");
+    setDraftCitations([]);
+    setInput("");
   }
 
   async function handleSubmit(event?: FormEvent<HTMLFormElement>) {
@@ -360,13 +491,7 @@ const AiStatusAssistant = () => {
         },
       );
 
-      const finalContent = nextContent.trim()
-        ? nextContent.trim()
-        : pickLang(
-            language,
-            "The AI did not return a visible answer this time. Please try again.",
-            "Die KI hat diesmal keine sichtbare Antwort zurückgegeben. Bitte versuche es erneut.",
-          );
+      const finalContent = nextContent.trim() ? nextContent.trim() : emptyResponseText(language);
 
       setMessages((previous) => [
         ...previous,
@@ -408,115 +533,131 @@ const AiStatusAssistant = () => {
       <SheetTrigger asChild>
         <button
           type="button"
-          className="fixed bottom-[calc(6.25rem+env(safe-area-inset-bottom,0px))] right-4 z-40 flex items-center gap-2 rounded-full border border-cyan-300/15 bg-slate-950/82 px-4 py-3 text-sm font-semibold text-foreground shadow-[0_18px_46px_rgba(2,8,23,0.48)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.015] active:scale-[0.985] sm:bottom-6 sm:right-6"
+          className="fixed bottom-[calc(6.1rem+env(safe-area-inset-bottom,0px))] right-4 z-40 flex items-center gap-2.5 rounded-full border border-white/10 bg-slate-950/78 px-4 py-3 text-sm font-medium text-foreground shadow-[0_18px_46px_rgba(2,8,23,0.42)] backdrop-blur-xl transition-all duration-300 hover:border-cyan-300/20 hover:bg-slate-900/86 hover:shadow-[0_20px_54px_rgba(2,8,23,0.5)] active:scale-[0.985] sm:bottom-6 sm:right-6"
         >
           <span
             className={cn(
-              "h-2.5 w-2.5 rounded-full",
-              availability === "available" ? "bg-emerald-400" : availability === "checking" ? "bg-amber-300" : "bg-slate-500",
+              "h-2.5 w-2.5 rounded-full shadow-[0_0_14px_currentColor]",
+              availability === "available"
+                ? "bg-emerald-400 text-emerald-400"
+                : availability === "checking"
+                  ? "bg-amber-300 text-amber-300"
+                  : "bg-slate-500 text-slate-500",
             )}
           />
-          <Bot size={16} />
+          <Bot size={16} className="text-cyan-100" />
           <span>{pickLang(language, "Ask AI", "KI fragen")}</span>
         </button>
       </SheetTrigger>
 
       <SheetContent
         side={isMobile ? "bottom" : "right"}
-        className="h-[min(88dvh,860px)] rounded-t-[30px] border-x border-t border-cyan-300/10 bg-[radial-gradient(circle_at_top,_rgba(52,211,153,0.1),_transparent_28%),radial-gradient(circle_at_85%_12%,_rgba(59,130,246,0.12),_transparent_24%),linear-gradient(180deg,_rgba(4,9,20,0.98),_rgba(6,12,24,0.98))] p-0 text-foreground shadow-[0_-24px_70px_rgba(2,8,23,0.56)] motion-safe:data-[state=open]:animate-[ai-sheet-rise_320ms_cubic-bezier(0.22,1,0.36,1)] sm:h-full sm:max-w-[430px] sm:rounded-none sm:border-x-0 sm:border-t-0 sm:border-l sm:shadow-[-18px_0_70px_rgba(2,8,23,0.36)]"
+        className="h-[min(84dvh,860px)] overflow-hidden rounded-t-[32px] border-x border-t border-white/10 bg-[linear-gradient(180deg,rgba(5,11,22,0.98),rgba(5,11,22,0.94))] p-0 text-foreground shadow-[0_-28px_72px_rgba(2,8,23,0.58)] motion-safe:data-[state=open]:animate-[ai-sheet-rise_340ms_cubic-bezier(0.22,1,0.36,1)] sm:h-full sm:max-w-[420px] sm:rounded-none sm:border-x-0 sm:border-t-0 sm:border-l sm:shadow-[-16px_0_58px_rgba(2,8,23,0.36)] [&>button]:right-4 [&>button]:top-4 [&>button]:rounded-full [&>button]:border [&>button]:border-white/10 [&>button]:bg-white/[0.04] [&>button]:p-1.5 [&>button]:text-slate-400 [&>button]:transition-colors [&>button:hover]:bg-white/[0.08] [&>button:hover]:text-slate-100 [&>button_svg]:h-4 [&>button_svg]:w-4"
       >
-        <div className="flex h-full min-h-0 max-h-[100dvh] flex-col">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute left-[-14%] top-[-6%] h-52 w-52 rounded-full bg-cyan-400/10 blur-3xl motion-safe:animate-[ai-aura_16s_ease-in-out_infinite]" />
+          <div className="absolute bottom-[12%] right-[-18%] h-56 w-56 rounded-full bg-emerald-400/8 blur-3xl motion-safe:animate-[ai-aura_18s_ease-in-out_infinite_reverse]" />
+          <div className="absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent)]" />
+        </div>
+
+        <div className="relative flex h-full min-h-0 max-h-[100dvh] flex-col">
           {isMobile ? <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-white/15" /> : null}
 
-          <SheetHeader className="border-b border-white/8 px-5 pb-4 pt-4 sm:px-6 sm:pt-5">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <SheetTitle className="flex items-center gap-2 text-[15px] font-semibold sm:text-[17px]">
-                  <MessageSquareText size={16} className="text-cyan-100/90" />
-                  {pickLang(language, "Status Assistant", "Status-Assistent")}
-                </SheetTitle>
-                <SheetDescription className="mt-1 max-w-[28rem] text-[12px] leading-5 text-slate-400">
-                  {pickLang(
-                    language,
-                    "Answers from public status data and public site help only.",
-                    "Antworten nur aus öffentlichen Statusdaten und öffentlichen Seitenhilfen.",
-                  )}
-                </SheetDescription>
+          <SheetHeader className="border-b border-white/8 px-5 pb-3 pt-4 text-left sm:px-6 sm:pb-3 sm:pt-5">
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2.5">
+                  <MessageSquareText size={15} className="shrink-0 text-cyan-100/85" />
+                  <div className="min-w-0">
+                    <SheetTitle className="text-[15px] font-semibold tracking-[-0.01em] sm:text-[17px]">
+                      {pickLang(language, "Status Assistant", "Status-Assistent")}
+                    </SheetTitle>
+                    <SheetDescription className="mt-0.5 text-[11px] leading-5 text-slate-400">
+                      {publicDataDescription(language)}
+                    </SheetDescription>
+                  </div>
+                </div>
+
+                {routeServiceId ? (
+                  <div className="mt-2 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] text-slate-300">
+                    <ShieldCheck size={14} className="shrink-0 text-cyan-300" />
+                    <span>
+                      {contextLabel(language)}{" "}
+                      <span className="font-semibold text-slate-50">{prettifyServiceId(routeServiceId)}</span>
+                    </span>
+                  </div>
+                ) : null}
               </div>
+
               <div
                 className={cn(
-                  "min-w-[112px] whitespace-nowrap rounded-full border px-3 py-1.5 text-center text-[10px] font-semibold uppercase tracking-[0.18em]",
+                  "shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em]",
                   availability === "available"
                     ? "border-emerald-300/25 bg-emerald-400/10 text-emerald-300"
                     : availability === "checking"
                       ? "border-amber-300/25 bg-amber-300/10 text-amber-200"
-                      : "border-white/10 bg-white/5 text-muted-foreground",
+                      : "border-white/10 bg-white/[0.05] text-muted-foreground",
                 )}
               >
                 {availabilityLabel(language, availability, configured)}
               </div>
             </div>
-
-            {routeServiceId ? (
-              <div className="mt-3 inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-300/12 bg-cyan-300/6 px-3 py-1.5 text-[11px] text-slate-300">
-                <ShieldCheck size={14} className="shrink-0 text-cyan-300" />
-                <span>
-                  {pickLang(language, "Context", "Kontext")}{" "}
-                  <span className="font-semibold text-slate-50">{prettifyServiceId(routeServiceId)}</span>
-                </span>
-              </div>
-            ) : null}
           </SheetHeader>
 
           <div
             ref={chatScrollRef}
-            className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6"
-            style={{ WebkitOverflowScrolling: "touch" }}
+            className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-5"
+            style={{ WebkitOverflowScrolling: "touch", scrollPaddingBottom: "7rem" }}
           >
-            {messages.length === 0 && !assistantDraft ? (
-              <div className="space-y-4">
-                <div className="overflow-hidden rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.86),rgba(10,16,30,0.92))] p-5 shadow-[0_24px_60px_rgba(2,8,23,0.34)]">
-                  <div className="space-y-3">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-100/90">
+            {!hasConversation ? (
+              <div className="mx-auto max-w-[22rem] space-y-4">
+                <section className="relative overflow-hidden rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(12,20,38,0.92),rgba(8,14,27,0.96))] px-4 pb-5 pt-4 shadow-[0_20px_60px_rgba(2,8,23,0.26)]">
+                  <div className="absolute inset-x-0 top-0 h-20 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_72%)]" />
+                  <div className="relative space-y-3.5">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-100/90">
                       <Sparkles size={12} />
                       {publicDataLabel(language)}
                     </div>
-                    <p className="max-w-[18rem] text-[20px] font-semibold leading-[1.15] text-slate-50">
-                      {pickLang(
-                        language,
-                        "Ask what matters right now.",
-                        "Frage nach dem, was jetzt wichtig ist.",
-                      )}
-                    </p>
-                    <p className="max-w-[22rem] text-[13px] leading-6 text-slate-300">
-                      {pickLang(
-                        language,
-                        "Status, incidents, history, and help are summarized from the same public data already used on this site.",
-                        "Status, Vorfälle, Verlauf und Hilfetexte werden aus denselben öffentlichen Daten zusammengefasst, die diese Seite bereits nutzt.",
-                      )}
-                    </p>
-                  </div>
-                </div>
 
-                <div className="grid gap-2.5">
-                  {suggestions.map((suggestion) => (
-                    <button
-                      key={suggestion}
-                      type="button"
-                      onClick={() => handleSuggestionSelect(suggestion)}
-                      className="group rounded-[22px] border border-white/8 bg-white/[0.045] px-4 py-3.5 text-left text-[14px] text-slate-100 transition-all duration-200 hover:border-cyan-300/20 hover:bg-cyan-300/[0.06] hover:shadow-[0_12px_28px_rgba(8,47,73,0.2)]"
-                    >
-                      <span className="block leading-6">{suggestion}</span>
-                      <span className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-cyan-200/75 transition-transform duration-200 group-hover:translate-x-0.5">
-                        {pickLang(language, "Use prompt", "Frage einsetzen")}
-                      </span>
-                    </button>
-                  ))}
-                </div>
+                    <div className="space-y-2.5">
+                      <p className="max-w-[12rem] text-[24px] font-semibold leading-[1.02] tracking-[-0.045em] text-slate-50">
+                        {introHeading(language)}
+                      </p>
+                      <p className="max-w-[18rem] text-[13px] leading-5 text-slate-300">{introBody(language)}</p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {routeServiceId ? (
+                        <span className="rounded-full border border-cyan-300/12 bg-cyan-300/[0.08] px-3 py-1.5 text-[11px] text-cyan-100">
+                          {prettifyServiceId(routeServiceId)}
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                </section>
+
+                <section className="space-y-2">
+                  <p className="px-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    {introSuggestionLabel(language)}
+                  </p>
+                  <div className="flex flex-wrap gap-2.5">
+                    {suggestions.map((suggestion, index) => (
+                      <button
+                        key={suggestion}
+                        type="button"
+                        onClick={() => handleSuggestionSelect(suggestion)}
+                        className="rounded-full border border-white/10 bg-white/[0.035] px-4 py-2.5 text-left text-[13px] leading-5 text-slate-100 transition-all duration-200 hover:border-cyan-300/20 hover:bg-cyan-300/[0.05] hover:text-white motion-safe:animate-[ai-message-in_220ms_cubic-bezier(0.22,1,0.36,1)]"
+                        style={{ animationDelay: `${index * 55}ms` }}
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                </section>
               </div>
             ) : null}
 
-            <div className="space-y-4">
+            <div className={cn("space-y-4", !hasConversation && "mt-6")}>
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -525,42 +666,24 @@ const AiStatusAssistant = () => {
                     message.role === "user" ? "justify-end" : "justify-start",
                   )}
                 >
-                  <div className="max-w-full sm:max-w-[90%]">
+                  <div className="max-w-[88%] sm:max-w-[86%]">
                     <div
                       className={cn(
-                        "overflow-hidden rounded-[24px] px-4 py-3.5 text-sm shadow-[0_18px_40px_rgba(0,0,0,0.2)]",
+                        "overflow-hidden rounded-[24px] px-4 py-3.5 shadow-[0_18px_42px_rgba(0,0,0,0.18)]",
                         message.role === "user"
-                          ? "rounded-br-md bg-[linear-gradient(135deg,_rgba(13,148,136,0.96),_rgba(14,116,144,0.94))] text-primary-foreground"
-                          : "rounded-bl-md border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(10,16,30,0.94))] text-foreground",
+                          ? "rounded-br-[10px] bg-[linear-gradient(135deg,rgba(8,145,178,0.96),rgba(13,148,136,0.94))] text-primary-foreground"
+                          : "rounded-bl-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(13,20,37,0.92),rgba(9,15,28,0.94))] text-foreground",
                       )}
                     >
                       {message.role === "assistant" ? (
-                        <div className="space-y-3">
-                          <AiFormattedMessage content={message.content} />
-                        </div>
+                        <AiFormattedMessage content={message.content} />
                       ) : (
                         <p className="break-words text-[15px] leading-7">{message.content}</p>
                       )}
                     </div>
 
                     {message.role === "assistant" && message.citations && message.citations.length > 0 ? (
-                      <div className="mt-3 space-y-2.5">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                          {pickLang(language, "Sources", "Quellen")}
-                        </p>
-                        {message.citations.map((citation) => (
-                          <a
-                            key={`${message.id}-${citation.url}`}
-                            href={citation.url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center justify-between gap-3 rounded-[18px] border border-white/8 bg-slate-950/35 px-3.5 py-2.5 text-left text-xs text-slate-200 transition-all duration-200 hover:border-cyan-300/25 hover:bg-white/[0.08]"
-                          >
-                            <span className="min-w-0 break-words font-medium">{citation.title}</span>
-                            <ExternalLink size={14} className="shrink-0 text-slate-400" />
-                          </a>
-                        ))}
-                      </div>
+                      <CitationList citations={message.citations} language={language} />
                     ) : null}
                   </div>
                 </div>
@@ -568,34 +691,16 @@ const AiStatusAssistant = () => {
 
               {assistantDraft ? (
                 <div className="flex justify-start motion-safe:animate-[ai-message-in_220ms_cubic-bezier(0.22,1,0.36,1)]">
-                  <div className="max-w-full sm:max-w-[90%]">
-                    <div className="rounded-[24px] rounded-bl-md border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(10,16,30,0.94))] px-4 py-3.5 text-sm text-foreground shadow-[0_18px_40px_rgba(0,0,0,0.2)]">
+                  <div className="max-w-[88%] sm:max-w-[86%]">
+                    <div className="rounded-[24px] rounded-bl-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(13,20,37,0.92),rgba(9,15,28,0.94))] px-4 py-3.5 text-sm text-foreground shadow-[0_18px_42px_rgba(0,0,0,0.18)]">
                       <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/10 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-100">
                         <TypingDots />
-                        {pickLang(language, "Answer in progress", "Antwort läuft")}
+                        {liveAnswerLabel(language)}
                       </div>
                       <AiFormattedMessage content={assistantDraft} />
-                      <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-400">
-                        <TypingDots />
-                        {pickLang(language, "Live response", "Live-Antwort")}
-                      </div>
                     </div>
-                    {draftCitations.length > 0 ? (
-                      <div className="mt-3 space-y-2.5">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                          {pickLang(language, "Sources", "Quellen")}
-                        </p>
-                        {draftCitations.map((citation) => (
-                          <span
-                            key={`draft-${citation.url}`}
-                            className="flex items-center justify-between gap-3 rounded-[18px] border border-white/8 bg-slate-950/35 px-3.5 py-2.5 text-xs text-slate-300"
-                          >
-                            <span>{citation.title}</span>
-                            <ExternalLink size={14} className="shrink-0 text-slate-500" />
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
+
+                    <CitationList citations={draftCitations} language={language} pending />
                   </div>
                 </div>
               ) : null}
@@ -603,20 +708,18 @@ const AiStatusAssistant = () => {
           </div>
 
           <div
-            className="border-t border-white/8 bg-[linear-gradient(180deg,rgba(4,10,20,0.72),rgba(4,10,20,0.96))] px-4 pt-4 sm:px-6"
+            className="border-t border-white/8 bg-[linear-gradient(180deg,rgba(4,10,20,0.72),rgba(4,10,20,0.96))] px-4 pt-3 sm:px-6 sm:pt-4"
             style={{
               paddingBottom: `calc(1rem + env(safe-area-inset-bottom, 0px) + ${keyboardInset}px)`,
             }}
           >
             {availability !== "available" ? (
-              <div className="mb-3 rounded-[22px] border border-amber-300/20 bg-amber-300/10 px-3 py-2.5 text-xs text-amber-100">
+              <div className="mb-3 rounded-[22px] border border-amber-300/20 bg-amber-300/10 px-3 py-3 text-xs text-amber-100">
                 <div className="flex items-start gap-2">
                   <TriangleAlert size={14} className="mt-0.5 shrink-0" />
-                  <div>
-                    <p className="font-semibold">
-                      {pickLang(language, "AI unavailable", "KI nicht verfügbar")}
-                    </p>
-                    <p className="mt-1 opacity-90">
+                  <div className="min-w-0">
+                    <p className="font-semibold">{pickLang(language, "AI unavailable", "KI nicht verfügbar")}</p>
+                    <p className="mt-1 leading-5 opacity-90">
                       {availabilityReasonText(language, configured, availabilityReason)}
                     </p>
                   </div>
@@ -634,64 +737,57 @@ const AiStatusAssistant = () => {
               </div>
             ) : null}
 
-            <form onSubmit={(event) => void handleSubmit(event)} className="space-y-3">
-              <div className="rounded-[26px] border border-white/8 bg-slate-950/55 p-2 shadow-[0_16px_36px_rgba(2,8,23,0.24)]">
-                <textarea
-                  ref={textareaRef}
-                  value={input}
-                  onChange={(event) => setInput(event.target.value)}
-                  maxLength={600}
-                  placeholder={pickLang(
-                    language,
-                    "Ask about current status, recent incidents, or how to use the site...",
-                    "Frage nach aktuellem Status, letzten Vorfällen oder der Nutzung der Seite...",
-                  )}
-                  disabled={availability !== "available" || sending}
-                  className="min-h-[56px] w-full resize-none bg-transparent px-3.5 pb-2 pt-2.5 text-[15px] leading-6 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
-                />
-                <div className="flex items-end justify-between gap-3 border-t border-white/6 px-2 pt-2">
-                  <div className="pr-2">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-slate-500">
-                      {publicDataLabel(language)}
-                    </p>
-                    <p className="mt-1 max-w-[14rem] text-[11px] leading-5 text-slate-400">
-                      {publicDataDescription(language)}
-                    </p>
-                  </div>
+            <form onSubmit={(event) => void handleSubmit(event)} className="space-y-2.5">
+              <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(8,14,26,0.92),rgba(5,10,20,0.96))] p-3 shadow-[0_18px_42px_rgba(2,8,23,0.24)]">
+                <div className="flex items-start gap-3">
+                  <textarea
+                    ref={textareaRef}
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    maxLength={600}
+                    placeholder={inputPlaceholder(language)}
+                    disabled={composerDisabled}
+                    className="min-h-[62px] flex-1 resize-none bg-transparent px-1 py-1 text-[15px] leading-7 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                  />
                   <Button
                     type="submit"
-                    disabled={availability !== "available" || sending || !input.trim()}
-                    className="h-11 rounded-full bg-[linear-gradient(135deg,_rgba(20,184,166,0.96),_rgba(2,132,199,0.96))] px-5 text-primary-foreground shadow-[0_10px_28px_rgba(6,78,99,0.34)] transition-transform duration-200 hover:translate-y-[-1px] hover:brightness-105 disabled:bg-slate-700 disabled:text-slate-300"
+                    disabled={composerDisabled || !input.trim()}
+                    className="mt-1 h-10 w-10 shrink-0 rounded-full bg-[linear-gradient(135deg,rgba(20,184,166,0.98),rgba(3,105,161,0.98))] p-0 text-primary-foreground shadow-[0_14px_28px_rgba(8,47,73,0.34)] transition-all duration-200 hover:translate-y-[-1px] hover:brightness-105 disabled:bg-slate-700 disabled:text-slate-300"
                   >
-                    {sending ? <Loader2 className="animate-spin" /> : <Send size={14} />}
-                    {pickLang(language, "Send", "Senden")}
+                    {sending ? <Loader2 className="animate-spin" /> : <Send size={16} />}
+                    <span className="sr-only">{pickLang(language, "Send", "Senden")}</span>
                   </Button>
+                </div>
+
+                <div className="mt-3 flex items-center justify-between gap-3 border-t border-white/8 pt-3">
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                      {publicDataLabel(language)}
+                    </p>
+                    <p className="mt-1 text-[11px] leading-5 text-slate-400">{publicDataDescription(language)}</p>
+                  </div>
+
+                  {canClear ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearConversation}
+                      className="h-8 rounded-full px-3 text-[11px] text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                    >
+                      {pickLang(language, "Clear", "Leeren")}
+                    </Button>
+                  ) : (
+                    <span className="shrink-0 text-[11px] text-slate-500">
+                      {input.trim() ? `${input.trim().length}/600` : ""}
+                    </span>
+                  )}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-3 px-1">
-                <p className="text-[11px] leading-5 text-slate-500">
-                  {pickLang(
-                    language,
-                    "If the assistant is offline, the normal status site still works.",
-                    "Wenn der Assistent offline ist, funktioniert die normale Statusseite weiter.",
-                  )}
-                </p>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setMessages([]);
-                    setAssistantDraft("");
-                    setDraftCitations([]);
-                    setInput("");
-                  }}
-                  className="h-8 rounded-full px-3 text-[11px] text-slate-400 hover:bg-white/5 hover:text-slate-200"
-                >
-                  {pickLang(language, "Clear", "Leeren")}
-                </Button>
-              </div>
+              {availability !== "available" ? (
+                <p className="px-1 text-[11px] leading-5 text-slate-500">{footerNote(language)}</p>
+              ) : null}
             </form>
           </div>
         </div>
