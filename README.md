@@ -23,10 +23,10 @@ See:
 python -m http.server 8000 --directory site
 ```
 
-Open `http://127.0.0.1:8000`.
+Open the local preview URL shown by your browser or local server.
 
 ## AI Assistant Deployment
-- Local frontend development can use `react-next/.env.example`, which points to `http://127.0.0.1:3000`.
+- Local frontend development can use `react-next/.env.example`, which points to the backend's default localhost port.
 - GitHub Pages production builds must receive `VITE_AI_API_BASE_URL` from the repo variable `AI_API_BASE_URL`.
 - If `AI_API_BASE_URL` is unset, the site still deploys and the assistant shows as unavailable.
 

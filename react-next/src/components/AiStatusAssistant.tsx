@@ -17,6 +17,7 @@ import {
   type AiChatHistoryEntry,
 } from "@/lib/aiStatusChat";
 import { pickLang, useAppShell } from "@/lib/appShell";
+import { safeExternalHref } from "@/lib/safeUrl";
 import { cn } from "@/lib/utils";
 import {
   Bot,
@@ -265,7 +266,8 @@ function CitationList({
       </p>
       <div className="grid gap-2">
         {citations.map((citation) => {
-          const host = citationHost(citation.url);
+          const safeHref = safeExternalHref(citation.url);
+          const host = safeHref ? citationHost(safeHref) : "";
           const content = (
             <>
               <div className="min-w-0">
@@ -279,7 +281,7 @@ function CitationList({
           const className =
             "flex items-center justify-between gap-3 rounded-[18px] border border-white/8 bg-white/[0.03] px-3.5 py-3 text-left transition-all duration-200";
 
-          if (pending) {
+          if (pending || !safeHref) {
             return (
               <span key={`draft-${citation.url}`} className={cn(className, "text-slate-300")}>
                 {content}
@@ -290,7 +292,7 @@ function CitationList({
           return (
             <a
               key={citation.url}
-              href={citation.url}
+              href={safeHref}
               target="_blank"
               rel="noreferrer"
               aria-label={citation.title}

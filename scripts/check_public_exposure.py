@@ -55,6 +55,13 @@ ROUTE_EXPOSURE_PATTERNS = [
     re.compile(r"unterst.{0,3}tzte\s+routen", re.IGNORECASE),
 ]
 
+PUBLIC_RUNTIME_DOC_PATTERNS = [
+    re.compile(r"https://[a-z0-9-]+\.tail[a-z0-9]+\.ts\.net", re.IGNORECASE),
+    re.compile(r"https://[a-z0-9-]+\.trycloudflare\.com", re.IGNORECASE),
+    re.compile(r"http://127\.0\.0\.1:3000", re.IGNORECASE),
+    re.compile(r"http://127\.0\.0\.1:11434", re.IGNORECASE),
+]
+
 MANIFEST_ALLOWED_TOP_LEVEL_KEYS = {"schema_version", "services"}
 MANIFEST_ALLOWED_SERVICE_KEYS = {
     "id",
@@ -87,6 +94,29 @@ def iter_site_files():
     for path in SITE.rglob("*"):
         if path.is_file():
             yield path
+
+
+def iter_tracked_files():
+    try:
+        result = subprocess.run(
+            ["git", "ls-files"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except Exception:
+        return []
+
+    files: list[Path] = []
+    for line in result.stdout.splitlines():
+        rel = line.strip()
+        if not rel:
+            continue
+        path = ROOT / rel
+        if path.is_file():
+            files.append(path)
+    return files
 
 
 def check_forbidden_site_files(errors: list[str]) -> None:
@@ -286,6 +316,31 @@ def check_secret_markers(errors: list[str]) -> None:
                 errors.append(f"Potential secret marker in public file {rel}: {pattern.pattern}")
 
 
+def check_public_runtime_doc_markers(errors: list[str]) -> None:
+    for path in iter_tracked_files():
+        rel = path.relative_to(ROOT).as_posix()
+        if not (
+            rel.startswith("docs/")
+            or rel == "README.md"
+            or rel.endswith("AGENT_HANDOFF.md")
+        ):
+            continue
+        if path.suffix.lower() not in TEXT_FILE_SUFFIXES:
+            continue
+
+        try:
+            text = path.read_text(encoding="utf-8", errors="ignore")
+        except Exception as exc:
+            errors.append(f"Could not read {rel}: {exc}")
+            continue
+
+        for pattern in PUBLIC_RUNTIME_DOC_PATTERNS:
+            if pattern.search(text):
+                errors.append(
+                    f"Public documentation leaks runtime endpoint details in {rel}: {pattern.pattern}"
+                )
+
+
 def main() -> int:
     errors: list[str] = []
 
@@ -299,6 +354,7 @@ def main() -> int:
     check_services_manifest_public_contract(errors)
     check_route_enumeration_exposure(errors)
     check_secret_markers(errors)
+    check_public_runtime_doc_markers(errors)
 
     if errors:
         print("Public exposure checks failed:", file=sys.stderr)

@@ -1,3 +1,5 @@
+import { safeExternalHref } from "@/lib/safeUrl";
+
 export type AiChatRole = "user" | "assistant";
 
 export interface AiChatHistoryEntry {
@@ -33,6 +35,63 @@ export interface AskStatusStreamParams {
   serviceId?: string | null;
   pagePath?: string;
   signal?: AbortSignal;
+}
+
+function sanitizeCitation(value: unknown): AiCitation | null {
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+
+  const title = String((value as { title?: unknown }).title || "").trim();
+  const url = safeExternalHref((value as { url?: unknown }).url);
+
+  if (!title || !url) {
+    return null;
+  }
+
+  return {
+    title,
+    url,
+  };
+}
+
+function sanitizeContextChunk(value: unknown): AiContextChunk {
+  if (!value || typeof value !== "object") {
+    return {};
+  }
+
+  const context = value as AiContextChunk;
+  const selectedServices = Array.isArray(context.selectedServices)
+    ? context.selectedServices
+        .map((service) => {
+          if (!service || typeof service !== "object") {
+            return null;
+          }
+
+          const id = String(service.id || "").trim();
+          const name = String(service.name || "").trim();
+          const detailUrl = safeExternalHref(service.detailUrl);
+
+          if (!id || !name) {
+            return null;
+          }
+
+          return {
+            id,
+            name,
+            detailUrl: detailUrl || undefined,
+          };
+        })
+        .filter((service): service is NonNullable<typeof service> => Boolean(service))
+    : undefined;
+
+  return {
+    scope: typeof context.scope === "string" ? context.scope : undefined,
+    selectedServices,
+    citations: Array.isArray(context.citations)
+      ? context.citations.map((citation) => sanitizeCitation(citation)).filter((citation): citation is AiCitation => Boolean(citation))
+      : undefined,
+  };
 }
 
 function trimTrailingSlash(value: string) {
@@ -226,7 +285,7 @@ export async function askStatusStream(
     }
 
     if (chunk.type === "context") {
-      handlers.onContext?.(chunk.context as AiContextChunk);
+      handlers.onContext?.(sanitizeContextChunk(chunk.context));
       return;
     }
 

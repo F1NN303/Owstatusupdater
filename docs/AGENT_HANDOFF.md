@@ -17,10 +17,9 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
 ### Live URLs
 - Live site:
   - `https://f1nn303.github.io/Owstatusupdater/next/`
-- Current public AI base URL:
-  - `https://status-ai.tail0f936a.ts.net`
-- AI health:
-  - `https://status-ai.tail0f936a.ts.net/health`
+- Public AI base URL:
+  - configured outside the repo via the `AI_API_BASE_URL` GitHub repo variable
+  - do not commit the live Funnel URL into tracked docs or frontend config
 
 ### AI architecture
 - Frontend repo:
@@ -28,10 +27,9 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
 - Backend repo:
   - `owstbcknd`
 - Runtime:
-  - Ollama local on `http://127.0.0.1:11434`
-  - model `qwen3.5:4b`
-  - Node wrapper local on `http://127.0.0.1:3000`
-  - public exposure through Tailscale Funnel on a stable `*.ts.net` URL
+  - Ollama and the Node wrapper run locally on the AI host PC
+  - default model `qwen3.5:4b`
+  - public exposure is via a stable Tailscale Funnel URL kept out of the public repo
 - Trusted AI data source:
   - public generated site JSON plus public site-help context only
 - Public AI contract used by the site:
