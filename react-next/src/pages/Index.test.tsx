@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
@@ -155,19 +155,22 @@ describe("Index favorites filter", () => {
       </MemoryRouter>
     );
 
-    expect(await screen.findByText("GitHub")).toBeInTheDocument();
-    expect(screen.getByText("OpenAI / ChatGPT")).toBeInTheDocument();
+    const serviceFeed = await screen.findByLabelText("Service feed");
+    expect(within(serviceFeed).getByText("GitHub")).toBeInTheDocument();
+    expect(within(serviceFeed).getByText("OpenAI / ChatGPT")).toBeInTheDocument();
 
-    const favoritesOnlyButton = screen.getByRole("button", { name: /favorites only/i });
+    const favoritesOnlyButton = screen.getByRole("button", { name: /^favorites$/i });
     fireEvent.click(favoritesOnlyButton);
 
-    expect(screen.getByText("Showing 1/2 services")).toBeInTheDocument();
-    expect(screen.getByText("GitHub")).toBeInTheDocument();
-    expect(screen.queryByText("OpenAI / ChatGPT")).not.toBeInTheDocument();
+    expect(screen.getByText("Filter: Favorites")).toBeInTheDocument();
+    expect(screen.getByText("1/2")).toBeInTheDocument();
+    expect(within(serviceFeed).getByText("GitHub")).toBeInTheDocument();
+    expect(within(serviceFeed).queryByText("OpenAI / ChatGPT")).not.toBeInTheDocument();
 
     fireEvent.click(favoritesOnlyButton);
 
-    expect(screen.getByText("Showing 2/2 services")).toBeInTheDocument();
-    expect(screen.getByText("OpenAI / ChatGPT")).toBeInTheDocument();
+    expect(screen.queryByText("Filter: Favorites")).not.toBeInTheDocument();
+    expect(screen.getByText("2/2")).toBeInTheDocument();
+    expect(within(serviceFeed).getByText("OpenAI / ChatGPT")).toBeInTheDocument();
   });
 });

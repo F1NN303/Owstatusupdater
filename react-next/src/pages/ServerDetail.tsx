@@ -2191,8 +2191,13 @@ const ServerDetail = () => {
   }
 
   const tone = detail ? TONE_STYLES[detail.tone] : TONE_STYLES.unknown;
-  const reports24h =
-    detail?.payload.analytics?.signal_metrics?.reports_24h ?? detail?.payload.outage?.reports_24h ?? "--";
+  const reports24hCount =
+    typeof detail?.payload.analytics?.signal_metrics?.reports_24h === "number"
+      ? detail.payload.analytics.signal_metrics.reports_24h
+      : typeof detail?.payload.outage?.reports_24h === "number"
+        ? detail.payload.outage.reports_24h
+        : null;
+  const reports24h = reports24hCount ?? "--";
   const severityScore = detail?.payload.analytics?.severity_score ?? "--";
   const sourceOkCountNum =
     typeof detail?.payload.analytics?.source_ok_count === "number"
@@ -2238,6 +2243,25 @@ const ServerDetail = () => {
   const latestIncidentTitle = showLatestIncidentSubtitle
     ? outageIncidents[0]?.title || pickLang(language, "No listed incidents", "Keine gelisteten Vorfälle")
     : pickLang(language, "No recent listed incidents", "Keine aktuellen gelisteten Vorfälle");
+  const scheduledMaintenances = Array.isArray(detail?.payload.outage?.scheduled_maintenances)
+    ? detail.payload.outage.scheduled_maintenances
+    : [];
+  const activeMaintenanceCount = scheduledMaintenances.filter((item) => {
+    const startsAt = parseMaybeDate(item.starts_at);
+    const endsAt = parseMaybeDate(item.ends_at);
+    if (!startsAt && !endsAt) {
+      return false;
+    }
+    const now = Date.now();
+    if (startsAt && startsAt.getTime() > now) {
+      return false;
+    }
+    if (endsAt && endsAt.getTime() < now) {
+      return false;
+    }
+    return true;
+  }).length;
+  const upcomingMaintenanceCount = Math.max(0, scheduledMaintenances.length - activeMaintenanceCount);
   const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? extractApiServiceComponents(detail) : [];
@@ -2615,6 +2639,126 @@ const ServerDetail = () => {
         : topUpdatedLabel,
     72
   );
+  const changeDeltaCount =
+    (typeof changeSummary?.new_incidents === "number" ? changeSummary.new_incidents : 0) +
+    (typeof changeSummary?.updated_incidents === "number" ? changeSummary.updated_incidents : 0) +
+    (typeof changeSummary?.resolved_incidents === "number" ? changeSummary.resolved_incidents : 0);
+  const changeNarrativeTitle =
+    activeMaintenanceCount > 0 && changeDeltaCount === 0 && (changeSummary?.new_reports ?? 0) === 0
+      ? t(
+          activeMaintenanceCount === 1 ? "Planned work is the main active change" : "Planned work is shaping the live picture",
+          activeMaintenanceCount === 1 ? "Geplante Arbeit ist die wichtigste aktive Änderung" : "Geplante Arbeit prägt das Live-Bild"
+        )
+      : (changeSummary?.new_incidents ?? 0) > 0
+        ? t(
+            changeSummary?.new_incidents === 1
+              ? "A new incident appeared in the latest refresh"
+              : `${changeSummary?.new_incidents} new incidents appeared in the latest refresh`,
+            changeSummary?.new_incidents === 1
+              ? "Im letzten Refresh ist ein neuer Vorfall aufgetaucht"
+              : `Im letzten Refresh sind ${changeSummary?.new_incidents} neue Vorfälle aufgetaucht`
+          )
+        : (changeSummary?.resolved_incidents ?? 0) > 0 && changeDeltaCount === (changeSummary?.resolved_incidents ?? 0)
+          ? t("Recent changes are moving toward resolution", "Die jüngsten Änderungen laufen auf Entwarnung hinaus")
+          : changeDeltaCount > 0 || (changeSummary?.new_reports ?? 0) > 0
+            ? t("The live picture is still shifting", "Das Live-Bild verschiebt sich weiterhin")
+            : t("No fresh incident delta in the latest refresh", "Im letzten Refresh gab es keine frische Vorfallsänderung");
+  const changeNarrativeParts = [
+    (changeSummary?.new_incidents ?? 0) > 0
+      ? t(
+          `${changeSummary?.new_incidents} new incident${changeSummary?.new_incidents === 1 ? "" : "s"}`,
+          `${changeSummary?.new_incidents} neue Vorfälle`
+        )
+      : null,
+    (changeSummary?.updated_incidents ?? 0) > 0
+      ? t(
+          `${changeSummary?.updated_incidents} updated`,
+          `${changeSummary?.updated_incidents} aktualisiert`
+        )
+      : null,
+    (changeSummary?.resolved_incidents ?? 0) > 0
+      ? t(
+          `${changeSummary?.resolved_incidents} resolved`,
+          `${changeSummary?.resolved_incidents} gelöst`
+        )
+      : null,
+    (changeSummary?.new_reports ?? 0) > 0
+      ? t(
+          `${changeSummary?.new_reports} fresh reports`,
+          `${changeSummary?.new_reports} neue Meldungen`
+        )
+      : null,
+  ].filter(Boolean);
+  const changeNarrativeBody = clampInlineText(
+    changeNarrativeParts.length > 0
+      ? changeNarrativeParts.join(" · ")
+      : activeMaintenanceCount > 0
+        ? t(
+            activeMaintenanceCount === 1
+              ? "One maintenance window is currently active without a broader incident delta."
+              : `${activeMaintenanceCount} maintenance windows are currently active without a broader incident delta.`,
+            activeMaintenanceCount === 1
+              ? "Ein Wartungsfenster ist aktuell aktiv, ohne breitere Vorfallsänderung."
+              : `${activeMaintenanceCount} Wartungsfenster sind aktuell aktiv, ohne breitere Vorfallsänderung.`
+          )
+        : latestIncidentTitle,
+    118
+  );
+  const userImpactTitle =
+    serviceStatus === "offline" || (typeof reports24hCount === "number" && reports24hCount >= 120) || impactedRegionCount >= 4
+      ? t("Broad user disruption likely", "Breite Nutzerstörung wahrscheinlich")
+      : serviceStatus === "degraded" || (typeof reports24hCount === "number" && reports24hCount >= 25) || impactedRegionCount >= 1
+        ? t("Partial user impact reported", "Teilweise Nutzerwirkung gemeldet")
+        : activeMaintenanceCount > 0
+          ? t("Planned impact window", "Geplantes Wirkfenster")
+          : t("Low active user impact", "Geringe aktive Nutzerwirkung");
+  const userImpactBody = clampInlineText(
+    [
+      typeof reports24hCount === "number"
+        ? t(`${reports24hCount} reports in 24h`, `${reports24hCount} Meldungen in 24h`)
+        : null,
+      incidentCount > 0
+        ? t(`${incidentCount} listed incidents`, `${incidentCount} gelistete Vorfälle`)
+        : t("No active incident list", "Keine aktive Vorfallsliste"),
+      impactedRegionCount > 0
+        ? t(`${impactedRegionCount} impacted regions`, `${impactedRegionCount} betroffene Regionen`)
+        : stableRegionCount > 0
+          ? t(`${stableRegionCount} stable regions`, `${stableRegionCount} stabile Regionen`)
+          : null,
+      activeMaintenanceCount > 0
+        ? t(
+            activeMaintenanceCount === 1 ? "1 active maintenance window" : `${activeMaintenanceCount} active maintenance windows`,
+            activeMaintenanceCount === 1 ? "1 aktives Wartungsfenster" : `${activeMaintenanceCount} aktive Wartungsfenster`
+          )
+        : upcomingMaintenanceCount > 0
+          ? t(
+              upcomingMaintenanceCount === 1 ? "1 upcoming maintenance window" : `${upcomingMaintenanceCount} upcoming maintenance windows`,
+              upcomingMaintenanceCount === 1 ? "1 bevorstehendes Wartungsfenster" : `${upcomingMaintenanceCount} bevorstehende Wartungsfenster`
+            )
+          : null,
+    ]
+      .filter(Boolean)
+      .slice(0, 3)
+      .join(" · "),
+    118
+  );
+  const confidenceNarrativeTitle =
+    sourceConfidenceTier === "high"
+      ? t("Strong source agreement", "Starke Quellenübereinstimmung")
+      : sourceConfidenceTier === "medium"
+        ? t("Usable but mixed source picture", "Nutzbares, aber gemischtes Quellenbild")
+        : t("Confidence is reduced right now", "Das Vertrauen ist aktuell reduziert");
+  const confidenceNarrativeBody = clampInlineText(
+    sourceTransparencyDecision?.explanation ||
+      (hasSourceUnavailable && sourceUnavailableLabel
+        ? sourceUnavailableLabel
+        : hasFreshnessBreach
+          ? staleSourceNames.length > 0
+            ? t(`Freshness risk: ${staleSourceNames.join(", ")}`, `Frischerisiko: ${staleSourceNames.join(", ")}`)
+            : t("Some sources are outside freshness SLA", "Einige Quellen liegen außerhalb der Frische-SLA")
+          : t("Required and scoring sources are aligned in the latest refresh.", "Pflicht- und Bewertungsquellen sind im letzten Refresh ausgerichtet.")),
+    118
+  );
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
       return t("Overview", "Übersicht");
@@ -2945,70 +3089,88 @@ const ServerDetail = () => {
                     )}
                 </p>
 
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  <span
-                    className={`rounded-full border px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-[11px] ${
-                      isFavoriteEnabled
-                        ? "border-amber-300/35 bg-amber-300/16 text-amber-200"
-                        : "border-white/10 bg-white/5 text-muted-foreground"
-                    }`}
-                  >
-                    {isFavoriteEnabled ? t("Favorite pinned", "Favorit angeheftet") : t("Not favorited", "Nicht favorisiert")}
-                  </span>
-                  <span
-                    className={`rounded-full border px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-[11px] ${
-                      isAlertEnabled
-                        ? "border-primary/25 bg-primary/12 text-primary"
-                        : "border-white/10 bg-white/5 text-muted-foreground"
-                    }`}
-                  >
-                    {isAlertEnabled
-                      ? alertSeverityThreshold === "degraded"
-                        ? t("Watchlist: degraded+", "Watchlist: beeintrachtigt+")
-                        : t("Watchlist: major", "Watchlist: groserer Ausfall")
-                      : t("Watchlist off", "Watchlist aus")}
-                  </span>
+                <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-black/15">
+                  <div className="flex items-start justify-between gap-3 px-3 py-3">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {t("What changed", "Was sich verändert hat")}
+                      </p>
+                      <p className="mt-1 text-[13px] font-semibold text-foreground">{changeNarrativeTitle}</p>
+                      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{changeNarrativeBody}</p>
+                    </div>
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-medium text-foreground">
+                      {changeDeltaCount > 0
+                        ? t(`${changeDeltaCount} live deltas`, `${changeDeltaCount} Live-Deltas`)
+                        : activeMaintenanceCount > 0
+                          ? t(
+                              activeMaintenanceCount === 1 ? "1 planned window" : `${activeMaintenanceCount} planned windows`,
+                              activeMaintenanceCount === 1 ? "1 geplantes Fenster" : `${activeMaintenanceCount} geplante Fenster`
+                            )
+                          : t("Steady", "Ruhig")}
+                    </span>
+                  </div>
+                  <div className="border-t border-white/10 px-3 py-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                          {t("User impact", "Nutzerwirkung")}
+                        </p>
+                        <p className="mt-1 text-[13px] font-semibold text-foreground">{userImpactTitle}</p>
+                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{userImpactBody}</p>
+                      </div>
+                      <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-medium text-foreground">
+                        {typeof reports24hCount === "number"
+                          ? t(`${reports24hCount}/24h`, `${reports24hCount}/24h`)
+                          : impactedRegionCount > 0
+                            ? t(`${impactedRegionCount} regions`, `${impactedRegionCount} Regionen`)
+                            : serviceStatusLabel}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="border-t border-white/10 px-3 py-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                          {t("Source confidence", "Quellenvertrauen")}
+                        </p>
+                        <p className="mt-1 text-[13px] font-semibold text-foreground">{confidenceNarrativeTitle}</p>
+                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{confidenceNarrativeBody}</p>
+                      </div>
+                      <span className={`rounded-full border px-2 py-1 text-[10px] font-medium ${sourceReliabilityToneClass}`}>
+                        {heroSourceValue}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
-                <details className="mt-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
-                  <summary className="cursor-pointer list-none text-[11px] font-semibold text-foreground">
-                    {t("Signal context and source reliability", "Signal-Kontext und Quellenzuverlassigkeit")}
-                  </summary>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                      {topUpdatedLabel}
-                    </span>
-                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                      {t("Confidence", "Vertrauen")}: {confidenceChipLabel}
-                    </span>
-                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                      {t("Regions", "Regionen")}:{" "}
-                      {t(
-                        `${stableRegionCount} stable / ${impactedRegionCount} impacted`,
-                        `${stableRegionCount} stabil / ${impactedRegionCount} betroffen`
-                      )}
-                    </span>
-                    {topSourceLabel ? (
-                      <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                        {topSourceLabel}
-                      </span>
-                    ) : null}
-                    {hasSourceUnavailable && sourceUnavailableLabel ? (
-                      <span className="rounded-full border border-status-offline/20 bg-status-offline/10 px-2 py-0.5 text-[10px] text-status-offline sm:text-[11px]">
-                        {sourceUnavailableLabel}
-                      </span>
-                    ) : null}
-                  </div>
-                  <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground sm:text-[12px]">
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                    {topUpdatedLabel}
+                  </span>
+                  <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                    {t("Confidence", "Vertrauen")}: {confidenceChipLabel}
+                  </span>
+                  <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                    {t("Regions", "Regionen")}:{" "}
                     {t(
-                      "Keep the first screen focused on status, then expand this block for confidence and source spread.",
-                      "Der erste Bildschirm bleibt auf Status fokussiert; Vertrauens- und Quellenhinweise lassen sich hier aufklappen."
+                      `${stableRegionCount} stable / ${impactedRegionCount} impacted`,
+                      `${stableRegionCount} stabil / ${impactedRegionCount} betroffen`
                     )}
-                  </p>
-                </details>
+                  </span>
+                  {topSourceLabel ? (
+                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                      {topSourceLabel}
+                    </span>
+                  ) : null}
+                  {hasSourceUnavailable && sourceUnavailableLabel ? (
+                    <span className="rounded-full border border-status-offline/20 bg-status-offline/10 px-2 py-0.5 text-[10px] text-status-offline sm:text-[11px]">
+                      {sourceUnavailableLabel}
+                    </span>
+                  ) : null}
+                </div>
 
                 {detail.payload.outage?.url ? (
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <div className="mt-3 flex flex-wrap gap-2">
                     <ExternalHref
                       href={detail.payload.outage.url}
                       className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:bg-white/10 sm:px-3 sm:py-2 sm:text-xs"

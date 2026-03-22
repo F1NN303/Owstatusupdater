@@ -1,6 +1,5 @@
 ﻿import AppLayout from "@/components/AppLayout";
 import OnboardingHints from "@/components/OnboardingHints";
-import OverallStatus from "@/components/OverallStatus";
 import PullToRefreshIndicator from "@/components/PullToRefreshIndicator";
 import ServerCard from "@/components/ServerCard";
 import ServiceIdentityIcon from "@/components/ServiceIdentityIcon";
@@ -34,6 +33,23 @@ interface HomeServiceCard {
   serviceCategory: string;
   servicePriority: number;
   serviceTags: string[];
+  summaryText: string;
+  latestIncidentTitle?: string;
+  latestIncidentAt: string | null;
+  incidentCount: number;
+  reports24h: number | null;
+  changeSnapshot: {
+    newReports: number;
+    newIncidents: number;
+    updatedIncidents: number;
+    resolvedIncidents: number;
+    total: number;
+  };
+  changeHeadline: string;
+  impactLabel: string;
+  impactSummary: string;
+  sourceConfidenceScore: number | null;
+  sourceConfidenceTier: "high" | "medium" | "low" | "unknown";
   error?: string;
 }
 
@@ -368,11 +384,214 @@ function deriveMetricLabel(detail: LegacyServiceDetailResult, language: "en" | "
   return pickLang(language, "Live signals", "Live-Signale");
 }
 
+function compactText(value?: string | null, maxLength = 132) {
+  const text = String(value || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!text) {
+    return "";
+  }
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return `${text.slice(0, Math.max(0, maxLength - 3)).trimEnd()}...`;
+}
+
+function deriveSourceConfidenceSnapshot(detail: LegacyServiceDetailResult) {
+  const overview = detail.payload.source_transparency?.overview;
+  const sourceOk = detail.payload.analytics?.source_ok_count;
+  const sourceTotal = detail.payload.analytics?.source_total_count;
+  const score =
+    typeof overview?.confidence_score === "number"
+      ? overview.confidence_score
+      : typeof sourceOk === "number" && typeof sourceTotal === "number" && sourceTotal > 0
+        ? Math.round((sourceOk / sourceTotal) * 1000) / 10
+        : null;
+  const tier = String(
+    overview?.confidence_tier ||
+      (score === null ? "unknown" : score >= 85 ? "high" : score >= 65 ? "medium" : "low")
+  ).toLowerCase();
+
+  return {
+    score,
+    tier:
+      tier === "high" || tier === "medium" || tier === "low"
+        ? tier
+        : ("unknown" as const),
+  };
+}
+
+function deriveHomeChangeSnapshot(detail: LegacyServiceDetailResult) {
+  const changeSummary = detail.payload.changes?.summary;
+  const newReports =
+    typeof changeSummary?.new_reports === "number" ? changeSummary.new_reports : 0;
+  const newIncidents =
+    typeof changeSummary?.new_incidents === "number" ? changeSummary.new_incidents : 0;
+  const updatedIncidents =
+    typeof changeSummary?.updated_incidents === "number" ? changeSummary.updated_incidents : 0;
+  const resolvedIncidents =
+    typeof changeSummary?.resolved_incidents === "number" ? changeSummary.resolved_incidents : 0;
+
+  return {
+    newReports,
+    newIncidents,
+    updatedIncidents,
+    resolvedIncidents,
+    total: newIncidents + updatedIncidents + resolvedIncidents,
+  };
+}
+
+function buildHomeChangeHeadline(
+  detail: LegacyServiceDetailResult,
+  changeSnapshot: ReturnType<typeof deriveHomeChangeSnapshot>,
+  language: "en" | "de"
+) {
+  const activeMaintenances = Array.isArray(detail.payload.outage?.scheduled_maintenances)
+    ? detail.payload.outage.scheduled_maintenances.filter((item) =>
+        maintenanceStateFromItem(item) === "active"
+      ).length
+    : 0;
+
+  if (changeSnapshot.newIncidents > 0) {
+    return pickLang(
+      language,
+      changeSnapshot.newIncidents === 1
+        ? "A new incident appeared in the latest refresh"
+        : `${changeSnapshot.newIncidents} new incidents appeared in the latest refresh`,
+      changeSnapshot.newIncidents === 1
+        ? "Im letzten Refresh ist ein neuer Vorfall aufgetaucht"
+        : `Im letzten Refresh sind ${changeSnapshot.newIncidents} neue Vorfälle aufgetaucht`
+    );
+  }
+  if (changeSnapshot.resolvedIncidents > 0 && changeSnapshot.total === changeSnapshot.resolvedIncidents) {
+    return pickLang(
+      language,
+      changeSnapshot.resolvedIncidents === 1
+        ? "The latest visible change is a resolution"
+        : "Recent changes are moving toward resolution",
+      changeSnapshot.resolvedIncidents === 1
+        ? "Die letzte sichtbare Änderung ist eine Entwarnung"
+        : "Die jüngsten Änderungen laufen eher auf Entwarnung hinaus"
+    );
+  }
+  if (changeSnapshot.total > 0 || changeSnapshot.newReports > 0) {
+    return pickLang(
+      language,
+      "The live picture is still shifting",
+      "Das Live-Bild verschiebt sich weiterhin"
+    );
+  }
+  if (activeMaintenances > 0) {
+    return pickLang(
+      language,
+      activeMaintenances === 1 ? "Planned work is the main active change" : "Planned work is shaping the current view",
+      activeMaintenances === 1 ? "Geplante Arbeit ist die wichtigste aktive Änderung" : "Geplante Arbeit prägt die aktuelle Ansicht"
+    );
+  }
+  return pickLang(
+    language,
+    "No fresh incident delta in the latest refresh",
+    "Im letzten Refresh gab es keine frische Vorfallsänderung"
+  );
+}
+
+function buildHomeImpactSummary(
+  detail: LegacyServiceDetailResult,
+  language: "en" | "de"
+) {
+  const reports24h =
+    typeof detail.payload.outage?.reports_24h === "number"
+      ? detail.payload.outage.reports_24h
+      : typeof detail.payload.analytics?.signal_metrics?.reports_24h === "number"
+        ? detail.payload.analytics.signal_metrics.reports_24h
+        : null;
+  const incidents = Array.isArray(detail.payload.outage?.incidents)
+    ? detail.payload.outage.incidents
+    : [];
+  const activeMaintenances = Array.isArray(detail.payload.outage?.scheduled_maintenances)
+    ? detail.payload.outage.scheduled_maintenances.filter((item) =>
+        maintenanceStateFromItem(item) === "active"
+      ).length
+    : 0;
+
+  if (detail.severity === "major" || detail.tone === "bad" || (typeof reports24h === "number" && reports24h >= 120)) {
+    return {
+      label: pickLang(language, "Broad user impact", "Breite Nutzerwirkung"),
+      summary: pickLang(
+        language,
+        typeof reports24h === "number"
+          ? `${reports24h} reports in 24h and ${incidents.length} listed incidents point to a broader disruption.`
+          : `${incidents.length} listed incidents point to a broader disruption right now.`,
+        typeof reports24h === "number"
+          ? `${reports24h} Meldungen in 24h und ${incidents.length} gelistete Vorfälle deuten auf eine breitere Störung hin.`
+          : `${incidents.length} gelistete Vorfälle deuten gerade auf eine breitere Störung hin.`
+      ),
+    };
+  }
+
+  if (
+    detail.severity === "degraded" ||
+    (typeof reports24h === "number" && reports24h >= 25) ||
+    incidents.length > 0
+  ) {
+    return {
+      label: pickLang(language, "Partial user impact", "Teilweise Nutzerwirkung"),
+      summary: pickLang(
+        language,
+        typeof reports24h === "number"
+          ? `${reports24h} reports in 24h suggest a narrower disruption that users can still feel.`
+          : incidents.length > 0
+            ? "Recent incidents suggest user-facing friction, but not a full outage."
+            : "Signals suggest user-facing friction, but not a full outage.",
+        typeof reports24h === "number"
+          ? `${reports24h} Meldungen in 24h deuten auf eine engere, aber spürbare Störung hin.`
+          : incidents.length > 0
+            ? "Jüngste Vorfälle deuten auf spürbare Reibung hin, aber nicht auf einen kompletten Ausfall."
+            : "Die Signale deuten auf spürbare Reibung hin, aber nicht auf einen kompletten Ausfall."
+      ),
+    };
+  }
+
+  if (activeMaintenances > 0) {
+    return {
+      label: pickLang(language, "Planned work window", "Geplantes Wartungsfenster"),
+      summary: pickLang(
+        language,
+        activeMaintenances === 1
+          ? "A scheduled maintenance window is active, but the wider status picture is otherwise calm."
+          : "Multiple scheduled maintenance windows are active without a broader outage signal.",
+        activeMaintenances === 1
+          ? "Ein geplantes Wartungsfenster ist aktiv, das restliche Statusbild wirkt aber ruhig."
+          : "Mehrere geplante Wartungsfenster sind aktiv, ohne breiteres Ausfallsignal."
+      ),
+    };
+  }
+
+  return {
+    label: pickLang(language, "Low active impact", "Geringe aktive Wirkung"),
+    summary: pickLang(
+      language,
+      "Current sources do not suggest a broad disruption for most users.",
+      "Die aktuellen Quellen deuten für die meisten Nutzer nicht auf eine breite Störung hin."
+    ),
+  };
+}
+
 function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de"): HomeServiceCard {
   const uptimeHistory = buildTrendHistory(detail);
   const score = trendPercent(uptimeHistory);
   const responseHistory = buildActivitySparkline(detail);
   const status = severityToStatus(detail.severity, detail.tone);
+  const latestIncident = detail.payload.outage?.incidents?.[0];
+  const changeSnapshot = deriveHomeChangeSnapshot(detail);
+  const sourceConfidence = deriveSourceConfidenceSnapshot(detail);
+  const impactCopy = buildHomeImpactSummary(detail, language);
+  const reports24h =
+    typeof detail.payload.outage?.reports_24h === "number"
+      ? detail.payload.outage.reports_24h
+      : typeof detail.payload.analytics?.signal_metrics?.reports_24h === "number"
+        ? detail.payload.analytics.signal_metrics.reports_24h
+        : null;
 
   const name = detail.service.name || detail.service.id;
   const icon =
@@ -433,6 +652,30 @@ function buildServerCard(detail: LegacyServiceDetailResult, language: "en" | "de
     serviceTags: Array.isArray(detail.service.tags)
       ? detail.service.tags.map((tag) => String(tag || "").toLowerCase()).filter(Boolean)
       : [],
+    summaryText: compactText(
+      detail.payload.outage?.summary ||
+        detail.payload.official?.summary ||
+        latestIncident?.acknowledgement ||
+        latestIncident?.title ||
+        detail.service.note ||
+        pickLang(
+          language,
+          "Live service signals are currently available.",
+          "Live-Service-Signale sind aktuell verfügbar."
+        )
+    ),
+    latestIncidentTitle: latestIncident?.title || undefined,
+    latestIncidentAt: latestIncident?.started_at ?? null,
+    incidentCount: Array.isArray(detail.payload.outage?.incidents)
+      ? detail.payload.outage.incidents.length
+      : 0,
+    reports24h,
+    changeSnapshot,
+    changeHeadline: buildHomeChangeHeadline(detail, changeSnapshot, language),
+    impactLabel: impactCopy.label,
+    impactSummary: impactCopy.summary,
+    sourceConfidenceScore: sourceConfidence.score,
+    sourceConfidenceTier: sourceConfidence.tier,
   };
 }
 
@@ -749,6 +992,14 @@ const Index = () => {
     ],
     [categoryFilters, hasFavoriteServices, language]
   );
+  const primaryFilterOptions = useMemo(
+    () => filterOptions.filter((option) => !option.key.startsWith("category:")),
+    [filterOptions]
+  );
+  const categoryFilterOptions = useMemo(
+    () => filterOptions.filter((option) => option.key.startsWith("category:")),
+    [filterOptions]
+  );
   const sortOptions = useMemo(
     () => [
       {
@@ -825,6 +1076,140 @@ const Index = () => {
       })
       .slice(0, 4);
   }, [cards, language]);
+  const averageSourceConfidence = useMemo(() => {
+    const scores = cards
+      .map((card) => card.sourceConfidenceScore)
+      .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+    if (scores.length === 0) {
+      return null;
+    }
+    return Math.round((scores.reduce((sum, value) => sum + value, 0) / scores.length) * 10) / 10;
+  }, [cards]);
+  const servicesWithRecentChange = useMemo(
+    () =>
+      cards.filter(
+        (card) => card.changeSnapshot.total > 0 || card.changeSnapshot.newReports > 0 || card.server.status !== "online"
+      ).length,
+    [cards]
+  );
+  const focusCards = useMemo(() => {
+    return [...cards]
+      .sort((left, right) => {
+        const byImpact = impactRank(left.server.status) - impactRank(right.server.status);
+        if (byImpact !== 0) {
+          return byImpact;
+        }
+        const leftChangeWeight = left.changeSnapshot.total * 5 + left.changeSnapshot.newReports;
+        const rightChangeWeight = right.changeSnapshot.total * 5 + right.changeSnapshot.newReports;
+        if (leftChangeWeight !== rightChangeWeight) {
+          return rightChangeWeight - leftChangeWeight;
+        }
+        const leftReports = typeof left.reports24h === "number" ? left.reports24h : -1;
+        const rightReports = typeof right.reports24h === "number" ? right.reports24h : -1;
+        if (leftReports !== rightReports) {
+          return rightReports - leftReports;
+        }
+        const leftIncidentAt = parseDate(left.latestIncidentAt)?.getTime() ?? 0;
+        const rightIncidentAt = parseDate(right.latestIncidentAt)?.getTime() ?? 0;
+        if (leftIncidentAt !== rightIncidentAt) {
+          return rightIncidentAt - leftIncidentAt;
+        }
+        return left.servicePriority - right.servicePriority;
+      })
+      .slice(0, 3);
+  }, [cards]);
+  const nextMaintenanceEntry = maintenanceEntries[0] ?? null;
+  const heroStateLabel =
+    overallState === "major-outage"
+      ? pickLang(language, "Major outage", "Große Störung")
+      : overallState === "some-issues"
+        ? pickLang(language, "Active issues", "Aktive Probleme")
+        : overallState === "minor-issues"
+          ? pickLang(language, "Watching signals", "Signale im Blick")
+          : pickLang(language, "Operational", "Stabil");
+  const heroStateToneClass =
+    overallState === "major-outage"
+      ? "border-rose-300/25 bg-rose-300/10 text-rose-200"
+      : overallState === "some-issues"
+        ? "border-amber-300/25 bg-amber-300/10 text-amber-200"
+        : overallState === "minor-issues"
+          ? "border-sky-300/25 bg-sky-300/10 text-sky-100"
+          : "border-emerald-300/25 bg-emerald-400/10 text-emerald-300";
+  const heroHeadline =
+    cards.length === 0
+      ? pickLang(language, "Waiting for live status", "Warte auf Live-Status")
+      : overallState === "major-outage"
+        ? pickLang(language, `${offlineCount} services are down right now.`, `${offlineCount} Services sind gerade offline.`)
+        : overallState === "some-issues"
+          ? pickLang(language, `${impactedCount} services need attention right now.`, `${impactedCount} Services brauchen gerade Aufmerksamkeit.`)
+          : overallState === "minor-issues"
+            ? pickLang(language, "A few signals need watching.", "Ein paar Signale brauchen Beobachtung.")
+            : pickLang(language, "Everything looks steady right now.", "Im Moment wirkt alles stabil.");
+  const heroSupportCopy = useMemo(() => {
+    if (cards.length === 0) {
+      return pickLang(
+        language,
+        "Service cards appear as soon as the live status pipeline returns fresh data.",
+        "Sobald die Live-Status-Pipeline frische Daten liefert, erscheinen hier die Service-Karten."
+      );
+    }
+
+    if (isDataVeryStale) {
+      return pickLang(
+        language,
+        `The last successful refresh is ${formatAgeMinutes(dataAgeMinutes)} old, so treat the feed as delayed until the next live poll lands.`,
+        `Das letzte erfolgreiche Update ist ${formatAgeMinutes(dataAgeMinutes)} alt. Die Ansicht sollte bis zum nächsten Live-Poll als verzögert gelten.`
+      );
+    }
+
+    if (cachedCardCount > 0 && latestCachedAt) {
+      return pickLang(
+        language,
+        `${cachedCardCount} services are temporarily running on last known data from ${formatTimestampByMode(latestCachedAt, {
+          language,
+          mode: timeDisplayMode,
+          absoluteFormat: {
+            hour: "2-digit",
+            minute: "2-digit",
+          },
+          fallbackText: "stored",
+        })}.`,
+        `${cachedCardCount} Services laufen vorübergehend mit zuletzt bekannten Daten von ${formatTimestampByMode(latestCachedAt, {
+          language,
+          mode: timeDisplayMode,
+          absoluteFormat: {
+            hour: "2-digit",
+            minute: "2-digit",
+          },
+          fallbackText: "gespeichert",
+        })}.`
+      );
+    }
+
+    if (nextMaintenanceEntry) {
+      return pickLang(
+        language,
+        `${servicesWithRecentChange}/${cards.length} services show live change signals. Next planned window: ${nextMaintenanceEntry.serviceName}.`,
+        `${servicesWithRecentChange}/${cards.length} Services zeigen Live-Änderungen. Nächstes geplantes Fenster: ${nextMaintenanceEntry.serviceName}.`
+      );
+    }
+
+    return pickLang(
+      language,
+      `${servicesWithRecentChange}/${cards.length} services currently show active change or disruption signals.`,
+      `${servicesWithRecentChange}/${cards.length} Services zeigen aktuell aktive Änderungs- oder Störungssignale.`
+    );
+  }, [
+    cachedCardCount,
+    cards.length,
+    dataAgeMinutes,
+    isDataVeryStale,
+    language,
+    latestCachedAt,
+    nextMaintenanceEntry,
+    servicesWithRecentChange,
+    timeDisplayMode,
+  ]);
   const filteredCards = useMemo(() => {
     const query = deferredSearchQuery.trim().toLowerCase();
 
@@ -929,9 +1314,12 @@ const Index = () => {
         refreshingLabel={pickLang(language, "Refreshing live status...", "Live-Status wird aktualisiert...")}
       />
       <main className="mx-auto max-w-md px-4 pb-6 pt-8" {...pullToRefresh.bind}>
-        <div className="flex items-start justify-between gap-3 pb-5 pt-4">
+        <div className="flex items-start justify-between gap-3 pb-4 pt-4">
           <div>
-            <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/75">
+              {pickLang(language, "Live status view", "Live-Statusansicht")}
+            </p>
+            <h1 className="mt-2 text-[28px] font-extrabold tracking-tight text-foreground">
               {pickLang(language, "Status Radar", "Status Radar")}
             </h1>
             <p className="mt-1 text-[13px] text-muted-foreground">{subtitle}</p>
@@ -950,21 +1338,179 @@ const Index = () => {
         </div>
 
         {cards.length === 0 && isRefreshing ? (
-          <div className="glass glass-specular h-[84px] rounded-2xl" />
-        ) : cards.length > 0 ? (
-          <div>
-            <OverallStatus
-              state={overallState}
-              onlineCount={onlineCount}
-              degradedCount={degradedCount}
-              offlineCount={offlineCount}
-              impactedCount={impactedCount}
-              totalCount={cards.length}
-              onShowImpacted={() => setActiveFilter("issues")}
-            />
+          <div className="space-y-3">
+            <div className="glass-heavy glass-specular h-[220px] rounded-[28px]" />
+            <div className="glass glass-specular h-[112px] rounded-[26px]" />
           </div>
+        ) : cards.length > 0 ? (
+          <section className="glass-heavy glass-specular overflow-hidden rounded-[28px] px-4 py-4">
+            <div className="relative z-10">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    {pickLang(language, "Operational picture", "Betriebsbild")}
+                  </p>
+                  <h2 className="mt-2 max-w-[14ch] text-[29px] font-semibold leading-[0.98] tracking-tight text-foreground">
+                    {heroHeadline}
+                  </h2>
+                  <p className="mt-3 max-w-[34rem] text-[13px] leading-relaxed text-muted-foreground">
+                    {heroSupportCopy}
+                  </p>
+                </div>
+                <span
+                  className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] ${heroStateToneClass}`}
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
+                  {heroStateLabel}
+                </span>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-2.5">
+                <div className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {pickLang(language, "Monitored", "Überwacht")}
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">{cards.length}</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    {pickLang(language, "Public status feeds", "Öffentliche Statusquellen")}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveFilter("issues")}
+                  className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3 text-left transition-colors hover:bg-white/10"
+                >
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {pickLang(language, "Needs attention", "Braucht Aufmerksamkeit")}
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">{impactedCount}</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    {pickLang(language, "Tap to isolate impacted services", "Tippen, um betroffene Services zu filtern")}
+                  </p>
+                </button>
+                <div className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {pickLang(language, "Source confidence", "Quellenvertrauen")}
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+                    {averageSourceConfidence !== null ? `${averageSourceConfidence.toFixed(1)}%` : "--"}
+                  </p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    {pickLang(language, "Average cross-source confidence", "Durchschnittliches Quellenvertrauen")}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    {pickLang(language, "Changing now", "Verändert sich jetzt")}
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+                    {servicesWithRecentChange}
+                  </p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    {pickLang(language, "Services with live change or disruption signals", "Services mit Live-Änderungs- oder Störungssignalen")}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <div className="flex items-end justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      {pickLang(language, "Watch now", "Jetzt im Blick")}
+                    </p>
+                    <p className="mt-1 text-[12px] text-muted-foreground">
+                      {pickLang(language, "The shortest path to what matters next.", "Der kürzeste Weg zu dem, was jetzt zählt.")}
+                    </p>
+                  </div>
+                  {nextMaintenanceEntry ? (
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-muted-foreground">
+                      {pickLang(language, "Next planned", "Nächst geplant")}: {nextMaintenanceEntry.serviceName}
+                    </span>
+                  ) : null}
+                </div>
+
+                {impactedCount > 0 || servicesWithRecentChange > 0 || nextMaintenanceEntry ? (
+                  <div className="mt-2.5 space-y-2">
+                    {focusCards.map((card) => (
+                      <Link
+                        key={card.serviceId}
+                        to={`/status/${card.serviceId}`}
+                        className="group flex items-start justify-between gap-3 rounded-2xl border border-white/10 bg-black/15 px-3 py-3 transition-colors hover:bg-white/10"
+                      >
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <ServiceIdentityIcon
+                              serviceId={card.serviceId}
+                              iconName={card.server.icon}
+                              size={14}
+                              containerClassName="h-8 w-8 shrink-0"
+                            />
+                            <div className="min-w-0">
+                              <p className="truncate text-[13px] font-semibold text-foreground">{card.server.name}</p>
+                              <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                                {card.impactLabel}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+                            {card.server.status !== "online" || card.changeSnapshot.total > 0 || card.changeSnapshot.newReports > 0
+                              ? card.changeHeadline
+                              : card.summaryText}
+                          </p>
+                        </div>
+                        <div className="flex shrink-0 items-center gap-2">
+                          <span
+                            className={`rounded-full border px-2 py-1 text-[10px] font-medium ${
+                              card.server.status === "offline"
+                                ? "border-rose-300/25 bg-rose-300/10 text-rose-200"
+                                : card.server.status === "degraded"
+                                  ? "border-amber-300/25 bg-amber-300/10 text-amber-200"
+                                  : card.sourceConfidenceTier === "high"
+                                    ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-300"
+                                    : "border-white/10 bg-white/5 text-muted-foreground"
+                            }`}
+                          >
+                            {card.server.status === "offline"
+                              ? pickLang(language, "offline", "offline")
+                              : card.server.status === "degraded"
+                                ? pickLang(language, "degraded", "beeinträchtigt")
+                                : card.sourceConfidenceScore !== null
+                                  ? `${card.sourceConfidenceScore.toFixed(0)}%`
+                                  : pickLang(language, "steady", "ruhig")}
+                          </span>
+                          <ChevronRight
+                            size={15}
+                            className="text-muted-foreground transition-transform group-hover:translate-x-0.5"
+                          />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="mt-2.5 rounded-2xl border border-white/10 bg-black/15 px-3 py-3">
+                    <p className="text-[13px] font-semibold text-foreground">
+                      {pickLang(language, "No broad disruption is standing out right now.", "Gerade sticht keine breite Störung heraus.")}
+                    </p>
+                    <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                      {nextMaintenanceEntry
+                        ? pickLang(
+                            language,
+                            `The next visible change is scheduled maintenance for ${nextMaintenanceEntry.serviceName}.`,
+                            `Die nächste sichtbare Änderung ist geplante Wartung bei ${nextMaintenanceEntry.serviceName}.`
+                          )
+                        : pickLang(
+                            language,
+                            "Use the feed below to inspect individual services, categories, or freshness signals.",
+                            "Nutze den Feed unten, um einzelne Services, Kategorien oder Frische-Signale zu prüfen."
+                          )}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
         ) : (
-          <div className="glass glass-specular rounded-2xl p-4">
+          <div className="glass glass-specular rounded-[28px] p-4">
             <div className="relative z-10">
               <p className="text-sm font-semibold text-foreground">
                 {pickLang(language, "No live service data loaded", "Keine Live-Service-Daten geladen")}
@@ -980,72 +1526,19 @@ const Index = () => {
           </div>
         )}
 
-        {cachedCardCount > 0 ? (
-          <div className="mt-4 rounded-2xl border border-sky-300/20 bg-sky-300/10 px-3 py-2.5 text-[11px] text-sky-100">
-            <p className="font-semibold">
-              {pickLang(
-                language,
-                "Showing last known service data",
-                "Letzte bekannte Servicedaten werden angezeigt"
-              )}
-            </p>
-            <p className="mt-0.5 opacity-90">
-              {latestCachedAt
-                ? pickLang(
-                    language,
-                    `${cachedCardCount} services are currently using cached data from ${formatTimestampByMode(
-                      latestCachedAt,
-                      {
-                        language,
-                        mode: timeDisplayMode,
-                        absoluteFormat: {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        },
-                        fallbackText: "stored",
-                      }
-                    )} while live refresh retries continue.`,
-                    `${cachedCardCount} Services verwenden aktuell zwischengespeicherte Daten von ${formatTimestampByMode(
-                      latestCachedAt,
-                      {
-                        language,
-                        mode: timeDisplayMode,
-                        absoluteFormat: {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        },
-                        fallbackText: "gespeichert",
-                      }
-                    )}, während Live-Aktualisierungen weiter versuchen nachzuladen.`
-                  )
-                : pickLang(
-                    language,
-                    "Cached service data is being used while live refresh retries continue.",
-                    "Zwischengespeicherte Servicedaten werden verwendet, während Live-Aktualisierungen weiter versuchen nachzuladen."
-                  )}
-            </p>
-          </div>
-        ) : null}
-
         {maintenanceEntries.length > 0 ? (
           <section className="mt-4">
-            <div className="mb-2 px-1">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary text-primary">
-                  <Wrench size={15} />
-                </div>
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {pickLang(language, "Scheduled maintenance", "Geplante Wartungen")}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {pickLang(
-                      language,
-                      "Upcoming or active provider maintenance windows",
-                      "Bevorstehende oder aktive Wartungsfenster der Anbieter"
-                    )}
-                  </p>
-                </div>
+            <div className="mb-2 flex items-center gap-2 px-1">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary text-primary">
+                <Wrench size={15} />
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  {pickLang(language, "Planned work", "Geplante Arbeiten")}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {pickLang(language, "Upcoming or active provider windows", "Bevorstehende oder aktive Wartungsfenster")}
+                </p>
               </div>
             </div>
             <div className="space-y-2.5">
@@ -1053,54 +1546,47 @@ const Index = () => {
                 <Link
                   key={entry.key}
                   to={`/status/${entry.serviceId}`}
-                  className="glass glass-specular block rounded-2xl p-3 transition-all duration-300 hover:scale-[1.01] active:scale-[0.98]"
+                  className="glass block rounded-2xl p-3 transition-colors hover:bg-white/10"
                 >
-                  <div className="relative z-10">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex min-w-0 items-center gap-3">
-                        <ServiceIdentityIcon
-                          serviceId={entry.serviceId}
-                          iconName={entry.iconName}
-                          size={16}
-                          containerClassName="h-10 w-10 shrink-0"
-                        />
-                        <div className="min-w-0">
-                          <p className="text-[12px] font-semibold text-foreground">{entry.serviceName}</p>
-                          <p className="mt-0.5 text-[13px] font-medium text-foreground/90">{entry.title}</p>
-                        </div>
-                      </div>
-                      <div className="flex shrink-0 items-center gap-2">
-                        <span
-                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-semibold ${
-                            entry.state === "active"
-                              ? "border-status-degraded/30 bg-status-degraded/10 text-status-degraded"
-                              : "border-sky-300/25 bg-sky-300/10 text-sky-100"
-                          }`}
-                        >
-                          <span
-                            className={`h-1.5 w-1.5 rounded-full ${
-                              entry.state === "active" ? "bg-status-degraded" : "bg-sky-200"
-                            }`}
-                          />
-                          {entry.state === "active"
-                            ? pickLang(language, "Active", "Aktiv")
-                            : pickLang(language, "Scheduled", "Geplant")}
-                        </span>
-                        <ChevronRight size={15} className="text-muted-foreground" />
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <ServiceIdentityIcon
+                        serviceId={entry.serviceId}
+                        iconName={entry.iconName}
+                        size={16}
+                        containerClassName="h-10 w-10 shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-[12px] font-semibold text-foreground">{entry.serviceName}</p>
+                        <p className="mt-0.5 text-[13px] font-medium text-foreground/90">{entry.title}</p>
+                        <p className="mt-2 text-[11px] font-medium text-muted-foreground">
+                          {formatMaintenanceWindow(entry, language, timeDisplayMode)}
+                        </p>
                       </div>
                     </div>
-                    <p className="mt-3 text-[11px] font-medium text-muted-foreground">
-                      {formatMaintenanceWindow(entry, language, timeDisplayMode)}
-                    </p>
-                    {entry.summary ? (
-                      <p className="mt-1 text-[11px] text-muted-foreground/90">{entry.summary}</p>
-                    ) : null}
-                    {entry.source ? (
-                      <p className="mt-2 text-[10px] uppercase tracking-[0.12em] text-muted-foreground/80">
-                        {entry.source}
-                      </p>
-                    ) : null}
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-semibold ${
+                          entry.state === "active"
+                            ? "border-status-degraded/30 bg-status-degraded/10 text-status-degraded"
+                            : "border-sky-300/25 bg-sky-300/10 text-sky-100"
+                        }`}
+                      >
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            entry.state === "active" ? "bg-status-degraded" : "bg-sky-200"
+                          }`}
+                        />
+                        {entry.state === "active"
+                          ? pickLang(language, "Active", "Aktiv")
+                          : pickLang(language, "Scheduled", "Geplant")}
+                      </span>
+                      <ChevronRight size={15} className="text-muted-foreground" />
+                    </div>
                   </div>
+                  {entry.summary ? (
+                    <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground/90">{entry.summary}</p>
+                  ) : null}
                 </Link>
               ))}
             </div>
@@ -1108,125 +1594,135 @@ const Index = () => {
         ) : null}
 
         {cards.length > 0 ? (
-          <div className="mt-4">
-            <div className="glass rounded-2xl px-3 py-2.5">
-              <label className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                {pickLang(language, "Search services", "Services suchen")}
-              </label>
-              <input
-                type="search"
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder={pickLang(
-                  language,
-                  "Search by name, category, or tags",
-                  "Nach Name, Kategorie oder Tags suchen"
-                )}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary/40"
-                aria-label={pickLang(
-                  language,
-                  "Search service cards",
-                  "Service-Karten durchsuchen"
-                )}
-              />
-            </div>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <label className="glass rounded-xl px-2.5 py-2">
-                <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Filter", "Filter")}
-                </span>
-                <select
-                  value={activeFilter}
-                  onChange={(event) => setActiveFilter(event.target.value as HomeFilterKey)}
-                  className="mt-1 w-full bg-transparent text-xs font-semibold text-foreground outline-none"
-                  aria-label={pickLang(language, "Filter services", "Services filtern")}
-                >
-                  {filterOptions.map((option) => (
-                    <option key={option.key} value={option.key} className="bg-[#0B1324] text-foreground">
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="glass rounded-xl px-2.5 py-2">
-                <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {pickLang(language, "Sort", "Sortierung")}
-                </span>
-                <select
-                  value={sortBy}
-                  onChange={(event) => setSortBy(event.target.value as HomeSortKey)}
-                  className="mt-1 w-full bg-transparent text-xs font-semibold text-foreground outline-none"
-                  aria-label={pickLang(language, "Sort services", "Services sortieren")}
-                >
-                  {sortOptions.map((option) => (
-                    <option key={option.key} value={option.key} className="bg-[#0B1324] text-foreground">
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-            {hasFavoriteServices ? (
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveFilter((previous) => (previous === "favorites" ? "all" : "favorites"))}
-                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[11px] font-semibold transition-colors ${
-                    activeFilter === "favorites"
-                      ? "border-amber-300/40 bg-amber-300/16 text-amber-200"
-                      : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
-                  }`}
-                  aria-pressed={activeFilter === "favorites"}
-                >
-                  <Star size={13} className={activeFilter === "favorites" ? "fill-current" : ""} />
-                  <span>{pickLang(language, "Favorites only", "Nur Favoriten")}</span>
-                  <span className="rounded-full border border-current/20 px-1.5 py-0.5 text-[10px]">
-                    {favoriteServiceIds.length}
+          <section className="mt-4">
+            <div className="glass rounded-[26px] px-3 py-3">
+              <div className="flex items-end justify-between gap-3">
+                <label className="block min-w-0 flex-1">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {pickLang(language, "Find a service", "Service finden")}
                   </span>
-                </button>
+                  <input
+                    type="search"
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder={pickLang(
+                      language,
+                      "Search by name, category, or tags",
+                      "Nach Name, Kategorie oder Tags suchen"
+                    )}
+                    className="mt-2 h-11 w-full rounded-2xl border border-white/10 bg-white/5 px-3 text-sm text-foreground outline-none transition-colors focus:border-primary/40"
+                    aria-label={pickLang(language, "Search service cards", "Service-Karten durchsuchen")}
+                  />
+                </label>
+                <div className="shrink-0 text-right">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {pickLang(language, "Visible", "Sichtbar")}
+                  </p>
+                  <p className="mt-2 text-lg font-semibold tracking-tight text-foreground">
+                    {filteredCards.length}/{cards.length}
+                  </p>
+                </div>
               </div>
-            ) : null}
-            {hasActiveRefinements ? (
-              <div className="mt-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                      {pickLang(language, "Active view", "Aktive Ansicht")}
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {activeFilterLabel ? (
-                        <span className="rounded-full border border-primary/25 bg-primary/12 px-2 py-0.5 text-[10px] font-medium text-primary">
-                          {pickLang(language, "Filter", "Filter")}: {activeFilterLabel}
+
+              <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                {primaryFilterOptions.map((option) => {
+                  const isActive = activeFilter === option.key;
+                  return (
+                    <button
+                      key={option.key}
+                      type="button"
+                      onClick={() => setActiveFilter((previous) => (previous === option.key ? "all" : option.key))}
+                      className={`shrink-0 rounded-full border px-3 py-2 text-[11px] font-semibold transition-colors ${
+                        isActive
+                          ? "border-primary/35 bg-primary/15 text-primary"
+                          : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                      }`}
+                      aria-pressed={isActive}
+                    >
+                      {option.key === "favorites" ? (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Star size={12} className={isActive ? "fill-current" : ""} />
+                          {option.label}
                         </span>
-                      ) : null}
-                      {hasActiveSearch ? (
-                        <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground">
-                          {pickLang(language, "Search", "Suche")}: {deferredSearchQuery.trim()}
-                        </span>
-                      ) : null}
-                    </div>
-                  </div>
+                      ) : (
+                        option.label
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {categoryFilterOptions.length > 0 ? (
+                <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+                  {categoryFilterOptions.map((option) => {
+                    const isActive = activeFilter === option.key;
+                    return (
+                      <button
+                        key={option.key}
+                        type="button"
+                        onClick={() => setActiveFilter((previous) => (previous === option.key ? "all" : option.key))}
+                        className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-medium transition-colors ${
+                          isActive
+                            ? "border-white/15 bg-white/10 text-foreground"
+                            : "border-white/10 bg-black/15 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                        }`}
+                        aria-pressed={isActive}
+                      >
+                        {option.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : null}
+
+              <div className="mt-3 flex items-center justify-between gap-3">
+                <div className="flex rounded-full border border-white/10 bg-black/15 p-1">
+                  {sortOptions.map((option) => {
+                    const isActive = sortBy === option.key;
+                    return (
+                      <button
+                        key={option.key}
+                        type="button"
+                        onClick={() => setSortBy(option.key)}
+                        className={`rounded-full px-3 py-1.5 text-[10px] font-semibold transition-colors ${
+                          isActive ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
+                        }`}
+                        aria-pressed={isActive}
+                      >
+                        {option.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {hasActiveRefinements ? (
                   <button
                     type="button"
                     onClick={() => {
                       setActiveFilter("all");
                       setSearchQuery("");
                     }}
-                    className="shrink-0 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-[11px] font-semibold text-foreground transition-colors hover:bg-white/10"
+                    className="shrink-0 rounded-full border border-white/10 bg-black/15 px-3 py-1.5 text-[11px] font-semibold text-foreground transition-colors hover:bg-white/10"
                   >
-                    {pickLang(language, "Reset", "Zuruecksetzen")}
+                    {pickLang(language, "Reset", "Zurücksetzen")}
                   </button>
-                </div>
+                ) : (
+                  <p className="text-[11px] text-muted-foreground">
+                    {pickLang(language, "Focused live feed", "Fokussierter Live-Feed")}
+                  </p>
+                )}
               </div>
-            ) : null}
-            <p className="mt-2 text-[11px] text-muted-foreground">
-              {pickLang(
-                language,
-                `Showing ${filteredCards.length}/${cards.length} services`,
-                `${filteredCards.length}/${cards.length} Services angezeigt`
-              )}
-            </p>
-          </div>
+
+              {hasActiveRefinements ? (
+                <p className="mt-2 text-[11px] text-muted-foreground">
+                  {activeFilterLabel
+                    ? `${pickLang(language, "Filter", "Filter")}: ${activeFilterLabel}`
+                    : pickLang(language, "Custom search is active", "Benutzerdefinierte Suche ist aktiv")}
+                  {hasActiveSearch ? ` · ${pickLang(language, "Search", "Suche")}: ${deferredSearchQuery.trim()}` : ""}
+                </p>
+              ) : null}
+            </div>
+          </section>
         ) : null}
 
         {cards.length === 0 ? (
@@ -1264,7 +1760,10 @@ const Index = () => {
             </div>
           </div>
         ) : (
-          <div className={`mt-4 ${homeCompactCards ? "space-y-2.5" : "space-y-4"}`}>
+          <section
+            aria-label={pickLang(language, "Service feed", "Service-Feed")}
+            className={`mt-4 ${homeCompactCards ? "space-y-2.5" : "space-y-4"}`}
+          >
             {filteredCards.map((card) => {
               const isFavorite = isFavoriteService(card.serviceId);
               return (
@@ -1297,7 +1796,7 @@ const Index = () => {
                 </div>
               );
             })}
-          </div>
+          </section>
         )}
 
         {isDataStale ? (

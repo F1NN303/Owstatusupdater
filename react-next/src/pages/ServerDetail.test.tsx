@@ -232,10 +232,8 @@ describe("Server detail favorites", () => {
     fireEvent.click(screen.getByRole("button", { name: /add this service to favorites/i }));
 
     await waitFor(() => {
-      expect(screen.getByText("Favorite pinned")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /remove this service from favorites/i })).toBeInTheDocument();
     });
-
-    expect(screen.getByRole("button", { name: /remove this service from favorites/i })).toBeInTheDocument();
 
     const persisted = JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) || "{}");
     expect(persisted.favorites).toEqual(["github"]);
