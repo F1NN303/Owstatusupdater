@@ -39,6 +39,7 @@ STATUSGATOR_SERVICE_HEALTH_STATUS_LABELS = {
     1: "possible outage",
     2: "likely outage",
 }
+MOJIBAKE_REPAIR_MARKERS = ("Ãƒ", "Ã¢", "â‚¬â„¢", "Å“", "Å¾", "ï¿½", "Ã¢â‚¬â„¢", "Ã¢â‚¬Å“", "Ã¢â‚¬", "Ã°Å¸")
 
 
 def _utc_now() -> dt.datetime:
@@ -64,14 +65,7 @@ def _hours_since(value: str | None) -> float | None:
 
 def _repair_text_encoding(value: str) -> str:
     text = value
-    if any(token in text for token in ("Ãƒ", "Ã¢", "â‚¬â„¢", "Å“", "Å¾", "ï¿½")):
-        try:
-            repaired = text.encode("latin-1", "ignore").decode("utf-8", "ignore")
-            if repaired:
-                text = repaired
-        except Exception:
-            pass
-    if any(token in text for token in ("Ã¢â‚¬â„¢", "Ã¢â‚¬Å“", "Ã¢â‚¬", "Ã°Å¸")):
+    if any(token in text for token in MOJIBAKE_REPAIR_MARKERS):
         try:
             repaired = text.encode("latin-1", "ignore").decode("utf-8", "ignore")
             if repaired:

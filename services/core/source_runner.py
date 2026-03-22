@@ -4,10 +4,12 @@ import copy
 import logging
 import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Any, Callable, Generic, Protocol, TypeVar
 
 T = TypeVar("T")
+PayloadT = TypeVar("PayloadT")
 
 LOGGER = logging.getLogger("services.core.source_runner")
 SOURCE_ROLES = {"official", "provider", "community", "social", "probe"}
@@ -65,6 +67,7 @@ class SourceRunResult(Generic[T]):
 
 _CACHE_LOCK = threading.Lock()
 _CACHE: dict[str, tuple[float, Any]] = {}
+_CACHE_INFLIGHT: dict[str, threading.Event] = {}
 
 
 def _normalize_source_role(value: Any) -> str:
@@ -101,6 +104,117 @@ def _cache_set(key: str, value: Any) -> None:
         _CACHE[key] = (time.time(), copy.deepcopy(value))
 
 
+def _get_or_fetch_cached(key: str, ttl_seconds: int, fetch_fn: Callable[[], T]) -> tuple[bool, T]:
+    if ttl_seconds <= 0:
+        return False, fetch_fn()
+
+    while True:
+        with _CACHE_LOCK:
+            entry = _CACHE.get(key)
+            if entry:
+                stored_at, value = entry
+                if (time.time() - stored_at) < ttl_seconds:
+                    return True, copy.deepcopy(value)
+                _CACHE.pop(key, None)
+
+            inflight = _CACHE_INFLIGHT.get(key)
+            if inflight is None:
+                inflight = threading.Event()
+                _CACHE_INFLIGHT[key] = inflight
+                break
+
+        inflight.wait()
+
+    try:
+        value = fetch_fn()
+    except Exception:
+        with _CACHE_LOCK:
+            current = _CACHE_INFLIGHT.get(key)
+            if current is inflight:
+                _CACHE_INFLIGHT.pop(key, None)
+                inflight.set()
+        raise
+
+    with _CACHE_LOCK:
+        _CACHE[key] = (time.time(), copy.deepcopy(value))
+        current = _CACHE_INFLIGHT.get(key)
+        if current is inflight:
+            _CACHE_INFLIGHT.pop(key, None)
+            inflight.set()
+    return False, copy.deepcopy(value)
+
+
+def run_parallel_tasks(
+    tasks: list[Callable[[], T]],
+    *,
+    max_workers: int | None = None,
+) -> list[T]:
+    if not tasks:
+        return []
+    worker_count = max_workers or len(tasks)
+    worker_count = max(1, min(worker_count, len(tasks)))
+    if worker_count == 1:
+        return [task() for task in tasks]
+    with ThreadPoolExecutor(max_workers=worker_count) as executor:
+        futures = [executor.submit(task) for task in tasks]
+        return [future.result() for future in futures]
+
+
+def build_cached_payload(
+    *,
+    force_refresh: bool,
+    ttl_seconds: int,
+    cache_lock: threading.Lock,
+    cache_state: dict[str, dict[str, Any]],
+    cache_key: str,
+    builder: Callable[[], PayloadT],
+) -> PayloadT:
+    owner_event: threading.Event | None = None
+    key = cache_key or "default"
+
+    while True:
+        with cache_lock:
+            entry = cache_state.setdefault(
+                key,
+                {
+                    "payload": None,
+                    "ts": 0.0,
+                    "inflight": None,
+                },
+            )
+            cached_payload = entry.get("payload")
+            cached_at = float(entry.get("ts") or 0.0)
+            inflight = entry.get("inflight")
+            if not force_refresh and cached_payload is not None and (time.time() - cached_at) < ttl_seconds:
+                return cached_payload
+            if inflight is None:
+                owner_event = threading.Event()
+                entry["inflight"] = owner_event
+                break
+
+        if isinstance(inflight, threading.Event):
+            inflight.wait()
+
+    try:
+        payload = builder()
+    except Exception:
+        with cache_lock:
+            entry = cache_state.get(key)
+            if entry and entry.get("inflight") is owner_event:
+                entry["inflight"] = None
+                owner_event.set()
+        raise
+
+    with cache_lock:
+        entry = cache_state.setdefault(key, {"payload": None, "ts": 0.0, "inflight": None})
+        entry["payload"] = payload
+        entry["ts"] = time.time()
+        if entry.get("inflight") is owner_event:
+            entry["inflight"] = None
+            owner_event.set()
+        return entry["payload"]
+
+
 def run_source_adapter(
     adapter: SourceAdapter[T],
     *,
@@ -117,16 +231,9 @@ def run_source_adapter(
 
     cache_hit = False
     data: T | None = None
-    if spec.cache_ttl_seconds > 0:
-        cache_hit, cached_value = _cache_get(cache_key, spec.cache_ttl_seconds)
-        if cache_hit:
-            data = cached_value
 
     try:
-        if not cache_hit:
-            data = adapter.fetch()
-            if spec.cache_ttl_seconds > 0:
-                _cache_set(cache_key, data)
+        cache_hit, data = _get_or_fetch_cached(cache_key, spec.cache_ttl_seconds, adapter.fetch)
 
         item_count = adapter.item_count(data) if data is not None else 0
         last_item_at = adapter.last_item_at(data) if data is not None else None
@@ -197,5 +304,7 @@ __all__ = [
     "SourceAdapter",
     "SourceAdapterSpec",
     "SourceRunResult",
+    "build_cached_payload",
+    "run_parallel_tasks",
     "run_source_adapter",
 ]

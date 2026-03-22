@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import unittest
+import threading
+import time
 from unittest.mock import patch
 
 import scripts.build_site_data as build_site_data
+import services.core.source_runner as source_runner
 import services.claude_aggregator as claude_aggregator
 import services.cloudflare_aggregator as cloudflare_aggregator
 import services.discord_aggregator as discord_aggregator
@@ -38,6 +41,10 @@ def _source_entry(name: str, ok: bool) -> dict[str, object]:
 
 
 class SourceRunnerResilienceTests(unittest.TestCase):
+    def tearDown(self) -> None:
+        source_runner._CACHE.clear()
+        source_runner._CACHE_INFLIGHT.clear()
+
     def test_run_source_adapter_failure_returns_structured_result(self) -> None:
         def _fetch_failure():
             raise RuntimeError("boom")
@@ -68,6 +75,62 @@ class SourceRunnerResilienceTests(unittest.TestCase):
         self.assertFalse(result.source.get("ok"))
         self.assertEqual(result.source.get("name"), "Failing Source")
         self.assertIn("boom", str(result.source.get("error")))
+
+    def test_run_source_adapter_coalesces_concurrent_cache_misses(self) -> None:
+        fetch_started = threading.Event()
+        release_fetch = threading.Event()
+        fetch_count = 0
+        fetch_count_lock = threading.Lock()
+        results: list[SourceRunResult[dict[str, str]]] = []
+        result_lock = threading.Lock()
+
+        def _fetch_success() -> dict[str, str]:
+            nonlocal fetch_count
+            with fetch_count_lock:
+                fetch_count += 1
+            fetch_started.set()
+            release_fetch.wait(timeout=1)
+            return {"value": "ok"}
+
+        adapter = CallableSourceAdapter(
+            spec=SourceAdapterSpec(
+                service_id="test",
+                adapter_id="cached-source",
+                name="Cached Source",
+                kind="test",
+                url="https://example.test",
+                cache_ttl_seconds=60,
+            ),
+            fetch_fn=_fetch_success,
+            item_count_fn=lambda payload: 1 if isinstance(payload, dict) else 0,
+            last_item_at_fn=lambda _: "2026-02-27T00:00:00Z",
+        )
+
+        def _run() -> None:
+            result = run_source_adapter(
+                adapter,
+                utc_now_iso=lambda: "2026-02-27T00:00:00Z",
+                source_freshness=lambda _: ("fresh", 0),
+                safe_error_message=lambda exc: str(exc),
+            )
+            with result_lock:
+                results.append(result)
+
+        first = threading.Thread(target=_run)
+        second = threading.Thread(target=_run)
+        first.start()
+        self.assertTrue(fetch_started.wait(timeout=1))
+        second.start()
+        time.sleep(0.05)
+        release_fetch.set()
+        first.join(timeout=1)
+        second.join(timeout=1)
+
+        self.assertEqual(fetch_count, 1)
+        self.assertEqual(len(results), 2)
+        self.assertTrue(all(result.ok for result in results))
+        self.assertEqual([result.cache_hit for result in results].count(True), 1)
+        self.assertEqual([result.cache_hit for result in results].count(False), 1)
 
 
 class BuilderInvocationTests(unittest.TestCase):

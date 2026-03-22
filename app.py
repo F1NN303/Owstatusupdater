@@ -18,7 +18,13 @@ def api_status():
     force_refresh = request.args.get("refresh") == "1"
     payload = build_dashboard_payload(force_refresh=force_refresh)
     status_code = 200 if payload.get("health") in {"ok", "degraded"} else 503
-    return jsonify(payload), status_code
+    response = jsonify(payload)
+    response.status_code = status_code
+    if force_refresh:
+        response.headers["Cache-Control"] = "no-store"
+    else:
+        response.headers["Cache-Control"] = "public, max-age=60, stale-while-revalidate=60"
+    return response
 
 
 if __name__ == "__main__":

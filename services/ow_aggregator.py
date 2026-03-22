@@ -19,11 +19,15 @@ from services.core.source_runner import (
     CallableSourceAdapter,
     SourceAdapterSpec,
     SourceRunResult,
+    build_cached_payload,
+    run_parallel_tasks,
     run_source_adapter,
 )
 
 UA = {"User-Agent": "OW-Web-Status/2.0 (+github-actions)"}
 REQUEST_TIMEOUT = 20
+# Runtime cache shields the live Flask endpoint between static data refreshes; the 30-minute
+# GitHub Actions schedule is a separate artifact-generation cadence.
 CACHE_TTL_SECONDS = 120
 
 STATUSGATOR_URL = "https://statusgator.com/services/overwatch-2"
@@ -56,6 +60,22 @@ SEVERITY_SCORE_THRESHOLDS = {
 }
 SEVERITY_INCIDENT_SCORE_CAP = 5.5
 SEVERITY_MODEL_VERSION = "2.4"
+MOJIBAKE_REPAIR_MARKERS = ("Ã", "â", "€™", "œ", "ž", "�", "â€™", "â€œ", "â€", "ðŸ")
+REPORT_CONTRIBUTION_STEPS = (
+    (1800, 2.8),
+    (1200, 2.0),
+    (700, 1.2),
+    (350, 0.6),
+)
+INCIDENT_AGE_WEIGHT_STEPS = (
+    (3, 2.2),
+    (6, 1.8),
+    (24, 1.0),
+    (72, 0.35),
+)
+INCIDENT_AGE_UNKNOWN_WEIGHT = 0.3
+INCIDENT_AGE_DEFAULT_WEIGHT = 0.1
+INCIDENT_KEYWORD_WEIGHTS = {"critical": 1.1, "warning": 0.45}
 SOURCE_FRESH_MINUTES_FRESH = 120
 SOURCE_FRESH_MINUTES_WARM = 24 * 60
 STATUSGATOR_FALLBACK_MAX_AGE_HOURS = 12
@@ -66,8 +86,7 @@ REGION_KEYWORDS = {
 }
 
 _CACHE_LOCK = threading.Lock()
-_CACHE_TS = 0.0
-_CACHE_PAYLOAD: dict[str, Any] | None = None
+_CACHE_STATE: dict[str, dict[str, Any]] = {}
 
 STATUSGATOR_SERVICE_HEALTH_STATUS_LABELS = {
     0: "service up",
@@ -103,14 +122,7 @@ def _hours_since(value: str | None) -> float | None:
 
 def _repair_text_encoding(value: str) -> str:
     text = value
-    if any(token in text for token in ("Ã", "â", "€™", "œ", "ž", "�")):
-        try:
-            repaired = text.encode("latin-1", "ignore").decode("utf-8", "ignore")
-            if repaired:
-                text = repaired
-        except Exception:
-            pass
-    if any(token in text for token in ("â€™", "â€œ", "â€", "ðŸ")):
+    if any(token in text for token in MOJIBAKE_REPAIR_MARKERS):
         try:
             repaired = text.encode("latin-1", "ignore").decode("utf-8", "ignore")
             if repaired:
@@ -118,6 +130,22 @@ def _repair_text_encoding(value: str) -> str:
         except Exception:
             pass
     return text
+
+
+def _report_volume_contribution(reports_24h: int) -> float:
+    for threshold, contribution in REPORT_CONTRIBUTION_STEPS:
+        if reports_24h >= threshold:
+            return contribution
+    return 0.0
+
+
+def _incident_age_weight(age_h: float | None) -> float:
+    if age_h is None:
+        return INCIDENT_AGE_UNKNOWN_WEIGHT
+    for threshold, weight in INCIDENT_AGE_WEIGHT_STEPS:
+        if age_h <= threshold:
+            return weight
+    return INCIDENT_AGE_DEFAULT_WEIGHT
 
 
 def _clean(text: str | None) -> str:
@@ -829,15 +857,7 @@ def _calculate_severity(
     recent_incidents_6h = 0
     recent_incidents_24h = 0
 
-    report_contribution = 0.0
-    if reports_24h >= 1800:
-        report_contribution = 2.8
-    elif reports_24h >= 1200:
-        report_contribution = 2.0
-    elif reports_24h >= 700:
-        report_contribution = 1.2
-    elif reports_24h >= 350:
-        report_contribution = 0.6
+    report_contribution = _report_volume_contribution(reports_24h)
     score += report_contribution
 
     for incident in incidents:
@@ -848,24 +868,13 @@ def _calculate_severity(
         if age_h is not None and age_h <= 24:
             recent_incidents_24h += 1
 
-        if age_h is None:
-            age_weight = 0.3
-        elif age_h <= 3:
-            age_weight = 2.2
-        elif age_h <= 6:
-            age_weight = 1.8
-        elif age_h <= 24:
-            age_weight = 1.0
-        elif age_h <= 72:
-            age_weight = 0.35
-        else:
-            age_weight = 0.1
+        age_weight = _incident_age_weight(age_h)
 
         keyword_weight = 0.0
         if any(keyword in title for keyword in SEVERITY_CRITICAL_KEYWORDS):
-            keyword_weight = 1.1
+            keyword_weight = INCIDENT_KEYWORD_WEIGHTS["critical"]
         elif any(keyword in title for keyword in SEVERITY_WARNING_KEYWORDS):
-            keyword_weight = 0.45
+            keyword_weight = INCIDENT_KEYWORD_WEIGHTS["warning"]
 
         if age_h is None or age_h <= 24:
             keyword_factor = 1.0
@@ -1075,18 +1084,87 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
     social: list[dict[str, Any]] = []
     isdown_outage: dict[str, Any] | None = None
 
-    statusgator_run = _run_ow_source(
-        adapter_id="statusgator",
-        name="StatusGator",
-        kind="outage-index",
-        url=STATUSGATOR_URL,
-        role="provider",
-        criticality="supporting",
-        used_for_scoring=True,
-        fetch_fn=fetch_statusgator_outages,
-        item_count_fn=_ow_statusgator_item_count,
-        last_item_at_fn=_ow_statusgator_last_item_at,
+    forum_tasks: list[Callable[[], SourceRunResult[Any]]] = []
+    for slug, category_id, label in FORUM_CATEGORIES:
+        forum_tasks.append(
+            lambda slug=slug, category_id=category_id, label=label: _run_ow_source(
+                adapter_id=f"blizzard_forum_{slug}",
+                name=f"Blizzard Forums - {label}",
+                kind="community-forum",
+                url=f"{FORUM_BASE_URL}/c/{slug}/{category_id}",
+                role="community",
+                criticality="supporting",
+                used_for_scoring=True,
+                fetch_fn=lambda slug=slug, category_id=category_id, label=label: fetch_forum_topics(
+                    slug,
+                    category_id,
+                    label,
+                ),
+                item_count_fn=_ow_forum_item_count,
+                last_item_at_fn=_ow_forum_last_item_at,
+            )
+        )
+
+    parallel_runs = run_parallel_tasks(
+        [
+            lambda: _run_ow_source(
+                adapter_id="statusgator",
+                name="StatusGator",
+                kind="outage-index",
+                url=STATUSGATOR_URL,
+                role="provider",
+                criticality="supporting",
+                used_for_scoring=True,
+                fetch_fn=fetch_statusgator_outages,
+                item_count_fn=_ow_statusgator_item_count,
+                last_item_at_fn=_ow_statusgator_last_item_at,
+            ),
+            lambda: _run_ow_source(
+                adapter_id="isdown",
+                name="IsDown",
+                kind="outage-index-alt",
+                url=ISDOWN_STATUS_URL,
+                role="provider",
+                criticality="supporting",
+                used_for_scoring=True,
+                fetch_fn=fetch_isdown_outages,
+                item_count_fn=_ow_isdown_item_count,
+                last_item_at_fn=_ow_isdown_last_item_at,
+            ),
+            *forum_tasks,
+            lambda: _run_ow_source(
+                adapter_id="overwatch_news",
+                name="Overwatch News",
+                kind="official-news",
+                url=OVERWATCH_NEWS_URL,
+                role="official",
+                criticality="supporting",
+                used_for_scoring=True,
+                fetch_fn=fetch_overwatch_news,
+                item_count_fn=_ow_news_item_count,
+                last_item_at_fn=_ow_news_last_item_at,
+            ),
+            lambda: _run_ow_source(
+                adapter_id="x_mirror_playoverwatch",
+                name="X mirror feed",
+                kind="social-mirror",
+                url=X_MIRROR_URL,
+                role="social",
+                criticality="optional",
+                used_for_scoring=True,
+                fetch_fn=fetch_x_updates,
+                item_count_fn=_ow_social_item_count,
+                last_item_at_fn=_ow_social_last_item_at,
+            ),
+        ],
+        max_workers=2 + len(FORUM_CATEGORIES) + 2,
     )
+    statusgator_run = parallel_runs[0]
+    isdown_run = parallel_runs[1]
+    forum_runs = parallel_runs[2 : 2 + len(FORUM_CATEGORIES)]
+    news_run = parallel_runs[-2]
+    social_run = parallel_runs[-1]
+
     if statusgator_run.ok and isinstance(statusgator_run.data, dict):
         outage = statusgator_run.data
         sources.append(statusgator_run.source)
@@ -1108,39 +1186,13 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
         failed_statusgator_source["fallback_cache_used"] = bool(fallback_outage)
         failed_statusgator_source["fallback_age_minutes"] = fallback_age_minutes
         sources.append(failed_statusgator_source)
-
-    isdown_run = _run_ow_source(
-        adapter_id="isdown",
-        name="IsDown",
-        kind="outage-index-alt",
-        url=ISDOWN_STATUS_URL,
-        role="provider",
-        criticality="supporting",
-        used_for_scoring=True,
-        fetch_fn=fetch_isdown_outages,
-        item_count_fn=_ow_isdown_item_count,
-        last_item_at_fn=_ow_isdown_last_item_at,
-    )
     sources.append(isdown_run.source)
     if isdown_run.ok and isinstance(isdown_run.data, dict):
         isdown_outage = isdown_run.data
 
     outage = _merge_secondary_outage_signal(outage, isdown_outage)
 
-    for slug, category_id, label in FORUM_CATEGORIES:
-        source_name = f"Blizzard Forums - {label}"
-        forum_run = _run_ow_source(
-            adapter_id=f"blizzard_forum_{slug}",
-            name=source_name,
-            kind="community-forum",
-            url=f"{FORUM_BASE_URL}/c/{slug}/{category_id}",
-            role="community",
-            criticality="supporting",
-            used_for_scoring=True,
-            fetch_fn=lambda slug=slug, category_id=category_id, label=label: fetch_forum_topics(slug, category_id, label),
-            item_count_fn=_ow_forum_item_count,
-            last_item_at_fn=_ow_forum_last_item_at,
-        )
+    for forum_run in forum_runs:
         sources.append(forum_run.source)
         if forum_run.ok and isinstance(forum_run.data, tuple) and len(forum_run.data) >= 2:
             category_items, category_known = forum_run.data
@@ -1148,35 +1200,9 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
                 reports.extend(category_items)
             if isinstance(category_known, list):
                 known_resources.extend(category_known)
-
-    news_run = _run_ow_source(
-        adapter_id="overwatch_news",
-        name="Overwatch News",
-        kind="official-news",
-        url=OVERWATCH_NEWS_URL,
-        role="official",
-        criticality="supporting",
-        used_for_scoring=True,
-        fetch_fn=fetch_overwatch_news,
-        item_count_fn=_ow_news_item_count,
-        last_item_at_fn=_ow_news_last_item_at,
-    )
     sources.append(news_run.source)
     if news_run.ok and isinstance(news_run.data, list):
         news = news_run.data
-
-    social_run = _run_ow_source(
-        adapter_id="x_mirror_playoverwatch",
-        name="X mirror feed",
-        kind="social-mirror",
-        url=X_MIRROR_URL,
-        role="social",
-        criticality="optional",
-        used_for_scoring=True,
-        fetch_fn=fetch_x_updates,
-        item_count_fn=_ow_social_item_count,
-        last_item_at_fn=_ow_social_last_item_at,
-    )
     sources.append(social_run.source)
     if social_run.ok and isinstance(social_run.data, list):
         social = social_run.data
@@ -1215,17 +1241,11 @@ def build_dashboard_payload(
     force_refresh: bool = False,
     previous_outage_fallback: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    global _CACHE_TS
-    global _CACHE_PAYLOAD
-
-    with _CACHE_LOCK:
-        now = time.time()
-        if not force_refresh and _CACHE_PAYLOAD and (now - _CACHE_TS) < CACHE_TTL_SECONDS:
-            return _CACHE_PAYLOAD
-
-    payload = _collect_payload(previous_outage_fallback=previous_outage_fallback)
-
-    with _CACHE_LOCK:
-        _CACHE_PAYLOAD = payload
-        _CACHE_TS = time.time()
-        return _CACHE_PAYLOAD
+    return build_cached_payload(
+        force_refresh=force_refresh,
+        ttl_seconds=CACHE_TTL_SECONDS,
+        cache_lock=_CACHE_LOCK,
+        cache_state=_CACHE_STATE,
+        cache_key="default",
+        builder=lambda: _collect_payload(previous_outage_fallback=previous_outage_fallback),
+    )
