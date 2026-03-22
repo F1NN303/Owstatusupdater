@@ -1,8 +1,82 @@
 # Agent Handoff
 
-Last updated: 2026-03-19
+Last updated: 2026-03-22
 Current branch: `main`
-Latest known commit at handoff update: `d2273903`
+Latest known commit at handoff update: `fdbaf1fe`
+
+## Current Priority State (2026-03-22)
+
+This handoff was refreshed after the site was rebranded toward `Status Radar` and after the first public AI assistant integration shipped.
+
+### What this project is now
+- Public GitHub Pages status site for multiple services, not only Overwatch.
+- React frontend is the real live app.
+- Existing public JSON status outputs remain the source of truth.
+- AI is an optional public assistant layered on top of those public JSON/site-help sources.
+
+### Live URLs
+- Live site:
+  - `https://f1nn303.github.io/Owstatusupdater/next/`
+- Current public AI base URL:
+  - `https://status-ai.tail0f936a.ts.net`
+- AI health:
+  - `https://status-ai.tail0f936a.ts.net/health`
+
+### AI architecture
+- Frontend repo:
+  - `Owstatusupdater`
+- Backend repo:
+  - `owstbcknd`
+- Runtime:
+  - Ollama local on `http://127.0.0.1:11434`
+  - model `qwen3.5:4b`
+  - Node wrapper local on `http://127.0.0.1:3000`
+  - public exposure through Tailscale Funnel on a stable `*.ts.net` URL
+- Trusted AI data source:
+  - public generated site JSON plus public site-help context only
+- Public AI contract used by the site:
+  - `GET /health`
+  - `POST /api/ask-status/stream`
+
+### AI safety / behavior rules
+- Do not let the AI invent status logic.
+- Deterministic site logic still comes from the public JSON files.
+- AI should summarize, explain, and answer help questions only from approved public data.
+- If the backend is offline, the site must show `AI unavailable` and keep the rest of the site working.
+- Frontend must not assume the AI is always reachable.
+
+### Current recent UI changes
+- AI assistant sheet was redesigned into a cleaner, more premium mobile sheet.
+- Settings page was redesigned with a calmer hierarchy and a public changelog entry point.
+- Settings alert-account flicker bug was fixed:
+  - root cause was unstable effect dependencies in `react-next/src/lib/alertAccount.tsx`
+  - account state no longer flips between `Connected` and `Local only` during reload/checking
+- Mobile AI sheet overlap was fixed:
+  - it now tracks the visible mobile viewport more closely instead of relying on a short fixed-height bottom sheet
+
+### Recent important commits
+- `fdbaf1fe` - `fix(ui): stabilize settings account state and mobile assistant`
+- `e20a9588` - `chore: refresh status data`
+- `aa8bee63` - `feat(ui): redesign settings and add public changelog`
+- `66840ec3` - `refactor(ui): simplify premium AI assistant sheet`
+
+### Files future agents should read first
+- `react-next/src/components/AiStatusAssistant.tsx`
+- `react-next/src/lib/aiStatusChat.ts`
+- `react-next/src/lib/alertAccount.tsx`
+- `react-next/src/pages/SettingsPage.tsx`
+- `react-next/src/components/AiFormattedMessage.tsx`
+- `.github/workflows/deploy-pages.yml`
+- `react-next/.env.example`
+
+### Do / Don't
+- Do keep the site static on GitHub Pages if possible.
+- Do keep AI answers grounded in public JSON/site-help content.
+- Do expect `origin/main` to move because scheduled status-data refreshes push regularly.
+- Do rebase before pushing UI changes.
+- Don't commit real secrets or local `.env` values.
+- Don't bake temporary public backend URLs into tracked frontend config.
+- Don't turn the AI into a source of truth for uptime/status.
 
 ## Purpose
 This file is the persistent handoff for future agents. It captures the current project state, recent changes, deployment behavior, known risks, and recommended next steps.
