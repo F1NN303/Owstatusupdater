@@ -834,3 +834,37 @@ Key files:
 - Notes:
   - This was a follow-up to live mobile screenshots showing the `KI fragen` trigger overlapping settings content.
   - The AI backend contract and deployment wiring were not changed; only the trigger's mobile behavior and settings-page presentation were adjusted.
+
+## Cross-Agent Status Snapshot (2026-03-23)
+- Current remote `main` head at handoff time:
+  - `905ddf4d` `fix(ui): tighten mobile settings layout`
+- Recent shipped commits that materially changed the site:
+  - `905ddf4d` `fix(ui): tighten mobile settings layout`
+  - `b5548c7a` `fix(ci): serialize update-site-data runs`
+  - `0a1a0e60` `feat(ui): refine settings and detail hierarchy`
+  - `25a3f1d0` `perf(ui): isolate alert account and unify page shell`
+- Current non-AI frontend state:
+  - settings uses a lighter mobile-first hierarchy with grouped rows and compact summary chips
+  - service detail uses a lighter first-screen summary with the denser chart content pushed lower
+  - alerts/settings load their alert-account provider lazily instead of loading that code during initial app boot
+  - `Update Site Data` workflow runs are serialized to avoid overlapping push races on `main`
+- Current AI-related state:
+  - the AI assistant is already integrated into the main site UI
+  - the backend / deployment side is owned by a separate agent/workstream
+  - do not change AI backend contract or deploy wiring casually
+  - frontend-only AI adjustment already shipped here:
+    - mobile `/settings` hides the floating assistant trigger to avoid overlaying form content
+    - desktop and non-settings mobile routes still keep the assistant launcher
+- Known AI ownership boundary in this repo:
+  - AI UI files most likely to conflict if edited in parallel:
+    - `react-next/src/components/AiStatusAssistant.tsx`
+    - `react-next/src/components/AiFormattedMessage.tsx`
+    - `react-next/src/lib/aiStatusChat.ts`
+  - avoid touching those unless the task is explicitly about the assistant
+- Known operational caveats:
+  - the public AI backend is not the stable part of this repo; availability depends on external runtime and tunnel state
+  - untracked local artifact folders like `output/` and `react-next/.playwright-cli/` are validation byproducts and should not be committed
+- Recommended next non-AI focus areas:
+  - continue tightening mobile hierarchy on remaining dense pages
+  - reduce remaining mixed EN/DE wording in user-facing labels
+  - keep validating important phone routes with real browser QA after layout changes
