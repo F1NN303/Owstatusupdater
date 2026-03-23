@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-23
 Current branch: `main`
-Latest known commit at handoff update: `7736f001`
+Latest known commit at handoff update: `0a1a0e60`
 
 ## Current Priority State (2026-03-22)
 
@@ -804,3 +804,14 @@ Key files:
 - Notes:
   - The local QA run used a temporary `react-next/node_modules` junction to the original checkout so the clean synced worktree could reuse the existing dependency install.
   - Preview console still showed local data/fetch 404s on the root preview route because this clean worktree was validated against `vite preview`, not a regenerated `site/next` artifact tree with live JSON beside it.
+
+## Latest Validation Snapshot (Update-Site-Data Concurrency Guard)
+- Scope:
+  - Added a top-level workflow concurrency guard to `.github/workflows/update-site-data.yml`.
+  - New scheduled/manual `Update Site Data` runs now serialize per ref instead of racing each other to push refreshed data back to `main`.
+  - This specifically addresses the March 23, 2026 overlap where run `#861` succeeded and near-simultaneous run `#862` failed in the final push step.
+- Validation:
+  - `py -3 scripts/check_public_exposure.py` -> passed
+- Notes:
+  - This is a workflow-only safety fix; it does not change the status-data build logic itself.
+  - `Deploy GitHub Pages #1009` for commit `0a1a0e60` already succeeded before this fix; the concurrency guard is for future overlapping `Update Site Data` runs.

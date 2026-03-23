@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: update-site-data-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   refresh-data:
     runs-on: ubuntu-latest
