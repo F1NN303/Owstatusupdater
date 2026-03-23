@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAlertAccount } from "@/lib/alertAccount";
-import { appBuildMeta, formatBuildLabel, pickLang, useAppShell } from "@/lib/appShell";
+import { appBuildMeta, pickLang, useAppShell } from "@/lib/appShell";
 import { formatPublicChangelogDate, publicChangelogEntries } from "@/lib/publicChangelog";
 import { cn } from "@/lib/utils";
 import {
@@ -171,23 +171,20 @@ function ToggleSwitch({
   );
 }
 
-function QuickStat({
+function SummaryChip({
   label,
   value,
-  hint,
   valueClassName,
 }: {
   label: string;
   value: string;
-  hint?: string;
   valueClassName?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-3">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
-      <p className={cn("mt-1 text-sm font-semibold text-foreground", valueClassName)}>{value}</p>
-      {hint ? <p className="mt-1 text-[11px] leading-5 text-muted-foreground">{hint}</p> : null}
-    </div>
+    <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2 text-[11px] text-slate-300">
+      <span className="font-semibold uppercase tracking-[0.14em] text-slate-500">{label}</span>
+      <span className={cn("truncate font-medium text-slate-100", valueClassName)}>{value}</span>
+    </span>
   );
 }
 
@@ -375,7 +372,6 @@ const SettingsPage = () => {
   } = useAlertAccount();
 
   const buildMeta = appBuildMeta();
-  const versionLabel = formatBuildLabel(language);
   const compactBuildId = buildMeta.id ? buildMeta.id.slice(0, 7) : pickLang(language, "unknown", "unbekannt");
   const buildTimeLabel = formatBuildStamp(buildMeta.stamp, language);
   const syncStatusLabel =
@@ -417,15 +413,15 @@ const SettingsPage = () => {
   );
   const heroDescription = pickLang(
     language,
-    "Adjust language, feed defaults, and alert links for this browser.",
-    "Passe Sprache, Feed-Standards und Alarm-Verknuepfungen fuer diesen Browser an.",
+    "Adjust display, home feed, and alert defaults saved in this browser.",
+    "Passe Anzeige-, Startseiten- und Alarm-Standards an, die in diesem Browser gespeichert sind.",
   );
   const heroTitle = pickLang(
     language,
-    "Quiet defaults for this browser.",
-    "Ruhige Standards fuer diesen Browser.",
+    "Defaults for this browser.",
+    "Standards fuer diesen Browser.",
   );
-  const heroEyebrow = pickLang(language, "This device", "Dieses Geraet");
+  const heroEyebrow = pickLang(language, "This browser", "Dieser Browser");
   const alertStatusValue =
     alertAccountStatus === "checking"
       ? pickLang(language, "Checking", "Pruefe")
@@ -445,7 +441,7 @@ const SettingsPage = () => {
   const motionValue = reduceMotion
     ? pickLang(language, "Reduced motion", "Weniger Bewegung")
     : pickLang(language, "Full motion", "Volle Bewegung");
-  const buildMetaLabel = pickLang(language, "Current build", "Aktueller Build");
+  const buildMetaLabel = pickLang(language, "Build", "Build");
 
   const initialCategory = useMemo(() => {
     if (!homeDefaultFilter.startsWith("category:")) {
@@ -469,10 +465,6 @@ const SettingsPage = () => {
         : defaultFilterMode === "category"
           ? pickLang(language, "Category", "Kategorie")
           : pickLang(language, "All", "Alle");
-  const defaultFilterHint =
-    defaultFilterMode === "category" && initialCategory
-      ? pickLang(language, `Category: ${initialCategory}`, `Kategorie: ${initialCategory}`)
-      : pickLang(language, "Start feed focus", "Startfokus");
   const defaultSortLabel =
     homeDefaultSort === "name"
       ? pickLang(language, "Name", "Name")
@@ -480,27 +472,12 @@ const SettingsPage = () => {
         ? pickLang(language, "Updated", "Aktualisiert")
         : pickLang(language, "Impact", "Impact");
   const refreshLabel = `${homeRefreshIntervalSec}s`;
-  const refreshHint = pickLang(language, "Auto refresh", "Auto-Refresh");
-  const alertsStatHint = alertAccountConnected
-    ? pickLang(language, `${alertServiceIds.length} watched`, `${alertServiceIds.length} beobachtet`)
-    : pickLang(language, `${alertServiceIds.length} local`, `${alertServiceIds.length} lokal`);
   const feedStatValue = `${defaultSortLabel} / ${refreshLabel}`;
-  const feedStatHint = pickLang(language, `${defaultFilterLabel} by default`, `${defaultFilterLabel} als Standard`);
   const homeDefaultsSummary = pickLang(
     language,
     `Home opens with ${defaultFilterLabel.toLowerCase()} items, ${defaultSortLabel.toLowerCase()} sorting, and a ${refreshLabel} refresh cadence.`,
     `Start zeigt standardmaessig ${defaultFilterLabel.toLowerCase()}, sortiert nach ${defaultSortLabel.toLowerCase()}, mit ${refreshLabel} Aktualisierung.`,
   );
-  const alertStateSummary = pickLang(
-    language,
-    alertAccountConnected
-      ? `${alertServiceIds.length} services follow your connected alert account.`
-      : `${alertServiceIds.length} services are only saved on this device right now.`,
-    alertAccountConnected
-      ? `${alertServiceIds.length} Services folgen deinem verbundenen Alarm-Konto.`
-      : `${alertServiceIds.length} Services sind aktuell nur auf diesem Geraet gespeichert.`,
-  );
-
   const applyCategoryDraft = (rawValue: string) => {
     const normalized = sanitizeCategory(rawValue);
     setCategoryDraft(normalized);
@@ -516,8 +493,8 @@ const SettingsPage = () => {
           title={pickLang(language, "Settings", "Einstellungen")}
           description={pickLang(
             language,
-            "Device display defaults, feed behavior, and account links",
-            "Anzeige-Standards, Feed-Verhalten und Konto-Verknuepfungen fuer dieses Geraet",
+            "Display, home feed, and alert defaults for this browser",
+            "Anzeige, Startseite und Alarm-Standards fuer diesen Browser",
           )}
           action={
             <div className="glass flex h-12 w-12 items-center justify-center rounded-2xl">
@@ -526,68 +503,37 @@ const SettingsPage = () => {
           }
         />
 
-        <GlassSection className="overflow-hidden border-white/12 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_34%),linear-gradient(180deg,rgba(15,23,42,0.82),rgba(8,15,29,0.92))]" contentClassName="space-y-5">
+        <GlassSection className="overflow-hidden border-white/12 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_34%),linear-gradient(180deg,rgba(15,23,42,0.82),rgba(8,15,29,0.92))]" contentClassName="space-y-4">
           <div className="min-w-0">
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">{heroEyebrow}</p>
-              <h2 className="mt-2 max-w-[13rem] text-[26px] font-semibold leading-[1.02] tracking-[-0.04em] text-foreground">
-                {heroTitle}
-              </h2>
-              <p className="mt-3 max-w-[22rem] text-[13px] leading-6 text-muted-foreground">{heroDescription}</p>
-            </div>
-            <div
-              className="mt-4 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-3 py-2 text-[11px] text-slate-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
-              title={versionLabel}
-            >
-              <span className="font-semibold uppercase tracking-[0.12em] text-slate-400">{buildMetaLabel}</span>
-              <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 font-semibold text-slate-100">
-                v {compactBuildId}
-              </span>
-              <span className="text-slate-500">|</span>
-              <span>{buildTimeLabel}</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            <QuickStat
-              label={pickLang(language, "Language", "Sprache")}
-              value={language === "de" ? "Deutsch" : "English"}
-              hint={pickLang(language, "Interface", "Oberflaeche")}
-            />
-            <QuickStat
-              label={pickLang(language, "Alerts", "Alarme")}
-              value={alertStatusValue}
-              hint={alertsStatHint}
-              valueClassName={alertStatusValueClassName}
-            />
-            <QuickStat label={pickLang(language, "Feed", "Feed")} value={feedStatValue} hint={feedStatHint} />
-          </div>
-
-          <SettingsSurface className="border-primary/15 bg-black/20">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-              {pickLang(language, "Current defaults", "Aktuelle Standards")}
-            </p>
-            <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{homeDefaultsSummary}</p>
-          </SettingsSurface>
-
-          <div className="grid gap-2">
-            <PublicChangelogSheet language={language} compactBuildId={compactBuildId} buildTimeLabel={buildTimeLabel} />
-
-            <Link
-              to="/alerts"
-              className="flex items-center justify-between rounded-[24px] border border-white/10 bg-white/[0.04] px-4 py-3 text-left transition-colors hover:bg-white/[0.07]"
-            >
+            <div className="min-w-0 space-y-3">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {pickLang(language, "Alerts", "Alarme")}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-foreground">
-                  {pickLang(language, "Manage account and watched services", "Konto und beobachtete Services verwalten")}
-                </p>
-                <p className="mt-1 text-[12px] leading-5 text-muted-foreground">{alertStateSummary}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">{heroEyebrow}</p>
+                <h2 className="mt-2 max-w-[14rem] text-[24px] font-semibold leading-[1.02] tracking-[-0.04em] text-foreground">
+                  {heroTitle}
+                </h2>
+                <p className="mt-2 max-w-[24rem] text-[13px] leading-6 text-muted-foreground">{heroDescription}</p>
               </div>
-              <ChevronRight size={16} className="shrink-0 text-muted-foreground" />
-            </Link>
+
+              <div className="flex flex-wrap gap-2">
+                <SummaryChip label={buildMetaLabel} value={`v ${compactBuildId}`} />
+                <SummaryChip label={pickLang(language, "Updated", "Aktualisiert")} value={buildTimeLabel} />
+                <SummaryChip label={pickLang(language, "Language", "Sprache")} value={language === "de" ? "Deutsch" : "English"} />
+                <SummaryChip
+                  label={pickLang(language, "Alerts", "Alarme")}
+                  value={alertStatusValue}
+                  valueClassName={alertStatusValueClassName}
+                />
+                <SummaryChip label={pickLang(language, "Feed", "Feed")} value={feedStatValue} />
+                <SummaryChip label={pickLang(language, "Motion", "Bewegung")} value={motionValue} />
+              </div>
+
+              <SettingsSurface className="border-primary/15 bg-black/20">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
+                  {pickLang(language, "Current defaults", "Aktuelle Standards")}
+                </p>
+                <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{homeDefaultsSummary}</p>
+              </SettingsSurface>
+            </div>
           </div>
         </GlassSection>
 
@@ -596,22 +542,22 @@ const SettingsPage = () => {
             <SectionHeading
               icon={<MonitorSmartphone size={18} />}
               eyebrow={pickLang(language, "Display", "Anzeige")}
-              title={pickLang(language, "Reading experience", "Leseerlebnis")}
+              title={pickLang(language, "Display and time", "Ansicht und Zeit")}
               description={pickLang(
                 language,
-                "Language, motion, and time display for this browser.",
-                "Sprache, Bewegung und Zeitdarstellung fuer diesen Browser.",
+                "Language, motion, and time labels for this browser.",
+                "Sprache, Bewegung und Zeitangaben fuer diesen Browser.",
               )}
             />
 
             <SettingsGroup>
               <SettingsRow
                 eyebrow={pickLang(language, "Language", "Sprache")}
-                title={pickLang(language, "Interface language", "Oberflaechensprache")}
+                title={pickLang(language, "Status page language", "Sprache der Statusseite")}
                 description={pickLang(
                   language,
-                  "Switch the primary language used across the status UI.",
-                  "Wechsle die primaere Sprache der Statusoberflaeche.",
+                  "Choose the primary language used across the site.",
+                  "Lege die Hauptsprache fuer die gesamte Statusseite fest.",
                 )}
               >
                 <SegmentGroup
@@ -626,11 +572,11 @@ const SettingsPage = () => {
 
               <SettingsRow
                 eyebrow={pickLang(language, "Time format", "Zeitformat")}
-                title={pickLang(language, "Timestamp style", "Zeitdarstellung")}
+                title={pickLang(language, "Timestamp style", "Zeitangaben")}
                 description={pickLang(
                   language,
                   "Choose whether status updates should look relative, absolute, or combined.",
-                  "Waehle, ob Statusupdates relativ, absolut oder kombiniert erscheinen sollen.",
+                  "Lege fest, ob Statusupdates relativ, absolut oder kombiniert erscheinen.",
                 )}
               >
                 <SegmentGroup
@@ -646,17 +592,17 @@ const SettingsPage = () => {
 
               <SettingsRow
                 eyebrow={pickLang(language, "Motion", "Bewegung")}
-                title={pickLang(language, "Reduce interface motion", "Weniger Oberflaechen-Bewegung")}
+                title={pickLang(language, "Reduce interface motion", "Weniger Bewegung")}
                 description={pickLang(
                   language,
                   "Use calmer transitions across the app on this device.",
-                  "Nutzt auf diesem Geraet ruhigere Uebergaenge in der gesamten App.",
+                  "Nutzt in diesem Browser ruhigere Uebergaenge in der gesamten App.",
                 )}
                 control={
                   <ToggleSwitch
                     checked={reduceMotion}
                     onCheckedChange={setReduceMotion}
-                    ariaLabel={pickLang(language, "Reduce interface motion", "Weniger Oberflaechen-Bewegung")}
+                    ariaLabel={pickLang(language, "Reduce interface motion", "Weniger Bewegung")}
                   />
                 }
               />
@@ -671,20 +617,16 @@ const SettingsPage = () => {
               description={pickLang(
                 language,
                 "Choose how the start view should look before you filter anything.",
-                "Waehle, wie die Startansicht aussehen soll, bevor du etwas filterst.",
+                "Lege fest, wie die Startansicht aussieht, bevor du filterst.",
               )}
             />
 
             <div className="grid gap-3">
               <SettingsSurface className="bg-white/[0.035]">
-                <div className="grid grid-cols-3 gap-2">
-                  <QuickStat label={pickLang(language, "Filter", "Filter")} value={defaultFilterLabel} hint={defaultFilterHint} />
-                  <QuickStat
-                    label={pickLang(language, "Sort", "Sortierung")}
-                    value={defaultSortLabel}
-                    hint={pickLang(language, "Home order", "Feed-Reihenfolge")}
-                  />
-                  <QuickStat label={pickLang(language, "Refresh", "Refresh")} value={refreshLabel} hint={refreshHint} />
+                <div className="flex flex-wrap gap-2">
+                  <SummaryChip label={pickLang(language, "Filter", "Filter")} value={defaultFilterLabel} />
+                  <SummaryChip label={pickLang(language, "Sort", "Sortierung")} value={defaultSortLabel} />
+                  <SummaryChip label={pickLang(language, "Refresh", "Refresh")} value={refreshLabel} />
                 </div>
               </SettingsSurface>
 
@@ -777,13 +719,13 @@ const SettingsPage = () => {
 
                 <SettingsRow
                   eyebrow={pickLang(language, "Auto refresh", "Auto-Aktualisierung")}
-                  title={pickLang(language, "Refresh cadence", "Aktualisierungsrhythmus")}
-                  description={pickLang(
-                    language,
-                    "Choose how often the home feed should refresh live data.",
-                    "Waehle, wie oft der Home-Feed Live-Daten aktualisieren soll.",
-                  )}
-                >
+                title={pickLang(language, "Refresh cadence", "Aktualisierungsrhythmus")}
+                description={pickLang(
+                  language,
+                  "Choose how often the home feed should refresh live data.",
+                  "Lege fest, wie oft der Home-Feed Live-Daten aktualisieren soll.",
+                )}
+              >
                   <div className="flex flex-wrap gap-2">
                     {[30, 60, 120].map((seconds) => (
                       <button
@@ -846,17 +788,17 @@ const SettingsPage = () => {
             <SectionHeading
               icon={<BookOpenText size={18} />}
               eyebrow={pickLang(language, "System", "System")}
-              title={pickLang(language, "Storage, alerts, and public info", "Speicher, Alarme und oeffentliche Infos")}
+              title={pickLang(language, "Storage, alerts, and updates", "Speicher, Alarme und Updates")}
               description={pickLang(
                 language,
-                "Quick links and controls that affect this browser or your connected alert account.",
-                "Schnelle Links und Steuerungen, die diesen Browser oder dein verbundenes Alarm-Konto betreffen.",
+                "Quick links and controls for this browser and your connected alert account.",
+                "Schnelle Links und Steuerungen fuer diesen Browser und dein verbundenes Alarm-Konto.",
               )}
             />
 
             <SettingsGroup>
               <SettingsRow
-                eyebrow={pickLang(language, "This device", "Dieses Geraet")}
+                eyebrow={pickLang(language, "This browser", "Dieser Browser")}
                 title={pickLang(language, "Local storage", "Lokaler Speicher")}
                 description={storageSummary}
                 control={<HardDriveDownload size={16} className="text-primary/80" aria-hidden="true" />}
@@ -879,6 +821,8 @@ const SettingsPage = () => {
             </SettingsGroup>
 
             <div className="grid gap-2">
+              <PublicChangelogSheet language={language} compactBuildId={compactBuildId} buildTimeLabel={buildTimeLabel} />
+
               <button
                 type="button"
                 onClick={reopenHomeHints}
@@ -908,7 +852,7 @@ const SettingsPage = () => {
               >
                 <div>
                   <p className="text-sm font-medium text-amber-100">
-                    {pickLang(language, "Reset device preferences", "Gerateinstellungen zuruecksetzen")}
+                    {pickLang(language, "Reset browser defaults", "Browser-Standards zuruecksetzen")}
                   </p>
                   <p className="mt-1 text-[12px] leading-5 text-amber-100/75">
                     {pickLang(

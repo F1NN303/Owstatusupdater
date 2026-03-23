@@ -815,3 +815,22 @@ Key files:
 - Notes:
   - This is a workflow-only safety fix; it does not change the status-data build logic itself.
   - `Deploy GitHub Pages #1009` for commit `0a1a0e60` already succeeded before this fix; the concurrency guard is for future overlapping `Update Site Data` runs.
+
+## Latest Validation Snapshot (Settings Mobile Cleanup + Non-Intrusive AI Trigger)
+- Scope:
+  - Refined `react-next/src/pages/SettingsPage.tsx` to reduce mobile density:
+    - compacted the settings hero into summary chips instead of mini dashboard tiles
+    - moved changelog access down into the system/update area
+    - tightened German-facing settings copy so the page reads more naturally in the public UI
+    - kept the existing grouped settings rows for display, feed, and system controls
+  - Updated `react-next/src/components/AiStatusAssistant.tsx` so the floating assistant launcher no longer overlays the mobile settings screen:
+    - desktop still uses the larger floating pill
+    - mobile uses the compact launcher on other routes
+    - the floating launcher is hidden on `/settings` mobile to avoid covering form content
+- Validation:
+  - `npm.cmd run build` in `react-next` -> passed
+  - `npm.cmd run test` in `react-next` -> passed
+  - Manual mobile browser QA at `393x852` via `vite preview` -> passed for `/Owstatusupdater/next/settings`
+- Notes:
+  - This was a follow-up to live mobile screenshots showing the `KI fragen` trigger overlapping settings content.
+  - The AI backend contract and deployment wiring were not changed; only the trigger's mobile behavior and settings-page presentation were adjusted.

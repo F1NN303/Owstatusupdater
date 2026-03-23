@@ -317,6 +317,7 @@ const AiStatusAssistant = () => {
   const configured = isAiConfigured();
   const routeServiceId = resolveServiceIdFromPathname(location.pathname);
   const suggestions = useMemo(() => buildSuggestions(language, routeServiceId), [language, routeServiceId]);
+  const triggerLabel = pickLang(language, "Ask AI", "KI fragen");
 
   const [open, setOpen] = useState(false);
   const [availability, setAvailability] = useState<AvailabilityState>("checking");
@@ -328,6 +329,8 @@ const AiStatusAssistant = () => {
   const [draftCitations, setDraftCitations] = useState<AiCitation[]>([]);
   const [keyboardInset, setKeyboardInset] = useState(0);
   const [sheetViewportHeight, setSheetViewportHeight] = useState<number | null>(null);
+  const triggerStatusLabel = availabilityLabel(language, availability, configured);
+  const hideFloatingTrigger = isMobile && /\/settings(?:$|[/?#])/.test(location.pathname);
 
   const hasConversation = messages.length > 0 || Boolean(assistantDraft);
   const composerDisabled = availability !== "available" || sending;
@@ -550,25 +553,35 @@ const AiStatusAssistant = () => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <button
-          type="button"
-          className="fixed bottom-[calc(5.4rem+env(safe-area-inset-bottom,0px))] right-3.5 z-40 flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/78 px-3.5 py-2.5 text-[13px] font-medium text-foreground shadow-[0_18px_46px_rgba(2,8,23,0.42)] backdrop-blur-xl transition-all duration-300 hover:border-cyan-300/20 hover:bg-slate-900/86 hover:shadow-[0_20px_54px_rgba(2,8,23,0.5)] active:scale-[0.985] sm:bottom-6 sm:right-6 sm:gap-2.5 sm:px-4 sm:py-3 sm:text-sm"
-        >
-          <span
+      {hideFloatingTrigger ? null : (
+        <SheetTrigger asChild>
+          <button
+            type="button"
+            aria-label={`${triggerLabel} - ${triggerStatusLabel}`}
+            title={triggerStatusLabel}
             className={cn(
-              "h-2.5 w-2.5 rounded-full shadow-[0_0_14px_currentColor]",
-              availability === "available"
-                ? "bg-emerald-400 text-emerald-400"
-                : availability === "checking"
-                  ? "bg-amber-300 text-amber-300"
-                  : "bg-slate-500 text-slate-500",
+              "fixed z-40 flex items-center border border-white/10 bg-slate-950/78 text-foreground backdrop-blur-xl transition-all duration-300 hover:border-cyan-300/20 hover:bg-slate-900/86 active:scale-[0.985]",
+              isMobile
+                ? "bottom-[calc(4.95rem+env(safe-area-inset-bottom,0px))] right-3.5 h-11 w-11 justify-center rounded-[18px] shadow-[0_14px_30px_rgba(2,8,23,0.36)]"
+                : "bottom-6 right-6 gap-2.5 rounded-full px-4 py-3 text-sm shadow-[0_18px_46px_rgba(2,8,23,0.42)] hover:shadow-[0_20px_54px_rgba(2,8,23,0.5)]",
             )}
-          />
-          <Bot size={16} className="text-cyan-100" />
-          <span>{pickLang(language, "Ask AI", "KI fragen")}</span>
-        </button>
-      </SheetTrigger>
+          >
+            <span
+              className={cn(
+                "rounded-full shadow-[0_0_14px_currentColor]",
+                isMobile ? "absolute right-2 top-2 h-2 w-2" : "h-2.5 w-2.5",
+                availability === "available"
+                  ? "bg-emerald-400 text-emerald-400"
+                  : availability === "checking"
+                    ? "bg-amber-300 text-amber-300"
+                    : "bg-slate-500 text-slate-500",
+              )}
+            />
+            <Bot size={isMobile ? 18 : 16} className="text-cyan-100" />
+            {isMobile ? null : <span>{triggerLabel}</span>}
+          </button>
+        </SheetTrigger>
+      )}
 
       <SheetContent
         side={isMobile ? "bottom" : "right"}
