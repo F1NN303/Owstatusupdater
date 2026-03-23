@@ -1343,82 +1343,82 @@ const Index = () => {
             <div className="glass glass-specular h-[112px] rounded-[26px]" />
           </div>
         ) : cards.length > 0 ? (
-          <section className="glass-heavy glass-specular overflow-hidden rounded-[28px] px-4 py-4">
+          <section className="glass-heavy glass-specular overflow-hidden rounded-[28px] px-3 py-3 sm:px-4 sm:py-4">
             <div className="relative z-10">
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start justify-between gap-2 sm:gap-3">
                 <div className="min-w-0">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     {pickLang(language, "Operational picture", "Betriebsbild")}
                   </p>
-                  <h2 className="mt-2 max-w-[14ch] text-[29px] font-semibold leading-[0.98] tracking-tight text-foreground">
+                  <h2 className="mt-1 max-w-[16ch] text-[23px] font-semibold leading-[0.95] tracking-tight text-foreground sm:mt-2 sm:max-w-[14ch] sm:text-[29px] sm:leading-[0.98]">
                     {heroHeadline}
                   </h2>
-                  <p className="mt-3 max-w-[34rem] text-[13px] leading-relaxed text-muted-foreground">
+                  <p className="mt-2 max-w-[28rem] text-[11px] leading-[1.45] text-muted-foreground sm:mt-3 sm:max-w-[34rem] sm:text-[13px] sm:leading-relaxed">
                     {heroSupportCopy}
                   </p>
                 </div>
                 <span
-                  className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] ${heroStateToneClass}`}
+                  className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] sm:gap-2 sm:px-3 sm:py-1.5 sm:text-[10px] sm:tracking-[0.16em] ${heroStateToneClass}`}
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
                   {heroStateLabel}
                 </span>
               </div>
 
-              <div className="mt-4 grid grid-cols-2 gap-2.5">
-                <div className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              <div className="mt-3 grid grid-cols-2 gap-1.5 sm:mt-4 sm:gap-2.5">
+                <div className="rounded-2xl border border-white/10 bg-black/15 px-2.5 py-2.5 sm:px-3 sm:py-3">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[10px]">
                     {pickLang(language, "Monitored", "Überwacht")}
                   </p>
-                  <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">{cards.length}</p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
+                  <p className="mt-1.5 text-[21px] font-semibold leading-none tracking-tight text-foreground sm:mt-2 sm:text-2xl">{cards.length}</p>
+                  <p className="mt-1 text-[10px] leading-[1.3] text-muted-foreground sm:text-[11px] sm:leading-relaxed">
                     {pickLang(language, "Public status feeds", "Öffentliche Statusquellen")}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setActiveFilter("issues")}
-                  className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3 text-left transition-colors hover:bg-white/10"
+                  className="rounded-2xl border border-white/10 bg-black/15 px-2.5 py-2.5 text-left transition-colors hover:bg-white/10 sm:px-3 sm:py-3"
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[10px]">
                     {pickLang(language, "Needs attention", "Braucht Aufmerksamkeit")}
                   </p>
-                  <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">{impactedCount}</p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
+                  <p className="mt-1.5 text-[21px] font-semibold leading-none tracking-tight text-foreground sm:mt-2 sm:text-2xl">{impactedCount}</p>
+                  <p className="mt-1 text-[10px] leading-[1.3] text-muted-foreground sm:text-[11px] sm:leading-relaxed">
                     {pickLang(language, "Tap to isolate impacted services", "Tippen, um betroffene Services zu filtern")}
                   </p>
                 </button>
-                <div className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                <div className="rounded-2xl border border-white/10 bg-black/15 px-2.5 py-2.5 sm:px-3 sm:py-3">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[10px]">
                     {pickLang(language, "Source confidence", "Quellenvertrauen")}
                   </p>
-                  <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+                  <p className="mt-1.5 text-[21px] font-semibold leading-none tracking-tight text-foreground sm:mt-2 sm:text-2xl">
                     {averageSourceConfidence !== null ? `${averageSourceConfidence.toFixed(1)}%` : "--"}
                   </p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
+                  <p className="mt-1 text-[10px] leading-[1.3] text-muted-foreground sm:text-[11px] sm:leading-relaxed">
                     {pickLang(language, "Average cross-source confidence", "Durchschnittliches Quellenvertrauen")}
                   </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                <div className="rounded-2xl border border-white/10 bg-black/15 px-2.5 py-2.5 sm:px-3 sm:py-3">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[10px]">
                     {pickLang(language, "Changing now", "Verändert sich jetzt")}
                   </p>
-                  <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+                  <p className="mt-1.5 text-[21px] font-semibold leading-none tracking-tight text-foreground sm:mt-2 sm:text-2xl">
                     {servicesWithRecentChange}
                   </p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
+                  <p className="mt-1 text-[10px] leading-[1.3] text-muted-foreground sm:text-[11px] sm:leading-relaxed">
                     {pickLang(language, "Services with live change or disruption signals", "Services mit Live-Änderungs- oder Störungssignalen")}
                   </p>
                 </div>
               </div>
 
-              <div className="mt-4">
+              <div className="mt-3.5 sm:mt-4">
                 <div className="flex items-end justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                       {pickLang(language, "Watch now", "Jetzt im Blick")}
                     </p>
-                    <p className="mt-1 text-[12px] text-muted-foreground">
+                    <p className="mt-1 text-[11px] text-muted-foreground sm:text-[12px]">
                       {pickLang(language, "The shortest path to what matters next.", "Der kürzeste Weg zu dem, was jetzt zählt.")}
                     </p>
                   </div>
@@ -1430,12 +1430,12 @@ const Index = () => {
                 </div>
 
                 {impactedCount > 0 || servicesWithRecentChange > 0 || nextMaintenanceEntry ? (
-                  <div className="mt-2.5 space-y-2">
+                  <div className="mt-2.5 space-y-1.5 sm:space-y-2">
                     {focusCards.map((card) => (
                       <Link
                         key={card.serviceId}
                         to={`/status/${card.serviceId}`}
-                        className="group flex items-start justify-between gap-3 rounded-2xl border border-white/10 bg-black/15 px-3 py-3 transition-colors hover:bg-white/10"
+                        className="group flex items-start justify-between gap-2.5 rounded-2xl border border-white/10 bg-black/15 px-2.5 py-2.5 transition-colors hover:bg-white/10 sm:gap-3 sm:px-3 sm:py-3"
                       >
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
@@ -1443,7 +1443,7 @@ const Index = () => {
                               serviceId={card.serviceId}
                               iconName={card.server.icon}
                               size={14}
-                              containerClassName="h-8 w-8 shrink-0"
+                              containerClassName="h-7 w-7 shrink-0 sm:h-8 sm:w-8"
                             />
                             <div className="min-w-0">
                               <p className="truncate text-[13px] font-semibold text-foreground">{card.server.name}</p>

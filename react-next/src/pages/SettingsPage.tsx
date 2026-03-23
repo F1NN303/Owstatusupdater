@@ -247,13 +247,13 @@ function PublicChangelogSheet({
       <SheetTrigger asChild>
         <button
           type="button"
-          className="group flex w-full items-center justify-between rounded-[22px] border border-primary/20 bg-primary/10 px-4 py-3 text-left transition-all duration-200 hover:bg-primary/15"
+          className="group flex w-full items-start justify-between gap-3 rounded-[22px] border border-primary/20 bg-primary/10 px-4 py-3.5 text-left transition-all duration-200 hover:bg-primary/15"
         >
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1 pr-1">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary/80">
               {pickLang(language, "What's new", "Was ist neu")}
             </p>
-            <p className="mt-1 truncate text-sm font-semibold text-foreground">
+            <p className="mt-1 max-w-[15.5rem] text-sm font-semibold leading-5 text-foreground sm:max-w-none">
               {language === "de" ? latestEntry.titleDe : latestEntry.titleEn}
             </p>
             <p className="mt-1 text-[12px] leading-5 text-muted-foreground">
@@ -266,12 +266,12 @@ function PublicChangelogSheet({
 
       <SheetContent
         side={isMobile ? "bottom" : "right"}
-        className="h-[min(82dvh,760px)] overflow-hidden rounded-t-[30px] border-white/10 bg-[linear-gradient(180deg,rgba(7,12,24,0.98),rgba(7,12,24,0.94))] p-0 text-foreground shadow-[0_-24px_64px_rgba(2,8,23,0.5)] sm:h-full sm:max-w-[420px] sm:rounded-none sm:border-l"
+        className="h-[min(88dvh,760px)] overflow-hidden rounded-t-[30px] border-white/10 bg-[linear-gradient(180deg,rgba(7,12,24,0.98),rgba(7,12,24,0.94))] p-0 text-foreground shadow-[0_-24px_64px_rgba(2,8,23,0.5)] sm:h-full sm:max-w-[420px] sm:rounded-none sm:border-l"
       >
         <div className="relative flex h-full min-h-0 flex-col">
-          {isMobile ? <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-white/15" /> : null}
+          {isMobile ? <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-white/15" /> : null}
 
-          <SheetHeader className="border-b border-white/8 px-5 pb-4 pt-5 text-left sm:px-6">
+          <SheetHeader className="border-b border-white/8 px-4 pb-4 pt-3 pr-14 text-left sm:px-6 sm:pb-4 sm:pt-5 sm:pr-16">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-primary">
                 <History size={18} />
@@ -280,11 +280,11 @@ function PublicChangelogSheet({
                 <SheetTitle className="text-[17px] font-semibold tracking-[-0.02em]">
                   {pickLang(language, "Recent changes", "Letzte Aenderungen")}
                 </SheetTitle>
-                <SheetDescription className="mt-1 text-[13px] leading-6 text-muted-foreground">
+                <SheetDescription className="mt-1 max-w-[15.5rem] text-[13px] leading-6 text-muted-foreground sm:max-w-[18rem]">
                   {pickLang(
                     language,
-                    "Short public notes for larger updates. No internal rollout details.",
-                    "Kurze oeffentliche Hinweise fuer groessere Updates. Keine internen Rollout-Details.",
+                    "Short public notes about visible updates.",
+                    "Kurze oeffentliche Hinweise zu sichtbaren Updates.",
                   )}
                 </SheetDescription>
               </div>
@@ -300,7 +300,7 @@ function PublicChangelogSheet({
             </div>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-6" style={{ WebkitOverflowScrolling: "touch" }}>
+          <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5" style={{ WebkitOverflowScrolling: "touch" }}>
             <div className="space-y-4">
               {publicChangelogEntries.map((entry) => {
                 const badge = language === "de" ? entry.badgeDe : entry.badgeEn;
@@ -313,7 +313,7 @@ function PublicChangelogSheet({
                     key={entry.id}
                     className="rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.03))] p-4"
                   >
-                    <div className="flex items-center justify-between gap-3">
+                    <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
                         {badge}
                       </span>
@@ -322,9 +322,11 @@ function PublicChangelogSheet({
                       </span>
                     </div>
 
-                    <h3 className="mt-3 text-[17px] font-semibold tracking-[-0.02em] text-foreground">{title}</h3>
-                    <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{summary}</p>
-                    <ul className="mt-3 space-y-2 pl-4 text-[13px] leading-6 text-slate-200 marker:text-primary">
+                    <div className="mt-3 max-w-[18rem] sm:max-w-none">
+                      <h3 className="text-[17px] font-semibold tracking-[-0.02em] text-foreground">{title}</h3>
+                      <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{summary}</p>
+                    </div>
+                    <ul className="mt-3 max-w-[18rem] space-y-2 pl-4 text-[13px] leading-6 text-slate-200 marker:text-primary sm:max-w-none">
                       {bullets.map((bullet) => (
                         <li key={bullet}>{bullet}</li>
                       ))}
@@ -379,6 +381,8 @@ const SettingsPage = () => {
       ? pickLang(language, "Synced", "Synchronisiert")
       : alertAccountProfile?.brevoSyncStatus === "error"
         ? pickLang(language, "Sync issue", "Sync-Problem")
+        : alertAccountProfile?.providerContactId
+          ? pickLang(language, "Checking signup", "Anmeldung wird geprueft")
         : pickLang(language, "Not connected", "Nicht verbunden");
 
   const alertsSummary = pickLang(

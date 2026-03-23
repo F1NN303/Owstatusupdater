@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-23
 Current branch: `main`
-Latest known commit at handoff update: `0a1a0e60`
+Latest known commit at handoff update: `fe8fbb50`
 
 ## Current Priority State (2026-03-22)
 
@@ -16,6 +16,8 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
 
 ### Live URLs
 - Live site:
+  - `https://f1nn303.github.io/Owstatusupdater/`
+- React preview copy:
   - `https://f1nn303.github.io/Owstatusupdater/next/`
 - Public AI base URL:
   - configured outside the repo via the `AI_API_BASE_URL` GitHub repo variable
@@ -53,10 +55,10 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
   - it now tracks the visible mobile viewport more closely instead of relying on a short fixed-height bottom sheet
 
 ### Recent important commits
-- `fdbaf1fe` - `fix(ui): stabilize settings account state and mobile assistant`
-- `e20a9588` - `chore: refresh status data`
-- `aa8bee63` - `feat(ui): redesign settings and add public changelog`
-- `66840ec3` - `refactor(ui): simplify premium AI assistant sheet`
+- `fe8fbb50` - `docs: add cross-agent project snapshot`
+- `905ddf4d` - `fix(ui): tighten mobile settings layout`
+- `b5548c7a` - `fix(ci): serialize update-site-data runs`
+- `0a1a0e60` - `feat(ui): refine settings and detail hierarchy`
 
 ### Files future agents should read first
 - `react-next/src/components/AiStatusAssistant.tsx`
@@ -837,12 +839,16 @@ Key files:
 
 ## Cross-Agent Status Snapshot (2026-03-23)
 - Current remote `main` head at handoff time:
-  - `905ddf4d` `fix(ui): tighten mobile settings layout`
+  - `fe8fbb50` `docs: add cross-agent project snapshot`
 - Recent shipped commits that materially changed the site:
+  - `fe8fbb50` `docs: add cross-agent project snapshot`
   - `905ddf4d` `fix(ui): tighten mobile settings layout`
   - `b5548c7a` `fix(ci): serialize update-site-data runs`
   - `0a1a0e60` `feat(ui): refine settings and detail hierarchy`
-  - `25a3f1d0` `perf(ui): isolate alert account and unify page shell`
+- Current public data/docs sync state:
+  - `site/data/assistant-profile.json` is committed public assistant context and should stay public-safe
+  - the handoff header and live URL section now reflect the real root-vs-preview GitHub Pages layout
+  - `app.py` + `render.yaml` still exist as a legacy Flask/Render side path and are not part of the GitHub Pages deploy flow
 - Current non-AI frontend state:
   - settings uses a lighter mobile-first hierarchy with grouped rows and compact summary chips
   - service detail uses a lighter first-screen summary with the denser chart content pushed lower
@@ -868,3 +874,45 @@ Key files:
   - continue tightening mobile hierarchy on remaining dense pages
   - reduce remaining mixed EN/DE wording in user-facing labels
   - keep validating important phone routes with real browser QA after layout changes
+
+## Latest Validation Snapshot (Assistant Profile Copy + Handoff Sync)
+- Scope:
+  - verified that `site/data/assistant-profile.json` remains committed public assistant context and public-safe under the repo exposure rules
+  - refreshed the `docs/AGENT_HANDOFF.md` header, live URL section, and cross-agent snapshot to match the actual `origin/main` head and the root-vs-preview Pages deployment split
+  - clarified in the snapshot that `app.py` + `render.yaml` are a legacy side path, not the active Pages deployment contract
+- Validation:
+  - `py -3 scripts/check_public_exposure.py` -> passed
+- Notes:
+  - no runtime routes or frontend component behavior changed in this pass
+
+## Latest Validation Snapshot (Mobile Settings + Changelog Sheet Polish)
+- Scope:
+  - refined the mobile `Was ist neu` trigger in `react-next/src/pages/SettingsPage.tsx` so the latest title no longer depends on a single-line truncation on narrow screens
+  - tightened the mobile changelog sheet top spacing, reserved more room for the close action, and increased the bottom-sheet height so the sheet sits higher on phones
+  - reduced the mobile changelog text measure and refreshed the latest public changelog entry in `react-next/src/lib/publicChangelog.ts` to keep the copy shorter and more public-safe
+- Validation:
+  - `npm.cmd run test` in `react-next` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+- Notes:
+  - this pass is layout/content polish only; it does not change routes, data contracts, or AI backend wiring
+
+## Latest Validation Snapshot (Mobile Home Hero + Alerts Delivery Follow-Up)
+- Scope:
+  - tightened the mobile home hero in `react-next/src/pages/Index.tsx` so the first status block uses less vertical space on phone widths:
+    - smaller/tighter mobile typography and spacing
+    - a wider mobile headline measure so the German hero wraps less aggressively
+    - denser metric-card spacing without changing desktop layout
+  - refined alert delivery status handling in `react-next/src/pages/EmailAlerts.tsx`:
+    - step 3 no longer treats every non-synced state as the same static `Setup offen` message
+    - once the secure provider form is opened, the page keeps a local follow-up state, re-checks alert-account delivery status when the user returns, and offers an explicit `Status pruefen` action
+    - settings summary wording in `react-next/src/pages/SettingsPage.tsx` now also reflects a pending provider signup when a provider contact exists
+  - broadened the latest public changelog copy in `react-next/src/lib/publicChangelog.ts` so the public note covers the mobile hero + alert setup polish without exposing internal rollout detail
+- Validation:
+  - `npm.cmd run test` in `react-next` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+  - Manual mobile browser QA at `393x852` via local Vite dev server -> passed for `/` and unauthenticated `/alerts`
+- Notes:
+  - the auth-dependent step-3 follow-up state could not be fully end-to-end verified locally without a live connected alert account plus provider sync callback data
+  - the frontend now has a clearer pending/check-again path, but final `Active` status still depends on alert-account profile data reaching `brevo_sync_status = synced`

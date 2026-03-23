@@ -13,6 +13,26 @@ export interface PublicChangelogEntry {
 
 export const publicChangelogEntries: PublicChangelogEntry[] = [
   {
+    id: "2026-03-23-mobile-settings-polish",
+    updatedAt: "2026-03-23",
+    badgeEn: "Latest update",
+    badgeDe: "Letztes Update",
+    titleEn: "Mobile polish pass",
+    titleDe: "Mobiler Feinschliff",
+    summaryEn:
+      "Several phone-sized layouts and setup cues were tightened so key actions are easier to read and follow.",
+    summaryDe:
+      "Mehrere Ansichten und Setup-Hinweise fuer Smartphones wurden gestrafft, damit wichtige Aktionen ruhiger und leichter lesbar bleiben.",
+    bulletsEn: [
+      "The home overview fits more cleanly on narrow screens.",
+      "Alert setup gives clearer follow-up cues after signup steps.",
+    ],
+    bulletsDe: [
+      "Die Start-Uebersicht sitzt auf schmalen Displays kompakter.",
+      "Die Alarm-Einrichtung gibt nach Anmeldeschritten klarere Rueckmeldungen.",
+    ],
+  },
+  {
     id: "2026-03-22-premium-ui-pass",
     updatedAt: "2026-03-22",
     badgeEn: "Latest update",

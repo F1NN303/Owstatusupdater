@@ -34,6 +34,44 @@ const STATUS_CLASS: Record<NoticeTone, string> = {
   bad: "border-rose-300/20 bg-rose-300/10 text-rose-200",
 };
 
+const DELIVERY_PROGRESS_STORAGE_KEY = "owstatusupdater.alerts.delivery-follow-up.v1";
+const DELIVERY_PROGRESS_MAX_AGE_MS = 1000 * 60 * 60 * 48;
+
+function readDeliveryFollowUpPending() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  try {
+    const storedValue = window.localStorage.getItem(DELIVERY_PROGRESS_STORAGE_KEY);
+    if (!storedValue) {
+      return false;
+    }
+    const parsedTime = Date.parse(storedValue);
+    if (!Number.isFinite(parsedTime) || Date.now() - parsedTime > DELIVERY_PROGRESS_MAX_AGE_MS) {
+      window.localStorage.removeItem(DELIVERY_PROGRESS_STORAGE_KEY);
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function writeDeliveryFollowUpPending(pending: boolean) {
+  if (typeof window === "undefined") {
+    return;
+  }
+  try {
+    if (pending) {
+      window.localStorage.setItem(DELIVERY_PROGRESS_STORAGE_KEY, new Date().toISOString());
+    } else {
+      window.localStorage.removeItem(DELIVERY_PROGRESS_STORAGE_KEY);
+    }
+  } catch {
+    // Ignore storage failures so alert setup still works in restricted browsers.
+  }
+}
+
 function statusTone(result: LegacySubscriptionLoadResult | null): NoticeTone {
   if (!result || result.status === "loading") {
     return "neutral";
@@ -147,6 +185,7 @@ const EmailAlerts = () => {
   );
   const [magicLinkPending, setMagicLinkPending] = useState(false);
   const [magicLinkSentEmail, setMagicLinkSentEmail] = useState("");
+  const [deliveryFollowUpPending, setDeliveryFollowUpPending] = useState(readDeliveryFollowUpPending);
   const [showProviderEmbed, setShowProviderEmbed] = useState(false);
   const [serviceQuery, setServiceQuery] = useState("");
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
@@ -184,6 +223,11 @@ const EmailAlerts = () => {
     setConfigResult(result);
     setLastCheckedAt(new Date().toISOString());
     setIsRefreshing(false);
+  };
+
+  const refreshAlertSetup = () => {
+    void loadConfig();
+    reloadAlertAccount();
   };
 
   useEffect(() => {
@@ -367,6 +411,10 @@ const EmailAlerts = () => {
         return t("Synced", "Synchronisiert");
       case "error":
         return t("Sync issue", "Sync-Problem");
+      case "not_synced":
+        return alertAccountProfile?.providerContactId
+          ? t("Checking signup", "Anmeldung wird geprueft")
+          : t("Not connected", "Nicht verbunden");
       default:
         return t("Not connected", "Nicht verbunden");
     }
@@ -377,7 +425,21 @@ const EmailAlerts = () => {
       : "good"
     : "neutral";
   const deliveryReady = alertAccountProfile?.brevoSyncStatus === "synced";
-  const providerTone = deliveryReady ? "good" : canEmbed ? "warn" : statusTone(configResult);
+  const deliverySyncError = alertAccountProfile?.brevoSyncStatus === "error";
+  const deliveryAwaitingConfirmation =
+    !deliveryReady &&
+    !deliverySyncError &&
+    alertAccountConnected &&
+    (deliveryFollowUpPending || Boolean(alertAccountProfile?.providerContactId));
+  const providerTone = deliveryReady
+    ? "good"
+    : deliverySyncError
+      ? "bad"
+      : deliveryAwaitingConfirmation
+        ? "neutral"
+        : canEmbed
+          ? "warn"
+          : statusTone(configResult);
   const preferencesStatusLabel = alertAccountConnected
     ? alertAccountDirty
       ? t("Needs save", "Speichern")
@@ -385,14 +447,21 @@ const EmailAlerts = () => {
     : t("Local only", "Nur lokal");
   const providerStatusLabel = deliveryReady
     ? t("Active", "Aktiv")
-    : canEmbed
-      ? t("Setup pending", "Setup offen")
-      : t("Unavailable", "Nicht verfuegbar");
+    : deliverySyncError
+      ? t("Sync issue", "Sync-Problem")
+      : deliveryAwaitingConfirmation
+        ? t("Confirming", "Bestaetigung")
+        : canEmbed
+          ? t("Open delivery", "Zustellung starten")
+          : t("Unavailable", "Nicht verfuegbar");
   const setupTone: NoticeTone = (() => {
     if (!alertsBackendConfigured) {
       return "warn";
     }
     if (!alertAccountConnected) {
+      return "warn";
+    }
+    if (deliverySyncError) {
       return "warn";
     }
     if (alertAccountDirty || !deliveryReady) {
@@ -425,6 +494,9 @@ const EmailAlerts = () => {
     if (alertAccountDirty) {
       return t("Save what should trigger alerts", "Speichere, was Alarme ausloesen soll");
     }
+    if (deliveryAwaitingConfirmation) {
+      return t("Waiting for delivery confirmation", "Warte auf Zustellungsbestaetigung");
+    }
     if (!deliveryReady) {
       return t("Finish e-mail delivery", "Aktiviere die E-Mail-Zustellung");
     }
@@ -454,6 +526,12 @@ const EmailAlerts = () => {
         "Deine aktuelle Watchlist unterscheidet sich von der gespeicherten Konto-Version."
       );
     }
+    if (deliveryAwaitingConfirmation) {
+      return t(
+        "The provider signup was already opened. Return here after confirmation and the page will check the delivery status again.",
+        "Die Provider-Anmeldung wurde bereits gestartet. Kehre nach der Bestaetigung hierher zurueck, dann prueft die Seite den Zustellungsstatus erneut."
+      );
+    }
     if (!deliveryReady) {
       return t(
         "Preferences are saved. Finish the delivery step if you also want inbox alerts.",
@@ -481,13 +559,46 @@ const EmailAlerts = () => {
       );
   const providerConnectionText = alertAccountConnected
     ? t(
-        "Account preferences are already handled above. Use this provider step only for inbox delivery.",
-        "Die Konto-Einstellungen werden bereits oben verwaltet. Nutze diesen Provider-Schritt nur fuer die Zustellung ins Postfach."
+        "Account preferences are already handled above. Use this provider step only for inbox delivery, then return here to confirm the final status.",
+        "Die Konto-Einstellungen werden bereits oben verwaltet. Nutze diesen Provider-Schritt nur fuer die Zustellung ins Postfach und kehre danach hierher zur Statuspruefung zurueck."
       )
     : t(
         "This is the final delivery step. Connect your alert account first if you want one clearer setup flow.",
         "Das ist der letzte Zustellungs-Schritt. Verbinde zuerst dein Alarm-Konto, wenn du einen klaren Setup-Ablauf moechtest."
       );
+
+  useEffect(() => {
+    if (!alertAccountConnected || deliveryReady || deliverySyncError) {
+      setDeliveryFollowUpPending(false);
+      writeDeliveryFollowUpPending(false);
+    }
+  }, [alertAccountConnected, deliveryReady, deliverySyncError]);
+
+  useEffect(() => {
+    if (!deliveryAwaitingConfirmation) {
+      return;
+    }
+
+    const recheckDeliveryStatus = () => {
+      reloadAlertAccount();
+    };
+    const handleResume = () => {
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") {
+        return;
+      }
+      recheckDeliveryStatus();
+    };
+
+    const interval = window.setInterval(recheckDeliveryStatus, 15000);
+    window.addEventListener("focus", handleResume);
+    document.addEventListener("visibilitychange", handleResume);
+
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", handleResume);
+      document.removeEventListener("visibilitychange", handleResume);
+    };
+  }, [deliveryAwaitingConfirmation, reloadAlertAccount]);
 
   const handleRequestMagicLink = async () => {
     setMagicLinkPending(true);
@@ -542,10 +653,7 @@ const EmailAlerts = () => {
           action={
             <button
               type="button"
-              onClick={() => {
-                void loadConfig();
-                reloadAlertAccount();
-              }}
+              onClick={refreshAlertSetup}
               className="glass flex h-12 w-12 items-center justify-center rounded-2xl transition-all active:scale-95"
               aria-label={t("Refresh alert setup", "Alarm-Einrichtung aktualisieren")}
             >
@@ -992,10 +1100,20 @@ const EmailAlerts = () => {
                 caption={
                   deliveryReady
                     ? t("Inbox delivery looks active.", "Die Postfach-Zustellung wirkt aktiv.")
-                    : t(
-                        "Finish the provider opt-in if you still want e-mail delivery.",
-                        "Schliesse den Provider-Opt-in ab, wenn du weiter E-Mail-Zustellung moechtest."
-                      )
+                    : deliverySyncError
+                      ? t(
+                          "The provider delivery status could not be confirmed cleanly yet.",
+                          "Der Provider-Zustellungsstatus konnte noch nicht sauber bestaetigt werden."
+                        )
+                      : deliveryAwaitingConfirmation
+                        ? t(
+                            "Confirmation looks in progress. Return here after the provider step and check again if needed.",
+                            "Die Bestaetigung wirkt noch unterwegs. Kehre nach dem Provider-Schritt hierher zurueck und pruefe bei Bedarf erneut."
+                          )
+                        : t(
+                            "Open the provider step if you still want e-mail delivery.",
+                            "Oeffne den Provider-Schritt, wenn du weiter E-Mail-Zustellung moechtest."
+                          )
                 }
               />
               <AlertsStatusMetric
@@ -1020,6 +1138,10 @@ const EmailAlerts = () => {
                     href={embedUrl}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => {
+                      setDeliveryFollowUpPending(true);
+                      writeDeliveryFollowUpPending(true);
+                    }}
                     className="inline-flex w-full items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-center text-sm font-medium text-primary transition-colors hover:bg-primary/15 sm:w-auto"
                   >
                     <span className="inline-flex items-center gap-1.5">
@@ -1029,14 +1151,56 @@ const EmailAlerts = () => {
                   </a>
                   <button
                     type="button"
-                    onClick={() => setShowProviderEmbed((previous) => !previous)}
+                    onClick={() => {
+                      setShowProviderEmbed((previous) => {
+                        const nextValue = !previous;
+                        if (nextValue) {
+                          setDeliveryFollowUpPending(true);
+                          writeDeliveryFollowUpPending(true);
+                        }
+                        return nextValue;
+                      });
+                    }}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 sm:w-auto"
                   >
                     {showProviderEmbed
                       ? t("Hide embedded form", "Eingebettetes Formular ausblenden")
                       : t("Show embedded form here", "Formular hier einblenden")}
                   </button>
+                  <button
+                    type="button"
+                    onClick={refreshAlertSetup}
+                    disabled={isRefreshing || alertAccountLoading}
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                  >
+                    {isRefreshing || alertAccountLoading
+                      ? t("Checking status...", "Pruefe Status...")
+                      : t("Check delivery status", "Zustellungsstatus pruefen")}
+                  </button>
                 </div>
+
+                {deliveryAwaitingConfirmation ? (
+                  <div className="rounded-xl border border-sky-300/20 bg-sky-400/10 px-3 py-2.5">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-[11px] leading-relaxed text-sky-100/90">
+                        {t(
+                          "If you already finished the provider form, come back here and re-check. This page also checks again when you return to it.",
+                          "Wenn du das Provider-Formular schon abgeschlossen hast, kehre hierher zurueck und pruefe erneut. Diese Seite prueft auch noch einmal, wenn du zu ihr zurueckkommst."
+                        )}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={refreshAlertSetup}
+                        disabled={isRefreshing || alertAccountLoading}
+                        className="rounded-xl border border-sky-300/20 bg-sky-400/10 px-3 py-2 text-sm font-medium text-sky-100 transition-colors hover:bg-sky-400/15 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {isRefreshing || alertAccountLoading
+                          ? t("Checking...", "Prueft...")
+                          : t("Check status", "Status pruefen")}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
 
                 {showProviderEmbed ? (
                   <div className="space-y-3">
