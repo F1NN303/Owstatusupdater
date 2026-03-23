@@ -1,8 +1,8 @@
 # Agent Handoff
 
-Last updated: 2026-03-22
+Last updated: 2026-03-23
 Current branch: `main`
-Latest known commit at handoff update: `fdbaf1fe`
+Latest known commit at handoff update: `7736f001`
 
 ## Current Priority State (2026-03-22)
 
@@ -781,3 +781,26 @@ Key files:
 - Notes:
   - This intentionally avoids AI-specific files and keeps the AI integration untouched.
   - Production build size improved from roughly `619 kB` initial JS to roughly `376 kB`, with alert-account code moved into its own lazy chunk.
+
+## Latest Validation Snapshot (Settings Hierarchy Refresh + Detail Hero Compaction)
+- Scope:
+  - Refined `react-next/src/pages/SettingsPage.tsx` into calmer grouped preference rows instead of a stack of small cards:
+    - added reusable local settings helpers for grouped rows
+    - added a clearer current-defaults summary near the top
+    - removed the risky narrow-shell two-column splits inside settings
+    - expanded alert summary copy in the alerts quick link
+    - fixed the broken build-meta separator rendering in the hero
+    - added explicit switch labels for motion, compact cards, and favorites-first controls
+  - Added focused settings regression coverage in:
+    - `react-next/src/pages/SettingsPage.test.tsx`
+  - Reused the earlier non-AI detail pass in `react-next/src/pages/ServerDetail.tsx`:
+    - reduced first-screen density in the service hero
+    - replaced the heavier hero narrative stack with a lighter status snapshot
+    - kept deeper analytics and charts lower in the detail view
+- Validation:
+  - `npm.cmd run build` in `react-next` -> passed
+  - `npm.cmd run test` in `react-next` -> passed
+  - Manual mobile browser QA at ~`390x844` -> passed for `/Owstatusupdater/next/settings` via in-app navigation from the preview home route
+- Notes:
+  - The local QA run used a temporary `react-next/node_modules` junction to the original checkout so the clean synced worktree could reuse the existing dependency install.
+  - Preview console still showed local data/fetch 404s on the root preview route because this clean worktree was validated against `vite preview`, not a regenerated `site/next` artifact tree with live JSON beside it.

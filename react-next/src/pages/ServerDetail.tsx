@@ -185,17 +185,6 @@ function parseDurationToMs(value?: string | null) {
   return totalMs > 0 ? totalMs : null;
 }
 
-function clampInlineText(value?: string | null, maxLength = 72) {
-  const text = String(value || "").replace(/\s+/g, " ").trim();
-  if (!text) {
-    return "";
-  }
-  if (text.length <= maxLength) {
-    return text;
-  }
-  return `${text.slice(0, Math.max(0, maxLength - 1)).trimEnd()}...`;
-}
-
 function startOfDay(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
@@ -701,30 +690,6 @@ function MetricTile({
       </div>
       <p className="mt-1 text-sm font-semibold tracking-tight text-foreground sm:text-base">{value}</p>
       {hint ? <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground sm:text-[11px]">{hint}</p> : null}
-    </div>
-  );
-}
-
-function HeroSnapshotTile({
-  label,
-  value,
-  hint,
-  valueClassName,
-}: {
-  label: string;
-  value: string | number;
-  hint?: string;
-  valueClassName?: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-black/15 px-3 py-2.5">
-      <p className="text-[10px] uppercase tracking-[0.13em] text-muted-foreground">{label}</p>
-      <p className={`mt-1 text-sm font-semibold tracking-tight sm:text-[15px] ${valueClassName || "text-foreground"}`}>
-        {value}
-      </p>
-      {hint ? (
-        <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground sm:text-[11px]">{hint}</p>
-      ) : null}
     </div>
   );
 }
@@ -2191,13 +2156,8 @@ const ServerDetail = () => {
   }
 
   const tone = detail ? TONE_STYLES[detail.tone] : TONE_STYLES.unknown;
-  const reports24hCount =
-    typeof detail?.payload.analytics?.signal_metrics?.reports_24h === "number"
-      ? detail.payload.analytics.signal_metrics.reports_24h
-      : typeof detail?.payload.outage?.reports_24h === "number"
-        ? detail.payload.outage.reports_24h
-        : null;
-  const reports24h = reports24hCount ?? "--";
+  const reports24h =
+    detail?.payload.analytics?.signal_metrics?.reports_24h ?? detail?.payload.outage?.reports_24h ?? "--";
   const severityScore = detail?.payload.analytics?.severity_score ?? "--";
   const sourceOkCountNum =
     typeof detail?.payload.analytics?.source_ok_count === "number"
@@ -2243,25 +2203,6 @@ const ServerDetail = () => {
   const latestIncidentTitle = showLatestIncidentSubtitle
     ? outageIncidents[0]?.title || pickLang(language, "No listed incidents", "Keine gelisteten Vorfälle")
     : pickLang(language, "No recent listed incidents", "Keine aktuellen gelisteten Vorfälle");
-  const scheduledMaintenances = Array.isArray(detail?.payload.outage?.scheduled_maintenances)
-    ? detail.payload.outage.scheduled_maintenances
-    : [];
-  const activeMaintenanceCount = scheduledMaintenances.filter((item) => {
-    const startsAt = parseMaybeDate(item.starts_at);
-    const endsAt = parseMaybeDate(item.ends_at);
-    if (!startsAt && !endsAt) {
-      return false;
-    }
-    const now = Date.now();
-    if (startsAt && startsAt.getTime() > now) {
-      return false;
-    }
-    if (endsAt && endsAt.getTime() < now) {
-      return false;
-    }
-    return true;
-  }).length;
-  const upcomingMaintenanceCount = Math.max(0, scheduledMaintenances.length - activeMaintenanceCount);
   const quickMetricLabel = detail ? shortMetricLabel(detail, language) : pickLang(language, "Live signals", "Live-Signale");
   const dailySignalPercentages = trendHistory.map((value) => Math.round(value * 100));
   const componentRows = detail ? extractApiServiceComponents(detail) : [];
@@ -2372,6 +2313,25 @@ const ServerDetail = () => {
     sourceOkCountNum !== null && sourceTotalCountNum !== null
       ? t(`${sourceOkCountNum}/${sourceTotalCountNum} sources`, `${sourceOkCountNum}/${sourceTotalCountNum} Quellen`)
       : null;
+  const trendSnapshotHint = t(
+    "Derived 30-day signal health",
+    "Abgeleitete 30-Tage-Signalgesundheit"
+  );
+  const incidentSnapshotHint = t(
+    incidentCount === 1 ? "1 listed incident in this feed" : `${incidentCount} listed incidents in this feed`,
+    incidentCount === 1 ? "1 gelisteter Vorfall in diesem Feed" : `${incidentCount} gelistete Vorfalle in diesem Feed`
+  );
+  const sourceSnapshotHint =
+    sourceUnavailableLabel ||
+    t("Trusted source checks in this snapshot", "Quellenchecks in diesem Snapshot");
+  const sourceSnapshotLabel = topSourceLabel || t("n/a", "k. A.");
+  const serviceSummaryText =
+    detail?.payload.outage?.summary ||
+    detail?.payload.official?.summary ||
+    t(
+      "Live service signals loaded from the current status JSON pipeline.",
+      "Live-Service-Signale wurden aus der aktuellen Status-JSON-Pipeline geladen."
+    );
   const apiBadge = t("API", "API");
   const derivedBadge = t("Derived", "Abgeleitet");
   const sourceTransparencyOverview = detail?.payload.source_transparency?.overview;
@@ -2585,180 +2545,6 @@ const ServerDetail = () => {
           `${sourceOkCountNum}/${sourceTotalCountNum} gesund`
         )
       : t("Unavailable", "Nicht verfügbar");
-  const heroStatusValueClass =
-    serviceStatus === "online"
-      ? "text-emerald-300"
-      : serviceStatus === "offline"
-        ? "text-rose-200"
-        : "text-amber-200";
-  const heroSourceValueClass =
-    sourceConfidenceTier === "high"
-      ? "text-emerald-300"
-      : sourceConfidenceTier === "medium"
-        ? "text-amber-200"
-        : "text-rose-200";
-  const heroStatusHint = clampInlineText(
-    isDataVeryStale
-      ? t("Latest refresh is delayed", "Letzte Aktualisierung ist verspätet")
-      : quickMetricLabel,
-    68
-  );
-  const heroTrendHint = clampInlineText(
-    incidentCount > 0
-      ? t(
-          `${incidentCount} listed incidents across the last 30 days`,
-          `${incidentCount} gelistete Vorfälle in den letzten 30 Tagen`
-        )
-      : t(
-          "No listed incidents across the last 30 days",
-          "Keine gelisteten Vorfälle in den letzten 30 Tagen"
-        ),
-    72
-  );
-  const heroIncidentValue =
-    incidentCount === 0
-      ? t("None", "Keine")
-      : t(`${incidentCount} logged`, `${incidentCount} erfasst`);
-  const heroIncidentHint = clampInlineText(
-    incidentCount > 0
-      ? latestIncidentTitle
-      : t("No current incident headline", "Keine aktuelle Vorfallsüberschrift"),
-    72
-  );
-  const heroSourceValue =
-    sourceConfidenceScore !== null
-      ? `${sourceConfidenceScore.toFixed(1)}%`
-      : topSourceLabel || t("n/a", "k.A.");
-  const heroSourceHint = clampInlineText(
-    hasSourceUnavailable && sourceUnavailableLabel
-      ? sourceUnavailableLabel
-      : hasFreshnessBreach
-        ? staleSourceNames.length > 0
-          ? t(`Stale: ${staleSourceNames.join(", ")}`, `Veraltet: ${staleSourceNames.join(", ")}`)
-          : t("Some sources are stale", "Einige Quellen sind veraltet")
-        : topUpdatedLabel,
-    72
-  );
-  const changeDeltaCount =
-    (typeof changeSummary?.new_incidents === "number" ? changeSummary.new_incidents : 0) +
-    (typeof changeSummary?.updated_incidents === "number" ? changeSummary.updated_incidents : 0) +
-    (typeof changeSummary?.resolved_incidents === "number" ? changeSummary.resolved_incidents : 0);
-  const changeNarrativeTitle =
-    activeMaintenanceCount > 0 && changeDeltaCount === 0 && (changeSummary?.new_reports ?? 0) === 0
-      ? t(
-          activeMaintenanceCount === 1 ? "Planned work is the main active change" : "Planned work is shaping the live picture",
-          activeMaintenanceCount === 1 ? "Geplante Arbeit ist die wichtigste aktive Änderung" : "Geplante Arbeit prägt das Live-Bild"
-        )
-      : (changeSummary?.new_incidents ?? 0) > 0
-        ? t(
-            changeSummary?.new_incidents === 1
-              ? "A new incident appeared in the latest refresh"
-              : `${changeSummary?.new_incidents} new incidents appeared in the latest refresh`,
-            changeSummary?.new_incidents === 1
-              ? "Im letzten Refresh ist ein neuer Vorfall aufgetaucht"
-              : `Im letzten Refresh sind ${changeSummary?.new_incidents} neue Vorfälle aufgetaucht`
-          )
-        : (changeSummary?.resolved_incidents ?? 0) > 0 && changeDeltaCount === (changeSummary?.resolved_incidents ?? 0)
-          ? t("Recent changes are moving toward resolution", "Die jüngsten Änderungen laufen auf Entwarnung hinaus")
-          : changeDeltaCount > 0 || (changeSummary?.new_reports ?? 0) > 0
-            ? t("The live picture is still shifting", "Das Live-Bild verschiebt sich weiterhin")
-            : t("No fresh incident delta in the latest refresh", "Im letzten Refresh gab es keine frische Vorfallsänderung");
-  const changeNarrativeParts = [
-    (changeSummary?.new_incidents ?? 0) > 0
-      ? t(
-          `${changeSummary?.new_incidents} new incident${changeSummary?.new_incidents === 1 ? "" : "s"}`,
-          `${changeSummary?.new_incidents} neue Vorfälle`
-        )
-      : null,
-    (changeSummary?.updated_incidents ?? 0) > 0
-      ? t(
-          `${changeSummary?.updated_incidents} updated`,
-          `${changeSummary?.updated_incidents} aktualisiert`
-        )
-      : null,
-    (changeSummary?.resolved_incidents ?? 0) > 0
-      ? t(
-          `${changeSummary?.resolved_incidents} resolved`,
-          `${changeSummary?.resolved_incidents} gelöst`
-        )
-      : null,
-    (changeSummary?.new_reports ?? 0) > 0
-      ? t(
-          `${changeSummary?.new_reports} fresh reports`,
-          `${changeSummary?.new_reports} neue Meldungen`
-        )
-      : null,
-  ].filter(Boolean);
-  const changeNarrativeBody = clampInlineText(
-    changeNarrativeParts.length > 0
-      ? changeNarrativeParts.join(" · ")
-      : activeMaintenanceCount > 0
-        ? t(
-            activeMaintenanceCount === 1
-              ? "One maintenance window is currently active without a broader incident delta."
-              : `${activeMaintenanceCount} maintenance windows are currently active without a broader incident delta.`,
-            activeMaintenanceCount === 1
-              ? "Ein Wartungsfenster ist aktuell aktiv, ohne breitere Vorfallsänderung."
-              : `${activeMaintenanceCount} Wartungsfenster sind aktuell aktiv, ohne breitere Vorfallsänderung.`
-          )
-        : latestIncidentTitle,
-    118
-  );
-  const userImpactTitle =
-    serviceStatus === "offline" || (typeof reports24hCount === "number" && reports24hCount >= 120) || impactedRegionCount >= 4
-      ? t("Broad user disruption likely", "Breite Nutzerstörung wahrscheinlich")
-      : serviceStatus === "degraded" || (typeof reports24hCount === "number" && reports24hCount >= 25) || impactedRegionCount >= 1
-        ? t("Partial user impact reported", "Teilweise Nutzerwirkung gemeldet")
-        : activeMaintenanceCount > 0
-          ? t("Planned impact window", "Geplantes Wirkfenster")
-          : t("Low active user impact", "Geringe aktive Nutzerwirkung");
-  const userImpactBody = clampInlineText(
-    [
-      typeof reports24hCount === "number"
-        ? t(`${reports24hCount} reports in 24h`, `${reports24hCount} Meldungen in 24h`)
-        : null,
-      incidentCount > 0
-        ? t(`${incidentCount} listed incidents`, `${incidentCount} gelistete Vorfälle`)
-        : t("No active incident list", "Keine aktive Vorfallsliste"),
-      impactedRegionCount > 0
-        ? t(`${impactedRegionCount} impacted regions`, `${impactedRegionCount} betroffene Regionen`)
-        : stableRegionCount > 0
-          ? t(`${stableRegionCount} stable regions`, `${stableRegionCount} stabile Regionen`)
-          : null,
-      activeMaintenanceCount > 0
-        ? t(
-            activeMaintenanceCount === 1 ? "1 active maintenance window" : `${activeMaintenanceCount} active maintenance windows`,
-            activeMaintenanceCount === 1 ? "1 aktives Wartungsfenster" : `${activeMaintenanceCount} aktive Wartungsfenster`
-          )
-        : upcomingMaintenanceCount > 0
-          ? t(
-              upcomingMaintenanceCount === 1 ? "1 upcoming maintenance window" : `${upcomingMaintenanceCount} upcoming maintenance windows`,
-              upcomingMaintenanceCount === 1 ? "1 bevorstehendes Wartungsfenster" : `${upcomingMaintenanceCount} bevorstehende Wartungsfenster`
-            )
-          : null,
-    ]
-      .filter(Boolean)
-      .slice(0, 3)
-      .join(" · "),
-    118
-  );
-  const confidenceNarrativeTitle =
-    sourceConfidenceTier === "high"
-      ? t("Strong source agreement", "Starke Quellenübereinstimmung")
-      : sourceConfidenceTier === "medium"
-        ? t("Usable but mixed source picture", "Nutzbares, aber gemischtes Quellenbild")
-        : t("Confidence is reduced right now", "Das Vertrauen ist aktuell reduziert");
-  const confidenceNarrativeBody = clampInlineText(
-    sourceTransparencyDecision?.explanation ||
-      (hasSourceUnavailable && sourceUnavailableLabel
-        ? sourceUnavailableLabel
-        : hasFreshnessBreach
-          ? staleSourceNames.length > 0
-            ? t(`Freshness risk: ${staleSourceNames.join(", ")}`, `Frischerisiko: ${staleSourceNames.join(", ")}`)
-            : t("Some sources are outside freshness SLA", "Einige Quellen liegen außerhalb der Frische-SLA")
-          : t("Required and scoring sources are aligned in the latest refresh.", "Pflicht- und Bewertungsquellen sind im letzten Refresh ausgerichtet.")),
-    118
-  );
   const detailTabLabel = (key: DetailTabKey) => {
     if (key === "overview") {
       return t("Overview", "Übersicht");
@@ -3026,20 +2812,16 @@ const ServerDetail = () => {
                       <h1 className="mt-0.5 text-lg font-bold tracking-tight text-foreground sm:text-xl">
                         {detail.service.name}
                       </h1>
-                      <p className="mt-1 max-w-[34rem] text-[11px] leading-snug text-muted-foreground sm:text-[12px]">
-                        {clampInlineText(latestIncidentTitle, 96)}
+                      <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground sm:text-[12px]">
+                        {latestIncidentTitle}
                       </p>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                        <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[9px] text-muted-foreground sm:text-[10px]">
-                          {serviceStatusLabel}
+                      <div className="mt-1.5 flex flex-wrap items-center gap-1">
+                        <span className="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[9px] text-muted-foreground sm:px-2 sm:text-[10px]">
+                          {topUpdatedLabel}
                         </span>
-                        {isDataStale ? (
-                          <span className="rounded-full border border-amber-300/25 bg-amber-300/10 px-2 py-0.5 text-[9px] text-amber-200 sm:text-[10px]">
-                            {t("Delayed refresh", "Aktualisierung verzögert")}
-                          </span>
-                        ) : null}
                         {hasSourceUnavailable && sourceUnavailableLabel ? (
-                          <span className="rounded-full border border-status-offline/30 bg-status-offline/10 px-2 py-0.5 text-[9px] font-medium text-status-offline sm:text-[10px]">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-status-offline/30 bg-status-offline/10 px-1.5 py-0.5 text-[9px] font-medium text-status-offline sm:px-2 sm:text-[10px]">
+                            <span className="h-1.5 w-1.5 rounded-full bg-status-offline" />
                             {sourceUnavailableLabel}
                           </span>
                         ) : null}
@@ -3055,122 +2837,93 @@ const ServerDetail = () => {
                   </div>
                 </div>
 
-                <div className="mt-2 grid grid-cols-2 gap-2">
-                  <HeroSnapshotTile
+                <div className="mt-2.5 grid grid-cols-2 gap-2">
+                  <MetricTile
                     label={t("Status", "Status")}
                     value={serviceStatusLabel}
-                    hint={heroStatusHint}
-                    valueClassName={heroStatusValueClass}
+                    hint={quickMetricLabel}
                   />
-                  <HeroSnapshotTile
-                    label={t("30-day signal", "30-Tage-Signal")}
+                  <MetricTile
+                    label={t("30d Signal", "30T-Signal")}
                     value={trendScoreLabel}
-                    hint={heroTrendHint}
+                    hint={trendSnapshotHint}
+                    badgeLabel={derivedBadge}
+                    badgeTone="derived"
                   />
-                  <HeroSnapshotTile
+                  <MetricTile
                     label={t("Incidents", "Vorfälle")}
-                    value={heroIncidentValue}
-                    hint={heroIncidentHint}
+                    value={incidentCount}
+                    hint={incidentSnapshotHint}
                   />
-                  <HeroSnapshotTile
-                    label={t("Source health", "Quellenstatus")}
-                    value={heroSourceValue}
-                    hint={heroSourceHint}
-                    valueClassName={heroSourceValueClass}
+                  <MetricTile
+                    label={t("Sources", "Quellen")}
+                    value={sourceSnapshotLabel}
+                    hint={sourceSnapshotHint}
+                    badgeLabel={apiBadge}
+                    badgeTone="api"
                   />
                 </div>
 
-                <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground sm:text-sm">
-                  {detail.payload.outage?.summary ||
-                    detail.payload.official?.summary ||
-                    t(
-                      "Live service signals loaded from the current status JSON pipeline.",
-                      "Live-Service-Signale wurden aus der aktuellen Status-JSON-Pipeline geladen."
-                    )}
+                <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground sm:text-sm">
+                  {serviceSummaryText}
                 </p>
 
-                <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-black/15">
-                  <div className="flex items-start justify-between gap-3 px-3 py-3">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                        {t("What changed", "Was sich verändert hat")}
-                      </p>
-                      <p className="mt-1 text-[13px] font-semibold text-foreground">{changeNarrativeTitle}</p>
-                      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{changeNarrativeBody}</p>
-                    </div>
-                    <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-medium text-foreground">
-                      {changeDeltaCount > 0
-                        ? t(`${changeDeltaCount} live deltas`, `${changeDeltaCount} Live-Deltas`)
-                        : activeMaintenanceCount > 0
-                          ? t(
-                              activeMaintenanceCount === 1 ? "1 planned window" : `${activeMaintenanceCount} planned windows`,
-                              activeMaintenanceCount === 1 ? "1 geplantes Fenster" : `${activeMaintenanceCount} geplante Fenster`
-                            )
-                          : t("Steady", "Ruhig")}
-                    </span>
-                  </div>
-                  <div className="border-t border-white/10 px-3 py-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                          {t("User impact", "Nutzerwirkung")}
-                        </p>
-                        <p className="mt-1 text-[13px] font-semibold text-foreground">{userImpactTitle}</p>
-                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{userImpactBody}</p>
-                      </div>
-                      <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-medium text-foreground">
-                        {typeof reports24hCount === "number"
-                          ? t(`${reports24hCount}/24h`, `${reports24hCount}/24h`)
-                          : impactedRegionCount > 0
-                            ? t(`${impactedRegionCount} regions`, `${impactedRegionCount} Regionen`)
-                            : serviceStatusLabel}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="border-t border-white/10 px-3 py-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                          {t("Source confidence", "Quellenvertrauen")}
-                        </p>
-                        <p className="mt-1 text-[13px] font-semibold text-foreground">{confidenceNarrativeTitle}</p>
-                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{confidenceNarrativeBody}</p>
-                      </div>
-                      <span className={`rounded-full border px-2 py-1 text-[10px] font-medium ${sourceReliabilityToneClass}`}>
-                        {heroSourceValue}
-                      </span>
-                    </div>
-                  </div>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  <span
+                    className={`rounded-full border px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-[11px] ${
+                      isFavoriteEnabled
+                        ? "border-amber-300/35 bg-amber-300/16 text-amber-200"
+                        : "border-white/10 bg-white/5 text-muted-foreground"
+                    }`}
+                  >
+                    {isFavoriteEnabled ? t("Favorite pinned", "Favorit angeheftet") : t("Not favorited", "Nicht favorisiert")}
+                  </span>
+                  <span
+                    className={`rounded-full border px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-[11px] ${
+                      isAlertEnabled
+                        ? "border-primary/25 bg-primary/12 text-primary"
+                        : "border-white/10 bg-white/5 text-muted-foreground"
+                    }`}
+                  >
+                    {isAlertEnabled
+                      ? alertSeverityThreshold === "degraded"
+                        ? t("Watchlist: degraded+", "Watchlist: beeintrachtigt+")
+                        : t("Watchlist: major", "Watchlist: groserer Ausfall")
+                      : t("Watchlist off", "Watchlist aus")}
+                  </span>
                 </div>
 
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                    {topUpdatedLabel}
-                  </span>
-                  <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                    {t("Confidence", "Vertrauen")}: {confidenceChipLabel}
-                  </span>
-                  <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                    {t("Regions", "Regionen")}:{" "}
-                    {t(
-                      `${stableRegionCount} stable / ${impactedRegionCount} impacted`,
-                      `${stableRegionCount} stabil / ${impactedRegionCount} betroffen`
-                    )}
-                  </span>
-                  {topSourceLabel ? (
+                <details className="mt-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                  <summary className="cursor-pointer list-none text-[11px] font-semibold text-foreground">
+                    {t("Signal context and source reliability", "Signal-Kontext und Quellenzuverlassigkeit")}
+                  </summary>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
                     <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                      {topSourceLabel}
+                      {t("Confidence", "Vertrauen")}: {confidenceChipLabel}
                     </span>
-                  ) : null}
-                  {hasSourceUnavailable && sourceUnavailableLabel ? (
-                    <span className="rounded-full border border-status-offline/20 bg-status-offline/10 px-2 py-0.5 text-[10px] text-status-offline sm:text-[11px]">
-                      {sourceUnavailableLabel}
+                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                      {t("Regions", "Regionen")}:{" "}
+                      {t(
+                        `${stableRegionCount} stable / ${impactedRegionCount} impacted`,
+                        `${stableRegionCount} stabil / ${impactedRegionCount} betroffen`
+                      )}
                     </span>
-                  ) : null}
-                </div>
+                    {topSourceLabel ? (
+                      <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
+                        {topSourceLabel}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground sm:text-[12px]">
+                    {t(
+                      "Keep the first screen focused on status, then expand this block for confidence and source spread.",
+                      "Der erste Bildschirm bleibt auf Status fokussiert; Vertrauens- und Quellenhinweise lassen sich hier aufklappen."
+                    )}
+                  </p>
+                </details>
 
                 {detail.payload.outage?.url ? (
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-2 flex flex-wrap gap-2">
                     <ExternalHref
                       href={detail.payload.outage.url}
                       className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:bg-white/10 sm:px-3 sm:py-2 sm:text-xs"

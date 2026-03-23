@@ -143,15 +143,18 @@ function SegmentGroup<T extends string>({
 function ToggleSwitch({
   checked,
   onCheckedChange,
+  ariaLabel,
 }: {
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
+  ariaLabel: string;
 }) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
+      aria-label={ariaLabel}
       onClick={() => onCheckedChange(!checked)}
       className={cn(
         "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors",
@@ -171,16 +174,61 @@ function ToggleSwitch({
 function QuickStat({
   label,
   value,
+  hint,
   valueClassName,
 }: {
   label: string;
   value: string;
+  hint?: string;
   valueClassName?: string;
 }) {
   return (
     <div className="rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-3">
       <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
       <p className={cn("mt-1 text-sm font-semibold text-foreground", valueClassName)}>{value}</p>
+      {hint ? <p className="mt-1 text-[11px] leading-5 text-muted-foreground">{hint}</p> : null}
+    </div>
+  );
+}
+
+function SettingsGroup({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <SettingsSurface className={cn("overflow-hidden p-0", className)}>
+      <div className="divide-y divide-white/8">{children}</div>
+    </SettingsSurface>
+  );
+}
+
+function SettingsRow({
+  eyebrow,
+  title,
+  description,
+  control,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  control?: ReactNode;
+  children?: ReactNode;
+}) {
+  return (
+    <div className="px-4 py-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{eyebrow}</p>
+          <p className="mt-2 text-sm font-semibold text-foreground">{title}</p>
+          <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{description}</p>
+        </div>
+        {control ? <div className="shrink-0 pt-0.5">{control}</div> : null}
+      </div>
+      {children ? <div className="mt-3">{children}</div> : null}
     </div>
   );
 }
@@ -413,6 +461,45 @@ const SettingsPage = () => {
   }, [initialCategory]);
 
   const defaultFilterMode = homeDefaultFilter.startsWith("category:") ? "category" : homeDefaultFilter;
+  const defaultFilterLabel =
+    defaultFilterMode === "issues"
+      ? pickLang(language, "Issues", "Probleme")
+      : defaultFilterMode === "healthy"
+        ? pickLang(language, "Healthy", "Stabil")
+        : defaultFilterMode === "category"
+          ? pickLang(language, "Category", "Kategorie")
+          : pickLang(language, "All", "Alle");
+  const defaultFilterHint =
+    defaultFilterMode === "category" && initialCategory
+      ? pickLang(language, `Category: ${initialCategory}`, `Kategorie: ${initialCategory}`)
+      : pickLang(language, "Start feed focus", "Startfokus");
+  const defaultSortLabel =
+    homeDefaultSort === "name"
+      ? pickLang(language, "Name", "Name")
+      : homeDefaultSort === "updated"
+        ? pickLang(language, "Updated", "Aktualisiert")
+        : pickLang(language, "Impact", "Impact");
+  const refreshLabel = `${homeRefreshIntervalSec}s`;
+  const refreshHint = pickLang(language, "Auto refresh", "Auto-Refresh");
+  const alertsStatHint = alertAccountConnected
+    ? pickLang(language, `${alertServiceIds.length} watched`, `${alertServiceIds.length} beobachtet`)
+    : pickLang(language, `${alertServiceIds.length} local`, `${alertServiceIds.length} lokal`);
+  const feedStatValue = `${defaultSortLabel} / ${refreshLabel}`;
+  const feedStatHint = pickLang(language, `${defaultFilterLabel} by default`, `${defaultFilterLabel} als Standard`);
+  const homeDefaultsSummary = pickLang(
+    language,
+    `Home opens with ${defaultFilterLabel.toLowerCase()} items, ${defaultSortLabel.toLowerCase()} sorting, and a ${refreshLabel} refresh cadence.`,
+    `Start zeigt standardmaessig ${defaultFilterLabel.toLowerCase()}, sortiert nach ${defaultSortLabel.toLowerCase()}, mit ${refreshLabel} Aktualisierung.`,
+  );
+  const alertStateSummary = pickLang(
+    language,
+    alertAccountConnected
+      ? `${alertServiceIds.length} services follow your connected alert account.`
+      : `${alertServiceIds.length} services are only saved on this device right now.`,
+    alertAccountConnected
+      ? `${alertServiceIds.length} Services folgen deinem verbundenen Alarm-Konto.`
+      : `${alertServiceIds.length} Services sind aktuell nur auf diesem Geraet gespeichert.`,
+  );
 
   const applyCategoryDraft = (rawValue: string) => {
     const normalized = sanitizeCategory(rawValue);
@@ -456,22 +543,34 @@ const SettingsPage = () => {
               <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 font-semibold text-slate-100">
                 v {compactBuildId}
               </span>
-              <span className="text-slate-500">•</span>
+              <span className="text-slate-500">|</span>
               <span>{buildTimeLabel}</span>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
-            <QuickStat label={pickLang(language, "Language", "Sprache")} value={language === "de" ? "Deutsch" : "English"} />
+            <QuickStat
+              label={pickLang(language, "Language", "Sprache")}
+              value={language === "de" ? "Deutsch" : "English"}
+              hint={pickLang(language, "Interface", "Oberflaeche")}
+            />
             <QuickStat
               label={pickLang(language, "Alerts", "Alarme")}
               value={alertStatusValue}
+              hint={alertsStatHint}
               valueClassName={alertStatusValueClassName}
             />
-            <QuickStat label={pickLang(language, "Motion", "Bewegung")} value={motionValue} />
+            <QuickStat label={pickLang(language, "Feed", "Feed")} value={feedStatValue} hint={feedStatHint} />
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2">
+          <SettingsSurface className="border-primary/15 bg-black/20">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
+              {pickLang(language, "Current defaults", "Aktuelle Standards")}
+            </p>
+            <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{homeDefaultsSummary}</p>
+          </SettingsSurface>
+
+          <div className="grid gap-2">
             <PublicChangelogSheet language={language} compactBuildId={compactBuildId} buildTimeLabel={buildTimeLabel} />
 
             <Link
@@ -485,6 +584,7 @@ const SettingsPage = () => {
                 <p className="mt-1 text-sm font-semibold text-foreground">
                   {pickLang(language, "Manage account and watched services", "Konto und beobachtete Services verwalten")}
                 </p>
+                <p className="mt-1 text-[12px] leading-5 text-muted-foreground">{alertStateSummary}</p>
               </div>
               <ChevronRight size={16} className="shrink-0 text-muted-foreground" />
             </Link>
@@ -504,16 +604,17 @@ const SettingsPage = () => {
               )}
             />
 
-            <div className="grid gap-3">
-              <SettingsSurface>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {pickLang(language, "Language", "Sprache")}
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {pickLang(language, "Switch the primary interface language.", "Wechsle die primaere Sprache der Oberflaeche.")}
-                </p>
+            <SettingsGroup>
+              <SettingsRow
+                eyebrow={pickLang(language, "Language", "Sprache")}
+                title={pickLang(language, "Interface language", "Oberflaechensprache")}
+                description={pickLang(
+                  language,
+                  "Switch the primary language used across the status UI.",
+                  "Wechsle die primaere Sprache der Statusoberflaeche.",
+                )}
+              >
                 <SegmentGroup
-                  className="mt-3"
                   value={language}
                   onChange={setLanguage}
                   options={[
@@ -521,50 +622,45 @@ const SettingsPage = () => {
                     { key: "de", label: "Deutsch" },
                   ]}
                 />
-              </SettingsSurface>
+              </SettingsRow>
 
-              <div className="grid gap-3 sm:grid-cols-2">
-                <SettingsSurface>
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                        {pickLang(language, "Motion", "Bewegung")}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-foreground">
-                        {pickLang(language, "Reduce interface motion", "Weniger Oberflaechen-Bewegung")}
-                      </p>
-                      <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
-                        {pickLang(
-                          language,
-                          "Use calmer transitions across the app.",
-                          "Nutzt ruhigere Uebergaenge in der gesamten App.",
-                        )}
-                      </p>
-                    </div>
-                    <ToggleSwitch checked={reduceMotion} onCheckedChange={setReduceMotion} />
-                  </div>
-                </SettingsSurface>
+              <SettingsRow
+                eyebrow={pickLang(language, "Time format", "Zeitformat")}
+                title={pickLang(language, "Timestamp style", "Zeitdarstellung")}
+                description={pickLang(
+                  language,
+                  "Choose whether status updates should look relative, absolute, or combined.",
+                  "Waehle, ob Statusupdates relativ, absolut oder kombiniert erscheinen sollen.",
+                )}
+              >
+                <SegmentGroup
+                  value={timeDisplayMode}
+                  onChange={setTimeDisplayMode}
+                  options={[
+                    { key: "relative", label: pickLang(language, "Relative", "Relativ") },
+                    { key: "absolute", label: pickLang(language, "Absolute", "Absolut") },
+                    { key: "both", label: pickLang(language, "Both", "Beides") },
+                  ]}
+                />
+              </SettingsRow>
 
-                <SettingsSurface>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {pickLang(language, "Time format", "Zeitformat")}
-                  </p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {pickLang(language, "Choose how timestamps appear.", "Waehle, wie Zeitangaben erscheinen.")}
-                  </p>
-                  <SegmentGroup
-                    className="mt-3"
-                    value={timeDisplayMode}
-                    onChange={setTimeDisplayMode}
-                    options={[
-                      { key: "relative", label: pickLang(language, "Relative", "Relativ") },
-                      { key: "absolute", label: pickLang(language, "Absolute", "Absolut") },
-                      { key: "both", label: pickLang(language, "Both", "Beides") },
-                    ]}
+              <SettingsRow
+                eyebrow={pickLang(language, "Motion", "Bewegung")}
+                title={pickLang(language, "Reduce interface motion", "Weniger Oberflaechen-Bewegung")}
+                description={pickLang(
+                  language,
+                  "Use calmer transitions across the app on this device.",
+                  "Nutzt auf diesem Geraet ruhigere Uebergaenge in der gesamten App.",
+                )}
+                control={
+                  <ToggleSwitch
+                    checked={reduceMotion}
+                    onCheckedChange={setReduceMotion}
+                    ariaLabel={pickLang(language, "Reduce interface motion", "Weniger Oberflaechen-Bewegung")}
                   />
-                </SettingsSurface>
-              </div>
-            </div>
+                }
+              />
+            </SettingsGroup>
           </GlassSection>
 
           <GlassSection contentClassName="space-y-4">
@@ -580,60 +676,83 @@ const SettingsPage = () => {
             />
 
             <div className="grid gap-3">
-              <SettingsSurface>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {pickLang(language, "Default filter", "Standardfilter")}
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {[
-                    { key: "all", label: pickLang(language, "All", "Alle") },
-                    { key: "issues", label: pickLang(language, "Issues", "Probleme") },
-                    { key: "healthy", label: pickLang(language, "Healthy", "Stabil") },
-                    { key: "category", label: pickLang(language, "Category", "Kategorie") },
-                  ].map((option) => {
-                    const active = defaultFilterMode === option.key;
-                    return (
-                      <button
-                        key={option.key}
-                        type="button"
-                        onClick={() => {
-                          if (option.key === "category") {
-                            const nextCategory = sanitizeCategory(categoryDraft) || "gaming";
-                            setCategoryDraft(nextCategory);
-                            setHomeDefaultFilter(`category:${nextCategory}`);
-                            return;
-                          }
-                          setHomeDefaultFilter(option.key as "all" | "issues" | "healthy");
-                        }}
-                        className={cn(
-                          "rounded-full border px-3 py-2 text-xs font-semibold transition-colors",
-                          active
-                            ? "border-primary/35 bg-primary/15 text-primary"
-                            : "border-white/10 bg-black/20 text-muted-foreground hover:text-foreground",
-                        )}
-                      >
-                        {option.label}
-                      </button>
-                    );
-                  })}
-                </div>
-                {defaultFilterMode === "category" ? (
-                  <input
-                    type="text"
-                    value={categoryDraft}
-                    onChange={(event) => applyCategoryDraft(event.target.value)}
-                    placeholder={pickLang(language, "category slug (e.g. gaming)", "Kategorie-Slug (z. B. gaming)")}
-                    className="mt-3 w-full rounded-2xl border border-white/10 bg-black/20 px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary/40"
+              <SettingsSurface className="bg-white/[0.035]">
+                <div className="grid grid-cols-3 gap-2">
+                  <QuickStat label={pickLang(language, "Filter", "Filter")} value={defaultFilterLabel} hint={defaultFilterHint} />
+                  <QuickStat
+                    label={pickLang(language, "Sort", "Sortierung")}
+                    value={defaultSortLabel}
+                    hint={pickLang(language, "Home order", "Feed-Reihenfolge")}
                   />
-                ) : null}
+                  <QuickStat label={pickLang(language, "Refresh", "Refresh")} value={refreshLabel} hint={refreshHint} />
+                </div>
               </SettingsSurface>
 
-              <div className="grid gap-3 sm:grid-cols-2">
-                <SettingsSurface>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {pickLang(language, "Default sort", "Standardsortierung")}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
+              <SettingsGroup>
+                <SettingsRow
+                  eyebrow={pickLang(language, "Default filter", "Standardfilter")}
+                  title={pickLang(language, "Choose the first feed view", "Erste Feed-Ansicht waehlen")}
+                  description={pickLang(
+                    language,
+                    "Pick what the home page should emphasize before you use manual filters.",
+                    "Lege fest, was die Startseite betonen soll, bevor du manuell filterst.",
+                  )}
+                >
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { key: "all", label: pickLang(language, "All", "Alle") },
+                      { key: "issues", label: pickLang(language, "Issues", "Probleme") },
+                      { key: "healthy", label: pickLang(language, "Healthy", "Stabil") },
+                      { key: "category", label: pickLang(language, "Category", "Kategorie") },
+                    ].map((option) => {
+                      const active = defaultFilterMode === option.key;
+                      return (
+                        <button
+                          key={option.key}
+                          type="button"
+                          onClick={() => {
+                            if (option.key === "category") {
+                              const nextCategory = sanitizeCategory(categoryDraft) || "gaming";
+                              setCategoryDraft(nextCategory);
+                              setHomeDefaultFilter(`category:${nextCategory}`);
+                              return;
+                            }
+                            setHomeDefaultFilter(option.key as "all" | "issues" | "healthy");
+                          }}
+                          className={cn(
+                            "rounded-full border px-3 py-2 text-xs font-semibold transition-colors",
+                            active
+                              ? "border-primary/35 bg-primary/15 text-primary"
+                              : "border-white/10 bg-black/20 text-muted-foreground hover:text-foreground",
+                          )}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {defaultFilterMode === "category" ? (
+                    <input
+                      type="text"
+                      aria-label={pickLang(language, "Default category slug", "Standard-Kategorie-Slug")}
+                      value={categoryDraft}
+                      onChange={(event) => applyCategoryDraft(event.target.value)}
+                      placeholder={pickLang(language, "category slug (e.g. gaming)", "Kategorie-Slug (z. B. gaming)")}
+                      className="mt-3 w-full rounded-2xl border border-white/10 bg-black/20 px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary/40"
+                    />
+                  ) : null}
+                </SettingsRow>
+
+                <SettingsRow
+                  eyebrow={pickLang(language, "Default sort", "Standardsortierung")}
+                  title={pickLang(language, "Order the home feed", "Home-Feed sortieren")}
+                  description={pickLang(
+                    language,
+                    "Keep impact first, alphabetical, or freshest updates near the top.",
+                    "Lege Impact, Alphabet oder die frischesten Updates nach vorne.",
+                  )}
+                >
+                  <div className="flex flex-wrap gap-2">
                     {[
                       { key: "impact", label: pickLang(language, "Impact", "Impact") },
                       { key: "name", label: pickLang(language, "Name", "Name") },
@@ -654,13 +773,18 @@ const SettingsPage = () => {
                       </button>
                     ))}
                   </div>
-                </SettingsSurface>
+                </SettingsRow>
 
-                <SettingsSurface>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {pickLang(language, "Auto refresh", "Auto-Aktualisierung")}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                <SettingsRow
+                  eyebrow={pickLang(language, "Auto refresh", "Auto-Aktualisierung")}
+                  title={pickLang(language, "Refresh cadence", "Aktualisierungsrhythmus")}
+                  description={pickLang(
+                    language,
+                    "Choose how often the home feed should refresh live data.",
+                    "Waehle, wie oft der Home-Feed Live-Daten aktualisieren soll.",
+                  )}
+                >
+                  <div className="flex flex-wrap gap-2">
                     {[30, 60, 120].map((seconds) => (
                       <button
                         key={seconds}
@@ -677,52 +801,44 @@ const SettingsPage = () => {
                       </button>
                     ))}
                   </div>
-                </SettingsSurface>
-              </div>
+                </SettingsRow>
+              </SettingsGroup>
 
-              <div className="grid gap-3 sm:grid-cols-2">
-                <SettingsSurface>
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                        {pickLang(language, "Compact cards", "Kompakte Karten")}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-foreground">
-                        {pickLang(language, "Reduce card spacing", "Weniger Kartenabstand")}
-                      </p>
-                      <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
-                        {pickLang(
-                          language,
-                          "Fits more services into the first viewport.",
-                          "Bringt mehr Services in den ersten Viewport.",
-                        )}
-                      </p>
-                    </div>
-                    <ToggleSwitch checked={homeCompactCards} onCheckedChange={setHomeCompactCards} />
-                  </div>
-                </SettingsSurface>
+              <SettingsGroup>
+                <SettingsRow
+                  eyebrow={pickLang(language, "Compact cards", "Kompakte Karten")}
+                  title={pickLang(language, "Reduce card spacing", "Weniger Kartenabstand")}
+                  description={pickLang(
+                    language,
+                    "Fits more services into the first viewport.",
+                    "Bringt mehr Services in den ersten Viewport.",
+                  )}
+                  control={
+                    <ToggleSwitch
+                      checked={homeCompactCards}
+                      onCheckedChange={setHomeCompactCards}
+                      ariaLabel={pickLang(language, "Reduce card spacing", "Weniger Kartenabstand")}
+                    />
+                  }
+                />
 
-                <SettingsSurface>
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                        {pickLang(language, "Favorites first", "Favoriten zuerst")}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-foreground">
-                        {pickLang(language, "Keep starred services near the top", "Markierte Services oben halten")}
-                      </p>
-                      <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
-                        {pickLang(
-                          language,
-                          "Helpful if you mainly track a smaller set of services.",
-                          "Hilfreich, wenn du vor allem eine kleinere Auswahl verfolgst.",
-                        )}
-                      </p>
-                    </div>
-                    <ToggleSwitch checked={homeFavoritesFirst} onCheckedChange={setHomeFavoritesFirst} />
-                  </div>
-                </SettingsSurface>
-              </div>
+                <SettingsRow
+                  eyebrow={pickLang(language, "Favorites first", "Favoriten zuerst")}
+                  title={pickLang(language, "Keep starred services near the top", "Markierte Services oben halten")}
+                  description={pickLang(
+                    language,
+                    "Helpful if you mainly track a smaller set of services.",
+                    "Hilfreich, wenn du vor allem eine kleinere Auswahl verfolgst.",
+                  )}
+                  control={
+                    <ToggleSwitch
+                      checked={homeFavoritesFirst}
+                      onCheckedChange={setHomeFavoritesFirst}
+                      ariaLabel={pickLang(language, "Keep starred services near the top", "Markierte Services oben halten")}
+                    />
+                  }
+                />
+              </SettingsGroup>
             </div>
           </GlassSection>
 
@@ -738,27 +854,29 @@ const SettingsPage = () => {
               )}
             />
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <SettingsSurface>
-                <div className="flex items-center gap-2">
-                  <HardDriveDownload size={16} className="text-primary/80" />
-                  <p className="text-sm font-semibold text-foreground">
-                    {pickLang(language, "Local storage", "Lokaler Speicher")}
-                  </p>
-                </div>
-                <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{storageSummary}</p>
-              </SettingsSurface>
+            <SettingsGroup>
+              <SettingsRow
+                eyebrow={pickLang(language, "This device", "Dieses Geraet")}
+                title={pickLang(language, "Local storage", "Lokaler Speicher")}
+                description={storageSummary}
+                control={<HardDriveDownload size={16} className="text-primary/80" aria-hidden="true" />}
+              />
 
-              <SettingsSurface>
-                <div className="flex items-center gap-2">
-                  <BellRing size={16} className="text-primary/80" />
-                  <p className="text-sm font-semibold text-foreground">
-                    {pickLang(language, "Alert account", "Alarm-Konto")}
-                  </p>
-                </div>
-                <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{alertsSummary}</p>
-              </SettingsSurface>
-            </div>
+              <SettingsRow
+                eyebrow={pickLang(language, "Alerts", "Alarme")}
+                title={pickLang(language, "Alert account", "Alarm-Konto")}
+                description={alertsSummary}
+                control={<BellRing size={16} className="text-primary/80" aria-hidden="true" />}
+              >
+                <Link
+                  to="/alerts"
+                  className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-black/30"
+                >
+                  {pickLang(language, "Open alerts center", "Alarm-Center oeffnen")}
+                  <ChevronRight size={14} />
+                </Link>
+              </SettingsRow>
+            </SettingsGroup>
 
             <div className="grid gap-2">
               <button
