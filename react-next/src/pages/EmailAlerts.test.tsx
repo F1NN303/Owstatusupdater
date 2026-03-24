@@ -61,7 +61,7 @@ describe("Email alerts delivery follow-up", () => {
           displayMode: "both",
         },
         alerts: {
-          watchedServiceIds: [],
+          watchedServiceIds: ["cloudflare"],
           severityThreshold: "major",
         },
         onboarding: {
@@ -166,5 +166,41 @@ describe("Email alerts delivery follow-up", () => {
     expect(
       await screen.findByText("Delivery status synced. Account was checked against Brevo.")
     ).toBeInTheDocument();
+  });
+
+  it("switches into settings mode once delivery is synced", async () => {
+    useAlertAccountMock.mockReturnValue({
+      configured: true,
+      status: "connected",
+      isLoading: false,
+      isSaving: false,
+      isConnected: true,
+      isDirty: false,
+      profile: {
+        brevoSyncStatus: "synced",
+        providerContactId: "123",
+        lastSyncedAt: "2026-03-24T00:29:33.645Z",
+        lastDeliveryAt: null,
+      },
+      savedPreferences: null,
+      sessionEmail: "alerts@example.com",
+      requestMagicLink: vi.fn(),
+      signOut: vi.fn(),
+      reload: vi.fn(),
+      savePreferences: vi.fn(),
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/alerts"]}>
+        <AppShellProvider>
+          <EmailAlerts />
+        </AppShellProvider>
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByText("Alert settings")).toBeInTheDocument();
+    expect(screen.getByText("Alerts are active")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Watchlist & threshold" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Inbox delivery" })).toBeInTheDocument();
   });
 });

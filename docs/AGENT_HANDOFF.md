@@ -1,8 +1,8 @@
 # Agent Handoff
 
-Last updated: 2026-03-23
+Last updated: 2026-03-24
 Current branch: `main`
-Latest known commit at handoff update: `fe8fbb50`
+Latest known commit at handoff update: `47a3752e`
 
 ## Current Priority State (2026-03-22)
 
@@ -230,6 +230,12 @@ Key files:
   - the Alerts flow summary and final delivery status cards now stack vertically on narrow screens instead of forcing cramped 3-column mini-cards
   - the delivery CTAs now become full-width stacked actions on phones so the secure Brevo entry point reads as the primary action
   - the embedded Brevo form remains available in-app, with a slightly shorter default mobile iframe height and clearer guidance that the direct secure form is usually smoother on phones
+- Alerts setup modernization shipped in working tree:
+  - the Alerts page now behaves like a one-time setup until account connection plus Brevo delivery sync are both complete
+  - the hero now shows all three setup steps at once, but only the current step section expands below it instead of keeping all three full sections open
+  - once setup is complete, the page switches into a calmer settings workspace with compact summary stats, watchlist chips, and delivery/account controls without step numbering
+  - account and delivery notices now sit directly under the hero instead of being buried inside the first card
+  - synced accounts with no real send yet now show a clearer `No e-mail yet` state instead of the more ambiguous pending label
 
 Key files:
 - `react-next/src/lib/supabase.ts`

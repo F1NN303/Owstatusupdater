@@ -147,6 +147,76 @@ function AlertsStatusMetric({
   );
 }
 
+type SetupProgressState = "done" | "current" | "upcoming";
+
+function AlertsInlineStat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-full border border-white/10 bg-black/15 px-3 py-2">
+      <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+      <p className="mt-1 text-sm font-semibold text-foreground">{value}</p>
+    </div>
+  );
+}
+
+function SetupProgressStep({
+  step,
+  title,
+  description,
+  state,
+  icon,
+  stateLabel,
+}: {
+  step: string;
+  title: string;
+  description: string;
+  state: SetupProgressState;
+  icon: ReactNode;
+  stateLabel: string;
+}) {
+  const stateClass =
+    state === "done"
+      ? "border-emerald-300/20 bg-emerald-400/10"
+      : state === "current"
+        ? "border-primary/25 bg-primary/12"
+        : "border-white/10 bg-white/5";
+  const iconClass =
+    state === "done"
+      ? "bg-emerald-400/15 text-emerald-200"
+      : state === "current"
+        ? "bg-primary/15 text-primary"
+        : "bg-black/20 text-muted-foreground";
+  const badgeClass =
+    state === "done"
+      ? STATUS_CLASS.good
+      : state === "current"
+        ? STATUS_CLASS.neutral
+        : "border-white/10 bg-black/20 text-muted-foreground";
+
+  return (
+    <div className={cn("rounded-2xl border p-3", stateClass)}>
+      <div className="flex items-start justify-between gap-3">
+        <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", iconClass)}>
+          {icon}
+        </div>
+        <span className={cn("rounded-full border px-2 py-1 text-[10px] font-semibold", badgeClass)}>
+          {stateLabel}
+        </span>
+      </div>
+      <p className="mt-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+        {step}
+      </p>
+      <h3 className="mt-1 text-sm font-semibold text-foreground">{title}</h3>
+      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{description}</p>
+    </div>
+  );
+}
+
 const EmailAlerts = () => {
   const {
     language,
@@ -465,6 +535,10 @@ const EmailAlerts = () => {
         fallbackText: t("Pending", "Ausstehend"),
       })
     : t("Pending", "Ausstehend");
+  const selectedServiceNames = useMemo(() => {
+    const labelMap = new Map(availableServices.map((service) => [service.id, service.name]));
+    return alertServiceIds.map((serviceId) => labelMap.get(serviceId) || serviceId);
+  }, [alertServiceIds, availableServices]);
   const accountTone: NoticeTone = (() => {
     if (!alertsBackendConfigured) {
       return "warn";
@@ -514,8 +588,17 @@ const EmailAlerts = () => {
       ? "warn"
       : "good"
     : "neutral";
+  const watchlistPrimed = selectedServiceCount > 0 && !alertAccountDirty;
   const deliveryReady = alertAccountProfile?.brevoSyncStatus === "synced";
   const deliverySyncError = alertAccountProfile?.brevoSyncStatus === "error";
+  const setupComplete = alertAccountConnected && deliveryReady;
+  const showSetupFlow = !setupComplete;
+  const setupCurrentStep: "account" | "preferences" | "delivery" = !alertAccountConnected
+    ? "account"
+    : !watchlistPrimed
+      ? "preferences"
+      : "delivery";
+  const setupCurrentStepIndex = setupCurrentStep === "account" ? 0 : setupCurrentStep === "preferences" ? 1 : 2;
   const deliveryAwaitingConfirmation =
     !deliveryReady &&
     !deliverySyncError &&
@@ -544,6 +627,11 @@ const EmailAlerts = () => {
         : canEmbed
           ? t("Open delivery", "Zustellung starten")
           : t("Unavailable", "Nicht verfuegbar");
+  const lastDeliveryDisplayLabel = alertAccountProfile?.lastDeliveryAt
+    ? profileLastDeliveryLabel
+    : deliveryReady
+      ? t("No e-mail yet", "Noch keine E-Mail")
+      : t("Pending", "Ausstehend");
   const setupTone: NoticeTone = (() => {
     if (!alertsBackendConfigured) {
       return "warn";
@@ -560,6 +648,9 @@ const EmailAlerts = () => {
     return "good";
   })();
   const setupBadgeLabel = (() => {
+    if (setupComplete) {
+      return t("Settings", "Einstellungen");
+    }
     if (!alertsBackendConfigured) {
       return t("Unavailable", "Nicht verfuegbar");
     }
@@ -575,6 +666,9 @@ const EmailAlerts = () => {
     return t("Ready", "Bereit");
   })();
   const setupTitle = (() => {
+    if (setupComplete) {
+      return t("Alerts are active", "Alarme sind aktiv");
+    }
     if (!alertsBackendConfigured) {
       return t("Alerts account unavailable", "Alarm-Konto nicht verfuegbar");
     }
@@ -593,6 +687,12 @@ const EmailAlerts = () => {
     return t("Alerts are ready", "Alarme sind bereit");
   })();
   const setupDescription = (() => {
+    if (setupComplete) {
+      return t(
+        "Delivery is live. This page now stays in settings mode so you can adjust watchlist, threshold, and account details without walking through setup again.",
+        "Die Zustellung ist aktiv. Diese Seite bleibt jetzt im Einstellungsmodus, damit du Watchlist, Schwelle und Konto spaeter direkt anpassen kannst."
+      );
+    }
     if (!alertsBackendConfigured) {
       return t(
         "Browser alerts are not configured in this build yet.",
@@ -629,8 +729,8 @@ const EmailAlerts = () => {
       );
     }
     return t(
-      "Account, preferences, and delivery are all active.",
-      "Konto, Einstellungen und Zustellung sind alle aktiv."
+      "Only the final delivery step is left. Once it turns active, this page becomes a calmer settings workspace.",
+      "Nur der letzte Zustellungs-Schritt fehlt noch. Sobald er aktiv ist, wird diese Seite zu einem ruhigeren Einstellungsbereich."
     );
   })();
   const watchlistModeText = alertAccountConnected
@@ -731,14 +831,60 @@ const EmailAlerts = () => {
     });
   };
 
+  const setupProgressSteps = [
+    {
+      key: "account" as const,
+      step: t("Step 1", "Schritt 1"),
+      title: t("Connect account", "Konto verbinden"),
+      description: alertAccountConnected
+        ? sessionEmail || t("Account connected.", "Konto verbunden.")
+        : t("Use one magic link, no password needed.", "Ein Magic Link reicht, kein Passwort noetig."),
+      icon: <Cloud size={16} />,
+    },
+    {
+      key: "preferences" as const,
+      step: t("Step 2", "Schritt 2"),
+      title: t("Pick alerts", "Alarme auswaehlen"),
+      description:
+        selectedServiceCount > 0
+          ? t(
+              `${selectedServiceCount} services are currently on your watchlist.`,
+              `${selectedServiceCount} Services sind aktuell auf deiner Watchlist.`
+            )
+          : t(
+              "Choose at least one service and the threshold you care about.",
+              "Waehle mindestens einen Service und die Schwelle, die dir wichtig ist."
+            ),
+      icon: <BellRing size={16} />,
+    },
+    {
+      key: "delivery" as const,
+      step: t("Step 3", "Schritt 3"),
+      title: t("Activate inbox delivery", "Postfach-Zustellung aktivieren"),
+      description: deliveryReady
+        ? t("Brevo delivery is active.", "Die Brevo-Zustellung ist aktiv.")
+        : t(
+            "Finish the secure provider step once, then this page switches to settings.",
+            "Schliesse den sicheren Provider-Schritt einmal ab, dann wechselt diese Seite in den Einstellungsmodus."
+          ),
+      icon: <Mail size={16} />,
+    },
+  ];
+
+  const selectedWatchlistPreview = selectedServiceNames.slice(0, 6);
+
   return (
     <AppLayout>
       <PageShell>
         <PageIntro
           title={t("Alerts", "Alarme")}
           description={t(
-            "Connect your account, choose what matters, then finish e-mail delivery if you want inbox alerts.",
-            "Verbinde dein Konto, waehle die wichtigen Services und aktiviere danach bei Bedarf die E-Mail-Zustellung."
+            showSetupFlow
+              ? "Finish the one-time setup once: connect the account, save the watchlist, then activate inbox delivery."
+              : "Alerts are already configured. Adjust watchlist, threshold, account access, or inbox delivery here whenever needed.",
+            showSetupFlow
+              ? "Schliesse die einmalige Einrichtung einmal ab: Konto verbinden, Watchlist speichern und danach die Postfach-Zustellung aktivieren."
+              : "Die Alarme sind bereits eingerichtet. Passe hier bei Bedarf Watchlist, Schwelle, Kontozugang oder Postfach-Zustellung an."
           )}
           action={
             <button
@@ -758,7 +904,7 @@ const EmailAlerts = () => {
         />
 
         <section className="glass glass-specular overflow-hidden rounded-2xl">
-          <div className="bg-gradient-to-r from-primary/15 to-transparent p-4">
+          <div className="bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.2),transparent_45%),linear-gradient(140deg,rgba(14,165,233,0.08),transparent_55%)] p-4 sm:p-5">
             <div className="relative z-10 flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary">
@@ -766,10 +912,12 @@ const EmailAlerts = () => {
                 </div>
                 <div className="min-w-0">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-primary/80">
-                    {t("Alerts flow", "Alarm-Ablauf")}
+                    {showSetupFlow ? t("Alerts setup", "Alarm-Setup") : t("Alert settings", "Alarm-Einstellungen")}
                   </p>
-                  <h2 className="truncate text-sm font-bold text-foreground">{setupTitle}</h2>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{setupDescription}</p>
+                  <h2 className="text-sm font-bold text-foreground sm:text-base">{setupTitle}</h2>
+                  <p className="mt-0.5 max-w-2xl text-xs leading-relaxed text-muted-foreground">
+                    {setupDescription}
+                  </p>
                 </div>
               </div>
               <span
@@ -779,51 +927,168 @@ const EmailAlerts = () => {
               </span>
             </div>
 
-            <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
-              <AlertsStatusMetric
-                label={t("Account", "Konto")}
-                value={connectionStatusLabel}
-                tone={accountTone}
-                caption={
-                  alertAccountConnected
-                    ? sessionEmail || t("Unknown", "Unbekannt")
-                    : t("Use the magic link to connect.", "Nutze den Magic Link zum Verbinden.")
-                }
-              />
-              <AlertsStatusMetric
-                label={t("Preferences", "Einstellungen")}
-                value={preferencesStatusLabel}
-                tone={preferencesTone}
-                caption={
-                  alertAccountConnected
-                    ? t(
-                        `${selectedServiceCount} services currently selected.`,
-                        `${selectedServiceCount} Services sind aktuell ausgewaehlt.`
-                      )
-                    : t(
-                        `${selectedServiceCount} services are only stored on this device right now.`,
-                        `${selectedServiceCount} Services sind aktuell nur auf diesem Geraet gespeichert.`
-                      )
-                }
-              />
-              <AlertsStatusMetric
-                label={t("Delivery", "Zustellung")}
-                value={providerStatusLabel}
-                tone={providerTone}
-                caption={deliveryReady ? provider : t("Brevo delivery step still open.", "Brevo-Zustellung ist noch offen.")}
-              />
-            </div>
+            {showSetupFlow ? (
+              <>
+                <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-3">
+                  {setupProgressSteps.map((item, index) => (
+                    <SetupProgressStep
+                      key={item.key}
+                      step={item.step}
+                      title={item.title}
+                      description={item.description}
+                      icon={item.icon}
+                      state={
+                        index < setupCurrentStepIndex
+                          ? "done"
+                          : index === setupCurrentStepIndex
+                            ? "current"
+                            : "upcoming"
+                      }
+                      stateLabel={
+                        index < setupCurrentStepIndex
+                          ? t("Done", "Fertig")
+                          : index === setupCurrentStepIndex
+                            ? t("Current", "Jetzt")
+                            : t("Next", "Danach")
+                      }
+                    />
+                  ))}
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <AlertsInlineStat label={t("Account", "Konto")} value={connectionStatusLabel} />
+                  <AlertsInlineStat label={t("Watching", "Beobachtet")} value={String(selectedServiceCount)} />
+                  <AlertsInlineStat
+                    label={t("Threshold", "Schwelle")}
+                    value={
+                      alertSeverityThreshold === "degraded"
+                        ? t("Degraded+", "Beeintraechtigt+")
+                        : t("Major only", "Nur groessere")
+                    }
+                  />
+                  <AlertsInlineStat label={t("Delivery", "Zustellung")} value={providerStatusLabel} />
+                </div>
+              </>
+            ) : (
+              <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+                <div className="rounded-2xl border border-white/10 bg-black/15 p-4">
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-primary/80">
+                    {t("Live watchlist", "Live-Watchlist")}
+                  </p>
+                  <h3 className="mt-2 text-base font-semibold text-foreground">
+                    {selectedServiceCount > 0
+                      ? t("Alerts stay focused on what you selected.", "Die Alarme bleiben auf deine Auswahl fokussiert.")
+                      : t("No services selected yet.", "Noch keine Services ausgewaehlt.")}
+                  </h3>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {selectedServiceCount > 0
+                      ? t(
+                          "This page is now your settings workspace. Update the watchlist or severity threshold any time without walking through the full setup again.",
+                          "Diese Seite ist jetzt dein Einstellungsbereich. Passe Watchlist oder Alarm-Schwelle jederzeit an, ohne den kompletten Setup-Ablauf erneut zu durchlaufen."
+                        )
+                      : t(
+                          "Choose the services you care about below and save them back into your account.",
+                          "Waehle unten die Services aus, die fuer dich wichtig sind, und speichere sie wieder in deinem Konto."
+                        )}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {selectedWatchlistPreview.length > 0 ? (
+                      <>
+                        {selectedWatchlistPreview.map((serviceName) => (
+                          <span
+                            key={serviceName}
+                            className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-medium text-primary"
+                          >
+                            {serviceName}
+                          </span>
+                        ))}
+                        {selectedServiceCount > selectedWatchlistPreview.length ? (
+                          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground">
+                            {t(
+                              `+${selectedServiceCount - selectedWatchlistPreview.length} more`,
+                              `+${selectedServiceCount - selectedWatchlistPreview.length} weitere`
+                            )}
+                          </span>
+                        ) : null}
+                      </>
+                    ) : (
+                      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground">
+                        {t("Pick at least one service below.", "Waehle unten mindestens einen Service aus.")}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+                  <AlertsInlineStat
+                    label={t("Account", "Konto")}
+                    value={sessionEmail || connectionStatusLabel}
+                  />
+                  <AlertsInlineStat
+                    label={t("Threshold", "Schwelle")}
+                    value={
+                      alertSeverityThreshold === "degraded"
+                        ? t("Degraded+", "Beeintraechtigt+")
+                        : t("Major only", "Nur groessere")
+                    }
+                  />
+                  <AlertsInlineStat
+                    label={t("Last delivery", "Letzte Zustellung")}
+                    value={lastDeliveryDisplayLabel}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
-        <GlassSection className="mt-4">
+        {accountNotice ? (
+          <div
+            className={`mt-4 rounded-2xl border px-3 py-2.5 text-[12px] leading-relaxed ${STATUS_CLASS[accountNotice.tone]}`}
+          >
+            {accountNotice.message}
+          </div>
+        ) : null}
+
+        {usingCachedConfig ? (
+          <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-3 py-2.5 text-[11px] text-amber-200">
+            <p className="font-semibold">
+              {t("Showing last known signup settings", "Letzte bekannte Anmelde-Einstellungen werden angezeigt")}
+            </p>
+            <p className="mt-0.5 opacity-90">
+              {cachedConfigLabel
+                ? t(
+                    `Stored configuration from ${cachedConfigLabel} is being used while the connection recovers.`,
+                    `Gespeicherte Konfiguration von ${cachedConfigLabel} wird verwendet, waehrend sich die Verbindung erholt.`
+                  )
+                : t(
+                    "A previously saved configuration is being used while the connection recovers.",
+                    "Eine zuvor gespeicherte Konfiguration wird verwendet, waehrend sich die Verbindung erholt."
+                  )}
+            </p>
+          </div>
+        ) : null}
+
+        {!showSetupFlow || setupCurrentStep === "account" ? (
+          <GlassSection className="mt-4">
             <AlertsSectionHeader
               icon={<Cloud size={16} className="text-primary" />}
-              title={t("1. Account access", "1. Kontozugang")}
-              description={t(
-                "Connect once with a magic link, then this account can keep your alert preferences.",
-                "Verbinde dich einmal per Magic Link, dann kann dieses Konto deine Alarm-Einstellungen speichern."
-              )}
+              title={
+                showSetupFlow
+                  ? t("1. Account access", "1. Kontozugang")
+                  : t("Account & sync", "Konto & Sync")
+              }
+              description={
+                showSetupFlow
+                  ? t(
+                      "Connect once with a magic link, then this account can keep your alert preferences.",
+                      "Verbinde dich einmal per Magic Link, dann kann dieses Konto deine Alarm-Einstellungen speichern."
+                    )
+                  : t(
+                      "Manage the connected account, see the latest sync state, or switch to a different e-mail.",
+                      "Verwalte das verbundene Konto, pruefe den letzten Sync-Stand oder wechsle zu einer anderen E-Mail."
+                    )
+              }
             />
 
             {alertAccountConnected ? (
@@ -837,8 +1102,12 @@ const EmailAlerts = () => {
                   </p>
                   <p className="mt-2 text-[11px] text-muted-foreground">
                     {t(
-                      "This account is now the source of truth for saved alert preferences.",
-                      "Dieses Konto ist jetzt die Quelle fuer gespeicherte Alarm-Einstellungen."
+                      showSetupFlow
+                        ? "This account is now the source of truth for saved alert preferences."
+                        : "This account is now the source of truth for your saved alert preferences and inbox delivery state.",
+                      showSetupFlow
+                        ? "Dieses Konto ist jetzt die Quelle fuer gespeicherte Alarm-Einstellungen."
+                        : "Dieses Konto ist jetzt die Quelle fuer gespeicherte Alarm-Einstellungen und fuer den Status der Postfach-Zustellung."
                     )}
                   </p>
                 </div>
@@ -854,7 +1123,7 @@ const EmailAlerts = () => {
                     <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                       {t("Last delivery", "Letzte Zustellung")}
                     </p>
-                    <p className="mt-1 text-xs font-medium text-foreground">{profileLastDeliveryLabel}</p>
+                    <p className="mt-1 text-xs font-medium text-foreground">{lastDeliveryDisplayLabel}</p>
                   </div>
                 </div>
 
@@ -866,7 +1135,7 @@ const EmailAlerts = () => {
                   >
                     <span className="inline-flex items-center gap-1.5">
                       <LogOut size={14} />
-                      {t("Sign out", "Abmelden")}
+                      {showSetupFlow ? t("Use another e-mail", "Andere E-Mail nutzen") : t("Sign out", "Abmelden")}
                     </span>
                   </button>
                 </div>
@@ -917,51 +1186,57 @@ const EmailAlerts = () => {
                 ) : null}
               </div>
             )}
-
-            {accountNotice ? (
-              <div className={`mt-3 rounded-xl border px-3 py-2 text-[11px] ${STATUS_CLASS[accountNotice.tone]}`}>
-                {accountNotice.message}
-              </div>
-            ) : null}
-        </GlassSection>
-
-        {usingCachedConfig ? (
-          <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-3 py-2.5 text-[11px] text-amber-200">
-            <p className="font-semibold">
-              {t("Showing last known signup settings", "Letzte bekannte Anmelde-Einstellungen werden angezeigt")}
-            </p>
-            <p className="mt-0.5 opacity-90">
-              {cachedConfigLabel
-                ? t(
-                    `Stored configuration from ${cachedConfigLabel} is being used while the connection recovers.`,
-                    `Gespeicherte Konfiguration von ${cachedConfigLabel} wird verwendet, waehrend sich die Verbindung erholt.`
-                  )
-                : t(
-                    "A previously saved configuration is being used while the connection recovers.",
-                    "Eine zuvor gespeicherte Konfiguration wird verwendet, waehrend sich die Verbindung erholt."
-                  )}
-            </p>
-          </div>
+          </GlassSection>
         ) : null}
 
-        <GlassSection className="mt-4">
+        {!showSetupFlow || setupCurrentStep === "preferences" ? (
+          <GlassSection className="mt-4">
             <AlertsSectionHeader
               icon={<BellRing size={16} className="text-primary" />}
-              title={t("2. Choose alerts", "2. Alarme auswaehlen")}
+              title={
+                showSetupFlow
+                  ? t("2. Choose alerts", "2. Alarme auswaehlen")
+                  : t("Watchlist & threshold", "Watchlist & Schwelle")
+              }
               description={
-                alertAccountConnected
-                  ? t(
-                      "Pick the services and threshold you want to save into your account.",
-                      "Waehle die Services und die Schwelle, die in deinem Konto gespeichert werden sollen."
-                    )
+                showSetupFlow
+                  ? alertAccountConnected
+                    ? t(
+                        "Pick the services and threshold you want to save into your account. Once saved, setup moves to inbox delivery.",
+                        "Waehle die Services und die Schwelle, die in deinem Konto gespeichert werden sollen. Nach dem Speichern wechselt das Setup zur Postfach-Zustellung."
+                      )
+                    : t(
+                        "You can prepare this before sign-in. Until then, it stays only on this device.",
+                        "Du kannst das vor der Anmeldung vorbereiten. Bis dahin bleibt es nur auf diesem Geraet."
+                      )
                   : t(
-                      "You can prepare this before sign-in. Until then, it stays only on this device.",
-                      "Du kannst das vor der Anmeldung vorbereiten. Bis dahin bleibt es nur auf diesem Geraet."
+                      "Adjust which services should trigger alerts and how sensitive the watchlist should be.",
+                      "Passe an, welche Services Alarme ausloesen und wie empfindlich die Watchlist reagieren soll."
                     )
               }
             />
 
-            <div className="grid grid-cols-3 gap-2">
+            {showSetupFlow && alertAccountConnected ? (
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                    {t("Connected account", "Verbundenes Konto")}
+                  </p>
+                  <p className="mt-1 text-sm font-medium text-foreground">
+                    {sessionEmail || t("Unknown", "Unbekannt")}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="rounded-xl border border-white/10 bg-black/15 px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-white/10"
+                >
+                  {t("Use another e-mail", "Andere E-Mail nutzen")}
+                </button>
+              </div>
+            ) : null}
+
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                 <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                   {t("Watching", "Beobachtet")}
@@ -986,7 +1261,28 @@ const EmailAlerts = () => {
               </div>
             </div>
 
-            <p className="mt-3 text-[11px] text-muted-foreground">{watchlistModeText}</p>
+            {selectedWatchlistPreview.length > 0 ? (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {selectedWatchlistPreview.map((serviceName) => (
+                  <span
+                    key={serviceName}
+                    className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-medium text-primary"
+                  >
+                    {serviceName}
+                  </span>
+                ))}
+                {selectedServiceCount > selectedWatchlistPreview.length ? (
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground">
+                    {t(
+                      `+${selectedServiceCount - selectedWatchlistPreview.length} more`,
+                      `+${selectedServiceCount - selectedWatchlistPreview.length} weitere`
+                    )}
+                  </span>
+                ) : null}
+              </div>
+            ) : null}
+
+            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">{watchlistModeText}</p>
 
             <div className="mt-3 rounded-xl border border-white/10 bg-white/5 p-3">
               <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
@@ -1062,7 +1358,9 @@ const EmailAlerts = () => {
                     {alertAccountSaving
                       ? t("Saving...", "Speichert...")
                       : alertAccountDirty
-                        ? t("Save to account", "Im Konto speichern")
+                        ? showSetupFlow
+                          ? t("Save and continue", "Speichern und weiter")
+                          : t("Save changes", "Aenderungen speichern")
                         : t("Saved", "Gespeichert")}
                   </span>
                 </button>
@@ -1167,14 +1465,61 @@ const EmailAlerts = () => {
                 })
               )}
             </div>
-        </GlassSection>
+          </GlassSection>
+        ) : null}
 
-        <GlassSection className="mt-4">
+        {!showSetupFlow || setupCurrentStep === "delivery" ? (
+          <GlassSection className="mt-4">
             <AlertsSectionHeader
               icon={<Mail size={16} className="text-primary" />}
-              title={t("3. Activate e-mail delivery", "3. E-Mail-Zustellung aktivieren")}
-              description={providerConnectionText}
+              title={
+                showSetupFlow
+                  ? t("3. Activate e-mail delivery", "3. E-Mail-Zustellung aktivieren")
+                  : t("Inbox delivery", "Postfach-Zustellung")
+              }
+              description={
+                showSetupFlow
+                  ? providerConnectionText
+                  : t(
+                      "Delivery is already linked. Re-check the sync or reopen the provider form only if you want to reconnect or verify mailbox delivery.",
+                      "Die Zustellung ist bereits verknuepft. Pruefe den Sync erneut oder oeffne das Provider-Formular nur, wenn du die Postfach-Zustellung neu verbinden oder verifizieren willst."
+                    )
+              }
             />
+
+            {showSetupFlow && alertAccountConnected ? (
+              <div className="mb-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
+                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                  {t("Saved watchlist", "Gespeicherte Watchlist")}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {selectedWatchlistPreview.length > 0 ? (
+                    <>
+                      {selectedWatchlistPreview.map((serviceName) => (
+                        <span
+                          key={serviceName}
+                          className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-medium text-primary"
+                        >
+                          {serviceName}
+                        </span>
+                      ))}
+                      {selectedServiceCount > selectedWatchlistPreview.length ? (
+                        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground">
+                          {t(
+                            `+${selectedServiceCount - selectedWatchlistPreview.length} more`,
+                            `+${selectedServiceCount - selectedWatchlistPreview.length} weitere`
+                          )}
+                        </span>
+                      ) : null}
+                    </>
+                  ) : (
+                    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground">
+                      {t("No saved services yet.", "Noch keine gespeicherten Services.")}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ) : null}
 
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <AlertsStatusMetric
@@ -1207,16 +1552,18 @@ const EmailAlerts = () => {
                 }
               />
               <AlertsStatusMetric
-                label={t("Checked", "Geprueft")}
-                value={checkedLabel}
-                tone={usingCachedConfig ? "warn" : "neutral"}
+                label={showSetupFlow ? t("Checked", "Geprueft") : t("Last delivery", "Letzte Zustellung")}
+                value={showSetupFlow ? checkedLabel : lastDeliveryDisplayLabel}
+                tone={showSetupFlow ? (usingCachedConfig ? "warn" : "neutral") : deliveryReady ? "good" : "neutral"}
                 caption={
-                  usingCachedConfig
-                    ? t("Using cached signup metadata.", "Es werden zwischengespeicherte Anmelde-Metadaten verwendet.")
-                    : t(
-                        "Brevo handles captcha and double opt-in.",
-                        "Brevo verarbeitet Captcha und Double-Opt-In."
-                      )
+                  showSetupFlow
+                    ? usingCachedConfig
+                      ? t("Using cached signup metadata.", "Es werden zwischengespeicherte Anmelde-Metadaten verwendet.")
+                      : t(
+                          "Brevo handles captcha and double opt-in.",
+                          "Brevo verarbeitet Captcha und Double-Opt-In."
+                        )
+                    : t(`Last sync: ${profileLastSyncedLabel}.`, `Letzter Sync: ${profileLastSyncedLabel}.`)
                 }
               />
             </div>
@@ -1224,6 +1571,20 @@ const EmailAlerts = () => {
             {canEmbed ? (
               <div className="mt-3 space-y-3">
                 <div className="flex flex-col gap-2 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={() => void handleCheckDeliveryStatus()}
+                    disabled={deliverySyncPending || isRefreshing || alertAccountLoading}
+                    className="w-full rounded-xl border border-primary/20 bg-primary/10 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                  >
+                    {deliverySyncPending
+                      ? t("Syncing delivery...", "Synchronisiere Zustellung...")
+                      : isRefreshing || alertAccountLoading
+                        ? t("Checking status...", "Pruefe Status...")
+                        : deliveryReady
+                          ? t("Re-check delivery", "Zustellung erneut pruefen")
+                          : t("Check delivery status", "Zustellungsstatus pruefen")}
+                  </button>
                   <a
                     href={embedUrl}
                     target="_blank"
@@ -1235,7 +1596,9 @@ const EmailAlerts = () => {
                     className="inline-flex w-full items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-3 py-2.5 text-center text-sm font-medium text-primary transition-colors hover:bg-primary/15 sm:w-auto"
                   >
                     <span className="inline-flex items-center gap-1.5">
-                      {t("Open secure delivery form", "Sicheres Zustellungsformular oeffnen")}
+                      {deliveryReady
+                        ? t("Open provider form again", "Provider-Formular erneut oeffnen")
+                        : t("Open secure delivery form", "Sicheres Zustellungsformular oeffnen")}
                       <ExternalLink size={14} />
                     </span>
                   </a>
@@ -1257,18 +1620,6 @@ const EmailAlerts = () => {
                       ? t("Hide embedded form", "Eingebettetes Formular ausblenden")
                       : t("Show embedded form here", "Formular hier einblenden")}
                   </button>
-                      <button
-                        type="button"
-                        onClick={() => void handleCheckDeliveryStatus()}
-                        disabled={deliverySyncPending || isRefreshing || alertAccountLoading}
-                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-                      >
-                        {deliverySyncPending
-                          ? t("Syncing delivery...", "Synchronisiere Zustellung...")
-                          : isRefreshing || alertAccountLoading
-                          ? t("Checking status...", "Pruefe Status...")
-                          : t("Check delivery status", "Zustellungsstatus pruefen")}
-                      </button>
                 </div>
 
                 {deliveryAwaitingConfirmation ? (
@@ -1333,8 +1684,12 @@ const EmailAlerts = () => {
                 ) : (
                   <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] leading-relaxed text-muted-foreground">
                     {t(
-                      "On phones, the direct secure form is usually the smoother option. Open the embedded form only when you want to finish the provider step inside the app.",
-                      "Auf dem Handy ist das direkte sichere Formular meistens die angenehmere Option. Oeffne das eingebettete Formular nur, wenn du den Provider-Schritt direkt in der App abschliessen willst."
+                      showSetupFlow
+                        ? "On phones, the direct secure form is usually the smoother option. Open the embedded form only when you want to finish the provider step inside the app."
+                        : "On phones, the direct secure form is usually smoother. Keep the embedded form only as a fallback when you want to handle the provider step without leaving the app.",
+                      showSetupFlow
+                        ? "Auf dem Handy ist das direkte sichere Formular meistens die angenehmere Option. Oeffne das eingebettete Formular nur, wenn du den Provider-Schritt direkt in der App abschliessen willst."
+                        : "Auf dem Handy ist das direkte sichere Formular meistens angenehmer. Nutze das eingebettete Formular nur als Rueckfalloption, wenn du den Provider-Schritt innerhalb der App erledigen willst."
                     )}
                   </div>
                 )}
@@ -1347,7 +1702,8 @@ const EmailAlerts = () => {
                 )}
               </div>
             )}
-        </GlassSection>
+          </GlassSection>
+        ) : null}
       </PageShell>
     </AppLayout>
   );
