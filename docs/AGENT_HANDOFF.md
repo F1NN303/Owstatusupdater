@@ -929,3 +929,14 @@ Key files:
 - Notes:
   - this pass assumes the Supabase Edge Function `sync-brevo-contact` is already deployed with a valid `BREVO_API_KEY` secret
   - the frontend still depends on the signed-in alert account matching the Brevo contact e-mail
+
+## Latest Validation Snapshot (Subscriber Test Email Targeting)
+- Scope:
+  - extended `scripts/send_brevo_major_alert.py` so manual forced test runs can target one synced subscriber via a private `ALERT_TEST_SUBSCRIBER_EMAIL` secret while keeping the legacy fixed-recipient fallback intact
+  - updated `.github/workflows/send-test-email.yml` to pass the optional subscriber-test secret into the manual test workflow
+  - added focused Python coverage in `tests/test_send_brevo_major_alert.py` for subscriber filtering and forced subscriber-test mode selection
+- Validation:
+  - `py -3 -m unittest tests.test_send_brevo_major_alert` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+- Notes:
+  - the new subscriber-test path still requires a private repo secret and matching synced alert account state; it does not expose target e-mail addresses in committed workflow config

@@ -86,6 +86,11 @@ def _parse_recipients(raw: str | None) -> list[str]:
     return deduped
 
 
+def _normalize_target_email(raw: str | None) -> str:
+    value = str(raw or "").strip().lower()
+    return value if "@" in value else ""
+
+
 def _parse_cooldown_minutes(raw: str | None) -> int:
     try:
         parsed = int(str(raw or "").strip())
@@ -391,7 +396,8 @@ def _patch_profile(base_url: str, api_key: str, user_id: str, payload: dict) -> 
     return response.status_code in {200, 204}
 
 
-def _fetch_subscribers(base_url: str, api_key: str) -> list[dict]:
+def _fetch_subscribers(base_url: str, api_key: str, target_email: str | None = None) -> list[dict]:
+    normalized_target_email = _normalize_target_email(target_email)
     profile_rows = _fetch_supabase_rows(
         base_url,
         api_key,
@@ -428,6 +434,8 @@ def _fetch_subscribers(base_url: str, api_key: str) -> list[dict]:
         user_id = str(record.get("user_id") or "").strip()
         email = str(record.get("email") or "").strip().lower()
         if not user_id or not email or "@" not in email:
+            continue
+        if normalized_target_email and email != normalized_target_email:
             continue
         preferences = preference_map.get(
             user_id,
@@ -478,9 +486,10 @@ def _dispatch_to_subscribers(
     cooldown_minutes: int,
     state: dict,
     now: dt.datetime,
+    target_email: str | None = None,
 ) -> tuple[int, int]:
     service_entries = _build_service_entries(site_root_url)
-    subscribers = _fetch_subscribers(supabase_url, supabase_api_key)
+    subscribers = _fetch_subscribers(supabase_url, supabase_api_key, target_email)
     _sync_active_profiles(supabase_url, supabase_api_key, subscribers, _iso_utc(now))
 
     sent_count = 0
@@ -666,6 +675,7 @@ def main() -> None:
     sender_email = os.getenv("ALERT_EMAIL_FROM", "").strip()
     sender_name = os.getenv("ALERT_EMAIL_SENDER_NAME", "StatusChecker Alerts").strip() or "StatusChecker Alerts"
     explicit_recipients = _parse_recipients(os.getenv("ALERT_EMAIL_TO"))
+    test_subscriber_email = _normalize_target_email(os.getenv("ALERT_TEST_SUBSCRIBER_EMAIL"))
     api_key = os.getenv("BREVO_API_KEY", "").strip()
     site_root_url = _safe_http_url(os.getenv("ALERT_SITE_URL", DEFAULT_SITE_URL).strip()) or DEFAULT_SITE_URL
     test_service_id = os.getenv("ALERT_TEST_SERVICE_ID", "").strip() or None
@@ -697,7 +707,23 @@ def main() -> None:
     reason = "no_dispatch_target"
 
     try:
-        if force_send and explicit_recipients:
+        if force_send and test_subscriber_email and supabase_url and supabase_api_key:
+            run_mode = "forced_subscriber_test"
+            sent_count, attempted_count = _dispatch_to_subscribers(
+                api_key,
+                sender_name,
+                sender_email,
+                site_root_url,
+                supabase_url,
+                supabase_api_key,
+                True,
+                cooldown_minutes,
+                state,
+                now,
+                test_subscriber_email,
+            )
+            reason = "forced_subscriber_test"
+        elif force_send and explicit_recipients:
             run_mode = "forced_test"
             sent_count, attempted_count = _dispatch_legacy_recipients(
                 api_key,
