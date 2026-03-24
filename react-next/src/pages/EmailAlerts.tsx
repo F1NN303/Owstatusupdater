@@ -9,6 +9,7 @@ import {
   providerLabel,
   type LegacySubscriptionLoadResult,
 } from "@/lib/legacySubscription";
+import { getSupabaseClient } from "@/lib/supabase";
 import { formatTimestampByMode } from "@/lib/timeDisplay";
 import { cn } from "@/lib/utils";
 import {
@@ -186,6 +187,7 @@ const EmailAlerts = () => {
   const [magicLinkPending, setMagicLinkPending] = useState(false);
   const [magicLinkSentEmail, setMagicLinkSentEmail] = useState("");
   const [deliveryFollowUpPending, setDeliveryFollowUpPending] = useState(readDeliveryFollowUpPending);
+  const [deliverySyncPending, setDeliverySyncPending] = useState(false);
   const [showProviderEmbed, setShowProviderEmbed] = useState(false);
   const [serviceQuery, setServiceQuery] = useState("");
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
@@ -228,6 +230,94 @@ const EmailAlerts = () => {
   const refreshAlertSetup = () => {
     void loadConfig();
     reloadAlertAccount();
+  };
+
+  const handleCheckDeliveryStatus = async () => {
+    if (!alertsBackendConfigured) {
+      setAccountNotice({
+        tone: "warn",
+        message: t(
+          "Alert account checks are not configured in this build.",
+          "Alarm-Konto-Pruefungen sind in diesem Build nicht konfiguriert."
+        ),
+      });
+      return;
+    }
+
+    if (!alertAccountConnected) {
+      setAccountNotice({
+        tone: "warn",
+        message: t(
+          "Connect your alert account first, then check delivery again.",
+          "Verbinde zuerst dein Alarm-Konto und pruefe die Zustellung danach erneut."
+        ),
+      });
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setAccountNotice({
+        tone: "bad",
+        message: t(
+          "Supabase is not available in this build right now.",
+          "Supabase ist in diesem Build gerade nicht verfuegbar."
+        ),
+      });
+      return;
+    }
+
+    setDeliverySyncPending(true);
+    const { data, error } = await supabase.functions.invoke("sync-brevo-contact", {
+      body: {},
+    });
+    setDeliverySyncPending(false);
+    refreshAlertSetup();
+
+    if (error) {
+      setAccountNotice({
+        tone: "bad",
+        message:
+          String(error.message || "").trim() ||
+          t(
+            "Could not check Brevo delivery status right now.",
+            "Der Brevo-Zustellungsstatus konnte gerade nicht geprueft werden."
+          ),
+      });
+      return;
+    }
+
+    if (data?.synced) {
+      setDeliveryFollowUpPending(false);
+      writeDeliveryFollowUpPending(false);
+      setAccountNotice({
+        tone: "good",
+        message: t(
+          "Delivery status synced. Account was checked against Brevo.",
+          "Zustellungsstatus synchronisiert. Das Konto wurde mit Brevo abgeglichen."
+        ),
+      });
+      return;
+    }
+
+    if (data?.contactFound === false) {
+      setAccountNotice({
+        tone: "warn",
+        message: t(
+          "No confirmed Brevo contact was found for this account e-mail yet.",
+          "Fuer diese Konto-E-Mail wurde noch kein bestaetigter Brevo-Kontakt gefunden."
+        ),
+      });
+      return;
+    }
+
+    setAccountNotice({
+      tone: "warn",
+      message: t(
+        "Brevo contact found, but delivery is not fully active yet.",
+        "Ein Brevo-Kontakt wurde gefunden, aber die Zustellung ist noch nicht voll aktiv."
+      ),
+    });
   };
 
   useEffect(() => {
@@ -1167,16 +1257,18 @@ const EmailAlerts = () => {
                       ? t("Hide embedded form", "Eingebettetes Formular ausblenden")
                       : t("Show embedded form here", "Formular hier einblenden")}
                   </button>
-                  <button
-                    type="button"
-                    onClick={refreshAlertSetup}
-                    disabled={isRefreshing || alertAccountLoading}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-                  >
-                    {isRefreshing || alertAccountLoading
-                      ? t("Checking status...", "Pruefe Status...")
-                      : t("Check delivery status", "Zustellungsstatus pruefen")}
-                  </button>
+                      <button
+                        type="button"
+                        onClick={() => void handleCheckDeliveryStatus()}
+                        disabled={deliverySyncPending || isRefreshing || alertAccountLoading}
+                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                      >
+                        {deliverySyncPending
+                          ? t("Syncing delivery...", "Synchronisiere Zustellung...")
+                          : isRefreshing || alertAccountLoading
+                          ? t("Checking status...", "Pruefe Status...")
+                          : t("Check delivery status", "Zustellungsstatus pruefen")}
+                      </button>
                 </div>
 
                 {deliveryAwaitingConfirmation ? (

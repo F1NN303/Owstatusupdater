@@ -916,3 +916,16 @@ Key files:
 - Notes:
   - the auth-dependent step-3 follow-up state could not be fully end-to-end verified locally without a live connected alert account plus provider sync callback data
   - the frontend now has a clearer pending/check-again path, but final `Active` status still depends on alert-account profile data reaching `brevo_sync_status = synced`
+
+## Latest Validation Snapshot (Brevo Manual Sync Hookup)
+- Scope:
+  - wired the existing `Zustellungsstatus pruefen` action in `react-next/src/pages/EmailAlerts.tsx` to invoke the deployed Supabase Edge Function `sync-brevo-contact`
+  - added explicit account notices for successful sync, missing Brevo contact, and transient sync failures
+  - added focused regression coverage in `react-next/src/pages/EmailAlerts.test.tsx` for the manual sync button path
+- Validation:
+  - `npm.cmd run test` in `react-next` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+- Notes:
+  - this pass assumes the Supabase Edge Function `sync-brevo-contact` is already deployed with a valid `BREVO_API_KEY` secret
+  - the frontend still depends on the signed-in alert account matching the Brevo contact e-mail

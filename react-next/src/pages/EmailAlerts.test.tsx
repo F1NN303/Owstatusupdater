@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
@@ -15,6 +15,8 @@ vi.mock("@/components/ServiceIdentityIcon", () => ({
 const getLegacyLiveStatusServices = vi.fn();
 const fetchLegacySubscriptionConfig = vi.fn();
 const useAlertAccountMock = vi.fn();
+const invokeFunctionMock = vi.fn();
+const getSupabaseClientMock = vi.fn();
 
 vi.mock("@/lib/legacyStatus", () => ({
   getLegacyLiveStatusServices: (...args: unknown[]) => getLegacyLiveStatusServices(...args),
@@ -27,6 +29,10 @@ vi.mock("@/lib/legacySubscription", () => ({
 
 vi.mock("@/lib/alertAccount", () => ({
   useAlertAccount: () => useAlertAccountMock(),
+}));
+
+vi.mock("@/lib/supabase", () => ({
+  getSupabaseClient: () => getSupabaseClientMock(),
 }));
 
 import EmailAlerts from "./EmailAlerts";
@@ -94,6 +100,19 @@ describe("Email alerts delivery follow-up", () => {
       reload: vi.fn(),
       savePreferences: vi.fn(),
     });
+    invokeFunctionMock.mockResolvedValue({
+      data: {
+        synced: true,
+        contactFound: true,
+        contactId: "123",
+      },
+      error: null,
+    });
+    getSupabaseClientMock.mockReturnValue({
+      functions: {
+        invoke: (...args: unknown[]) => invokeFunctionMock(...args),
+      },
+    });
   });
 
   afterEach(() => {
@@ -128,5 +147,24 @@ describe("Email alerts delivery follow-up", () => {
 
     expect((await screen.findAllByText("Confirming")).length).toBeGreaterThan(0);
     expect(screen.getByRole("button", { name: "Check delivery status" })).toBeInTheDocument();
+  });
+
+  it("invokes the Brevo sync function from the delivery status button", async () => {
+    render(
+      <MemoryRouter initialEntries={["/alerts"]}>
+        <AppShellProvider>
+          <EmailAlerts />
+        </AppShellProvider>
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Check delivery status" }));
+
+    await waitFor(() => {
+      expect(invokeFunctionMock).toHaveBeenCalledWith("sync-brevo-contact", { body: {} });
+    });
+    expect(
+      await screen.findByText("Delivery status synced. Account was checked against Brevo.")
+    ).toBeInTheDocument();
   });
 });
