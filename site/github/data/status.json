@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-03-24T16:37:21.171859Z",
+  "generated_at": "2026-03-24T17:58:19.492698Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 1.345,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 2.15
     },
     "signal_metrics": {
-      "reports_24h": 123,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 24,
+      "recent_incidents_6h": 3,
+      "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,40 +31,40 @@
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "major",
+      "severity_score": 9,
       "report_weight": 1.0
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     }
   },
@@ -74,10 +74,34 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-03-24T16:37:20.831318Z",
+        "published_at": "2026-03-24T17:58:19.139643Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Teams Github Notifications App is down",
+        "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5#xcr1ym5qnrjf",
+        "published_at": "2026-03-24T17:43:14.237Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We are experiencing degraded availability from Azure APIs, which is impacting notifications from GitHub to Microsoft Teams. We are working with Azure to resolve the issue."
+      },
+      {
+        "title": "Teams Github Notifications App is down",
+        "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5#9zktcsr73nq6",
+        "published_at": "2026-03-24T17:09:57.765Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We found an issue impacting notifications from GitHub to Microsoft Teams. We are working on mitigation and will keep users updated on progress towards mitigation."
+      },
+      {
+        "title": "Teams Github Notifications App is down",
+        "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5#76xwwx1909k8",
+        "published_at": "2026-03-24T16:59:27.723Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We are investigating reports of impacted performance for some GitHub services."
       },
       {
         "title": "Disruption with some GitHub services",
@@ -126,47 +150,37 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Major / Resolved / We are seeing widespread issues starting and viewing Copilot Agent sessions. We understand the cause and are working on remediation."
-      },
-      {
-        "title": "Disruption with Copilot Coding Agent Sessions",
-        "url": "https://www.githubstatus.com/incidents/9jyjvxkz735j#cwttgn1xqxs2",
-        "published_at": "2026-03-20T00:58:34.261Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / We are investigating reports of impacted performance for some GitHub services."
-      },
-      {
-        "title": "Git operations for users in the west coast are experiencing an increase in latency",
-        "url": "https://www.githubstatus.com/incidents/p08cncy05m4k#y8bmghzdtbd3",
-        "published_at": "2026-03-20T00:05:15.572Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
-      },
-      {
-        "title": "Git operations for users in the west coast are experiencing an increase in latency",
-        "url": "https://www.githubstatus.com/incidents/p08cncy05m4k#c2ppj7wqqx1s",
-        "published_at": "2026-03-20T00:05:11.502Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We have reached stability with git operations through our changes deployed today."
       }
     ],
-    "last_statement_at": "2026-03-24T16:37:20.831318Z"
+    "last_statement_at": "2026-03-24T17:58:19.139643Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "GitHub Statuspage reports an active incident: Teams Github Notifications App is down.",
     "current_status": "operational",
-    "reports_24h": 123,
+    "reports_24h": 24,
     "incidents": [
       {
-        "title": "Disruption with some GitHub services",
-        "started_at": "2026-03-22T09:11:33Z",
-        "duration": "55m",
+        "title": "Teams Github Notifications App is down",
+        "started_at": "2026-03-24T17:11:41Z",
+        "duration": "1m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Teams Github Notifications App is down",
+        "started_at": "2026-03-24T17:01:34Z",
+        "duration": "10m",
         "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Teams Github Notifications App is down",
+        "started_at": "2026-03-24T16:59:27.656Z",
+        "duration": "58m ongoing",
+        "acknowledgement": "Major / Investigating",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5"
       },
       {
         "title": "Disruption with some GitHub services",
@@ -175,12 +189,6 @@
         "acknowledgement": "Minor / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/7vwbds3snh28"
-      },
-      {
-        "title": "Disruption with Copilot Coding Agent Sessions",
-        "started_at": "2026-03-20T01:01:42Z",
-        "duration": "1h",
-        "acknowledgement": "down icon Down"
       },
       {
         "title": "Disruption with Copilot Coding Agent Sessions",
@@ -213,14 +221,6 @@
         "acknowledgement": "Minor / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/djmkyscrj9jh"
-      },
-      {
-        "title": "Disruption with some GitHub services",
-        "started_at": "2026-03-18T22:36:15.348Z",
-        "duration": "3h 7m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/49xnkj77r7vl"
       }
     ],
     "top_reported_issues": [],
@@ -230,36 +230,6 @@
       "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-03-23T16:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-23T17:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-23T17:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-23T17:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-23T17:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-03-23T18:00:00Z",
         "signal_value": 1.0,
@@ -802,7 +772,37 @@
       },
       {
         "timestamp": "2026-03-24T16:30:00Z",
-        "signal_value": 8.0,
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-24T16:45:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-24T17:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-24T17:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-24T17:30:00Z",
+        "signal_value": 46.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-03-24T17:45:00Z",
+        "signal_value": 5.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -813,26 +813,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-03-24T16:30:00Z"
+      "last_sample_at": "2026-03-24T17:45:00Z"
     },
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "16:40",
-        "count": 2
-      },
-      {
-        "label": "17:00",
-        "count": 3
-      },
-      {
-        "label": "17:20",
-        "count": 1
-      },
-      {
-        "label": "17:40",
-        "count": 3
-      },
       {
         "label": "18:00",
         "count": 0
@@ -1104,6 +1087,22 @@
       {
         "label": "16:20",
         "count": 2
+      },
+      {
+        "label": "16:40",
+        "count": 5
+      },
+      {
+        "label": "17:00",
+        "count": 1
+      },
+      {
+        "label": "17:20",
+        "count": 2
+      },
+      {
+        "label": "17:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1112,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-24T12:37:20-04:00"
+      "last_reviewed_at": "2026-03-24T13:58:18-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 123,
-        "last_reviewed_at": "2026-03-24T12:37:20-04:00"
+        "reports_24h": 122,
+        "last_reviewed_at": "2026-03-24T13:58:18-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -1207,15 +1206,15 @@
     "top_reported_issues_provider": [
       {
         "label": "Error message",
+        "count": 4
+      },
+      {
+        "label": "Server not responding",
         "count": 3
       },
       {
         "label": "Slow performance",
         "count": 3
-      },
-      {
-        "label": "Server not responding",
-        "count": 2
       },
       {
         "label": "Other",
@@ -1241,11 +1240,25 @@
   },
   "reports": [
     {
-      "title": "Disruption with some GitHub services",
-      "url": "https://www.githubstatus.com/#2026-03-22T09:11:33Z",
-      "published_at": "2026-03-22T09:11:33Z",
+      "title": "Teams Github Notifications App is down",
+      "url": "https://www.githubstatus.com/#2026-03-24T17:11:41Z",
+      "published_at": "2026-03-24T17:11:41Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Teams Github Notifications App is down",
+      "url": "https://www.githubstatus.com/#2026-03-24T17:01:34Z",
+      "published_at": "2026-03-24T17:01:34Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
+    },
+    {
+      "title": "Teams Github Notifications App is down",
+      "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5",
+      "published_at": "2026-03-24T16:59:27.656Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Major / Investigating"
     },
     {
       "title": "Disruption with some GitHub services",
@@ -1253,13 +1266,6 @@
       "published_at": "2026-03-22T09:08:38.800Z",
       "source": "GitHub Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Disruption with Copilot Coding Agent Sessions",
-      "url": "https://www.githubstatus.com/#2026-03-20T01:01:42Z",
-      "published_at": "2026-03-20T01:01:42Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
     },
     {
       "title": "Disruption with Copilot Coding Agent Sessions",
@@ -1288,13 +1294,6 @@
       "published_at": "2026-03-19T02:05:59.173Z",
       "source": "GitHub Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Disruption with some GitHub services",
-      "url": "https://www.githubstatus.com/incidents/49xnkj77r7vl",
-      "published_at": "2026-03-18T22:36:15.348Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1303,52 +1302,76 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-03-24T16:37:21.171859Z"
+      "published_at": "2026-03-24T17:58:19.492698Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-24T16:37:21.171859Z"
+      "published_at": "2026-03-24T17:58:19.492698Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-03-24T16:37:21.171859Z"
+      "published_at": "2026-03-24T17:58:19.492698Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-03-24T16:37:21.171859Z"
+      "published_at": "2026-03-24T17:58:19.492698Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-03-24T16:37:21.171859Z"
+      "published_at": "2026-03-24T17:58:19.492698Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-03-24T16:37:21.171859Z"
+      "published_at": "2026-03-24T17:58:19.492698Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-03-24T16:37:20.831318Z",
+      "published_at": "2026-03-24T17:58:19.139643Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Teams Github Notifications App is down",
+      "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5#xcr1ym5qnrjf",
+      "published_at": "2026-03-24T17:43:14.237Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We are experiencing degraded availability from Azure APIs, which is impacting notifications from GitHub to Microsoft Teams. We are working with Azure to resolve the issue."
+    },
+    {
+      "title": "Teams Github Notifications App is down",
+      "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5#9zktcsr73nq6",
+      "published_at": "2026-03-24T17:09:57.765Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We found an issue impacting notifications from GitHub to Microsoft Teams. We are working on mitigation and will keep users updated on progress towards mitigation."
+    },
+    {
+      "title": "Teams Github Notifications App is down",
+      "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5#76xwwx1909k8",
+      "published_at": "2026-03-24T16:59:27.723Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We are investigating reports of impacted performance for some GitHub services."
     },
     {
       "title": "Disruption with some GitHub services",
@@ -1381,30 +1404,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Major / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
-    },
-    {
-      "title": "Disruption with Copilot Coding Agent Sessions",
-      "url": "https://www.githubstatus.com/incidents/9jyjvxkz735j#qzp5pfbt3wc2",
-      "published_at": "2026-03-20T01:26:19.374Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are rolling out our mitigation and are seeing recovery."
-    },
-    {
-      "title": "Disruption with Copilot Coding Agent Sessions",
-      "url": "https://www.githubstatus.com/incidents/9jyjvxkz735j#83g41fs10dff",
-      "published_at": "2026-03-20T01:00:53.170Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are seeing widespread issues starting and viewing Copilot Agent sessions. We understand the cause and are working on remediation."
-    },
-    {
-      "title": "Disruption with Copilot Coding Agent Sessions",
-      "url": "https://www.githubstatus.com/incidents/9jyjvxkz735j#cwttgn1xqxs2",
-      "published_at": "2026-03-20T00:58:34.261Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are investigating reports of impacted performance for some GitHub services."
     }
   ],
   "social": [],
@@ -1420,11 +1419,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-03-24T16:37:19.762115Z",
+      "last_item_at": "2026-03-24T17:58:18.044062Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 170,
-      "fetched_at": "2026-03-24T16:37:19.762136Z",
+      "duration_ms": 174,
+      "fetched_at": "2026-03-24T17:58:18.044081Z",
       "cache_hit": false
     },
     {
@@ -1438,11 +1437,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-24T12:37:20-04:00",
+      "last_item_at": "2026-03-24T13:58:18-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1068,
-      "fetched_at": "2026-03-24T16:37:20.830693Z",
+      "duration_ms": 1094,
+      "fetched_at": "2026-03-24T17:58:19.139082Z",
       "cache_hit": false
     },
     {
@@ -1456,17 +1455,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-03-24T16:37:20.831318Z",
+      "last_item_at": "2026-03-24T17:58:19.139643Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 339,
-      "fetched_at": "2026-03-24T16:37:21.170476Z",
+      "duration_ms": 351,
+      "fetched_at": "2026-03-24T17:58:19.491202Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-03-24T16:37:21.171859Z",
+    "generated_at": "2026-03-24T17:58:19.492698Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1488,7 +1487,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1503,9 +1502,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 170,
+          "duration_ms": 174,
           "cache_hit": false,
-          "at": "2026-03-24T16:37:19Z"
+          "at": "2026-03-24T17:58:17Z"
         },
         "metrics_24h": {
           "runs": 23,
@@ -1514,19 +1513,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 244.4
+          "avg_duration_ms": 244.8
         },
         "metrics_7d": {
-          "runs": 167,
-          "ok": 167,
+          "runs": 166,
+          "ok": 166,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 260.2
+          "avg_duration_ms": 257.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-24T16:37:19Z",
+        "last_success_at": "2026-03-24T17:58:17Z",
         "last_failure_at": null
       },
       {
@@ -1540,9 +1539,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1068,
+          "duration_ms": 1094,
           "cache_hit": false,
-          "at": "2026-03-24T16:37:19Z"
+          "at": "2026-03-24T17:58:17Z"
         },
         "metrics_24h": {
           "runs": 23,
@@ -1551,19 +1550,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1443.8
+          "avg_duration_ms": 1440.7
         },
         "metrics_7d": {
-          "runs": 167,
-          "ok": 167,
+          "runs": 166,
+          "ok": 166,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1230.2
+          "avg_duration_ms": 1229.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-24T16:37:19Z",
+        "last_success_at": "2026-03-24T17:58:17Z",
         "last_failure_at": null
       },
       {
@@ -1577,9 +1576,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 339,
+          "duration_ms": 351,
           "cache_hit": false,
-          "at": "2026-03-24T16:37:19Z"
+          "at": "2026-03-24T17:58:17Z"
         },
         "metrics_24h": {
           "runs": 23,
@@ -1588,38 +1587,113 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 371.5
+          "avg_duration_ms": 374.6
         },
         "metrics_7d": {
-          "runs": 167,
-          "ok": 167,
+          "runs": 166,
+          "ok": 166,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 356.3
+          "avg_duration_ms": 354.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-24T16:37:19Z",
+        "last_success_at": "2026-03-24T17:58:17Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-03-24T16:37:21.171859Z",
+    "generated_at": "2026-03-24T17:58:19.492698Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "475591f78accb5a7",
+          "title": "Teams Github Notifications App is down",
+          "started_at": "2026-03-24T17:11:41Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "910142bb20aeeff2",
+          "title": "Teams Github Notifications App is down",
+          "started_at": "2026-03-24T17:01:34Z",
+          "duration": "10m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "cf39b43c15073298",
+          "title": "Teams Github Notifications App is down",
+          "started_at": "2026-03-24T16:59:27.656Z",
+          "duration": "58m ongoing",
+          "acknowledgement": "Major / Investigating",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "ed9233a54bfea71c",
+          "title": "Disruption with some GitHub services",
+          "started_at": "2026-03-22T09:11:33Z",
+          "duration": "55m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "fb44e6c61ce4e79c",
+          "title": "Disruption with Copilot Coding Agent Sessions",
+          "started_at": "2026-03-20T01:01:42Z",
+          "duration": "1h",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "ebb1a1626e9bff6d",
+          "title": "Disruption with some GitHub services",
+          "started_at": "2026-03-18T22:36:15.348Z",
+          "duration": "3h 7m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "4c3ec47a07b36e53",
+          "title": "Teams Github Notifications App is down",
+          "url": "https://www.githubstatus.com/#2026-03-24T17:11:41Z",
+          "published_at": "2026-03-24T17:11:41Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "ec91cbdbd8ffccff",
+          "title": "Teams Github Notifications App is down",
+          "url": "https://www.githubstatus.com/#2026-03-24T17:01:34Z",
+          "published_at": "2026-03-24T17:01:34Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "21931380991ae5f1",
+          "title": "Teams Github Notifications App is down",
+          "url": "https://www.githubstatus.com/incidents/z7gsp4wd05c5",
+          "published_at": "2026-03-24T16:59:27.656Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Major / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 3,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 3,
+      "new_reports": 3
     }
   }
 }
