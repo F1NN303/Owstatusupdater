@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-03-25T18:59:43.411299Z",
+  "generated_at": "2026-03-25T19:52:00.322141Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "major",
+    "severity_score": 8,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "discord-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
-      "reports": 0.0,
-      "incidents": 4.2,
+      "reports": 2.8,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 135,
-      "recent_incidents_6h": 2,
-      "recent_incidents_24h": 2,
+      "reports_24h": 2047,
+      "recent_incidents_6h": 5,
+      "recent_incidents_24h": 5,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
-      "cross_source_guard": true,
+      "operational_dampening": false,
+      "cross_source_guard": false,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "major outage",
+      "derived_severity": "major",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,47 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Discord Statuspage API: All Systems Operational",
+    "summary": "Discord Statuspage API: Partial System Outage",
     "updates": [
       {
-        "title": "Discord Statuspage API: All Systems Operational",
+        "title": "Discord Statuspage API: Partial System Outage",
         "url": "https://discordstatus.com/",
-        "published_at": "2026-03-25T18:59:43.111787Z",
+        "published_at": "2026-03-25T19:51:59.883532Z",
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: major"
+      },
+      {
+        "title": "Issues connecting to Discord",
+        "url": "https://discordstatus.com/incidents/9sng5r2j71sq#byf8yw910c3t",
+        "published_at": "2026-03-25T12:46:21.899-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Investigating / We're continuing to investigate impacts to voice connectivity. There may be some temporary impacts to other features as we work to accelerate recovery."
+      },
+      {
+        "title": "Issues connecting to Discord",
+        "url": "https://discordstatus.com/incidents/9sng5r2j71sq#mc4t19580x1r",
+        "published_at": "2026-03-25T12:21:47.195-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Investigating / We're aware of an issue that is preventing people from connecting to Discord - we're actively investigating"
       },
       {
         "title": "Elevated errors for streaming and messaging",
@@ -133,34 +149,38 @@
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Major / Resolved / We believe the 503s have been resolved."
-      },
-      {
-        "title": "Applications experiencing 503 errors",
-        "url": "https://discordstatus.com/incidents/jxpmdts24t6d#xq71ssbbf75q",
-        "published_at": "2026-03-12T14:04:13.386-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / We believe that the 503s have been resolved."
-      },
-      {
-        "title": "Applications experiencing 503 errors",
-        "url": "https://discordstatus.com/incidents/dsv750sj44fn#04rbbqjg21pv",
-        "published_at": "2026-03-12T13:50:26.891-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / We are aware that bot traffic may be hitting 503 errors and are investigating the issue."
       }
     ],
-    "last_statement_at": "2026-03-25T18:59:43.111787Z"
+    "last_statement_at": "2026-03-25T19:51:59.883532Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://discordstatus.com/",
-    "summary": "Discord Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 135,
+    "summary": "Discord Statuspage reports an active incident: Issues connecting to Discord.",
+    "current_status": "major outage",
+    "reports_24h": 2047,
     "incidents": [
+      {
+        "title": "Issues connecting to Discord",
+        "started_at": "2026-03-25T19:22:30Z",
+        "duration": "1m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Issues connecting to Discord",
+        "started_at": "2026-03-25T12:21:47.075-07:00",
+        "duration": "30m ongoing",
+        "acknowledgement": "Critical / Investigating",
+        "source": "Discord Statuspage API",
+        "url": "https://discordstatus.com/incidents/9sng5r2j71sq"
+      },
+      {
+        "title": "Issues connecting to Discord and joining calls.",
+        "started_at": "2026-03-25T19:17:01Z",
+        "duration": "",
+        "acknowledgement": "6m later"
+      },
       {
         "title": "Elevated errors for streaming and messaging",
         "started_at": "2026-03-25T15:22:23Z",
@@ -174,12 +194,6 @@
         "acknowledgement": "Minor / Resolved",
         "source": "Discord Statuspage API",
         "url": "https://discordstatus.com/incidents/hm33xk31dk46"
-      },
-      {
-        "title": "Failure to start new voice calls",
-        "started_at": "2026-03-20T02:52:33Z",
-        "duration": "3h 10m",
-        "acknowledgement": "down icon Down"
       },
       {
         "title": "Failure to start new voice calls",
@@ -200,55 +214,24 @@
         "started_at": "2026-03-14T00:39:01Z",
         "duration": "5h 10m",
         "acknowledgement": "Never acknowledged"
-      },
-      {
-        "title": "Applications experiencing 503 errors",
-        "started_at": "2026-03-12T14:04:13.338-07:00",
-        "duration": "0m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Discord Statuspage API",
-        "url": "https://discordstatus.com/incidents/jxpmdts24t6d"
-      },
-      {
-        "title": "Applications experiencing 503 errors",
-        "started_at": "2026-03-12T13:50:26.853-07:00",
-        "duration": "15m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Discord Statuspage API",
-        "url": "https://discordstatus.com/incidents/dsv750sj44fn"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "API",
+        "count": 1
+      },
+      {
+        "label": "Gateway",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Discord Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-03-24T19:00:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-24T19:15:00Z",
-        "signal_value": 13.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-24T19:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-24T19:45:00Z",
-        "signal_value": 47.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-03-24T20:00:00Z",
         "signal_value": 20.0,
@@ -797,9 +780,33 @@
       },
       {
         "timestamp": "2026-03-25T18:45:00Z",
-        "signal_value": 1.0,
+        "signal_value": 4.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-25T19:00:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-25T19:15:00Z",
+        "signal_value": 19097.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-03-25T19:30:00Z",
+        "signal_value": 9558.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-03-25T19:45:00Z",
+        "signal_value": 3163.0,
+        "status_code": 1,
+        "status_label": "possible outage"
       }
     ],
     "service_health_24h_meta": {
@@ -808,22 +815,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-03-25T18:45:00Z"
+      "last_sample_at": "2026-03-25T19:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "19:00",
-        "count": 2
-      },
-      {
-        "label": "19:20",
-        "count": 0
-      },
-      {
-        "label": "19:40",
-        "count": 3
-      },
       {
         "label": "20:00",
         "count": 2
@@ -1099,6 +1094,18 @@
       {
         "label": "18:40",
         "count": 2
+      },
+      {
+        "label": "19:00",
+        "count": 356
+      },
+      {
+        "label": "19:20",
+        "count": 1040
+      },
+      {
+        "label": "19:40",
+        "count": 521
       }
     ],
     "user_reports_24h_meta": {
@@ -1107,14 +1114,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-25T18:59:42Z"
+      "last_reviewed_at": "2026-03-25T15:51:59-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 135,
-        "last_reviewed_at": "2026-03-25T18:59:42Z"
+        "reports_24h": 2047,
+        "last_reviewed_at": "2026-03-25T15:51:59-04:00"
       }
     ],
     "current_status_origin": "Discord Statuspage API",
@@ -1122,9 +1129,9 @@
     "components": [
       {
         "name": "API",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-25T08:51:12.713-07:00",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-03-25T12:21:47.128-07:00",
         "source": "Discord Statuspage API"
       },
       {
@@ -1192,9 +1199,9 @@
       },
       {
         "name": "Gateway",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-11T16:33:11.221-07:00",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-03-25T12:21:47.144-07:00",
         "source": "Discord Statuspage API"
       },
       {
@@ -1355,40 +1362,61 @@
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
-        "label": "App not loading",
-        "count": 7
-      },
-      {
         "label": "Connectivity issue",
-        "count": 4
+        "count": 320
       },
       {
-        "label": "Error message",
-        "count": 0
-      },
-      {
-        "label": "Server not responding",
-        "count": 0
-      },
-      {
-        "label": "Sign in problem",
-        "count": 0
+        "label": "App not loading",
+        "count": 219
       },
       {
         "label": "Service down",
-        "count": 0
+        "count": 46
+      },
+      {
+        "label": "Server not responding",
+        "count": 38
+      },
+      {
+        "label": "Other",
+        "count": 30
+      },
+      {
+        "label": "Error message",
+        "count": 20
+      },
+      {
+        "label": "Sign in problem",
+        "count": 8
       },
       {
         "label": "Slow performance",
-        "count": 0
-      },
-      {
-        "label": "Unable to download",
-        "count": 0
+        "count": 7
       }
     ]
   },
   "reports": [
+    {
+      "title": "Issues connecting to Discord",
+      "url": "https://discordstatus.com/#2026-03-25T19:22:30Z",
+      "published_at": "2026-03-25T19:22:30Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Issues connecting to Discord",
+      "url": "https://discordstatus.com/incidents/9sng5r2j71sq",
+      "published_at": "2026-03-25T12:21:47.075-07:00",
+      "source": "Discord Statuspage API",
+      "meta": "Critical / Investigating"
+    },
+    {
+      "title": "Issues connecting to Discord and joining calls.",
+      "url": "https://discordstatus.com/#2026-03-25T19:17:01Z",
+      "published_at": "2026-03-25T19:17:01Z",
+      "source": "StatusGator",
+      "meta": "6m later"
+    },
     {
       "title": "Elevated errors for streaming and messaging",
       "url": "https://discordstatus.com/#2026-03-25T15:22:23Z",
@@ -1402,13 +1430,6 @@
       "published_at": "2026-03-25T08:18:46.585-07:00",
       "source": "Discord Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Failure to start new voice calls",
-      "url": "https://discordstatus.com/#2026-03-20T02:52:33Z",
-      "published_at": "2026-03-20T02:52:33Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
     },
     {
       "title": "Failure to start new voice calls",
@@ -1430,20 +1451,6 @@
       "published_at": "2026-03-14T00:39:01Z",
       "source": "StatusGator",
       "meta": "Never acknowledged"
-    },
-    {
-      "title": "Applications experiencing 503 errors",
-      "url": "https://discordstatus.com/incidents/jxpmdts24t6d",
-      "published_at": "2026-03-12T14:04:13.338-07:00",
-      "source": "Discord Statuspage API",
-      "meta": "Major / Resolved"
-    },
-    {
-      "title": "Applications experiencing 503 errors",
-      "url": "https://discordstatus.com/incidents/dsv750sj44fn",
-      "published_at": "2026-03-12T13:50:26.853-07:00",
-      "source": "Discord Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -1452,45 +1459,61 @@
       "url": "https://discordstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-03-25T18:59:43.411299Z"
+      "published_at": "2026-03-25T19:52:00.322141Z"
     },
     {
       "title": "Discord Status API (Statuspage v2)",
       "url": "https://discordstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-25T18:59:43.411299Z"
+      "published_at": "2026-03-25T19:52:00.322141Z"
     },
     {
       "title": "Discord Status history RSS",
       "url": "https://discordstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-03-25T18:59:43.411299Z"
+      "published_at": "2026-03-25T19:52:00.322141Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-03-25T18:59:43.411299Z"
+      "published_at": "2026-03-25T19:52:00.322141Z"
     },
     {
       "title": "Discord Help Center",
       "url": "https://support.discord.com/hc/en-us",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-03-25T18:59:43.411299Z"
+      "published_at": "2026-03-25T19:52:00.322141Z"
     }
   ],
   "news": [
     {
-      "title": "Discord Statuspage API: All Systems Operational",
+      "title": "Discord Statuspage API: Partial System Outage",
       "url": "https://discordstatus.com/",
-      "published_at": "2026-03-25T18:59:43.111787Z",
+      "published_at": "2026-03-25T19:51:59.883532Z",
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: major"
+    },
+    {
+      "title": "Issues connecting to Discord",
+      "url": "https://discordstatus.com/incidents/9sng5r2j71sq#byf8yw910c3t",
+      "published_at": "2026-03-25T12:46:21.899-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Investigating / We're continuing to investigate impacts to voice connectivity. There may be some temporary impacts to other features as we work to accelerate recovery."
+    },
+    {
+      "title": "Issues connecting to Discord",
+      "url": "https://discordstatus.com/incidents/9sng5r2j71sq#mc4t19580x1r",
+      "published_at": "2026-03-25T12:21:47.195-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Investigating / We're aware of an issue that is preventing people from connecting to Discord - we're actively investigating"
     },
     {
       "title": "Elevated errors for streaming and messaging",
@@ -1531,22 +1554,6 @@
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "Failure to start new voice calls",
-      "url": "https://discordstatus.com/incidents/2vw56wyzvjqn#9vvvymlvl303",
-      "published_at": "2026-03-19T19:47:07.575-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / New voice calls are failing to be created. We are currently investigating."
-    },
-    {
-      "title": "Applications experiencing 503 errors",
-      "url": "https://discordstatus.com/incidents/dsv750sj44fn#yqrw75b885sz",
-      "published_at": "2026-03-12T14:06:00.560-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Major / Resolved / We believe the 503s have been resolved."
     }
   ],
   "social": [],
@@ -1562,11 +1569,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-03-25T18:59:42.225727Z",
+      "last_item_at": "2026-03-25T19:51:58.819814Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 182,
-      "fetched_at": "2026-03-25T18:59:42.225754Z",
+      "duration_ms": 172,
+      "fetched_at": "2026-03-25T19:51:58.819832Z",
       "cache_hit": false
     },
     {
@@ -1580,11 +1587,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-25T18:59:42Z",
+      "last_item_at": "2026-03-25T15:51:59-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 885,
-      "fetched_at": "2026-03-25T18:59:43.111234Z",
+      "duration_ms": 1063,
+      "fetched_at": "2026-03-25T19:51:59.882977Z",
       "cache_hit": false
     },
     {
@@ -1598,17 +1605,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-03-25T18:59:43.111787Z",
+      "last_item_at": "2026-03-25T19:51:59.883532Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 298,
-      "fetched_at": "2026-03-25T18:59:43.409932Z",
+      "duration_ms": 437,
+      "fetched_at": "2026-03-25T19:52:00.320612Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-03-25T18:59:43.411299Z",
+    "generated_at": "2026-03-25T19:52:00.322141Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1630,7 +1637,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "major",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1645,9 +1652,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 182,
+          "duration_ms": 172,
           "cache_hit": false,
-          "at": "2026-03-25T18:59:42Z"
+          "at": "2026-03-25T19:51:58Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1656,7 +1663,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 558.9
+          "avg_duration_ms": 509.5
         },
         "metrics_7d": {
           "runs": 166,
@@ -1665,10 +1672,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 449.9
+          "avg_duration_ms": 445.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-25T18:59:42Z",
+        "last_success_at": "2026-03-25T19:51:58Z",
         "last_failure_at": null
       },
       {
@@ -1682,9 +1689,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 885,
+          "duration_ms": 1063,
           "cache_hit": false,
-          "at": "2026-03-25T18:59:42Z"
+          "at": "2026-03-25T19:51:58Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1693,7 +1700,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 902.0
+          "avg_duration_ms": 886.5
         },
         "metrics_7d": {
           "runs": 166,
@@ -1702,10 +1709,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 956.3
+          "avg_duration_ms": 958.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-25T18:59:42Z",
+        "last_success_at": "2026-03-25T19:51:58Z",
         "last_failure_at": null
       },
       {
@@ -1719,9 +1726,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 298,
+          "duration_ms": 437,
           "cache_hit": false,
-          "at": "2026-03-25T18:59:42Z"
+          "at": "2026-03-25T19:51:58Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1730,7 +1737,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 465.9
+          "avg_duration_ms": 452.4
         },
         "metrics_7d": {
           "runs": 166,
@@ -1739,29 +1746,104 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 532.8
+          "avg_duration_ms": 532.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-25T18:59:42Z",
+        "last_success_at": "2026-03-25T19:51:58Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-03-25T18:59:43.411299Z",
+    "generated_at": "2026-03-25T19:52:00.322141Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "d098af6c8767b88e",
+          "title": "Issues connecting to Discord",
+          "started_at": "2026-03-25T19:22:30Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "afbda7b8256f460e",
+          "title": "Issues connecting to Discord",
+          "started_at": "2026-03-25T12:21:47.075-07:00",
+          "duration": "30m ongoing",
+          "acknowledgement": "Critical / Investigating",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "7039f8a776c80b1e",
+          "title": "Issues connecting to Discord and joining calls.",
+          "started_at": "2026-03-25T19:17:01Z",
+          "duration": "",
+          "acknowledgement": "6m later",
+          "url": "https://discordstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "c01cb010a5238eaa",
+          "title": "Failure to start new voice calls",
+          "started_at": "2026-03-20T02:52:33Z",
+          "duration": "3h 10m",
+          "acknowledgement": "down icon Down",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "190779b6a3b7dfae",
+          "title": "Applications experiencing 503 errors",
+          "started_at": "2026-03-12T14:04:13.338-07:00",
+          "duration": "0m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "3b5a78de03a4ae3b",
+          "title": "Applications experiencing 503 errors",
+          "started_at": "2026-03-12T13:50:26.853-07:00",
+          "duration": "15m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://discordstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "a3a76a5b8de19ea7",
+          "title": "Issues connecting to Discord",
+          "url": "https://discordstatus.com/#2026-03-25T19:22:30Z",
+          "published_at": "2026-03-25T19:22:30Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "697f9bb9b49cf2ac",
+          "title": "Issues connecting to Discord",
+          "url": "https://discordstatus.com/incidents/9sng5r2j71sq",
+          "published_at": "2026-03-25T12:21:47.075-07:00",
+          "source": "Discord Statuspage API",
+          "meta": "Critical / Investigating"
+        },
+        {
+          "id": "1cf319a97db311f2",
+          "title": "Issues connecting to Discord and joining calls.",
+          "url": "https://discordstatus.com/#2026-03-25T19:17:01Z",
+          "published_at": "2026-03-25T19:17:01Z",
+          "source": "StatusGator",
+          "meta": "6m later"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 3,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 3,
+      "new_reports": 3
     }
   }
 }
