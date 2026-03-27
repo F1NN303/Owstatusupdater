@@ -273,9 +273,9 @@ describe("Email alerts delivery follow-up", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Show inbox tips" }));
 
-    expect(
-      screen.getByRole("dialog", { name: "Find the first alert fast" })
-    ).toBeInTheDocument();
+    const dialog = screen.getByRole("dialog", { name: "Find the first alert fast" });
+    expect(dialog).toBeInTheDocument();
+    expect(dialog.className).toContain("h-[100dvh]");
     expect(screen.getByText("1. Search the usual folders")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Got it" }));

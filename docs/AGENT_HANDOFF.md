@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-27
 Current branch: `codex/latest-sync`
-Latest known commit at handoff update: `73e24c76`
+Latest known commit at handoff update: `2a3ab2cc`
 
 ## Current Priority State (2026-03-22)
 
@@ -68,6 +68,7 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
   - the alerts delivery section now includes an inbox-help popup that explains how to recover the first message from Spam/Junk
   - the public changelog now includes a March 27 note for inbox-delivery polish
   - the settings changelog sheet now opens as a true full-screen mobile overlay instead of a shorter bottom sheet
+  - the inbox-help popup was corrected after rollout so it now renders in a true viewport portal above the bottom nav and uses its own mobile-safe scroll region
 
 ### Recent important commits
 - `fe8fbb50` - `docs: add cross-agent project snapshot`
@@ -236,6 +237,7 @@ Key files:
   - if workflow logs show `mode=legacy_recipients`, subscriber watchlists are being skipped
   - if workflow logs show `mode=subscriber_dispatch result=sent`, Brevo accepted the messages and remaining inbox issues are mailbox-side deliverability/filtering
   - the live alerts UI now surfaces a dedicated inbox-help popup once delivery is active, with mailbox-specific guidance for Spam/Junk recovery
+  - the inbox-help popup must stay portal-based; keeping it inside the page tree lets the fixed bottom nav sit above it because the app content wrapper has a lower stacking context than the nav
   - the Alerts screen now follows a 3-step flow (`account -> choose alerts -> delivery`) instead of mixing account, watchlist, and provider details into repeated blocks
   - `/alerts` is now the canonical route and `/email-alerts` is only a redirect for backwards compatibility
   - the long service watchlist now has search plus a selected-only filter to make large lists easier to manage
