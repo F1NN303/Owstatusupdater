@@ -13,6 +13,7 @@ vi.mock("@/components/ServiceIdentityIcon", () => ({
 }));
 
 const getLegacyLiveStatusServices = vi.fn();
+const fetchLegacyServiceSummary = vi.fn();
 const fetchLegacySubscriptionConfig = vi.fn();
 const useAlertAccountMock = vi.fn();
 const invokeFunctionMock = vi.fn();
@@ -20,6 +21,7 @@ const getSupabaseClientMock = vi.fn();
 
 vi.mock("@/lib/legacyStatus", () => ({
   getLegacyLiveStatusServices: (...args: unknown[]) => getLegacyLiveStatusServices(...args),
+  fetchLegacyServiceSummary: (...args: unknown[]) => fetchLegacyServiceSummary(...args),
 }));
 
 vi.mock("@/lib/legacySubscription", () => ({
@@ -70,7 +72,34 @@ describe("Email alerts delivery follow-up", () => {
       }),
     );
 
-    getLegacyLiveStatusServices.mockResolvedValue([]);
+    getLegacyLiveStatusServices.mockResolvedValue([
+      {
+        id: "cloudflare",
+        name: "Cloudflare",
+        href: "/status/cloudflare",
+        legacyHref: "/cloudflare/",
+        note: "Cloudflare live status",
+        statusPath: "/cloudflare/data/status.json",
+      },
+    ]);
+    fetchLegacyServiceSummary.mockResolvedValue({
+      service: {
+        id: "cloudflare",
+        name: "Cloudflare",
+        href: "/status/cloudflare",
+        legacyHref: "/cloudflare/",
+        note: "Cloudflare live status",
+        statusPath: "/cloudflare/data/status.json",
+      },
+      severity: "stable",
+      tone: "good",
+      statusLabel: "Stable",
+      updatedText: "Updated: now",
+      generatedAt: "2026-03-27T20:00:00.000Z",
+      error: false,
+      source: "network",
+      cachedAt: null,
+    });
     fetchLegacySubscriptionConfig.mockResolvedValue({
       status: "ready",
       config: {
@@ -202,5 +231,54 @@ describe("Email alerts delivery follow-up", () => {
     expect(screen.getByText("Alerts are active")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Watchlist & threshold" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Inbox delivery" })).toBeInTheDocument();
+    expect(screen.getByText("Delivery readiness")).toBeInTheDocument();
+    expect(
+      screen.getAllByText("No watched service currently meets the major only alert threshold.").length
+    ).toBeGreaterThan(0);
+  });
+
+  it("shows a softer browser network warning when the delivery re-check cannot reach the edge function", async () => {
+    invokeFunctionMock.mockResolvedValue({
+      data: null,
+      error: {
+        message: "Failed to fetch",
+      },
+    });
+    useAlertAccountMock.mockReturnValue({
+      configured: true,
+      status: "connected",
+      isLoading: false,
+      isSaving: false,
+      isConnected: true,
+      isDirty: false,
+      profile: {
+        brevoSyncStatus: "synced",
+        providerContactId: "123",
+        lastSyncedAt: "2026-03-24T00:29:33.645Z",
+        lastDeliveryAt: null,
+      },
+      savedPreferences: null,
+      sessionEmail: "alerts@example.com",
+      requestMagicLink: vi.fn(),
+      signOut: vi.fn(),
+      reload: vi.fn(),
+      savePreferences: vi.fn(),
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/alerts"]}>
+        <AppShellProvider>
+          <EmailAlerts />
+        </AppShellProvider>
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Re-check delivery" }));
+
+    expect(
+      await screen.findByText(
+        "This browser could not reach the delivery check service just now. Your current synced delivery state stays unchanged."
+      )
+    ).toBeInTheDocument();
   });
 });

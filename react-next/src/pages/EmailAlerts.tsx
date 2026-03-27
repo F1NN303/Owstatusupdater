@@ -3,7 +3,13 @@ import { GlassSection, PageIntro, PageShell } from "@/components/PageScaffold";
 import ServiceIdentityIcon from "@/components/ServiceIdentityIcon";
 import { useAlertAccount } from "@/lib/alertAccount";
 import { pickLang, useAppShell } from "@/lib/appShell";
-import { getLegacyLiveStatusServices, type LegacyHomeServiceConfig } from "@/lib/legacyStatus";
+import {
+  fetchLegacyServiceSummary,
+  getLegacyLiveStatusServices,
+  type LegacyHomeServiceConfig,
+  type LegacyServiceSummary,
+  type LegacySeverity,
+} from "@/lib/legacyStatus";
 import {
   fetchLegacySubscriptionConfig,
   providerLabel,
@@ -93,6 +99,16 @@ function compareServices(a: LegacyHomeServiceConfig, b: LegacyHomeServiceConfig)
     return aPriority - bPriority;
   }
   return a.name.localeCompare(b.name);
+}
+
+function severityMatchesThreshold(
+  severity: LegacySeverity,
+  threshold: "major" | "degraded"
+) {
+  if (threshold === "major") {
+    return severity === "major";
+  }
+  return severity === "major" || severity === "degraded";
 }
 
 function AlertsSectionHeader({
@@ -261,6 +277,8 @@ const EmailAlerts = () => {
   const [showProviderEmbed, setShowProviderEmbed] = useState(false);
   const [serviceQuery, setServiceQuery] = useState("");
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
+  const [selectedServiceSummaries, setSelectedServiceSummaries] = useState<LegacyServiceSummary[]>([]);
+  const [selectedServiceSummaryLoading, setSelectedServiceSummaryLoading] = useState(false);
 
   const t = (en: string, de: string) => pickLang(language, en, de);
   const favoriteServiceIdSet = useMemo(() => new Set(favoriteServiceIds), [favoriteServiceIds]);
@@ -345,14 +363,25 @@ const EmailAlerts = () => {
     refreshAlertSetup();
 
     if (error) {
+      const rawMessage = String(error.message || "").trim();
+      const networkLikeFailure = rawMessage.toLowerCase().includes("failed to fetch");
       setAccountNotice({
-        tone: "bad",
-        message:
-          String(error.message || "").trim() ||
-          t(
-            "Could not check Brevo delivery status right now.",
-            "Der Brevo-Zustellungsstatus konnte gerade nicht geprueft werden."
-          ),
+        tone: networkLikeFailure ? "warn" : "bad",
+        message: networkLikeFailure
+          ? deliveryReady
+            ? t(
+                "This browser could not reach the delivery check service just now. Your current synced delivery state stays unchanged.",
+                "Dieser Browser konnte den Zustellungs-Check gerade nicht erreichen. Dein aktuell synchronisierter Zustellungsstatus bleibt unveraendert."
+              )
+            : t(
+                "This browser could not reach the delivery check service just now. Try again on another browser or network.",
+                "Dieser Browser konnte den Zustellungs-Check gerade nicht erreichen. Versuche es noch einmal in einem anderen Browser oder Netzwerk."
+              )
+          : rawMessage ||
+            t(
+              "Could not check Brevo delivery status right now.",
+              "Der Brevo-Zustellungsstatus konnte gerade nicht geprueft werden."
+            ),
       });
       return;
     }
@@ -413,6 +442,42 @@ const EmailAlerts = () => {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    const selectedServices = availableServices.filter(
+      (service) => alertServiceIdSet.has(service.id) && Boolean(service.statusPath)
+    );
+
+    if (selectedServices.length === 0) {
+      setSelectedServiceSummaries([]);
+      setSelectedServiceSummaryLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setSelectedServiceSummaryLoading(true);
+    void Promise.all(selectedServices.map((service) => fetchLegacyServiceSummary(service)))
+      .then((summaries) => {
+        if (cancelled) {
+          return;
+        }
+        setSelectedServiceSummaries(summaries);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSelectedServiceSummaries([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setSelectedServiceSummaryLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [alertServiceIdSet, availableServices]);
 
   useEffect(() => {
     if (alertAccountConnected && sessionEmail) {
@@ -539,6 +604,52 @@ const EmailAlerts = () => {
     const labelMap = new Map(availableServices.map((service) => [service.id, service.name]));
     return alertServiceIds.map((serviceId) => labelMap.get(serviceId) || serviceId);
   }, [alertServiceIds, availableServices]);
+  const qualifyingSelectedServiceSummaries = selectedServiceSummaries.filter((summary) =>
+    severityMatchesThreshold(summary.severity, alertSeverityThreshold)
+  );
+  const thresholdLabel = alertSeverityThreshold === "major"
+    ? t("major only", "nur groessere")
+    : t("degraded or major", "beeintraechtigt oder groesser");
+  const qualifyingSelectedServiceLabel = qualifyingSelectedServiceSummaries
+    .slice(0, 3)
+    .map((summary) => summary.service.name)
+    .join(", ");
+  const deliveryExpectationText = (() => {
+    if (selectedServiceCount === 0) {
+      return t(
+        "No services are saved in the watchlist yet, so there is nothing to alert on.",
+        "Es sind noch keine Services in der Watchlist gespeichert, daher gibt es noch nichts fuer Alarmmails."
+      );
+    }
+    if (selectedServiceSummaryLoading) {
+      return t(
+        "Checking the current state of your watched services...",
+        "Der aktuelle Zustand deiner beobachteten Services wird geprueft..."
+      );
+    }
+    if (selectedServiceSummaries.length === 0) {
+      return t(
+        "Current watched service states could not be loaded right now.",
+        "Die aktuellen Zustaende deiner beobachteten Services konnten gerade nicht geladen werden."
+      );
+    }
+    if (qualifyingSelectedServiceSummaries.length === 0) {
+      return t(
+        `No watched service currently meets the ${thresholdLabel} alert threshold.`,
+        `Aktuell erreicht kein beobachteter Service die Alarmschwelle ${thresholdLabel}.`
+      );
+    }
+    if (qualifyingSelectedServiceSummaries.length === 1) {
+      return t(
+        `${qualifyingSelectedServiceLabel} currently meets the ${thresholdLabel} alert threshold. The next scheduled alert run can send an e-mail if this snapshot is new and not in cooldown.`,
+        `${qualifyingSelectedServiceLabel} erreicht aktuell die Alarmschwelle ${thresholdLabel}. Der naechste geplante Alert-Lauf kann eine E-Mail senden, wenn dieser Snapshot neu ist und keine Cooldown-Sperre greift.`
+      );
+    }
+    return t(
+      `${qualifyingSelectedServiceSummaries.length} watched services currently meet the ${thresholdLabel} alert threshold. The next scheduled alert run can send e-mails if these snapshots are new and not in cooldown.`,
+      `${qualifyingSelectedServiceSummaries.length} beobachtete Services erreichen aktuell die Alarmschwelle ${thresholdLabel}. Der naechste geplante Alert-Lauf kann E-Mails senden, wenn diese Snapshots neu sind und keine Cooldown-Sperre greift.`
+    );
+  })();
   const accountTone: NoticeTone = (() => {
     if (!alertsBackendConfigured) {
       return "warn";
@@ -1563,10 +1674,65 @@ const EmailAlerts = () => {
                           "Brevo handles captcha and double opt-in.",
                           "Brevo verarbeitet Captcha und Double-Opt-In."
                         )
-                    : t(`Last sync: ${profileLastSyncedLabel}.`, `Letzter Sync: ${profileLastSyncedLabel}.`)
+                    : deliveryExpectationText
                 }
               />
             </div>
+
+            {alertAccountConnected ? (
+              <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                      {t("Delivery readiness", "Zustellungsbereitschaft")}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">
+                      {t("Current watchlist vs. threshold", "Aktuelle Watchlist vs. Schwelle")}
+                    </p>
+                  </div>
+                  <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[11px] text-muted-foreground">
+                    {t("Threshold", "Schwelle")}: {thresholdLabel}
+                  </span>
+                </div>
+                <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
+                  {deliveryExpectationText}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {selectedServiceSummaries.length > 0 ? (
+                    selectedServiceSummaries.map((summary) => {
+                      const qualifies = severityMatchesThreshold(summary.severity, alertSeverityThreshold);
+                      return (
+                        <span
+                          key={summary.service.id}
+                          className={cn(
+                            "rounded-full border px-3 py-1 text-[11px]",
+                            qualifies
+                              ? "border-amber-300/20 bg-amber-300/10 text-amber-200"
+                              : "border-white/10 bg-black/20 text-muted-foreground"
+                          )}
+                        >
+                          {summary.service.name}: {summary.statusLabel}
+                        </span>
+                      );
+                    })
+                  ) : (
+                    <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[11px] text-muted-foreground">
+                      {selectedServiceCount === 0
+                        ? t("No watched services saved yet", "Noch keine beobachteten Services gespeichert")
+                        : t("Watchlist state loading...", "Watchlist-Zustand wird geladen...")}
+                    </span>
+                  )}
+                </div>
+                {!showSetupFlow ? (
+                  <p className="mt-2 text-[11px] text-muted-foreground">
+                    {t(
+                      `Last sync: ${profileLastSyncedLabel}. Last delivery: ${lastDeliveryDisplayLabel}.`,
+                      `Letzter Sync: ${profileLastSyncedLabel}. Letzte Zustellung: ${lastDeliveryDisplayLabel}.`
+                    )}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
 
             {canEmbed ? (
               <div className="mt-3 space-y-3">

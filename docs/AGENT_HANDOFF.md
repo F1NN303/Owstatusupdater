@@ -48,6 +48,9 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
 ### Current recent UI changes
 - AI assistant sheet was redesigned into a cleaner, more premium mobile sheet.
 - Settings page was redesigned with a calmer hierarchy and a public changelog entry point.
+- Alerts delivery diagnostics were tightened in the working tree:
+  - the alerts page now explains whether the current watchlist actually meets the saved severity threshold
+  - `Re-check delivery` now shows a softer browser/network warning when the Edge Function cannot be reached, instead of implying delivery itself is broken
 - Settings alert-account flicker bug was fixed:
   - root cause was unstable effect dependencies in `react-next/src/lib/alertAccount.tsx`
   - account state no longer flips between `Connected` and `Local only` during reload/checking
