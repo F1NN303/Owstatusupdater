@@ -29,6 +29,45 @@ SEVERITY_RANK = {
     "major": 3,
     "unknown": -1,
 }
+SEVERITY_LABELS = {
+    "stable": "Operational",
+    "minor": "Minor issue",
+    "degraded": "Degraded",
+    "major": "Major outage",
+    "unknown": "Status change",
+}
+SEVERITY_EMAIL_STYLES = {
+    "stable": {
+        "pill_bg": "#dcfce7",
+        "pill_text": "#166534",
+        "accent": "#16a34a",
+        "panel": "#f0fdf4",
+    },
+    "minor": {
+        "pill_bg": "#fef3c7",
+        "pill_text": "#92400e",
+        "accent": "#d97706",
+        "panel": "#fffbeb",
+    },
+    "degraded": {
+        "pill_bg": "#fef3c7",
+        "pill_text": "#92400e",
+        "accent": "#d97706",
+        "panel": "#fffbeb",
+    },
+    "major": {
+        "pill_bg": "#fee2e2",
+        "pill_text": "#991b1b",
+        "accent": "#dc2626",
+        "panel": "#fef2f2",
+    },
+    "unknown": {
+        "pill_bg": "#e2e8f0",
+        "pill_text": "#334155",
+        "accent": "#475569",
+        "panel": "#f8fafc",
+    },
+}
 
 
 def _now() -> dt.datetime:
@@ -147,6 +186,13 @@ def _join_site_url(base_url: str, path: str) -> str:
     return _safe_http_url(urljoin(normalized_base, relative)) or safe_base
 
 
+def _format_timestamp_label(value: str) -> str:
+    parsed = _parse_iso(value)
+    if not parsed:
+        return value
+    return parsed.strftime("%Y-%m-%d %H:%M UTC")
+
+
 def _service_sort_key(item: tuple[str, dict]) -> tuple[int, str]:
     service_id, config = item
     try:
@@ -165,6 +211,7 @@ def _service_status_path(config: dict) -> Path:
 
 def _build_service_entries(site_root_url: str) -> dict[str, dict]:
     entries: dict[str, dict] = {}
+    alerts_url = _join_site_url(site_root_url, "/alerts")
     for service_id, config in sorted(SERVICE_CONFIGS.items(), key=_service_sort_key):
         status_path = _service_status_path(config)
         status = _read_json(status_path, {})
@@ -180,6 +227,7 @@ def _build_service_entries(site_root_url: str) -> dict[str, dict]:
             "detail_path": detail_path,
             "detail_url": detail_url,
             "service_url": service_url,
+            "alerts_url": alerts_url,
             "status_path": status_path,
             "status": status,
         }
@@ -278,44 +326,140 @@ def _build_email_payload(
     )
     detail_url = _safe_http_url(service_entry.get("detail_url")) or DEFAULT_SITE_URL
     source_url = _safe_http_url(outage.get("url")) or detail_url
+    alerts_url = _safe_http_url(service_entry.get("alerts_url")) or _join_site_url(DEFAULT_SITE_URL, "/alerts")
     service_name = str(service_entry.get("display_name") or service_entry.get("label") or service_entry.get("service_id") or "Service")
-    severity_label = severity.upper()
+    severity_text = SEVERITY_LABELS.get(severity, SEVERITY_LABELS["unknown"])
+    severity_styles = SEVERITY_EMAIL_STYLES.get(severity, SEVERITY_EMAIL_STYLES["unknown"])
+    severity_label = severity_text.upper()
+    generated_label = _format_timestamp_label(generated_at)
+    preheader = f"{service_name} is currently {severity_text.lower()}. Open Status Radar for live details."
 
     if force_send:
-        subject = f"[StatusChecker] Test alert - {service_name} - {generated_at}"
-        intro = f"StatusChecker test email for {service_name}."
+        subject = f"Status Radar test alert: {service_name}"
+        intro = f"This is a test alert for {service_name}."
     else:
-        subject = f"[StatusChecker] {service_name} {severity_label} alert - {generated_at}"
-        intro = f"StatusChecker detected a {severity} service state for {service_name}."
+        subject = f"Status Radar alert: {service_name} is {severity_text.lower()}"
+        intro = f"{service_name} is currently {severity_text.lower()}."
 
     text = "\n".join(
         [
-            intro,
+            "Status Radar",
             "",
-            f"Service: {service_name}",
-            f"Generated at: {generated_at}",
-            f"Severity: {severity}",
+            intro,
             f"Reports (24h): {reports_24h}",
             f"Source agreement: {source_ok}/{source_total}",
+            f"Generated at: {generated_label}",
+            f"Severity: {severity_text}",
             f"Summary: {summary}",
             "",
             f"Service detail: {detail_url}",
             f"Outage source: {source_url}",
+            f"Manage alerts: {alerts_url}",
+            "",
+            "You are receiving this because e-mail delivery is active for your saved alert watchlist.",
         ]
     )
-    html = (
-        f"<h2>{_escape_html(service_name)}: {'Test alert' if force_send else f'{_escape_html(severity_label)} alert'}</h2>"
-        f"<p><strong>Generated at:</strong> {_escape_html(generated_at)}<br>"
-        f"<strong>Severity:</strong> {_escape_html(severity)}<br>"
-        f"<strong>Reports (24h):</strong> {reports_24h}<br>"
-        f"<strong>Source agreement:</strong> {source_ok}/{source_total}</p>"
-        f"<p>{_escape_html(summary)}</p>"
-        f"<p><a href=\"{_escape_html(detail_url)}\">Open service detail</a><br>"
-        f"<a href=\"{_escape_html(source_url)}\">Open outage source</a></p>"
-    )
+    html = f"""
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">
+  {_escape_html(preheader)}
+</div>
+<div style="margin:0;padding:24px;background:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#0f172a;">
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:640px;margin:0 auto;border-collapse:collapse;">
+    <tr>
+      <td style="padding:0;">
+        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;background:#ffffff;border:1px solid #dbe4f0;border-radius:24px;overflow:hidden;">
+          <tr>
+            <td style="padding:28px 28px 22px;background:linear-gradient(135deg,#0f172a 0%,#111827 52%,#0b1220 100%);">
+              <div style="font-size:11px;line-height:1.4;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#7dd3fc;">Status Radar</div>
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top:18px;border-collapse:collapse;">
+                <tr>
+                  <td style="vertical-align:top;padding-right:14px;">
+                    <div style="font-size:30px;line-height:1.08;font-weight:800;color:#f8fafc;">{_escape_html(service_name)}</div>
+                    <div style="margin-top:8px;font-size:15px;line-height:1.6;color:#cbd5e1;">{_escape_html(intro)}</div>
+                  </td>
+                  <td style="vertical-align:top;text-align:right;white-space:nowrap;">
+                    <span style="display:inline-block;padding:10px 14px;border-radius:999px;background:{severity_styles['pill_bg']};color:{severity_styles['pill_text']};font-size:12px;line-height:1.2;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;">{_escape_html(severity_label)}</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 28px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:separate;border-spacing:0 12px;">
+                <tr>
+                  <td style="width:50%;padding-right:6px;vertical-align:top;">
+                    <div style="border:1px solid #e2e8f0;border-radius:18px;background:#f8fafc;padding:16px;">
+                      <div style="font-size:11px;line-height:1.3;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#64748b;">Generated</div>
+                      <div style="margin-top:8px;font-size:16px;line-height:1.5;font-weight:700;color:#0f172a;">{_escape_html(generated_label)}</div>
+                    </div>
+                  </td>
+                  <td style="width:50%;padding-left:6px;vertical-align:top;">
+                    <div style="border:1px solid #e2e8f0;border-radius:18px;background:{severity_styles['panel']};padding:16px;">
+                      <div style="font-size:11px;line-height:1.3;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#64748b;">Signal confidence</div>
+                      <div style="margin-top:8px;font-size:16px;line-height:1.5;font-weight:700;color:#0f172a;">{source_ok}/{source_total} sources agree</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:50%;padding-right:6px;vertical-align:top;">
+                    <div style="border:1px solid #e2e8f0;border-radius:18px;background:#f8fafc;padding:16px;">
+                      <div style="font-size:11px;line-height:1.3;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#64748b;">Reports in 24h</div>
+                      <div style="margin-top:8px;font-size:16px;line-height:1.5;font-weight:700;color:#0f172a;">{reports_24h}</div>
+                    </div>
+                  </td>
+                  <td style="width:50%;padding-left:6px;vertical-align:top;">
+                    <div style="border:1px solid #e2e8f0;border-radius:18px;background:#f8fafc;padding:16px;">
+                      <div style="font-size:11px;line-height:1.3;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#64748b;">Current state</div>
+                      <div style="margin-top:8px;font-size:16px;line-height:1.5;font-weight:700;color:{severity_styles['accent']};">{_escape_html(severity_text)}</div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:12px 28px 0;">
+              <div style="border:1px solid #e2e8f0;border-radius:20px;background:#ffffff;padding:18px 18px 16px;">
+                <div style="font-size:11px;line-height:1.3;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#64748b;">Summary</div>
+                <div style="margin-top:10px;font-size:15px;line-height:1.75;color:#1e293b;">{_escape_html(summary)}</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 28px 8px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:separate;border-spacing:0 12px;">
+                <tr>
+                  <td>
+                    <a href="{_escape_html(detail_url)}" style="display:block;text-align:center;padding:14px 18px;border-radius:16px;background:#0ea5e9;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;">Open live service detail</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="{_escape_html(source_url)}" style="display:block;text-align:center;padding:14px 18px;border-radius:16px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;text-decoration:none;border:1px solid #cbd5e1;">Open provider source</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:4px 28px 28px;">
+              <div style="border-top:1px solid #e2e8f0;padding-top:18px;font-size:12px;line-height:1.7;color:#64748b;">
+                You are receiving this because e-mail delivery is active for your saved Status Radar watchlist.<br>
+                Manage delivery preferences in <a href="{_escape_html(alerts_url)}" style="color:#0284c7;text-decoration:underline;">Alerts settings</a>.
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+""".strip()
 
     return {
         "sender": {"name": sender_name, "email": sender_email},
+        "replyTo": {"email": sender_email, "name": sender_name},
         "to": [{"email": recipient_email}],
         "subject": subject,
         "textContent": text,
@@ -673,7 +817,7 @@ def main() -> None:
     force_send = os.getenv("ALERT_FORCE_SEND", "").strip().lower() in {"1", "true", "yes", "on"}
 
     sender_email = os.getenv("ALERT_EMAIL_FROM", "").strip()
-    sender_name = os.getenv("ALERT_EMAIL_SENDER_NAME", "StatusChecker Alerts").strip() or "StatusChecker Alerts"
+    sender_name = os.getenv("ALERT_EMAIL_SENDER_NAME", "Status Radar Alerts").strip() or "Status Radar Alerts"
     explicit_recipients = _parse_recipients(os.getenv("ALERT_EMAIL_TO"))
     test_subscriber_email = _normalize_target_email(os.getenv("ALERT_TEST_SUBSCRIBER_EMAIL"))
     api_key = os.getenv("BREVO_API_KEY", "").strip()

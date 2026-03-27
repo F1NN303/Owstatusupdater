@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-27
 Current branch: `codex/latest-sync`
-Latest known commit at handoff update: `34d0758f`
+Latest known commit at handoff update: `d98d8469`
 
 ## Current Priority State (2026-03-22)
 
@@ -51,11 +51,19 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
 - Alerts delivery diagnostics were tightened in the working tree:
   - the alerts page now explains whether the current watchlist actually meets the saved severity threshold
   - `Re-check delivery` now shows a softer browser/network warning when the Edge Function cannot be reached, instead of implying delivery itself is broken
+- Alert delivery wiring is now live end to end:
+  - GitHub Actions subscriber dispatch is active once both `ALERT_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are configured in repo secrets
+  - recent live workflow verification showed `mode=subscriber_dispatch result=sent`
+  - missing `SUPABASE_SERVICE_ROLE_KEY` was the reason earlier runs silently fell back to `legacy_recipients`
 - Settings alert-account flicker bug was fixed:
   - root cause was unstable effect dependencies in `react-next/src/lib/alertAccount.tsx`
   - account state no longer flips between `Connected` and `Local only` during reload/checking
 - Mobile AI sheet overlap was fixed:
   - it now tracks the visible mobile viewport more closely instead of relying on a short fixed-height bottom sheet
+- Alert email polish shipped in the working tree:
+  - sender branding now uses `Status Radar Alerts`
+  - Brevo payloads now include `replyTo`
+  - alert mails use a branded HTML layout with severity pill, summary card, metric panels, and clearer CTA links back into the site
 
 ### Recent important commits
 - `fe8fbb50` - `docs: add cross-agent project snapshot`
@@ -218,6 +226,11 @@ Key files:
   - account/session bootstrap in `react-next/src/lib/alertAccount.tsx`
   - alert preference save/load against `profiles` + `alert_preferences`
   - Alerts page now shows connected e-mail, account status, delivery-sync status, last saved/synced timestamps, and save/sign-out actions
+- Current live alert-delivery requirements:
+  - subscriber mail dispatch depends on GitHub Actions secrets, not only the Supabase edge-function sync
+  - required repo secrets for subscriber dispatch are `ALERT_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BREVO_API_KEY`, and sender settings
+  - if workflow logs show `mode=legacy_recipients`, subscriber watchlists are being skipped
+  - if workflow logs show `mode=subscriber_dispatch result=sent`, Brevo accepted the messages and remaining inbox issues are mailbox-side deliverability/filtering
   - the Alerts screen now follows a 3-step flow (`account -> choose alerts -> delivery`) instead of mixing account, watchlist, and provider details into repeated blocks
   - `/alerts` is now the canonical route and `/email-alerts` is only a redirect for backwards compatibility
   - the long service watchlist now has search plus a selected-only filter to make large lists easier to manage

@@ -26,6 +26,7 @@ class UrlSafetyTests(unittest.TestCase):
                 "service_id": "openai",
                 "display_name": "OpenAI / ChatGPT",
                 "detail_url": "https://status.example.com/status/openai",
+                "alerts_url": "https://status.example.com/alerts",
             },
             {
                 "generated_at": "2026-03-08T00:00:00Z",
@@ -47,10 +48,22 @@ class UrlSafetyTests(unittest.TestCase):
         )
 
         html = payload["htmlContent"]
+        text = payload["textContent"]
+        self.assertEqual(payload["subject"], "Status Radar alert: OpenAI / ChatGPT is major outage")
+        self.assertEqual(
+            payload["replyTo"],
+            {"email": "sender@example.com", "name": "Radar Sender"},
+        )
         self.assertIn("&lt;img src=x onerror=alert(1)&gt;", html)
         self.assertNotIn('<img src=x onerror=alert(1)>', html)
         self.assertNotIn("javascript:alert(1)", html)
         self.assertIn('href="https://status.example.com/status/openai"', html)
+        self.assertIn('href="https://status.example.com/alerts"', html)
+        self.assertIn("Status Radar", html)
+        self.assertIn("Open live service detail", html)
+        self.assertIn("Manage delivery preferences", html)
+        self.assertIn("OpenAI / ChatGPT is currently major outage.", text)
+        self.assertIn("Manage alerts: https://status.example.com/alerts", text)
 
     def test_severity_threshold_matches_expected_levels(self) -> None:
         self.assertFalse(_severity_matches_threshold("stable", "degraded"))
