@@ -1,11 +1,13 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { AppShellProvider } from "./lib/appShell.tsx";
-import { recoverAppRoute } from "./lib/routerRecovery.ts";
+import { installChunkLoadRecovery, recoverAppRoute } from "./lib/routerRecovery.ts";
 import "./index.css";
 
 if (typeof window !== "undefined") {
-  recoverAppRoute(window, import.meta.env.BASE_URL as string | undefined);
+  const baseUrl = import.meta.env.BASE_URL as string | undefined;
+  recoverAppRoute(window, baseUrl);
+  installChunkLoadRecovery(window, baseUrl);
 }
 
 createRoot(document.getElementById("root")!).render(

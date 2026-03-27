@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-27
 Current branch: `codex/latest-sync`
-Latest known commit at handoff update: `2a3ab2cc`
+Latest known commit at handoff update: `423b70b7`
 
 ## Current Priority State (2026-03-22)
 
@@ -69,6 +69,10 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
   - the public changelog now includes a March 27 note for inbox-delivery polish
   - the settings changelog sheet now opens as a true full-screen mobile overlay instead of a shorter bottom sheet
   - the inbox-help popup was corrected after rollout so it now renders in a true viewport portal above the bottom nav and uses its own mobile-safe scroll region
+- Deploy-cache recovery shipped in the working tree:
+  - stale browser bundles can still request deleted lazy route chunks like `Favorites-*` or `SettingsPageRoute-*` after a Pages deploy
+  - the router now traps recoverable dynamic-import failures, clears `owstatus-*` caches, unregisters matching service workers, and reloads once
+  - the React build script now stamps a unique service-worker cache version per root/preview build so old app-shell caches are forced out more reliably
 
 ### Recent important commits
 - `fe8fbb50` - `docs: add cross-agent project snapshot`
@@ -197,6 +201,10 @@ This file is the persistent handoff for future agents. It captures the current p
   - `react-next/public/sw.js` cache version was bumped to force a cleaner service-worker asset refresh after recent deploys
   - `react-next/src/pages/EmailAlerts.tsx` German UI copy was normalized to ASCII-safe strings to eliminate mojibake from previously corrupted literals
   - `react-next/src/pages/SettingsPage.tsx` now shows account-aware storage text instead of always claiming only local browser storage
+  - follow-up hardening now avoids route-specific stale-chunk black screens after deploys:
+    - `react-next/src/lib/routerRecovery.ts` detects lazy import failures like `Failed to fetch dynamically imported module`
+    - it clears only `owstatus-*` caches, unregisters matching service workers for the current base path, and reloads once per path inside a short session window
+    - `scripts/build_react_artifacts.py` now replaces a service-worker version token with a per-build SHA-based value for both root and preview artifacts
 - Scheduled maintenance surfacing shipped in working tree:
   - Statuspage-based providers now extract future or active scheduled maintenance incidents into `outage.scheduled_maintenances`
   - Slack's custom official parser now exposes the same normalized maintenance rows

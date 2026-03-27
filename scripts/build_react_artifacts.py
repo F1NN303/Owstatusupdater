@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -12,6 +13,7 @@ REACT_DIR = ROOT / "react-next"
 DIST_DIR = REACT_DIR / "dist"
 SITE_DIR = ROOT / "site"
 SITE_NEXT_DIR = SITE_DIR / "next"
+SERVICE_WORKER_VERSION_TOKEN = "__OWSTATUS_SW_VERSION__"
 
 
 def run(cmd: list[str], cwd: Path, extra_env: dict[str, str] | None = None) -> None:
@@ -22,6 +24,26 @@ def run(cmd: list[str], cwd: Path, extra_env: dict[str, str] | None = None) -> N
         cmd = ["npm.cmd", *cmd[1:]]
     print(f"[build-react] run: {' '.join(cmd)} (cwd={cwd})")
     subprocess.run(cmd, cwd=cwd, env=env, check=True)
+
+
+def read_output(cmd: list[str], cwd: Path) -> str | None:
+    env = os.environ.copy()
+    if os.name == "nt" and cmd and cmd[0] == "npm":
+        cmd = ["npm.cmd", *cmd[1:]]
+
+    try:
+        completed = subprocess.run(
+            cmd,
+            cwd=cwd,
+            env=env,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+    return completed.stdout.strip() or None
 
 
 def copy_file(src: Path, dst: Path) -> None:
@@ -40,6 +62,34 @@ def ensure_dist() -> None:
         raise FileNotFoundError(f"Missing dist output: {DIST_DIR}")
     if not (DIST_DIR / "assets").is_dir():
         raise FileNotFoundError(f"Missing dist assets: {DIST_DIR / 'assets'}")
+
+
+def resolve_build_version(target_name: str) -> str:
+    git_sha = (
+        os.environ.get("GITHUB_SHA")
+        or read_output(["git", "rev-parse", "--short=12", "HEAD"], cwd=ROOT)
+        or datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+    )
+    normalized_target = "".join(char if char.isalnum() else "-" for char in target_name).strip("-") or "site"
+    return f"{git_sha[:12]}-{normalized_target}"
+
+
+def stamp_service_worker(version: str) -> None:
+    ensure_dist()
+    service_worker_path = DIST_DIR / "sw.js"
+    if not service_worker_path.is_file():
+        raise FileNotFoundError(f"Missing service worker output: {service_worker_path}")
+
+    current = service_worker_path.read_text(encoding="utf-8")
+    if SERVICE_WORKER_VERSION_TOKEN not in current:
+        raise ValueError(
+            f"Service worker placeholder {SERVICE_WORKER_VERSION_TOKEN!r} missing in {service_worker_path}"
+        )
+
+    service_worker_path.write_text(
+        current.replace(SERVICE_WORKER_VERSION_TOKEN, version),
+        encoding="utf-8",
+    )
 
 
 def sync_dist_public_entries(target_dir: Path) -> None:
@@ -74,10 +124,12 @@ def main() -> int:
 
     print("[build-react] Building root artifact (/Owstatusupdater/)")
     build("/Owstatusupdater/")
+    stamp_service_worker(resolve_build_version("root"))
     sync_root_site()
 
     print("[build-react] Building preview artifact (/Owstatusupdater/next/)")
     build("/Owstatusupdater/next/")
+    stamp_service_worker(resolve_build_version("preview"))
     sync_preview_site()
 
     print("[build-react] OK: root + preview artifacts updated in site/")
