@@ -1,8 +1,8 @@
 # Agent Handoff
 
-Last updated: 2026-03-24
+Last updated: 2026-03-27
 Current branch: `main`
-Latest known commit at handoff update: `47a3752e`
+Latest known commit at handoff update: `72adeec0`
 
 ## Current Priority State (2026-03-22)
 
@@ -60,6 +60,21 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
 - `b5548c7a` - `fix(ci): serialize update-site-data runs`
 - `0a1a0e60` - `feat(ui): refine settings and detail hierarchy`
 
+### Current recent data coverage changes
+- X (formerly Twitter) support is now wired as a normal per-service payload:
+  - config: `config/services/x.yaml`
+  - data path: `site/x/data/*`
+  - detail route: `/status/x`
+  - manifest aliases include `x`, `twitter`, and `x-twitter`
+- X uses a custom official parser instead of Statuspage:
+  - official current status and component rows come from `https://docs.x.com/status`
+  - official incident history comes from `https://docs.x.com/incidents`
+  - StatusGator and IsDown remain supporting corroboration sources
+- Unlike Sony and Overwatch, X now ships component rows in the React detail view because the official parser normalizes:
+  - `X API v2`
+  - `GNIP Enterprise API`
+  - `Developer Console`
+
 ### Files future agents should read first
 - `react-next/src/components/AiStatusAssistant.tsx`
 - `react-next/src/lib/aiStatusChat.ts`
@@ -104,6 +119,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/discord/index.html`
   - `site/slack/index.html`
   - `site/reddit/index.html`
+  - `site/x/index.html`
   - `site/github/index.html`
   - `site/cloudflare/index.html`
   - `site/steam/index.html`

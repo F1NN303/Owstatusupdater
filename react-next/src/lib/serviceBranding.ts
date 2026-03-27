@@ -37,6 +37,11 @@ const BRAND_ASSETS: Record<string, ServiceBrandAsset> = {
     assetPath: "brands/reddit.svg",
     label: "Reddit",
   },
+  x: {
+    assetPath: "brands/x.svg",
+    label: "X / Twitter",
+    containerClassName: "bg-white/90",
+  },
   github: {
     assetPath: "brands/github.svg",
     label: "GitHub",
@@ -70,6 +75,8 @@ const SERVICE_ALIASES: Record<string, string> = {
   slackapp: "slack",
   "reddit-status": "reddit",
   redditstatus: "reddit",
+  twitter: "x",
+  "x-twitter": "x",
   "github-status": "github",
   githubstatus: "github",
   "cloudflare-status": "cloudflare",

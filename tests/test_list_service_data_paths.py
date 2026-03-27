@@ -21,6 +21,7 @@ class ListServiceDataPathsTests(unittest.TestCase):
             "site/sony/data",
             "site/m365/data",
             "site/openai/data",
+            "site/x/data",
             "site/data/services-manifest.json",
         }
         self.assertTrue(expected.issubset(set(paths)))

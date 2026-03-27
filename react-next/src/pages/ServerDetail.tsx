@@ -606,6 +606,9 @@ function normalizeDetailId(id?: string): LegacyDetailServiceId | null {
   if (key === "openai" || key === "chatgpt" || key === "open-ai") {
     return "openai";
   }
+  if (key === "x" || key === "twitter" || key === "x-twitter") {
+    return "x";
+  }
   return key;
 }
 
@@ -2561,6 +2564,7 @@ const ServerDetail = () => {
   const isSonyDetail = detail?.service.id === "sony";
   const isM365Detail = detail?.service.id === "m365";
   const isOpenAIDetail = detail?.service.id === "openai";
+  const isXDetail = detail?.service.id === "x";
   const sonyTopIssueMode = String(topReportedIssuesMeta?.mode || "").toLowerCase();
   const sonyTopIssueWindowHours =
     typeof topReportedIssuesMeta?.window_hours === "number" ? topReportedIssuesMeta.window_hours : null;
@@ -2569,12 +2573,13 @@ const ServerDetail = () => {
       ? Math.round(sonyTopIssueWindowHours / 24)
       : null;
   const showTopIssueCard = Boolean(
-    detail && (isOverwatchDetail || isSonyDetail || isM365Detail || isOpenAIDetail || topReportedIssues.length > 0)
+    detail &&
+      (isOverwatchDetail || isSonyDetail || isM365Detail || isOpenAIDetail || isXDetail || topReportedIssues.length > 0)
   );
   const showStatusgatorServiceHealthChart =
-    (isOverwatchDetail || isM365Detail || isOpenAIDetail) && statusgator24hSeries.length >= 8;
+    (isOverwatchDetail || isM365Detail || isOpenAIDetail || isXDetail) && statusgator24hSeries.length >= 8;
   const showIsDownUserReportsChartFallback =
-    (isOverwatchDetail || isM365Detail || isOpenAIDetail) &&
+    (isOverwatchDetail || isM365Detail || isOpenAIDetail || isXDetail) &&
     !showStatusgatorServiceHealthChart &&
     isDown24hSeries.length >= 8;
   const topIssueCardTitle = isSonyDetail

@@ -17,6 +17,7 @@ SERVICE_DATA_DIRS = {
     "discord": ROOT / "site" / "discord" / "data",
     "slack": ROOT / "site" / "slack" / "data",
     "reddit": ROOT / "site" / "reddit" / "data",
+    "x": ROOT / "site" / "x" / "data",
     "github": ROOT / "site" / "github" / "data",
     "cloudflare": ROOT / "site" / "cloudflare" / "data",
     "steam": ROOT / "site" / "steam" / "data",
