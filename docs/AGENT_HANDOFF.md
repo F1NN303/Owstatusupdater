@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-27
 Current branch: `codex/latest-sync`
-Latest known commit at handoff update: `d98d8469`
+Latest known commit at handoff update: `73e24c76`
 
 ## Current Priority State (2026-03-22)
 
@@ -64,6 +64,10 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
   - sender branding now uses `Status Radar Alerts`
   - Brevo payloads now include `replyTo`
   - alert mails use a branded HTML layout with severity pill, summary card, metric panels, and clearer CTA links back into the site
+- Additional alerts/settings polish shipped in the working tree:
+  - the alerts delivery section now includes an inbox-help popup that explains how to recover the first message from Spam/Junk
+  - the public changelog now includes a March 27 note for inbox-delivery polish
+  - the settings changelog sheet now opens as a true full-screen mobile overlay instead of a shorter bottom sheet
 
 ### Recent important commits
 - `fe8fbb50` - `docs: add cross-agent project snapshot`
@@ -231,6 +235,7 @@ Key files:
   - required repo secrets for subscriber dispatch are `ALERT_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BREVO_API_KEY`, and sender settings
   - if workflow logs show `mode=legacy_recipients`, subscriber watchlists are being skipped
   - if workflow logs show `mode=subscriber_dispatch result=sent`, Brevo accepted the messages and remaining inbox issues are mailbox-side deliverability/filtering
+  - the live alerts UI now surfaces a dedicated inbox-help popup once delivery is active, with mailbox-specific guidance for Spam/Junk recovery
   - the Alerts screen now follows a 3-step flow (`account -> choose alerts -> delivery`) instead of mixing account, watchlist, and provider details into repeated blocks
   - `/alerts` is now the canonical route and `/email-alerts` is only a redirect for backwards compatibility
   - the long service watchlist now has search plus a selected-only filter to make large lists easier to manage

@@ -237,6 +237,56 @@ describe("Email alerts delivery follow-up", () => {
     ).toBeGreaterThan(0);
   });
 
+  it("shows a spam and junk help dialog once inbox delivery is active", async () => {
+    useAlertAccountMock.mockReturnValue({
+      configured: true,
+      status: "connected",
+      isLoading: false,
+      isSaving: false,
+      isConnected: true,
+      isDirty: false,
+      profile: {
+        brevoSyncStatus: "synced",
+        providerContactId: "123",
+        lastSyncedAt: "2026-03-24T00:29:33.645Z",
+        lastDeliveryAt: null,
+      },
+      savedPreferences: null,
+      sessionEmail: "alerts@example.com",
+      requestMagicLink: vi.fn(),
+      signOut: vi.fn(),
+      reload: vi.fn(),
+      savePreferences: vi.fn(),
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/alerts"]}>
+        <AppShellProvider>
+          <EmailAlerts />
+        </AppShellProvider>
+      </MemoryRouter>,
+    );
+
+    expect(
+      await screen.findByText("Missing the first alert? Check Spam or Junk once.")
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Show inbox tips" }));
+
+    expect(
+      screen.getByRole("dialog", { name: "Find the first alert fast" })
+    ).toBeInTheDocument();
+    expect(screen.getByText("1. Search the usual folders")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Got it" }));
+
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "Find the first alert fast" })
+      ).not.toBeInTheDocument();
+    });
+  });
+
   it("shows a softer browser network warning when the delivery re-check cannot reach the edge function", async () => {
     invokeFunctionMock.mockResolvedValue({
       data: null,

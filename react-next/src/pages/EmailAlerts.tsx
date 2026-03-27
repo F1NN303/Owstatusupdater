@@ -29,6 +29,7 @@ import {
   Search,
   ShieldCheck,
   Star,
+  X,
 } from "lucide-react";
 import { useEffect, useMemo, useState, type KeyboardEvent, type ReactNode } from "react";
 
@@ -180,6 +181,30 @@ function AlertsInlineStat({
   );
 }
 
+function DeliveryInboxTipStep({
+  icon,
+  title,
+  description,
+}: {
+  icon: ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-sky-300/20 bg-sky-400/10 text-sky-200">
+          {icon}
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-foreground">{title}</p>
+          <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">{description}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SetupProgressStep({
   step,
   title,
@@ -275,6 +300,7 @@ const EmailAlerts = () => {
   const [deliveryFollowUpPending, setDeliveryFollowUpPending] = useState(readDeliveryFollowUpPending);
   const [deliverySyncPending, setDeliverySyncPending] = useState(false);
   const [showProviderEmbed, setShowProviderEmbed] = useState(false);
+  const [showInboxTips, setShowInboxTips] = useState(false);
   const [serviceQuery, setServiceQuery] = useState("");
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
   const [selectedServiceSummaries, setSelectedServiceSummaries] = useState<LegacyServiceSummary[]>([]);
@@ -874,6 +900,12 @@ const EmailAlerts = () => {
       writeDeliveryFollowUpPending(false);
     }
   }, [alertAccountConnected, deliveryReady, deliverySyncError]);
+
+  useEffect(() => {
+    if (!deliveryReady && showInboxTips) {
+      setShowInboxTips(false);
+    }
+  }, [deliveryReady, showInboxTips]);
 
   useEffect(() => {
     if (!deliveryAwaitingConfirmation) {
@@ -1734,6 +1766,37 @@ const EmailAlerts = () => {
               </div>
             ) : null}
 
+            {deliveryReady ? (
+              <div className="mt-3 overflow-hidden rounded-2xl border border-sky-300/15 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.18),transparent_55%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82))]">
+                <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-end sm:justify-between">
+                  <div className="max-w-xl">
+                    <div className="inline-flex items-center rounded-full border border-sky-300/20 bg-sky-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-sky-200">
+                      {t("Inbox tip", "Postfach-Tipp")}
+                    </div>
+                    <p className="mt-3 text-sm font-semibold text-foreground">
+                      {t(
+                        "Missing the first alert? Check Spam or Junk once.",
+                        "Fehlt die erste Alarmmail? Pruefe einmal Spam oder Junk."
+                      )}
+                    </p>
+                    <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">
+                      {t(
+                        "If a Status Radar Alerts message lands there, move it back to inbox and mark it as not spam. After that, later alerts usually look cleaner.",
+                        "Wenn dort eine Mail von Status Radar Alerts landet, verschiebe sie zurueck in den Posteingang und markiere sie als kein Spam. Danach wirken spaetere Alarme meist sauberer."
+                      )}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowInboxTips(true)}
+                    className="inline-flex items-center justify-center rounded-xl border border-sky-300/20 bg-sky-400/10 px-4 py-2.5 text-sm font-medium text-sky-100 transition-colors hover:bg-sky-400/15"
+                  >
+                    {t("Show inbox tips", "Postfach-Hilfe anzeigen")}
+                  </button>
+                </div>
+              </div>
+            ) : null}
+
             {canEmbed ? (
               <div className="mt-3 space-y-3">
                 <div className="flex flex-col gap-2 sm:flex-row">
@@ -1869,6 +1932,105 @@ const EmailAlerts = () => {
               </div>
             )}
           </GlassSection>
+        ) : null}
+
+        {showInboxTips ? (
+          <div className="fixed inset-0 z-[90] flex items-end justify-center bg-slate-950/78 p-3 backdrop-blur-md sm:items-center sm:p-6">
+            <button
+              type="button"
+              aria-label={t("Close inbox tips", "Postfach-Hilfe schliessen")}
+              onClick={() => setShowInboxTips(false)}
+              className="absolute inset-0"
+            />
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="alerts-inbox-help-title"
+              className="relative z-[1] w-full max-w-2xl overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.98),rgba(15,23,42,0.94))] shadow-[0_32px_100px_rgba(2,6,23,0.6)]"
+            >
+              <div className="border-b border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.2),transparent_52%),linear-gradient(135deg,rgba(15,23,42,0.98),rgba(15,23,42,0.92))] px-5 py-5 sm:px-6">
+                <button
+                  type="button"
+                  aria-label={t("Close inbox tips", "Postfach-Hilfe schliessen")}
+                  onClick={() => setShowInboxTips(false)}
+                  className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/20 text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
+                >
+                  <X size={16} />
+                </button>
+                <div className="inline-flex items-center rounded-full border border-sky-300/20 bg-sky-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-sky-200">
+                  {t("First delivery help", "Hilfe fuer die erste Zustellung")}
+                </div>
+                <h3 id="alerts-inbox-help-title" className="mt-3 text-2xl font-semibold tracking-tight text-foreground">
+                  {t("Find the first alert fast", "Finde die erste Alarmmail schnell")}
+                </h3>
+                <p className="mt-2 max-w-xl text-[13px] leading-relaxed text-slate-300">
+                  {t(
+                    "Some mailbox providers place the first automated alert in Spam, Junk, or Promotions. One clean move back to inbox is often enough to improve the next alerts.",
+                    "Manche Mail-Anbieter legen die erste automatische Alarmmail in Spam, Junk oder Werbung ab. Ein sauberes Verschieben in den Posteingang reicht oft schon aus, damit die naechsten Alarme besser landen."
+                  )}
+                </p>
+              </div>
+
+              <div className="space-y-3 px-5 py-5 sm:px-6">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <DeliveryInboxTipStep
+                    icon={<Search size={16} />}
+                    title={t("1. Search the usual folders", "1. In den ueblichen Ordnern suchen")}
+                    description={t(
+                      "Look in Inbox, Spam, Junk, and Promotions for the sender name Status Radar Alerts or the affected service name.",
+                      "Suche in Posteingang, Spam, Junk und Werbung nach dem Absendernamen Status Radar Alerts oder nach dem betroffenen Service-Namen."
+                    )}
+                  />
+                  <DeliveryInboxTipStep
+                    icon={<Mail size={16} />}
+                    title={t("2. Move it back to Inbox", "2. Zurueck in den Posteingang verschieben")}
+                    description={t(
+                      "If the alert is in Spam or Junk, move it to Inbox and use Not spam or Not junk if your mailbox offers that action.",
+                      "Wenn die Alarmmail in Spam oder Junk liegt, verschiebe sie in den Posteingang und nutze Kein Spam oder Kein Junk, falls dein Postfach diese Aktion anbietet."
+                    )}
+                  />
+                  <DeliveryInboxTipStep
+                    icon={<ShieldCheck size={16} />}
+                    title={t("3. Mark the sender as safe", "3. Absender als sicher markieren")}
+                    description={t(
+                      "Add the sender to your contacts or safe-sender list. That helps future alerts look less suspicious to the mailbox.",
+                      "Fuege den Absender zu Kontakten oder sicheren Absendern hinzu. Das hilft kuenftigen Alarmen, fuer das Postfach weniger verdaechtig zu wirken."
+                    )}
+                  />
+                  <DeliveryInboxTipStep
+                    icon={<CheckCheck size={16} />}
+                    title={t("4. Open the next alert from Inbox", "4. Die naechste Mail im Posteingang oeffnen")}
+                    description={t(
+                      "If the next alert arrives normally, the mailbox has usually learned the pattern and later deliveries should behave better.",
+                      "Wenn die naechste Alarmmail normal ankommt, hat das Postfach das Muster meist gelernt und spaetere Zustellungen verhalten sich besser."
+                    )}
+                  />
+                </div>
+
+                <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                    {t("Mailbox quick notes", "Kurznotizen fuers Postfach")}
+                  </p>
+                  <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
+                    {t(
+                      "Apple Mail / iCloud: open Spam, move the alert to Inbox, then confirm Not Junk if prompted. Gmail / Outlook: open Spam or Junk, choose Not spam or Not junk, and keep one alert in your inbox.",
+                      "Apple Mail / iCloud: oeffne Spam, verschiebe die Alarmmail in den Posteingang und bestaetige danach Kein Junk, falls die App fragt. Gmail / Outlook: oeffne Spam oder Junk, waehle Kein Spam oder Kein Junk und lasse mindestens eine Alarmmail im Posteingang liegen."
+                    )}
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setShowInboxTips(false)}
+                    className="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
+                  >
+                    {t("Got it", "Verstanden")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         ) : null}
       </PageShell>
     </AppLayout>

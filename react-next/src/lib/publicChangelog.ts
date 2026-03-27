@@ -13,6 +13,28 @@ export interface PublicChangelogEntry {
 
 export const publicChangelogEntries: PublicChangelogEntry[] = [
   {
+    id: "2026-03-27-alerts-and-mobile-sheet",
+    updatedAt: "2026-03-27",
+    badgeEn: "Latest update",
+    badgeDe: "Letztes Update",
+    titleEn: "Inbox delivery polish",
+    titleDe: "Postfach-Feinschliff",
+    summaryEn:
+      "Alert mails and the delivery flow were tightened so the first inbox experience feels clearer on phones and in the app.",
+    summaryDe:
+      "Alarmmails und der Zustellungsablauf wurden gestrafft, damit sich die erste Postfach-Erfahrung auf dem Handy und in der App klarer anfuehlt.",
+    bulletsEn: [
+      "Alert mails now use a cleaner branded layout with clearer call-to-action links.",
+      "Alerts now include a quick inbox help flow when the first message lands in Spam or Junk.",
+      "The update notes now open as a true full-screen sheet on mobile.",
+    ],
+    bulletsDe: [
+      "Alarmmails nutzen jetzt ein klareres Branding mit deutlichere Aktionslinks.",
+      "Alarme enthalten jetzt eine schnelle Postfach-Hilfe, falls die erste Mail in Spam oder Junk landet.",
+      "Die Update-Hinweise oeffnen sich auf dem Handy jetzt als echtes Vollbild-Sheet.",
+    ],
+  },
+  {
     id: "2026-03-23-mobile-settings-polish",
     updatedAt: "2026-03-23",
     badgeEn: "Latest update",

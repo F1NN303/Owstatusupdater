@@ -266,10 +266,15 @@ function PublicChangelogSheet({
 
       <SheetContent
         side={isMobile ? "bottom" : "right"}
-        className="h-[min(88dvh,760px)] overflow-hidden rounded-t-[30px] border-white/10 bg-[linear-gradient(180deg,rgba(7,12,24,0.98),rgba(7,12,24,0.94))] p-0 text-foreground shadow-[0_-24px_64px_rgba(2,8,23,0.5)] sm:h-full sm:max-w-[420px] sm:rounded-none sm:border-l"
+        className={cn(
+          "overflow-hidden border-white/10 bg-[linear-gradient(180deg,rgba(7,12,24,0.98),rgba(7,12,24,0.94))] p-0 text-foreground",
+          isMobile
+            ? "inset-x-0 bottom-0 top-0 h-[100dvh] max-h-[100dvh] rounded-none border-x-0 border-b-0 shadow-[0_-24px_64px_rgba(2,8,23,0.5)]"
+            : "h-full sm:max-w-[420px] sm:rounded-none sm:border-l",
+        )}
       >
         <div className="relative flex h-full min-h-0 flex-col">
-          {isMobile ? <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-white/15" /> : null}
+          {isMobile ? <div className="mx-auto mt-[max(0.5rem,env(safe-area-inset-top))] h-1.5 w-12 rounded-full bg-white/15" /> : null}
 
           <SheetHeader className="border-b border-white/8 px-4 pb-4 pt-3 pr-14 text-left sm:px-6 sm:pb-4 sm:pt-5 sm:pr-16">
             <div className="flex items-center gap-3">
@@ -300,7 +305,10 @@ function PublicChangelogSheet({
             </div>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5" style={{ WebkitOverflowScrolling: "touch" }}>
+          <div
+            className="flex-1 overflow-y-auto px-4 py-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-5"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
             <div className="space-y-4">
               {publicChangelogEntries.map((entry) => {
                 const badge = language === "de" ? entry.badgeDe : entry.badgeEn;
