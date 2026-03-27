@@ -18,6 +18,7 @@ class ListServiceDataPathsTests(unittest.TestCase):
 
         expected = {
             "site/data",
+            "site/overwatch/data",
             "site/sony/data",
             "site/m365/data",
             "site/openai/data",

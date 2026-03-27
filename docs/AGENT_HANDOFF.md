@@ -1,8 +1,8 @@
 # Agent Handoff
 
 Last updated: 2026-03-27
-Current branch: `main`
-Latest known commit at handoff update: `72adeec0`
+Current branch: `codex/latest-sync`
+Latest known commit at handoff update: `34d0758f`
 
 ## Current Priority State (2026-03-22)
 
@@ -74,6 +74,15 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
   - `X API v2`
   - `GNIP Enterprise API`
   - `Developer Console`
+- Overwatch canonical data is now being migrated off the shared root path:
+  - config: `config/services/overwatch.yaml`
+  - canonical data path: `site/overwatch/data/*`
+  - public entry path: `/overwatch/`
+  - detail route stays `/status/overwatch`
+  - root `site/data/*` remains as a compatibility mirror for legacy home/legacy detail consumers
+- Overwatch detail data is now less legacy-shaped for the React app:
+  - `services/ow_aggregator.py` now publishes normalized derived regional service rows under `outage.services`
+  - `react-next/src/pages/ServerDetail.tsx` treats those rows as regional signals/trends instead of implying an empty generic component feed
 
 ### Files future agents should read first
 - `react-next/src/components/AiStatusAssistant.tsx`
@@ -111,6 +120,7 @@ This file is the persistent handoff for future agents. It captures the current p
   - `/terms`
 - Legacy wrappers/fallbacks still exist for direct service entry points:
   - `site/overwatch.html`
+  - `site/overwatch/index.html`
   - `site/sony/index.html`
   - `site/epic/index.html`
   - `site/m365/index.html`
@@ -176,6 +186,10 @@ This file is the persistent handoff for future agents. It captures the current p
   - Slack's custom official parser now exposes the same normalized maintenance rows
   - the home screen now shows compact scheduled-maintenance cards near the top when at least one provider publishes an active or upcoming maintenance window
   - current local verification builds for GitHub and Slack returned empty maintenance arrays, so the new home section is working but not expected to appear unless live provider data includes maintenance entries
+- Overwatch path migration note:
+  - `scripts/build_site_data.py` now mirrors canonical Overwatch artifacts from `site/overwatch/data/*` back into `site/data/*`
+  - this is required because `legacy-home.html`, `legacy-overwatch.html`, and `site/home.js` still consume the root Overwatch JSON paths
+  - `scripts/list_service_data_paths.py` explicitly stages both `site/overwatch/data` and the root compatibility mirror so scheduled workflow commits keep both copies in sync
 
 Key files:
 - `services/core/source_runner.py`

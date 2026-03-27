@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SERVICE_DATA_DIRS = {
-    "overwatch": ROOT / "site" / "data",
+    "overwatch": ROOT / "site" / "overwatch" / "data",
     "sony": ROOT / "site" / "sony" / "data",
     "epic": ROOT / "site" / "epic" / "data",
     "m365": ROOT / "site" / "m365" / "data",
@@ -145,6 +145,20 @@ class PayloadContractTests(unittest.TestCase):
                 self.assertTrue(rss_path.exists(), f"Missing file: {rss_path}")
                 rss_root = ET.fromstring(rss_path.read_text(encoding="utf-8"))
                 self.assertEqual(rss_root.tag, "rss")
+
+    def test_overwatch_root_legacy_mirror_contract(self) -> None:
+        canonical_dir = SERVICE_DATA_DIRS["overwatch"]
+        legacy_root_dir = ROOT / "site" / "data"
+        for filename in ("status.json", "history.json", "summary.json", "alerts.json", "rss.xml"):
+            with self.subTest(filename=filename):
+                canonical_path = canonical_dir / filename
+                legacy_path = legacy_root_dir / filename
+                self.assertTrue(canonical_path.exists(), f"Missing file: {canonical_path}")
+                self.assertTrue(legacy_path.exists(), f"Missing file: {legacy_path}")
+                self.assertEqual(
+                    canonical_path.read_text(encoding="utf-8"),
+                    legacy_path.read_text(encoding="utf-8"),
+                )
 
     def test_sony_sources_include_provider_corroboration(self) -> None:
         status = self._load_json(SERVICE_DATA_DIRS["sony"] / "status.json")

@@ -8,6 +8,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SERVICE_CONFIG_DIR = ROOT / "config" / "services"
 SERVICE_CONFIG_GLOBS = ("*.yaml", "*.yml")
 MANIFEST_PATH = Path("site/data/services-manifest.json")
+LEGACY_SERVICE_DATA_MIRRORS = {
+    "overwatch": ("site/data",),
+}
 
 
 def _parse_args() -> argparse.Namespace:
@@ -79,6 +82,11 @@ def list_service_data_paths(config_dir: Path) -> list[str]:
         if not data_dir.startswith("site/"):
             continue
         data_paths.add(data_dir)
+        service_id = str(raw.get("id") or config_path.stem).strip().lower()
+        for mirror_path in LEGACY_SERVICE_DATA_MIRRORS.get(service_id, ()):
+            normalized_mirror = _normalize_relative(mirror_path)
+            if normalized_mirror.startswith("site/"):
+                data_paths.add(normalized_mirror)
 
     data_paths.add(_normalize_relative(str(MANIFEST_PATH)))
     return sorted(data_paths)

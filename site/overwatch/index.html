@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Opening Overwatch Status</title>
-  <meta http-equiv="refresh" content="0; url=./overwatch/">
+  <meta http-equiv="refresh" content="0; url=../#/status/overwatch">
   <style>
     :root {
       color-scheme: dark;
@@ -60,21 +60,23 @@
 </head>
 <body>
   <main class="panel" aria-live="polite">
-    <h1>Opening the Overwatch status entry...</h1>
+    <h1>Opening the React Overwatch status page...</h1>
     <p>
-      The canonical Overwatch entry page now lives under <code>/overwatch/</code>. Use the links
-      below if the redirect does not complete automatically.
+      The Overwatch entry page now routes to the React status detail view. Use the links below if
+      automatic redirect does not complete.
     </p>
     <div class="links">
-      <a class="primary" href="./overwatch/">Open Overwatch entry</a>
-      <a href="./overwatch/data/status.json">Open Overwatch status.json</a>
-      <a href="./legacy-overwatch.html">Open Legacy Overwatch</a>
-      <a href="./">Open React Home</a>
+      <a class="primary" href="../#/status/overwatch">Open React Overwatch</a>
+      <a href="./data/status.json">Open Overwatch status.json</a>
+      <a href="../legacy-overwatch.html">Open Legacy Overwatch</a>
+      <a href="../">Open React Home</a>
     </div>
   </main>
   <script>
     (function () {
-      window.location.replace(new URL("./overwatch/", window.location.href).toString());
+      var target = new URL("../", window.location.href);
+      target.hash = "/status/overwatch";
+      window.location.replace(target.toString());
     })();
   </script>
 </body>

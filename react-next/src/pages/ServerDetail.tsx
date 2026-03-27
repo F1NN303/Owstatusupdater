@@ -2609,6 +2609,36 @@ const ServerDetail = () => {
         "Zurzeit sind keine Top-Probleme von StatusGator verfügbar."
       );
 
+  const componentSectionTitle = isOverwatchDetail
+    ? t("Regional Signals", "Regionensignale")
+    : t("Service Components", "Komponentenstatus");
+  const componentSectionEmptyText = isOverwatchDetail
+    ? t(
+        "No regional signal breakdown is available right now.",
+        "Zurzeit ist keine Regionalübersicht verfügbar."
+      )
+    : t(
+        "No component breakdown is available right now.",
+        "Zurzeit ist keine Komponentenübersicht verfügbar."
+      );
+  const componentSectionSearchPlaceholder = isOverwatchDetail
+    ? t("Search regions...", "Regionen durchsuchen...")
+    : t("Search components...", "Komponenten durchsuchen...");
+  const componentSectionBadgeLabel = isOverwatchDetail ? derivedBadge : apiBadge;
+  const componentSectionBadgeTone: "derived" | "api" = isOverwatchDetail ? "derived" : "api";
+  const componentTrendTitle = isOverwatchDetail
+    ? t("Regional Trend (30d)", "Regionstrend (30 Tage)")
+    : t("Component Trend (30d)", "Komponenten-Trend (30 Tage)");
+  const componentTrendEmptyText = isOverwatchDetail
+    ? t(
+        "No regional trend history is available yet for this service.",
+        "Für diesen Service ist noch kein Regionaltrend verfügbar."
+      )
+    : t(
+        "No component trend history available yet for this service.",
+        "Für diesen Service ist noch kein Komponenten-Trendverlauf verfügbar."
+      );
+
   const beginTabSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
     if (event.touches.length !== 1) {
       return;
@@ -3052,9 +3082,9 @@ const ServerDetail = () => {
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Service Components", "Komponentenstatus")}
+                    {componentSectionTitle}
                   </h2>
-                  <DataOriginBadge label={apiBadge} tone="api" />
+                  <DataOriginBadge label={componentSectionBadgeLabel} tone={componentSectionBadgeTone} />
                 </div>
                 {shouldShowComponentSearch ? (
                   <div className="mt-2">
@@ -3062,7 +3092,7 @@ const ServerDetail = () => {
                       type="search"
                       value={componentSearch}
                       onChange={(event) => setComponentSearch(event.target.value)}
-                      placeholder={t("Search components...", "Komponenten durchsuchen...")}
+                      placeholder={componentSectionSearchPlaceholder}
                       className="h-9 w-full rounded-xl border border-white/10 bg-white/5 px-3 text-[12px] text-foreground outline-none transition-colors placeholder:text-muted-foreground/80 focus:border-primary/40 sm:text-[13px]"
                     />
                   </div>
@@ -3070,10 +3100,7 @@ const ServerDetail = () => {
                 <div className="mt-2 space-y-1.5">
                   {componentRows.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground sm:text-[13px]">
-                      {t(
-                        "No component breakdown is available right now.",
-                        "Zurzeit ist keine Komponentenübersicht verfügbar."
-                      )}
+                      {componentSectionEmptyText}
                     </p>
                   ) : filteredComponentRows.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[12px] text-muted-foreground sm:text-[13px]">
@@ -3347,17 +3374,14 @@ const ServerDetail = () => {
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {t("Component Trend (30d)", "Komponenten-Trend (30 Tage)")}
+                    {componentTrendTitle}
                   </h2>
                   <DataOriginBadge label={derivedBadge} tone="derived" />
                 </div>
                 <div className="mt-3 space-y-2.5">
                   {componentTrendRows.length === 0 ? (
                     <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-muted-foreground">
-                      {t(
-                        "No component trend history available yet for this service.",
-                        "Für diesen Service ist noch kein Komponenten-Trendverlauf verfügbar."
-                      )}
+                      {componentTrendEmptyText}
                     </p>
                   ) : (
                     componentTrendRows.map((component) => (

@@ -1035,6 +1035,46 @@ def _build_region_signals(
     return regions
 
 
+REGION_DISPLAY_NAMES = {
+    "eu": "Europe",
+    "na": "North America",
+    "apac": "Asia Pacific",
+}
+
+
+def _region_severity_to_status(severity_key: object) -> str:
+    normalized = str(severity_key or "").strip().lower()
+    if normalized == "stable":
+        return "online"
+    if normalized in {"minor", "degraded"}:
+        return "degraded"
+    if normalized == "major":
+        return "offline"
+    return "unknown"
+
+
+def _build_region_service_rows(regions: dict[str, Any]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for region_key, region_data in regions.items():
+        if not isinstance(region_data, dict):
+            continue
+        severity_key = str(region_data.get("severity_key") or "unknown").strip().lower() or "unknown"
+        display_name = REGION_DISPLAY_NAMES.get(region_key, region_key.upper())
+        rows.append(
+            {
+                "service_id": f"region-{region_key}",
+                "name": f"{display_name} Region",
+                "label": display_name,
+                "status": _region_severity_to_status(severity_key),
+                "severity_key": severity_key,
+                "score": int(region_data.get("severity_score") or 0),
+                "weight": round(float(region_data.get("report_weight") or 0.0) * 100, 1),
+                "source": "Derived regional blend",
+            }
+        )
+    return rows
+
+
 def _build_official_block(known_resources: list[dict[str, Any]], news: list[dict[str, Any]]) -> dict[str, Any]:
     updates: list[dict[str, Any]] = []
     seen_urls: set[str] = set()
@@ -1221,6 +1261,11 @@ def _collect_payload(previous_outage_fallback: dict[str, Any] | None = None) -> 
     analytics = _calculate_severity(outage, sources, health, sorted_reports, sorted_news, social[:6])
     official = _build_official_block(sorted_known_resources, sorted_news)
     regions = _build_region_signals(analytics, outage, sorted_reports, sorted_news)
+    outage["services"] = _build_region_service_rows(regions)
+    outage["services_meta"] = {
+        "source": "Derived regional blend",
+        "kind": "regional-signals",
+    }
 
     return {
         "generated_at": _utc_now_iso(),

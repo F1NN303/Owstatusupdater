@@ -5,6 +5,7 @@ import importlib
 import inspect
 import json
 import re
+import shutil
 import sys
 from email.utils import format_datetime
 from pathlib import Path
@@ -30,6 +31,10 @@ SOURCE_FRESHNESS_OK = {"fresh", "warm"}
 SOURCE_ROLE_VALUES = {"official", "provider", "community", "social", "probe"}
 SOURCE_CRITICALITY_VALUES = {"required", "supporting", "optional"}
 COMPONENT_STATUS_VALUES = {"online", "degraded", "offline", "unknown"}
+GENERATED_DATA_FILENAMES = ("status.json", "history.json", "summary.json", "alerts.json", "rss.xml")
+LEGACY_SERVICE_DATA_MIRROR_DIRS = {
+    "overwatch": (ROOT / "site" / "data",),
+}
 
 
 def _resolve_builder(builder_target: str):
@@ -1095,14 +1100,27 @@ def _build_point(payload: dict, point_time: dt.datetime) -> dict:
         }
 
     outage = payload.get("outage") if isinstance(payload.get("outage"), dict) else {}
-    raw_components = outage.get("components") if isinstance(outage.get("components"), list) else []
+    raw_components: list[dict[str, object]] = []
+    for container in (payload, outage):
+        if not isinstance(container, dict):
+            continue
+        for key in ("components", "services"):
+            items = container.get(key)
+            if not isinstance(items, list):
+                continue
+            raw_components.extend(item for item in items if isinstance(item, dict))
     component_states: dict[str, dict] = {}
+    seen_component_names: set[str] = set()
     for index, component in enumerate(raw_components):
         if not isinstance(component, dict):
             continue
         name = str(component.get("name") or component.get("component") or component.get("service") or "").strip()
         if not name:
             continue
+        normalized_name = name.casefold()
+        if normalized_name in seen_component_names:
+            continue
+        seen_component_names.add(normalized_name)
         component_id = _slugify_source_id(name)
         if not component_id:
             continue
@@ -1402,6 +1420,36 @@ def _service_keys_for_build(service_key: str) -> list[str]:
     raise ValueError(f"Unsupported service: {service_key}")
 
 
+def _write_legacy_data_mirrors(service_key: str, data_dir: Path) -> list[Path]:
+    mirrored_paths: list[Path] = []
+    for mirror_dir in LEGACY_SERVICE_DATA_MIRROR_DIRS.get(service_key, ()):
+        if mirror_dir.resolve() == data_dir.resolve():
+            continue
+        mirror_dir.mkdir(parents=True, exist_ok=True)
+        for filename in GENERATED_DATA_FILENAMES:
+            source_path = data_dir / filename
+            if not source_path.exists():
+                continue
+            target_path = mirror_dir / filename
+            shutil.copy2(source_path, target_path)
+            mirrored_paths.append(target_path)
+    return mirrored_paths
+
+
+def _read_history_with_legacy_fallback(service_key: str, history_path: Path) -> dict:
+    if history_path.exists():
+        return _read_history(history_path)
+
+    for mirror_dir in LEGACY_SERVICE_DATA_MIRROR_DIRS.get(service_key, ()):
+        legacy_history_path = mirror_dir / "history.json"
+        if legacy_history_path.exists():
+            history = _read_history(legacy_history_path)
+            if history.get("points"):
+                return history
+
+    return _read_history(history_path)
+
+
 def _build_single_service(service_key: str, manifest_path: Path) -> None:
     config = SERVICE_CONFIGS.get(service_key)
     if not config:
@@ -1452,7 +1500,7 @@ def _build_single_service(service_key: str, manifest_path: Path) -> None:
     status_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     history_path = data_dir / "history.json"
-    history = _read_history(history_path)
+    history = _read_history_with_legacy_fallback(service_key, history_path)
     history["cadence_minutes"] = CADENCE_MINUTES
     history["retention_days"] = RETENTION_DAYS
 
@@ -1470,6 +1518,7 @@ def _build_single_service(service_key: str, manifest_path: Path) -> None:
     rss_path.write_text(_build_rss(payload), encoding="utf-8")
     alerts_path = data_dir / "alerts.json"
     alerts_path.write_text(json.dumps(alerts, ensure_ascii=False, indent=2), encoding="utf-8")
+    mirrored_paths = _write_legacy_data_mirrors(service_key, data_dir)
 
     next_last_good_outage_snapshot = previous_state.get("last_good_outage_snapshot")
     if service_key == "overwatch":
@@ -1493,6 +1542,8 @@ def _build_single_service(service_key: str, manifest_path: Path) -> None:
     print(f"[{service_key}] wrote {summary_path}")
     print(f"[{service_key}] wrote {rss_path}")
     print(f"[{service_key}] wrote {alerts_path} with events={len(alerts.get('events', []))}")
+    for mirrored_path in mirrored_paths:
+        print(f"[{service_key}] mirrored {mirrored_path}")
     print(f"[{service_key}] wrote {state_path}")
     print(f"[{service_key}] wrote {manifest_path.relative_to(ROOT)}")
 
