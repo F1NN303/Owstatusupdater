@@ -13,6 +13,28 @@ export interface PublicChangelogEntry {
 
 export const publicChangelogEntries: PublicChangelogEntry[] = [
   {
+    id: "2026-03-29-delivery-and-refresh-reliability",
+    updatedAt: "2026-03-29",
+    badgeEn: "Latest update",
+    badgeDe: "Letztes Update",
+    titleEn: "Delivery and refresh reliability",
+    titleDe: "Zustellung und Update-Stabilitaet",
+    summaryEn:
+      "Alert delivery and app refresh behavior were tightened so the first inbox steps and post-update browsing feel more reliable.",
+    summaryDe:
+      "Alarm-Zustellung und App-Aktualisierung wurden gestrafft, damit die ersten Postfach-Schritte und das Weiterbrowsen nach Updates verlaesslicher wirken.",
+    bulletsEn: [
+      "The alert flow now gives clearer inbox recovery guidance when the first message lands in Spam or Junk.",
+      "The mailbox help overlay now behaves more cleanly on phones.",
+      "Fresh app updates recover more reliably if an older browser cache still points at removed files.",
+    ],
+    bulletsDe: [
+      "Der Alarm-Ablauf gibt jetzt klarere Hinweise, falls die erste Mail in Spam oder Junk landet.",
+      "Die Postfach-Hilfe verhaelt sich auf dem Handy jetzt sauberer.",
+      "Frische App-Updates erholen sich zuverlaessiger, falls ein aelterer Browser-Cache noch auf entfernte Dateien zeigt.",
+    ],
+  },
+  {
     id: "2026-03-27-alerts-and-mobile-sheet",
     updatedAt: "2026-03-27",
     badgeEn: "Latest update",

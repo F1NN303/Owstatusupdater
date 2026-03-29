@@ -1,6 +1,6 @@
 ﻿# AGENTS.md - Owstatusupdater (Public-Safe Agent Guide)
 
-Last updated: 2026-03-02
+Last updated: 2026-03-29
 
 ## 0) Public Repo Hard Rule (Do Not Violate)
 - This repository is public. Treat all committed files as public.
@@ -21,9 +21,10 @@ Documentation hard rule:
   - `Last updated` date
   - `Latest known commit at handoff update`
   - concise summary of what changed + affected files/routes
+- User-visible public behavior changes should also be reflected in `react-next/src/lib/publicChangelog.ts` using public-safe wording.
 
 ## 2) Canonical Repo / Paths
-- Repo root (local): `Owstatusupdater-main/project/mc-regeln-main`
+- Repo root (local): `Owstatusupdater-main/project/mc-regeln-main-sync`
 - Public repo: `https://github.com/F1NN303/Owstatusupdater`
 - Live site: `https://f1nn303.github.io/Owstatusupdater/`
 - React preview copy: `https://f1nn303.github.io/Owstatusupdater/next/`
@@ -37,12 +38,13 @@ Important:
 - Deployed root app artifacts are built in CI into `site/`
 - `/next/` preview artifacts are also built in CI into `site/next/`
 - Legacy HTML pages still exist as fallbacks (`site/legacy-*.html`, `site/sony/legacy-index.html`)
-- Data pipeline: Python scripts generate JSON/XML into `site/data` and `site/sony/data`
+- Data pipeline: Python scripts generate public JSON/XML into `site/data` plus per-service paths like `site/<service>/data`
 - Hosting: GitHub Pages via GitHub Actions
 
 ## 4) Data / Security Guardrails
 - `site/data/subscription.json` is public-safe config only (provider/form URL/allowed hosts)
 - `.bot_state/` is workflow runtime state and must remain untracked
+- The live AI endpoint base URL is configured outside the repo; broken DNS there should not block normal routes/pages.
 - Public output must not contain:
   - `state.json` runtime files
   - `.env*`
@@ -54,8 +56,8 @@ Validation script:
 
 ## 5) CI/CD Workflows (Current)
 - `update-site-data.yml`
-  - builds Overwatch + Sony + Microsoft 365 data
-  - sends major outage Brevo alert (via GitHub secrets)
+  - builds all configured public status payloads
+  - sends subscriber-aware Brevo alerts when Supabase + Brevo secrets are configured
   - commits public data outputs only
   - restores/saves `.bot_state` via Actions cache
 - `watch-data-freshness.yml`
@@ -78,6 +80,10 @@ Normal resolution:
 3. `git push origin main`
 
 If conflict involves `.bot_state/*`, keep them untracked/deleted from Git.
+
+Current deploy reality:
+- If the live site goes black after a deploy and the console shows failed lazy imports for old `Favorites-*`, `SettingsPageRoute-*`, or similar chunks, suspect stale cached app-shell assets first.
+- Do not regress the recovery path in `react-next/src/lib/routerRecovery.ts`, `react-next/public/sw.js`, or `scripts/build_react_artifacts.py`.
 
 ## 7) Product / UX Priorities (User)
 - Mobile-first UI quality

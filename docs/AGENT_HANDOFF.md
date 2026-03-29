@@ -1,10 +1,10 @@
 # Agent Handoff
 
-Last updated: 2026-03-27
+Last updated: 2026-03-29
 Current branch: `codex/latest-sync`
-Latest known commit at handoff update: `423b70b7`
+Latest known commit at handoff update: `00e6f726`
 
-## Current Priority State (2026-03-22)
+## Current Priority State (2026-03-29)
 
 This handoff was refreshed after the site was rebranded toward `Status Radar` and after the first public AI assistant integration shipped.
 
@@ -48,37 +48,43 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
 ### Current recent UI changes
 - AI assistant sheet was redesigned into a cleaner, more premium mobile sheet.
 - Settings page was redesigned with a calmer hierarchy and a public changelog entry point.
-- Alerts delivery diagnostics were tightened in the working tree:
+- Alerts delivery diagnostics are now live:
   - the alerts page now explains whether the current watchlist actually meets the saved severity threshold
   - `Re-check delivery` now shows a softer browser/network warning when the Edge Function cannot be reached, instead of implying delivery itself is broken
 - Alert delivery wiring is now live end to end:
   - GitHub Actions subscriber dispatch is active once both `ALERT_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are configured in repo secrets
-  - recent live workflow verification showed `mode=subscriber_dispatch result=sent`
+  - recent live workflow verification showed `mode=subscriber_dispatch result=sent sent=2 attempted=2`
   - missing `SUPABASE_SERVICE_ROLE_KEY` was the reason earlier runs silently fell back to `legacy_recipients`
 - Settings alert-account flicker bug was fixed:
   - root cause was unstable effect dependencies in `react-next/src/lib/alertAccount.tsx`
   - account state no longer flips between `Connected` and `Local only` during reload/checking
 - Mobile AI sheet overlap was fixed:
   - it now tracks the visible mobile viewport more closely instead of relying on a short fixed-height bottom sheet
-- Alert email polish shipped in the working tree:
+- Alert email polish is now live:
   - sender branding now uses `Status Radar Alerts`
   - Brevo payloads now include `replyTo`
   - alert mails use a branded HTML layout with severity pill, summary card, metric panels, and clearer CTA links back into the site
-- Additional alerts/settings polish shipped in the working tree:
+- Additional alerts/settings polish is now live:
   - the alerts delivery section now includes an inbox-help popup that explains how to recover the first message from Spam/Junk
   - the public changelog now includes a March 27 note for inbox-delivery polish
   - the settings changelog sheet now opens as a true full-screen mobile overlay instead of a shorter bottom sheet
   - the inbox-help popup was corrected after rollout so it now renders in a true viewport portal above the bottom nav and uses its own mobile-safe scroll region
-- Deploy-cache recovery shipped in the working tree:
+- Deploy-cache recovery is now live:
   - stale browser bundles can still request deleted lazy route chunks like `Favorites-*` or `SettingsPageRoute-*` after a Pages deploy
   - the router now traps recoverable dynamic-import failures, clears `owstatus-*` caches, unregisters matching service workers, and reloads once
   - the React build script now stamps a unique service-worker cache version per root/preview build so old app-shell caches are forced out more reliably
+- Current production caveat:
+  - the public AI health URL currently resolves to a dead DNS host (`status-ai.tail0f936a.ts.net`), so assistant health checks fail in the browser console
+  - that AI outage is separate from route/deploy issues and should not break normal site navigation
 
 ### Recent important commits
-- `fe8fbb50` - `docs: add cross-agent project snapshot`
-- `905ddf4d` - `fix(ui): tighten mobile settings layout`
-- `b5548c7a` - `fix(ci): serialize update-site-data runs`
-- `0a1a0e60` - `feat(ui): refine settings and detail hierarchy`
+- `00e6f726` - `fix(deploy): recover from stale route chunks`
+- `423b70b7` - `fix(ui): repair mobile inbox help modal`
+- `2a3ab2cc` - `feat(ui): polish alerts inbox help and changelog sheet`
+- `73e24c76` - `feat(email): upgrade alert email branding`
+- `d98d8469` - `fix(ui): clarify alert delivery readiness`
+- `abad3b53` - `feat(data): modernize overwatch status pipeline`
+- `34d0758f` - `feat(data): add x service coverage`
 
 ### Current recent data coverage changes
 - X (formerly Twitter) support is now wired as a normal per-service payload:
@@ -162,11 +168,11 @@ This file is the persistent handoff for future agents. It captures the current p
   - `site/` (root app)
   - `site/next/` (preview app)
 - Build metadata (commit SHA) is injected for Settings version display.
-- Route UX hardening shipped in working tree:
+- Route UX hardening is live:
   - production React router now prefers clean browser routes instead of defaulting to hash routes
   - `react-next/public/404.html` now captures GitHub Pages deep-link misses and redirects them back into the app
   - app boot recovers redirected deep links and also migrates legacy `#/status/...` links into clean paths
-- Offline resilience shipped in working tree:
+- Offline resilience is live:
   - a lightweight service worker now caches the app shell and last-known JSON responses
   - React data fetchers now fall back to cached manifest/status/subscription payloads when live fetches fail
   - home and detail pages now surface a visible "last known data" banner when cached payloads are being used
@@ -186,18 +192,18 @@ This file is the persistent handoff for future agents. It captures the current p
 - Existing outage/status data contracts stay compatible with current frontend.
 - Detail payload sanitization now preserves component/service breakdown arrays on both the top-level payload and `outage`.
 - This fixes missing API component rows on service detail pages for providers like OpenAI and Claude where the live JSON already includes `outage.components`.
-- Bug-hunt fix shipped in working tree:
+- Bug-hunt fix is live:
   - source transparency percentage fields (`confidence_score`, `success_rate`, `stale_rate`, `cache_hit_rate`) are now sanitized as percentages, not incorrectly clamped to `0..1`
   - the detail header confidence chip no longer mixes German labels with English body text
   - source role / criticality values are rendered as user-facing labels instead of raw backend values like `provider` / `supporting`
-- UI behavior fix shipped in working tree:
+- UI behavior fix is live:
   - `Favorites First` is now the default home behavior for fresh installs, resets, and a one-time migration for pre-v3 stored settings
   - API component lists now sort impacted components ahead of healthy ones so degraded/offline entries stay visible without forcing `Show all`
-- iOS/mobile UX fix shipped in working tree:
+- iOS/mobile UX fix is live:
   - root React HTML viewport now uses `viewport-fit=cover` so the app fully respects iPhone safe-area insets
   - home and service detail now support pull-to-refresh using a shared mobile touch hook + top refresh indicator
   - service detail header now includes native share with clipboard fallback when `navigator.share` is unavailable
-- Browser cache/deploy hardening shipped in working tree:
+- Browser cache/deploy hardening is live:
   - `react-next/public/sw.js` cache version was bumped to force a cleaner service-worker asset refresh after recent deploys
   - `react-next/src/pages/EmailAlerts.tsx` German UI copy was normalized to ASCII-safe strings to eliminate mojibake from previously corrupted literals
   - `react-next/src/pages/SettingsPage.tsx` now shows account-aware storage text instead of always claiming only local browser storage
@@ -205,7 +211,7 @@ This file is the persistent handoff for future agents. It captures the current p
     - `react-next/src/lib/routerRecovery.ts` detects lazy import failures like `Failed to fetch dynamically imported module`
     - it clears only `owstatus-*` caches, unregisters matching service workers for the current base path, and reloads once per path inside a short session window
     - `scripts/build_react_artifacts.py` now replaces a service-worker version token with a per-build SHA-based value for both root and preview artifacts
-- Scheduled maintenance surfacing shipped in working tree:
+- Scheduled maintenance surfacing is live:
   - Statuspage-based providers now extract future or active scheduled maintenance incidents into `outage.scheduled_maintenances`
   - Slack's custom official parser now exposes the same normalized maintenance rows
   - the home screen now shows compact scheduled-maintenance cards near the top when at least one provider publishes an active or upcoming maintenance window
@@ -228,13 +234,13 @@ Key files:
 
 ## UI State (Current)
 
-### Alerts + Onboarding (Working Tree)
+### Alerts + Onboarding
 - Alerts now include device-local watchlist controls:
   - per-service watchlist selection
   - severity threshold (`major` only vs `degraded + major`)
   - quick import from favorites
 - The Brevo signup remains global; the new watchlist controls are explicitly local UI preferences until provider-side filtering exists.
-- New alert-account phase is now wired in the working tree:
+- New alert-account phase is now live:
   - Supabase browser auth via magic-link sign-in
   - account/session bootstrap in `react-next/src/lib/alertAccount.tsx`
   - alert preference save/load against `profiles` + `alert_preferences`
@@ -251,7 +257,7 @@ Key files:
   - the long service watchlist now has search plus a selected-only filter to make large lists easier to manage
   - Settings now surfaces the connected alert-account summary instead of describing alerts as local-only when a session exists
   - `react-next/src/lib/supabase.ts` must use explicit `import.meta.env.VITE_SUPABASE_*` access for production builds; dynamic key access does not survive Vite env replacement
-- Subscriber-aware outbound mail dispatch is now wired in the working tree:
+- Subscriber-aware outbound mail dispatch is now live:
   - `scripts/send_brevo_major_alert.py` now loads all configured service `status.json` files instead of targeting a single hard-coded service
   - the sender now fetches `profiles` + `alert_preferences` from Supabase and filters deliveries per subscriber by watched services plus severity threshold
   - subscriber mail state is tracked in `.bot_state/email_alert_state.json` so duplicate snapshots and cooldown spam are suppressed per user and per service
@@ -282,16 +288,16 @@ Key files:
   - share on detail pages
 - Settings now shows alert-watchlist summary and exposes a "show onboarding again" action.
 - Home now links to the broader Alerts flow rather than describing the screen as only a newsletter signup page.
-- Mobile smoothness hardening shipped in working tree:
+- Mobile smoothness hardening is live:
   - shared app background layers now use `absolute` positioning on small screens instead of always forcing fixed full-viewport compositing
   - coarse-pointer devices now use reduced glass blur/shadow intensity
   - iOS coarse-pointer devices now fall back to opaque glass surfaces instead of expensive `backdrop-filter` layers for the shared cards and bottom nav
   - intent: keep the current visual hierarchy while reducing scroll jank on the Alerts route and other mobile screens that stack many glass cards
-- Alerts mobile readability pass shipped in working tree:
+- Alerts mobile readability pass is live:
   - the Alerts flow summary and final delivery status cards now stack vertically on narrow screens instead of forcing cramped 3-column mini-cards
   - the delivery CTAs now become full-width stacked actions on phones so the secure Brevo entry point reads as the primary action
   - the embedded Brevo form remains available in-app, with a slightly shorter default mobile iframe height and clearer guidance that the direct secure form is usually smoother on phones
-- Alerts setup modernization shipped in working tree:
+- Alerts setup modernization is live:
   - the Alerts page now behaves like a one-time setup until account connection plus Brevo delivery sync are both complete
   - the hero now shows all three setup steps at once, but only the current step section expands below it instead of keeping all three full sections open
   - once setup is complete, the page switches into a calmer settings workspace with compact summary stats, watchlist chips, and delivery/account controls without step numbering
@@ -502,13 +508,13 @@ Key files:
 - `NOTICE.md`
 
 ## Recent Important Commits
-- `working tree` - `feat(routes/offline): recover clean deep links on GitHub Pages and cache last-known status payloads`
-- `working tree` - `feat(alerts): add per-service local watchlist controls and first-launch onboarding hints`
-- `working tree` - `fix(alerts-ui): uncramp mobile delivery and flow status cards`
-- `working tree` - `feat(home): add quick favorites-only filter chip`
-- `working tree` - `test(mobile): add pull-to-refresh, share, and router recovery regression coverage`
-- `working tree` - `fix(ui): correct source transparency percentage scaling and localize source confidence labels`
-- `working tree` - `fix(ui): preserve sanitized component lists so detail API component status renders`
+- `shipped` - `feat(routes/offline): recover clean deep links on GitHub Pages and cache last-known status payloads`
+- `shipped` - `feat(alerts): add per-service local watchlist controls and first-launch onboarding hints`
+- `shipped` - `fix(alerts-ui): uncramp mobile delivery and flow status cards`
+- `shipped` - `feat(home): add quick favorites-only filter chip`
+- `shipped` - `test(mobile): add pull-to-refresh, share, and router recovery regression coverage`
+- `shipped` - `fix(ui): correct source transparency percentage scaling and localize source confidence labels`
+- `shipped` - `fix(ui): preserve sanitized component lists so detail API component status renders`
 - `6f2ad53` - `fix(ui): uncramp favorite star on service cards`
 - `4749029` - `feat(favorites): add persistent service starring and harden alerts info exposure`
 - `bf6581b` - `fix(deploy): include public brand assets in root and preview artifacts`
