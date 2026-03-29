@@ -74,7 +74,7 @@ This handoff was refreshed after the site was rebranded toward `Status Radar` an
   - the router now traps recoverable dynamic-import failures, clears `owstatus-*` caches, unregisters matching service workers, and reloads once
   - the React build script now stamps a unique service-worker cache version per root/preview build so old app-shell caches are forced out more reliably
 - Current production caveat:
-  - the public AI health URL currently resolves to a dead DNS host (`status-ai.tail0f936a.ts.net`), so assistant health checks fail in the browser console
+  - the currently configured public AI health URL is offline, so assistant health checks fail in the browser console
   - that AI outage is separate from route/deploy issues and should not break normal site navigation
 
 ### Recent important commits
@@ -266,11 +266,9 @@ Key files:
 - Required local/frontend env for the new alert-account flow:
   - `VITE_SUPABASE_URL`
   - `VITE_SUPABASE_ANON_KEY`
-- Browser auth now also has committed public defaults in `react-next/src/lib/supabase.ts`:
-  - `https://adijigutpkibobwczbic.supabase.co`
-  - `sb_publishable_GzehFO0uWtjYMHotTPZi-g_HzDSMwMZ`
+- Browser auth now also has committed public defaults in `react-next/src/lib/supabase.ts`.
 - Reason:
-  - the Supabase publishable URL/key are safe to ship in the frontend, and this removes fragile Pages build-time secret dependency for browser auth
+  - the Supabase publishable URL/key are intentionally public-safe frontend config, and this removes fragile Pages build-time secret dependency for browser auth
 - Required GitHub Actions secrets for subscriber-aware dispatch:
   - `BREVO_API_KEY`
   - `ALERT_EMAIL_FROM`
