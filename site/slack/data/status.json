@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-03-30T01:17:28.372844Z",
+  "generated_at": "2026-03-30T02:44:42.527525Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 1,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "slack-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 5.5,
+      "incidents": 4.7,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
+      "official_operational_cap_applied": true,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "stable",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Slack Status API: Issue with Sending and Receiving Messages",
+    "summary": "Slack Status API: Slack is up and running",
     "updates": [
       {
-        "title": "Slack Status API: Issue with Sending and Receiving Messages",
+        "title": "Slack Status API: Slack is up and running",
         "url": "https://slack-status.com/",
-        "published_at": "2026-03-30T01:17:27.830432Z",
+        "published_at": "2026-03-30T02:44:41.869801Z",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Indicator: active"
+        "meta": "Indicator: ok"
+      },
+      {
+        "title": "Issue with Sending and Receiving Messages",
+        "url": "https://slack-status.com/2026-03/6da2f3fe8e16319d#note-4",
+        "published_at": "2026-03-29T18:17:35-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Incident / Services: Messaging / Following a period of monitoring, our engineering team called this incident resolved as of 01:10 UTC, March 30. We apologize for any inconvenience this issue has caused to users."
       },
       {
         "title": "Issue with Sending and Receiving Messages",
@@ -84,7 +92,7 @@
         "published_at": "2026-03-29T17:29:49-07:00",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Active / Incident / Services: Messaging / A fix has been deployed to the affected shards. ProcessMessage jobs had been paused, and these have now been unpaused on the affected shards. We are monitoring performance to assess whether the shards have returned to expected performance l"
+        "meta": "Resolved / Incident / Services: Messaging / A fix has been deployed to the affected shards. ProcessMessage jobs had been paused, and these have now been unpaused on the affected shards. We are monitoring performance to assess whether the shards have returned to expected performance l"
       },
       {
         "title": "Issue with Sending and Receiving Messages",
@@ -92,7 +100,7 @@
         "published_at": "2026-03-29T16:30:00-07:00",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Active / Incident / Services: Messaging / We’re continuing to investigate the issue. We have identified two affected shards that are becoming overloaded, causing elevated query failures and message-related degradations. We are in the process of testing a potential fix. We’ll provid"
+        "meta": "Resolved / Incident / Services: Messaging / We’re continuing to investigate the issue. We have identified two affected shards that are becoming overloaded, causing elevated query failures and message-related degradations. We are in the process of testing a potential fix. We’ll provid"
       },
       {
         "title": "Issue with Sending and Receiving Messages",
@@ -100,7 +108,7 @@
         "published_at": "2026-03-29T15:38:57-07:00",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Active / Incident / Services: Messaging / We're investigating a new incident. Current impact to end users: Some users may experience elevated error rates and message-related degradations when sending and receiving messages across the Slack platform Teams are actively engaged to ide"
+        "meta": "Resolved / Incident / Services: Messaging / We're investigating a new incident. Current impact to end users: Some users may experience elevated error rates and message-related degradations when sending and receiving messages across the Slack platform Teams are actively engaged to ide"
       },
       {
         "title": "Issues while sending messages and loading message history is impacting some users",
@@ -141,37 +149,29 @@
         "source": "Slack Status API",
         "channel": "official-status-page",
         "meta": "Resolved / Incident / Services: Connectivity, Notifications / Intermittent errors when sending messages have been resolved. Additionally, some customers may see inaccurate notification badge counts which can be resolved with a hard reload to clear temporary local cache. Apologies for the trouble today"
-      },
-      {
-        "title": "Trouble connecting to Slack",
-        "url": "https://slack-status.com/2026-03/8269f159feb011e3#note-2",
-        "published_at": "2026-03-26T09:07:28-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / Services: Connectivity, Notifications / The team is investigating the issue and have rolled back a recent feature change to reduce load on affected systems. We are also actively increasing infrastructure capacity to restore normal service levels. We'll provide an update in 30 min"
       }
     ],
-    "last_statement_at": "2026-03-30T01:17:27.830432Z"
+    "last_statement_at": "2026-03-30T02:44:41.869801Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://slack-status.com/",
-    "summary": "Slack Status reports an active incident: Issue with Sending and Receiving Messages.",
-    "current_status": "degraded",
+    "summary": "Slack Status reports Slack is up and running. No active incidents are listed.",
+    "current_status": "operational",
     "reports_24h": 110,
     "incidents": [
       {
         "title": "Issue with Sending and Receiving Messages",
         "started_at": "2026-03-29T22:39:58Z",
-        "duration": "1m",
+        "duration": "2h 40m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Issue with Sending and Receiving Messages",
         "started_at": "2026-03-29T15:38:57-07:00",
-        "duration": "2h 38m ongoing",
-        "acknowledgement": "Incident / Active / Messaging",
+        "duration": "2h 38m",
+        "acknowledgement": "Incident / Resolved / Messaging",
         "source": "Slack Status API",
         "url": "https://slack-status.com/2026-03/6da2f3fe8e16319d"
       },
@@ -216,58 +216,13 @@
         "url": "https://slack-status.com/2026-03/8269f159feb011e3"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Messaging",
-        "count": 1
-      },
-      {
-        "label": "Messaging",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "Slack Status API",
       "kind": "component-grid",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-03-29T01:15:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-29T01:30:00Z",
-        "signal_value": 17.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-29T01:45:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-29T02:00:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-29T02:15:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-03-29T02:30:00Z",
-        "signal_value": 17.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-03-29T02:45:00Z",
         "signal_value": 1.0,
@@ -807,6 +762,42 @@
         "signal_value": 16.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-30T01:15:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-30T01:30:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-30T01:45:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-30T02:00:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-30T02:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-03-30T02:30:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -815,30 +806,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-03-30T01:00:00Z"
+      "last_sample_at": "2026-03-30T02:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "01:20",
-        "count": 0
-      },
-      {
-        "label": "01:40",
-        "count": 2
-      },
-      {
-        "label": "02:00",
-        "count": 3
-      },
-      {
-        "label": "02:20",
-        "count": 1
-      },
-      {
-        "label": "02:40",
-        "count": 3
-      },
       {
         "label": "03:00",
         "count": 0
@@ -1106,6 +1077,26 @@
       {
         "label": "01:00",
         "count": 2
+      },
+      {
+        "label": "01:20",
+        "count": 0
+      },
+      {
+        "label": "01:40",
+        "count": 2
+      },
+      {
+        "label": "02:00",
+        "count": 3
+      },
+      {
+        "label": "02:20",
+        "count": 1
+      },
+      {
+        "label": "02:40",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1114,14 +1105,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-03-29T21:17:25-04:00"
+      "last_reviewed_at": "2026-03-29T22:44:41-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 110,
-        "last_reviewed_at": "2026-03-29T21:17:25-04:00"
+        "last_reviewed_at": "2026-03-29T22:44:41-04:00"
       }
     ],
     "current_status_origin": "Slack Status API",
@@ -1131,77 +1122,77 @@
         "name": "Login/SSO",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Connectivity",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Messaging",
-        "status": "something's not quite right. view details",
-        "health": "Something's not quite right. View details",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "status": "operational",
+        "health": "No issues",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Files",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Notifications",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Huddles",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Search",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Apps/Integrations/APIs",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workspace/Org Administration",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workflows",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Canvases",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-03-29T17:29:49-07:00",
+        "updated_at": "2026-03-29T18:17:35-07:00",
         "source": "Slack Status API"
       }
     ],
@@ -1254,7 +1245,7 @@
       "url": "https://slack-status.com/2026-03/6da2f3fe8e16319d",
       "published_at": "2026-03-29T15:38:57-07:00",
       "source": "Slack Status API",
-      "meta": "Incident / Active / Messaging"
+      "meta": "Incident / Resolved / Messaging"
     },
     {
       "title": "Issues while sending messages and loading message history is impacting some users",
@@ -1305,52 +1296,60 @@
       "url": "https://slack-status.com/",
       "source": "Official",
       "meta": "Dashboard",
-      "published_at": "2026-03-30T01:17:28.372844Z"
+      "published_at": "2026-03-30T02:44:42.527525Z"
     },
     {
       "title": "Slack Status API docs",
       "url": "https://slack-status.com/api",
       "source": "Official",
       "meta": "API docs",
-      "published_at": "2026-03-30T01:17:28.372844Z"
+      "published_at": "2026-03-30T02:44:42.527525Z"
     },
     {
       "title": "Slack Status current API",
       "url": "https://slack-status.com/api/v2.0.0/current",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-30T01:17:28.372844Z"
+      "published_at": "2026-03-30T02:44:42.527525Z"
     },
     {
       "title": "Slack Status history API",
       "url": "https://slack-status.com/api/v2.0.0/history",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-03-30T01:17:28.372844Z"
+      "published_at": "2026-03-30T02:44:42.527525Z"
     },
     {
       "title": "Slack Status history RSS",
       "url": "https://slack-status.com/feed/rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-03-30T01:17:28.372844Z"
+      "published_at": "2026-03-30T02:44:42.527525Z"
     },
     {
       "title": "Slack connection troubleshooting",
       "url": "https://slack.com/help/articles/205138367-Troubleshoot-connection-issues",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-03-30T01:17:28.372844Z"
+      "published_at": "2026-03-30T02:44:42.527525Z"
     }
   ],
   "news": [
     {
-      "title": "Slack Status API: Issue with Sending and Receiving Messages",
+      "title": "Slack Status API: Slack is up and running",
       "url": "https://slack-status.com/",
-      "published_at": "2026-03-30T01:17:27.830432Z",
+      "published_at": "2026-03-30T02:44:41.869801Z",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Indicator: active"
+      "meta": "Indicator: ok"
+    },
+    {
+      "title": "Issue with Sending and Receiving Messages",
+      "url": "https://slack-status.com/2026-03/6da2f3fe8e16319d#note-4",
+      "published_at": "2026-03-29T18:17:35-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Incident / Services: Messaging / Following a period of monitoring, our engineering team called this incident resolved as of 01:10 UTC, March 30. We apologize for any inconvenience this issue has caused to users."
     },
     {
       "title": "Issue with Sending and Receiving Messages",
@@ -1358,7 +1357,7 @@
       "published_at": "2026-03-29T17:29:49-07:00",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Active / Incident / Services: Messaging / A fix has been deployed to the affected shards. ProcessMessage jobs had been paused, and these have now been unpaused on the affected shards. We are monitoring performance to assess whether the shards have returned to expected performance l"
+      "meta": "Resolved / Incident / Services: Messaging / A fix has been deployed to the affected shards. ProcessMessage jobs had been paused, and these have now been unpaused on the affected shards. We are monitoring performance to assess whether the shards have returned to expected performance l"
     },
     {
       "title": "Issue with Sending and Receiving Messages",
@@ -1366,7 +1365,7 @@
       "published_at": "2026-03-29T16:30:00-07:00",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Active / Incident / Services: Messaging / We’re continuing to investigate the issue. We have identified two affected shards that are becoming overloaded, causing elevated query failures and message-related degradations. We are in the process of testing a potential fix. We’ll provid"
+      "meta": "Resolved / Incident / Services: Messaging / We’re continuing to investigate the issue. We have identified two affected shards that are becoming overloaded, causing elevated query failures and message-related degradations. We are in the process of testing a potential fix. We’ll provid"
     },
     {
       "title": "Issue with Sending and Receiving Messages",
@@ -1374,7 +1373,7 @@
       "published_at": "2026-03-29T15:38:57-07:00",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Active / Incident / Services: Messaging / We're investigating a new incident. Current impact to end users: Some users may experience elevated error rates and message-related degradations when sending and receiving messages across the Slack platform Teams are actively engaged to ide"
+      "meta": "Resolved / Incident / Services: Messaging / We're investigating a new incident. Current impact to end users: Some users may experience elevated error rates and message-related degradations when sending and receiving messages across the Slack platform Teams are actively engaged to ide"
     },
     {
       "title": "Issues while sending messages and loading message history is impacting some users",
@@ -1399,14 +1398,6 @@
       "source": "Slack Status API",
       "channel": "official-status-page",
       "meta": "Resolved / Incident / Services: Messaging / We continue to investigate the issue. Current status and actions being taken: We have identified high resource utilization as a potential trigger. We continue to investigate and determine the best path to resolution. Estimated time to resol"
-    },
-    {
-      "title": "Issues while sending messages and loading message history is impacting some users",
-      "url": "https://slack-status.com/2026-03/5e14cc3c13b8ae14#note-1",
-      "published_at": "2026-03-27T21:12:33-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Services: Messaging / We're investigating a new incident. Current impact to end users: Some users may experience issues while sending messages and loading message history in Slack. We'll provide an update within 30 minutes including further details on current ac"
     }
   ],
   "social": [],
@@ -1422,11 +1413,11 @@
       "ok": true,
       "error": null,
       "item_count": 5,
-      "last_item_at": "2026-03-30T01:17:25.445055Z",
+      "last_item_at": "2026-03-30T02:44:40.798929Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 175,
-      "fetched_at": "2026-03-30T01:17:25.445085Z",
+      "duration_ms": 306,
+      "fetched_at": "2026-03-30T02:44:40.798947Z",
       "cache_hit": false
     },
     {
@@ -1440,11 +1431,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-03-29T21:17:25-04:00",
+      "last_item_at": "2026-03-29T22:44:41-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 2384,
-      "fetched_at": "2026-03-30T01:17:27.829814Z",
+      "duration_ms": 1070,
+      "fetched_at": "2026-03-30T02:44:41.869268Z",
       "cache_hit": false
     },
     {
@@ -1458,17 +1449,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-03-30T01:17:27.830432Z",
+      "last_item_at": "2026-03-30T02:44:41.869801Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 540,
-      "fetched_at": "2026-03-30T01:17:28.371163Z",
+      "duration_ms": 656,
+      "fetched_at": "2026-03-30T02:44:42.525909Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-03-30T01:17:28.372844Z",
+    "generated_at": "2026-03-30T02:44:42.527525Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1490,7 +1481,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1505,9 +1496,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 175,
+          "duration_ms": 306,
           "cache_hit": false,
-          "at": "2026-03-30T01:17:25Z"
+          "at": "2026-03-30T02:44:40Z"
         },
         "metrics_24h": {
           "runs": 22,
@@ -1516,7 +1507,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 249.3
+          "avg_duration_ms": 232.8
         },
         "metrics_7d": {
           "runs": 148,
@@ -1525,10 +1516,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 216.2
+          "avg_duration_ms": 217.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-30T01:17:25Z",
+        "last_success_at": "2026-03-30T02:44:40Z",
         "last_failure_at": null
       },
       {
@@ -1542,9 +1533,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 2384,
+          "duration_ms": 1070,
           "cache_hit": false,
-          "at": "2026-03-30T01:17:25Z"
+          "at": "2026-03-30T02:44:40Z"
         },
         "metrics_24h": {
           "runs": 22,
@@ -1553,7 +1544,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1386.5
+          "avg_duration_ms": 1374.5
         },
         "metrics_7d": {
           "runs": 148,
@@ -1562,10 +1553,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1301.3
+          "avg_duration_ms": 1299.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-30T01:17:25Z",
+        "last_success_at": "2026-03-30T02:44:40Z",
         "last_failure_at": null
       },
       {
@@ -1579,9 +1570,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 540,
+          "duration_ms": 656,
           "cache_hit": false,
-          "at": "2026-03-30T01:17:25Z"
+          "at": "2026-03-30T02:44:40Z"
         },
         "metrics_24h": {
           "runs": 22,
@@ -1590,7 +1581,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 506.0
+          "avg_duration_ms": 514.2
         },
         "metrics_7d": {
           "runs": 148,
@@ -1599,25 +1590,33 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 503.8
+          "avg_duration_ms": 505.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-03-30T01:17:25Z",
+        "last_success_at": "2026-03-30T02:44:40Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-03-30T01:17:28.372844Z",
+    "generated_at": "2026-03-30T02:44:42.527525Z",
     "incidents": {
       "new": [],
       "updated": [
         {
+          "id": "dd14d4877543db65",
+          "title": "Issue with Sending and Receiving Messages",
+          "started_at": "2026-03-29T22:39:58Z",
+          "duration": "2h 40m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://slack-status.com/"
+        },
+        {
           "id": "18c70ddef7597389",
           "title": "Issue with Sending and Receiving Messages",
           "started_at": "2026-03-29T15:38:57-07:00",
-          "duration": "2h 38m ongoing",
-          "acknowledgement": "Incident / Active / Messaging",
+          "duration": "2h 38m",
+          "acknowledgement": "Incident / Resolved / Messaging",
           "url": "https://slack-status.com/"
         }
       ],
@@ -1628,7 +1627,7 @@
     },
     "summary": {
       "new_incidents": 0,
-      "updated_incidents": 1,
+      "updated_incidents": 2,
       "resolved_incidents": 0,
       "new_reports": 0
     }
