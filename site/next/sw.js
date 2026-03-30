@@ -1,12 +1,20 @@
-const VERSION = "2026-03-17-2";
-const APP_SHELL_CACHE = `owstatus-app-shell-${VERSION}`;
-const STATIC_CACHE = `owstatus-static-${VERSION}`;
-const DATA_CACHE = `owstatus-data-${VERSION}`;
+const VERSION = "36104044e62f-preview";
 
 function currentBasePath() {
   const scopePath = new URL(self.registration.scope).pathname || "/";
   return scopePath.endsWith("/") ? scopePath.slice(0, -1) : scopePath;
 }
+
+function currentScopeTag() {
+  const basePath = currentBasePath();
+  const normalized = basePath.replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "");
+  return normalized || "root";
+}
+
+const CACHE_SCOPE = currentScopeTag();
+const APP_SHELL_CACHE = `owstatus-app-shell-${CACHE_SCOPE}-${VERSION}`;
+const STATIC_CACHE = `owstatus-static-${CACHE_SCOPE}-${VERSION}`;
+const DATA_CACHE = `owstatus-data-${CACHE_SCOPE}-${VERSION}`;
 
 function currentBaseUrl(path) {
   const basePath = currentBasePath();

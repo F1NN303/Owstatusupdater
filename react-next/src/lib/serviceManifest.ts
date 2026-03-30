@@ -39,188 +39,102 @@ interface RawServiceManifestPayload {
   services?: unknown;
 }
 
-const FALLBACK_SERVICE_MANIFEST: ServiceManifestEntry[] = [
-  {
-    id: "overwatch",
-    label: "Overwatch",
-    name: "Overwatch",
-    detailPath: "/status/overwatch",
-    statusPath: "/overwatch/data/status.json",
-    legacyHref: "/overwatch/",
-    note: "Full live dashboard with incidents, analytics, and status summary.",
-    iconName: "Gamepad2",
-    category: "gaming",
-    priority: 100,
-    tags: ["overwatch", "blizzard", "battle-net", "fps"],
-    aliases: ["overwatch", "ow"],
-  },
+interface FallbackServiceSeed {
+  id: string;
+  label: string;
+  name?: string;
+  aliases?: string[];
+  iconName?: string;
+  category?: string;
+  legacyHref?: string;
+}
+
+const FALLBACK_GENERIC_NOTE = "Live service status and incident summary.";
+
+// Keep the fallback intentionally thin so the generated manifest remains the detailed source of truth.
+const FALLBACK_SERVICE_SEEDS: FallbackServiceSeed[] = [
+  { id: "overwatch", label: "Overwatch", aliases: ["ow"], iconName: "Gamepad2", category: "gaming" },
   {
     id: "sony",
     label: "Sony",
     name: "Sony PSN",
-    detailPath: "/status/sony",
-    statusPath: "/sony/data/status.json",
-    legacyHref: "/sony/legacy-index.html",
-    note: "PlayStation Network live signals, service trend, and incident data.",
+    aliases: ["psn", "playstation", "playstation-network"],
     iconName: "Tv",
     category: "gaming",
-    priority: 110,
-    tags: ["sony", "psn", "playstation", "console"],
-    aliases: ["sony", "psn", "playstation", "playstation-network"],
-  },
-  {
-    id: "epic",
-    label: "Epic Games",
-    name: "Epic Games",
-    detailPath: "/status/epic",
-    statusPath: "/epic/data/status.json",
-    legacyHref: "/epic/",
-    note: "Epic Games live status signals with official Statuspage API and provider corroboration.",
-    iconName: "Gamepad2",
-    category: "gaming",
-    priority: 115,
-    tags: ["epic", "epic-games", "fortnite", "launcher", "unreal-engine", "gaming"],
-    aliases: ["epic", "epic-games", "epicgames"],
+    legacyHref: "/sony/legacy-index.html",
   },
   {
     id: "m365",
     label: "Microsoft 365",
-    name: "Microsoft 365",
-    detailPath: "/status/m365",
-    statusPath: "/m365/data/status.json",
-    legacyHref: "/m365/",
-    note: "Microsoft 365 live service health signals with official and provider sources.",
-    iconName: "Globe",
+    aliases: ["microsoft365", "office365", "microsoft-365"],
     category: "productivity",
-    priority: 200,
-    tags: ["microsoft", "office", "collaboration", "enterprise"],
-    aliases: ["m365", "microsoft365", "office365", "microsoft-365"],
   },
   {
     id: "openai",
     label: "OpenAI (ChatGPT)",
     name: "OpenAI / ChatGPT",
-    detailPath: "/status/openai",
-    statusPath: "/openai/data/status.json",
-    legacyHref: "/openai/",
-    note: "OpenAI and ChatGPT live status signals with official Statuspage API and provider corroboration.",
+    aliases: ["chatgpt", "open-ai"],
     iconName: "Cpu",
     category: "ai",
-    priority: 210,
-    tags: ["openai", "chatgpt", "api", "ai"],
-    aliases: ["openai", "chatgpt", "open-ai"],
   },
   {
     id: "claude",
     label: "Claude (Anthropic)",
     name: "Claude / Anthropic",
-    detailPath: "/status/claude",
-    statusPath: "/claude/data/status.json",
-    legacyHref: "/claude/",
-    note: "Claude and Anthropic live status signals with official Statuspage API and provider corroboration.",
+    aliases: ["anthropic", "claude-ai"],
     iconName: "Cpu",
     category: "ai",
-    priority: 220,
-    tags: ["claude", "anthropic", "ai", "llm"],
-    aliases: ["claude", "anthropic", "claude-ai"],
   },
   {
     id: "discord",
     label: "Discord",
-    name: "Discord",
-    detailPath: "/status/discord",
-    statusPath: "/discord/data/status.json",
-    legacyHref: "/discord/",
-    note: "Discord live status signals with official Statuspage API and provider corroboration.",
-    iconName: "Globe",
+    aliases: ["discordapp", "discord-status"],
     category: "notifications",
-    priority: 230,
-    tags: ["discord", "chat", "notifications", "collaboration"],
-    aliases: ["discord", "discordapp", "discord-status"],
   },
   {
     id: "slack",
     label: "Slack",
-    name: "Slack",
-    detailPath: "/status/slack",
-    statusPath: "/slack/data/status.json",
-    legacyHref: "/slack/",
-    note: "Slack live status signals with official Slack Status API and provider corroboration.",
-    iconName: "Globe",
+    aliases: ["slack-status", "slackapp"],
     category: "productivity",
-    priority: 235,
-    tags: ["slack", "chat", "collaboration", "workplace", "productivity"],
-    aliases: ["slack", "slack-status", "slackapp"],
   },
   {
     id: "reddit",
     label: "Reddit",
-    name: "Reddit",
-    detailPath: "/status/reddit",
-    statusPath: "/reddit/data/status.json",
-    legacyHref: "/reddit/",
-    note: "Reddit live status signals with official Statuspage API and provider corroboration.",
-    iconName: "Globe",
+    aliases: ["reddit-status", "redditstatus"],
     category: "social",
-    priority: 237,
-    tags: ["reddit", "social", "community", "forums"],
-    aliases: ["reddit", "reddit-status", "redditstatus"],
   },
   {
     id: "x",
     label: "X (Twitter)",
     name: "X / Twitter",
-    detailPath: "/status/x",
-    statusPath: "/x/data/status.json",
-    legacyHref: "/x/",
-    note: "X live status signals with official developer-platform status plus provider corroboration.",
-    iconName: "Globe",
+    aliases: ["twitter", "x-twitter"],
     category: "social",
-    priority: 238,
-    tags: ["x", "twitter", "social", "microblogging"],
-    aliases: ["x", "twitter", "x-twitter"],
   },
   {
     id: "github",
     label: "GitHub",
-    name: "GitHub",
-    detailPath: "/status/github",
-    statusPath: "/github/data/status.json",
-    legacyHref: "/github/",
-    note: "GitHub live status signals with official Statuspage API and provider corroboration.",
-    iconName: "Globe",
+    aliases: ["github-status", "githubstatus"],
     category: "developer",
-    priority: 240,
-    tags: ["github", "git", "developer", "devops"],
-    aliases: ["github", "github-status", "githubstatus"],
   },
   {
     id: "cloudflare",
     label: "Cloudflare",
-    name: "Cloudflare",
-    detailPath: "/status/cloudflare",
-    statusPath: "/cloudflare/data/status.json",
-    legacyHref: "/cloudflare/",
-    note: "Cloudflare live status signals with official Statuspage API and provider corroboration.",
-    iconName: "Globe",
+    aliases: ["cloudflare-status", "cf"],
     category: "infrastructure",
-    priority: 250,
-    tags: ["cloudflare", "cdn", "dns", "infrastructure", "edge"],
-    aliases: ["cloudflare", "cloudflare-status", "cf"],
+  },
+  {
+    id: "epic",
+    label: "Epic Games",
+    aliases: ["epic-games", "epicgames"],
+    iconName: "Gamepad2",
+    category: "gaming",
   },
   {
     id: "steam",
     label: "Steam",
-    name: "Steam",
-    detailPath: "/status/steam",
-    statusPath: "/steam/data/status.json",
-    legacyHref: "/steam/",
-    note: "Steam live status synthesized from official Valve API probes and provider corroboration.",
+    aliases: ["valve", "steam-platform"],
     iconName: "Flame",
     category: "gaming",
-    priority: 120,
-    tags: ["steam", "valve", "pc", "gaming"],
-    aliases: ["steam", "valve", "steam-platform"],
   },
 ];
 
@@ -286,6 +200,46 @@ function normalizePriority(rawPriority: unknown, fallback: number) {
   return fallback;
 }
 
+function tokenizeFallbackText(...values: Array<string | undefined>) {
+  const tokens: string[] = [];
+  for (const value of values) {
+    const matches = String(value ?? "")
+      .toLowerCase()
+      .match(/[a-z0-9]+(?:-[a-z0-9]+)*/g);
+    if (!matches) {
+      continue;
+    }
+    tokens.push(...matches);
+  }
+  return Array.from(new Set(tokens));
+}
+
+function buildFallbackServiceManifestEntries(): ServiceManifestEntry[] {
+  return FALLBACK_SERVICE_SEEDS.map((seed, index) => {
+    const id = String(seed.id).trim().toLowerCase();
+    const label = String(seed.label).trim() || id;
+    const name = String(seed.name ?? label).trim() || label;
+    const aliases = normalizeAliases(seed.aliases ?? [], id);
+    const category = String(seed.category ?? "general").trim().toLowerCase() || "general";
+    const priority = (index + 1) * 10;
+
+    return {
+      id,
+      label,
+      name,
+      detailPath: `/status/${id}`,
+      statusPath: `/${id}/data/status.json`,
+      legacyHref: String(seed.legacyHref ?? `/${id}/`).trim() || `/${id}/`,
+      note: FALLBACK_GENERIC_NOTE,
+      iconName: String(seed.iconName ?? "Globe").trim() || "Globe",
+      category,
+      priority,
+      tags: tokenizeFallbackText(label, name, category, ...aliases),
+      aliases,
+    };
+  });
+}
+
 function normalizeManifestEntry(entry: RawServiceManifestEntry): ServiceManifestEntry | null {
   const id = String(entry.id ?? "").trim().toLowerCase();
   if (!id) {
@@ -344,11 +298,7 @@ function parseManifestPayload(payload: unknown): ServiceManifestEntry[] {
 }
 
 export function getFallbackServiceManifestEntries(): ServiceManifestEntry[] {
-  return FALLBACK_SERVICE_MANIFEST.map((entry) => ({
-    ...entry,
-    tags: [...entry.tags],
-    aliases: [...entry.aliases],
-  }));
+  return buildFallbackServiceManifestEntries();
 }
 
 export async function fetchServiceManifestEntries(forceRefresh = false): Promise<ServiceManifestEntry[]> {

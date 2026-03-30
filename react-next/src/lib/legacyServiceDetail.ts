@@ -317,6 +317,44 @@ export interface LegacyServiceDetailResult {
   };
 }
 
+function detailSeverityRank(severity: LegacySeverity) {
+  switch (severity) {
+    case "major":
+      return 3;
+    case "degraded":
+      return 2;
+    case "minor":
+      return 1;
+    case "stable":
+      return 0;
+    default:
+      return -1;
+  }
+}
+
+export function resolveLegacyDetailSeverity(payload: LegacyStatusDetailPayload): LegacySeverity {
+  const derivedSeverity = normalizeLegacySeverity(
+    payload.analytics?.severity_key || payload.outage?.current_status || payload.health
+  );
+  const activeIncidents = Array.isArray(payload.outage?.incidents) ? payload.outage.incidents : [];
+  if (activeIncidents.length === 0) {
+    return derivedSeverity;
+  }
+
+  const outageSeverity = normalizeLegacySeverity(payload.outage?.current_status);
+  const officialConflictSeverity = normalizeLegacySeverity(
+    payload.analytics?.source_conflict?.official_status
+  );
+  const strongerActiveSeverity =
+    detailSeverityRank(officialConflictSeverity) >= detailSeverityRank(outageSeverity)
+      ? officialConflictSeverity
+      : outageSeverity;
+
+  return detailSeverityRank(strongerActiveSeverity) > detailSeverityRank(derivedSeverity)
+    ? strongerActiveSeverity
+    : derivedSeverity;
+}
+
 const MAX_LINK_ITEMS = 200;
 const MAX_OUTAGE_INCIDENTS = 100;
 const MAX_TOP_ISSUES = 50;
@@ -1167,9 +1205,7 @@ export async function fetchLegacyServiceDetail(
     history = null;
   }
 
-  const severity = normalizeLegacySeverity(
-    payload.analytics?.severity_key || payload.outage?.current_status || payload.health
-  );
+  const severity = resolveLegacyDetailSeverity(payload);
 
   return {
     service,

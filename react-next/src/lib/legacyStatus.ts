@@ -2,7 +2,6 @@ import { fetchCachedJson, type CachedJsonSource } from "@/lib/cachedJson";
 import { resolveLegacyUrl } from "@/lib/legacySite";
 import {
   fetchServiceManifestEntries,
-  getFallbackServiceManifestEntries,
   type ServiceManifestEntry,
 } from "@/lib/serviceManifest";
 
@@ -93,11 +92,6 @@ function mapManifestToLegacyHomeService(entry: ServiceManifestEntry): LegacyHome
     aliases: entry.aliases,
   };
 }
-
-export const HOME_SERVICES: LegacyHomeServiceConfig[] = [
-  ...getFallbackServiceManifestEntries().map(mapManifestToLegacyHomeService),
-  EMAIL_SERVICE,
-];
 
 const SEVERITY_LABELS: Record<LegacySeverity, string> = {
   stable: "Stable",

@@ -1,8 +1,8 @@
 # Agent Handoff
 
-Last updated: 2026-03-29
+Last updated: 2026-03-30
 Current branch: `codex/latest-sync`
-Latest known commit at handoff update: `00e6f726`
+Latest known commit at handoff update: `36104044`
 
 ## Current Priority State (2026-03-29)
 
@@ -1011,3 +1011,30 @@ Key files:
   - `py -3 scripts/check_public_exposure.py` -> passed
 - Notes:
   - the new subscriber-test path still requires a private repo secret and matching synced alert account state; it does not expose target e-mail addresses in committed workflow config
+
+## Latest Validation Snapshot (Manifest Fallback Drift Reduction)
+- Scope:
+  - reduced the hardcoded React fallback registry in `react-next/src/lib/serviceManifest.ts` so it now uses a thinner bootstrap definition instead of copying the full generated manifest field-for-field
+  - fallback routes, status paths, priorities, generic notes, and derived search tags are now generated from the bootstrap data instead of being repeated manually
+  - added focused regression coverage in `react-next/src/lib/serviceManifest.test.ts` to keep the fallback service order aligned with the published `site/data/services-manifest.json`
+- Validation:
+  - `npm.cmd run test -- src/lib/serviceManifest.test.ts` in `react-next` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 -m unittest tests.test_services_manifest` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+- Notes:
+  - this is an internal reliability cleanup only; no public changelog entry was added because the visible product behavior is intended to stay the same
+  - fallback alias/display metadata still exists intentionally for first-load resilience when the generated manifest cannot be fetched, but the largest source of manual field drift is now removed
+
+## Latest Validation Snapshot (Legacy Status Registry Cleanup)
+- Scope:
+  - removed the unused hardcoded `HOME_SERVICES` registry from `react-next/src/lib/legacyStatus.ts`
+  - kept `legacyStatus` fully manifest-driven so home, favorites, and alerts service lists continue to come from the generated manifest plus the single appended alerts setup entry
+  - added focused regression coverage in `react-next/src/lib/legacyStatus.test.ts` for live-service mapping, home-service assembly, and setup-state handling for entries without a status payload
+- Validation:
+  - `npm.cmd run test -- src/lib/legacyStatus.test.ts src/lib/serviceManifest.test.ts src/pages/Index.test.tsx src/pages/Favorites.test.tsx src/pages/EmailAlerts.test.tsx` in `react-next` -> passed
+  - `npm.cmd run build` in `react-next` -> passed
+  - `py -3 scripts/check_public_exposure.py` -> passed
+- Notes:
+  - this is another internal cleanup only; no public changelog update was needed because the intended visible behavior stays unchanged
+  - existing React Router v7 future-flag warnings still appear in the route tests and remain unchanged by this pass

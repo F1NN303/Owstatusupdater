@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  resolveLegacyDetailSeverity,
   sanitizeLegacyHistoryPayload,
   sanitizeLegacyStatusDetailPayload,
 } from "@/lib/legacyServiceDetail";
@@ -210,5 +211,50 @@ describe("sanitizeLegacyHistoryPayload", () => {
         },
       },
     });
+  });
+});
+
+describe("resolveLegacyDetailSeverity", () => {
+  it("prefers the stronger active official status when live incidents still exist", () => {
+    const severity = resolveLegacyDetailSeverity({
+      analytics: {
+        severity_key: "stable",
+        source_conflict: {
+          has_conflict: true,
+          official_status: "degraded",
+          derived_severity: "stable",
+        },
+      },
+      outage: {
+        current_status: "degraded",
+        incidents: [
+          {
+            title: "Europe outage",
+            started_at: "2026-03-21T22:12:57.639+00:00",
+            duration: "5d 19h",
+          },
+        ],
+      },
+    });
+
+    expect(severity).toBe("degraded");
+  });
+
+  it("keeps the derived severity when there are no active incidents", () => {
+    const severity = resolveLegacyDetailSeverity({
+      analytics: {
+        severity_key: "stable",
+        source_conflict: {
+          has_conflict: true,
+          official_status: "degraded",
+        },
+      },
+      outage: {
+        current_status: "degraded",
+        incidents: [],
+      },
+    });
+
+    expect(severity).toBe("stable");
   });
 });
