@@ -1,4 +1,4 @@
-const VERSION = "36104044e62f-preview";
+const VERSION = "2da9941e2334-preview";
 
 function currentBasePath() {
   const scopePath = new URL(self.registration.scope).pathname || "/";
