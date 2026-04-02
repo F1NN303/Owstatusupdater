@@ -1,41 +1,41 @@
 {
-  "generated_at": "2026-04-02T23:00:17.510304Z",
+  "generated_at": "2026-04-02T23:46:57.178839Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 3.4,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.503,
+      "support_score": 0.527,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 104,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 106,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
-        "report_score": 0.341,
-        "news_score": 0.162,
+        "report_score": 0.266,
+        "news_score": 0.261,
         "social_score": 0.0,
-        "combined_score": 0.503,
+        "combined_score": 0.527,
         "report_hits_24h": 0
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: All Systems Operational",
+    "summary": "Claude Statuspage API: Partially Degraded Service",
     "updates": [
       {
-        "title": "Claude Statuspage API: All Systems Operational",
+        "title": "Claude Statuspage API: Partially Degraded Service",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-04-02T23:00:16.791529Z",
+        "published_at": "2026-04-02T23:46:56.415763Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Voice conversations not shown in Claude.ai sidebar",
+        "url": "https://status.anthropic.com/incidents/bl9khzzz4sfg#2r81d242t185",
+        "published_at": "2026-04-02T23:16:07.638Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / The issue has been identified and a fix is being implemented."
       },
       {
         "title": "Errors on the Claude.ai desktop application",
@@ -141,26 +149,32 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / We are currently investigating this issue."
-      },
-      {
-        "title": "Unavailable connectors in Claude.ai desktop applications",
-        "url": "https://status.anthropic.com/incidents/z5scppyhphjk#f1c23vxt9wjw",
-        "published_at": "2026-03-31T22:59:37.233Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / We have resolved an issue that resulted in the unavailability of connectors in the Claude.ai desktop application. Affected connectors were removed from organization allowlists, and can be manually re-added while we work to automatically res"
       }
     ],
-    "last_statement_at": "2026-04-02T23:00:16.791529Z"
+    "last_statement_at": "2026-04-02T23:46:56.415763Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 104,
+    "summary": "Claude Statuspage reports an active incident: Voice conversations not shown in Claude.ai sidebar.",
+    "current_status": "degraded",
+    "reports_24h": 106,
     "incidents": [
+      {
+        "title": "Voice conversations not shown in sidebar",
+        "started_at": "2026-04-02T23:18:28Z",
+        "duration": "16m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Voice conversations not shown in Claude.ai sidebar",
+        "started_at": "2026-04-02T23:16:07.560Z",
+        "duration": "30m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "Claude Statuspage API",
+        "url": "https://status.anthropic.com/incidents/bl9khzzz4sfg"
+      },
       {
         "title": "Errors on the Claude.ai desktop application",
         "started_at": "2026-04-01T22:15:35.287Z",
@@ -193,12 +207,6 @@
       },
       {
         "title": "Elevated errors and latency on Claude Haiku 4.5",
-        "started_at": "2026-04-01T01:29:03Z",
-        "duration": "50m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Elevated errors and latency on Claude Haiku 4.5",
         "started_at": "2026-04-01T01:27:50.853Z",
         "duration": "46m",
         "acknowledgement": "Minor / Resolved",
@@ -212,41 +220,20 @@
         "acknowledgement": "Major / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/z5scppyhphjk"
-      },
-      {
-        "title": "Opus 4.6 and Sonnet 4.6 error rate elevated",
-        "started_at": "2026-03-31T19:41:35.022Z",
-        "duration": "2h 27m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/65w1yxq40m3l"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "claude.ai",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-01T23:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-01T23:30:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-01T23:45:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-02T00:00:00Z",
         "signal_value": 10.0,
@@ -804,6 +791,24 @@
         "signal_value": 19.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-02T23:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-02T23:30:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-02T23:45:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -812,18 +817,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-02T23:00:00Z"
+      "last_sample_at": "2026-04-02T23:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "23:20",
-        "count": 2
-      },
-      {
-        "label": "23:40",
-        "count": 0
-      },
       {
         "label": "00:00",
         "count": 0
@@ -1103,6 +1100,14 @@
       {
         "label": "23:00",
         "count": 1
+      },
+      {
+        "label": "23:20",
+        "count": 3
+      },
+      {
+        "label": "23:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1111,14 +1116,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-02T16:00:16-07:00"
+      "last_reviewed_at": "2026-04-02T19:46:55-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 104,
-        "last_reviewed_at": "2026-04-02T16:00:16-07:00"
+        "reports_24h": 106,
+        "last_reviewed_at": "2026-04-02T19:46:55-04:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -1126,9 +1131,9 @@
     "components": [
       {
         "name": "claude.ai",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-01T22:16:55.666Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-04-02T23:16:07.596Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1205,6 +1210,20 @@
   },
   "reports": [
     {
+      "title": "Voice conversations not shown in sidebar",
+      "url": "https://status.anthropic.com/#2026-04-02T23:18:28Z",
+      "published_at": "2026-04-02T23:18:28Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Voice conversations not shown in Claude.ai sidebar",
+      "url": "https://status.anthropic.com/incidents/bl9khzzz4sfg",
+      "published_at": "2026-04-02T23:16:07.560Z",
+      "source": "Claude Statuspage API",
+      "meta": "Minor / Identified"
+    },
+    {
       "title": "Errors on the Claude.ai desktop application",
       "url": "https://status.anthropic.com/incidents/z22j49ktx41d",
       "published_at": "2026-04-01T22:15:35.287Z",
@@ -1234,13 +1253,6 @@
     },
     {
       "title": "Elevated errors and latency on Claude Haiku 4.5",
-      "url": "https://status.anthropic.com/#2026-04-01T01:29:03Z",
-      "published_at": "2026-04-01T01:29:03Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Elevated errors and latency on Claude Haiku 4.5",
       "url": "https://status.anthropic.com/incidents/cbffv7jf2jck",
       "published_at": "2026-04-01T01:27:50.853Z",
       "source": "Claude Statuspage API",
@@ -1252,13 +1264,6 @@
       "published_at": "2026-03-31T20:12:05.864Z",
       "source": "Claude Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Opus 4.6 and Sonnet 4.6 error rate elevated",
-      "url": "https://status.anthropic.com/incidents/65w1yxq40m3l",
-      "published_at": "2026-03-31T19:41:35.022Z",
-      "source": "Claude Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -1267,45 +1272,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-02T23:00:17.510304Z"
+      "published_at": "2026-04-02T23:46:57.178839Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-02T23:00:17.510304Z"
+      "published_at": "2026-04-02T23:46:57.178839Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-02T23:00:17.510304Z"
+      "published_at": "2026-04-02T23:46:57.178839Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-02T23:00:17.510304Z"
+      "published_at": "2026-04-02T23:46:57.178839Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-02T23:00:17.510304Z"
+      "published_at": "2026-04-02T23:46:57.178839Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: All Systems Operational",
+      "title": "Claude Statuspage API: Partially Degraded Service",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-04-02T23:00:16.791529Z",
+      "published_at": "2026-04-02T23:46:56.415763Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Voice conversations not shown in Claude.ai sidebar",
+      "url": "https://status.anthropic.com/incidents/bl9khzzz4sfg#2r81d242t185",
+      "published_at": "2026-04-02T23:16:07.638Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / The issue has been identified and a fix is being implemented."
     },
     {
       "title": "Errors on the Claude.ai desktop application",
@@ -1354,14 +1367,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Elevated errors and latency on Claude Haiku 4.5",
-      "url": "https://status.anthropic.com/incidents/cbffv7jf2jck#tsb91f5fbwss",
-      "published_at": "2026-04-01T01:47:27.406Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
     }
   ],
   "social": [],
@@ -1377,11 +1382,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-02T23:00:15.660704Z",
+      "last_item_at": "2026-04-02T23:46:55.535226Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 713,
-      "fetched_at": "2026-04-02T23:00:15.660725Z",
+      "duration_ms": 634,
+      "fetched_at": "2026-04-02T23:46:55.535244Z",
       "cache_hit": false
     },
     {
@@ -1395,11 +1400,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-02T16:00:16-07:00",
+      "last_item_at": "2026-04-02T19:46:55-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1130,
-      "fetched_at": "2026-04-02T23:00:16.790987Z",
+      "duration_ms": 879,
+      "fetched_at": "2026-04-02T23:46:56.415209Z",
       "cache_hit": false
     },
     {
@@ -1413,17 +1418,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-02T23:00:16.791529Z",
+      "last_item_at": "2026-04-02T23:46:56.415763Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 716,
-      "fetched_at": "2026-04-02T23:00:17.508475Z",
+      "duration_ms": 761,
+      "fetched_at": "2026-04-02T23:46:57.176944Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-02T23:00:17.510304Z",
+    "generated_at": "2026-04-02T23:46:57.178839Z",
     "overview": {
       "confidence_score": 99.7,
       "confidence_tier": "high",
@@ -1445,7 +1450,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1460,9 +1465,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 713,
+          "duration_ms": 634,
           "cache_hit": false,
-          "at": "2026-04-02T23:00:14Z"
+          "at": "2026-04-02T23:46:54Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1471,7 +1476,7 @@
           "success_rate": 95.0,
           "stale_rate": 5.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1569.8
+          "avg_duration_ms": 1557.8
         },
         "metrics_7d": {
           "runs": 146,
@@ -1480,10 +1485,10 @@
           "success_rate": 99.3,
           "stale_rate": 0.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 773.6
+          "avg_duration_ms": 771.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-02T23:00:14Z",
+        "last_success_at": "2026-04-02T23:46:54Z",
         "last_failure_at": "2026-04-02T14:40:37Z"
       },
       {
@@ -1497,9 +1502,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1130,
+          "duration_ms": 879,
           "cache_hit": false,
-          "at": "2026-04-02T23:00:14Z"
+          "at": "2026-04-02T23:46:54Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1508,7 +1513,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1269.0
+          "avg_duration_ms": 1213.5
         },
         "metrics_7d": {
           "runs": 146,
@@ -1517,10 +1522,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1256.3
+          "avg_duration_ms": 1252.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-02T23:00:14Z",
+        "last_success_at": "2026-04-02T23:46:54Z",
         "last_failure_at": null
       },
       {
@@ -1534,9 +1539,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 716,
+          "duration_ms": 761,
           "cache_hit": false,
-          "at": "2026-04-02T23:00:14Z"
+          "at": "2026-04-02T23:46:54Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1545,7 +1550,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 884.5
+          "avg_duration_ms": 861.2
         },
         "metrics_7d": {
           "runs": 146,
@@ -1554,29 +1559,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 909.1
+          "avg_duration_ms": 906.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-02T23:00:14Z",
+        "last_success_at": "2026-04-02T23:46:54Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-02T23:00:17.510304Z",
+    "generated_at": "2026-04-02T23:46:57.178839Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "ab6636feecffbfe3",
+          "title": "Voice conversations not shown in sidebar",
+          "started_at": "2026-04-02T23:18:28Z",
+          "duration": "16m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "a74339c6952d4ece",
+          "title": "Voice conversations not shown in Claude.ai sidebar",
+          "started_at": "2026-04-02T23:16:07.560Z",
+          "duration": "30m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://status.anthropic.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "055f9209321e1b15",
+          "title": "Elevated errors and latency on Claude Haiku 4.5",
+          "started_at": "2026-04-01T01:29:03Z",
+          "duration": "50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "8f4d568413632ebb",
+          "title": "Opus 4.6 and Sonnet 4.6 error rate elevated",
+          "started_at": "2026-03-31T19:41:35.022Z",
+          "duration": "2h 27m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://status.anthropic.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "b695cb2bdb5fa67c",
+          "title": "Voice conversations not shown in sidebar",
+          "url": "https://status.anthropic.com/#2026-04-02T23:18:28Z",
+          "published_at": "2026-04-02T23:18:28Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "c002ac412123214d",
+          "title": "Voice conversations not shown in Claude.ai sidebar",
+          "url": "https://status.anthropic.com/incidents/bl9khzzz4sfg",
+          "published_at": "2026-04-02T23:16:07.560Z",
+          "source": "Claude Statuspage API",
+          "meta": "Minor / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
