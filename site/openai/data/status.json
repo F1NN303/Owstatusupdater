@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-08T17:41:19.008832Z",
+  "generated_at": "2026-04-08T19:01:14.676048Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 2,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
@@ -17,7 +17,7 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 15,
+      "reports_24h": 176,
       "recent_incidents_6h": 2,
       "recent_incidents_24h": 2,
       "cross_source": {
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
+      "official_operational_cap_applied": true,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "stable",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: Partial System Degradation",
+    "summary": "OpenAI Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: Partial System Degradation",
+        "title": "OpenAI Statuspage API: All Systems Operational",
         "url": "https://status.openai.com/",
-        "published_at": "2026-04-08T17:41:18.255540Z",
+        "published_at": "2026-04-08T19:01:14.074019Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Elevated Errors with Login",
+        "url": "https://status.openai.com/incidents/01KNQ1XDJ1T0NS4P15YNEG5FPV#01KNQ3509T31T043HDND4FJFMC",
+        "published_at": "2026-04-08T17:44:56Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved"
       },
       {
         "title": "Elevated Errors with Login",
@@ -84,7 +92,7 @@
         "published_at": "2026-04-08T17:32:26Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring"
+        "meta": "Monitoring / Minor / Resolved"
       },
       {
         "title": "Elevated Errors with Login",
@@ -92,7 +100,7 @@
         "published_at": "2026-04-08T17:23:19Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Minor / Monitoring"
+        "meta": "Identified / Minor / Resolved"
       },
       {
         "title": "Some users may experience issues accessing the ChatGPT website on VPN",
@@ -141,37 +149,29 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Major / Resolved"
-      },
-      {
-        "title": "GET /v1/responses endpoint is currently down and unable to serve requests",
-        "url": "https://status.openai.com/incidents/01KNH45H33H4J553XBG6TJ3PQF#01KNH45H333MH8BYHNVXDYATWM",
-        "published_at": "2026-04-06T10:07:16Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved"
       }
     ],
-    "last_statement_at": "2026-04-08T17:41:18.255540Z"
+    "last_statement_at": "2026-04-08T19:01:14.074019Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports an active incident: Elevated Errors with Login.",
-    "current_status": "degraded",
-    "reports_24h": 15,
+    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
+    "current_status": "operational",
+    "reports_24h": 176,
     "incidents": [
       {
         "title": "Elevated Errors with Login",
         "started_at": "2026-04-08T17:27:02Z",
-        "duration": "4m",
+        "duration": "20m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Elevated Errors with Login",
         "started_at": "2026-04-08T17:23:19Z",
-        "duration": "18m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "21m",
+        "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KNQ1XDJ1T0NS4P15YNEG5FPV"
       },
@@ -222,58 +222,13 @@
         "url": "https://status.openai.com/incidents/01KN6HYER5GRV8WVNZXCAC5FA3"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Login",
-        "count": 1
-      },
-      {
-        "label": "Login",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-07T17:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-07T18:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-07T18:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-07T18:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-07T18:45:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-07T19:00:00Z",
-        "signal_value": 23.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-07T19:15:00Z",
         "signal_value": 3.0,
@@ -810,7 +765,43 @@
       },
       {
         "timestamp": "2026-04-08T17:30:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-08T17:45:00Z",
         "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-08T18:00:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-08T18:15:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-08T18:30:00Z",
+        "signal_value": 46.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-08T18:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-08T19:00:00Z",
+        "signal_value": 20.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -821,25 +812,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-08T17:30:00Z"
+      "last_sample_at": "2026-04-08T19:00:00Z"
     },
+    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "18:00",
-        "count": 4
-      },
-      {
-        "label": "18:20",
-        "count": 1
-      },
-      {
-        "label": "18:40",
-        "count": 3
-      },
-      {
-        "label": "19:00",
-        "count": 3
-      },
       {
         "label": "19:20",
         "count": 3
@@ -1110,7 +1086,23 @@
       },
       {
         "label": "17:40",
+        "count": 3
+      },
+      {
+        "label": "18:00",
+        "count": 4
+      },
+      {
+        "label": "18:20",
         "count": 2
+      },
+      {
+        "label": "18:40",
+        "count": 4
+      },
+      {
+        "label": "19:00",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1119,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-08T18:41:17+01:00"
+      "last_reviewed_at": "2026-04-08T15:01:13-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 176,
-        "last_reviewed_at": "2026-04-08T18:41:17+01:00"
+        "last_reviewed_at": "2026-04-08T15:01:13-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1302,8 +1294,8 @@
       },
       {
         "name": "Login",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1372,8 +1364,8 @@
       },
       {
         "name": "Login",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       }
@@ -1382,7 +1374,7 @@
     "top_reported_issues_provider": [
       {
         "label": "Error message",
-        "count": 7
+        "count": 8
       },
       {
         "label": "Other",
@@ -1394,7 +1386,7 @@
       },
       {
         "label": "Connectivity issue",
-        "count": 0
+        "count": 1
       },
       {
         "label": "Sign in problem",
@@ -1427,7 +1419,7 @@
       "url": "https://status.openai.com/incidents/01KNQ1XDJ1T0NS4P15YNEG5FPV",
       "published_at": "2026-04-08T17:23:19Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Some users may experience issues accessing the ChatGPT website on VPN",
@@ -1478,45 +1470,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-08T17:41:19.008832Z"
+      "published_at": "2026-04-08T19:01:14.676048Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-08T17:41:19.008832Z"
+      "published_at": "2026-04-08T19:01:14.676048Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-08T17:41:19.008832Z"
+      "published_at": "2026-04-08T19:01:14.676048Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-08T17:41:19.008832Z"
+      "published_at": "2026-04-08T19:01:14.676048Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-08T17:41:19.008832Z"
+      "published_at": "2026-04-08T19:01:14.676048Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: Partial System Degradation",
+      "title": "OpenAI Statuspage API: All Systems Operational",
       "url": "https://status.openai.com/",
-      "published_at": "2026-04-08T17:41:18.255540Z",
+      "published_at": "2026-04-08T19:01:14.074019Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Elevated Errors with Login",
+      "url": "https://status.openai.com/incidents/01KNQ1XDJ1T0NS4P15YNEG5FPV#01KNQ3509T31T043HDND4FJFMC",
+      "published_at": "2026-04-08T17:44:56Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved"
     },
     {
       "title": "Elevated Errors with Login",
@@ -1524,7 +1524,7 @@
       "published_at": "2026-04-08T17:32:26Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring"
+      "meta": "Monitoring / Minor / Resolved"
     },
     {
       "title": "Elevated Errors with Login",
@@ -1532,7 +1532,7 @@
       "published_at": "2026-04-08T17:23:19Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Minor / Monitoring"
+      "meta": "Identified / Minor / Resolved"
     },
     {
       "title": "Some users may experience issues accessing the ChatGPT website on VPN",
@@ -1565,14 +1565,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Major / Resolved"
-    },
-    {
-      "title": "GET /v1/responses endpoint is currently down and unable to serve requests",
-      "url": "https://status.openai.com/incidents/01KNH45H33H4J553XBG6TJ3PQF#01KNH52ZFF0QMTRJMTRCZYMGJB",
-      "published_at": "2026-04-06T10:23:21Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Major / Resolved"
     }
   ],
   "social": [],
@@ -1588,11 +1580,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-08T17:41:17.149410Z",
+      "last_item_at": "2026-04-08T19:01:12.896569Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 910,
-      "fetched_at": "2026-04-08T17:41:17.149428Z",
+      "duration_ms": 198,
+      "fetched_at": "2026-04-08T19:01:12.896587Z",
       "cache_hit": false
     },
     {
@@ -1606,11 +1598,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-08T18:41:17+01:00",
+      "last_item_at": "2026-04-08T15:01:13-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1105,
-      "fetched_at": "2026-04-08T17:41:18.254945Z",
+      "duration_ms": 1176,
+      "fetched_at": "2026-04-08T19:01:14.073454Z",
       "cache_hit": false
     },
     {
@@ -1624,17 +1616,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-08T17:41:18.255540Z",
+      "last_item_at": "2026-04-08T19:01:14.074019Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 751,
-      "fetched_at": "2026-04-08T17:41:19.007177Z",
+      "duration_ms": 600,
+      "fetched_at": "2026-04-08T19:01:14.674378Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-08T17:41:19.008832Z",
+    "generated_at": "2026-04-08T19:01:14.676048Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1656,7 +1648,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1671,9 +1663,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 910,
+          "duration_ms": 198,
           "cache_hit": false,
-          "at": "2026-04-08T17:41:16Z"
+          "at": "2026-04-08T19:01:12Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1682,7 +1674,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 674.2
+          "avg_duration_ms": 618.3
         },
         "metrics_7d": {
           "runs": 143,
@@ -1691,10 +1683,10 @@
           "success_rate": 99.3,
           "stale_rate": 0.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 724.4
+          "avg_duration_ms": 723.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-08T17:41:16Z",
+        "last_success_at": "2026-04-08T19:01:12Z",
         "last_failure_at": "2026-04-02T14:40:15Z"
       },
       {
@@ -1708,9 +1700,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1105,
+          "duration_ms": 1176,
           "cache_hit": false,
-          "at": "2026-04-08T17:41:16Z"
+          "at": "2026-04-08T19:01:12Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1719,7 +1711,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 947.5
+          "avg_duration_ms": 1003.4
         },
         "metrics_7d": {
           "runs": 143,
@@ -1728,10 +1720,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1042.3
+          "avg_duration_ms": 1042.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-08T17:41:16Z",
+        "last_success_at": "2026-04-08T19:01:12Z",
         "last_failure_at": null
       },
       {
@@ -1745,9 +1737,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 751,
+          "duration_ms": 600,
           "cache_hit": false,
-          "at": "2026-04-08T17:41:16Z"
+          "at": "2026-04-08T19:01:12Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1756,7 +1748,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 700.6
+          "avg_duration_ms": 693.9
         },
         "metrics_7d": {
           "runs": 143,
@@ -1765,23 +1757,24 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 721.1
+          "avg_duration_ms": 720.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-08T17:41:16Z",
+        "last_success_at": "2026-04-08T19:01:12Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-08T17:41:19.008832Z",
+    "generated_at": "2026-04-08T19:01:14.676048Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "8bdc713a3a4392f7",
           "title": "Elevated Errors with Login",
           "started_at": "2026-04-08T17:27:02Z",
-          "duration": "4m",
+          "duration": "20m",
           "acknowledgement": "warn icon Warn",
           "url": "https://status.openai.com/"
         },
@@ -1789,56 +1782,21 @@
           "id": "e2dd91098cb7331d",
           "title": "Elevated Errors with Login",
           "started_at": "2026-04-08T17:23:19Z",
-          "duration": "18m ongoing",
-          "acknowledgement": "Minor / Monitoring",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "41aa299ece54be4b",
-          "title": "GET /v1/responses endpoint is currently down and unable to serve requests",
-          "started_at": "2026-04-06T10:12:22Z",
-          "duration": "30m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "68fcc48820aa541a",
-          "title": "Elevated failures for some users joining ChatGPT Enterprise and ChatGPT Edu workspaces via SSO.",
-          "started_at": "2026-03-31T14:36:59Z",
-          "duration": "23m",
+          "duration": "21m",
           "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
-      ]
+      ],
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "e691c96ada8dcddf",
-          "title": "Elevated Errors with Login",
-          "url": "https://status.openai.com/#2026-04-08T17:27:02Z",
-          "published_at": "2026-04-08T17:27:02Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "19afa6c25e68eb99",
-          "title": "Elevated Errors with Login",
-          "url": "https://status.openai.com/incidents/01KNQ1XDJ1T0NS4P15YNEG5FPV",
-          "published_at": "2026-04-08T17:23:19Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Monitoring"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 2,
-      "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "new_incidents": 0,
+      "updated_incidents": 2,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
