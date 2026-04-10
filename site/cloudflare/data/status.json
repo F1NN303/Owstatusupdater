@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-04-10T13:17:49.573098Z",
+  "generated_at": "2026-04-10T14:34:55.653367Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 3,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 4.1,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
@@ -18,8 +18,8 @@
     },
     "signal_metrics": {
       "reports_24h": 118,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 2,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -40,30 +40,30 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-04-10T13:17:49.185249Z",
+        "published_at": "2026-04-10T14:34:55.192019Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Workers Assets increased upload failure",
+        "url": "https://www.cloudflarestatus.com/incidents/wt7ydt03k9hb#6vhxq3m4w57t",
+        "published_at": "2026-04-10T14:06:38.547Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / Cloudflare has identified an issue impacting Workers Assets uploads. Customers may be seeing an increase in Workers Assets upload failures. This issues does not affect the serving of Workers Assets traffic. We are working to mitigate this p"
       },
       {
         "title": "Increased HTTP 5xx errors in Philadelphia colo",
@@ -141,26 +149,32 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Minor / Resolved / The cause of this issue has been identified and a fix is being implemented."
-      },
-      {
-        "title": "Analytics Delays and Errors",
-        "url": "https://www.cloudflarestatus.com/incidents/hcymjjyr55rs#316zgsnnct9j",
-        "published_at": "2026-04-07T15:55:29.944Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / Cloudflare Analytics processing is running behind. This affects timely delivery of customer data. This also affects querying data, and some users may see errors when trying to view or access analytics."
       }
     ],
-    "last_statement_at": "2026-04-10T13:17:49.185249Z"
+    "last_statement_at": "2026-04-10T14:34:55.192019Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 23h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: Workers Assets increased upload failure.",
     "current_status": "degraded",
     "reports_24h": 118,
     "incidents": [
+      {
+        "title": "Workers Assets increased upload failure",
+        "started_at": "2026-04-10T14:10:23Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Workers Assets increased upload failure",
+        "started_at": "2026-04-10T14:06:38.463Z",
+        "duration": "28m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/wt7ydt03k9hb"
+      },
       {
         "title": "AMS (Amsterdam) on 2026-04-10",
         "started_at": "2026-04-10T00:00:20Z",
@@ -200,25 +214,13 @@
         "started_at": "2026-04-08T07:30:21Z",
         "duration": "2h 25m",
         "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Issues with the Cloudflare One Dashboard",
-        "started_at": "2026-04-08T07:28:25.626Z",
-        "duration": "2h 20m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/sl49fdmqvzxf"
-      },
-      {
-        "title": "Increased HTTP 5XX Errors in Sao Paulo, GRU",
-        "started_at": "2026-04-08T06:30:00.000Z",
-        "duration": "15m",
-        "acknowledgement": "None / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/b8dkfysdvf3l"
       }
     ],
     "top_reported_issues": [
+      {
+        "label": "Cloudflare Sites and Services",
+        "count": 1
+      },
       {
         "label": "Ahmedabad, India - (AMD)",
         "count": 1
@@ -246,48 +248,14 @@
       {
         "label": "Basra, Iraq - (BSR)",
         "count": 1
-      },
-      {
-        "label": "Latin America & the Caribbean",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-09T13:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-09T13:45:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-09T14:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-09T14:15:00Z",
-        "signal_value": 22.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-09T14:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-09T14:45:00Z",
         "signal_value": 1.0,
@@ -830,7 +798,37 @@
       },
       {
         "timestamp": "2026-04-10T13:15:00Z",
-        "signal_value": 18.0,
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-10T13:30:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-10T13:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-10T14:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-10T14:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-10T14:30:00Z",
+        "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -841,26 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-10T13:15:00Z"
+      "last_sample_at": "2026-04-10T14:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "13:20",
-        "count": 1
-      },
-      {
-        "label": "13:40",
-        "count": 3
-      },
-      {
-        "label": "14:00",
-        "count": 0
-      },
-      {
-        "label": "14:20",
-        "count": 4
-      },
       {
         "label": "14:40",
         "count": 0
@@ -1132,6 +1114,22 @@
       {
         "label": "13:00",
         "count": 3
+      },
+      {
+        "label": "13:20",
+        "count": 1
+      },
+      {
+        "label": "13:40",
+        "count": 5
+      },
+      {
+        "label": "14:00",
+        "count": 0
+      },
+      {
+        "label": "14:20",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1140,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-10T09:17:48-04:00"
+      "last_reviewed_at": "2026-04-10T14:34:44Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 118,
-        "last_reviewed_at": "2026-04-10T09:17:48-04:00"
+        "last_reviewed_at": "2026-04-10T14:34:44Z"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1162,8 +1160,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -1605,7 +1603,7 @@
         "name": "Brasilia, Brazil - (BSB)",
         "status": "degraded",
         "health": "under_maintenance",
-        "updated_at": "2026-04-10T02:47:40.176Z",
+        "updated_at": "2026-04-10T14:31:31.514Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1624,9 +1622,9 @@
       },
       {
         "name": "Buenos Aires, Argentina - (EZE)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-06T08:32:54.927Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-04-10T14:31:31.150Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2158,7 +2156,7 @@
         "name": "Nairobi, Kenya - (NBO)",
         "status": "degraded",
         "health": "under_maintenance",
-        "updated_at": "2026-04-10T10:16:05.984Z",
+        "updated_at": "2026-04-10T14:19:04.038Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2513,9 +2511,9 @@
       },
       {
         "name": "Windhoek, Namibia - (WDH)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-10T13:12:36.670Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-04-10T13:17:38.843Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4130,9 +4128,9 @@
       },
       {
         "name": "Workers Assets",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-02T18:47:13.569Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-04-10T14:06:38.494Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4432,8 +4430,8 @@
       {
         "name": "Lahore, Pakistan - (LHE)",
         "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-04-09T22:00:00.072Z",
+        "health": "partial_outage",
+        "updated_at": "2026-04-10T14:31:55.668Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4486,10 +4484,6 @@
         "count": 1
       },
       {
-        "label": "Other",
-        "count": 1
-      },
-      {
         "label": "Error message",
         "count": 0
       },
@@ -4512,10 +4506,28 @@
       {
         "label": "Unable to download",
         "count": 0
+      },
+      {
+        "label": "App not loading",
+        "count": 0
       }
     ]
   },
   "reports": [
+    {
+      "title": "Workers Assets increased upload failure",
+      "url": "https://www.cloudflarestatus.com/#2026-04-10T14:10:23Z",
+      "published_at": "2026-04-10T14:10:23Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Workers Assets increased upload failure",
+      "url": "https://www.cloudflarestatus.com/incidents/wt7ydt03k9hb",
+      "published_at": "2026-04-10T14:06:38.463Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Identified"
+    },
     {
       "title": "AMS (Amsterdam) on 2026-04-10",
       "url": "https://www.cloudflarestatus.com/#2026-04-10T00:00:20Z",
@@ -4557,20 +4569,6 @@
       "published_at": "2026-04-08T07:30:21Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
-    },
-    {
-      "title": "Issues with the Cloudflare One Dashboard",
-      "url": "https://www.cloudflarestatus.com/incidents/sl49fdmqvzxf",
-      "published_at": "2026-04-08T07:28:25.626Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Increased HTTP 5XX Errors in Sao Paulo, GRU",
-      "url": "https://www.cloudflarestatus.com/incidents/b8dkfysdvf3l",
-      "published_at": "2026-04-08T06:30:00.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "None / Resolved"
     }
   ],
   "known_resources": [
@@ -4579,52 +4577,60 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-10T13:17:49.573098Z"
+      "published_at": "2026-04-10T14:34:55.653367Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-10T13:17:49.573098Z"
+      "published_at": "2026-04-10T14:34:55.653367Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-10T13:17:49.573098Z"
+      "published_at": "2026-04-10T14:34:55.653367Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-04-10T13:17:49.573098Z"
+      "published_at": "2026-04-10T14:34:55.653367Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-10T13:17:49.573098Z"
+      "published_at": "2026-04-10T14:34:55.653367Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-10T13:17:49.573098Z"
+      "published_at": "2026-04-10T14:34:55.653367Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-04-10T13:17:49.185249Z",
+      "published_at": "2026-04-10T14:34:55.192019Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Workers Assets increased upload failure",
+      "url": "https://www.cloudflarestatus.com/incidents/wt7ydt03k9hb#6vhxq3m4w57t",
+      "published_at": "2026-04-10T14:06:38.547Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / Cloudflare has identified an issue impacting Workers Assets uploads. Customers may be seeing an increase in Workers Assets upload failures. This issues does not affect the serving of Workers Assets traffic. We are working to mitigate this p"
     },
     {
       "title": "Increased HTTP 5xx errors in Philadelphia colo",
@@ -4673,14 +4679,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / None / Resolved / Cloudflare investigated increased HTTP 5XX errors in Sau Paulo between 0645: - 06:55 UTC. Issue has been resolved"
-    },
-    {
-      "title": "Analytics Delays and Errors",
-      "url": "https://www.cloudflarestatus.com/incidents/hcymjjyr55rs#hgpd3qj7l623",
-      "published_at": "2026-04-07T17:04:09.468Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / An effective fix has been applied and this incident is now resolved."
     }
   ],
   "social": [],
@@ -4696,11 +4694,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-04-10T13:17:48.411722Z",
+      "last_item_at": "2026-04-10T14:34:55.058947Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 164,
-      "fetched_at": "2026-04-10T13:17:48.411739Z",
+      "duration_ms": 184,
+      "fetched_at": "2026-04-10T14:34:55.058965Z",
       "cache_hit": false
     },
     {
@@ -4714,11 +4712,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-10T09:17:48-04:00",
+      "last_item_at": "2026-04-10T14:34:44Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 772,
-      "fetched_at": "2026-04-10T13:17:49.184692Z",
+      "duration_ms": 132,
+      "fetched_at": "2026-04-10T14:34:55.191458Z",
       "cache_hit": false
     },
     {
@@ -4732,17 +4730,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-10T13:17:49.185249Z",
+      "last_item_at": "2026-04-10T14:34:55.192019Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 386,
-      "fetched_at": "2026-04-10T13:17:49.571498Z",
+      "duration_ms": 459,
+      "fetched_at": "2026-04-10T14:34:55.651736Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-10T13:17:49.573098Z",
+    "generated_at": "2026-04-10T14:34:55.653367Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4764,7 +4762,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4779,18 +4777,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 164,
+          "duration_ms": 184,
           "cache_hit": false,
-          "at": "2026-04-10T13:17:48Z"
+          "at": "2026-04-10T14:34:54Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 604.8
+          "avg_duration_ms": 536.7
         },
         "metrics_7d": {
           "runs": 141,
@@ -4799,10 +4797,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 750.7
+          "avg_duration_ms": 745.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-10T13:17:48Z",
+        "last_success_at": "2026-04-10T14:34:54Z",
         "last_failure_at": null
       },
       {
@@ -4816,18 +4814,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 772,
+          "duration_ms": 132,
           "cache_hit": false,
-          "at": "2026-04-10T13:17:48Z"
+          "at": "2026-04-10T14:34:54Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 776.2
+          "avg_duration_ms": 750.7
         },
         "metrics_7d": {
           "runs": 141,
@@ -4836,10 +4834,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 858.7
+          "avg_duration_ms": 854.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-10T13:17:48Z",
+        "last_success_at": "2026-04-10T14:34:54Z",
         "last_failure_at": null
       },
       {
@@ -4853,18 +4851,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 386,
+          "duration_ms": 459,
           "cache_hit": false,
-          "at": "2026-04-10T13:17:48Z"
+          "at": "2026-04-10T14:34:54Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 405.5
+          "avg_duration_ms": 409.9
         },
         "metrics_7d": {
           "runs": 141,
@@ -4873,29 +4871,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 407.9
+          "avg_duration_ms": 408.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-10T13:17:48Z",
+        "last_success_at": "2026-04-10T14:34:54Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-10T13:17:49.573098Z",
+    "generated_at": "2026-04-10T14:34:55.653367Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "36f0fb1fffa7f347",
+          "title": "Workers Assets increased upload failure",
+          "started_at": "2026-04-10T14:10:23Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "4e564f1686aa67bd",
+          "title": "Workers Assets increased upload failure",
+          "started_at": "2026-04-10T14:06:38.463Z",
+          "duration": "28m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "34f482ddc695c3a2",
+          "title": "Issues with the Cloudflare One Dashboard",
+          "started_at": "2026-04-08T07:28:25.626Z",
+          "duration": "2h 20m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "8c85ee8999415a2c",
+          "title": "Increased HTTP 5XX Errors in Sao Paulo, GRU",
+          "started_at": "2026-04-08T06:30:00.000Z",
+          "duration": "15m",
+          "acknowledgement": "None / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "1e6d40708a779702",
+          "title": "Workers Assets increased upload failure",
+          "url": "https://www.cloudflarestatus.com/#2026-04-10T14:10:23Z",
+          "published_at": "2026-04-10T14:10:23Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "f20aa7418447d211",
+          "title": "Workers Assets increased upload failure",
+          "url": "https://www.cloudflarestatus.com/incidents/wt7ydt03k9hb",
+          "published_at": "2026-04-10T14:06:38.463Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
