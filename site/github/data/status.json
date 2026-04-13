@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-04-13T15:17:12.849931Z",
+  "generated_at": "2026-04-13T16:43:08.630839Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.8,
+      "incidents": 5.0,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.85
     },
     "signal_metrics": {
-      "reports_24h": 118,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 166,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,40 +31,40 @@
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -74,10 +74,18 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-04-13T15:17:12.618743Z",
+        "published_at": "2026-04-13T16:43:08.430382Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Disruption with some GitHub services",
+        "url": "https://www.githubstatus.com/incidents/1ghdqdbyyjmt#3zzfz0n15vpm",
+        "published_at": "2026-04-13T16:41:27.467Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating reports of impacted performance for some GitHub services."
       },
       {
         "title": "Problems with third-party Claude and Codex Agent sessions not being listed in the agents tab dashboard",
@@ -142,26 +150,32 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Major / Resolved / We are investigating delays processing Copilot Cloud Agent jobs"
-      },
-      {
-        "title": "Disruption with some GitHub services",
-        "url": "https://www.githubstatus.com/incidents/2rqwxl8y7m0j#9r58tgq0k0jz",
-        "published_at": "2026-04-09T16:20:12.473Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / We are experiencing issues where jobs are being delayed to start for copilot coding agent"
       }
     ],
-    "last_statement_at": "2026-04-13T15:17:12.618743Z"
+    "last_statement_at": "2026-04-13T16:43:08.430382Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "GitHub Statuspage reports an active incident: Disruption with some GitHub services.",
     "current_status": "operational",
-    "reports_24h": 118,
+    "reports_24h": 166,
     "incidents": [
+      {
+        "title": "Disruption with some GitHub services",
+        "started_at": "2026-04-13T16:41:27.425Z",
+        "duration": "1m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/1ghdqdbyyjmt"
+      },
+      {
+        "title": "Service outage",
+        "started_at": "2026-04-13T16:11:01Z",
+        "duration": "",
+        "acknowledgement": "Never acknowledged"
+      },
       {
         "title": "Problems with third-party Claude and Codex Agent sessions not being listed in the agents tab dashboard",
         "started_at": "2026-04-10T13:11:45Z",
@@ -205,22 +219,6 @@
         "acknowledgement": "Minor / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/bnvg7qml7krl"
-      },
-      {
-        "title": "Disruption with some GitHub services",
-        "started_at": "2026-04-02T17:49:36.922Z",
-        "duration": "3h 59m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/d96l71t3h63k"
-      },
-      {
-        "title": "Copilot Coding Agent failing to start some jobs",
-        "started_at": "2026-04-02T16:18:04.776Z",
-        "duration": "12m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/j3sgbdw2lw3c"
       }
     ],
     "top_reported_issues": [],
@@ -230,36 +228,6 @@
       "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-12T15:30:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-12T15:45:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-12T16:00:00Z",
-        "signal_value": 22.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-12T16:15:00Z",
-        "signal_value": 26.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-12T16:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-12T16:45:00Z",
         "signal_value": 2.0,
@@ -802,7 +770,37 @@
       },
       {
         "timestamp": "2026-04-13T15:15:00Z",
-        "signal_value": 1.0,
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-13T15:30:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-13T15:45:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-13T16:00:00Z",
+        "signal_value": 1012.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-04-13T16:15:00Z",
+        "signal_value": 251.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-04-13T16:30:00Z",
+        "signal_value": 70.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -813,30 +811,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-13T15:15:00Z"
+      "last_sample_at": "2026-04-13T16:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "15:20",
-        "count": 1
-      },
-      {
-        "label": "15:40",
-        "count": 3
-      },
-      {
-        "label": "16:00",
-        "count": 0
-      },
-      {
-        "label": "16:20",
-        "count": 2
-      },
-      {
-        "label": "16:40",
-        "count": 0
-      },
       {
         "label": "17:00",
         "count": 1
@@ -1104,6 +1082,26 @@
       {
         "label": "15:00",
         "count": 0
+      },
+      {
+        "label": "15:20",
+        "count": 2
+      },
+      {
+        "label": "15:40",
+        "count": 0
+      },
+      {
+        "label": "16:00",
+        "count": 47
+      },
+      {
+        "label": "16:20",
+        "count": 4
+      },
+      {
+        "label": "16:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1112,14 +1110,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-13T10:17:12-05:00"
+      "last_reviewed_at": "2026-04-13T12:43:07-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 118,
-        "last_reviewed_at": "2026-04-13T10:17:12-05:00"
+        "reports_24h": 166,
+        "last_reviewed_at": "2026-04-13T12:43:07-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -1206,31 +1204,31 @@
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
+        "label": "Server not responding",
+        "count": 17
+      },
+      {
         "label": "Connectivity issue",
         "count": 2
       },
       {
-        "label": "Server not responding",
-        "count": 1
+        "label": "Error message",
+        "count": 2
+      },
+      {
+        "label": "Service down",
+        "count": 2
       },
       {
         "label": "App not loading",
-        "count": 1
+        "count": 2
       },
       {
         "label": "Other",
         "count": 1
       },
       {
-        "label": "Error message",
-        "count": 0
-      },
-      {
         "label": "Sign in problem",
-        "count": 0
-      },
-      {
-        "label": "Service down",
         "count": 0
       },
       {
@@ -1240,6 +1238,20 @@
     ]
   },
   "reports": [
+    {
+      "title": "Disruption with some GitHub services",
+      "url": "https://www.githubstatus.com/incidents/1ghdqdbyyjmt",
+      "published_at": "2026-04-13T16:41:27.425Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
+      "title": "Service outage",
+      "url": "https://www.githubstatus.com/#2026-04-13T16:11:01Z",
+      "published_at": "2026-04-13T16:11:01Z",
+      "source": "StatusGator",
+      "meta": "Never acknowledged"
+    },
     {
       "title": "Problems with third-party Claude and Codex Agent sessions not being listed in the agents tab dashboard",
       "url": "https://www.githubstatus.com/#2026-04-10T13:11:45Z",
@@ -1281,20 +1293,6 @@
       "published_at": "2026-04-09T04:42:06.164Z",
       "source": "GitHub Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Disruption with some GitHub services",
-      "url": "https://www.githubstatus.com/incidents/d96l71t3h63k",
-      "published_at": "2026-04-02T17:49:36.922Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Copilot Coding Agent failing to start some jobs",
-      "url": "https://www.githubstatus.com/incidents/j3sgbdw2lw3c",
-      "published_at": "2026-04-02T16:18:04.776Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1303,52 +1301,60 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-13T15:17:12.849931Z"
+      "published_at": "2026-04-13T16:43:08.630839Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-13T15:17:12.849931Z"
+      "published_at": "2026-04-13T16:43:08.630839Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-13T15:17:12.849931Z"
+      "published_at": "2026-04-13T16:43:08.630839Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-04-13T15:17:12.849931Z"
+      "published_at": "2026-04-13T16:43:08.630839Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-13T15:17:12.849931Z"
+      "published_at": "2026-04-13T16:43:08.630839Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-13T15:17:12.849931Z"
+      "published_at": "2026-04-13T16:43:08.630839Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-04-13T15:17:12.618743Z",
+      "published_at": "2026-04-13T16:43:08.430382Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Disruption with some GitHub services",
+      "url": "https://www.githubstatus.com/incidents/1ghdqdbyyjmt#3zzfz0n15vpm",
+      "published_at": "2026-04-13T16:41:27.467Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating reports of impacted performance for some GitHub services."
     },
     {
       "title": "Problems with third-party Claude and Codex Agent sessions not being listed in the agents tab dashboard",
@@ -1397,14 +1403,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Major / Resolved / We are continuing to investigate Copilot Cloud Agent job delays"
-    },
-    {
-      "title": "Disruption with some GitHub services",
-      "url": "https://www.githubstatus.com/incidents/2rqwxl8y7m0j#kjm69bxg6xy4",
-      "published_at": "2026-04-09T17:48:11.684Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / Copilot Cloud Agent jobs are being processed and we are monitoring recovery"
     }
   ],
   "social": [],
@@ -1420,11 +1418,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-13T15:17:11.901463Z",
+      "last_item_at": "2026-04-13T16:43:07.622911Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 761,
-      "fetched_at": "2026-04-13T15:17:11.901490Z",
+      "duration_ms": 129,
+      "fetched_at": "2026-04-13T16:43:07.622929Z",
       "cache_hit": false
     },
     {
@@ -1438,11 +1436,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-13T10:17:12-05:00",
+      "last_item_at": "2026-04-13T12:43:07-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 716,
-      "fetched_at": "2026-04-13T15:17:12.618146Z",
+      "duration_ms": 806,
+      "fetched_at": "2026-04-13T16:43:08.429814Z",
       "cache_hit": false
     },
     {
@@ -1456,17 +1454,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-13T15:17:12.618743Z",
+      "last_item_at": "2026-04-13T16:43:08.430382Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 229,
-      "fetched_at": "2026-04-13T15:17:12.848490Z",
+      "duration_ms": 198,
+      "fetched_at": "2026-04-13T16:43:08.629343Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-13T15:17:12.849931Z",
+    "generated_at": "2026-04-13T16:43:08.630839Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1488,7 +1486,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1503,9 +1501,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 761,
+          "duration_ms": 129,
           "cache_hit": false,
-          "at": "2026-04-13T15:17:11Z"
+          "at": "2026-04-13T16:43:07Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1514,7 +1512,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 339.1
+          "avg_duration_ms": 326.1
         },
         "metrics_7d": {
           "runs": 140,
@@ -1523,10 +1521,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 314.9
+          "avg_duration_ms": 314.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-13T15:17:11Z",
+        "last_success_at": "2026-04-13T16:43:07Z",
         "last_failure_at": null
       },
       {
@@ -1540,9 +1538,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 716,
+          "duration_ms": 806,
           "cache_hit": false,
-          "at": "2026-04-13T15:17:11Z"
+          "at": "2026-04-13T16:43:07Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1551,7 +1549,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1283.9
+          "avg_duration_ms": 1284.2
         },
         "metrics_7d": {
           "runs": 140,
@@ -1563,7 +1561,7 @@
           "avg_duration_ms": 1252.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-13T15:17:11Z",
+        "last_success_at": "2026-04-13T16:43:07Z",
         "last_failure_at": null
       },
       {
@@ -1577,9 +1575,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 229,
+          "duration_ms": 198,
           "cache_hit": false,
-          "at": "2026-04-13T15:17:11Z"
+          "at": "2026-04-13T16:43:07Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1588,7 +1586,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 340.7
+          "avg_duration_ms": 336.2
         },
         "metrics_7d": {
           "runs": 140,
@@ -1597,29 +1595,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 339.2
+          "avg_duration_ms": 337.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-13T15:17:11Z",
+        "last_success_at": "2026-04-13T16:43:07Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-13T15:17:12.849931Z",
+    "generated_at": "2026-04-13T16:43:08.630839Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "0ede0aee12d8aa18",
+          "title": "Disruption with some GitHub services",
+          "started_at": "2026-04-13T16:41:27.425Z",
+          "duration": "1m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "3028df4c5f835f0a",
+          "title": "Service outage",
+          "started_at": "2026-04-13T16:11:01Z",
+          "duration": "",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "186fc1b03d4f4894",
+          "title": "Disruption with some GitHub services",
+          "started_at": "2026-04-02T17:49:36.922Z",
+          "duration": "3h 59m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "b7a6e053a6962adc",
+          "title": "Copilot Coding Agent failing to start some jobs",
+          "started_at": "2026-04-02T16:18:04.776Z",
+          "duration": "12m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "396a3a33c540aab4",
+          "title": "Disruption with some GitHub services",
+          "url": "https://www.githubstatus.com/incidents/1ghdqdbyyjmt",
+          "published_at": "2026-04-13T16:41:27.425Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Investigating"
+        },
+        {
+          "id": "361fa1b880955b13",
+          "title": "Service outage",
+          "url": "https://www.githubstatus.com/#2026-04-13T16:11:01Z",
+          "published_at": "2026-04-13T16:11:01Z",
+          "source": "StatusGator",
+          "meta": "Never acknowledged"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
