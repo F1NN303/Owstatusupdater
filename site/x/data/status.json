@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-04-14T20:06:32.880141Z",
+  "generated_at": "2026-04-14T21:25:50.147722Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "minor",
+    "severity_score": 3,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "x-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
-      "reports": 0.0,
-      "incidents": 0.91,
+      "reports": 0.6,
+      "incidents": 2.9,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 39,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 429,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 1,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,41 +29,41 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_degraded_vs_aggregate_normal",
+      "official_status": "degraded",
+      "derived_severity": "minor",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status indicates degradation while aggregate severity is low."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     }
   },
@@ -76,10 +76,16 @@
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://docs.x.com/status",
-    "summary": "X Developer Platform reports All systems are operational.",
-    "current_status": "operational",
-    "reports_24h": 39,
+    "summary": "X Developer Platform reports issues affecting: X API v2.",
+    "current_status": "degraded",
+    "reports_24h": 429,
     "incidents": [
+      {
+        "title": "Posts and timeline not loading.",
+        "started_at": "2026-04-14T21:07:00Z",
+        "duration": "",
+        "acknowledgement": "Never acknowledged"
+      },
       {
         "title": "Website not loading and pages displaying error or blank screen.",
         "started_at": "2026-04-09T22:15:00Z",
@@ -121,51 +127,20 @@
         "started_at": "2026-03-26T07:17:00Z",
         "duration": "1h 3m",
         "acknowledgement": "Never acknowledged"
-      },
-      {
-        "title": "Login page unavailable or displays error messages.",
-        "started_at": "2026-03-23T20:47:00Z",
-        "duration": "2h 3m",
-        "acknowledgement": "Never acknowledged"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "X API v2",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "X Developer Platform Status",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-13T20:15:00Z",
-        "signal_value": 23.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-13T20:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-13T20:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-13T21:00:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-13T21:15:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-13T21:30:00Z",
         "signal_value": 5.0,
@@ -529,8 +504,8 @@
       {
         "timestamp": "2026-04-14T12:30:00Z",
         "signal_value": 119.0,
-        "status_code": 0,
-        "status_label": "service up"
+        "status_code": 1,
+        "status_label": "possible outage"
       },
       {
         "timestamp": "2026-04-14T12:45:00Z",
@@ -708,7 +683,37 @@
       },
       {
         "timestamp": "2026-04-14T20:00:00Z",
-        "signal_value": 1.0,
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-14T20:15:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-14T20:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-14T20:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-14T21:00:00Z",
+        "signal_value": 2110.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-04-14T21:15:00Z",
+        "signal_value": 169.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -719,25 +724,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-14T20:00:00Z"
+      "last_sample_at": "2026-04-14T21:15:00Z"
     },
+    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "20:20",
-        "count": 4
-      },
-      {
-        "label": "20:40",
-        "count": 0
-      },
-      {
-        "label": "21:00",
-        "count": 2
-      },
-      {
-        "label": "21:20",
-        "count": 3
-      },
       {
         "label": "21:40",
         "count": 2
@@ -1008,6 +998,22 @@
       },
       {
         "label": "20:00",
+        "count": 2
+      },
+      {
+        "label": "20:20",
+        "count": 3
+      },
+      {
+        "label": "20:40",
+        "count": 2
+      },
+      {
+        "label": "21:00",
+        "count": 264
+      },
+      {
+        "label": "21:20",
         "count": 1
       }
     ],
@@ -1017,14 +1023,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-14T16:06:29-04:00"
+      "last_reviewed_at": "2026-04-14T17:25:48-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 167,
-        "last_reviewed_at": "2026-04-14T16:06:29-04:00"
+        "reports_24h": 429,
+        "last_reviewed_at": "2026-04-14T17:25:48-04:00"
       }
     ],
     "current_status_origin": "X Developer Platform Status",
@@ -1033,10 +1039,10 @@
       {
         "component_id": "x-api-v2",
         "name": "X API v2",
-        "status": "online",
-        "state": "Normal",
+        "status": "degraded",
+        "state": "Degraded",
         "source": "X Developer Platform Status",
-        "updated_at": "2026-04-14T20:06:30.563584Z",
+        "updated_at": "2026-04-14T21:25:49.496282Z",
         "url": "https://docs.x.com/status"
       },
       {
@@ -1045,7 +1051,7 @@
         "status": "online",
         "state": "Normal",
         "source": "X Developer Platform Status",
-        "updated_at": "2026-04-14T20:06:30.563584Z",
+        "updated_at": "2026-04-14T21:25:49.496282Z",
         "url": "https://docs.x.com/status"
       },
       {
@@ -1054,50 +1060,50 @@
         "status": "online",
         "state": "Normal",
         "source": "X Developer Platform Status",
-        "updated_at": "2026-04-14T20:06:30.563584Z",
+        "updated_at": "2026-04-14T21:25:49.496282Z",
         "url": "https://docs.x.com/status"
       }
     ],
     "top_reported_issues_provider": [
       {
-        "label": "Sign in problem",
-        "count": 9
-      },
-      {
         "label": "Server not responding",
-        "count": 3
+        "count": 14
       },
       {
         "label": "App not loading",
-        "count": 3
+        "count": 14
+      },
+      {
+        "label": "Sign in problem",
+        "count": 12
       },
       {
         "label": "Error message",
-        "count": 2
+        "count": 5
       },
       {
         "label": "Connectivity issue",
-        "count": 1
-      },
-      {
-        "label": "Slow performance",
-        "count": 1
+        "count": 2
       },
       {
         "label": "Service down",
-        "count": 0
+        "count": 2
+      },
+      {
+        "label": "Slow performance",
+        "count": 2
       },
       {
         "label": "Unable to download",
-        "count": 0
+        "count": 1
       }
     ]
   },
   "reports": [
     {
-      "title": "Website not loading and pages displaying error or blank screen.",
+      "title": "Posts and timeline not loading.",
       "url": "https://docs.x.com/status",
-      "published_at": "2026-04-09T22:15:00Z",
+      "published_at": "2026-04-14T21:07:00Z",
       "source": "StatusGator",
       "meta": "Never acknowledged"
     }
@@ -1108,21 +1114,21 @@
       "url": "https://docs.x.com/status",
       "source": "Official",
       "meta": "Status page",
-      "published_at": "2026-04-14T20:06:32.880141Z"
+      "published_at": "2026-04-14T21:25:50.147722Z"
     },
     {
       "title": "X Incident History",
       "url": "https://docs.x.com/incidents",
       "source": "Official",
       "meta": "Incident history",
-      "published_at": "2026-04-14T20:06:32.880141Z"
+      "published_at": "2026-04-14T21:25:50.147722Z"
     },
     {
       "title": "X Developer Platform Docs",
       "url": "https://docs.x.com/",
       "source": "Official",
       "meta": "Developer docs",
-      "published_at": "2026-04-14T20:06:32.880141Z"
+      "published_at": "2026-04-14T21:25:50.147722Z"
     }
   ],
   "news": [],
@@ -1139,11 +1145,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-14T20:06:29.540029Z",
+      "last_item_at": "2026-04-14T21:25:48.471058Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 719,
-      "fetched_at": "2026-04-14T20:06:29.540053Z",
+      "duration_ms": 175,
+      "fetched_at": "2026-04-14T21:25:48.471075Z",
       "cache_hit": false
     },
     {
@@ -1157,11 +1163,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-14T16:06:29-04:00",
+      "last_item_at": "2026-04-14T17:25:48-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1022,
-      "fetched_at": "2026-04-14T20:06:30.563052Z",
+      "duration_ms": 1024,
+      "fetched_at": "2026-04-14T21:25:49.495693Z",
       "cache_hit": false
     },
     {
@@ -1175,17 +1181,17 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-04-14T20:06:30.563584Z",
+      "last_item_at": "2026-04-14T21:25:49.496282Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 2316,
-      "fetched_at": "2026-04-14T20:06:32.879718Z",
+      "duration_ms": 651,
+      "fetched_at": "2026-04-14T21:25:50.147285Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-14T20:06:32.880141Z",
+    "generated_at": "2026-04-14T21:25:50.147722Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1207,7 +1213,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "minor",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1222,9 +1228,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 719,
+          "duration_ms": 175,
           "cache_hit": false,
-          "at": "2026-04-14T20:06:28Z"
+          "at": "2026-04-14T21:25:48Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1233,19 +1239,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 318.2
+          "avg_duration_ms": 320.7
         },
         "metrics_7d": {
-          "runs": 137,
-          "ok": 137,
+          "runs": 136,
+          "ok": 136,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 389.6
+          "avg_duration_ms": 391.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T20:06:28Z",
+        "last_success_at": "2026-04-14T21:25:48Z",
         "last_failure_at": null
       },
       {
@@ -1259,9 +1265,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1022,
+          "duration_ms": 1024,
           "cache_hit": false,
-          "at": "2026-04-14T20:06:28Z"
+          "at": "2026-04-14T21:25:48Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1270,19 +1276,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1055.7
+          "avg_duration_ms": 1056.2
         },
         "metrics_7d": {
-          "runs": 137,
-          "ok": 137,
+          "runs": 136,
+          "ok": 136,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1067.7
+          "avg_duration_ms": 1072.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T20:06:28Z",
+        "last_success_at": "2026-04-14T21:25:48Z",
         "last_failure_at": null
       },
       {
@@ -1296,9 +1302,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 2316,
+          "duration_ms": 651,
           "cache_hit": false,
-          "at": "2026-04-14T20:06:28Z"
+          "at": "2026-04-14T21:25:48Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1307,38 +1313,65 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1585.8
+          "avg_duration_ms": 1574.6
         },
         "metrics_7d": {
-          "runs": 137,
-          "ok": 137,
+          "runs": 136,
+          "ok": 136,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 953.3
+          "avg_duration_ms": 956.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T20:06:28Z",
+        "last_success_at": "2026-04-14T21:25:48Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-14T20:06:32.880141Z",
+    "generated_at": "2026-04-14T21:25:50.147722Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "53377115c6a0860d",
+          "title": "Posts and timeline not loading.",
+          "started_at": "2026-04-14T21:07:00Z",
+          "duration": "",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://docs.x.com/status"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "04df7f05f68c0daa",
+          "title": "Login page unavailable or displays error messages.",
+          "started_at": "2026-03-23T20:47:00Z",
+          "duration": "2h 3m",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://docs.x.com/status"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "2ad9eba7275aef7b",
+          "title": "Posts and timeline not loading.",
+          "url": "https://docs.x.com/status",
+          "published_at": "2026-04-14T21:07:00Z",
+          "source": "StatusGator",
+          "meta": "Never acknowledged"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
