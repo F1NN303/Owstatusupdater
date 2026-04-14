@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-14T19:59:42.245743Z",
+  "generated_at": "2026-04-14T20:06:14.503582Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 3,
+    "severity_key": "stable",
+    "severity_score": 0,
     "source_ok_count": 6,
     "source_total_count": 6,
     "model_version": "2.4",
@@ -15,7 +15,7 @@
       "support_score": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 106,
+      "reports_24h": 107,
       "recent_incidents_6h": 1,
       "recent_incidents_24h": 1,
       "cross_source": {
@@ -27,7 +27,7 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
@@ -35,30 +35,30 @@
       "recency_decay": true
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "high",
-      "reason": "official_major_vs_aggregate_lower",
-      "official_status": "major outage",
-      "derived_severity": "minor",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
+      "official_status": "operational",
+      "derived_severity": "stable",
       "source_ok": 6,
       "source_total": 6,
-      "summary": "Official status reports a major outage while aggregate severity is lower."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     }
   },
@@ -114,8 +114,8 @@
     "source_type": "Downdetector-like",
     "url": "https://statusgator.com/services/overwatch-2",
     "summary": "StatusGator incident table is available. Latest listed incident: Connection errors due to server failure.",
-    "current_status": "major outage",
-    "reports_24h": 106,
+    "current_status": "operational",
+    "reports_24h": 107,
     "incidents": [
       {
         "title": "Connection errors due to server failure",
@@ -192,11 +192,11 @@
         "count": 4
       },
       {
-        "label": "Error message",
-        "count": 3
+        "label": "Slow performance",
+        "count": 4
       },
       {
-        "label": "Slow performance",
+        "label": "Error message",
         "count": 3
       }
     ],
@@ -205,12 +205,6 @@
       "kind": "community-labels"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-13T20:00:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-13T20:15:00Z",
         "signal_value": 1.0,
@@ -777,9 +771,15 @@
       },
       {
         "timestamp": "2026-04-14T19:45:00Z",
-        "signal_value": 442.0,
+        "signal_value": 445.0,
         "status_code": 2,
         "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-04-14T20:00:00Z",
+        "signal_value": 39.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -788,14 +788,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-14T19:45:00Z"
+      "last_sample_at": "2026-04-14T20:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "20:00",
-        "count": 0
-      },
       {
         "label": "20:20",
         "count": 2
@@ -1079,6 +1075,10 @@
       {
         "label": "19:40",
         "count": 1
+      },
+      {
+        "label": "20:00",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1087,14 +1087,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-14T15:59:35-04:00"
+      "last_reviewed_at": "2026-04-14T16:06:14-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 106,
-        "last_reviewed_at": "2026-04-14T15:59:35-04:00"
+        "reports_24h": 107,
+        "last_reviewed_at": "2026-04-14T16:06:14-04:00"
       }
     ],
     "services": [
@@ -1102,9 +1102,9 @@
         "service_id": "region-eu",
         "name": "Europe Region",
         "label": "Europe",
-        "status": "degraded",
-        "severity_key": "minor",
-        "score": 3,
+        "status": "online",
+        "severity_key": "stable",
+        "score": 0,
         "weight": 33.3,
         "source": "Derived regional blend"
       },
@@ -1112,9 +1112,9 @@
         "service_id": "region-na",
         "name": "North America Region",
         "label": "North America",
-        "status": "degraded",
-        "severity_key": "minor",
-        "score": 3,
+        "status": "online",
+        "severity_key": "stable",
+        "score": 0,
         "weight": 33.3,
         "source": "Derived regional blend"
       },
@@ -1122,9 +1122,9 @@
         "service_id": "region-apac",
         "name": "Asia Pacific Region",
         "label": "Asia Pacific",
-        "status": "degraded",
-        "severity_key": "minor",
-        "score": 3,
+        "status": "online",
+        "severity_key": "stable",
+        "score": 0,
         "weight": 33.3,
         "source": "Derived regional blend"
       }
@@ -1136,74 +1136,74 @@
   },
   "reports": [
     {
-      "title": "Missing pompompurin player icon",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-pompompurin-player-icon/1013632",
-      "published_at": "2026-04-14T19:59:32.236Z",
+      "title": "Stadium Decay doesn't make sense",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/stadium-decay-doesnt-make-sense/1013643",
+      "published_at": "2026-04-14T20:05:48.492Z",
       "source": "Blizzard Forums - Bug Report",
       "meta": "1 posts | 1 views"
     },
     {
       "title": "Keybinds Stuck cant change Hero Settings",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/keybinds-stuck-cant-change-hero-settings/1013488",
-      "published_at": "2026-04-14T19:59:25.349Z",
+      "published_at": "2026-04-14T20:05:42.585Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "24 posts | 196 views"
+      "meta": "29 posts | 241 views"
     },
     {
       "title": "Overwatch Switch 2 - still locked at 30fps",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-switch-2-still-locked-at-30fps/1013516",
-      "published_at": "2026-04-14T19:59:18.664Z",
+      "published_at": "2026-04-14T20:05:33.650Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "28 posts | 305 views"
+      "meta": "34 posts | 369 views"
     },
     {
-      "title": "Ramattra Salvaged Slug bug",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/ramattra-salvaged-slug-bug/1013631",
-      "published_at": "2026-04-14T19:58:52.388Z",
+      "title": "Alguem consegui me informar como resolvo esse problema?",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/alguem-consegui-me-informar-como-resolvo-esse-problema/1013641",
+      "published_at": "2026-04-14T20:05:15.314Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 2 views"
+      "meta": "1 posts | 3 views"
     },
     {
-      "title": "Junkrat mythical skin not available",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/junkrat-mythical-skin-not-available/1013479",
-      "published_at": "2026-04-14T19:58:39.355Z",
+      "title": "Top 500 title and rewards missing or broken",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/top-500-title-and-rewards-missing-or-broken/1013482",
+      "published_at": "2026-04-14T20:04:48.289Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "8 posts | 82 views"
+      "meta": "14 posts | 53 views"
     },
     {
-      "title": "High ping (280-300) for the entire length of the match",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/high-ping-280-300-for-the-entire-length-of-the-match/1011174",
-      "published_at": "2026-04-14T19:58:00.530Z",
+      "title": "Keybind problem",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/keybind-problem/1013637",
+      "published_at": "2026-04-14T20:04:30.664Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "50 posts | 844 views"
+      "meta": "2 posts | 23 views"
     },
     {
-      "title": "Sorry, you’re not eligible to purchase Ultimate Battle Pass",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/sorry-you%E2%80%99re-not-eligible-to-purchase-ultimate-battle-pass/1013471",
-      "published_at": "2026-04-14T19:57:13.136Z",
+      "title": "Wuyang orbs are very bugged",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/wuyang-orbs-are-very-bugged/1013627",
+      "published_at": "2026-04-14T20:04:23.208Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "35 posts | 580 views"
+      "meta": "2 posts | 15 views"
+    },
+    {
+      "title": "Tracer keybinds changing to default for no reason",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/tracer-keybinds-changing-to-default-for-no-reason/1013640",
+      "published_at": "2026-04-14T20:04:08.372Z",
+      "source": "Blizzard Forums - Bug Report",
+      "meta": "1 posts | 5 views"
+    },
+    {
+      "title": "Keybinds dont save",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/keybinds-dont-save/1013554",
+      "published_at": "2026-04-14T20:00:33.116Z",
+      "source": "Blizzard Forums - Technical Support",
+      "meta": "7 posts | 96 views"
     },
     {
       "title": "Overwatch Comms wheel causing severe frame drops",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-comms-wheel-causing-severe-frame-drops/1013628",
       "published_at": "2026-04-14T19:56:47.336Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "1 posts | 1 views"
-    },
-    {
-      "title": "Wrong Region servers",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/wrong-region-servers/1013621",
-      "published_at": "2026-04-14T19:56:24.863Z",
-      "source": "Blizzard Forums - Technical Support",
-      "meta": "2 posts | 17 views"
-    },
-    {
-      "title": "Wuyang orbs are very bugged",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/wuyang-orbs-are-very-bugged/1013627",
-      "published_at": "2026-04-14T19:55:42.591Z",
-      "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 11 views"
+      "meta": "1 posts | 3 views"
     }
   ],
   "known_resources": [
@@ -1212,14 +1212,14 @@
       "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-known-issues-april-14-2026/942905",
       "published_at": "2025-04-23T21:47:27.953Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "2 posts | 171724 views"
+      "meta": "2 posts | 171773 views"
     },
     {
       "title": "Known Technical Support Issues",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/known-technical-support-issues/25",
       "published_at": "2024-06-14T15:44:35.443Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "14 posts | 176218 views"
+      "meta": "14 posts | 176223 views"
     }
   ],
   "news": [
@@ -1280,11 +1280,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-14T19:59:35.120554Z",
+      "last_item_at": "2026-04-14T20:06:14.019994Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 227,
-      "fetched_at": "2026-04-14T19:59:35.120578Z",
+      "duration_ms": 218,
+      "fetched_at": "2026-04-14T20:06:14.020015Z",
       "cache_hit": false
     },
     {
@@ -1298,11 +1298,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-14T15:59:35-04:00",
+      "last_item_at": "2026-04-14T16:06:14-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 650,
-      "fetched_at": "2026-04-14T19:59:35.543420Z",
+      "duration_ms": 698,
+      "fetched_at": "2026-04-14T20:06:14.500178Z",
       "cache_hit": false
     },
     {
@@ -1316,11 +1316,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-14T19:56:47.336Z",
+      "last_item_at": "2026-04-14T20:00:33.116Z",
       "freshness": "fresh",
-      "age_minutes": 2,
-      "duration_ms": 490,
-      "fetched_at": "2026-04-14T19:59:35.385783Z",
+      "age_minutes": 5,
+      "duration_ms": 582,
+      "fetched_at": "2026-04-14T20:06:14.384366Z",
       "cache_hit": false
     },
     {
@@ -1334,11 +1334,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-14T19:59:32.236Z",
+      "last_item_at": "2026-04-14T20:05:48.492Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 464,
-      "fetched_at": "2026-04-14T19:59:35.361072Z",
+      "duration_ms": 559,
+      "fetched_at": "2026-04-14T20:06:14.362735Z",
       "cache_hit": false
     },
     {
@@ -1352,11 +1352,11 @@
       "ok": true,
       "error": null,
       "item_count": 4,
-      "last_item_at": "2026-04-14T19:59:34.981618Z",
+      "last_item_at": "2026-04-14T20:06:14.011541Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 84,
-      "fetched_at": "2026-04-14T19:59:34.981645Z",
+      "duration_ms": 205,
+      "fetched_at": "2026-04-14T20:06:14.011564Z",
       "cache_hit": false
     },
     {
@@ -1370,17 +1370,17 @@
       "ok": true,
       "error": null,
       "item_count": 2,
-      "last_item_at": "2026-04-14T19:59:42.242369Z",
+      "last_item_at": "2026-04-14T20:06:14.202708Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 7344,
-      "fetched_at": "2026-04-14T19:59:42.242395Z",
+      "duration_ms": 395,
+      "fetched_at": "2026-04-14T20:06:14.202735Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-14T19:59:42.245743Z",
+    "generated_at": "2026-04-14T20:06:14.503582Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1402,7 +1402,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1417,30 +1417,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 227,
+          "duration_ms": 218,
           "cache_hit": false,
-          "at": "2026-04-14T19:59:34Z"
+          "at": "2026-04-14T20:06:13Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 599.6
+          "avg_duration_ms": 578.4
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 136,
+          "runs": 137,
+          "ok": 137,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 559.7
+          "avg_duration_ms": 557.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T19:59:34Z",
+        "last_success_at": "2026-04-14T20:06:13Z",
         "last_failure_at": null
       },
       {
@@ -1454,30 +1454,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 650,
+          "duration_ms": 698,
           "cache_hit": false,
-          "at": "2026-04-14T19:59:34Z"
+          "at": "2026-04-14T20:06:13Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 837.8
+          "avg_duration_ms": 830.1
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 136,
+          "runs": 137,
+          "ok": 137,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 850.3
+          "avg_duration_ms": 849.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T19:59:34Z",
+        "last_success_at": "2026-04-14T20:06:13Z",
         "last_failure_at": null
       },
       {
@@ -1491,30 +1491,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 490,
+          "duration_ms": 582,
           "cache_hit": false,
-          "at": "2026-04-14T19:59:34Z"
+          "at": "2026-04-14T20:06:13Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 432.2
+          "avg_duration_ms": 440.5
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 136,
+          "runs": 137,
+          "ok": 137,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 446.7
+          "avg_duration_ms": 447.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T19:59:34Z",
+        "last_success_at": "2026-04-14T20:06:13Z",
         "last_failure_at": null
       },
       {
@@ -1528,30 +1528,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 464,
+          "duration_ms": 559,
           "cache_hit": false,
-          "at": "2026-04-14T19:59:34Z"
+          "at": "2026-04-14T20:06:13Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 432.9
+          "avg_duration_ms": 439.9
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 136,
+          "runs": 137,
+          "ok": 137,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 447.9
+          "avg_duration_ms": 448.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T19:59:34Z",
+        "last_success_at": "2026-04-14T20:06:13Z",
         "last_failure_at": null
       },
       {
@@ -1565,30 +1565,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 84,
+          "duration_ms": 205,
           "cache_hit": false,
-          "at": "2026-04-14T19:59:34Z"
+          "at": "2026-04-14T20:06:13Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 221.3
+          "avg_duration_ms": 220.4
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 136,
+          "runs": 137,
+          "ok": 137,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 250.7
+          "avg_duration_ms": 250.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T19:59:34Z",
+        "last_success_at": "2026-04-14T20:06:13Z",
         "last_failure_at": null
       },
       {
@@ -1602,36 +1602,36 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 7344,
+          "duration_ms": 395,
           "cache_hit": false,
-          "at": "2026-04-14T19:59:34Z"
+          "at": "2026-04-14T20:06:13Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 8692.9
+          "avg_duration_ms": 8231.9
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 135,
+          "runs": 137,
+          "ok": 136,
           "stale": 1,
           "success_rate": 99.3,
           "stale_rate": 0.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 6750.4
+          "avg_duration_ms": 6704.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-14T19:59:34Z",
+        "last_success_at": "2026-04-14T20:06:13Z",
         "last_failure_at": "2026-04-12T18:54:42Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-14T19:59:42.245743Z",
+    "generated_at": "2026-04-14T20:06:14.503582Z",
     "incidents": {
       "new": [],
       "updated": [],
@@ -1640,76 +1640,52 @@
     "reports": {
       "new": [
         {
-          "id": "fe9d249566c1e5b0",
-          "title": "Missing pompompurin player icon",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-pompompurin-player-icon/1013632",
-          "published_at": "2026-04-14T19:59:32.236Z",
+          "id": "654cd2f7b7e13136",
+          "title": "Stadium Decay doesn't make sense",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/stadium-decay-doesnt-make-sense/1013643",
+          "published_at": "2026-04-14T20:05:48.492Z",
           "source": "Blizzard Forums - Bug Report",
           "meta": "1 posts | 1 views"
         },
         {
-          "id": "8585f6de78da3bdb",
-          "title": "Keybinds Stuck cant change Hero Settings",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/keybinds-stuck-cant-change-hero-settings/1013488",
-          "published_at": "2026-04-14T19:59:25.349Z",
+          "id": "813fbdbd735b40a6",
+          "title": "Alguem consegui me informar como resolvo esse problema?",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/alguem-consegui-me-informar-como-resolvo-esse-problema/1013641",
+          "published_at": "2026-04-14T20:05:15.314Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "24 posts | 196 views"
+          "meta": "1 posts | 3 views"
         },
         {
-          "id": "9a0b2b076b190c8f",
-          "title": "Overwatch Switch 2 - still locked at 30fps",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-switch-2-still-locked-at-30fps/1013516",
-          "published_at": "2026-04-14T19:59:18.664Z",
+          "id": "3969a01f1a63eaca",
+          "title": "Top 500 title and rewards missing or broken",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/top-500-title-and-rewards-missing-or-broken/1013482",
+          "published_at": "2026-04-14T20:04:48.289Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "28 posts | 305 views"
+          "meta": "14 posts | 53 views"
         },
         {
-          "id": "caf4315afef7e77f",
-          "title": "Ramattra Salvaged Slug bug",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/ramattra-salvaged-slug-bug/1013631",
-          "published_at": "2026-04-14T19:58:52.388Z",
+          "id": "3fa4efc482e66a65",
+          "title": "Keybind problem",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/keybind-problem/1013637",
+          "published_at": "2026-04-14T20:04:30.664Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "1 posts | 2 views"
+          "meta": "2 posts | 23 views"
         },
         {
-          "id": "283b53b4f58454d3",
-          "title": "Junkrat mythical skin not available",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/junkrat-mythical-skin-not-available/1013479",
-          "published_at": "2026-04-14T19:58:39.355Z",
+          "id": "84c94a81ccffd746",
+          "title": "Tracer keybinds changing to default for no reason",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/tracer-keybinds-changing-to-default-for-no-reason/1013640",
+          "published_at": "2026-04-14T20:04:08.372Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "8 posts | 82 views"
+          "meta": "1 posts | 5 views"
         },
         {
-          "id": "3d13037a4d577857",
-          "title": "High ping (280-300) for the entire length of the match",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/high-ping-280-300-for-the-entire-length-of-the-match/1011174",
-          "published_at": "2026-04-14T19:58:00.530Z",
-          "source": "Blizzard Forums - Bug Report",
-          "meta": "50 posts | 844 views"
-        },
-        {
-          "id": "9f86afd3489aa0a8",
-          "title": "Overwatch Comms wheel causing severe frame drops",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-comms-wheel-causing-severe-frame-drops/1013628",
-          "published_at": "2026-04-14T19:56:47.336Z",
+          "id": "dced77b54c304f7e",
+          "title": "Keybinds dont save",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/keybinds-dont-save/1013554",
+          "published_at": "2026-04-14T20:00:33.116Z",
           "source": "Blizzard Forums - Technical Support",
-          "meta": "1 posts | 1 views"
-        },
-        {
-          "id": "31afab507004e5bc",
-          "title": "Wrong Region servers",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/wrong-region-servers/1013621",
-          "published_at": "2026-04-14T19:56:24.863Z",
-          "source": "Blizzard Forums - Technical Support",
-          "meta": "2 posts | 17 views"
-        },
-        {
-          "id": "aa6f5fe3ad4635b1",
-          "title": "Wuyang orbs are very bugged",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/wuyang-orbs-are-very-bugged/1013627",
-          "published_at": "2026-04-14T19:55:42.591Z",
-          "source": "Blizzard Forums - Bug Report",
-          "meta": "1 posts | 11 views"
+          "meta": "7 posts | 96 views"
         }
       ]
     },
@@ -1717,7 +1693,7 @@
       "new_incidents": 0,
       "updated_incidents": 0,
       "resolved_incidents": 0,
-      "new_reports": 9
+      "new_reports": 6
     }
   }
 }
