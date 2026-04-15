@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-15T14:11:04.056533Z",
+  "generated_at": "2026-04-15T15:45:21.985042Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "degraded",
+    "severity_score": 6,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -13,24 +13,24 @@
       "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.255,
+      "support_score": 0.828,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 122,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 4,
+      "reports_24h": 125,
+      "recent_incidents_6h": 4,
+      "recent_incidents_24h": 8,
       "cross_source": {
-        "report_score": 0.075,
-        "news_score": 0.18,
+        "report_score": 0.468,
+        "news_score": 0.36,
         "social_score": 0.0,
-        "combined_score": 0.255,
-        "report_hits_24h": 0
+        "combined_score": 0.828,
+        "report_hits_24h": 2
       }
     },
     "safeguards": {
       "operational_dampening": false,
-      "cross_source_guard": true,
+      "cross_source_guard": false,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
@@ -40,30 +40,30 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,34 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-04-15T14:11:03.478073Z",
+        "published_at": "2026-04-15T15:45:21.546725Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Cloudflare Workers API Latency",
+        "url": "https://www.cloudflarestatus.com/incidents/ydt10jsg02jq#msyz4p4q36sb",
+        "published_at": "2026-04-15T15:29:40.905Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / The issue has been identified and a fix is being implemented."
+      },
+      {
+        "title": "Cloudflare Workers API Latency",
+        "url": "https://www.cloudflarestatus.com/incidents/ydt10jsg02jq#l14mb7vddrz3",
+        "published_at": "2026-04-15T14:37:30.990Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Identified / Cloudflare is investigating an increased latency when interacting with Workers Builds via webhooks from git providers. Customers might experience longer wait times on Workers endpoints, particularly when build a project from a git connectio"
+      },
+      {
+        "title": "Cloudflare Billing Issues",
+        "url": "https://www.cloudflarestatus.com/incidents/g1ds3j4z8hpn#q2ryltv5pjp7",
+        "published_at": "2026-04-15T14:19:56.759Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / Cloudflare is experiencing problems in processing changes through our billing subscription service for Argo Smart Routing. All other services are operating normally. We will provide an update once billing subscription services return to nor"
       },
       {
         "title": "Network Congestion",
@@ -125,42 +149,46 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
-      },
-      {
-        "title": "Network Congestion",
-        "url": "https://www.cloudflarestatus.com/incidents/213v4v7s7m97#mhn7xnlzq1lh",
-        "published_at": "2026-04-14T13:06:09.955Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Major / Resolved / Cloudflare is observing possible network congestion in the Eastern America and EU. We are working to mitigate impact to Internet users in these regions."
-      },
-      {
-        "title": "Network Congestion",
-        "url": "https://www.cloudflarestatus.com/incidents/213v4v7s7m97#sr4xz3n9wqct",
-        "published_at": "2026-04-14T12:47:57.000Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / Cloudflare is investigating an increased level of HTTP 5xx errors. We are working to analyse and mitigate this problem. More updates to follow shortly."
-      },
-      {
-        "title": "Increased KV latency and timeouts",
-        "url": "https://www.cloudflarestatus.com/incidents/lq1vw7z9xthq#hjsjzqtvxxmm",
-        "published_at": "2026-04-14T12:23:29.547Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
       }
     ],
-    "last_statement_at": "2026-04-15T14:11:03.478073Z"
+    "last_statement_at": "2026-04-15T15:45:21.546725Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident was about 25h ago.",
+    "summary": "Cloudflare Statuspage reports 2 active incidents. Latest: Cloudflare Workers API Latency.",
     "current_status": "degraded",
-    "reports_24h": 122,
+    "reports_24h": 125,
     "incidents": [
+      {
+        "title": "Cloudflare Workers API Latency",
+        "started_at": "2026-04-15T14:40:23Z",
+        "duration": "1h 5m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Cloudflare Workers API Latency",
+        "started_at": "2026-04-15T14:37:30.891Z",
+        "duration": "1h 7m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/ydt10jsg02jq"
+      },
+      {
+        "title": "Cloudflare Billing Issues",
+        "started_at": "2026-04-15T14:20:37Z",
+        "duration": "20m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Cloudflare Billing Issues",
+        "started_at": "2026-04-15T14:19:56.652Z",
+        "duration": "1h 25m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/g1ds3j4z8hpn"
+      },
       {
         "title": "AMS (Amsterdam) on 2026-04-14",
         "started_at": "2026-04-15T00:30:18Z",
@@ -186,37 +214,13 @@
         "started_at": "2026-04-14T15:45:22Z",
         "duration": "5h 20m",
         "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Increased HTTP 5xx Errors",
-        "started_at": "2026-04-14T12:50:21Z",
-        "duration": "2h 55m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Network Congestion",
-        "started_at": "2026-04-14T12:47:57.000Z",
-        "duration": "11h 39m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/213v4v7s7m97"
-      },
-      {
-        "title": "Increased KV latency and timeouts",
-        "started_at": "2026-04-14T12:25:16Z",
-        "duration": "25m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "WARP device configuration issues",
-        "started_at": "2026-04-14T06:49:00.000Z",
-        "duration": "5h 31m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/kstz7r3fq5cf"
       }
     ],
     "top_reported_issues": [
+      {
+        "label": "Cloudflare Sites and Services",
+        "count": 1
+      },
       {
         "label": "Ahmedabad, India - (AMD)",
         "count": 1
@@ -244,60 +248,14 @@
       {
         "label": "Latin America & the Caribbean",
         "count": 1
-      },
-      {
-        "label": "Bandar Seri Begawan, Brunei - (BWN)",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-14T14:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-14T14:30:00Z",
-        "signal_value": 30.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-14T14:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-14T15:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-14T15:15:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-14T15:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-14T15:45:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-14T16:00:00Z",
         "signal_value": 4.0,
@@ -831,6 +789,48 @@
         "signal_value": 5.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-15T14:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-15T14:30:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-15T14:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-15T15:00:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-15T15:15:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-15T15:30:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-15T15:45:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,30 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-15T14:00:00Z"
+      "last_sample_at": "2026-04-15T15:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "14:20",
-        "count": 2
-      },
-      {
-        "label": "14:40",
-        "count": 0
-      },
-      {
-        "label": "15:00",
-        "count": 1
-      },
-      {
-        "label": "15:20",
-        "count": 3
-      },
-      {
-        "label": "15:40",
-        "count": 2
-      },
       {
         "label": "16:00",
         "count": 2
@@ -1129,7 +1109,27 @@
       },
       {
         "label": "14:00",
+        "count": 2
+      },
+      {
+        "label": "14:20",
+        "count": 3
+      },
+      {
+        "label": "14:40",
         "count": 1
+      },
+      {
+        "label": "15:00",
+        "count": 2
+      },
+      {
+        "label": "15:20",
+        "count": 1
+      },
+      {
+        "label": "15:40",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-15T09:11:02-05:00"
+      "last_reviewed_at": "2026-04-15T11:44:52-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 122,
-        "last_reviewed_at": "2026-04-15T09:11:02-05:00"
+        "reports_24h": 125,
+        "last_reviewed_at": "2026-04-15T11:44:52-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,8 +1160,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -1190,7 +1190,7 @@
         "name": "Accra, Ghana - (ACC)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-04-15T13:17:04.103Z",
+        "updated_at": "2026-04-15T14:46:45.772Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1699,9 +1699,9 @@
       },
       {
         "name": "Charlotte, NC, United States - (CLT)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-04-15T13:52:50.966Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-15T15:16:40.749Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1804,9 +1804,9 @@
       },
       {
         "name": "Argo Smart Routing",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-07T09:37:04.738Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-04-15T14:19:56.694Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1818,9 +1818,9 @@
       },
       {
         "name": "Jeddah, Saudi Arabia - (JED)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-15T12:29:13.043Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-04-15T15:34:27.607Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2149,7 +2149,7 @@
         "name": "Riyadh, Saudi Arabia - (RUH)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-04-15T10:20:41.394Z",
+        "updated_at": "2026-04-15T15:22:34.520Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3465,7 +3465,7 @@
         "name": "Phnom Penh, Cambodia - (PNH)",
         "status": "degraded",
         "health": "under_maintenance",
-        "updated_at": "2026-04-15T13:17:06.324Z",
+        "updated_at": "2026-04-15T15:34:27.223Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4135,9 +4135,9 @@
       },
       {
         "name": "Workers Builds",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-30T11:53:26.772Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-04-15T14:37:30.930Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4480,10 +4480,6 @@
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
-        "label": "Server not responding",
-        "count": 2
-      },
-      {
         "label": "Connectivity issue",
         "count": 1
       },
@@ -4492,7 +4488,7 @@
         "count": 1
       },
       {
-        "label": "App not loading",
+        "label": "Server not responding",
         "count": 1
       },
       {
@@ -4510,10 +4506,42 @@
       {
         "label": "Slow performance",
         "count": 0
+      },
+      {
+        "label": "Unable to download",
+        "count": 0
       }
     ]
   },
   "reports": [
+    {
+      "title": "Cloudflare Workers API Latency",
+      "url": "https://www.cloudflarestatus.com/#2026-04-15T14:40:23Z",
+      "published_at": "2026-04-15T14:40:23Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Cloudflare Workers API Latency",
+      "url": "https://www.cloudflarestatus.com/incidents/ydt10jsg02jq",
+      "published_at": "2026-04-15T14:37:30.891Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Identified"
+    },
+    {
+      "title": "Cloudflare Billing Issues",
+      "url": "https://www.cloudflarestatus.com/#2026-04-15T14:20:37Z",
+      "published_at": "2026-04-15T14:20:37Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Cloudflare Billing Issues",
+      "url": "https://www.cloudflarestatus.com/incidents/g1ds3j4z8hpn",
+      "published_at": "2026-04-15T14:19:56.652Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Identified"
+    },
     {
       "title": "AMS (Amsterdam) on 2026-04-14",
       "url": "https://www.cloudflarestatus.com/#2026-04-15T00:30:18Z",
@@ -4541,34 +4569,6 @@
       "published_at": "2026-04-14T15:45:22Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
-    },
-    {
-      "title": "Increased HTTP 5xx Errors",
-      "url": "https://www.cloudflarestatus.com/#2026-04-14T12:50:21Z",
-      "published_at": "2026-04-14T12:50:21Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Network Congestion",
-      "url": "https://www.cloudflarestatus.com/incidents/213v4v7s7m97",
-      "published_at": "2026-04-14T12:47:57.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Major / Resolved"
-    },
-    {
-      "title": "Increased KV latency and timeouts",
-      "url": "https://www.cloudflarestatus.com/#2026-04-14T12:25:16Z",
-      "published_at": "2026-04-14T12:25:16Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "WARP device configuration issues",
-      "url": "https://www.cloudflarestatus.com/incidents/kstz7r3fq5cf",
-      "published_at": "2026-04-14T06:49:00.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -4577,52 +4577,76 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-15T14:11:04.056533Z"
+      "published_at": "2026-04-15T15:45:21.985042Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-15T14:11:04.056533Z"
+      "published_at": "2026-04-15T15:45:21.985042Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-15T14:11:04.056533Z"
+      "published_at": "2026-04-15T15:45:21.985042Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-04-15T14:11:04.056533Z"
+      "published_at": "2026-04-15T15:45:21.985042Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-15T14:11:04.056533Z"
+      "published_at": "2026-04-15T15:45:21.985042Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-15T14:11:04.056533Z"
+      "published_at": "2026-04-15T15:45:21.985042Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-04-15T14:11:03.478073Z",
+      "published_at": "2026-04-15T15:45:21.546725Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Cloudflare Workers API Latency",
+      "url": "https://www.cloudflarestatus.com/incidents/ydt10jsg02jq#msyz4p4q36sb",
+      "published_at": "2026-04-15T15:29:40.905Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / The issue has been identified and a fix is being implemented."
+    },
+    {
+      "title": "Cloudflare Workers API Latency",
+      "url": "https://www.cloudflarestatus.com/incidents/ydt10jsg02jq#l14mb7vddrz3",
+      "published_at": "2026-04-15T14:37:30.990Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Identified / Cloudflare is investigating an increased latency when interacting with Workers Builds via webhooks from git providers. Customers might experience longer wait times on Workers endpoints, particularly when build a project from a git connectio"
+    },
+    {
+      "title": "Cloudflare Billing Issues",
+      "url": "https://www.cloudflarestatus.com/incidents/g1ds3j4z8hpn#q2ryltv5pjp7",
+      "published_at": "2026-04-15T14:19:56.759Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / Cloudflare is experiencing problems in processing changes through our billing subscription service for Argo Smart Routing. All other services are operating normally. We will provide an update once billing subscription services return to nor"
     },
     {
       "title": "Network Congestion",
@@ -4655,30 +4679,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / Cloudflare is investigating delays in container scheduling"
-    },
-    {
-      "title": "Increased KV latency and timeouts",
-      "url": "https://www.cloudflarestatus.com/incidents/lq1vw7z9xthq#l02lk21pt87f",
-      "published_at": "2026-04-14T15:42:02.993Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident has now been resolved."
-    },
-    {
-      "title": "Network Congestion",
-      "url": "https://www.cloudflarestatus.com/incidents/213v4v7s7m97#d24g91ztj23d",
-      "published_at": "2026-04-14T13:28:49.774Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "Network Congestion",
-      "url": "https://www.cloudflarestatus.com/incidents/213v4v7s7m97#mhn7xnlzq1lh",
-      "published_at": "2026-04-14T13:06:09.955Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Major / Resolved / Cloudflare is observing possible network congestion in the Eastern America and EU. We are working to mitigate impact to Internet users in these regions."
     }
   ],
   "social": [],
@@ -4694,11 +4694,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-04-15T14:11:02.183626Z",
+      "last_item_at": "2026-04-15T15:45:21.361809Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 357,
-      "fetched_at": "2026-04-15T14:11:02.183643Z",
+      "duration_ms": 1452,
+      "fetched_at": "2026-04-15T15:45:21.361827Z",
       "cache_hit": false
     },
     {
@@ -4712,11 +4712,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-15T09:11:02-05:00",
+      "last_item_at": "2026-04-15T11:44:52-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1293,
-      "fetched_at": "2026-04-15T14:11:03.477495Z",
+      "duration_ms": 184,
+      "fetched_at": "2026-04-15T15:45:21.546172Z",
       "cache_hit": false
     },
     {
@@ -4730,17 +4730,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-15T14:11:03.478073Z",
+      "last_item_at": "2026-04-15T15:45:21.546725Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 576,
-      "fetched_at": "2026-04-15T14:11:04.055049Z",
+      "duration_ms": 436,
+      "fetched_at": "2026-04-15T15:45:21.983548Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-15T14:11:04.056533Z",
+    "generated_at": "2026-04-15T15:45:21.985042Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4762,7 +4762,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4777,9 +4777,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 357,
+          "duration_ms": 1452,
           "cache_hit": false,
-          "at": "2026-04-15T14:11:01Z"
+          "at": "2026-04-15T15:45:19Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -4788,7 +4788,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 579.5
+          "avg_duration_ms": 600.8
         },
         "metrics_7d": {
           "runs": 138,
@@ -4797,10 +4797,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 668.7
+          "avg_duration_ms": 670.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-15T14:11:01Z",
+        "last_success_at": "2026-04-15T15:45:19Z",
         "last_failure_at": null
       },
       {
@@ -4814,9 +4814,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1293,
+          "duration_ms": 184,
           "cache_hit": false,
-          "at": "2026-04-15T14:11:01Z"
+          "at": "2026-04-15T15:45:19Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -4825,7 +4825,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 644.9
+          "avg_duration_ms": 595.8
         },
         "metrics_7d": {
           "runs": 138,
@@ -4834,10 +4834,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 834.6
+          "avg_duration_ms": 815.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-15T14:11:01Z",
+        "last_success_at": "2026-04-15T15:45:19Z",
         "last_failure_at": null
       },
       {
@@ -4851,9 +4851,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 576,
+          "duration_ms": 436,
           "cache_hit": false,
-          "at": "2026-04-15T14:11:01Z"
+          "at": "2026-04-15T15:45:19Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -4862,7 +4862,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 411.2
+          "avg_duration_ms": 418.3
         },
         "metrics_7d": {
           "runs": 138,
@@ -4871,29 +4871,128 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 412.7
+          "avg_duration_ms": 411.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-15T14:11:01Z",
+        "last_success_at": "2026-04-15T15:45:19Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-15T14:11:04.056533Z",
+    "generated_at": "2026-04-15T15:45:21.985042Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "3ddf3b8bd744c175",
+          "title": "Cloudflare Workers API Latency",
+          "started_at": "2026-04-15T14:40:23Z",
+          "duration": "1h 5m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "be7f00f1f4bd889d",
+          "title": "Cloudflare Workers API Latency",
+          "started_at": "2026-04-15T14:37:30.891Z",
+          "duration": "1h 7m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "0e198603b062a318",
+          "title": "Cloudflare Billing Issues",
+          "started_at": "2026-04-15T14:20:37Z",
+          "duration": "20m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "25c87dc572968a98",
+          "title": "Cloudflare Billing Issues",
+          "started_at": "2026-04-15T14:19:56.652Z",
+          "duration": "1h 25m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "864517afa47dc678",
+          "title": "Increased HTTP 5xx Errors",
+          "started_at": "2026-04-14T12:50:21Z",
+          "duration": "2h 55m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "550a2b39f67d07f3",
+          "title": "Network Congestion",
+          "started_at": "2026-04-14T12:47:57.000Z",
+          "duration": "11h 39m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "af50165ad57d75f2",
+          "title": "Increased KV latency and timeouts",
+          "started_at": "2026-04-14T12:25:16Z",
+          "duration": "25m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "5a8a0c5d0d42e2c5",
+          "title": "WARP device configuration issues",
+          "started_at": "2026-04-14T06:49:00.000Z",
+          "duration": "5h 31m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "23c061d60a1bd8a3",
+          "title": "Cloudflare Workers API Latency",
+          "url": "https://www.cloudflarestatus.com/#2026-04-15T14:40:23Z",
+          "published_at": "2026-04-15T14:40:23Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "0288115c1aca3649",
+          "title": "Cloudflare Workers API Latency",
+          "url": "https://www.cloudflarestatus.com/incidents/ydt10jsg02jq",
+          "published_at": "2026-04-15T14:37:30.891Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Identified"
+        },
+        {
+          "id": "c6078be2adbd3aee",
+          "title": "Cloudflare Billing Issues",
+          "url": "https://www.cloudflarestatus.com/#2026-04-15T14:20:37Z",
+          "published_at": "2026-04-15T14:20:37Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "9d99f99ac45a5ca3",
+          "title": "Cloudflare Billing Issues",
+          "url": "https://www.cloudflarestatus.com/incidents/g1ds3j4z8hpn",
+          "published_at": "2026-04-15T14:19:56.652Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 4,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 4,
+      "new_reports": 4
     }
   }
 }
