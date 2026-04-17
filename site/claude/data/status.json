@@ -1,41 +1,41 @@
 {
-  "generated_at": "2026-04-17T18:12:12.266486Z",
+  "generated_at": "2026-04-17T19:38:05.146029Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 2,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 5.195,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
+      "support_score": 0.18,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
       "reports_24h": 114,
-      "recent_incidents_6h": 0,
+      "recent_incidents_6h": 2,
       "recent_incidents_24h": 4,
       "cross_source": {
         "report_score": 0.0,
-        "news_score": 0.0,
+        "news_score": 0.18,
         "social_score": 0.0,
-        "combined_score": 0.0,
+        "combined_score": 0.18,
         "report_hits_24h": 0
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: All Systems Operational",
+    "summary": "Claude Statuspage API: Partially Degraded Service",
     "updates": [
       {
-        "title": "Claude Statuspage API: All Systems Operational",
+        "title": "Claude Statuspage API: Partially Degraded Service",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-04-17T18:12:11.585234Z",
+        "published_at": "2026-04-17T19:38:03.838174Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Errors uploading documents to Google Drive in Claude.ai",
+        "url": "https://status.anthropic.com/incidents/4t4qg3vkrz6z#k3f3jqpdc801",
+        "published_at": "2026-04-17T18:59:56.633Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating an issue causing errors when uploading documents to Google Drive from Claude.ai, including the desktop app and Cowork."
       },
       {
         "title": "Failures to add Credentials to Vaults",
@@ -141,26 +149,32 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / Earlier today we had an outage on Opus 4.6 that started at 23:03 PT / 6:03 UTC and ended at 00:26 PT / 7:26 UTC."
-      },
-      {
-        "title": "Opus 4.6 elevated rate of errors",
-        "url": "https://status.anthropic.com/incidents/7jbzthbc1dwr#p5krpg6h2h94",
-        "published_at": "2026-04-16T06:50:56.222Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / The issue has been identified and a fix is being implemented."
       }
     ],
-    "last_statement_at": "2026-04-17T18:12:11.585234Z"
+    "last_statement_at": "2026-04-17T19:38:03.838174Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
+    "summary": "Claude Statuspage reports an active incident: Errors uploading documents to Google Drive in Claude.ai.",
+    "current_status": "degraded",
     "reports_24h": 114,
     "incidents": [
+      {
+        "title": "Errors uploading documents to Google Drive in Claude.ai",
+        "started_at": "2026-04-17T19:03:17Z",
+        "duration": "26m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Errors uploading documents to Google Drive in Claude.ai",
+        "started_at": "2026-04-17T18:59:56.526Z",
+        "duration": "38m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "Claude Statuspage API",
+        "url": "https://status.anthropic.com/incidents/4t4qg3vkrz6z"
+      },
       {
         "title": "Failures to add Credentials to Vaults",
         "started_at": "2026-04-16T22:28:25Z",
@@ -174,12 +188,6 @@
         "acknowledgement": "Minor / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/fkltkq8kgjkh"
-      },
-      {
-        "title": "Claude Cowork not starting for some users",
-        "started_at": "2026-04-16T19:28:18Z",
-        "duration": "2h 5m",
-        "acknowledgement": "down icon Down"
       },
       {
         "title": "Claude Cowork not starting for some users",
@@ -210,59 +218,24 @@
         "started_at": "2026-04-15T14:46:07Z",
         "duration": "2h 41m",
         "acknowledgement": "8m later"
-      },
-      {
-        "title": "Degraded service on usage and analytics admin API endpoints",
-        "started_at": "2026-04-14T09:24:51.920Z",
-        "duration": "5h 56m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/w3389p5qg7kp"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "claude.ai",
+        "count": 1
+      },
+      {
+        "label": "Claude Cowork",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-16T18:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-16T18:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-16T18:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-16T19:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-16T19:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-16T19:30:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-16T19:45:00Z",
         "signal_value": 2.0,
@@ -802,6 +775,42 @@
         "signal_value": 15.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T18:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T18:30:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T18:45:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T19:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T19:15:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T19:30:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -810,26 +819,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-17T18:00:00Z"
+      "last_sample_at": "2026-04-17T19:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "18:20",
-        "count": 0
-      },
-      {
-        "label": "18:40",
-        "count": 2
-      },
-      {
-        "label": "19:00",
-        "count": 3
-      },
-      {
-        "label": "19:20",
-        "count": 1
-      },
       {
         "label": "19:40",
         "count": 4
@@ -1101,6 +1094,22 @@
       {
         "label": "18:00",
         "count": 3
+      },
+      {
+        "label": "18:20",
+        "count": 1
+      },
+      {
+        "label": "18:40",
+        "count": 3
+      },
+      {
+        "label": "19:00",
+        "count": 0
+      },
+      {
+        "label": "19:20",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1109,14 +1118,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-17T11:12:11-07:00"
+      "last_reviewed_at": "2026-04-17T15:38:02-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 114,
-        "last_reviewed_at": "2026-04-17T11:12:11-07:00"
+        "last_reviewed_at": "2026-04-17T15:38:02-04:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -1124,9 +1133,9 @@
     "components": [
       {
         "name": "claude.ai",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-16T07:43:32.810Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-04-17T18:59:56.573Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1152,9 +1161,9 @@
       },
       {
         "name": "Claude Cowork",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-16T21:29:01.652Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-04-17T18:59:56.590Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1203,6 +1212,20 @@
   },
   "reports": [
     {
+      "title": "Errors uploading documents to Google Drive in Claude.ai",
+      "url": "https://status.anthropic.com/#2026-04-17T19:03:17Z",
+      "published_at": "2026-04-17T19:03:17Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Errors uploading documents to Google Drive in Claude.ai",
+      "url": "https://status.anthropic.com/incidents/4t4qg3vkrz6z",
+      "published_at": "2026-04-17T18:59:56.526Z",
+      "source": "Claude Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "Failures to add Credentials to Vaults",
       "url": "https://status.anthropic.com/#2026-04-16T22:28:25Z",
       "published_at": "2026-04-16T22:28:25Z",
@@ -1215,13 +1238,6 @@
       "published_at": "2026-04-16T22:26:00.677Z",
       "source": "Claude Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Claude Cowork not starting for some users",
-      "url": "https://status.anthropic.com/#2026-04-16T19:28:18Z",
-      "published_at": "2026-04-16T19:28:18Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
     },
     {
       "title": "Claude Cowork not starting for some users",
@@ -1250,13 +1266,6 @@
       "published_at": "2026-04-15T14:46:07Z",
       "source": "StatusGator",
       "meta": "8m later"
-    },
-    {
-      "title": "Degraded service on usage and analytics admin API endpoints",
-      "url": "https://status.anthropic.com/incidents/w3389p5qg7kp",
-      "published_at": "2026-04-14T09:24:51.920Z",
-      "source": "Claude Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1265,45 +1274,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-17T18:12:12.266486Z"
+      "published_at": "2026-04-17T19:38:05.146029Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-17T18:12:12.266486Z"
+      "published_at": "2026-04-17T19:38:05.146029Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-17T18:12:12.266486Z"
+      "published_at": "2026-04-17T19:38:05.146029Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-17T18:12:12.266486Z"
+      "published_at": "2026-04-17T19:38:05.146029Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-17T18:12:12.266486Z"
+      "published_at": "2026-04-17T19:38:05.146029Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: All Systems Operational",
+      "title": "Claude Statuspage API: Partially Degraded Service",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-04-17T18:12:11.585234Z",
+      "published_at": "2026-04-17T19:38:03.838174Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Errors uploading documents to Google Drive in Claude.ai",
+      "url": "https://status.anthropic.com/incidents/4t4qg3vkrz6z#k3f3jqpdc801",
+      "published_at": "2026-04-17T18:59:56.633Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating an issue causing errors when uploading documents to Google Drive from Claude.ai, including the desktop app and Cowork."
     },
     {
       "title": "Failures to add Credentials to Vaults",
@@ -1352,14 +1369,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Identified / Major / Resolved / The issue has been identified and a fix is being implemented."
-    },
-    {
-      "title": "Claude Cowork not starting for some users",
-      "url": "https://status.anthropic.com/incidents/qj05p69fff9h#m94sbbtmgtbg",
-      "published_at": "2026-04-16T19:24:38.511Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are currently investigating this issue on the v1.3036.0 release of Claude Desktop"
     }
   ],
   "social": [],
@@ -1375,11 +1384,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-17T18:12:10.828533Z",
+      "last_item_at": "2026-04-17T19:38:02.394953Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 775,
-      "fetched_at": "2026-04-17T18:12:10.828550Z",
+      "duration_ms": 270,
+      "fetched_at": "2026-04-17T19:38:02.394969Z",
       "cache_hit": false
     },
     {
@@ -1393,11 +1402,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-17T11:12:11-07:00",
+      "last_item_at": "2026-04-17T15:38:02-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 756,
-      "fetched_at": "2026-04-17T18:12:11.584714Z",
+      "duration_ms": 1442,
+      "fetched_at": "2026-04-17T19:38:03.837636Z",
       "cache_hit": false
     },
     {
@@ -1411,17 +1420,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-17T18:12:11.585234Z",
+      "last_item_at": "2026-04-17T19:38:03.838174Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 679,
-      "fetched_at": "2026-04-17T18:12:12.264866Z",
+      "duration_ms": 1306,
+      "fetched_at": "2026-04-17T19:38:05.144371Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-17T18:12:12.266486Z",
+    "generated_at": "2026-04-17T19:38:05.146029Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1443,7 +1452,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1458,9 +1467,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 775,
+          "duration_ms": 270,
           "cache_hit": false,
-          "at": "2026-04-17T18:12:10Z"
+          "at": "2026-04-17T19:38:02Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1469,7 +1478,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 611.3
+          "avg_duration_ms": 612.5
         },
         "metrics_7d": {
           "runs": 137,
@@ -1478,10 +1487,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 618.6
+          "avg_duration_ms": 617.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-17T18:12:10Z",
+        "last_success_at": "2026-04-17T19:38:02Z",
         "last_failure_at": null
       },
       {
@@ -1495,9 +1504,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 756,
+          "duration_ms": 1442,
           "cache_hit": false,
-          "at": "2026-04-17T18:12:10Z"
+          "at": "2026-04-17T19:38:02Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1506,7 +1515,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1182.3
+          "avg_duration_ms": 1214.5
         },
         "metrics_7d": {
           "runs": 137,
@@ -1515,10 +1524,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1226.9
+          "avg_duration_ms": 1235.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-17T18:12:10Z",
+        "last_success_at": "2026-04-17T19:38:02Z",
         "last_failure_at": null
       },
       {
@@ -1532,9 +1541,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 679,
+          "duration_ms": 1306,
           "cache_hit": false,
-          "at": "2026-04-17T18:12:10Z"
+          "at": "2026-04-17T19:38:02Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1543,7 +1552,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 911.1
+          "avg_duration_ms": 937.7
         },
         "metrics_7d": {
           "runs": 137,
@@ -1552,29 +1561,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 900.5
+          "avg_duration_ms": 902.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-17T18:12:10Z",
+        "last_success_at": "2026-04-17T19:38:02Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-17T18:12:12.266486Z",
+    "generated_at": "2026-04-17T19:38:05.146029Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "8b00617b1024fa61",
+          "title": "Errors uploading documents to Google Drive in Claude.ai",
+          "started_at": "2026-04-17T19:03:17Z",
+          "duration": "26m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "79e681d3edb8baca",
+          "title": "Errors uploading documents to Google Drive in Claude.ai",
+          "started_at": "2026-04-17T18:59:56.526Z",
+          "duration": "38m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://status.anthropic.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "c2750279bb1c1eb6",
+          "title": "Claude Cowork not starting for some users",
+          "started_at": "2026-04-16T19:28:18Z",
+          "duration": "2h 5m",
+          "acknowledgement": "down icon Down",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "ec3b14516cae0397",
+          "title": "Degraded service on usage and analytics admin API endpoints",
+          "started_at": "2026-04-14T09:24:51.920Z",
+          "duration": "5h 56m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.anthropic.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "5e5294b409bb445a",
+          "title": "Errors uploading documents to Google Drive in Claude.ai",
+          "url": "https://status.anthropic.com/#2026-04-17T19:03:17Z",
+          "published_at": "2026-04-17T19:03:17Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "688d5269090648e1",
+          "title": "Errors uploading documents to Google Drive in Claude.ai",
+          "url": "https://status.anthropic.com/incidents/4t4qg3vkrz6z",
+          "published_at": "2026-04-17T18:59:56.526Z",
+          "source": "Claude Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
