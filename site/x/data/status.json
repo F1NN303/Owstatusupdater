@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-04-17T17:25:39.750881Z",
-  "health": "ok",
+  "generated_at": "2026-04-17T18:12:38.638780Z",
+  "health": "degraded",
   "analytics": {
     "severity_key": "stable",
     "severity_score": 0,
-    "source_ok_count": 3,
+    "source_ok_count": 2,
     "source_total_count": 3,
     "model_version": "x-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
       "incidents": 1.95,
-      "source_health": 0.0,
+      "source_health": 0.35,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
@@ -35,7 +35,7 @@
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -45,7 +45,7 @@
       "reason": "aligned",
       "official_status": "operational",
       "derived_severity": "stable",
-      "source_ok": 3,
+      "source_ok": 2,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
     }
@@ -75,8 +75,8 @@
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
-    "url": "https://docs.x.com/status",
-    "summary": "X Developer Platform reports All systems are operational.",
+    "url": "https://statusgator.com/services/x",
+    "summary": "StatusGator reports that X is currently operational. There have been 52 user-submitted reports of outages in the past 24 hours.",
     "current_status": "operational",
     "reports_24h": 52,
     "incidents": [
@@ -129,31 +129,45 @@
         "acknowledgement": "Never acknowledged"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Sign in problem",
+        "count": 11
+      },
+      {
+        "label": "App not loading",
+        "count": 8
+      },
+      {
+        "label": "Service down",
+        "count": 2
+      },
+      {
+        "label": "Server not responding",
+        "count": 1
+      },
+      {
+        "label": "Unable to download",
+        "count": 1
+      },
+      {
+        "label": "Connectivity issue",
+        "count": 0
+      },
+      {
+        "label": "Error message",
+        "count": 0
+      },
+      {
+        "label": "Slow performance",
+        "count": 0
+      }
+    ],
     "top_reported_issues_meta": {
-      "source": "X Developer Platform Status",
-      "kind": "degraded-components",
-      "mode": "none"
+      "source": "StatusGator",
+      "kind": "community-labels"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-16T17:30:00Z",
-        "signal_value": 48.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-16T17:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-16T18:00:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-16T18:15:00Z",
         "signal_value": 2.0,
@@ -708,7 +722,25 @@
       },
       {
         "timestamp": "2026-04-17T17:15:00Z",
-        "signal_value": 2.0,
+        "signal_value": 23.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T17:30:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T17:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-17T18:00:00Z",
+        "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -719,17 +751,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-17T17:15:00Z"
+      "last_sample_at": "2026-04-17T18:00:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "17:40",
-        "count": 1
-      },
-      {
-        "label": "18:00",
-        "count": 3
-      },
       {
         "label": "18:20",
         "count": 0
@@ -1009,6 +1033,14 @@
       {
         "label": "17:20",
         "count": 0
+      },
+      {
+        "label": "17:40",
+        "count": 3
+      },
+      {
+        "label": "18:00",
+        "count": 4
       }
     ],
     "user_reports_24h_meta": {
@@ -1017,86 +1049,21 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-17T10:25:37-07:00"
+      "last_reviewed_at": "2026-04-17T14:12:17-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 214,
-        "last_reviewed_at": "2026-04-17T10:25:37-07:00"
-      }
-    ],
-    "current_status_origin": "X Developer Platform Status",
-    "summary_origin": "X Developer Platform Status",
-    "components": [
-      {
-        "component_id": "x-api-v2",
-        "name": "X API v2",
-        "status": "online",
-        "state": "Normal",
-        "source": "X Developer Platform Status",
-        "updated_at": "2026-04-17T17:25:38.738907Z",
-        "url": "https://docs.x.com/status"
-      },
-      {
-        "component_id": "gnip-enterprise-api",
-        "name": "GNIP Enterprise API",
-        "status": "online",
-        "state": "Normal",
-        "source": "X Developer Platform Status",
-        "updated_at": "2026-04-17T17:25:38.738907Z",
-        "url": "https://docs.x.com/status"
-      },
-      {
-        "component_id": "developer-console",
-        "name": "Developer Console",
-        "status": "online",
-        "state": "Normal",
-        "source": "X Developer Platform Status",
-        "updated_at": "2026-04-17T17:25:38.738907Z",
-        "url": "https://docs.x.com/status"
-      }
-    ],
-    "top_reported_issues_provider": [
-      {
-        "label": "Sign in problem",
-        "count": 11
-      },
-      {
-        "label": "App not loading",
-        "count": 7
-      },
-      {
-        "label": "Service down",
-        "count": 2
-      },
-      {
-        "label": "Server not responding",
-        "count": 1
-      },
-      {
-        "label": "Unable to download",
-        "count": 1
-      },
-      {
-        "label": "Other",
-        "count": 1
-      },
-      {
-        "label": "Connectivity issue",
-        "count": 0
-      },
-      {
-        "label": "Error message",
-        "count": 0
+        "reports_24h": 217,
+        "last_reviewed_at": "2026-04-17T14:12:17-04:00"
       }
     ]
   },
   "reports": [
     {
       "title": "Content and feeds not loading",
-      "url": "https://docs.x.com/status",
+      "url": "https://statusgator.com/services/x",
       "published_at": "2026-04-17T01:34:01Z",
       "source": "StatusGator",
       "meta": "Never acknowledged"
@@ -1108,21 +1075,21 @@
       "url": "https://docs.x.com/status",
       "source": "Official",
       "meta": "Status page",
-      "published_at": "2026-04-17T17:25:39.750881Z"
+      "published_at": "2026-04-17T18:12:38.638780Z"
     },
     {
       "title": "X Incident History",
       "url": "https://docs.x.com/incidents",
       "source": "Official",
       "meta": "Incident history",
-      "published_at": "2026-04-17T17:25:39.750881Z"
+      "published_at": "2026-04-17T18:12:38.638780Z"
     },
     {
       "title": "X Developer Platform Docs",
       "url": "https://docs.x.com/",
       "source": "Official",
       "meta": "Developer docs",
-      "published_at": "2026-04-17T17:25:39.750881Z"
+      "published_at": "2026-04-17T18:12:38.638780Z"
     }
   ],
   "news": [],
@@ -1139,11 +1106,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-17T17:25:37.510257Z",
+      "last_item_at": "2026-04-17T18:12:17.372160Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 306,
-      "fetched_at": "2026-04-17T17:25:37.510293Z",
+      "duration_ms": 133,
+      "fetched_at": "2026-04-17T18:12:17.372179Z",
       "cache_hit": false
     },
     {
@@ -1157,11 +1124,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-17T10:25:37-07:00",
+      "last_item_at": "2026-04-17T14:12:17-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1228,
-      "fetched_at": "2026-04-17T17:25:38.738366Z",
+      "duration_ms": 975,
+      "fetched_at": "2026-04-17T18:12:18.347354Z",
       "cache_hit": false
     },
     {
@@ -1172,43 +1139,48 @@
       "role": "official",
       "criticality": "required",
       "used_for_scoring": true,
-      "ok": true,
-      "error": null,
+      "ok": false,
+      "error": "HTTPSConnectionPool(host='docs.x.com', port=443): Read timed out. (read timeout=20)",
       "item_count": 0,
-      "last_item_at": "2026-04-17T17:25:38.738907Z",
-      "freshness": "fresh",
-      "age_minutes": 0,
-      "duration_ms": 1011,
-      "fetched_at": "2026-04-17T17:25:39.750472Z",
+      "last_item_at": null,
+      "freshness": "unknown",
+      "age_minutes": null,
+      "duration_ms": 20289,
+      "fetched_at": "2026-04-17T18:12:38.637889Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-17T17:25:39.750881Z",
+    "generated_at": "2026-04-17T18:12:38.638780Z",
     "overview": {
-      "confidence_score": 100.0,
-      "confidence_tier": "high",
-      "source_ok": 3,
+      "confidence_score": 43.0,
+      "confidence_tier": "low",
+      "source_ok": 2,
       "source_total": 3,
-      "required_ok": 1,
+      "required_ok": 0,
       "required_total": 1,
-      "required_met": true,
-      "scoring_ok": 3,
+      "required_met": false,
+      "scoring_ok": 2,
       "scoring_total": 3,
       "scoring_met": true,
-      "degraded_reasons": [],
+      "degraded_reasons": [
+        "required_source_failure",
+        "partial_source_failure",
+        "required_source_stale",
+        "stale_source_data"
+      ],
       "ratios": {
-        "required_ratio": 1.0,
-        "scoring_ratio": 1.0,
-        "recent_success_ratio": 1.0,
-        "freshness_ratio": 1.0
+        "required_ratio": 0.0,
+        "scoring_ratio": 0.667,
+        "recent_success_ratio": 0.982,
+        "freshness_ratio": 0.667
       }
     },
     "decision": {
-      "health": "ok",
+      "health": "degraded",
       "severity_key": "stable",
-      "explanation": "All configured sources are healthy and recently refreshed."
+      "explanation": "Reliability constraints detected: required source failure, partial source failure, required source stale."
     },
     "sources": [
       {
@@ -1222,9 +1194,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 306,
+          "duration_ms": 133,
           "cache_hit": false,
-          "at": "2026-04-17T17:25:37Z"
+          "at": "2026-04-17T18:12:17Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1233,7 +1205,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 312.8
+          "avg_duration_ms": 308.2
         },
         "metrics_7d": {
           "runs": 137,
@@ -1242,10 +1214,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 387.3
+          "avg_duration_ms": 386.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-17T17:25:37Z",
+        "last_success_at": "2026-04-17T18:12:17Z",
         "last_failure_at": null
       },
       {
@@ -1259,9 +1231,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1228,
+          "duration_ms": 975,
           "cache_hit": false,
-          "at": "2026-04-17T17:25:37Z"
+          "at": "2026-04-17T18:12:17Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1270,7 +1242,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1187.8
+          "avg_duration_ms": 1183.8
         },
         "metrics_7d": {
           "runs": 137,
@@ -1279,10 +1251,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1103.9
+          "avg_duration_ms": 1103.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-17T17:25:37Z",
+        "last_success_at": "2026-04-17T18:12:17Z",
         "last_failure_at": null
       },
       {
@@ -1294,51 +1266,60 @@
         "criticality": "required",
         "used_for_scoring": true,
         "latest": {
-          "ok": true,
-          "freshness": "fresh",
-          "duration_ms": 1011,
+          "ok": false,
+          "freshness": "unknown",
+          "duration_ms": 20289,
           "cache_hit": false,
-          "at": "2026-04-17T17:25:37Z"
+          "at": "2026-04-17T18:12:17Z"
         },
         "metrics_24h": {
           "runs": 19,
-          "ok": 19,
-          "stale": 0,
-          "success_rate": 100.0,
-          "stale_rate": 0.0,
+          "ok": 18,
+          "stale": 1,
+          "success_rate": 94.7,
+          "stale_rate": 5.3,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1810.3
+          "avg_duration_ms": 2769.6
         },
         "metrics_7d": {
           "runs": 137,
-          "ok": 137,
-          "stale": 0,
-          "success_rate": 100.0,
-          "stale_rate": 0.0,
+          "ok": 136,
+          "stale": 1,
+          "success_rate": 99.3,
+          "stale_rate": 0.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1355.6
+          "avg_duration_ms": 1499.0
         },
-        "consecutive_failures": 0,
+        "consecutive_failures": 1,
         "last_success_at": "2026-04-17T17:25:37Z",
-        "last_failure_at": null
+        "last_failure_at": "2026-04-17T18:12:17Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-17T17:25:39.750881Z",
+    "generated_at": "2026-04-17T18:12:38.638780Z",
     "incidents": {
       "new": [],
       "updated": [],
       "resolved": []
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "dbb80b7ab50fc596",
+          "title": "Content and feeds not loading",
+          "url": "https://statusgator.com/services/x",
+          "published_at": "2026-04-17T01:34:01Z",
+          "source": "StatusGator",
+          "meta": "Never acknowledged"
+        }
+      ]
     },
     "summary": {
       "new_incidents": 0,
       "updated_incidents": 0,
       "resolved_incidents": 0,
-      "new_reports": 0
+      "new_reports": 1
     }
   }
 }
