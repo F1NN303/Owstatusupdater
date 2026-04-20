@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-04-20T13:47:48.276564Z",
+  "generated_at": "2026-04-20T14:41:05.082075Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 1.7,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 226,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 1,
+      "reports_24h": 345,
+      "recent_incidents_6h": 3,
+      "recent_incidents_24h": 4,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-04-20T13:47:47.699942Z",
+        "published_at": "2026-04-20T14:41:04.403220Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Users unable to load ChatGPT and Codex",
+        "url": "https://status.openai.com/incidents/01KPNN2V2SMP3TAN3MCJK87W50#01KPNN2V2SZN5C2WKHQB2HV010",
+        "published_at": "2026-04-20T14:35:33Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating"
       },
       {
         "title": "Users may encounter issue with ChatGPT Business after upgrade or adding new seats for up to an hour",
@@ -141,30 +149,42 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Critical / Resolved"
-      },
-      {
-        "title": "ChatGPT FedRAMP workspaces not loading",
-        "url": "https://status.openai.com/incidents/01KP96N94V5AJX22P8APDX6XH2#01KP96N94V7RYY51EVW1GGBE7X",
-        "published_at": "2026-04-15T17:55:00Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved"
       }
     ],
-    "last_statement_at": "2026-04-20T13:47:47.699942Z"
+    "last_statement_at": "2026-04-20T14:41:04.403220Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 226,
+    "summary": "OpenAI Statuspage reports an active incident: Users unable to load ChatGPT and Codex.",
+    "current_status": "degraded",
+    "reports_24h": 345,
     "incidents": [
+      {
+        "title": "Users unable to load ChatGPT and Codex",
+        "started_at": "2026-04-20T14:37:02Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Users unable to load ChatGPT and Codex",
+        "started_at": "2026-04-20T14:35:33Z",
+        "duration": "5m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01KPNN2V2SMP3TAN3MCJK87W50"
+      },
+      {
+        "title": "Chat and image generation features not loading or responding",
+        "started_at": "2026-04-20T14:25:08Z",
+        "duration": "",
+        "acknowledgement": "12m later"
+      },
       {
         "title": "Users may encounter issue with ChatGPT Business after upgrade or adding new seats for up to an hour",
         "started_at": "2026-04-20T07:13:42Z",
-        "duration": "6h 34m ongoing",
+        "duration": "7h 27m ongoing",
         "acknowledgement": "None / Monitoring",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KPMVSSRWY55RX257730KS2FA"
@@ -185,12 +205,6 @@
       },
       {
         "title": "ChatGPT FedRAMP workspaces not loading",
-        "started_at": "2026-04-15T18:36:53Z",
-        "duration": "20m",
-        "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "ChatGPT FedRAMP workspaces not loading",
         "started_at": "2026-04-15T18:32:35Z",
         "duration": "22m",
         "acknowledgement": "Critical / Resolved",
@@ -204,47 +218,48 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KP6EBCNE70DBFZ7Z56VG44N8"
-      },
-      {
-        "title": "Elevated 401 errors for API endpoints",
-        "started_at": "2026-04-12T20:40:24Z",
-        "duration": "1d 12h 1m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KP1PS4WFSH4CVJT0DJBKQ3FT"
-      },
-      {
-        "title": "Messaging feature showing errors and not working",
-        "started_at": "2026-04-11T17:51:00Z",
-        "duration": "31m",
-        "acknowledgement": "Never acknowledged"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "ChatGPT Atlas",
+        "count": 1
+      },
+      {
+        "label": "File uploads",
+        "count": 1
+      },
+      {
+        "label": "Compliance API",
+        "count": 1
+      },
+      {
+        "label": "Conversations",
+        "count": 1
+      },
+      {
+        "label": "Connectors/Apps",
+        "count": 1
+      },
+      {
+        "label": "App",
+        "count": 1
+      },
+      {
+        "label": "Voice mode",
+        "count": 1
+      },
+      {
+        "label": "Agent",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-19T14:00:00Z",
-        "signal_value": 17.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-19T14:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-19T14:30:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-19T14:45:00Z",
         "signal_value": 61.0,
@@ -799,9 +814,27 @@
       },
       {
         "timestamp": "2026-04-20T13:45:00Z",
-        "signal_value": 21.0,
+        "signal_value": 24.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-20T14:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-20T14:15:00Z",
+        "signal_value": 1686.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-04-20T14:30:00Z",
+        "signal_value": 4118.0,
+        "status_code": 2,
+        "status_label": "likely outage"
       }
     ],
     "service_health_24h_meta": {
@@ -810,22 +843,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-20T13:45:00Z"
+      "last_sample_at": "2026-04-20T14:30:00Z"
     },
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "14:00",
-        "count": 5
-      },
-      {
-        "label": "14:20",
-        "count": 6
-      },
-      {
-        "label": "14:40",
-        "count": 2
-      },
       {
         "label": "15:00",
         "count": 7
@@ -1100,7 +1120,19 @@
       },
       {
         "label": "13:40",
-        "count": 1
+        "count": 3
+      },
+      {
+        "label": "14:00",
+        "count": 4
+      },
+      {
+        "label": "14:20",
+        "count": 860
+      },
+      {
+        "label": "14:40",
+        "count": 65
       }
     ],
     "user_reports_24h_meta": {
@@ -1109,14 +1141,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-20T09:47:47-04:00"
+      "last_reviewed_at": "2026-04-20T10:41:03-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 226,
-        "last_reviewed_at": "2026-04-20T09:47:47-04:00"
+        "reports_24h": 1144,
+        "last_reviewed_at": "2026-04-20T10:41:03-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1186,42 +1218,7 @@
         "source": "OpenAI Statuspage API"
       },
       {
-        "name": "Conversations",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-26T22:18:01Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Voice mode",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-26T22:18:01Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Agent",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-26T22:18:01Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Connectors/Apps",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-26T22:18:01Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
         "name": "Codex Web",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-26T22:18:01Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "App",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-03-26T22:18:01Z",
@@ -1249,13 +1246,6 @@
         "source": "OpenAI Statuspage API"
       },
       {
-        "name": "Compliance API",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-03-26T22:18:01Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
         "name": "Video viewing",
         "status": "operational",
         "health": "operational",
@@ -1264,8 +1254,8 @@
       },
       {
         "name": "ChatGPT Atlas",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1327,43 +1317,85 @@
       },
       {
         "name": "File uploads",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-03-26T22:18:01Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Compliance API",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-03-26T22:18:01Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Conversations",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-03-26T22:18:01Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Connectors/Apps",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-03-26T22:18:01Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "App",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-03-26T22:18:01Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Voice mode",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-03-26T22:18:01Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "Agent",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Deep Research",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Search",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "GPTs",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Image Generation",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Login",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       }
@@ -1372,27 +1404,27 @@
     "top_reported_issues_provider": [
       {
         "label": "App not loading",
-        "count": 13
-      },
-      {
-        "label": "Server not responding",
-        "count": 6
+        "count": 88
       },
       {
         "label": "Service down",
-        "count": 4
-      },
-      {
-        "label": "Connectivity issue",
-        "count": 1
+        "count": 54
       },
       {
         "label": "Error message",
-        "count": 0
+        "count": 34
+      },
+      {
+        "label": "Server not responding",
+        "count": 33
       },
       {
         "label": "Sign in problem",
-        "count": 0
+        "count": 24
+      },
+      {
+        "label": "Connectivity issue",
+        "count": 5
       },
       {
         "label": "Slow performance",
@@ -1405,6 +1437,27 @@
     ]
   },
   "reports": [
+    {
+      "title": "Users unable to load ChatGPT and Codex",
+      "url": "https://status.openai.com/#2026-04-20T14:37:02Z",
+      "published_at": "2026-04-20T14:37:02Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Users unable to load ChatGPT and Codex",
+      "url": "https://status.openai.com/incidents/01KPNN2V2SMP3TAN3MCJK87W50",
+      "published_at": "2026-04-20T14:35:33Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
+      "title": "Chat and image generation features not loading or responding",
+      "url": "https://status.openai.com/#2026-04-20T14:25:08Z",
+      "published_at": "2026-04-20T14:25:08Z",
+      "source": "StatusGator",
+      "meta": "12m later"
+    },
     {
       "title": "Users may encounter issue with ChatGPT Business after upgrade or adding new seats for up to an hour",
       "url": "https://status.openai.com/incidents/01KPMVSSRWY55RX257730KS2FA",
@@ -1428,13 +1481,6 @@
     },
     {
       "title": "ChatGPT FedRAMP workspaces not loading",
-      "url": "https://status.openai.com/#2026-04-15T18:36:53Z",
-      "published_at": "2026-04-15T18:36:53Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
-      "title": "ChatGPT FedRAMP workspaces not loading",
       "url": "https://status.openai.com/incidents/01KP96N94V5AJX22P8APDX6XH2",
       "published_at": "2026-04-15T18:32:35Z",
       "source": "OpenAI Statuspage API",
@@ -1446,20 +1492,6 @@
       "published_at": "2026-04-14T16:49:17Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Elevated 401 errors for API endpoints",
-      "url": "https://status.openai.com/incidents/01KP1PS4WFSH4CVJT0DJBKQ3FT",
-      "published_at": "2026-04-12T20:40:24Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Messaging feature showing errors and not working",
-      "url": "https://status.openai.com/#2026-04-11T17:51:00Z",
-      "published_at": "2026-04-11T17:51:00Z",
-      "source": "StatusGator",
-      "meta": "Never acknowledged"
     }
   ],
   "known_resources": [
@@ -1468,45 +1500,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-20T13:47:48.276564Z"
+      "published_at": "2026-04-20T14:41:05.082075Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-20T13:47:48.276564Z"
+      "published_at": "2026-04-20T14:41:05.082075Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-20T13:47:48.276564Z"
+      "published_at": "2026-04-20T14:41:05.082075Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-20T13:47:48.276564Z"
+      "published_at": "2026-04-20T14:41:05.082075Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-20T13:47:48.276564Z"
+      "published_at": "2026-04-20T14:41:05.082075Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-04-20T13:47:47.699942Z",
+      "published_at": "2026-04-20T14:41:04.403220Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Users unable to load ChatGPT and Codex",
+      "url": "https://status.openai.com/incidents/01KPNN2V2SMP3TAN3MCJK87W50#01KPNN2V2SZN5C2WKHQB2HV010",
+      "published_at": "2026-04-20T14:35:33Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating"
     },
     {
       "title": "Users may encounter issue with ChatGPT Business after upgrade or adding new seats for up to an hour",
@@ -1555,14 +1595,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Critical / Resolved"
-    },
-    {
-      "title": "ChatGPT FedRAMP workspaces not loading",
-      "url": "https://status.openai.com/incidents/01KP96N94V5AJX22P8APDX6XH2#01KP97TZ4CX5AKFQT5KHYEAX9M",
-      "published_at": "2026-04-15T18:50:00Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Critical / Resolved"
     }
   ],
   "social": [],
@@ -1578,11 +1610,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-20T13:47:46.774495Z",
+      "last_item_at": "2026-04-20T14:41:03.460932Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 196,
-      "fetched_at": "2026-04-20T13:47:46.774511Z",
+      "duration_ms": 181,
+      "fetched_at": "2026-04-20T14:41:03.460949Z",
       "cache_hit": false
     },
     {
@@ -1596,11 +1628,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-20T09:47:47-04:00",
+      "last_item_at": "2026-04-20T10:41:03-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 924,
-      "fetched_at": "2026-04-20T13:47:47.699407Z",
+      "duration_ms": 941,
+      "fetched_at": "2026-04-20T14:41:04.402790Z",
       "cache_hit": false
     },
     {
@@ -1614,17 +1646,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-20T13:47:47.699942Z",
+      "last_item_at": "2026-04-20T14:41:04.403220Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 575,
-      "fetched_at": "2026-04-20T13:47:48.275062Z",
+      "duration_ms": 677,
+      "fetched_at": "2026-04-20T14:41:05.080856Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-20T13:47:48.276564Z",
+    "generated_at": "2026-04-20T14:41:05.082075Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1646,7 +1678,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1661,9 +1693,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 196,
+          "duration_ms": 181,
           "cache_hit": false,
-          "at": "2026-04-20T13:47:46Z"
+          "at": "2026-04-20T14:41:03Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1672,19 +1704,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 432.6
+          "avg_duration_ms": 430.0
         },
         "metrics_7d": {
-          "runs": 132,
-          "ok": 132,
+          "runs": 133,
+          "ok": 133,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 602.4
+          "avg_duration_ms": 599.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-20T13:47:46Z",
+        "last_success_at": "2026-04-20T14:41:03Z",
         "last_failure_at": null
       },
       {
@@ -1698,9 +1730,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 924,
+          "duration_ms": 941,
           "cache_hit": false,
-          "at": "2026-04-20T13:47:46Z"
+          "at": "2026-04-20T14:41:03Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1709,19 +1741,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 893.4
+          "avg_duration_ms": 884.4
         },
         "metrics_7d": {
-          "runs": 132,
-          "ok": 132,
+          "runs": 133,
+          "ok": 133,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 917.6
+          "avg_duration_ms": 917.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-20T13:47:46Z",
+        "last_success_at": "2026-04-20T14:41:03Z",
         "last_failure_at": null
       },
       {
@@ -1735,9 +1767,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 575,
+          "duration_ms": 677,
           "cache_hit": false,
-          "at": "2026-04-20T13:47:46Z"
+          "at": "2026-04-20T14:41:03Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1746,47 +1778,122 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 718.2
+          "avg_duration_ms": 715.5
         },
         "metrics_7d": {
-          "runs": 132,
-          "ok": 132,
+          "runs": 133,
+          "ok": 133,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 723.8
+          "avg_duration_ms": 723.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-20T13:47:46Z",
+        "last_success_at": "2026-04-20T14:41:03Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-20T13:47:48.276564Z",
+    "generated_at": "2026-04-20T14:41:05.082075Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "6b6475c9cfdc8375",
+          "title": "Users unable to load ChatGPT and Codex",
+          "started_at": "2026-04-20T14:37:02Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "9ded76b069860556",
+          "title": "Users unable to load ChatGPT and Codex",
+          "started_at": "2026-04-20T14:35:33Z",
+          "duration": "5m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "01196d52edb0985a",
+          "title": "Chat and image generation features not loading or responding",
+          "started_at": "2026-04-20T14:25:08Z",
+          "duration": "",
+          "acknowledgement": "12m later",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [
         {
           "id": "462fd2f4938395ec",
           "title": "Users may encounter issue with ChatGPT Business after upgrade or adding new seats for up to an hour",
           "started_at": "2026-04-20T07:13:42Z",
-          "duration": "6h 34m ongoing",
+          "duration": "7h 27m ongoing",
           "acknowledgement": "None / Monitoring",
           "url": "https://status.openai.com/"
         }
       ],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "fa4a758b9eed9cb8",
+          "title": "ChatGPT FedRAMP workspaces not loading",
+          "started_at": "2026-04-15T18:36:53Z",
+          "duration": "20m",
+          "acknowledgement": "down icon Down",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "161decb372bde702",
+          "title": "Elevated 401 errors for API endpoints",
+          "started_at": "2026-04-12T20:40:24Z",
+          "duration": "1d 12h 1m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "2e656d1f71e7fda1",
+          "title": "Messaging feature showing errors and not working",
+          "started_at": "2026-04-11T17:51:00Z",
+          "duration": "31m",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "60a4b4b527266169",
+          "title": "Users unable to load ChatGPT and Codex",
+          "url": "https://status.openai.com/#2026-04-20T14:37:02Z",
+          "published_at": "2026-04-20T14:37:02Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "572210d415021004",
+          "title": "Users unable to load ChatGPT and Codex",
+          "url": "https://status.openai.com/incidents/01KPNN2V2SMP3TAN3MCJK87W50",
+          "published_at": "2026-04-20T14:35:33Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Investigating"
+        },
+        {
+          "id": "e7987cb42765aa35",
+          "title": "Chat and image generation features not loading or responding",
+          "url": "https://status.openai.com/#2026-04-20T14:25:08Z",
+          "published_at": "2026-04-20T14:25:08Z",
+          "source": "StatusGator",
+          "meta": "12m later"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 3,
       "updated_incidents": 1,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 3,
+      "new_reports": 3
     }
   }
 }
