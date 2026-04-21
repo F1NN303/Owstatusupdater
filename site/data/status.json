@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-04-21T19:24:38.479358Z",
+  "generated_at": "2026-04-21T20:27:33.000999Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 3,
+    "severity_key": "stable",
+    "severity_score": 0,
     "source_ok_count": 6,
     "source_total_count": 6,
     "model_version": "2.4",
     "score_breakdown": {
-      "reports": 0.0,
+      "reports": 0.6,
       "incidents": 3.165,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 110,
+      "reports_24h": 386,
       "recent_incidents_6h": 1,
       "recent_incidents_24h": 1,
       "cross_source": {
@@ -27,7 +27,7 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
@@ -35,31 +35,31 @@
       "recency_decay": true
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
-      "official_status": "degraded",
-      "derived_severity": "minor",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
+      "official_status": "operational",
+      "derived_severity": "stable",
       "source_ok": 6,
       "source_total": 6,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
       "severity_key": "stable",
-      "severity_score": 2,
-      "report_weight": 0.0
+      "severity_score": 0,
+      "report_weight": 0.333
     },
     "na": {
       "severity_key": "stable",
-      "severity_score": 2,
-      "report_weight": 0.0
+      "severity_score": 0,
+      "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
-      "report_weight": 1.0
+      "severity_key": "stable",
+      "severity_score": 0,
+      "report_weight": 0.333
     }
   },
   "official": {
@@ -113,14 +113,14 @@
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://statusgator.com/services/overwatch-2",
-    "summary": "StatusGator incident table is available. Latest listed incident: Login and connection issues.",
-    "current_status": "degraded",
-    "reports_24h": 110,
+    "summary": "StatusGator reports that Overwatch 2 is currently operational. There have been 386 user-submitted reports of outages in the past 24 hours.",
+    "current_status": "operational",
+    "reports_24h": 386,
     "incidents": [
       {
         "title": "Login and connection issues",
         "started_at": "2026-04-21T18:39:01Z",
-        "duration": "",
+        "duration": "1h 12m",
         "acknowledgement": "Never acknowledged"
       },
       {
@@ -169,11 +169,11 @@
     "top_reported_issues": [
       {
         "label": "Connectivity issue",
-        "count": 91
+        "count": 95
       },
       {
         "label": "Sign in problem",
-        "count": 66
+        "count": 70
       },
       {
         "label": "Slow performance",
@@ -181,7 +181,7 @@
       },
       {
         "label": "Server not responding",
-        "count": 20
+        "count": 21
       },
       {
         "label": "Service down",
@@ -189,7 +189,7 @@
       },
       {
         "label": "App not loading",
-        "count": 4
+        "count": 6
       },
       {
         "label": "Error message",
@@ -205,30 +205,6 @@
       "kind": "community-labels"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-20T19:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T19:45:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T20:00:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T20:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-20T20:30:00Z",
         "signal_value": 26.0,
@@ -777,9 +753,33 @@
       },
       {
         "timestamp": "2026-04-21T19:15:00Z",
-        "signal_value": 912.0,
+        "signal_value": 1150.0,
         "status_code": 1,
         "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-04-21T19:30:00Z",
+        "signal_value": 145.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T19:45:00Z",
+        "signal_value": 31.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T20:00:00Z",
+        "signal_value": 33.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T20:15:00Z",
+        "signal_value": 29.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -788,22 +788,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-21T19:15:00Z"
+      "last_sample_at": "2026-04-21T20:15:00Z"
     },
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "19:40",
-        "count": 2
-      },
-      {
-        "label": "20:00",
-        "count": 2
-      },
-      {
-        "label": "20:20",
-        "count": 0
-      },
       {
         "label": "20:40",
         "count": 2
@@ -1079,6 +1066,18 @@
       {
         "label": "19:20",
         "count": 1
+      },
+      {
+        "label": "19:40",
+        "count": 3
+      },
+      {
+        "label": "20:00",
+        "count": 3
+      },
+      {
+        "label": "20:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1087,14 +1086,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-21T15:24:30-04:00"
+      "last_reviewed_at": "2026-04-21T20:27:23Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 110,
-        "last_reviewed_at": "2026-04-21T15:24:30-04:00"
+        "reports_24h": 113,
+        "last_reviewed_at": "2026-04-21T20:27:23Z"
       }
     ],
     "services": [
@@ -1104,8 +1103,8 @@
         "label": "Europe",
         "status": "online",
         "severity_key": "stable",
-        "score": 2,
-        "weight": 0.0,
+        "score": 0,
+        "weight": 33.3,
         "source": "Derived regional blend"
       },
       {
@@ -1114,18 +1113,18 @@
         "label": "North America",
         "status": "online",
         "severity_key": "stable",
-        "score": 2,
-        "weight": 0.0,
+        "score": 0,
+        "weight": 33.3,
         "source": "Derived regional blend"
       },
       {
         "service_id": "region-apac",
         "name": "Asia Pacific Region",
         "label": "Asia Pacific",
-        "status": "degraded",
-        "severity_key": "degraded",
-        "score": 5,
-        "weight": 100.0,
+        "status": "online",
+        "severity_key": "stable",
+        "score": 0,
+        "weight": 33.3,
         "source": "Derived regional blend"
       }
     ],
@@ -1136,74 +1135,74 @@
   },
   "reports": [
     {
-      "title": "Connection Problem with Game start",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/connection-problem-with-game-start/1015722",
-      "published_at": "2026-04-21T19:22:55.867Z",
+      "title": "\"connection to server lost\" practically every match",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/connection-to-server-lost-practically-every-match/1015646",
+      "published_at": "2026-04-21T20:26:29.115Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 4 views"
+      "meta": "6 posts | 27 views"
     },
     {
-      "title": "RAM Usage Doubles when re-launching the game",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/ram-usage-doubles-when-re-launching-the-game/1015719",
-      "published_at": "2026-04-21T19:19:23.983Z",
+      "title": "Loot boxes locked",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/loot-boxes-locked/952962",
+      "published_at": "2026-04-21T20:22:57.257Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 7 views"
+      "meta": "3 posts | 60 views"
     },
     {
-      "title": "Missing Console Tank Top 500 Rank for Season 18 Asia",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-console-tank-top-500-rank-for-season-18-asia/1013242",
-      "published_at": "2026-04-21T19:15:10.147Z",
+      "title": "Missing Cosmetics?",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-cosmetics/1013731",
+      "published_at": "2026-04-21T20:22:19.940Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "2 posts | 10 views"
+      "meta": "23 posts | 296 views"
     },
     {
-      "title": "Junkrat mythical skin not available",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/junkrat-mythical-skin-not-available/1013479",
-      "published_at": "2026-04-21T19:02:26.302Z",
+      "title": "Crashes (EXCEPTION_ACCESS_VIOLATION) on match start",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/crashes-exceptionaccessviolation-on-match-start/1015729",
+      "published_at": "2026-04-21T20:20:38.126Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "39 posts | 1508 views"
+      "meta": "1 posts | 2 views"
     },
     {
-      "title": "Missing T500 Rewards",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-t500-rewards/1015714",
-      "published_at": "2026-04-21T18:47:03.781Z",
+      "title": "Ramattra’s Bullets Invisible",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/ramattra%E2%80%99s-bullets-invisible/1015727",
+      "published_at": "2026-04-21T20:08:43.483Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 6 views"
+      "meta": "1 posts | 3 views"
     },
     {
-      "title": "Pompompurin mercy icon disappeared",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/pompompurin-mercy-icon-disappeared/1013588",
-      "published_at": "2026-04-21T18:24:17.385Z",
+      "title": "Keybinds are still bugged",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/keybinds-are-still-bugged/1015725",
+      "published_at": "2026-04-21T19:38:45.268Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "31 posts | 1563 views"
+      "meta": "1 posts | 5 views"
     },
     {
-      "title": "Where is the Mythic Zarya skin?",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/where-is-the-mythic-zarya-skin/1015708",
-      "published_at": "2026-04-21T18:11:24.861Z",
+      "title": "Game crash during comp match",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/game-crash-during-comp-match/1015724",
+      "published_at": "2026-04-21T19:37:22.860Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "2 posts | 19 views"
+      "meta": "1 posts | 5 views"
     },
     {
-      "title": "New Queen Street: Robot Stopped Moving",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/new-queen-street-robot-stopped-moving/1005436",
-      "published_at": "2026-04-21T18:07:29.363Z",
+      "title": "Missing skins after the new season",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-skins-after-the-new-season/1015136",
+      "published_at": "2026-04-21T19:36:42.329Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "3 posts | 38 views"
+      "meta": "6 posts | 46 views"
     },
     {
       "title": "Strange log in error",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/strange-log-in-error/1015655",
       "published_at": "2026-04-21T16:57:57.878Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "3 posts | 223 views"
+      "meta": "3 posts | 233 views"
     },
     {
       "title": "Is your first battlenet user change actually free?",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/is-your-first-battlenet-user-change-actually-free/1015677",
       "published_at": "2026-04-21T15:58:31.671Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "1 posts | 21 views"
+      "meta": "1 posts | 23 views"
     }
   ],
   "known_resources": [
@@ -1212,14 +1211,14 @@
       "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-known-issues-april-15-2026/942905",
       "published_at": "2025-04-23T21:47:27.953Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "2 posts | 197612 views"
+      "meta": "2 posts | 197645 views"
     },
     {
       "title": "Known Technical Support Issues",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/known-technical-support-issues/25",
       "published_at": "2024-06-14T15:44:35.443Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "14 posts | 177046 views"
+      "meta": "14 posts | 177049 views"
     }
   ],
   "news": [
@@ -1252,7 +1251,15 @@
       "meta": null
     }
   ],
-  "social": [],
+  "social": [
+    {
+      "title": "View latest post on X",
+      "url": "https://x.com/PlayOverwatch/status/2046333095893152027",
+      "published_at": null,
+      "source": "X - PlayOverwatch (mirror)",
+      "meta": "Mirror feed, may be delayed"
+    }
+  ],
   "sources": [
     {
       "source_id": "statusgator",
@@ -1265,11 +1272,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-21T19:24:29.745812Z",
+      "last_item_at": "2026-04-21T20:27:23.826696Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 228,
-      "fetched_at": "2026-04-21T19:24:29.745832Z",
+      "duration_ms": 311,
+      "fetched_at": "2026-04-21T20:27:23.826714Z",
       "cache_hit": false
     },
     {
@@ -1283,11 +1290,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-21T15:24:30-04:00",
+      "last_item_at": "2026-04-21T20:27:23Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1501,
-      "fetched_at": "2026-04-21T19:24:31.019214Z",
+      "duration_ms": 749,
+      "fetched_at": "2026-04-21T20:27:24.265078Z",
       "cache_hit": false
     },
     {
@@ -1303,9 +1310,9 @@
       "item_count": 8,
       "last_item_at": "2026-04-21T16:57:57.878Z",
       "freshness": "warm",
-      "age_minutes": 146,
-      "duration_ms": 447,
-      "fetched_at": "2026-04-21T19:24:29.967008Z",
+      "age_minutes": 209,
+      "duration_ms": 398,
+      "fetched_at": "2026-04-21T20:27:23.915377Z",
       "cache_hit": false
     },
     {
@@ -1319,11 +1326,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-21T19:22:55.867Z",
+      "last_item_at": "2026-04-21T20:26:29.115Z",
       "freshness": "fresh",
-      "age_minutes": 1,
-      "duration_ms": 411,
-      "fetched_at": "2026-04-21T19:24:29.932037Z",
+      "age_minutes": 0,
+      "duration_ms": 426,
+      "fetched_at": "2026-04-21T20:27:23.944884Z",
       "cache_hit": false
     },
     {
@@ -1337,11 +1344,11 @@
       "ok": true,
       "error": null,
       "item_count": 4,
-      "last_item_at": "2026-04-21T19:24:29.678696Z",
+      "last_item_at": "2026-04-21T20:27:23.729419Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 157,
-      "fetched_at": "2026-04-21T19:24:29.678721Z",
+      "duration_ms": 210,
+      "fetched_at": "2026-04-21T20:27:23.729446Z",
       "cache_hit": false
     },
     {
@@ -1354,18 +1361,18 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 0,
-      "last_item_at": "2026-04-21T19:24:38.476846Z",
+      "item_count": 1,
+      "last_item_at": "2026-04-21T20:27:32.997545Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 8955,
-      "fetched_at": "2026-04-21T19:24:38.476872Z",
+      "duration_ms": 9477,
+      "fetched_at": "2026-04-21T20:27:32.997570Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-21T19:24:38.479358Z",
+    "generated_at": "2026-04-21T20:27:33.000999Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1387,7 +1394,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1402,9 +1409,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 228,
+          "duration_ms": 311,
           "cache_hit": false,
-          "at": "2026-04-21T19:24:29Z"
+          "at": "2026-04-21T20:27:23Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1413,19 +1420,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 507.0
+          "avg_duration_ms": 476.1
         },
         "metrics_7d": {
-          "runs": 135,
-          "ok": 135,
+          "runs": 134,
+          "ok": 134,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 541.1
+          "avg_duration_ms": 544.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T19:24:29Z",
+        "last_success_at": "2026-04-21T20:27:23Z",
         "last_failure_at": null
       },
       {
@@ -1439,9 +1446,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1501,
+          "duration_ms": 749,
           "cache_hit": false,
-          "at": "2026-04-21T19:24:29Z"
+          "at": "2026-04-21T20:27:23Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1450,19 +1457,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 905.7
+          "avg_duration_ms": 906.3
         },
         "metrics_7d": {
-          "runs": 135,
-          "ok": 135,
+          "runs": 134,
+          "ok": 134,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 867.8
+          "avg_duration_ms": 869.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T19:24:29Z",
+        "last_success_at": "2026-04-21T20:27:23Z",
         "last_failure_at": null
       },
       {
@@ -1476,9 +1483,9 @@
         "latest": {
           "ok": true,
           "freshness": "warm",
-          "duration_ms": 447,
+          "duration_ms": 398,
           "cache_hit": false,
-          "at": "2026-04-21T19:24:29Z"
+          "at": "2026-04-21T20:27:23Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1487,19 +1494,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 436.7
+          "avg_duration_ms": 430.1
         },
         "metrics_7d": {
-          "runs": 135,
-          "ok": 135,
+          "runs": 134,
+          "ok": 134,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 442.9
+          "avg_duration_ms": 441.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T19:24:29Z",
+        "last_success_at": "2026-04-21T20:27:23Z",
         "last_failure_at": null
       },
       {
@@ -1513,9 +1520,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 411,
+          "duration_ms": 426,
           "cache_hit": false,
-          "at": "2026-04-21T19:24:29Z"
+          "at": "2026-04-21T20:27:23Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1524,19 +1531,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 425.6
+          "avg_duration_ms": 419.2
         },
         "metrics_7d": {
-          "runs": 135,
-          "ok": 135,
+          "runs": 134,
+          "ok": 134,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 442.2
+          "avg_duration_ms": 441.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T19:24:29Z",
+        "last_success_at": "2026-04-21T20:27:23Z",
         "last_failure_at": null
       },
       {
@@ -1550,9 +1557,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 157,
+          "duration_ms": 210,
           "cache_hit": false,
-          "at": "2026-04-21T19:24:29Z"
+          "at": "2026-04-21T20:27:23Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1561,19 +1568,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 250.5
+          "avg_duration_ms": 254.4
         },
         "metrics_7d": {
-          "runs": 135,
-          "ok": 135,
+          "runs": 134,
+          "ok": 134,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 239.7
+          "avg_duration_ms": 240.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T19:24:29Z",
+        "last_success_at": "2026-04-21T20:27:23Z",
         "last_failure_at": null
       },
       {
@@ -1587,9 +1594,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 8955,
+          "duration_ms": 9477,
           "cache_hit": false,
-          "at": "2026-04-21T19:24:29Z"
+          "at": "2026-04-21T20:27:23Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1598,120 +1605,111 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 5599.0
+          "avg_duration_ms": 6103.3
         },
         "metrics_7d": {
-          "runs": 135,
-          "ok": 134,
+          "runs": 134,
+          "ok": 133,
           "stale": 1,
           "success_rate": 99.3,
           "stale_rate": 0.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 5677.4
+          "avg_duration_ms": 5732.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T19:24:29Z",
+        "last_success_at": "2026-04-21T20:27:23Z",
         "last_failure_at": "2026-04-20T05:44:34Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-21T19:24:38.479358Z",
+    "generated_at": "2026-04-21T20:27:33.000999Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "8061e1ca6a5c38ff",
           "title": "Login and connection issues",
           "started_at": "2026-04-21T18:39:01Z",
-          "duration": "",
+          "duration": "1h 12m",
           "acknowledgement": "Never acknowledged",
           "url": "https://statusgator.com/services/overwatch-2"
         }
       ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "adf9204a4ea9e749",
-          "title": "Server connection issues",
-          "started_at": "2026-03-31T18:03:01Z",
-          "duration": "5h 32m",
-          "acknowledgement": "Never acknowledged",
-          "url": "https://statusgator.com/services/overwatch-2"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
       "new": [
         {
-          "id": "14cf9f38e4675dbf",
-          "title": "Connection Problem with Game start",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/connection-problem-with-game-start/1015722",
-          "published_at": "2026-04-21T19:22:55.867Z",
+          "id": "0da32e30a564281f",
+          "title": "\"connection to server lost\" practically every match",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/connection-to-server-lost-practically-every-match/1015646",
+          "published_at": "2026-04-21T20:26:29.115Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "1 posts | 4 views"
+          "meta": "6 posts | 27 views"
         },
         {
-          "id": "da59c0d71c20c53c",
-          "title": "RAM Usage Doubles when re-launching the game",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/ram-usage-doubles-when-re-launching-the-game/1015719",
-          "published_at": "2026-04-21T19:19:23.983Z",
+          "id": "e69400bd0738b65d",
+          "title": "Loot boxes locked",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/loot-boxes-locked/952962",
+          "published_at": "2026-04-21T20:22:57.257Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "1 posts | 7 views"
+          "meta": "3 posts | 60 views"
         },
         {
-          "id": "ca5104eb939ea099",
-          "title": "Missing Console Tank Top 500 Rank for Season 18 Asia",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-console-tank-top-500-rank-for-season-18-asia/1013242",
-          "published_at": "2026-04-21T19:15:10.147Z",
+          "id": "204527d60b7eaea5",
+          "title": "Missing Cosmetics?",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-cosmetics/1013731",
+          "published_at": "2026-04-21T20:22:19.940Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "2 posts | 10 views"
+          "meta": "23 posts | 296 views"
         },
         {
-          "id": "283b53b4f58454d3",
-          "title": "Junkrat mythical skin not available",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/junkrat-mythical-skin-not-available/1013479",
-          "published_at": "2026-04-21T19:02:26.302Z",
+          "id": "bf00b4b6b9bdc4ba",
+          "title": "Crashes (EXCEPTION_ACCESS_VIOLATION) on match start",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/crashes-exceptionaccessviolation-on-match-start/1015729",
+          "published_at": "2026-04-21T20:20:38.126Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "39 posts | 1508 views"
+          "meta": "1 posts | 2 views"
         },
         {
-          "id": "49441f56a46efb65",
-          "title": "Missing T500 Rewards",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-t500-rewards/1015714",
-          "published_at": "2026-04-21T18:47:03.781Z",
+          "id": "a4303c66226e536a",
+          "title": "Ramattra’s Bullets Invisible",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/ramattra%E2%80%99s-bullets-invisible/1015727",
+          "published_at": "2026-04-21T20:08:43.483Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "1 posts | 6 views"
+          "meta": "1 posts | 3 views"
         },
         {
-          "id": "e4801ed0929481af",
-          "title": "Pompompurin mercy icon disappeared",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/pompompurin-mercy-icon-disappeared/1013588",
-          "published_at": "2026-04-21T18:24:17.385Z",
+          "id": "17c9510f7ada0534",
+          "title": "Keybinds are still bugged",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/keybinds-are-still-bugged/1015725",
+          "published_at": "2026-04-21T19:38:45.268Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "31 posts | 1563 views"
+          "meta": "1 posts | 5 views"
         },
         {
-          "id": "dfaa9bda07f75ea3",
-          "title": "Where is the Mythic Zarya skin?",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/where-is-the-mythic-zarya-skin/1015708",
-          "published_at": "2026-04-21T18:11:24.861Z",
+          "id": "dd4018afb86b0ab7",
+          "title": "Game crash during comp match",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/game-crash-during-comp-match/1015724",
+          "published_at": "2026-04-21T19:37:22.860Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "2 posts | 19 views"
+          "meta": "1 posts | 5 views"
         },
         {
-          "id": "6d93d4f6899482e5",
-          "title": "New Queen Street: Robot Stopped Moving",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/new-queen-street-robot-stopped-moving/1005436",
-          "published_at": "2026-04-21T18:07:29.363Z",
+          "id": "edf851570ea93624",
+          "title": "Missing skins after the new season",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-skins-after-the-new-season/1015136",
+          "published_at": "2026-04-21T19:36:42.329Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "3 posts | 38 views"
+          "meta": "6 posts | 46 views"
         }
       ]
     },
     "summary": {
-      "new_incidents": 1,
-      "updated_incidents": 0,
-      "resolved_incidents": 1,
+      "new_incidents": 0,
+      "updated_incidents": 1,
+      "resolved_incidents": 0,
       "new_reports": 8
     }
   }
