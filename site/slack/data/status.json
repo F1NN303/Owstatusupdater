@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-21T15:16:01.874018Z",
+  "generated_at": "2026-04-21T16:36:42.255081Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 1,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "slack-1.0",
@@ -14,7 +14,7 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.1
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
       "reports_24h": 109,
@@ -29,22 +29,22 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_operational_cap_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "stable",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Slack Status API: Custom status not expiring",
+    "summary": "Slack Status API: Slack is up and running",
     "updates": [
       {
-        "title": "Slack Status API: Custom status not expiring",
+        "title": "Slack Status API: Slack is up and running",
         "url": "https://slack-status.com/",
-        "published_at": "2026-04-21T15:16:01.258456Z",
+        "published_at": "2026-04-21T16:36:41.576046Z",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Indicator: active"
+        "meta": "Indicator: ok"
+      },
+      {
+        "title": "Custom status not expiring",
+        "url": "https://slack-status.com/2026-04/be1299791e068265#note-2",
+        "published_at": "2026-04-21T08:47:38-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Incident / Services: Messaging / Resolved This issue is now resolved for all users. Current status and recent actions taken: Custom statuses set to expire at a specific time are now clearing as expected. The issue self-resolved when the next scheduled expiration job succes"
       },
       {
         "title": "Custom status not expiring",
@@ -84,7 +92,7 @@
         "published_at": "2026-04-21T06:46:30-07:00",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Active / Incident / Services: Messaging / We're aware of an issue affecting Slack. Some users who have set a custom status to expire at a specific time are finding that their status is not automatically clearing as expected. We're actively investigating and we'll provide an update "
+        "meta": "Resolved / Incident / Services: Messaging / We're aware of an issue affecting Slack. Some users who have set a custom status to expire at a specific time are finding that their status is not automatically clearing as expected. We're actively investigating and we'll provide an update "
       },
       {
         "title": "Users may experience delays due to increased load on bychan keyspace affecting system performance",
@@ -141,37 +149,29 @@
         "source": "Slack Status API",
         "channel": "official-status-page",
         "meta": "Resolved / Incident / Services: Connectivity, Workflows / Current status and recent actions taken: After monitoring system performance and infrastructure stability, we have confirmed that all Slack features are operating within expected levels. This incident is now resolved and users should no lon"
-      },
-      {
-        "title": "Trouble with Slackbot and AI-powered features",
-        "url": "https://slack-status.com/2026-04/2e11633c5821fcd0#note-12",
-        "published_at": "2026-04-09T11:13:03-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / Services: Connectivity, Workflows / Current status and actions being taken: We've deployed an emergency fix to address the issues contributing to intermittent errors with Slackbot and Workflows. We're now seeing significant recovery across all affected services and are contin"
       }
     ],
-    "last_statement_at": "2026-04-21T15:16:01.258456Z"
+    "last_statement_at": "2026-04-21T16:36:41.576046Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://slack-status.com/",
-    "summary": "Slack Status reports an active incident: Custom status not expiring.",
-    "current_status": "degraded",
+    "summary": "Slack Status reports Slack is up and running. No active incidents are listed.",
+    "current_status": "operational",
     "reports_24h": 109,
     "incidents": [
       {
         "title": "Custom status not expiring",
         "started_at": "2026-04-21T13:49:45Z",
-        "duration": "1m",
+        "duration": "2h",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Custom status not expiring",
         "started_at": "2026-04-21T06:46:30-07:00",
-        "duration": "1h 29m ongoing",
-        "acknowledgement": "Incident / Active / Messaging",
+        "duration": "2h 1m",
+        "acknowledgement": "Incident / Resolved / Messaging",
         "source": "Slack Status API",
         "url": "https://slack-status.com/2026-04/be1299791e068265"
       },
@@ -218,58 +218,13 @@
         "url": "https://slack-status.com/2026-04/2e11633c5821fcd0"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Messaging",
-        "count": 1
-      },
-      {
-        "label": "Messaging",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "Slack Status API",
       "kind": "component-grid",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-20T15:15:00Z",
-        "signal_value": 15.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T15:30:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T15:45:00Z",
-        "signal_value": 13.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T16:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T16:15:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T16:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-20T16:45:00Z",
         "signal_value": 15.0,
@@ -809,6 +764,42 @@
         "signal_value": 18.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T15:15:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T15:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T15:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T16:00:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T16:15:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T16:30:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -817,26 +808,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-21T15:00:00Z"
+      "last_sample_at": "2026-04-21T16:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "15:20",
-        "count": 0
-      },
-      {
-        "label": "15:40",
-        "count": 2
-      },
-      {
-        "label": "16:00",
-        "count": 3
-      },
-      {
-        "label": "16:20",
-        "count": 1
-      },
       {
         "label": "16:40",
         "count": 3
@@ -1108,6 +1083,22 @@
       {
         "label": "15:00",
         "count": 3
+      },
+      {
+        "label": "15:20",
+        "count": 1
+      },
+      {
+        "label": "15:40",
+        "count": 3
+      },
+      {
+        "label": "16:00",
+        "count": 0
+      },
+      {
+        "label": "16:20",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1116,14 +1107,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-21T15:16:00Z"
+      "last_reviewed_at": "2026-04-21T12:36:40-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 109,
-        "last_reviewed_at": "2026-04-21T15:16:00Z"
+        "last_reviewed_at": "2026-04-21T12:36:40-04:00"
       }
     ],
     "current_status_origin": "Slack Status API",
@@ -1133,77 +1124,77 @@
         "name": "Login/SSO",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Connectivity",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Messaging",
-        "status": "something's not quite right. view details",
-        "health": "Something's not quite right. View details",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "status": "operational",
+        "health": "No issues",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Files",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Notifications",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Huddles",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Search",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Apps/Integrations/APIs",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workspace/Org Administration",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workflows",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Canvases",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-04-21T06:46:30-07:00",
+        "updated_at": "2026-04-21T08:47:38-07:00",
         "source": "Slack Status API"
       }
     ],
@@ -1256,7 +1247,7 @@
       "url": "https://slack-status.com/2026-04/be1299791e068265",
       "published_at": "2026-04-21T06:46:30-07:00",
       "source": "Slack Status API",
-      "meta": "Incident / Active / Messaging"
+      "meta": "Incident / Resolved / Messaging"
     },
     {
       "title": "Users may experience delays due to increased load on bychan keyspace affecting system performance",
@@ -1307,52 +1298,60 @@
       "url": "https://slack-status.com/",
       "source": "Official",
       "meta": "Dashboard",
-      "published_at": "2026-04-21T15:16:01.874018Z"
+      "published_at": "2026-04-21T16:36:42.255081Z"
     },
     {
       "title": "Slack Status API docs",
       "url": "https://slack-status.com/api",
       "source": "Official",
       "meta": "API docs",
-      "published_at": "2026-04-21T15:16:01.874018Z"
+      "published_at": "2026-04-21T16:36:42.255081Z"
     },
     {
       "title": "Slack Status current API",
       "url": "https://slack-status.com/api/v2.0.0/current",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-21T15:16:01.874018Z"
+      "published_at": "2026-04-21T16:36:42.255081Z"
     },
     {
       "title": "Slack Status history API",
       "url": "https://slack-status.com/api/v2.0.0/history",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-21T15:16:01.874018Z"
+      "published_at": "2026-04-21T16:36:42.255081Z"
     },
     {
       "title": "Slack Status history RSS",
       "url": "https://slack-status.com/feed/rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-21T15:16:01.874018Z"
+      "published_at": "2026-04-21T16:36:42.255081Z"
     },
     {
       "title": "Slack connection troubleshooting",
       "url": "https://slack.com/help/articles/205138367-Troubleshoot-connection-issues",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-21T15:16:01.874018Z"
+      "published_at": "2026-04-21T16:36:42.255081Z"
     }
   ],
   "news": [
     {
-      "title": "Slack Status API: Custom status not expiring",
+      "title": "Slack Status API: Slack is up and running",
       "url": "https://slack-status.com/",
-      "published_at": "2026-04-21T15:16:01.258456Z",
+      "published_at": "2026-04-21T16:36:41.576046Z",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Indicator: active"
+      "meta": "Indicator: ok"
+    },
+    {
+      "title": "Custom status not expiring",
+      "url": "https://slack-status.com/2026-04/be1299791e068265#note-2",
+      "published_at": "2026-04-21T08:47:38-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Incident / Services: Messaging / Resolved This issue is now resolved for all users. Current status and recent actions taken: Custom statuses set to expire at a specific time are now clearing as expected. The issue self-resolved when the next scheduled expiration job succes"
     },
     {
       "title": "Custom status not expiring",
@@ -1360,7 +1359,7 @@
       "published_at": "2026-04-21T06:46:30-07:00",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Active / Incident / Services: Messaging / We're aware of an issue affecting Slack. Some users who have set a custom status to expire at a specific time are finding that their status is not automatically clearing as expected. We're actively investigating and we'll provide an update "
+      "meta": "Resolved / Incident / Services: Messaging / We're aware of an issue affecting Slack. Some users who have set a custom status to expire at a specific time are finding that their status is not automatically clearing as expected. We're actively investigating and we'll provide an update "
     },
     {
       "title": "Users may experience delays due to increased load on bychan keyspace affecting system performance",
@@ -1401,14 +1400,6 @@
       "source": "Slack Status API",
       "channel": "official-status-page",
       "meta": "Resolved / Incident / Services: Messaging / We are actively working to resolve the current platform functionality issues. Current status and actions being taken: We've identified a fix and are actively deploying it across the platform. Once the rollout is complete, we'll monitor syst"
-    },
-    {
-      "title": "Trouble Sending Messages",
-      "url": "https://slack-status.com/2026-04/a982d547f16ab676#note-1",
-      "published_at": "2026-04-10T12:09:27-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Services: Messaging / We're investigating a new incident. Current impact to end users: Some users may experience trouble sending messages. We're investigating the issue and we regret any inconvenience this is causing. We'll provide an update within 30 minutes in"
     }
   ],
   "social": [],
@@ -1424,11 +1415,11 @@
       "ok": true,
       "error": null,
       "item_count": 5,
-      "last_item_at": "2026-04-21T15:16:00.239353Z",
+      "last_item_at": "2026-04-21T16:36:40.422522Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 142,
-      "fetched_at": "2026-04-21T15:16:00.239369Z",
+      "duration_ms": 636,
+      "fetched_at": "2026-04-21T16:36:40.422539Z",
       "cache_hit": false
     },
     {
@@ -1442,11 +1433,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-21T15:16:00Z",
+      "last_item_at": "2026-04-21T12:36:40-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1018,
-      "fetched_at": "2026-04-21T15:16:01.257935Z",
+      "duration_ms": 1152,
+      "fetched_at": "2026-04-21T16:36:41.575550Z",
       "cache_hit": false
     },
     {
@@ -1460,17 +1451,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-21T15:16:01.258456Z",
+      "last_item_at": "2026-04-21T16:36:41.576046Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 614,
-      "fetched_at": "2026-04-21T15:16:01.872769Z",
+      "duration_ms": 677,
+      "fetched_at": "2026-04-21T16:36:42.253758Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-21T15:16:01.874018Z",
+    "generated_at": "2026-04-21T16:36:42.255081Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1492,7 +1483,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1507,9 +1498,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 142,
+          "duration_ms": 636,
           "cache_hit": false,
-          "at": "2026-04-21T15:16:00Z"
+          "at": "2026-04-21T16:36:39Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1518,19 +1509,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 254.2
+          "avg_duration_ms": 274.7
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 136,
+          "runs": 135,
+          "ok": 135,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 227.6
+          "avg_duration_ms": 231.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T15:16:00Z",
+        "last_success_at": "2026-04-21T16:36:39Z",
         "last_failure_at": null
       },
       {
@@ -1544,9 +1535,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1018,
+          "duration_ms": 1152,
           "cache_hit": false,
-          "at": "2026-04-21T15:16:00Z"
+          "at": "2026-04-21T16:36:39Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1555,19 +1546,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1296.7
+          "avg_duration_ms": 1285.2
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 136,
+          "runs": 135,
+          "ok": 135,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1189.9
+          "avg_duration_ms": 1188.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T15:16:00Z",
+        "last_success_at": "2026-04-21T16:36:39Z",
         "last_failure_at": null
       },
       {
@@ -1581,9 +1572,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 614,
+          "duration_ms": 677,
           "cache_hit": false,
-          "at": "2026-04-21T15:16:00Z"
+          "at": "2026-04-21T16:36:39Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1592,74 +1583,55 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 536.2
+          "avg_duration_ms": 547.6
         },
         "metrics_7d": {
-          "runs": 136,
-          "ok": 136,
+          "runs": 135,
+          "ok": 135,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 503.5
+          "avg_duration_ms": 504.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T15:16:00Z",
+        "last_success_at": "2026-04-21T16:36:39Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-21T15:16:01.874018Z",
+    "generated_at": "2026-04-21T16:36:42.255081Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "6e605c7505c6bd43",
           "title": "Custom status not expiring",
           "started_at": "2026-04-21T13:49:45Z",
-          "duration": "1m",
+          "duration": "2h",
           "acknowledgement": "warn icon Warn",
           "url": "https://slack-status.com/"
-        }
-      ],
-      "updated": [
+        },
         {
           "id": "148508bc88a98292",
           "title": "Custom status not expiring",
           "started_at": "2026-04-21T06:46:30-07:00",
-          "duration": "1h 29m ongoing",
-          "acknowledgement": "Incident / Active / Messaging",
+          "duration": "2h 1m",
+          "acknowledgement": "Incident / Resolved / Messaging",
           "url": "https://slack-status.com/"
         }
       ],
-      "resolved": [
-        {
-          "id": "502e1a454cbe7a84",
-          "title": "Slackbot button in the top navigation is disappearing",
-          "started_at": "2026-04-01T13:04:46Z",
-          "duration": "1h 40m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://slack-status.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "178df708e016d93a",
-          "title": "Custom status not expiring",
-          "url": "https://slack-status.com/#2026-04-21T13:49:45Z",
-          "published_at": "2026-04-21T13:49:45Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 1,
-      "updated_incidents": 1,
-      "resolved_incidents": 1,
-      "new_reports": 1
+      "new_incidents": 0,
+      "updated_incidents": 2,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
