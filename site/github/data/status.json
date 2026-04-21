@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-04-21T13:47:51.473451Z",
+  "generated_at": "2026-04-21T15:16:07.062061Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.31,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.35
     },
     "signal_metrics": {
-      "reports_24h": 117,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 1,
+      "reports_24h": 116,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -35,36 +35,36 @@
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -74,10 +74,26 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-04-21T13:47:51.009150Z",
+        "published_at": "2026-04-21T15:16:06.722080Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Disruption with projects service",
+        "url": "https://www.githubstatus.com/incidents/b4235qyfzx2z#n0g2lcs5dxw1",
+        "published_at": "2026-04-21T15:07:30.717Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating reports of delays with GitHub Projects. Users may notice that changes made to projects are not reflected immediately. Our team has identified the source of the delays and is actively working to resolve the issue."
+      },
+      {
+        "title": "Disruption with projects service",
+        "url": "https://www.githubstatus.com/incidents/b4235qyfzx2z#07189frbn6d0",
+        "published_at": "2026-04-21T15:03:21.193Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating reports of impacted performance for some GitHub services."
       },
       {
         "title": "Partial degradation for code scanning default setup and for code quality",
@@ -134,45 +150,37 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Major / Resolved / The issue has been mitigated. Newly created issues linked to projects should now function as expected. Issues that were linked to projects during the incident may take approximately five hours to render correctly while we complete a re-inde"
-      },
-      {
-        "title": "Partial degradation for code scanning default setup and for code quality",
-        "url": "https://www.githubstatus.com/incidents/m7pgzw1wlfq7#gvhhxjlk296r",
-        "published_at": "2026-04-20T18:08:33.678Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / A deployment to fix this issue of new issues not showing up in projects is underway."
-      },
-      {
-        "title": "Partial degradation for code scanning default setup and for code quality",
-        "url": "https://www.githubstatus.com/incidents/m7pgzw1wlfq7#wvjpb5pqgvzb",
-        "published_at": "2026-04-20T17:32:37.159Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / We continue to work on mitigation regarding new issues not showing on project boards."
       }
     ],
-    "last_statement_at": "2026-04-21T13:47:51.009150Z"
+    "last_statement_at": "2026-04-21T15:16:06.722080Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "GitHub Statuspage reports an active incident: Disruption with projects service.",
     "current_status": "operational",
-    "reports_24h": 117,
+    "reports_24h": 116,
     "incidents": [
+      {
+        "title": "Disruption with projects service",
+        "started_at": "2026-04-21T15:06:34Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Disruption with projects service",
+        "started_at": "2026-04-21T15:03:21.160Z",
+        "duration": "12m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/b4235qyfzx2z"
+      },
       {
         "title": "Partial degradation for code scanning default setup and for code quality",
         "started_at": "2026-04-20T14:01:43Z",
         "duration": "15h 5m",
         "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "Partial degradation for code scanning default setup and for code quality",
-        "started_at": "2026-04-20T13:31:37Z",
-        "duration": "30m",
-        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Partial degradation for code scanning default setup and for code quality",
@@ -209,14 +217,6 @@
         "started_at": "2026-04-14T07:06:00Z",
         "duration": "15h 38m",
         "acknowledgement": "Never acknowledged"
-      },
-      {
-        "title": "Disruption with some GitHub services",
-        "started_at": "2026-04-14T01:57:55.842Z",
-        "duration": "4h 10m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/gldshbt8tvdg"
       }
     ],
     "top_reported_issues": [],
@@ -226,42 +226,6 @@
       "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-20T13:45:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T14:00:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T14:15:00Z",
-        "signal_value": 18.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T14:30:00Z",
-        "signal_value": 34.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T14:45:00Z",
-        "signal_value": 34.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-20T15:00:00Z",
-        "signal_value": 33.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-20T15:15:00Z",
         "signal_value": 22.0,
@@ -798,7 +762,43 @@
       },
       {
         "timestamp": "2026-04-21T13:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T13:45:00Z",
+        "signal_value": 50.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T14:00:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T14:15:00Z",
         "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T14:30:00Z",
+        "signal_value": 25.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T14:45:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-21T15:00:00Z",
+        "signal_value": 11.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -809,26 +809,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-21T13:30:00Z"
+      "last_sample_at": "2026-04-21T15:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "14:00",
-        "count": 1
-      },
-      {
-        "label": "14:20",
-        "count": 3
-      },
-      {
-        "label": "14:40",
-        "count": 2
-      },
-      {
-        "label": "15:00",
-        "count": 2
-      },
       {
         "label": "15:20",
         "count": 0
@@ -1100,6 +1084,22 @@
       {
         "label": "13:40",
         "count": 1
+      },
+      {
+        "label": "14:00",
+        "count": 2
+      },
+      {
+        "label": "14:20",
+        "count": 0
+      },
+      {
+        "label": "14:40",
+        "count": 2
+      },
+      {
+        "label": "15:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1108,14 +1108,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-21T09:47:50-04:00"
+      "last_reviewed_at": "2026-04-21T11:16:06-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 117,
-        "last_reviewed_at": "2026-04-21T09:47:50-04:00"
+        "reports_24h": 116,
+        "last_reviewed_at": "2026-04-21T11:16:06-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -1209,23 +1209,23 @@
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
+        "label": "Server not responding",
+        "count": 8
+      },
+      {
         "label": "Error message",
         "count": 7
       },
       {
-        "label": "Server not responding",
-        "count": 7
-      },
-      {
         "label": "Slow performance",
-        "count": 4
-      },
-      {
-        "label": "Other",
-        "count": 3
+        "count": 5
       },
       {
         "label": "Service down",
+        "count": 2
+      },
+      {
+        "label": "Other",
         "count": 2
       },
       {
@@ -1244,18 +1244,25 @@
   },
   "reports": [
     {
+      "title": "Disruption with projects service",
+      "url": "https://www.githubstatus.com/#2026-04-21T15:06:34Z",
+      "published_at": "2026-04-21T15:06:34Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Disruption with projects service",
+      "url": "https://www.githubstatus.com/incidents/b4235qyfzx2z",
+      "published_at": "2026-04-21T15:03:21.160Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "Partial degradation for code scanning default setup and for code quality",
       "url": "https://www.githubstatus.com/#2026-04-20T14:01:43Z",
       "published_at": "2026-04-20T14:01:43Z",
       "source": "StatusGator",
       "meta": "down icon Down"
-    },
-    {
-      "title": "Partial degradation for code scanning default setup and for code quality",
-      "url": "https://www.githubstatus.com/#2026-04-20T13:31:37Z",
-      "published_at": "2026-04-20T13:31:37Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     },
     {
       "title": "Partial degradation for code scanning default setup and for code quality",
@@ -1291,13 +1298,6 @@
       "published_at": "2026-04-14T07:06:00Z",
       "source": "StatusGator",
       "meta": "Never acknowledged"
-    },
-    {
-      "title": "Disruption with some GitHub services",
-      "url": "https://www.githubstatus.com/incidents/gldshbt8tvdg",
-      "published_at": "2026-04-14T01:57:55.842Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1306,52 +1306,68 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-21T13:47:51.473451Z"
+      "published_at": "2026-04-21T15:16:07.062061Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-21T13:47:51.473451Z"
+      "published_at": "2026-04-21T15:16:07.062061Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-21T13:47:51.473451Z"
+      "published_at": "2026-04-21T15:16:07.062061Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-04-21T13:47:51.473451Z"
+      "published_at": "2026-04-21T15:16:07.062061Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-21T13:47:51.473451Z"
+      "published_at": "2026-04-21T15:16:07.062061Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-21T13:47:51.473451Z"
+      "published_at": "2026-04-21T15:16:07.062061Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-04-21T13:47:51.009150Z",
+      "published_at": "2026-04-21T15:16:06.722080Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Disruption with projects service",
+      "url": "https://www.githubstatus.com/incidents/b4235qyfzx2z#n0g2lcs5dxw1",
+      "published_at": "2026-04-21T15:07:30.717Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating reports of delays with GitHub Projects. Users may notice that changes made to projects are not reflected immediately. Our team has identified the source of the delays and is actively working to resolve the issue."
+    },
+    {
+      "title": "Disruption with projects service",
+      "url": "https://www.githubstatus.com/incidents/b4235qyfzx2z#07189frbn6d0",
+      "published_at": "2026-04-21T15:03:21.193Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating reports of impacted performance for some GitHub services."
     },
     {
       "title": "Partial degradation for code scanning default setup and for code quality",
@@ -1392,22 +1408,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Major / Resolved / The degradation has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Partial degradation for code scanning default setup and for code quality",
-      "url": "https://www.githubstatus.com/incidents/m7pgzw1wlfq7#bb4qc8cj7c17",
-      "published_at": "2026-04-20T18:20:38.322Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Major / Resolved / The degradation has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Partial degradation for code scanning default setup and for code quality",
-      "url": "https://www.githubstatus.com/incidents/m7pgzw1wlfq7#m4ml137bb39p",
-      "published_at": "2026-04-20T18:20:26.422Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / The issue has been mitigated. Newly created issues linked to projects should now function as expected. Issues that were linked to projects during the incident may take approximately five hours to render correctly while we complete a re-inde"
     }
   ],
   "social": [],
@@ -1423,11 +1423,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-21T13:47:49.587253Z",
+      "last_item_at": "2026-04-21T15:16:05.938987Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 268,
-      "fetched_at": "2026-04-21T13:47:49.587268Z",
+      "duration_ms": 165,
+      "fetched_at": "2026-04-21T15:16:05.939002Z",
       "cache_hit": false
     },
     {
@@ -1441,11 +1441,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-21T09:47:50-04:00",
+      "last_item_at": "2026-04-21T11:16:06-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1420,
-      "fetched_at": "2026-04-21T13:47:51.008102Z",
+      "duration_ms": 782,
+      "fetched_at": "2026-04-21T15:16:06.721532Z",
       "cache_hit": false
     },
     {
@@ -1459,17 +1459,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-21T13:47:51.009150Z",
+      "last_item_at": "2026-04-21T15:16:06.722080Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 463,
-      "fetched_at": "2026-04-21T13:47:51.472233Z",
+      "duration_ms": 338,
+      "fetched_at": "2026-04-21T15:16:07.060605Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-21T13:47:51.473451Z",
+    "generated_at": "2026-04-21T15:16:07.062061Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1491,7 +1491,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1506,18 +1506,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 268,
+          "duration_ms": 165,
           "cache_hit": false,
-          "at": "2026-04-21T13:47:49Z"
+          "at": "2026-04-21T15:16:05Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 334.0
+          "avg_duration_ms": 342.4
         },
         "metrics_7d": {
           "runs": 136,
@@ -1526,10 +1526,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 293.4
+          "avg_duration_ms": 293.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T13:47:49Z",
+        "last_success_at": "2026-04-21T15:16:05Z",
         "last_failure_at": null
       },
       {
@@ -1543,18 +1543,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1420,
+          "duration_ms": 782,
           "cache_hit": false,
-          "at": "2026-04-21T13:47:49Z"
+          "at": "2026-04-21T15:16:05Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1109.8
+          "avg_duration_ms": 1031.2
         },
         "metrics_7d": {
           "runs": 136,
@@ -1563,10 +1563,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1104.9
+          "avg_duration_ms": 1101.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T13:47:49Z",
+        "last_success_at": "2026-04-21T15:16:05Z",
         "last_failure_at": null
       },
       {
@@ -1580,18 +1580,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 463,
+          "duration_ms": 338,
           "cache_hit": false,
-          "at": "2026-04-21T13:47:49Z"
+          "at": "2026-04-21T15:16:05Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 349.5
+          "avg_duration_ms": 350.2
         },
         "metrics_7d": {
           "runs": 136,
@@ -1600,29 +1600,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 346.0
+          "avg_duration_ms": 345.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-21T13:47:49Z",
+        "last_success_at": "2026-04-21T15:16:05Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-21T13:47:51.473451Z",
+    "generated_at": "2026-04-21T15:16:07.062061Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "edc3adcc42468fab",
+          "title": "Disruption with projects service",
+          "started_at": "2026-04-21T15:06:34Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "11226f78d28c3097",
+          "title": "Disruption with projects service",
+          "started_at": "2026-04-21T15:03:21.160Z",
+          "duration": "12m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "b906c92242c01182",
+          "title": "Partial degradation for code scanning default setup and for code quality",
+          "started_at": "2026-04-20T13:31:37Z",
+          "duration": "30m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "edcc88ccf591b2aa",
+          "title": "Disruption with some GitHub services",
+          "started_at": "2026-04-14T01:57:55.842Z",
+          "duration": "4h 10m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "0bd66a0d2ffcbf1e",
+          "title": "Disruption with projects service",
+          "url": "https://www.githubstatus.com/#2026-04-21T15:06:34Z",
+          "published_at": "2026-04-21T15:06:34Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "e1da3d37ffda49b3",
+          "title": "Disruption with projects service",
+          "url": "https://www.githubstatus.com/incidents/b4235qyfzx2z",
+          "published_at": "2026-04-21T15:03:21.160Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
