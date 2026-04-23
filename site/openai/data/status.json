@@ -1,41 +1,41 @@
 {
-  "generated_at": "2026-04-23T15:13:42.116091Z",
+  "generated_at": "2026-04-23T17:00:22.309287Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.55,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
+      "support_score": 0.648,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 175,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 178,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
-        "report_score": 0.0,
-        "news_score": 0.0,
+        "report_score": 0.468,
+        "news_score": 0.18,
         "social_score": 0.0,
-        "combined_score": 0.0,
-        "report_hits_24h": 0
+        "combined_score": 0.648,
+        "report_hits_24h": 2
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "major",
+      "severity_score": 9,
       "report_weight": 1.0
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-04-23T15:13:41.535386Z",
+        "published_at": "2026-04-23T17:00:21.600846Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Elevated error rates and latency for Moderation API",
+        "url": "https://status.openai.com/incidents/01KPXKMRJ72KA5SYTEH509CQA5#01KPXKMRJ7KH4HGQR8PR33J7G1",
+        "published_at": "2026-04-23T16:44:18Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating"
       },
       {
         "title": "Enterprise, business & education workspaces seeing elevated rate of conversation errors",
@@ -141,26 +149,32 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved"
-      },
-      {
-        "title": "Some users may encounter issues with GPT-5.4-C model in Codex",
-        "url": "https://status.openai.com/incidents/01KPPY7B8PMYHJWDNFY9TMJX33#01KPPY7B8P6ZXE33849QE7ZT0Z",
-        "published_at": "2026-04-21T02:34:32Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved"
       }
     ],
-    "last_statement_at": "2026-04-23T15:13:41.535386Z"
+    "last_statement_at": "2026-04-23T17:00:21.600846Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 175,
+    "summary": "OpenAI Statuspage reports an active incident: Elevated error rates and latency for Moderation API.",
+    "current_status": "degraded",
+    "reports_24h": 178,
     "incidents": [
+      {
+        "title": "Elevated error rates and latency for Moderation API",
+        "started_at": "2026-04-23T16:46:51Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Elevated error rates and latency for Moderation API",
+        "started_at": "2026-04-23T16:44:18Z",
+        "duration": "16m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01KPXKMRJ72KA5SYTEH509CQA5"
+      },
       {
         "title": "Enterprise, business & education workspaces seeing elevated rate of conversation errors",
         "started_at": "2026-04-22T13:51:47Z",
@@ -174,12 +188,6 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KPTQAPRRSTTSSPDBGNG34FD5"
-      },
-      {
-        "title": "ChatGPT free users are seeing errors when having conversations",
-        "started_at": "2026-04-22T01:01:52Z",
-        "duration": "2h 35m",
-        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "ChatGPT free users are seeing errors when having conversations",
@@ -212,71 +220,20 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KPNZ1BW91D4S3V5PWWEVQ5F1"
-      },
-      {
-        "title": "Users unable to load ChatGPT, Codex and API Platform",
-        "started_at": "2026-04-20T14:35:33Z",
-        "duration": "4h 12m",
-        "acknowledgement": "Major / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KPNN2V2SMP3TAN3MCJK87W50"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Moderations",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-22T15:15:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-22T15:30:00Z",
-        "signal_value": 26.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-22T15:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-22T16:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-22T16:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-22T16:30:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-22T16:45:00Z",
-        "signal_value": 13.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-22T17:00:00Z",
-        "signal_value": 21.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-22T17:15:00Z",
         "signal_value": 7.0,
@@ -804,6 +761,54 @@
         "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-23T15:15:00Z",
+        "signal_value": 31.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-23T15:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-23T15:45:00Z",
+        "signal_value": 26.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-23T16:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-23T16:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-23T16:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-23T16:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-23T17:00:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -812,34 +817,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-23T15:00:00Z"
+      "last_sample_at": "2026-04-23T17:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "15:20",
-        "count": 3
-      },
-      {
-        "label": "15:40",
-        "count": 2
-      },
-      {
-        "label": "16:00",
-        "count": 3
-      },
-      {
-        "label": "16:20",
-        "count": 3
-      },
-      {
-        "label": "16:40",
-        "count": 4
-      },
-      {
-        "label": "17:00",
-        "count": 5
-      },
       {
         "label": "17:20",
         "count": 1
@@ -1103,6 +1084,30 @@
       {
         "label": "15:00",
         "count": 4
+      },
+      {
+        "label": "15:20",
+        "count": 4
+      },
+      {
+        "label": "15:40",
+        "count": 3
+      },
+      {
+        "label": "16:00",
+        "count": 4
+      },
+      {
+        "label": "16:20",
+        "count": 4
+      },
+      {
+        "label": "16:40",
+        "count": 5
+      },
+      {
+        "label": "17:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1111,14 +1116,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-23T11:13:41-04:00"
+      "last_reviewed_at": "2026-04-23T17:00:20Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 175,
-        "last_reviewed_at": "2026-04-23T11:13:41-04:00"
+        "reports_24h": 178,
+        "last_reviewed_at": "2026-04-23T17:00:20Z"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1196,8 +1201,8 @@
       },
       {
         "name": "Moderations",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1374,11 +1379,11 @@
     "top_reported_issues_provider": [
       {
         "label": "Error message",
-        "count": 15
+        "count": 17
       },
       {
         "label": "Service down",
-        "count": 4
+        "count": 3
       },
       {
         "label": "Server not responding",
@@ -1408,6 +1413,20 @@
   },
   "reports": [
     {
+      "title": "Elevated error rates and latency for Moderation API",
+      "url": "https://status.openai.com/#2026-04-23T16:46:51Z",
+      "published_at": "2026-04-23T16:46:51Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Elevated error rates and latency for Moderation API",
+      "url": "https://status.openai.com/incidents/01KPXKMRJ72KA5SYTEH509CQA5",
+      "published_at": "2026-04-23T16:44:18Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "Enterprise, business & education workspaces seeing elevated rate of conversation errors",
       "url": "https://status.openai.com/#2026-04-22T13:51:47Z",
       "published_at": "2026-04-22T13:51:47Z",
@@ -1420,13 +1439,6 @@
       "published_at": "2026-04-22T13:51:00Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "ChatGPT free users are seeing errors when having conversations",
-      "url": "https://status.openai.com/#2026-04-22T01:01:52Z",
-      "published_at": "2026-04-22T01:01:52Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     },
     {
       "title": "ChatGPT free users are seeing errors when having conversations",
@@ -1455,13 +1467,6 @@
       "published_at": "2026-04-20T17:29:30Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Users unable to load ChatGPT, Codex and API Platform",
-      "url": "https://status.openai.com/incidents/01KPNN2V2SMP3TAN3MCJK87W50",
-      "published_at": "2026-04-20T14:35:33Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -1470,45 +1475,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-23T15:13:42.116091Z"
+      "published_at": "2026-04-23T17:00:22.309287Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-23T15:13:42.116091Z"
+      "published_at": "2026-04-23T17:00:22.309287Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-23T15:13:42.116091Z"
+      "published_at": "2026-04-23T17:00:22.309287Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-23T15:13:42.116091Z"
+      "published_at": "2026-04-23T17:00:22.309287Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-23T15:13:42.116091Z"
+      "published_at": "2026-04-23T17:00:22.309287Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-04-23T15:13:41.535386Z",
+      "published_at": "2026-04-23T17:00:21.600846Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Elevated error rates and latency for Moderation API",
+      "url": "https://status.openai.com/incidents/01KPXKMRJ72KA5SYTEH509CQA5#01KPXKMRJ7KH4HGQR8PR33J7G1",
+      "published_at": "2026-04-23T16:44:18Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating"
     },
     {
       "title": "Enterprise, business & education workspaces seeing elevated rate of conversation errors",
@@ -1557,14 +1570,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Major / Resolved"
-    },
-    {
-      "title": "ChatGPT free users are seeing errors when having conversations",
-      "url": "https://status.openai.com/incidents/01KPSB0GQZ0G7FT3GAV3H2Q8D8#01KPSB0GQZ28XPZ5DCKE560AVK",
-      "published_at": "2026-04-22T00:56:29Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved"
     }
   ],
   "social": [],
@@ -1580,11 +1585,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-23T15:13:40.828573Z",
+      "last_item_at": "2026-04-23T17:00:20.524842Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 856,
-      "fetched_at": "2026-04-23T15:13:40.828592Z",
+      "duration_ms": 964,
+      "fetched_at": "2026-04-23T17:00:20.524858Z",
       "cache_hit": false
     },
     {
@@ -1598,11 +1603,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-23T11:13:41-04:00",
+      "last_item_at": "2026-04-23T17:00:20Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 706,
-      "fetched_at": "2026-04-23T15:13:41.534823Z",
+      "duration_ms": 1075,
+      "fetched_at": "2026-04-23T17:00:21.600288Z",
       "cache_hit": false
     },
     {
@@ -1616,17 +1621,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-23T15:13:41.535386Z",
+      "last_item_at": "2026-04-23T17:00:21.600846Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 578,
-      "fetched_at": "2026-04-23T15:13:42.114149Z",
+      "duration_ms": 706,
+      "fetched_at": "2026-04-23T17:00:22.307151Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-23T15:13:42.116091Z",
+    "generated_at": "2026-04-23T17:00:22.309287Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1648,7 +1653,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1663,18 +1668,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 856,
+          "duration_ms": 964,
           "cache_hit": false,
-          "at": "2026-04-23T15:13:39Z"
+          "at": "2026-04-23T17:00:19Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 17,
+          "ok": 17,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 697.3
+          "avg_duration_ms": 768.9
         },
         "metrics_7d": {
           "runs": 133,
@@ -1683,10 +1688,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 601.4
+          "avg_duration_ms": 602.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-23T15:13:39Z",
+        "last_success_at": "2026-04-23T17:00:19Z",
         "last_failure_at": null
       },
       {
@@ -1700,18 +1705,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 706,
+          "duration_ms": 1075,
           "cache_hit": false,
-          "at": "2026-04-23T15:13:39Z"
+          "at": "2026-04-23T17:00:19Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 17,
+          "ok": 17,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1005.9
+          "avg_duration_ms": 1036.6
         },
         "metrics_7d": {
           "runs": 133,
@@ -1720,10 +1725,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 968.2
+          "avg_duration_ms": 970.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-23T15:13:39Z",
+        "last_success_at": "2026-04-23T17:00:19Z",
         "last_failure_at": null
       },
       {
@@ -1737,18 +1742,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 578,
+          "duration_ms": 706,
           "cache_hit": false,
-          "at": "2026-04-23T15:13:39Z"
+          "at": "2026-04-23T17:00:19Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 17,
+          "ok": 17,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 686.1
+          "avg_duration_ms": 690.4
         },
         "metrics_7d": {
           "runs": 133,
@@ -1757,29 +1762,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 716.8
+          "avg_duration_ms": 718.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-23T15:13:39Z",
+        "last_success_at": "2026-04-23T17:00:19Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-23T15:13:42.116091Z",
+    "generated_at": "2026-04-23T17:00:22.309287Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "c9ec795610ae19ac",
+          "title": "Elevated error rates and latency for Moderation API",
+          "started_at": "2026-04-23T16:46:51Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "785274005da70663",
+          "title": "Elevated error rates and latency for Moderation API",
+          "started_at": "2026-04-23T16:44:18Z",
+          "duration": "16m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "68b1d7b68fce08e8",
+          "title": "ChatGPT free users are seeing errors when having conversations",
+          "started_at": "2026-04-22T01:01:52Z",
+          "duration": "2h 35m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "b85c330ac38f5649",
+          "title": "Users unable to load ChatGPT, Codex and API Platform",
+          "started_at": "2026-04-20T14:35:33Z",
+          "duration": "4h 12m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "ca63f426f325ee93",
+          "title": "Elevated error rates and latency for Moderation API",
+          "url": "https://status.openai.com/#2026-04-23T16:46:51Z",
+          "published_at": "2026-04-23T16:46:51Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "73280f7b0202edc9",
+          "title": "Elevated error rates and latency for Moderation API",
+          "url": "https://status.openai.com/incidents/01KPXKMRJ72KA5SYTEH509CQA5",
+          "published_at": "2026-04-23T16:44:18Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
