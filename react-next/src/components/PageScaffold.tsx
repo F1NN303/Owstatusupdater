@@ -9,7 +9,7 @@ export function PageShell({
   children: ReactNode;
   className?: string;
 }) {
-  return <main className={cn("mx-auto max-w-md px-4 pb-6 pt-8", className)}>{children}</main>;
+  return <main className={cn("mx-auto max-w-md px-4 pb-32 pt-8", className)}>{children}</main>;
 }
 
 export function PageIntro({

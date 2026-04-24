@@ -1313,7 +1313,7 @@ const Index = () => {
         releaseLabel={pickLang(language, "Release to refresh", "Loslassen zum Aktualisieren")}
         refreshingLabel={pickLang(language, "Refreshing live status...", "Live-Status wird aktualisiert...")}
       />
-      <main className="mx-auto max-w-md px-4 pb-6 pt-8" {...pullToRefresh.bind}>
+      <main className="mx-auto max-w-md px-4 pb-32 pt-8" {...pullToRefresh.bind}>
         <div className="flex items-start justify-between gap-3 pb-4 pt-4">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/75">
@@ -1624,7 +1624,7 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+              <div className="no-scrollbar -mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1">
                 {primaryFilterOptions.map((option) => {
                   const isActive = activeFilter === option.key;
                   return (
@@ -1653,7 +1653,7 @@ const Index = () => {
               </div>
 
               {categoryFilterOptions.length > 0 ? (
-                <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+                <div className="no-scrollbar -mx-1 mt-2 flex gap-2 overflow-x-auto px-1 pb-1">
                   {categoryFilterOptions.map((option) => {
                     const isActive = activeFilter === option.key;
                     return (

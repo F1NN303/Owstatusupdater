@@ -30,7 +30,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         style={{ backgroundImage: `url(${bgGradient})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background md:fixed" />
-      <div className="relative z-10 pb-[calc(6.1rem+env(safe-area-inset-bottom,8px))]">
+      <div className="relative z-10 pb-[calc(8.8rem+env(safe-area-inset-bottom,8px))]">
         {children}
         <AiStatusAssistant />
         <footer className="mx-auto max-w-md px-4 pt-1 text-center">

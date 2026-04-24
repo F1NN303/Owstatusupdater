@@ -9,7 +9,7 @@ const TermsPage = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-6 pt-6">
+      <main className="mx-auto max-w-md px-4 pb-32 pt-6">
         <div className="flex items-center justify-between gap-3 pb-4 pt-1">
           <div className="flex items-center gap-3">
             <Link

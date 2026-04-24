@@ -841,11 +841,11 @@ const EmailAlerts = () => {
       return magicLinkSentEmail
         ? t(
             `We sent a magic link to ${magicLinkSentEmail}. Open it on this device to continue.`,
-            `Wir haben einen Magic Link an ${magicLinkSentEmail} gesendet. Oeffne ihn auf diesem Geraet, um fortzufahren.`
+            `Wir haben einen Magic Link an ${magicLinkSentEmail} gesendet. Öffne ihn auf diesem Gerät, um fortzufahren.`
           )
         : t(
             "Step 1 is account access. After that, your watchlist can sync across devices.",
-            "Schritt 1 ist der Kontozugang. Danach kann deine Watchlist ueber Geraete hinweg synchronisiert werden."
+            "Schritt 1 ist der Kontozugang. Danach kann deine Watchlist über Geräte hinweg synchronisiert werden."
           );
     }
     if (alertAccountDirty) {
@@ -857,13 +857,13 @@ const EmailAlerts = () => {
     if (deliveryAwaitingConfirmation) {
       return t(
         "The provider signup was already opened. Return here after confirmation and the page will check the delivery status again.",
-        "Die Provider-Anmeldung wurde bereits gestartet. Kehre nach der Bestaetigung hierher zurueck, dann prueft die Seite den Zustellungsstatus erneut."
+        "Die Provider-Anmeldung wurde bereits gestartet. Kehre nach der Bestätigung hierher zurück, dann prüft die Seite den Zustellungsstatus erneut."
       );
     }
     if (!deliveryReady) {
       return t(
         "Preferences are saved. Finish the delivery step if you also want inbox alerts.",
-        "Die Einstellungen sind gespeichert. Schliesse den Zustellungs-Schritt ab, wenn du auch E-Mail-Alarme im Postfach moechtest."
+        "Die Einstellungen sind gespeichert. Schließe den Zustellungs-Schritt ab, wenn du auch E-Mail-Alarme im Postfach möchtest."
       );
     }
     return t(
@@ -883,12 +883,12 @@ const EmailAlerts = () => {
         )
     : t(
         "This watchlist still lives only on this device until you connect an alert account.",
-        "Diese Watchlist lebt noch nur auf diesem Geraet, bis du ein Alarm-Konto verbindest."
+        "Diese Watchlist lebt noch nur auf diesem Gerät, bis du ein Alarm-Konto verbindest."
       );
   const providerConnectionText = alertAccountConnected
     ? t(
         "Account preferences are already handled above. Use this provider step only for inbox delivery, then return here to confirm the final status.",
-        "Die Konto-Einstellungen werden bereits oben verwaltet. Nutze diesen Provider-Schritt nur fuer die Zustellung ins Postfach und kehre danach hierher zur Statuspruefung zurueck."
+        "Die Konto-Einstellungen werden bereits oben verwaltet. Nutze diesen Provider-Schritt nur für die Zustellung ins Postfach und kehre danach hierher zur Statusprüfung zurück."
       )
     : t(
         "This is the final delivery step. Connect your alert account first if you want one clearer setup flow.",
@@ -982,13 +982,13 @@ const EmailAlerts = () => {
       title: t("Connect account", "Konto verbinden"),
       description: alertAccountConnected
         ? sessionEmail || t("Account connected.", "Konto verbunden.")
-        : t("Use one magic link, no password needed.", "Ein Magic Link reicht, kein Passwort noetig."),
+        : t("Use one magic link, no password needed.", "Ein Magic Link reicht, kein Passwort nötig."),
       icon: <Cloud size={16} />,
     },
     {
       key: "preferences" as const,
       step: t("Step 2", "Schritt 2"),
-      title: t("Pick alerts", "Alarme auswaehlen"),
+      title: t("Pick alerts", "Alarme auswählen"),
       description:
         selectedServiceCount > 0
           ? t(
@@ -997,7 +997,7 @@ const EmailAlerts = () => {
             )
           : t(
               "Choose at least one service and the threshold you care about.",
-              "Waehle mindestens einen Service und die Schwelle, die dir wichtig ist."
+              "Wähle mindestens einen Service und die Schwelle, die dir wichtig ist."
             ),
       icon: <BellRing size={16} />,
     },
@@ -1009,7 +1009,7 @@ const EmailAlerts = () => {
         ? t("Brevo delivery is active.", "Die Brevo-Zustellung ist aktiv.")
         : t(
             "Finish the secure provider step once, then this page switches to settings.",
-            "Schliesse den sicheren Provider-Schritt einmal ab, dann wechselt diese Seite in den Einstellungsmodus."
+            "Schließe den sicheren Provider-Schritt einmal ab, dann wechselt diese Seite in den Einstellungsmodus."
           ),
       icon: <Mail size={16} />,
     },
@@ -1027,7 +1027,7 @@ const EmailAlerts = () => {
               ? "Finish the one-time setup once: connect the account, save the watchlist, then activate inbox delivery."
               : "Alerts are already configured. Adjust watchlist, threshold, account access, or inbox delivery here whenever needed.",
             showSetupFlow
-              ? "Schliesse die einmalige Einrichtung einmal ab: Konto verbinden, Watchlist speichern und danach die Postfach-Zustellung aktivieren."
+              ? "Schließe die einmalige Einrichtung einmal ab: Konto verbinden, Watchlist speichern und danach die Postfach-Zustellung aktivieren."
               : "Die Alarme sind bereits eingerichtet. Passe hier bei Bedarf Watchlist, Schwelle, Kontozugang oder Postfach-Zustellung an."
           )}
           action={
@@ -1107,7 +1107,7 @@ const EmailAlerts = () => {
                     value={
                       alertSeverityThreshold === "degraded"
                         ? t("Degraded+", "Beeintraechtigt+")
-                        : t("Major only", "Nur groessere")
+                        : t("Major only", "Nur größere")
                     }
                   />
                   <AlertsInlineStat label={t("Delivery", "Zustellung")} value={providerStatusLabel} />
@@ -1122,7 +1122,7 @@ const EmailAlerts = () => {
                   <h3 className="mt-2 text-base font-semibold text-foreground">
                     {selectedServiceCount > 0
                       ? t("Alerts stay focused on what you selected.", "Die Alarme bleiben auf deine Auswahl fokussiert.")
-                      : t("No services selected yet.", "Noch keine Services ausgewaehlt.")}
+                      : t("No services selected yet.", "Noch keine Services ausgewählt.")}
                   </h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     {selectedServiceCount > 0
@@ -1132,7 +1132,7 @@ const EmailAlerts = () => {
                         )
                       : t(
                           "Choose the services you care about below and save them back into your account.",
-                          "Waehle unten die Services aus, die fuer dich wichtig sind, und speichere sie wieder in deinem Konto."
+                          "Wähle unten die Services aus, die für dich wichtig sind, und speichere sie wieder in deinem Konto."
                         )}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
@@ -1157,7 +1157,7 @@ const EmailAlerts = () => {
                       </>
                     ) : (
                       <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground">
-                        {t("Pick at least one service below.", "Waehle unten mindestens einen Service aus.")}
+                        {t("Pick at least one service below.", "Wähle unten mindestens einen Service aus.")}
                       </span>
                     )}
                   </div>
@@ -1173,7 +1173,7 @@ const EmailAlerts = () => {
                     value={
                       alertSeverityThreshold === "degraded"
                         ? t("Degraded+", "Beeintraechtigt+")
-                        : t("Major only", "Nur groessere")
+                        : t("Major only", "Nur größere")
                     }
                   />
                   <AlertsInlineStat
@@ -1203,11 +1203,11 @@ const EmailAlerts = () => {
               {cachedConfigLabel
                 ? t(
                     `Stored configuration from ${cachedConfigLabel} is being used while the connection recovers.`,
-                    `Gespeicherte Konfiguration von ${cachedConfigLabel} wird verwendet, waehrend sich die Verbindung erholt.`
+                    `Gespeicherte Konfiguration von ${cachedConfigLabel} wird verwendet, während sich die Verbindung erholt.`
                   )
                 : t(
                     "A previously saved configuration is being used while the connection recovers.",
-                    "Eine zuvor gespeicherte Konfiguration wird verwendet, waehrend sich die Verbindung erholt."
+                    "Eine zuvor gespeicherte Konfiguration wird verwendet, während sich die Verbindung erholt."
                   )}
             </p>
           </div>
@@ -1250,8 +1250,8 @@ const EmailAlerts = () => {
                         ? "This account is now the source of truth for saved alert preferences."
                         : "This account is now the source of truth for your saved alert preferences and inbox delivery state.",
                       showSetupFlow
-                        ? "Dieses Konto ist jetzt die Quelle fuer gespeicherte Alarm-Einstellungen."
-                        : "Dieses Konto ist jetzt die Quelle fuer gespeicherte Alarm-Einstellungen und fuer den Status der Postfach-Zustellung."
+                        ? "Dieses Konto ist jetzt die Quelle für gespeicherte Alarm-Einstellungen."
+                        : "Dieses Konto ist jetzt die Quelle für gespeicherte Alarm-Einstellungen und für den Status der Postfach-Zustellung."
                     )}
                   </p>
                 </div>
@@ -1315,7 +1315,7 @@ const EmailAlerts = () => {
                   <p className="mt-2 text-[11px] text-muted-foreground">
                     {t(
                       "We use a secure magic link instead of a password for alert-account access.",
-                      "Wir nutzen einen sicheren Magic Link statt eines Passworts fuer den Zugriff auf das Alarm-Konto."
+                      "Wir nutzen einen sicheren Magic Link statt eines Passworts für den Zugriff auf das Alarm-Konto."
                     )}
                   </p>
                 </div>
@@ -1324,7 +1324,7 @@ const EmailAlerts = () => {
                   <div className="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-3 py-2 text-[11px] text-emerald-200">
                     {t(
                       `Magic link sent to ${magicLinkSentEmail}. Open it on this device, then return here.`,
-                      `Magic Link an ${magicLinkSentEmail} gesendet. Oeffne ihn auf diesem Geraet und kehre dann hierher zurueck.`
+                      `Magic Link an ${magicLinkSentEmail} gesendet. Öffne ihn auf diesem Gerät und kehre dann hierher zurück.`
                     )}
                   </div>
                 ) : null}
@@ -1339,7 +1339,7 @@ const EmailAlerts = () => {
               icon={<BellRing size={16} className="text-primary" />}
               title={
                 showSetupFlow
-                  ? t("2. Choose alerts", "2. Alarme auswaehlen")
+                  ? t("2. Choose alerts", "2. Alarme auswählen")
                   : t("Watchlist & threshold", "Watchlist & Schwelle")
               }
               description={
@@ -1347,11 +1347,11 @@ const EmailAlerts = () => {
                   ? alertAccountConnected
                     ? t(
                         "Pick the services and threshold you want to save into your account. Once saved, setup moves to inbox delivery.",
-                        "Waehle die Services und die Schwelle, die in deinem Konto gespeichert werden sollen. Nach dem Speichern wechselt das Setup zur Postfach-Zustellung."
+                        "Wähle die Services und die Schwelle, die in deinem Konto gespeichert werden sollen. Nach dem Speichern wechselt das Setup zur Postfach-Zustellung."
                       )
                     : t(
                         "You can prepare this before sign-in. Until then, it stays only on this device.",
-                        "Du kannst das vor der Anmeldung vorbereiten. Bis dahin bleibt es nur auf diesem Geraet."
+                        "Du kannst das vor der Anmeldung vorbereiten. Bis dahin bleibt es nur auf diesem Gerät."
                       )
                   : t(
                       "Adjust which services should trigger alerts and how sensitive the watchlist should be.",
@@ -1400,7 +1400,7 @@ const EmailAlerts = () => {
                 <p className="mt-1 text-sm font-semibold text-foreground">
                   {alertSeverityThreshold === "degraded"
                     ? t("Degraded+", "Beeintraechtigt+")
-                    : t("Major only", "Nur groessere")}
+                    : t("Major only", "Nur größere")}
                 </p>
               </div>
             </div>
@@ -1436,12 +1436,12 @@ const EmailAlerts = () => {
                 {[
                   {
                     key: "major" as const,
-                    label: t("Major only", "Nur groessere"),
-                    note: t("Only larger outages should stand out.", "Nur groessere Ausfaelle sollen hervorstechen."),
+                    label: t("Major only", "Nur größere"),
+                    note: t("Only larger outages should stand out.", "Nur größere Ausfälle sollen hervorstechen."),
                   },
                   {
                     key: "degraded" as const,
-                    label: t("Degraded + major", "Beeintraechtigt + groesser"),
+                    label: t("Degraded + major", "Beeinträchtigt + größer"),
                     note: t("Also flag smaller degraded states.", "Auch kleinere Beeintraechtigungen hervorheben."),
                   },
                 ].map((option) => {
@@ -1532,7 +1532,7 @@ const EmailAlerts = () => {
                       : "border-white/10 bg-white/5 text-foreground hover:bg-white/10"
                   }`}
                 >
-                  {showSelectedOnly ? t("Selected only", "Nur ausgewaehlte") : t("Show all", "Alle zeigen")}
+                  {showSelectedOnly ? t("Selected only", "Nur ausgewählte") : t("Show all", "Alle zeigen")}
                 </button>
               </div>
               <p className="text-[11px] text-muted-foreground">

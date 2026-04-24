@@ -2137,7 +2137,7 @@ const ServerDetail = () => {
   if (!serviceId) {
     return (
       <AppLayout>
-        <main className="mx-auto max-w-md px-4 pb-6 pt-10">
+        <main className="mx-auto max-w-md px-4 pb-32 pt-10">
           <button
             type="button"
             onClick={() => navigate(-1)}
@@ -2727,7 +2727,7 @@ const ServerDetail = () => {
         releaseLabel={t("Release to refresh", "Loslassen zum Aktualisieren")}
         refreshingLabel={t("Refreshing detail...", "Detail wird aktualisiert...")}
       />
-      <main className="mx-auto max-w-md px-4 pb-6 pt-4" {...pullToRefresh.bind}>
+      <main className="mx-auto max-w-md px-4 pb-32 pt-4" {...pullToRefresh.bind}>
         <div className="flex items-center justify-between gap-3 pb-2.5 pt-1">
           <div className="flex items-center gap-3">
             <button
@@ -2758,7 +2758,7 @@ const ServerDetail = () => {
                 aria-label={
                   isFavoriteEnabled
                     ? t("Remove this service from favorites", "Diesen Service aus den Favoriten entfernen")
-                    : t("Add this service to favorites", "Diesen Service zu den Favoriten hinzufugen")
+                    : t("Add this service to favorites", "Diesen Service zu den Favoriten hinzufügen")
                 }
               >
                 <Star size={15} className={isFavoriteEnabled ? "fill-current text-amber-200" : "text-muted-foreground"} />

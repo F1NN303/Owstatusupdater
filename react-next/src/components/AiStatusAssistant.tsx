@@ -562,7 +562,7 @@ const AiStatusAssistant = () => {
             className={cn(
               "fixed z-40 flex items-center border border-white/10 bg-slate-950/78 text-foreground backdrop-blur-xl transition-all duration-300 hover:border-cyan-300/20 hover:bg-slate-900/86 active:scale-[0.985]",
               isMobile
-                ? "bottom-[calc(4.95rem+env(safe-area-inset-bottom,0px))] right-3.5 h-11 w-11 justify-center rounded-[18px] shadow-[0_14px_30px_rgba(2,8,23,0.36)]"
+                ? "bottom-[calc(6.65rem+env(safe-area-inset-bottom,0px))] right-4 h-11 w-11 justify-center rounded-[18px] shadow-[0_14px_30px_rgba(2,8,23,0.36)]"
                 : "bottom-6 right-6 gap-2.5 rounded-full px-4 py-3 text-sm shadow-[0_18px_46px_rgba(2,8,23,0.42)] hover:shadow-[0_20px_54px_rgba(2,8,23,0.5)]",
             )}
           >

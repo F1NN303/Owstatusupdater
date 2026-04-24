@@ -152,7 +152,7 @@ const Favorites = () => {
 
   return (
     <AppLayout>
-      <main className="mx-auto max-w-md px-4 pb-6 pt-8">
+      <main className="mx-auto max-w-md px-4 pb-32 pt-8">
         <div className="flex items-start justify-between gap-3 pb-5 pt-4">
           <div>
             <h1 className="text-[26px] font-extrabold tracking-tight text-foreground">

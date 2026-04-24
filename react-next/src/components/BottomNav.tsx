@@ -50,8 +50,8 @@ const BottomNav = () => {
   });
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-[env(safe-area-inset-bottom,8px)] pt-0">
-      <div className="glass-nav mx-auto flex max-w-md items-center justify-around rounded-[1.6rem] px-1 py-1">
+    <nav className="fixed inset-x-0 bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] z-50 px-4 pt-0">
+      <div className="glass-nav mx-auto flex max-w-md items-center justify-around rounded-[1.6rem] px-1 py-1 shadow-[0_16px_44px_rgba(0,0,0,0.4)]">
         {navItems.map((item, i) => {
           const Icon = item.icon;
           const isActive = activeIndex === i;
@@ -61,7 +61,7 @@ const BottomNav = () => {
               key={`${item.labelKey}-${i}`}
               type="button"
               onClick={() => navigate(item.path)}
-              className={`relative flex flex-col items-center gap-0.5 rounded-2xl px-4 py-1.5 transition-all duration-200 ${
+              className={`relative flex min-w-[4rem] flex-col items-center gap-0.5 rounded-2xl px-3 py-1.5 transition-all duration-200 sm:px-4 ${
                 isActive ? "" : "active:scale-95"
               }`}
             >

@@ -11,10 +11,10 @@ const RouteLoadingShell = () => {
         <div className="space-y-3 pb-5 pt-4">
           <GlassSection>
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-              {pickLang(language, "Opening view", "Ansicht wird geoeffnet")}
+              {pickLang(language, "Opening view", "Ansicht wird geöffnet")}
             </p>
             <p className="mt-2 text-sm font-semibold text-foreground">
-              {pickLang(language, "Loading the next page...", "Die naechste Seite wird geladen...")}
+              {pickLang(language, "Loading the next page...", "Die nächste Seite wird geladen...")}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
               {pickLang(

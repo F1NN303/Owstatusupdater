@@ -289,7 +289,7 @@ function PublicChangelogSheet({
                   {pickLang(
                     language,
                     "Short public notes about visible updates.",
-                    "Kurze oeffentliche Hinweise zu sichtbaren Updates.",
+                    "Kurze öffentliche Hinweise zu sichtbaren Updates.",
                   )}
                 </SheetDescription>
               </div>
@@ -390,7 +390,7 @@ const SettingsPage = () => {
       : alertAccountProfile?.brevoSyncStatus === "error"
         ? pickLang(language, "Sync issue", "Sync-Problem")
         : alertAccountProfile?.providerContactId
-          ? pickLang(language, "Checking signup", "Anmeldung wird geprueft")
+          ? pickLang(language, "Checking signup", "Anmeldung wird geprüft")
         : pickLang(language, "Not connected", "Nicht verbunden");
 
   const alertsSummary = pickLang(
@@ -405,13 +405,13 @@ const SettingsPage = () => {
           alertSeverityThreshold === "degraded" ? "degraded+" : "major only"
         }.`,
     alertAccountStatus === "checking"
-      ? "Der Status des Alarm-Kontos wird gerade geprueft. Lokale Browser-Auswahlen bleiben bestehen, waehrend die Verbindung verifiziert wird."
+      ? "Der Status des Alarm-Kontos wird gerade geprüft. Lokale Browser-Auswahlen bleiben bestehen, während die Verbindung verifiziert wird."
       : alertAccountStatus === "error"
-        ? "Das Alarm-Konto konnte gerade nicht verifiziert werden. Lokale Alarm-Auswahlen bleiben auf diesem Geraet, bis die Verbindung wieder gesund ist."
+        ? "Das Alarm-Konto konnte gerade nicht verifiziert werden. Lokale Alarm-Auswahlen bleiben auf diesem Gerät, bis die Verbindung wieder gesund ist."
         : alertAccountConnected
       ? `Alarme werden auf der Alarm-Seite verwaltet. Verbunden als ${sessionEmail || "unbekannt"}, ${alertServiceIds.length} Services werden beobachtet. Sync: ${syncStatusLabel}.`
-      : `Alarme werden auf der Alarm-Seite verwaltet. ${alertServiceIds.length} Services sind aktuell nur auf diesem Geraet ausgewaehlt. Schwelle: ${
-          alertSeverityThreshold === "degraded" ? "beeintraechtigt+" : "nur groessere"
+      : `Alarme werden auf der Alarm-Seite verwaltet. ${alertServiceIds.length} Services sind aktuell nur auf diesem Gerät ausgewählt. Schwelle: ${
+          alertSeverityThreshold === "degraded" ? "beeinträchtigt+" : "nur größere"
         }.`,
   );
   const storageSummary = pickLang(
@@ -431,7 +431,7 @@ const SettingsPage = () => {
   const heroTitle = pickLang(
     language,
     "Defaults for this browser.",
-    "Standards fuer diesen Browser.",
+    "Standards für diesen Browser.",
   );
   const heroEyebrow = pickLang(language, "This browser", "Dieser Browser");
   const alertStatusValue =
@@ -500,13 +500,13 @@ const SettingsPage = () => {
 
   return (
     <AppLayout>
-      <PageShell className="pb-8">
+      <PageShell className="pb-32">
         <PageIntro
           title={pickLang(language, "Settings", "Einstellungen")}
           description={pickLang(
             language,
             "Display, home feed, and alert defaults for this browser",
-            "Anzeige, Startseite und Alarm-Standards fuer diesen Browser",
+            "Anzeige, Startseite und Alarm-Standards für diesen Browser",
           )}
           action={
             <div className="glass flex h-12 w-12 items-center justify-center rounded-2xl">
@@ -558,7 +558,7 @@ const SettingsPage = () => {
               description={pickLang(
                 language,
                 "Language, motion, and time labels for this browser.",
-                "Sprache, Bewegung und Zeitangaben fuer diesen Browser.",
+                "Sprache, Bewegung und Zeitangaben für diesen Browser.",
               )}
             />
 
@@ -569,7 +569,7 @@ const SettingsPage = () => {
                 description={pickLang(
                   language,
                   "Choose the primary language used across the site.",
-                  "Lege die Hauptsprache fuer die gesamte Statusseite fest.",
+                  "Lege die Hauptsprache für die gesamte Statusseite fest.",
                 )}
               >
                 <SegmentGroup
@@ -645,7 +645,7 @@ const SettingsPage = () => {
               <SettingsGroup>
                 <SettingsRow
                   eyebrow={pickLang(language, "Default filter", "Standardfilter")}
-                  title={pickLang(language, "Choose the first feed view", "Erste Feed-Ansicht waehlen")}
+                  title={pickLang(language, "Choose the first feed view", "Erste Feed-Ansicht wählen")}
                   description={pickLang(
                     language,
                     "Pick what the home page should emphasize before you use manual filters.",
@@ -804,7 +804,7 @@ const SettingsPage = () => {
               description={pickLang(
                 language,
                 "Quick links and controls for this browser and your connected alert account.",
-                "Schnelle Links und Steuerungen fuer diesen Browser und dein verbundenes Alarm-Konto.",
+                "Schnelle Links und Steuerungen für diesen Browser und dein verbundenes Alarm-Konto.",
               )}
             />
 
@@ -826,7 +826,7 @@ const SettingsPage = () => {
                   to="/alerts"
                   className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-black/30"
                 >
-                  {pickLang(language, "Open alerts center", "Alarm-Center oeffnen")}
+                  {pickLang(language, "Open alerts center", "Alarm-Center öffnen")}
                   <ChevronRight size={14} />
                 </Link>
               </SettingsRow>
@@ -850,7 +850,7 @@ const SettingsPage = () => {
                     {pickLang(
                       language,
                       "Restore the quick guidance shown to first-time visitors.",
-                      "Stellt die kurze Anleitung fuer Erstbesucher wieder her.",
+                      "Stellt die kurze Anleitung für Erstbesucher wieder her.",
                     )}
                   </p>
                 </div>
@@ -864,13 +864,13 @@ const SettingsPage = () => {
               >
                 <div>
                   <p className="text-sm font-medium text-amber-100">
-                    {pickLang(language, "Reset browser defaults", "Browser-Standards zuruecksetzen")}
+                    {pickLang(language, "Reset browser defaults", "Browser-Standards zurücksetzen")}
                   </p>
                   <p className="mt-1 text-[12px] leading-5 text-amber-100/75">
                     {pickLang(
                       language,
                       "Clears local defaults for this browser without touching the public site.",
-                      "Setzt lokale Standards fuer diesen Browser zurueck, ohne die oeffentliche Seite zu veraendern.",
+                      "Setzt lokale Standards für diesen Browser zurück, ohne die öffentliche Seite zu verändern.",
                     )}
                   </p>
                 </div>
@@ -885,10 +885,10 @@ const SettingsPage = () => {
               >
                 <div>
                   <p className="text-sm font-medium text-foreground">
-                    {pickLang(language, "Open GitHub repository", "GitHub-Repository oeffnen")}
+                    {pickLang(language, "Open GitHub repository", "GitHub-Repository öffnen")}
                   </p>
                   <p className="mt-1 text-[12px] leading-5 text-muted-foreground">
-                    {pickLang(language, "Public project page and code history.", "Oeffentliche Projektseite und Code-Historie.")}
+                    {pickLang(language, "Public project page and code history.", "Öffentliche Projektseite und Code-Historie.")}
                   </p>
                 </div>
                 <ExternalLink size={16} className="shrink-0 text-muted-foreground" />
