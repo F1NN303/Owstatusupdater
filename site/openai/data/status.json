@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-24T21:51:05.713663Z",
+  "generated_at": "2026-04-24T22:41:52.368433Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 2,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
@@ -17,7 +17,7 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 11,
+      "reports_24h": 152,
       "recent_incidents_6h": 2,
       "recent_incidents_24h": 2,
       "cross_source": {
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
+      "official_operational_cap_applied": true,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "stable",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: Partial System Degradation",
+    "summary": "OpenAI Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: Partial System Degradation",
+        "title": "OpenAI Statuspage API: All Systems Operational",
         "url": "https://status.openai.com/",
-        "published_at": "2026-04-24T21:51:05.043966Z",
+        "published_at": "2026-04-24T22:41:51.474928Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Elevated errors on model gpt-5.5 in codex",
+        "url": "https://status.openai.com/incidents/01KQ0P3DXVK7YQYB4NJBKSQCZC#01KQ0RZ6ZMH9WD12SQPGS6V7EX",
+        "published_at": "2026-04-24T22:15:07Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved"
       },
       {
         "title": "Elevated errors on model gpt-5.5 in codex",
@@ -84,7 +92,7 @@
         "published_at": "2026-04-24T21:24:59Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating"
+        "meta": "Investigating / Minor / Resolved"
       },
       {
         "title": "Elevated errors in Codex",
@@ -141,37 +149,29 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved"
-      },
-      {
-        "title": "Enterprise, business & education workspaces seeing elevated rate of conversation errors",
-        "url": "https://status.openai.com/incidents/01KPTQAPRRSTTSSPDBGNG34FD5#01KPTQAPRRGG7B6AKHFTH1SF15",
-        "published_at": "2026-04-22T13:51:00Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved"
       }
     ],
-    "last_statement_at": "2026-04-24T21:51:05.043966Z"
+    "last_statement_at": "2026-04-24T22:41:51.474928Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports an active incident: Elevated errors on model gpt-5.5 in codex.",
-    "current_status": "degraded",
-    "reports_24h": 11,
+    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
+    "current_status": "operational",
+    "reports_24h": 152,
     "incidents": [
       {
         "title": "Elevated errors on model gpt-5.5 in codex",
         "started_at": "2026-04-24T21:27:06Z",
-        "duration": "24m",
+        "duration": "50m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Elevated errors on model gpt-5.5 in codex",
         "started_at": "2026-04-24T21:24:59Z",
-        "duration": "26m ongoing",
-        "acknowledgement": "Minor / Investigating",
+        "duration": "50m",
+        "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KQ0P3DXVK7YQYB4NJBKSQCZC"
       },
@@ -222,36 +222,13 @@
         "url": "https://status.openai.com/incidents/01KPPY7B8PMYHJWDNFY9TMJX33"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Codex API",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-04-23T22:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-23T22:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-04-23T22:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-04-23T22:45:00Z",
         "signal_value": 3.0,
@@ -809,6 +786,24 @@
         "signal_value": 22.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-24T22:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-24T22:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-04-24T22:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -817,21 +812,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-04-24T21:45:00Z"
+      "last_sample_at": "2026-04-24T22:30:00Z"
     },
+    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "22:00",
-        "count": 5
-      },
-      {
-        "label": "22:20",
-        "count": 2
-      },
-      {
-        "label": "22:40",
-        "count": 3
-      },
       {
         "label": "23:00",
         "count": 0
@@ -1107,6 +1091,18 @@
       {
         "label": "21:40",
         "count": 3
+      },
+      {
+        "label": "22:00",
+        "count": 0
+      },
+      {
+        "label": "22:20",
+        "count": 4
+      },
+      {
+        "label": "22:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1115,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-24T17:50:53-04:00"
+      "last_reviewed_at": "2026-04-24T18:41:50-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 158,
-        "last_reviewed_at": "2026-04-24T17:50:53-04:00"
+        "reports_24h": 152,
+        "last_reviewed_at": "2026-04-24T18:41:50-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1256,8 +1252,8 @@
       },
       {
         "name": "Codex API",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-03-26T22:18:01Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1423,7 +1419,7 @@
       "url": "https://status.openai.com/incidents/01KQ0P3DXVK7YQYB4NJBKSQCZC",
       "published_at": "2026-04-24T21:24:59Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Investigating"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Elevated errors in Codex",
@@ -1474,45 +1470,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-24T21:51:05.713663Z"
+      "published_at": "2026-04-24T22:41:52.368433Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-24T21:51:05.713663Z"
+      "published_at": "2026-04-24T22:41:52.368433Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-24T21:51:05.713663Z"
+      "published_at": "2026-04-24T22:41:52.368433Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-24T21:51:05.713663Z"
+      "published_at": "2026-04-24T22:41:52.368433Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-24T21:51:05.713663Z"
+      "published_at": "2026-04-24T22:41:52.368433Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: Partial System Degradation",
+      "title": "OpenAI Statuspage API: All Systems Operational",
       "url": "https://status.openai.com/",
-      "published_at": "2026-04-24T21:51:05.043966Z",
+      "published_at": "2026-04-24T22:41:51.474928Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Elevated errors on model gpt-5.5 in codex",
+      "url": "https://status.openai.com/incidents/01KQ0P3DXVK7YQYB4NJBKSQCZC#01KQ0RZ6ZMH9WD12SQPGS6V7EX",
+      "published_at": "2026-04-24T22:15:07Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved"
     },
     {
       "title": "Elevated errors on model gpt-5.5 in codex",
@@ -1520,7 +1524,7 @@
       "published_at": "2026-04-24T21:24:59Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating"
+      "meta": "Investigating / Minor / Resolved"
     },
     {
       "title": "Elevated errors in Codex",
@@ -1561,14 +1565,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved"
-    },
-    {
-      "title": "Enterprise, business & education workspaces seeing elevated rate of conversation errors",
-      "url": "https://status.openai.com/incidents/01KPTQAPRRSTTSSPDBGNG34FD5#01KPVABNATMWF4S20AGVCJ43A0",
-      "published_at": "2026-04-22T19:23:34Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved"
     }
   ],
   "social": [],
@@ -1584,11 +1580,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-24T21:51:04.874967Z",
+      "last_item_at": "2026-04-24T22:41:50.422415Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 829,
-      "fetched_at": "2026-04-24T21:51:04.874995Z",
+      "duration_ms": 910,
+      "fetched_at": "2026-04-24T22:41:50.422431Z",
       "cache_hit": false
     },
     {
@@ -1602,11 +1598,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-24T17:50:53-04:00",
+      "last_item_at": "2026-04-24T18:41:50-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 168,
-      "fetched_at": "2026-04-24T21:51:05.043431Z",
+      "duration_ms": 1051,
+      "fetched_at": "2026-04-24T22:41:51.474368Z",
       "cache_hit": false
     },
     {
@@ -1620,17 +1616,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-24T21:51:05.043966Z",
+      "last_item_at": "2026-04-24T22:41:51.474928Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 668,
-      "fetched_at": "2026-04-24T21:51:05.712021Z",
+      "duration_ms": 891,
+      "fetched_at": "2026-04-24T22:41:52.366727Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-24T21:51:05.713663Z",
+    "generated_at": "2026-04-24T22:41:52.368433Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1652,7 +1648,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1667,30 +1663,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 829,
+          "duration_ms": 910,
           "cache_hit": false,
-          "at": "2026-04-24T21:51:04Z"
+          "at": "2026-04-24T22:41:49Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 560.8
+          "avg_duration_ms": 579.2
         },
         "metrics_7d": {
-          "runs": 132,
-          "ok": 132,
+          "runs": 133,
+          "ok": 133,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 590.7
+          "avg_duration_ms": 593.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-24T21:51:04Z",
+        "last_success_at": "2026-04-24T22:41:49Z",
         "last_failure_at": null
       },
       {
@@ -1704,30 +1700,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 168,
+          "duration_ms": 1051,
           "cache_hit": false,
-          "at": "2026-04-24T21:51:04Z"
+          "at": "2026-04-24T22:41:49Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 835.9
+          "avg_duration_ms": 847.2
         },
         "metrics_7d": {
-          "runs": 132,
-          "ok": 132,
+          "runs": 133,
+          "ok": 133,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 955.9
+          "avg_duration_ms": 956.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-24T21:51:04Z",
+        "last_success_at": "2026-04-24T22:41:49Z",
         "last_failure_at": null
       },
       {
@@ -1741,43 +1737,44 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 668,
+          "duration_ms": 891,
           "cache_hit": false,
-          "at": "2026-04-24T21:51:04Z"
+          "at": "2026-04-24T22:41:49Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 694.6
+          "avg_duration_ms": 704.9
         },
         "metrics_7d": {
-          "runs": 132,
-          "ok": 132,
+          "runs": 133,
+          "ok": 133,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 712.1
+          "avg_duration_ms": 713.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-24T21:51:04Z",
+        "last_success_at": "2026-04-24T22:41:49Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-24T21:51:05.713663Z",
+    "generated_at": "2026-04-24T22:41:52.368433Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "9beffc969d30ec54",
           "title": "Elevated errors on model gpt-5.5 in codex",
           "started_at": "2026-04-24T21:27:06Z",
-          "duration": "24m",
+          "duration": "50m",
           "acknowledgement": "warn icon Warn",
           "url": "https://status.openai.com/"
         },
@@ -1785,56 +1782,21 @@
           "id": "3b32138d51b1fe8d",
           "title": "Elevated errors on model gpt-5.5 in codex",
           "started_at": "2026-04-24T21:24:59Z",
-          "duration": "26m ongoing",
-          "acknowledgement": "Minor / Investigating",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "c9ec795610ae19ac",
-          "title": "Elevated error rates and latency for Moderation API",
-          "started_at": "2026-04-23T16:46:51Z",
-          "duration": "1h 15m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "d9dff2a81e7680f9",
-          "title": "Some users will see higher error rates on Codex",
-          "started_at": "2026-04-20T23:16:43Z",
-          "duration": "0m",
+          "duration": "50m",
           "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
-      ]
+      ],
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "0bc0cba194953fd9",
-          "title": "Elevated errors on model gpt-5.5 in codex",
-          "url": "https://status.openai.com/#2026-04-24T21:27:06Z",
-          "published_at": "2026-04-24T21:27:06Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "0130e7901a12a456",
-          "title": "Elevated errors on model gpt-5.5 in codex",
-          "url": "https://status.openai.com/incidents/01KQ0P3DXVK7YQYB4NJBKSQCZC",
-          "published_at": "2026-04-24T21:24:59Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Investigating"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 2,
-      "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "new_incidents": 0,
+      "updated_incidents": 2,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
