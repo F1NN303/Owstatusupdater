@@ -42,6 +42,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           </Link>
         </footer>
       </div>
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-32 bg-[linear-gradient(180deg,rgba(3,7,18,0),rgba(3,7,18,0.78)_42%,rgba(3,7,18,0.96)_100%)]"
+        aria-hidden="true"
+      />
       <BottomNav />
     </div>
   );

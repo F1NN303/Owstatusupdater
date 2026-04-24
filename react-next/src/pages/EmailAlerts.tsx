@@ -241,20 +241,22 @@ function SetupProgressStep({
         : "border-white/10 bg-black/20 text-muted-foreground";
 
   return (
-    <div className={cn("rounded-2xl border p-3", stateClass)}>
-      <div className="flex items-start justify-between gap-3">
-        <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", iconClass)}>
+    <div className={cn("rounded-2xl border p-2.5 sm:p-3", stateClass)}>
+      <div className="flex items-start justify-between gap-2.5">
+        <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl", iconClass)}>
           {icon}
         </div>
         <span className={cn("rounded-full border px-2 py-1 text-[10px] font-semibold", badgeClass)}>
           {stateLabel}
         </span>
       </div>
-      <p className="mt-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+      <p className="mt-2.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
         {step}
       </p>
       <h3 className="mt-1 text-sm font-semibold text-foreground">{title}</h3>
-      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{description}</p>
+      <p className={cn("mt-1 text-[11px] leading-relaxed text-muted-foreground", state !== "current" && "line-clamp-2")}>
+        {description}
+      </p>
     </div>
   );
 }
@@ -1048,10 +1050,10 @@ const EmailAlerts = () => {
         />
 
         <section className="glass glass-specular overflow-hidden rounded-2xl">
-          <div className="bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.2),transparent_45%),linear-gradient(140deg,rgba(14,165,233,0.08),transparent_55%)] p-4 sm:p-5">
+          <div className="bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.2),transparent_45%),linear-gradient(140deg,rgba(14,165,233,0.08),transparent_55%)] p-3.5 sm:p-5">
             <div className="relative z-10 flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary sm:h-10 sm:w-10">
                   <ShieldCheck size={18} className="text-primary" />
                 </div>
                 <div className="min-w-0">
@@ -1059,7 +1061,7 @@ const EmailAlerts = () => {
                     {showSetupFlow ? t("Alerts setup", "Alarm-Setup") : t("Alert settings", "Alarm-Einstellungen")}
                   </p>
                   <h2 className="text-sm font-bold text-foreground sm:text-base">{setupTitle}</h2>
-                  <p className="mt-0.5 max-w-2xl text-xs leading-relaxed text-muted-foreground">
+                  <p className="mt-0.5 line-clamp-3 max-w-2xl text-xs leading-relaxed text-muted-foreground">
                     {setupDescription}
                   </p>
                 </div>
@@ -1073,7 +1075,7 @@ const EmailAlerts = () => {
 
             {showSetupFlow ? (
               <>
-                <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-3">
+                <div className="mt-3 grid grid-cols-1 gap-2.5 lg:grid-cols-3">
                   {setupProgressSteps.map((item, index) => (
                     <SetupProgressStep
                       key={item.key}

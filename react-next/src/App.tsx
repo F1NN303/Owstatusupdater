@@ -1,16 +1,23 @@
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter, HashRouter, Navigate, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import RouteLoadingShell from "./components/RouteLoadingShell";
 
-const ServerDetail = lazy(() => import("./pages/ServerDetail"));
-const EmailAlerts = lazy(() => import("./pages/EmailAlertsRoute"));
-const Favorites = lazy(() => import("./pages/Favorites"));
-const SettingsPage = lazy(() => import("./pages/SettingsPageRoute"));
-const TermsPage = lazy(() => import("./pages/TermsPage"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const loadServerDetail = () => import("./pages/ServerDetail");
+const loadEmailAlerts = () => import("./pages/EmailAlertsRoute");
+const loadFavorites = () => import("./pages/Favorites");
+const loadSettingsPage = () => import("./pages/SettingsPageRoute");
+const loadTermsPage = () => import("./pages/TermsPage");
+const loadNotFound = () => import("./pages/NotFound");
+
+const ServerDetail = lazy(loadServerDetail);
+const EmailAlerts = lazy(loadEmailAlerts);
+const Favorites = lazy(loadFavorites);
+const SettingsPage = lazy(loadSettingsPage);
+const TermsPage = lazy(loadTermsPage);
+const NotFound = lazy(loadNotFound);
 const routerModeEnv = (import.meta.env.VITE_ROUTER_MODE as string | undefined)?.trim().toLowerCase();
 const useHashRouter = routerModeEnv === "hash";
 const Router = useHashRouter ? HashRouter : BrowserRouter;
@@ -24,9 +31,51 @@ const routerBasename =
       ? normalizedBaseUrl
       : undefined;
 
+const routePreloaders = [
+  loadFavorites,
+  loadEmailAlerts,
+  loadSettingsPage,
+  loadTermsPage,
+  loadServerDetail,
+  loadNotFound,
+];
+
+const RoutePreloader = () => {
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const preload = () => {
+      routePreloaders.forEach((loadRoute) => {
+        void loadRoute();
+      });
+    };
+
+    const idleWindow = window as Window & {
+      requestIdleCallback?: (
+        callback: IdleRequestCallback,
+        options?: IdleRequestOptions
+      ) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+
+    if (typeof idleWindow.requestIdleCallback === "function") {
+      const idleId = idleWindow.requestIdleCallback(preload, { timeout: 1800 });
+      return () => idleWindow.cancelIdleCallback?.(idleId);
+    }
+
+    const timeoutId = window.setTimeout(preload, 900);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
+  return null;
+};
+
 const App = () => (
   <TooltipProvider>
     <Toaster />
+    <RoutePreloader />
     <Router basename={routerBasename}>
       <Suspense fallback={<RouteLoadingShell />}>
         <Routes>
