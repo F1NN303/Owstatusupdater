@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-25T02:30:37.890908Z",
+  "generated_at": "2026-04-25T02:40:36.265415Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "minor",
+    "severity_score": 3,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
@@ -17,7 +17,7 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 112,
+      "reports_24h": 113,
       "recent_incidents_6h": 3,
       "recent_incidents_24h": 7,
       "cross_source": {
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
+      "official_operational_cap_applied": true,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "minor",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,47 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: Minor Service Outage",
+    "summary": "Claude Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "Claude Statuspage API: Minor Service Outage",
+        "title": "Claude Statuspage API: All Systems Operational",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-04-25T02:30:36.922855Z",
+        "published_at": "2026-04-25T02:40:35.408329Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Claude Code v2.1.120 Crashes on Startup",
+        "url": "https://status.anthropic.com/incidents/zqsk02ryfmrd#btzv451kjvyp",
+        "published_at": "2026-04-25T02:35:50.465Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+      },
+      {
+        "title": "Elevated error rates on Claude Opus 4.7",
+        "url": "https://status.anthropic.com/incidents/q93x64nrhwnn#5lhh1wzhrqmp",
+        "published_at": "2026-04-25T02:34:30.182Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / The issue affecting requests to Claude Opus 4.7 has been resolved. Impact occurred from 01:24–01:59 UTC."
       },
       {
         "title": "Elevated error rates on Claude Opus 4.7",
@@ -84,7 +100,7 @@
         "published_at": "2026-04-25T02:15:52.136Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / A fix has been deployed for Claude Opus 4.7 and we are seeing success rates at normal levels. We are continuing to monitor, and ensure no further recurrence."
+        "meta": "Monitoring / Minor / Resolved / A fix has been deployed for Claude Opus 4.7 and we are seeing success rates at normal levels. We are continuing to monitor, and ensure no further recurrence."
       },
       {
         "title": "Claude Code v2.1.120 Crashes on Startup",
@@ -92,7 +108,7 @@
         "published_at": "2026-04-25T01:45:32.688Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / We have identified an issue in Claude Code version 2.1.120 that causes a crash when resuming a prior session via the --resume or --continue flags. Auto-update will move affected clients back to 2.1.119 on next check, but you can always run "
+        "meta": "Monitoring / Minor / Resolved / We have identified an issue in Claude Code version 2.1.120 that causes a crash when resuming a prior session via the --resume or --continue flags. Auto-update will move affected clients back to 2.1.119 on next check, but you can always run "
       },
       {
         "title": "Elevated error rates on Claude Opus 4.7",
@@ -100,7 +116,7 @@
         "published_at": "2026-04-25T01:35:55.810Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring / We are investigating elevated errors for requests to Claude Opus 4.7. We will provide an update as soon as possible."
+        "meta": "Investigating / Minor / Resolved / We are investigating elevated errors for requests to Claude Opus 4.7. We will provide an update as soon as possible."
       },
       {
         "title": "Issues with sign-ups on platform.claude.com",
@@ -133,53 +149,37 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Minor / Resolved / We are continuing to work on a fix for this issue."
-      },
-      {
-        "title": "Elevated errors on Claude Opus 4.7",
-        "url": "https://status.anthropic.com/incidents/1mx31vhgl3ms#74xd65t67tzg",
-        "published_at": "2026-04-24T10:36:57.008Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / The issue has been identified and a fix is being implemented."
-      },
-      {
-        "title": "Elevated errors on Claude Opus 4.7",
-        "url": "https://status.anthropic.com/incidents/1mx31vhgl3ms#l0k0cr7l0htp",
-        "published_at": "2026-04-24T10:20:52.165Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are continuing to investigate this issue."
       }
     ],
-    "last_statement_at": "2026-04-25T02:30:36.922855Z"
+    "last_statement_at": "2026-04-25T02:40:35.408329Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports 2 active incidents. Latest: Elevated error rates on Claude Opus 4.7.",
-    "current_status": "degraded",
-    "reports_24h": 112,
+    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
+    "current_status": "operational",
+    "reports_24h": 113,
     "incidents": [
       {
         "title": "Claude Code v2.1.120 Crashes on Startup",
         "started_at": "2026-04-25T01:45:32.619Z",
-        "duration": "45m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "50m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/zqsk02ryfmrd"
       },
       {
         "title": "Elevated error rates on Claude Opus 4.7",
         "started_at": "2026-04-25T01:38:22Z",
-        "duration": "1m",
+        "duration": "1h",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Elevated error rates on Claude Opus 4.7",
         "started_at": "2026-04-25T01:35:55.664Z",
-        "duration": "54m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "58m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/q93x64nrhwnn"
       },
@@ -222,32 +222,11 @@
         "url": "https://status.anthropic.com/incidents/1gz3fcvd76fx"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "claude.ai",
-        "count": 1
-      },
-      {
-        "label": "Claude Console (platform.claude.com)",
-        "count": 1
-      },
-      {
-        "label": "Claude API (api.anthropic.com)",
-        "count": 1
-      },
-      {
-        "label": "Claude Code",
-        "count": 1
-      },
-      {
-        "label": "Claude Cowork",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
       {
@@ -838,10 +817,6 @@
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
       {
-        "label": "02:40",
-        "count": 2
-      },
-      {
         "label": "03:00",
         "count": 3
       },
@@ -1124,6 +1099,10 @@
       {
         "label": "02:20",
         "count": 1
+      },
+      {
+        "label": "02:40",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1132,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-24T22:30:36-04:00"
+      "last_reviewed_at": "2026-04-24T22:40:34-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 112,
-        "last_reviewed_at": "2026-04-24T22:30:36-04:00"
+        "reports_24h": 113,
+        "last_reviewed_at": "2026-04-24T22:40:34-04:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -1147,37 +1126,37 @@
     "components": [
       {
         "name": "claude.ai",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-04-25T01:35:55.710Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-25T02:35:50.395Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Console (platform.claude.com)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-04-25T01:35:55.725Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-25T02:35:50.408Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude API (api.anthropic.com)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-04-25T01:35:55.741Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-25T02:35:50.420Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Code",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-04-25T01:35:55.755Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-25T02:35:50.432Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Cowork",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-04-25T01:35:55.770Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-25T02:35:50.443Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1230,7 +1209,7 @@
       "url": "https://status.anthropic.com/incidents/zqsk02ryfmrd",
       "published_at": "2026-04-25T01:45:32.619Z",
       "source": "Claude Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Elevated error rates on Claude Opus 4.7",
@@ -1244,7 +1223,7 @@
       "url": "https://status.anthropic.com/incidents/q93x64nrhwnn",
       "published_at": "2026-04-25T01:35:55.664Z",
       "source": "Claude Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Issues with sign-ups on platform.claude.com",
@@ -1288,45 +1267,61 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-25T02:30:37.890908Z"
+      "published_at": "2026-04-25T02:40:36.265415Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-25T02:30:37.890908Z"
+      "published_at": "2026-04-25T02:40:36.265415Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-25T02:30:37.890908Z"
+      "published_at": "2026-04-25T02:40:36.265415Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-25T02:30:37.890908Z"
+      "published_at": "2026-04-25T02:40:36.265415Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-25T02:30:37.890908Z"
+      "published_at": "2026-04-25T02:40:36.265415Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: Minor Service Outage",
+      "title": "Claude Statuspage API: All Systems Operational",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-04-25T02:30:36.922855Z",
+      "published_at": "2026-04-25T02:40:35.408329Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Claude Code v2.1.120 Crashes on Startup",
+      "url": "https://status.anthropic.com/incidents/zqsk02ryfmrd#btzv451kjvyp",
+      "published_at": "2026-04-25T02:35:50.465Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+    },
+    {
+      "title": "Elevated error rates on Claude Opus 4.7",
+      "url": "https://status.anthropic.com/incidents/q93x64nrhwnn#5lhh1wzhrqmp",
+      "published_at": "2026-04-25T02:34:30.182Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / The issue affecting requests to Claude Opus 4.7 has been resolved. Impact occurred from 01:24–01:59 UTC."
     },
     {
       "title": "Elevated error rates on Claude Opus 4.7",
@@ -1334,7 +1329,7 @@
       "published_at": "2026-04-25T02:15:52.136Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / A fix has been deployed for Claude Opus 4.7 and we are seeing success rates at normal levels. We are continuing to monitor, and ensure no further recurrence."
+      "meta": "Monitoring / Minor / Resolved / A fix has been deployed for Claude Opus 4.7 and we are seeing success rates at normal levels. We are continuing to monitor, and ensure no further recurrence."
     },
     {
       "title": "Claude Code v2.1.120 Crashes on Startup",
@@ -1342,7 +1337,7 @@
       "published_at": "2026-04-25T01:45:32.688Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / We have identified an issue in Claude Code version 2.1.120 that causes a crash when resuming a prior session via the --resume or --continue flags. Auto-update will move affected clients back to 2.1.119 on next check, but you can always run "
+      "meta": "Monitoring / Minor / Resolved / We have identified an issue in Claude Code version 2.1.120 that causes a crash when resuming a prior session via the --resume or --continue flags. Auto-update will move affected clients back to 2.1.119 on next check, but you can always run "
     },
     {
       "title": "Elevated error rates on Claude Opus 4.7",
@@ -1350,7 +1345,7 @@
       "published_at": "2026-04-25T01:35:55.810Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring / We are investigating elevated errors for requests to Claude Opus 4.7. We will provide an update as soon as possible."
+      "meta": "Investigating / Minor / Resolved / We are investigating elevated errors for requests to Claude Opus 4.7. We will provide an update as soon as possible."
     },
     {
       "title": "Issues with sign-ups on platform.claude.com",
@@ -1367,22 +1362,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Major / Resolved / We are currently investigating an issue resulting in errors when attempting to sign up at platform.claude.com"
-    },
-    {
-      "title": "Elevated errors on Claude Opus 4.7",
-      "url": "https://status.anthropic.com/incidents/1mx31vhgl3ms#4zd66q3zfk5j",
-      "published_at": "2026-04-24T10:59:52.400Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / The incident has been resolved. We had 3 blips of unavailability: * 2:53 PT / 9:53 UTC -- 2:57 PT / 9:57 UTC * 3:01 PT / 10:01 UTC -- 3:06 PT / 10:06 UTC * 3:34 PT / 10:34 UTC -- 3:36 PT / 10:36 UTC"
-    },
-    {
-      "title": "Elevated errors on Claude Opus 4.7",
-      "url": "https://status.anthropic.com/incidents/1mx31vhgl3ms#q0y80bmltvkm",
-      "published_at": "2026-04-24T10:51:10.728Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / We are continuing to work on a fix for this issue."
     }
   ],
   "social": [],
@@ -1398,11 +1377,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-25T02:30:35.956229Z",
+      "last_item_at": "2026-04-25T02:40:33.906479Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 762,
-      "fetched_at": "2026-04-25T02:30:35.956246Z",
+      "duration_ms": 860,
+      "fetched_at": "2026-04-25T02:40:33.906502Z",
       "cache_hit": false
     },
     {
@@ -1416,11 +1395,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-24T22:30:36-04:00",
+      "last_item_at": "2026-04-24T22:40:34-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 966,
-      "fetched_at": "2026-04-25T02:30:36.922315Z",
+      "duration_ms": 1501,
+      "fetched_at": "2026-04-25T02:40:35.407758Z",
       "cache_hit": false
     },
     {
@@ -1434,17 +1413,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-25T02:30:36.922855Z",
+      "last_item_at": "2026-04-25T02:40:35.408329Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 966,
-      "fetched_at": "2026-04-25T02:30:37.889340Z",
+      "duration_ms": 855,
+      "fetched_at": "2026-04-25T02:40:36.263814Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-25T02:30:37.890908Z",
+    "generated_at": "2026-04-25T02:40:36.265415Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1466,7 +1445,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "minor",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1481,18 +1460,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 762,
+          "duration_ms": 860,
           "cache_hit": false,
-          "at": "2026-04-25T02:30:35Z"
+          "at": "2026-04-25T02:40:33Z"
         },
         "metrics_24h": {
-          "runs": 19,
-          "ok": 19,
+          "runs": 20,
+          "ok": 20,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 789.1
+          "avg_duration_ms": 792.6
         },
         "metrics_7d": {
           "runs": 132,
@@ -1501,10 +1480,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 689.5
+          "avg_duration_ms": 690.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-25T02:30:35Z",
+        "last_success_at": "2026-04-25T02:40:33Z",
         "last_failure_at": null
       },
       {
@@ -1518,18 +1497,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 966,
+          "duration_ms": 1501,
           "cache_hit": false,
-          "at": "2026-04-25T02:30:35Z"
+          "at": "2026-04-25T02:40:33Z"
         },
         "metrics_24h": {
-          "runs": 19,
-          "ok": 19,
+          "runs": 20,
+          "ok": 20,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1043.5
+          "avg_duration_ms": 1066.4
         },
         "metrics_7d": {
           "runs": 132,
@@ -1538,10 +1517,10 @@
           "success_rate": 99.2,
           "stale_rate": 0.8,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1237.5
+          "avg_duration_ms": 1243.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-25T02:30:35Z",
+        "last_success_at": "2026-04-25T02:40:33Z",
         "last_failure_at": "2026-04-23T15:13:42Z"
       },
       {
@@ -1555,18 +1534,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 966,
+          "duration_ms": 855,
           "cache_hit": false,
-          "at": "2026-04-25T02:30:35Z"
+          "at": "2026-04-25T02:40:33Z"
         },
         "metrics_24h": {
-          "runs": 19,
-          "ok": 19,
+          "runs": 20,
+          "ok": 20,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 891.8
+          "avg_duration_ms": 890.0
         },
         "metrics_7d": {
           "runs": 132,
@@ -1575,31 +1554,32 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 900.6
+          "avg_duration_ms": 899.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-25T02:30:35Z",
+        "last_success_at": "2026-04-25T02:40:33Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-25T02:30:37.890908Z",
+    "generated_at": "2026-04-25T02:40:36.265415Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "4877d090cb30fb40",
           "title": "Claude Code v2.1.120 Crashes on Startup",
           "started_at": "2026-04-25T01:45:32.619Z",
-          "duration": "45m ongoing",
-          "acknowledgement": "Minor / Monitoring",
+          "duration": "50m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://status.anthropic.com/"
         },
         {
           "id": "13998b9b37917b12",
           "title": "Elevated error rates on Claude Opus 4.7",
           "started_at": "2026-04-25T01:38:22Z",
-          "duration": "1m",
+          "duration": "1h",
           "acknowledgement": "warn icon Warn",
           "url": "https://status.anthropic.com/"
         },
@@ -1607,72 +1587,21 @@
           "id": "766ffda081ed871d",
           "title": "Elevated error rates on Claude Opus 4.7",
           "started_at": "2026-04-25T01:35:55.664Z",
-          "duration": "54m ongoing",
-          "acknowledgement": "Minor / Monitoring",
-          "url": "https://status.anthropic.com/"
-        }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "cbf4a25c0ef4c697",
-          "title": "Elevated errors on Claude Opus 4.7",
-          "started_at": "2026-04-24T10:53:15Z",
-          "duration": "10m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "02dde53948cb1a3e",
-          "title": "Issues with responses using structured outputs on the API",
-          "started_at": "2026-04-23T02:00:00.000Z",
-          "duration": "0m",
-          "acknowledgement": "None / Resolved",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "c0b1933ae26ccf81",
-          "title": "MCP apps unavailable on Claude.ai",
-          "started_at": "2026-04-23T00:41:43.270Z",
-          "duration": "1h 27m",
+          "duration": "58m",
           "acknowledgement": "Minor / Resolved",
           "url": "https://status.anthropic.com/"
         }
-      ]
+      ],
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "4924444b937b0bf3",
-          "title": "Claude Code v2.1.120 Crashes on Startup",
-          "url": "https://status.anthropic.com/incidents/zqsk02ryfmrd",
-          "published_at": "2026-04-25T01:45:32.619Z",
-          "source": "Claude Statuspage API",
-          "meta": "Minor / Monitoring"
-        },
-        {
-          "id": "5c9820bcb3b2a04e",
-          "title": "Elevated error rates on Claude Opus 4.7",
-          "url": "https://status.anthropic.com/#2026-04-25T01:38:22Z",
-          "published_at": "2026-04-25T01:38:22Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "e5fe89149180da05",
-          "title": "Elevated error rates on Claude Opus 4.7",
-          "url": "https://status.anthropic.com/incidents/q93x64nrhwnn",
-          "published_at": "2026-04-25T01:35:55.664Z",
-          "source": "Claude Statuspage API",
-          "meta": "Minor / Monitoring"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 3,
-      "updated_incidents": 0,
-      "resolved_incidents": 3,
-      "new_reports": 3
+      "new_incidents": 0,
+      "updated_incidents": 3,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
