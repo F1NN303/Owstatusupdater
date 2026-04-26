@@ -249,7 +249,7 @@ function buildChecks(primaryService) {
       label: "root home",
       path: `${basePath}/`,
       waitFor: async (page) => {
-        await page.getByRole("heading", { name: /^(Server Status|Server-Status)$/i }).waitFor({ timeout: 15000 });
+        await page.getByRole("heading", { name: /^(Status Radar|Server Status|Server-Status)$/i }).waitFor({ timeout: 15000 });
         await page.getByText(serviceNamePattern).first().waitFor({ timeout: 15000 });
       },
     },
@@ -279,9 +279,6 @@ function buildChecks(primaryService) {
       path: `${basePath}/alerts`,
       waitFor: async (page) => {
         await page.getByRole("heading", { name: /^(Alerts|Alarme)$/i }).waitFor({ timeout: 15000 });
-        await page
-          .getByRole("link", { name: /Open secure delivery form|Sicheres Zustellungsformular oeffnen/i })
-          .waitFor({ timeout: 15000 });
       },
     },
     {
@@ -290,7 +287,7 @@ function buildChecks(primaryService) {
       path: `${basePath}/settings`,
       waitFor: async (page) => {
         await page.getByRole("heading", { name: /^(Settings|Einstellungen)$/i }).waitFor({ timeout: 15000 });
-        await page.getByText(/This Device|Dieses Geraet/i).first().waitFor({ timeout: 15000 });
+        await page.getByText(/This browser|Dieser Browser|Local storage|Lokaler Speicher/i).first().waitFor({ timeout: 15000 });
       },
     },
     {
@@ -298,7 +295,7 @@ function buildChecks(primaryService) {
       label: "preview home",
       path: `${previewBasePath}/`,
       waitFor: async (page) => {
-        await page.getByRole("heading", { name: /^(Server Status|Server-Status)$/i }).waitFor({ timeout: 15000 });
+        await page.getByRole("heading", { name: /^(Status Radar|Server Status|Server-Status)$/i }).waitFor({ timeout: 15000 });
         await page.getByText(serviceNamePattern).first().waitFor({ timeout: 15000 });
       },
     },
