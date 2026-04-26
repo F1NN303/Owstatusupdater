@@ -243,6 +243,7 @@ export function AlertAccountProvider({ children }: { children: ReactNode }) {
   const [savedPreferences, setSavedPreferences] = useState<SavedAlertPreferences | null>(null);
   const [isLoading, setIsLoading] = useState(configured);
   const [isSaving, setIsSaving] = useState(false);
+  const [sessionChecked, setSessionChecked] = useState(!configured);
   const [reloadToken, setReloadToken] = useState(0);
 
   useEffect(() => {
@@ -264,29 +265,44 @@ export function AlertAccountProvider({ children }: { children: ReactNode }) {
     if (!configured || !supabase) {
       setStatus("disabled");
       setIsLoading(false);
+      setSessionChecked(true);
       return;
     }
 
     let active = true;
-    void supabase.auth.getSession().then(({ data, error }) => {
-      if (!active) {
-        return;
-      }
-      if (error) {
+    setSessionChecked(false);
+    void supabase.auth
+      .getSession()
+      .then(({ data, error }) => {
+        if (!active) {
+          return;
+        }
+        if (error) {
+          setStatus("error");
+          setIsLoading(false);
+          setSessionChecked(true);
+          return;
+        }
+        setSession(data.session ?? null);
+        setStatus(data.session ? "checking" : "signed_out");
+        setIsLoading(Boolean(data.session));
+        setSessionChecked(true);
+      })
+      .catch(() => {
+        if (!active) {
+          return;
+        }
         setStatus("error");
         setIsLoading(false);
-        return;
-      }
-      setSession(data.session ?? null);
-      setStatus(data.session ? "checking" : "signed_out");
-      setIsLoading(Boolean(data.session));
-    });
+        setSessionChecked(true);
+      });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession ?? null);
       setStatus(nextSession ? "checking" : "signed_out");
+      setSessionChecked(true);
       if (!nextSession) {
         setProfile(null);
         setSavedPreferences(null);
@@ -305,7 +321,10 @@ export function AlertAccountProvider({ children }: { children: ReactNode }) {
       return;
     }
     if (!session) {
-      setStatus("signed_out");
+      if (!sessionChecked) {
+        return;
+      }
+      setStatus((previous) => (previous === "error" ? previous : "signed_out"));
       setIsLoading(false);
       return;
     }
@@ -375,7 +394,7 @@ export function AlertAccountProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [configured, reloadToken, session, supabase]);
+  }, [configured, reloadToken, session, sessionChecked, supabase]);
 
   const sessionEmail = normalizeEmail(profile?.email || session?.user.email);
   const isConnected = status === "connected" && Boolean(session);

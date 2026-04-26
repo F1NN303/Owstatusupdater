@@ -1313,9 +1313,9 @@ const Index = () => {
         releaseLabel={pickLang(language, "Release to refresh", "Loslassen zum Aktualisieren")}
         refreshingLabel={pickLang(language, "Refreshing live status...", "Live-Status wird aktualisiert...")}
       />
-      <main className="mx-auto max-w-md px-4 pb-6 pt-8" {...pullToRefresh.bind}>
-        <div className="flex items-start justify-between gap-3 pb-4 pt-4">
-          <div>
+      <main className="mx-auto w-full max-w-6xl px-4 pb-8 pt-6 sm:px-6 lg:px-8" {...pullToRefresh.bind}>
+        <div className="flex items-start justify-between gap-4 pb-5 pt-4 md:items-end">
+          <div className="max-w-2xl">
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/75">
               {pickLang(language, "Live status view", "Live-Statusansicht")}
             </p>
@@ -1327,7 +1327,7 @@ const Index = () => {
           <button
             type="button"
             onClick={() => void loadCards()}
-            className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all active:scale-95"
+            className="glass flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all hover:bg-white/10 active:scale-95"
             aria-label={pickLang(language, "Refresh live status", "Live-Status aktualisieren")}
           >
             <RefreshCw
@@ -1762,12 +1762,14 @@ const Index = () => {
         ) : (
           <section
             aria-label={pickLang(language, "Service feed", "Service-Feed")}
-            className={`mt-4 ${homeCompactCards ? "space-y-2.5" : "space-y-4"}`}
+            className={`mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 ${
+              homeCompactCards ? "md:gap-2.5" : "md:gap-4"
+            }`}
           >
             {filteredCards.map((card) => {
               const isFavorite = isFavoriteService(card.serviceId);
               return (
-                <div key={card.serviceId} className="relative">
+                <div key={card.serviceId} className="relative h-full animate-fade-in-up">
                   <ServerCard
                     server={card.server}
                     compact={homeCompactCards}

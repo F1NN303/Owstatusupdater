@@ -39,21 +39,21 @@ const ServerCard = ({ server, compact = false, reserveTopRightSpace = false }: S
     <button
       type="button"
       onClick={() => navigate(`/status/${server.id}`)}
-      className={`glass glass-specular w-full rounded-2xl text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.98] active:brightness-90 ${
+      className={`glass glass-specular group h-full w-full rounded-2xl text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/10 active:translate-y-0 active:scale-[0.99] active:brightness-90 ${
         compact ? "p-3" : "p-4"
       }`}
     >
       <div className="relative z-10">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <ServiceIdentityIcon
               serviceId={server.id}
               iconName={server.icon}
               size={compact ? 16 : 18}
               containerClassName={compact ? "h-9 w-9" : "h-10 w-10"}
             />
-            <div>
-              <h3 className={`font-semibold text-foreground ${compact ? "text-[13px]" : "text-sm"}`}>
+            <div className="min-w-0">
+              <h3 className={`truncate font-semibold text-foreground ${compact ? "text-[13px]" : "text-sm"}`}>
                 {server.name}
               </h3>
               <div className={`mt-0.5 flex flex-wrap items-center ${compact ? "gap-1.5" : "gap-2"}`}>
@@ -96,7 +96,7 @@ const ServerCard = ({ server, compact = false, reserveTopRightSpace = false }: S
             }`}
           >
             <MiniSparkline data={server.responseHistory} />
-            <ChevronRight size={16} className="text-muted-foreground" />
+            <ChevronRight size={16} className="text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-foreground" />
           </div>
         </div>
 

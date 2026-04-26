@@ -9,7 +9,7 @@ import {
   type LegacyTone,
 } from "@/lib/legacyStatus";
 import { Home, RefreshCw, Settings, Star } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface FavoriteServiceEntry {
@@ -94,8 +94,7 @@ const Favorites = () => {
   const [entries, setEntries] = useState<FavoriteServiceEntry[]>([]);
 
   const hasFavorites = favoriteServiceIds.length > 0;
-
-  const loadFavorites = async () => {
+  const loadFavorites = useCallback(async () => {
     if (!hasFavorites) {
       setEntries([]);
       return;
@@ -134,11 +133,11 @@ const Favorites = () => {
     } finally {
       setIsRefreshing(false);
     }
-  };
+  }, [favoriteServiceIds, hasFavorites]);
 
   useEffect(() => {
     void loadFavorites();
-  }, [hasFavorites, language, favoriteServiceIds.join("|")]);
+  }, [loadFavorites]);
 
   const countLabel = useMemo(
     () =>

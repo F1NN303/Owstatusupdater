@@ -234,6 +234,12 @@ Key files:
 
 ## UI State (Current)
 
+### Home Design Pass
+- The React home route now uses a wider operational workspace on desktop while preserving the current `Status Radar` hero language.
+- The service feed renders as a single-column list on phones and a responsive `2 -> 3` column grid on larger viewports.
+- Service cards now support full-height grid placement and subtler hover affordance.
+- Desktop navigation is a compact left rail through `react-next/src/components/BottomNav.tsx`; mobile/tablet keeps the bottom tab bar.
+
 ### Alerts + Onboarding
 - Alerts now include device-local watchlist controls:
   - per-service watchlist selection
@@ -506,6 +512,7 @@ Key files:
 - `NOTICE.md`
 
 ## Recent Important Commits
+- `working tree` - `style(home): widen the status dashboard and improve responsive service scanning`
 - `shipped` - `feat(routes/offline): recover clean deep links on GitHub Pages and cache last-known status payloads`
 - `shipped` - `feat(alerts): add per-service local watchlist controls and first-launch onboarding hints`
 - `shipped` - `fix(alerts-ui): uncramp mobile delivery and flow status cards`

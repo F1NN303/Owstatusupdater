@@ -1,4 +1,5 @@
 import { Gamepad2, Tv, Flame, Cpu, Joystick, Globe } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export type Status = "online" | "degraded" | "offline";
 
@@ -160,6 +161,6 @@ export const servers: ServerService[] = [
 ];
 
 export const getIconComponent = (iconName: string) => {
-  const icons: Record<string, any> = { Gamepad2, Tv, Flame, Cpu, Joystick, Globe };
+  const icons: Record<string, LucideIcon> = { Gamepad2, Tv, Flame, Cpu, Joystick, Globe };
   return icons[iconName] || Globe;
 };
