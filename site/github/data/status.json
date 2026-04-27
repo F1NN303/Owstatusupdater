@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-27T21:32:20.356062Z",
+  "generated_at": "2026-04-27T21:34:19.572853Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
-    "severity_score": 6,
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
@@ -13,8 +13,8 @@
       "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.4,
-      "support_score": 1.782,
-      "profile_adjustment": 0.0
+      "support_score": 1.602,
+      "profile_adjustment": 1.25
     },
     "signal_metrics": {
       "reports_24h": 77,
@@ -22,62 +22,78 @@
       "recent_incidents_24h": 4,
       "cross_source": {
         "report_score": 0.702,
-        "news_score": 1.08,
+        "news_score": 0.9,
         "social_score": 0.0,
-        "combined_score": 1.782,
+        "combined_score": 1.602,
         "report_hits_24h": 3
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": false,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "degraded",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
+      "official_status": "operational",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
       "severity_key": "minor",
-      "severity_score": 4,
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "na": {
       "severity_key": "major",
-      "severity_score": 11,
+      "severity_score": 9,
       "report_weight": 1.0
     },
     "apac": {
       "severity_key": "minor",
-      "severity_score": 4,
+      "severity_score": 3,
       "report_weight": 0.0
     }
   },
   "official": {
-    "summary": "GitHub Statuspage API: Partially Degraded Service",
+    "summary": "GitHub Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "GitHub Statuspage API: Partially Degraded Service",
+        "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-04-27T21:32:19.930331Z",
+        "published_at": "2026-04-27T21:34:19.382875Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "GitHub search is degraded",
+        "url": "https://www.githubstatus.com/incidents/ql942tw29yl6#b2yb1lpcbmx7",
+        "published_at": "2026-04-27T21:33:20.434Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Critical / Monitoring / The degradation affecting Actions, Issues, Packages and Pull Requests has been mitigated. We are monitoring to ensure stability."
+      },
+      {
+        "title": "GitHub search is degraded",
+        "url": "https://www.githubstatus.com/incidents/ql942tw29yl6#qvs9mt5pqyr6",
+        "published_at": "2026-04-27T21:32:59.106Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Monitoring / We've applied a mitigation and continuing to monitor"
       },
       {
         "title": "GitHub search is degraded",
@@ -85,7 +101,7 @@
         "published_at": "2026-04-27T20:06:40.826Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Critical / Investigating / Pull Requests is experiencing degraded performance. We are continuing to investigate."
+        "meta": "Investigating / Critical / Monitoring / Pull Requests is experiencing degraded performance. We are continuing to investigate."
       },
       {
         "title": "GitHub search is degraded",
@@ -93,7 +109,7 @@
         "published_at": "2026-04-27T19:50:03.884Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Critical / Investigating / We have identified the source of the additional load causing stress on our ElasticSearch clusters. We have disabled the source of that load and are seeing signs of recovery"
+        "meta": "Investigating / Critical / Monitoring / We have identified the source of the additional load causing stress on our ElasticSearch clusters. We have disabled the source of that load and are seeing signs of recovery"
       },
       {
         "title": "Disruption with some GitHub services",
@@ -117,7 +133,7 @@
         "published_at": "2026-04-27T18:19:33.644Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Critical / Investigating / Pull Requests is experiencing degraded availability. We are continuing to investigate."
+        "meta": "Investigating / Critical / Monitoring / Pull Requests is experiencing degraded availability. We are continuing to investigate."
       },
       {
         "title": "GitHub search is degraded",
@@ -125,7 +141,7 @@
         "published_at": "2026-04-27T18:17:13.773Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Critical / Investigating / We're continuing to see connectivity issues reaching elasticsearch. Impact on downstream services will be intermittent as we find the root cause"
+        "meta": "Investigating / Critical / Monitoring / We're continuing to see connectivity issues reaching elasticsearch. Impact on downstream services will be intermittent as we find the root cause"
       },
       {
         "title": "GitHub search is degraded",
@@ -133,33 +149,17 @@
         "published_at": "2026-04-27T17:35:01.416Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Critical / Investigating / Users are experiencing intermittent failures to view issues, pull requests, projects and Actions workflow runs.<br /><br />We are still investigating and attempting mitigations. We will provide further updates."
-      },
-      {
-        "title": "Disruption with some GitHub services",
-        "url": "https://www.githubstatus.com/incidents/vq183jvj6vrw#h4lgtqk4lz12",
-        "published_at": "2026-04-27T17:26:59.299Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We've found the issue and are working on deploying a solution to get Codex agent runs working again."
-      },
-      {
-        "title": "Disruption with some GitHub services",
-        "url": "https://www.githubstatus.com/incidents/vq183jvj6vrw#gqz10fd12m95",
-        "published_at": "2026-04-27T17:01:56.904Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / Copilot Cloud Agent (CCA) jobs using the Codex agent are failing after starting. To avoid this issue, please choose a different agent. We are investigating the cause and working towards remediation"
+        "meta": "Investigating / Critical / Monitoring / Users are experiencing intermittent failures to view issues, pull requests, projects and Actions workflow runs.<br /><br />We are still investigating and attempting mitigations. We will provide further updates."
       }
     ],
-    "last_statement_at": "2026-04-27T21:32:19.930331Z"
+    "last_statement_at": "2026-04-27T21:34:19.382875Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
     "summary": "GitHub Statuspage reports an active incident: GitHub search is degraded.",
-    "current_status": "degraded",
+    "current_status": "operational",
     "reports_24h": 77,
     "incidents": [
       {
@@ -185,8 +185,8 @@
       {
         "title": "GitHub search is degraded",
         "started_at": "2026-04-27T16:31:07.245Z",
-        "duration": "5h 1m ongoing",
-        "acknowledgement": "Critical / Investigating",
+        "duration": "5h 3m ongoing",
+        "acknowledgement": "Critical / Monitoring",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/ql942tw29yl6"
       },
@@ -223,28 +223,11 @@
         "url": "https://www.githubstatus.com/incidents/myrbk7jvvs6p"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Issues",
-        "count": 1
-      },
-      {
-        "label": "Pull Requests",
-        "count": 1
-      },
-      {
-        "label": "Actions",
-        "count": 1
-      },
-      {
-        "label": "Packages",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "GitHub Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
       {
@@ -1128,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-04-27T17:32:19-04:00"
+      "last_reviewed_at": "2026-04-27T17:34:18-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 150,
-        "last_reviewed_at": "2026-04-27T17:32:19-04:00"
+        "last_reviewed_at": "2026-04-27T17:34:18-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -1171,30 +1154,30 @@
       },
       {
         "name": "Issues",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-04-27T16:36:39.122Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-27T21:33:20.375Z",
         "source": "GitHub Statuspage API"
       },
       {
         "name": "Pull Requests",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-04-27T20:06:40.789Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-27T21:33:20.388Z",
         "source": "GitHub Statuspage API"
       },
       {
         "name": "Actions",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-04-27T16:27:46.931Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-27T21:33:20.400Z",
         "source": "GitHub Statuspage API"
       },
       {
         "name": "Packages",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-04-27T16:39:04.662Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-04-27T21:33:20.412Z",
         "source": "GitHub Statuspage API"
       },
       {
@@ -1289,7 +1272,7 @@
       "url": "https://www.githubstatus.com/incidents/ql942tw29yl6",
       "published_at": "2026-04-27T16:31:07.245Z",
       "source": "GitHub Statuspage API",
-      "meta": "Critical / Investigating"
+      "meta": "Critical / Monitoring"
     },
     {
       "title": "Delays with Actions Jobs for Larger Runners using VNet Injection in the East US region",
@@ -1326,52 +1309,68 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-04-27T21:32:20.356062Z"
+      "published_at": "2026-04-27T21:34:19.572853Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-04-27T21:32:20.356062Z"
+      "published_at": "2026-04-27T21:34:19.572853Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-04-27T21:32:20.356062Z"
+      "published_at": "2026-04-27T21:34:19.572853Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-04-27T21:32:20.356062Z"
+      "published_at": "2026-04-27T21:34:19.572853Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-04-27T21:32:20.356062Z"
+      "published_at": "2026-04-27T21:34:19.572853Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-04-27T21:32:20.356062Z"
+      "published_at": "2026-04-27T21:34:19.572853Z"
     }
   ],
   "news": [
     {
-      "title": "GitHub Statuspage API: Partially Degraded Service",
+      "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-04-27T21:32:19.930331Z",
+      "published_at": "2026-04-27T21:34:19.382875Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "GitHub search is degraded",
+      "url": "https://www.githubstatus.com/incidents/ql942tw29yl6#b2yb1lpcbmx7",
+      "published_at": "2026-04-27T21:33:20.434Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Critical / Monitoring / The degradation affecting Actions, Issues, Packages and Pull Requests has been mitigated. We are monitoring to ensure stability."
+    },
+    {
+      "title": "GitHub search is degraded",
+      "url": "https://www.githubstatus.com/incidents/ql942tw29yl6#qvs9mt5pqyr6",
+      "published_at": "2026-04-27T21:32:59.106Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Monitoring / We've applied a mitigation and continuing to monitor"
     },
     {
       "title": "GitHub search is degraded",
@@ -1379,7 +1378,7 @@
       "published_at": "2026-04-27T20:06:40.826Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Critical / Investigating / Pull Requests is experiencing degraded performance. We are continuing to investigate."
+      "meta": "Investigating / Critical / Monitoring / Pull Requests is experiencing degraded performance. We are continuing to investigate."
     },
     {
       "title": "GitHub search is degraded",
@@ -1387,7 +1386,7 @@
       "published_at": "2026-04-27T19:50:03.884Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Critical / Investigating / We have identified the source of the additional load causing stress on our ElasticSearch clusters. We have disabled the source of that load and are seeing signs of recovery"
+      "meta": "Investigating / Critical / Monitoring / We have identified the source of the additional load causing stress on our ElasticSearch clusters. We have disabled the source of that load and are seeing signs of recovery"
     },
     {
       "title": "Disruption with some GitHub services",
@@ -1411,23 +1410,7 @@
       "published_at": "2026-04-27T18:19:33.644Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Critical / Investigating / Pull Requests is experiencing degraded availability. We are continuing to investigate."
-    },
-    {
-      "title": "GitHub search is degraded",
-      "url": "https://www.githubstatus.com/incidents/ql942tw29yl6#qmlflsnzmp19",
-      "published_at": "2026-04-27T18:17:13.773Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Investigating / We're continuing to see connectivity issues reaching elasticsearch. Impact on downstream services will be intermittent as we find the root cause"
-    },
-    {
-      "title": "GitHub search is degraded",
-      "url": "https://www.githubstatus.com/incidents/ql942tw29yl6#k160r7drp3dv",
-      "published_at": "2026-04-27T17:35:01.416Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Investigating / Users are experiencing intermittent failures to view issues, pull requests, projects and Actions workflow runs.<br /><br />We are still investigating and attempting mitigations. We will provide further updates."
+      "meta": "Investigating / Critical / Monitoring / Pull Requests is experiencing degraded availability. We are continuing to investigate."
     }
   ],
   "social": [],
@@ -1443,11 +1426,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-04-27T21:32:19.188802Z",
+      "last_item_at": "2026-04-27T21:34:18.620380Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 170,
-      "fetched_at": "2026-04-27T21:32:19.188832Z",
+      "duration_ms": 155,
+      "fetched_at": "2026-04-27T21:34:18.620405Z",
       "cache_hit": false
     },
     {
@@ -1461,11 +1444,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-04-27T17:32:19-04:00",
+      "last_item_at": "2026-04-27T17:34:18-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 740,
-      "fetched_at": "2026-04-27T21:32:19.929797Z",
+      "duration_ms": 761,
+      "fetched_at": "2026-04-27T21:34:19.382280Z",
       "cache_hit": false
     },
     {
@@ -1479,17 +1462,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-04-27T21:32:19.930331Z",
+      "last_item_at": "2026-04-27T21:34:19.382875Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 424,
-      "fetched_at": "2026-04-27T21:32:20.354605Z",
+      "duration_ms": 188,
+      "fetched_at": "2026-04-27T21:34:19.571246Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-04-27T21:32:20.356062Z",
+    "generated_at": "2026-04-27T21:34:19.572853Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1526,30 +1509,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 170,
+          "duration_ms": 155,
           "cache_hit": false,
-          "at": "2026-04-27T21:32:19Z"
+          "at": "2026-04-27T21:34:18Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 242.3
+          "avg_duration_ms": 237.7
         },
         "metrics_7d": {
-          "runs": 131,
-          "ok": 131,
+          "runs": 132,
+          "ok": 132,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 291.6
+          "avg_duration_ms": 290.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-27T21:32:19Z",
+        "last_success_at": "2026-04-27T21:34:18Z",
         "last_failure_at": null
       },
       {
@@ -1563,30 +1546,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 740,
+          "duration_ms": 761,
           "cache_hit": false,
-          "at": "2026-04-27T21:32:19Z"
+          "at": "2026-04-27T21:34:18Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 996.8
+          "avg_duration_ms": 984.4
         },
         "metrics_7d": {
-          "runs": 131,
-          "ok": 131,
+          "runs": 132,
+          "ok": 132,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1095.8
+          "avg_duration_ms": 1093.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-27T21:32:19Z",
+        "last_success_at": "2026-04-27T21:34:18Z",
         "last_failure_at": null
       },
       {
@@ -1600,93 +1583,58 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 424,
+          "duration_ms": 188,
           "cache_hit": false,
-          "at": "2026-04-27T21:32:19Z"
+          "at": "2026-04-27T21:34:18Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 19,
+          "ok": 19,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 320.6
+          "avg_duration_ms": 313.6
         },
         "metrics_7d": {
-          "runs": 131,
-          "ok": 130,
+          "runs": 132,
+          "ok": 131,
           "stale": 1,
           "success_rate": 99.2,
           "stale_rate": 0.8,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 336.7
+          "avg_duration_ms": 335.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-04-27T21:32:19Z",
+        "last_success_at": "2026-04-27T21:34:18Z",
         "last_failure_at": "2026-04-22T20:58:39Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-04-27T21:32:20.356062Z",
+    "generated_at": "2026-04-27T21:34:19.572853Z",
     "incidents": {
-      "new": [
-        {
-          "id": "0a13157a8b5bbc87",
-          "title": "GitHub search is degraded",
-          "started_at": "2026-04-27T20:11:36Z",
-          "duration": "1m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.githubstatus.com/"
-        }
-      ],
+      "new": [],
       "updated": [
-        {
-          "id": "7f6be4ff236f2180",
-          "title": "GitHub search is degraded",
-          "started_at": "2026-04-27T18:21:41Z",
-          "duration": "1h 50m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.githubstatus.com/"
-        },
         {
           "id": "f062027750ec3ca5",
           "title": "GitHub search is degraded",
           "started_at": "2026-04-27T16:31:07.245Z",
-          "duration": "5h 1m ongoing",
-          "acknowledgement": "Critical / Investigating",
+          "duration": "5h 3m ongoing",
+          "acknowledgement": "Critical / Monitoring",
           "url": "https://www.githubstatus.com/"
         }
       ],
-      "resolved": [
-        {
-          "id": "59e05199d9971967",
-          "title": "GitHub search is degraded",
-          "started_at": "2026-04-27T16:56:36Z",
-          "duration": "1h 25m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.githubstatus.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "bc3e35b9220a20fb",
-          "title": "GitHub search is degraded",
-          "url": "https://www.githubstatus.com/#2026-04-27T20:11:36Z",
-          "published_at": "2026-04-27T20:11:36Z",
-          "source": "StatusGator",
-          "meta": "down icon Down"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 1,
-      "updated_incidents": 2,
-      "resolved_incidents": 1,
-      "new_reports": 1
+      "new_incidents": 0,
+      "updated_incidents": 1,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
