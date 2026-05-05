@@ -1,69 +1,69 @@
 {
-  "generated_at": "2026-05-05T22:30:51.738491Z",
+  "generated_at": "2026-05-05T23:51:04.444090Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "reddit-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 1.02,
+      "incidents": 3.57,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "support_score": 0.594,
+      "profile_adjustment": 4.85
     },
     "signal_metrics": {
-      "reports_24h": 116,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 112,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 1,
       "cross_source": {
-        "report_score": 0.0,
-        "news_score": 0.0,
+        "report_score": 0.234,
+        "news_score": 0.36,
         "social_score": 0.0,
-        "combined_score": 0.0,
-        "report_hits_24h": 0
+        "combined_score": 0.594,
+        "report_hits_24h": 1
       }
     },
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Reddit Statuspage API: All Systems Operational",
         "url": "https://redditstatus.com/",
-        "published_at": "2026-05-05T22:30:50.706668Z",
+        "published_at": "2026-05-05T23:51:03.265642Z",
         "source": "Reddit Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Search experience and subreddit experience is degraded",
+        "url": "https://redditstatus.com/incidents/4xtn9kzpw2v8#22x3k26hrnmw",
+        "published_at": "2026-05-05T16:45:15.467-07:00",
+        "source": "Reddit Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / None / Identified / We have identified the issue and a fix is being implemented."
+      },
+      {
+        "title": "Search experience and subreddit experience is degraded",
+        "url": "https://redditstatus.com/incidents/4xtn9kzpw2v8#9fldby7dyb2b",
+        "published_at": "2026-05-05T16:44:02.967-07:00",
+        "source": "Reddit Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / None / Identified / We are currently investigating an issue which has caused bad search and subreddit feed experience"
       },
       {
         "title": "Issues with reporting",
@@ -133,34 +149,26 @@
         "source": "Reddit Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / None / Resolved / We're experiencing an elevated level of errors and are currently looking into the issue."
-      },
-      {
-        "title": "Elevated site Errors",
-        "url": "https://redditstatus.com/incidents/qpwpll5pmvkz#95csy2qypymt",
-        "published_at": "2026-04-06T12:57:56.645-07:00",
-        "source": "Reddit Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Elevated site Errors",
-        "url": "https://redditstatus.com/incidents/qpwpll5pmvkz#q8jdcnychwp5",
-        "published_at": "2026-04-06T12:03:32.940-07:00",
-        "source": "Reddit Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
       }
     ],
-    "last_statement_at": "2026-05-05T22:30:50.706668Z"
+    "last_statement_at": "2026-05-05T23:51:03.265642Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://redditstatus.com/",
-    "summary": "Reddit Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "Reddit Statuspage reports an active incident: Search experience and subreddit experience is degraded.",
     "current_status": "operational",
-    "reports_24h": 116,
+    "reports_24h": 112,
     "incidents": [
+      {
+        "title": "Search experience and subreddit experience is degraded",
+        "started_at": "2026-05-05T16:44:02.922-07:00",
+        "duration": "7m ongoing",
+        "acknowledgement": "None / Identified",
+        "source": "Reddit Statuspage API",
+        "url": "https://redditstatus.com/incidents/4xtn9kzpw2v8"
+      },
       {
         "title": "Issues with reporting",
         "started_at": "2026-04-30T19:32:47Z",
@@ -204,12 +212,6 @@
         "started_at": "2026-04-16T05:19:01Z",
         "duration": "57m",
         "acknowledgement": "Never acknowledged"
-      },
-      {
-        "title": "Site not loading",
-        "started_at": "2026-04-16T01:17:00Z",
-        "duration": "2h 58m",
-        "acknowledgement": "Never acknowledged"
       }
     ],
     "top_reported_issues": [],
@@ -219,36 +221,6 @@
       "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-05-04T22:45:00Z",
-        "signal_value": 25.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T23:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T23:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T23:30:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T23:45:00Z",
-        "signal_value": 23.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-05-05T00:00:00Z",
         "signal_value": 8.0,
@@ -791,7 +763,37 @@
       },
       {
         "timestamp": "2026-05-05T22:30:00Z",
-        "signal_value": 8.0,
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T22:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T23:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T23:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T23:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T23:45:00Z",
+        "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -802,26 +804,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-05-05T22:30:00Z"
+      "last_sample_at": "2026-05-05T23:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "22:40",
-        "count": 2
-      },
-      {
-        "label": "23:00",
-        "count": 3
-      },
-      {
-        "label": "23:20",
-        "count": 1
-      },
-      {
-        "label": "23:40",
-        "count": 3
-      },
       {
         "label": "00:00",
         "count": 3
@@ -1093,6 +1079,22 @@
       {
         "label": "22:20",
         "count": 1
+      },
+      {
+        "label": "22:40",
+        "count": 3
+      },
+      {
+        "label": "23:00",
+        "count": 0
+      },
+      {
+        "label": "23:20",
+        "count": 2
+      },
+      {
+        "label": "23:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1101,14 +1103,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-05-05T18:30:50-04:00"
+      "last_reviewed_at": "2026-05-05T19:51:02-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 116,
-        "last_reviewed_at": "2026-05-05T18:30:50-04:00"
+        "reports_24h": 112,
+        "last_reviewed_at": "2026-05-05T19:51:02-04:00"
       }
     ],
     "current_status_origin": "Reddit Statuspage API",
@@ -1237,6 +1239,13 @@
   },
   "reports": [
     {
+      "title": "Search experience and subreddit experience is degraded",
+      "url": "https://redditstatus.com/incidents/4xtn9kzpw2v8",
+      "published_at": "2026-05-05T16:44:02.922-07:00",
+      "source": "Reddit Statuspage API",
+      "meta": "None / Identified"
+    },
+    {
       "title": "Issues with reporting",
       "url": "https://redditstatus.com/#2026-04-30T19:32:47Z",
       "published_at": "2026-04-30T19:32:47Z",
@@ -1284,13 +1293,6 @@
       "published_at": "2026-04-16T05:19:01Z",
       "source": "StatusGator",
       "meta": "Never acknowledged"
-    },
-    {
-      "title": "Site not loading",
-      "url": "https://redditstatus.com/#2026-04-16T01:17:00Z",
-      "published_at": "2026-04-16T01:17:00Z",
-      "source": "StatusGator",
-      "meta": "Never acknowledged"
     }
   ],
   "known_resources": [
@@ -1299,52 +1301,68 @@
       "url": "https://redditstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-05-05T22:30:51.738491Z"
+      "published_at": "2026-05-05T23:51:04.444090Z"
     },
     {
       "title": "Reddit Status API (Statuspage v2)",
       "url": "https://redditstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-05-05T22:30:51.738491Z"
+      "published_at": "2026-05-05T23:51:04.444090Z"
     },
     {
       "title": "Reddit Status history RSS",
       "url": "https://redditstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-05-05T22:30:51.738491Z"
+      "published_at": "2026-05-05T23:51:04.444090Z"
     },
     {
       "title": "Reddit Status API docs",
       "url": "https://redditstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-05-05T22:30:51.738491Z"
+      "published_at": "2026-05-05T23:51:04.444090Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-05-05T22:30:51.738491Z"
+      "published_at": "2026-05-05T23:51:04.444090Z"
     },
     {
       "title": "Reddit Help",
       "url": "https://support.reddithelp.com/hc/en-us",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-05-05T22:30:51.738491Z"
+      "published_at": "2026-05-05T23:51:04.444090Z"
     }
   ],
   "news": [
     {
       "title": "Reddit Statuspage API: All Systems Operational",
       "url": "https://redditstatus.com/",
-      "published_at": "2026-05-05T22:30:50.706668Z",
+      "published_at": "2026-05-05T23:51:03.265642Z",
       "source": "Reddit Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Search experience and subreddit experience is degraded",
+      "url": "https://redditstatus.com/incidents/4xtn9kzpw2v8#22x3k26hrnmw",
+      "published_at": "2026-05-05T16:45:15.467-07:00",
+      "source": "Reddit Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / None / Identified / We have identified the issue and a fix is being implemented."
+    },
+    {
+      "title": "Search experience and subreddit experience is degraded",
+      "url": "https://redditstatus.com/incidents/4xtn9kzpw2v8#9fldby7dyb2b",
+      "published_at": "2026-05-05T16:44:02.967-07:00",
+      "source": "Reddit Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / None / Identified / We are currently investigating an issue which has caused bad search and subreddit feed experience"
     },
     {
       "title": "Issues with reporting",
@@ -1385,22 +1403,6 @@
       "source": "Reddit Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / None / Resolved / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "Elevated Site Errors",
-      "url": "https://redditstatus.com/incidents/3g8rl4wh1vy3#gdbh2z16d9yn",
-      "published_at": "2026-04-07T13:22:48.612-07:00",
-      "source": "Reddit Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / None / Resolved / The issue has been identified and a fix is being implemented."
-    },
-    {
-      "title": "Elevated Site Errors",
-      "url": "https://redditstatus.com/incidents/3g8rl4wh1vy3#2098m1n6r4fr",
-      "published_at": "2026-04-07T13:18:53.642-07:00",
-      "source": "Reddit Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / None / Resolved / We're experiencing an elevated level of errors and are currently looking into the issue."
     }
   ],
   "social": [],
@@ -1416,11 +1418,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-05-05T22:30:49.834971Z",
+      "last_item_at": "2026-05-05T23:51:01.956724Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 149,
-      "fetched_at": "2026-05-05T22:30:49.834992Z",
+      "duration_ms": 167,
+      "fetched_at": "2026-05-05T23:51:01.956742Z",
       "cache_hit": false
     },
     {
@@ -1434,11 +1436,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-05-05T18:30:50-04:00",
+      "last_item_at": "2026-05-05T19:51:02-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 871,
-      "fetched_at": "2026-05-05T22:30:50.706147Z",
+      "duration_ms": 1308,
+      "fetched_at": "2026-05-05T23:51:03.265084Z",
       "cache_hit": false
     },
     {
@@ -1452,17 +1454,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-05-05T22:30:50.706668Z",
+      "last_item_at": "2026-05-05T23:51:03.265642Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1030,
-      "fetched_at": "2026-05-05T22:30:51.737482Z",
+      "duration_ms": 1177,
+      "fetched_at": "2026-05-05T23:51:04.442693Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-05-05T22:30:51.738491Z",
+    "generated_at": "2026-05-05T23:51:04.444090Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1484,7 +1486,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1499,18 +1501,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 149,
+          "duration_ms": 167,
           "cache_hit": false,
-          "at": "2026-05-05T22:30:49Z"
+          "at": "2026-05-05T23:51:01Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 564.0
+          "avg_duration_ms": 548.1
         },
         "metrics_7d": {
           "runs": 117,
@@ -1519,10 +1521,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 494.8
+          "avg_duration_ms": 494.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-05T22:30:49Z",
+        "last_success_at": "2026-05-05T23:51:01Z",
         "last_failure_at": null
       },
       {
@@ -1536,18 +1538,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 871,
+          "duration_ms": 1308,
           "cache_hit": false,
-          "at": "2026-05-05T22:30:49Z"
+          "at": "2026-05-05T23:51:01Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 957.5
+          "avg_duration_ms": 969.8
         },
         "metrics_7d": {
           "runs": 117,
@@ -1556,10 +1558,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1043.6
+          "avg_duration_ms": 1047.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-05T22:30:49Z",
+        "last_success_at": "2026-05-05T23:51:01Z",
         "last_failure_at": null
       },
       {
@@ -1573,18 +1575,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1030,
+          "duration_ms": 1177,
           "cache_hit": false,
-          "at": "2026-05-05T22:30:49Z"
+          "at": "2026-05-05T23:51:01Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1228.5
+          "avg_duration_ms": 1229.3
         },
         "metrics_7d": {
           "runs": 117,
@@ -1593,29 +1595,56 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1279.6
+          "avg_duration_ms": 1279.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-05T22:30:49Z",
+        "last_success_at": "2026-05-05T23:51:01Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-05-05T22:30:51.738491Z",
+    "generated_at": "2026-05-05T23:51:04.444090Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "6602bba4e2031edb",
+          "title": "Search experience and subreddit experience is degraded",
+          "started_at": "2026-05-05T16:44:02.922-07:00",
+          "duration": "7m ongoing",
+          "acknowledgement": "None / Identified",
+          "url": "https://redditstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "b5926deeb818ef5e",
+          "title": "Site not loading",
+          "started_at": "2026-04-16T01:17:00Z",
+          "duration": "2h 58m",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://redditstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "bb70f4d4ac7584ac",
+          "title": "Search experience and subreddit experience is degraded",
+          "url": "https://redditstatus.com/incidents/4xtn9kzpw2v8",
+          "published_at": "2026-05-05T16:44:02.922-07:00",
+          "source": "Reddit Statuspage API",
+          "meta": "None / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
