@@ -1,24 +1,24 @@
 {
-  "generated_at": "2026-05-05T12:04:54.913549Z",
+  "generated_at": "2026-05-05T16:24:49.744853Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 3.545,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 136,
-      "recent_incidents_6h": 0,
+      "reports_24h": 125,
+      "recent_incidents_6h": 2,
       "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
@@ -44,8 +44,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -53,31 +53,71 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
-      "report_weight": 0.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
-      "report_weight": 1.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
-      "report_weight": 0.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "GitHub Statuspage API: All Systems Operational",
+    "summary": "GitHub Statuspage API: Minor Service Outage",
     "updates": [
       {
-        "title": "GitHub Statuspage API: All Systems Operational",
+        "title": "GitHub Statuspage API: Minor Service Outage",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-05-05T12:04:54.650870Z",
+        "published_at": "2026-05-05T16:24:49.280423Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Incident with Actions",
+        "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#ntclt13q8918",
+        "published_at": "2026-05-05T15:54:34.161Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We've applied a mitigation for long queue times and failures on Standard Hosted Runners and are monitoring for full recovery. Hosted Runners with Private Networking in the East US region remain affected as we continue working with our compu"
+      },
+      {
+        "title": "Incident with Actions",
+        "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#yghhltmycz1r",
+        "published_at": "2026-05-05T15:12:19.632Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We are working with our compute provider to alleviate elevated queue times and failures for Actions Jobs running on Hosted Runners in the East US region affecting 10% of runs. Hosted Runners with private networking can fail over to a differ"
+      },
+      {
+        "title": "Incident with Actions",
+        "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#vd5hrvhk2jwv",
+        "published_at": "2026-05-05T14:14:20.281Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We are investigating elevated queue times and failures on Actions Jobs running on Hosted Runners in East US affecting 8% of runs. Hosted Runners with private networking can fail over to a different Azure region to mitigate the issue."
+      },
+      {
+        "title": "Incident with Actions",
+        "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#ftjbrbg8qqsd",
+        "published_at": "2026-05-05T13:48:39.585Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We are investigating elevated queue times on Actions Jobs running on Standard Hosted Runners in East US affecting 10% of runs"
+      },
+      {
+        "title": "Incident with Actions",
+        "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#ddvl7l86qnlw",
+        "published_at": "2026-05-05T13:37:58.386Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We are investigating reports of degraded availability for Actions"
       },
       {
         "title": "Incident with Issues and Webhooks",
@@ -110,67 +150,35 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Critical / Resolved / The degradation affecting Codespaces has been mitigated. We are monitoring to ensure stability."
-      },
-      {
-        "title": "Incident with Issues and Webhooks",
-        "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#yzgdch9929sg",
-        "published_at": "2026-05-04T16:34:14.308Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / The degradation affecting Issues has been mitigated. We are monitoring to ensure stability."
-      },
-      {
-        "title": "Incident with Issues and Webhooks",
-        "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#6q8qpf81xv6g",
-        "published_at": "2026-05-04T16:32:40.893Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / Pull Requests is operating normally."
-      },
-      {
-        "title": "Incident with Issues and Webhooks",
-        "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#r5rbzvc4smfh",
-        "published_at": "2026-05-04T16:29:12.314Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / Pages is operating normally."
-      },
-      {
-        "title": "Incident with Issues and Webhooks",
-        "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#hrlw93s7yykj",
-        "published_at": "2026-05-04T16:29:07.165Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / Latency across services has normalized. We are continuing to investigate the root cause and prevent reoccurrence."
-      },
-      {
-        "title": "Incident with Issues and Webhooks",
-        "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#gd63jcb70p5t",
-        "published_at": "2026-05-04T16:28:59.065Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / Actions and Packages are operating normally."
       }
     ],
-    "last_statement_at": "2026-05-05T12:04:54.650870Z"
+    "last_statement_at": "2026-05-05T16:24:49.280423Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 136,
+    "summary": "GitHub Statuspage reports an active incident: Incident with Actions.",
+    "current_status": "degraded",
+    "reports_24h": 125,
     "incidents": [
       {
-        "title": "Incident with Issues and Webhooks",
-        "started_at": "2026-05-04T16:36:45Z",
-        "duration": "5m",
+        "title": "Incident with Actions",
+        "started_at": "2026-05-05T13:41:42Z",
+        "duration": "1m",
         "acknowledgement": "down icon Down"
       },
       {
+        "title": "Incident with Actions",
+        "started_at": "2026-05-05T13:37:58.322Z",
+        "duration": "2h 46m ongoing",
+        "acknowledgement": "Major / Investigating",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/1j40g94rn22j"
+      },
+      {
         "title": "Incident with Issues and Webhooks",
-        "started_at": "2026-05-04T16:31:38Z",
+        "started_at": "2026-05-04T16:36:45Z",
         "duration": "5m",
         "acknowledgement": "down icon Down"
       },
@@ -213,125 +221,20 @@
         "acknowledgement": "Critical / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/ql942tw29yl6"
-      },
-      {
-        "title": "Delays with Actions Jobs for Larger Runners using VNet Injection in the East US region",
-        "started_at": "2026-04-24T19:02:39.061Z",
-        "duration": "5h 33m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/3dqg0nhwnxs2"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Actions",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "GitHub Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-05-04T12:15:00Z",
-        "signal_value": 33.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T12:30:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T12:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T13:00:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T13:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T13:30:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T13:45:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T14:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T14:15:00Z",
-        "signal_value": 39.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T14:30:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T14:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T15:00:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T15:15:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-04T15:30:00Z",
-        "signal_value": 64.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-05-04T15:45:00Z",
-        "signal_value": 68.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-05-04T16:00:00Z",
-        "signal_value": 105.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-05-04T16:15:00Z",
-        "signal_value": 24.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-05-04T16:30:00Z",
         "signal_value": 40.0,
@@ -802,7 +705,109 @@
       },
       {
         "timestamp": "2026-05-05T12:00:00Z",
-        "signal_value": 6.0,
+        "signal_value": 62.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-05-05T12:15:00Z",
+        "signal_value": 97.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-05-05T12:30:00Z",
+        "signal_value": 35.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T12:45:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T13:00:00Z",
+        "signal_value": 28.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T13:15:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T13:30:00Z",
+        "signal_value": 59.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T13:45:00Z",
+        "signal_value": 41.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T14:00:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T14:15:00Z",
+        "signal_value": 33.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T14:30:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T14:45:00Z",
+        "signal_value": 40.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T15:00:00Z",
+        "signal_value": 18.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T15:15:00Z",
+        "signal_value": 65.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-05-05T15:30:00Z",
+        "signal_value": 25.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T15:45:00Z",
+        "signal_value": 31.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T16:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-05T16:15:00Z",
+        "signal_value": 3.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -813,62 +818,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-05-05T12:00:00Z"
+      "last_sample_at": "2026-05-05T16:15:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "12:20",
-        "count": 3
-      },
-      {
-        "label": "12:40",
-        "count": 2
-      },
-      {
-        "label": "13:00",
-        "count": 3
-      },
-      {
-        "label": "13:20",
-        "count": 0
-      },
-      {
-        "label": "13:40",
-        "count": 2
-      },
-      {
-        "label": "14:00",
-        "count": 4
-      },
-      {
-        "label": "14:20",
-        "count": 1
-      },
-      {
-        "label": "14:40",
-        "count": 4
-      },
-      {
-        "label": "15:00",
-        "count": 1
-      },
-      {
-        "label": "15:20",
-        "count": 2
-      },
-      {
-        "label": "15:40",
-        "count": 4
-      },
-      {
-        "label": "16:00",
-        "count": 5
-      },
-      {
-        "label": "16:20",
-        "count": 4
-      },
       {
         "label": "16:40",
         "count": 1
@@ -1104,6 +1057,58 @@
       {
         "label": "12:00",
         "count": 2
+      },
+      {
+        "label": "12:20",
+        "count": 0
+      },
+      {
+        "label": "12:40",
+        "count": 2
+      },
+      {
+        "label": "13:00",
+        "count": 3
+      },
+      {
+        "label": "13:20",
+        "count": 1
+      },
+      {
+        "label": "13:40",
+        "count": 3
+      },
+      {
+        "label": "14:00",
+        "count": 1
+      },
+      {
+        "label": "14:20",
+        "count": 3
+      },
+      {
+        "label": "14:40",
+        "count": 1
+      },
+      {
+        "label": "15:00",
+        "count": 2
+      },
+      {
+        "label": "15:20",
+        "count": 3
+      },
+      {
+        "label": "15:40",
+        "count": 1
+      },
+      {
+        "label": "16:00",
+        "count": 4
+      },
+      {
+        "label": "16:20",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1112,14 +1117,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-05-05T08:04:53-04:00"
+      "last_reviewed_at": "2026-05-05T12:24:48-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 136,
-        "last_reviewed_at": "2026-05-05T08:04:53-04:00"
+        "reports_24h": 125,
+        "last_reviewed_at": "2026-05-05T12:24:48-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -1169,9 +1174,9 @@
       },
       {
         "name": "Actions",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-04T16:28:59.014Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-05-05T13:37:58.352Z",
         "source": "GitHub Statuspage API"
       },
       {
@@ -1214,7 +1219,7 @@
     "top_reported_issues_provider": [
       {
         "label": "Connectivity issue",
-        "count": 3
+        "count": 6
       },
       {
         "label": "Error message",
@@ -1225,6 +1230,10 @@
         "count": 3
       },
       {
+        "label": "Other",
+        "count": 2
+      },
+      {
         "label": "Service down",
         "count": 1
       },
@@ -1233,31 +1242,34 @@
         "count": 1
       },
       {
-        "label": "Other",
+        "label": "Unable to download",
         "count": 1
       },
       {
         "label": "Sign in problem",
-        "count": 0
-      },
-      {
-        "label": "Unable to download",
         "count": 0
       }
     ]
   },
   "reports": [
     {
-      "title": "Incident with Issues and Webhooks",
-      "url": "https://www.githubstatus.com/#2026-05-04T16:36:45Z",
-      "published_at": "2026-05-04T16:36:45Z",
+      "title": "Incident with Actions",
+      "url": "https://www.githubstatus.com/#2026-05-05T13:41:42Z",
+      "published_at": "2026-05-05T13:41:42Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
+      "title": "Incident with Actions",
+      "url": "https://www.githubstatus.com/incidents/1j40g94rn22j",
+      "published_at": "2026-05-05T13:37:58.322Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Major / Investigating"
+    },
+    {
       "title": "Incident with Issues and Webhooks",
-      "url": "https://www.githubstatus.com/#2026-05-04T16:31:38Z",
-      "published_at": "2026-05-04T16:31:38Z",
+      "url": "https://www.githubstatus.com/#2026-05-04T16:36:45Z",
+      "published_at": "2026-05-04T16:36:45Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
@@ -1295,13 +1307,6 @@
       "published_at": "2026-04-27T16:31:07.245Z",
       "source": "GitHub Statuspage API",
       "meta": "Critical / Resolved"
-    },
-    {
-      "title": "Delays with Actions Jobs for Larger Runners using VNet Injection in the East US region",
-      "url": "https://www.githubstatus.com/incidents/3dqg0nhwnxs2",
-      "published_at": "2026-04-24T19:02:39.061Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1310,52 +1315,92 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-05-05T12:04:54.913549Z"
+      "published_at": "2026-05-05T16:24:49.744853Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-05-05T12:04:54.913549Z"
+      "published_at": "2026-05-05T16:24:49.744853Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-05-05T12:04:54.913549Z"
+      "published_at": "2026-05-05T16:24:49.744853Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-05-05T12:04:54.913549Z"
+      "published_at": "2026-05-05T16:24:49.744853Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-05-05T12:04:54.913549Z"
+      "published_at": "2026-05-05T16:24:49.744853Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-05-05T12:04:54.913549Z"
+      "published_at": "2026-05-05T16:24:49.744853Z"
     }
   ],
   "news": [
     {
-      "title": "GitHub Statuspage API: All Systems Operational",
+      "title": "GitHub Statuspage API: Minor Service Outage",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-05-05T12:04:54.650870Z",
+      "published_at": "2026-05-05T16:24:49.280423Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Incident with Actions",
+      "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#ntclt13q8918",
+      "published_at": "2026-05-05T15:54:34.161Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We've applied a mitigation for long queue times and failures on Standard Hosted Runners and are monitoring for full recovery. Hosted Runners with Private Networking in the East US region remain affected as we continue working with our compu"
+    },
+    {
+      "title": "Incident with Actions",
+      "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#yghhltmycz1r",
+      "published_at": "2026-05-05T15:12:19.632Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We are working with our compute provider to alleviate elevated queue times and failures for Actions Jobs running on Hosted Runners in the East US region affecting 10% of runs. Hosted Runners with private networking can fail over to a differ"
+    },
+    {
+      "title": "Incident with Actions",
+      "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#vd5hrvhk2jwv",
+      "published_at": "2026-05-05T14:14:20.281Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We are investigating elevated queue times and failures on Actions Jobs running on Hosted Runners in East US affecting 8% of runs. Hosted Runners with private networking can fail over to a different Azure region to mitigate the issue."
+    },
+    {
+      "title": "Incident with Actions",
+      "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#ftjbrbg8qqsd",
+      "published_at": "2026-05-05T13:48:39.585Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We are investigating elevated queue times on Actions Jobs running on Standard Hosted Runners in East US affecting 10% of runs"
+    },
+    {
+      "title": "Incident with Actions",
+      "url": "https://www.githubstatus.com/incidents/1j40g94rn22j#ddvl7l86qnlw",
+      "published_at": "2026-05-05T13:37:58.386Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We are investigating reports of degraded availability for Actions"
     },
     {
       "title": "Incident with Issues and Webhooks",
@@ -1372,46 +1417,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Critical / Resolved / The degradation has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Incident with Issues and Webhooks",
-      "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#8jkfn3m068v3",
-      "published_at": "2026-05-04T16:35:58.941Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / Webhooks is operating normally."
-    },
-    {
-      "title": "Incident with Issues and Webhooks",
-      "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#sbbygh5p7jqz",
-      "published_at": "2026-05-04T16:35:03.577Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / The degradation affecting Codespaces has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Incident with Issues and Webhooks",
-      "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#yzgdch9929sg",
-      "published_at": "2026-05-04T16:34:14.308Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / The degradation affecting Issues has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Incident with Issues and Webhooks",
-      "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#6q8qpf81xv6g",
-      "published_at": "2026-05-04T16:32:40.893Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / Pull Requests is operating normally."
-    },
-    {
-      "title": "Incident with Issues and Webhooks",
-      "url": "https://www.githubstatus.com/incidents/72q3n8yxthcy#r5rbzvc4smfh",
-      "published_at": "2026-05-04T16:29:12.314Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / Pages is operating normally."
     }
   ],
   "social": [],
@@ -1427,11 +1432,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-05-05T12:04:53.386343Z",
+      "last_item_at": "2026-05-05T16:24:48.491870Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 248,
-      "fetched_at": "2026-05-05T12:04:53.386364Z",
+      "duration_ms": 163,
+      "fetched_at": "2026-05-05T16:24:48.491895Z",
       "cache_hit": false
     },
     {
@@ -1445,11 +1450,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-05-05T08:04:53-04:00",
+      "last_item_at": "2026-05-05T12:24:48-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1263,
-      "fetched_at": "2026-05-05T12:04:54.650340Z",
+      "duration_ms": 787,
+      "fetched_at": "2026-05-05T16:24:49.279890Z",
       "cache_hit": false
     },
     {
@@ -1463,17 +1468,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-05-05T12:04:54.650870Z",
+      "last_item_at": "2026-05-05T16:24:49.280423Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 261,
-      "fetched_at": "2026-05-05T12:04:54.912218Z",
+      "duration_ms": 463,
+      "fetched_at": "2026-05-05T16:24:49.743542Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-05-05T12:04:54.913549Z",
+    "generated_at": "2026-05-05T16:24:49.744853Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1495,7 +1500,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1510,30 +1515,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 248,
+          "duration_ms": 163,
           "cache_hit": false,
-          "at": "2026-05-05T12:04:53Z"
+          "at": "2026-05-05T16:24:48Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 307.9
+          "avg_duration_ms": 253.3
         },
         "metrics_7d": {
-          "runs": 119,
-          "ok": 119,
+          "runs": 116,
+          "ok": 116,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 257.5
+          "avg_duration_ms": 259.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-05T12:04:53Z",
+        "last_success_at": "2026-05-05T16:24:48Z",
         "last_failure_at": null
       },
       {
@@ -1547,30 +1552,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1263,
+          "duration_ms": 787,
           "cache_hit": false,
-          "at": "2026-05-05T12:04:53Z"
+          "at": "2026-05-05T16:24:48Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1123.6
+          "avg_duration_ms": 1127.9
         },
         "metrics_7d": {
-          "runs": 119,
-          "ok": 119,
+          "runs": 116,
+          "ok": 116,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1058.0
+          "avg_duration_ms": 1058.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-05T12:04:53Z",
+        "last_success_at": "2026-05-05T16:24:48Z",
         "last_failure_at": null
       },
       {
@@ -1584,49 +1589,100 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 261,
+          "duration_ms": 463,
           "cache_hit": false,
-          "at": "2026-05-05T12:04:53Z"
+          "at": "2026-05-05T16:24:48Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 323.6
+          "avg_duration_ms": 310.0
         },
         "metrics_7d": {
-          "runs": 119,
-          "ok": 119,
+          "runs": 116,
+          "ok": 116,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 333.5
+          "avg_duration_ms": 338.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-05T12:04:53Z",
+        "last_success_at": "2026-05-05T16:24:48Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-05-05T12:04:54.913549Z",
+    "generated_at": "2026-05-05T16:24:49.744853Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "f8824b48b77746d7",
+          "title": "Incident with Actions",
+          "started_at": "2026-05-05T13:41:42Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "9de910d0b785d2b4",
+          "title": "Incident with Actions",
+          "started_at": "2026-05-05T13:37:58.322Z",
+          "duration": "2h 46m ongoing",
+          "acknowledgement": "Major / Investigating",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "fdda22cb74af3d6b",
+          "title": "Incident with Issues and Webhooks",
+          "started_at": "2026-05-04T16:31:38Z",
+          "duration": "5m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "dd71178ac53fe40b",
+          "title": "Delays with Actions Jobs for Larger Runners using VNet Injection in the East US region",
+          "started_at": "2026-04-24T19:02:39.061Z",
+          "duration": "5h 33m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "45a856308f09fae6",
+          "title": "Incident with Actions",
+          "url": "https://www.githubstatus.com/#2026-05-05T13:41:42Z",
+          "published_at": "2026-05-05T13:41:42Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "b8aa430b8e535083",
+          "title": "Incident with Actions",
+          "url": "https://www.githubstatus.com/incidents/1j40g94rn22j",
+          "published_at": "2026-05-05T13:37:58.322Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Major / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
