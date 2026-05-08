@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-05-08T18:11:32.013712Z",
+  "generated_at": "2026-05-08T19:43:46.743448Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 3,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "slack-1.0",
@@ -17,9 +17,9 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 118,
+      "reports_24h": 115,
       "recent_incidents_6h": 3,
-      "recent_incidents_24h": 3,
+      "recent_incidents_24h": 5,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "minor",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,55 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "major",
+      "severity_score": 9,
       "report_weight": 1.0
     }
   },
   "official": {
-    "summary": "Slack Status API: Slack is up and running",
+    "summary": "Slack Status API: EKM customers experiencing issues with channel loading and message delivery",
     "updates": [
       {
-        "title": "Slack Status API: Slack is up and running",
+        "title": "Slack Status API: EKM customers experiencing issues with channel loading and message delivery",
         "url": "https://slack-status.com/",
-        "published_at": "2026-05-08T18:11:31.736789Z",
+        "published_at": "2026-05-08T19:43:46.213126Z",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Indicator: ok"
+        "meta": "Indicator: active"
+      },
+      {
+        "title": "EKM customers experiencing issues with channel loading and message delivery",
+        "url": "https://slack-status.com/2026-05/d284d808ed66c511#note-3",
+        "published_at": "2026-05-08T12:20:05-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Active / Incident / Services: Messaging, Apps/Integrations/APIs, Notifications, Connectivity / We’re investigating this issue: Current status and actions being taken: We believe an issue with an upstream provider may be impacting some Slack services. We’re partnering with them to help with our investigation and are waiting on additio"
+      },
+      {
+        "title": "EKM customers experiencing issues with channel loading and message delivery",
+        "url": "https://slack-status.com/2026-05/d284d808ed66c511#note-2",
+        "published_at": "2026-05-08T11:44:53-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Active / Incident / Services: Messaging, Apps/Integrations/APIs, Notifications, Connectivity / We’re investigating this issue: Current status and actions being taken: We’re seeing renewed, elevated error rates and latency affecting customers using Enterprise Key Management (EKM). Affected customers may experience issues sending messa"
+      },
+      {
+        "title": "EKM customers experiencing issues with channel loading and message delivery",
+        "url": "https://slack-status.com/2026-05/d284d808ed66c511#note-1",
+        "published_at": "2026-05-08T11:31:22-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Active / Incident / Services: Messaging, Apps/Integrations/APIs, Notifications, Connectivity / Between approximately 10:55 AM and 11:10 AM PDT, customers using Enterprise Key Management (EKM) may have experienced issues sending messages and loading some channels. Error rates have returned to normal levels and customers should now see"
       },
       {
         "title": "Scheduled Grid Migrations are experiencing extended downtime",
@@ -125,42 +149,32 @@
         "source": "Slack Status API",
         "channel": "official-status-page",
         "meta": "Resolved / Incident / Services: Workflows / Some users are experiencing issues with workflows. Triggered workflows may fail to complete, with the first step not executing. We'll provide another update as soon as possible."
-      },
-      {
-        "title": "Slack Search Feature Disruption - Japan region",
-        "url": "https://slack-status.com/2026-04/4bd5196b0c972734#note-1",
-        "published_at": "2026-04-30T18:50:42-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / Services: Search / At 23:20 UTC, April 30, 2026, a feature disruption began affecting the Slack Search feature for a subset of customers in Japan region. As a result, users were unable to use Search functionality within Slack. We identified that infrastructur"
-      },
-      {
-        "title": "Users May Not Receive Notifications on Slack Thread Replies",
-        "url": "https://slack-status.com/2026-04/22195f9f2ca47237#note-3",
-        "published_at": "2026-04-27T13:36:02-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / Services: Notifications / We’ve successfully performed a rollback in the production environment, and all systems are now functioning as expected. Users should no longer experience any issues with thread replies not generating a notification banner. We apologize for "
-      },
-      {
-        "title": "Users May Not Receive Notifications on Slack Thread Replies",
-        "url": "https://slack-status.com/2026-04/22195f9f2ca47237#note-2",
-        "published_at": "2026-04-27T11:07:01-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / Services: Notifications / We’re observing positive signals after rolling back the deployment in test environments. We will complete some final validations before rolling back the deployment in the production environment. Thank you for your patience as we work throug"
       }
     ],
-    "last_statement_at": "2026-05-08T18:11:31.736789Z"
+    "last_statement_at": "2026-05-08T19:43:46.213126Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://slack-status.com/",
-    "summary": "Slack Status reports Slack is up and running. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 118,
+    "summary": "Slack Status reports an active incident: EKM customers experiencing issues with channel loading and message delivery.",
+    "current_status": "degraded",
+    "reports_24h": 115,
     "incidents": [
+      {
+        "title": "EKM customers experiencing issues with channel loading and message delivery",
+        "started_at": "2026-05-08T18:34:46Z",
+        "duration": "1h 4m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "EKM customers experiencing issues with channel loading and message delivery",
+        "started_at": "2026-05-08T11:31:22-07:00",
+        "duration": "1h 12m ongoing",
+        "acknowledgement": "Incident / Active / Messaging, Apps/Integrations/APIs, Notifications",
+        "source": "Slack Status API",
+        "url": "https://slack-status.com/2026-05/d284d808ed66c511"
+      },
       {
         "title": "Scheduled Grid Migrations are experiencing extended downtime",
         "started_at": "2026-05-08T17:45:02Z",
@@ -202,65 +216,48 @@
         "acknowledgement": "Incident / Resolved / Search",
         "source": "Slack Status API",
         "url": "https://slack-status.com/2026-04/4bd5196b0c972734"
-      },
-      {
-        "title": "Users May Not Receive Notifications on Slack Thread Replies",
-        "started_at": "2026-04-27T17:14:52Z",
-        "duration": "3h 25m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Users May Not Receive Notifications on Slack Thread Replies",
-        "started_at": "2026-04-27T10:11:53-07:00",
-        "duration": "3h 24m",
-        "acknowledgement": "Incident / Resolved / Notifications",
-        "source": "Slack Status API",
-        "url": "https://slack-status.com/2026-04/22195f9f2ca47237"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Connectivity",
+        "count": 1
+      },
+      {
+        "label": "Messaging",
+        "count": 1
+      },
+      {
+        "label": "Notifications",
+        "count": 1
+      },
+      {
+        "label": "Apps/Integrations/APIs",
+        "count": 1
+      },
+      {
+        "label": "Messaging",
+        "count": 1
+      },
+      {
+        "label": "Apps/Integrations/APIs",
+        "count": 1
+      },
+      {
+        "label": "Notifications",
+        "count": 1
+      },
+      {
+        "label": "Connectivity",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Slack Status API",
       "kind": "component-grid",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-05-07T18:15:00Z",
-        "signal_value": 24.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-07T18:30:00Z",
-        "signal_value": 24.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-07T18:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-07T19:00:00Z",
-        "signal_value": 18.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-07T19:15:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-07T19:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-05-07T19:45:00Z",
         "signal_value": 1.0,
@@ -797,9 +794,45 @@
       },
       {
         "timestamp": "2026-05-08T18:00:00Z",
-        "signal_value": 48.0,
+        "signal_value": 53.0,
         "status_code": 1,
         "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-05-08T18:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-08T18:30:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-08T18:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-08T19:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-08T19:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-08T19:30:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -808,30 +841,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-05-08T18:00:00Z"
+      "last_sample_at": "2026-05-08T19:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "18:20",
-        "count": 0
-      },
-      {
-        "label": "18:40",
-        "count": 2
-      },
-      {
-        "label": "19:00",
-        "count": 3
-      },
-      {
-        "label": "19:20",
-        "count": 1
-      },
-      {
-        "label": "19:40",
-        "count": 3
-      },
       {
         "label": "20:00",
         "count": 3
@@ -1099,6 +1112,26 @@
       {
         "label": "18:00",
         "count": 8
+      },
+      {
+        "label": "18:20",
+        "count": 1
+      },
+      {
+        "label": "18:40",
+        "count": 3
+      },
+      {
+        "label": "19:00",
+        "count": 0
+      },
+      {
+        "label": "19:20",
+        "count": 2
+      },
+      {
+        "label": "19:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1107,14 +1140,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-05-08T14:11:31-04:00"
+      "last_reviewed_at": "2026-05-08T13:43:45-06:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 118,
-        "last_reviewed_at": "2026-05-08T14:11:31-04:00"
+        "reports_24h": 115,
+        "last_reviewed_at": "2026-05-08T13:43:45-06:00"
       }
     ],
     "current_status_origin": "Slack Status API",
@@ -1124,92 +1157,84 @@
         "name": "Login/SSO",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Connectivity",
-        "status": "operational",
-        "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "status": "something's not quite right. view details",
+        "health": "Something's not quite right. View details",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Messaging",
-        "status": "operational",
-        "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "status": "something's not quite right. view details",
+        "health": "Something's not quite right. View details",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Files",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Notifications",
-        "status": "operational",
-        "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "status": "something's not quite right. view details",
+        "health": "Something's not quite right. View details",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Huddles",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Search",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Apps/Integrations/APIs",
-        "status": "operational",
-        "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "status": "something's not quite right. view details",
+        "health": "Something's not quite right. View details",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workspace/Org Administration",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workflows",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Canvases",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-05-08T10:44:24-07:00",
+        "updated_at": "2026-05-08T12:20:05-07:00",
         "source": "Slack Status API"
       }
     ],
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
-        "label": "Server not responding",
-        "count": 1
-      },
-      {
         "label": "Slow performance",
-        "count": 1
-      },
-      {
-        "label": "App not loading",
         "count": 1
       },
       {
@@ -1218,6 +1243,10 @@
       },
       {
         "label": "Error message",
+        "count": 0
+      },
+      {
+        "label": "Server not responding",
         "count": 0
       },
       {
@@ -1231,10 +1260,28 @@
       {
         "label": "Unable to download",
         "count": 0
+      },
+      {
+        "label": "App not loading",
+        "count": 0
       }
     ]
   },
   "reports": [
+    {
+      "title": "EKM customers experiencing issues with channel loading and message delivery",
+      "url": "https://slack-status.com/#2026-05-08T18:34:46Z",
+      "published_at": "2026-05-08T18:34:46Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "EKM customers experiencing issues with channel loading and message delivery",
+      "url": "https://slack-status.com/2026-05/d284d808ed66c511",
+      "published_at": "2026-05-08T11:31:22-07:00",
+      "source": "Slack Status API",
+      "meta": "Incident / Active / Messaging, Apps/Integrations/APIs, Notifications"
+    },
     {
       "title": "Scheduled Grid Migrations are experiencing extended downtime",
       "url": "https://slack-status.com/#2026-05-08T17:45:02Z",
@@ -1276,20 +1323,6 @@
       "published_at": "2026-04-30T18:50:42-07:00",
       "source": "Slack Status API",
       "meta": "Incident / Resolved / Search"
-    },
-    {
-      "title": "Users May Not Receive Notifications on Slack Thread Replies",
-      "url": "https://slack-status.com/#2026-04-27T17:14:52Z",
-      "published_at": "2026-04-27T17:14:52Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Users May Not Receive Notifications on Slack Thread Replies",
-      "url": "https://slack-status.com/2026-04/22195f9f2ca47237",
-      "published_at": "2026-04-27T10:11:53-07:00",
-      "source": "Slack Status API",
-      "meta": "Incident / Resolved / Notifications"
     }
   ],
   "known_resources": [
@@ -1298,52 +1331,76 @@
       "url": "https://slack-status.com/",
       "source": "Official",
       "meta": "Dashboard",
-      "published_at": "2026-05-08T18:11:32.013712Z"
+      "published_at": "2026-05-08T19:43:46.743448Z"
     },
     {
       "title": "Slack Status API docs",
       "url": "https://slack-status.com/api",
       "source": "Official",
       "meta": "API docs",
-      "published_at": "2026-05-08T18:11:32.013712Z"
+      "published_at": "2026-05-08T19:43:46.743448Z"
     },
     {
       "title": "Slack Status current API",
       "url": "https://slack-status.com/api/v2.0.0/current",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-05-08T18:11:32.013712Z"
+      "published_at": "2026-05-08T19:43:46.743448Z"
     },
     {
       "title": "Slack Status history API",
       "url": "https://slack-status.com/api/v2.0.0/history",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-05-08T18:11:32.013712Z"
+      "published_at": "2026-05-08T19:43:46.743448Z"
     },
     {
       "title": "Slack Status history RSS",
       "url": "https://slack-status.com/feed/rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-05-08T18:11:32.013712Z"
+      "published_at": "2026-05-08T19:43:46.743448Z"
     },
     {
       "title": "Slack connection troubleshooting",
       "url": "https://slack.com/help/articles/205138367-Troubleshoot-connection-issues",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-05-08T18:11:32.013712Z"
+      "published_at": "2026-05-08T19:43:46.743448Z"
     }
   ],
   "news": [
     {
-      "title": "Slack Status API: Slack is up and running",
+      "title": "Slack Status API: EKM customers experiencing issues with channel loading and message delivery",
       "url": "https://slack-status.com/",
-      "published_at": "2026-05-08T18:11:31.736789Z",
+      "published_at": "2026-05-08T19:43:46.213126Z",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Indicator: ok"
+      "meta": "Indicator: active"
+    },
+    {
+      "title": "EKM customers experiencing issues with channel loading and message delivery",
+      "url": "https://slack-status.com/2026-05/d284d808ed66c511#note-3",
+      "published_at": "2026-05-08T12:20:05-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Active / Incident / Services: Messaging, Apps/Integrations/APIs, Notifications, Connectivity / We’re investigating this issue: Current status and actions being taken: We believe an issue with an upstream provider may be impacting some Slack services. We’re partnering with them to help with our investigation and are waiting on additio"
+    },
+    {
+      "title": "EKM customers experiencing issues with channel loading and message delivery",
+      "url": "https://slack-status.com/2026-05/d284d808ed66c511#note-2",
+      "published_at": "2026-05-08T11:44:53-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Active / Incident / Services: Messaging, Apps/Integrations/APIs, Notifications, Connectivity / We’re investigating this issue: Current status and actions being taken: We’re seeing renewed, elevated error rates and latency affecting customers using Enterprise Key Management (EKM). Affected customers may experience issues sending messa"
+    },
+    {
+      "title": "EKM customers experiencing issues with channel loading and message delivery",
+      "url": "https://slack-status.com/2026-05/d284d808ed66c511#note-1",
+      "published_at": "2026-05-08T11:31:22-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Active / Incident / Services: Messaging, Apps/Integrations/APIs, Notifications, Connectivity / Between approximately 10:55 AM and 11:10 AM PDT, customers using Enterprise Key Management (EKM) may have experienced issues sending messages and loading some channels. Error rates have returned to normal levels and customers should now see"
     },
     {
       "title": "Scheduled Grid Migrations are experiencing extended downtime",
@@ -1376,30 +1433,6 @@
       "source": "Slack Status API",
       "channel": "official-status-page",
       "meta": "Resolved / Incident / Services: Workflows / A fix has been deployed to address the elevated latency in EU backend services. The team is monitoring the environment to ensure service stability and full recovery. We'll provide another update as soon as possible."
-    },
-    {
-      "title": "Slow behaviour in Slack",
-      "url": "https://slack-status.com/2026-05/bedf971f90be70a6#note-2",
-      "published_at": "2026-05-04T04:43:11-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Services: Workflows / The investigation identified elevated latency in EU backend services as the cause of workflows not completing. A subset of workflow trigger attempts is impacted, primarily, EU users. Pod restarts have stopped, and error rates are improving."
-    },
-    {
-      "title": "Slow behaviour in Slack",
-      "url": "https://slack-status.com/2026-05/bedf971f90be70a6#note-1",
-      "published_at": "2026-05-04T03:00:38-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Services: Workflows / Some users are experiencing issues with workflows. Triggered workflows may fail to complete, with the first step not executing. We'll provide another update as soon as possible."
-    },
-    {
-      "title": "Slack Search Feature Disruption - Japan region",
-      "url": "https://slack-status.com/2026-04/4bd5196b0c972734#note-1",
-      "published_at": "2026-04-30T18:50:42-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Services: Search / At 23:20 UTC, April 30, 2026, a feature disruption began affecting the Slack Search feature for a subset of customers in Japan region. As a result, users were unable to use Search functionality within Slack. We identified that infrastructur"
     }
   ],
   "social": [],
@@ -1415,11 +1448,11 @@
       "ok": true,
       "error": null,
       "item_count": 5,
-      "last_item_at": "2026-05-08T18:11:30.813801Z",
+      "last_item_at": "2026-05-08T19:43:44.626159Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 156,
-      "fetched_at": "2026-05-08T18:11:30.813834Z",
+      "duration_ms": 180,
+      "fetched_at": "2026-05-08T19:43:44.626176Z",
       "cache_hit": false
     },
     {
@@ -1433,11 +1466,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-05-08T14:11:31-04:00",
+      "last_item_at": "2026-05-08T13:43:45-06:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 922,
-      "fetched_at": "2026-05-08T18:11:31.736252Z",
+      "duration_ms": 1586,
+      "fetched_at": "2026-05-08T19:43:46.212633Z",
       "cache_hit": false
     },
     {
@@ -1451,17 +1484,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-05-08T18:11:31.736789Z",
+      "last_item_at": "2026-05-08T19:43:46.213126Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 275,
-      "fetched_at": "2026-05-08T18:11:32.012242Z",
+      "duration_ms": 528,
+      "fetched_at": "2026-05-08T19:43:46.741819Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-05-08T18:11:32.013712Z",
+    "generated_at": "2026-05-08T19:43:46.743448Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1483,7 +1516,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1498,9 +1531,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 156,
+          "duration_ms": 180,
           "cache_hit": false,
-          "at": "2026-05-08T18:11:30Z"
+          "at": "2026-05-08T19:43:44Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1509,19 +1542,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 242.3
+          "avg_duration_ms": 271.1
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 117,
+          "runs": 118,
+          "ok": 118,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 223.0
+          "avg_duration_ms": 226.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-08T18:11:30Z",
+        "last_success_at": "2026-05-08T19:43:44Z",
         "last_failure_at": null
       },
       {
@@ -1535,9 +1568,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 922,
+          "duration_ms": 1586,
           "cache_hit": false,
-          "at": "2026-05-08T18:11:30Z"
+          "at": "2026-05-08T19:43:44Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1546,19 +1579,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1114.4
+          "avg_duration_ms": 1152.8
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 117,
+          "runs": 118,
+          "ok": 118,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1134.4
+          "avg_duration_ms": 1137.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-08T18:11:30Z",
+        "last_success_at": "2026-05-08T19:43:44Z",
         "last_failure_at": null
       },
       {
@@ -1572,9 +1605,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 275,
+          "duration_ms": 528,
           "cache_hit": false,
-          "at": "2026-05-08T18:11:30Z"
+          "at": "2026-05-08T19:43:44Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1583,61 +1616,60 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 485.9
+          "avg_duration_ms": 500.9
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 117,
+          "runs": 118,
+          "ok": 118,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 499.6
+          "avg_duration_ms": 500.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-08T18:11:30Z",
+        "last_success_at": "2026-05-08T19:43:44Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-05-08T18:11:32.013712Z",
+    "generated_at": "2026-05-08T19:43:46.743448Z",
     "incidents": {
       "new": [
         {
-          "id": "3bb561a47dd02a2c",
-          "title": "Scheduled Grid Migrations are experiencing extended downtime",
-          "started_at": "2026-05-08T17:45:02Z",
-          "duration": "10m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://slack-status.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "31bd77aa41adb706",
-          "title": "Scheduled Grid Migrations are experiencing extended downtime",
-          "started_at": "2026-05-08T12:14:55Z",
-          "duration": "5h 30m",
+          "id": "e9754e325e9be3bb",
+          "title": "EKM customers experiencing issues with channel loading and message delivery",
+          "started_at": "2026-05-08T18:34:46Z",
+          "duration": "1h 4m",
           "acknowledgement": "warn icon Warn",
           "url": "https://slack-status.com/"
         },
         {
-          "id": "3ac50691c91cc761",
-          "title": "Scheduled Grid Migrations are experiencing extended downtime",
-          "started_at": "2026-05-08T05:13:46-07:00",
-          "duration": "5h 30m",
-          "acknowledgement": "Incident / Resolved / Connectivity",
+          "id": "5e52a57aeb09932a",
+          "title": "EKM customers experiencing issues with channel loading and message delivery",
+          "started_at": "2026-05-08T11:31:22-07:00",
+          "duration": "1h 12m ongoing",
+          "acknowledgement": "Incident / Active / Messaging, Apps/Integrations/APIs, Notifications",
           "url": "https://slack-status.com/"
         }
       ],
+      "updated": [],
       "resolved": [
         {
-          "id": "92befc027274b15c",
-          "title": "Slack Threads Not Loading",
-          "started_at": "2026-04-23T07:29:55Z",
-          "duration": "2h 25m",
+          "id": "1156c8e2baeaa055",
+          "title": "Users May Not Receive Notifications on Slack Thread Replies",
+          "started_at": "2026-04-27T17:14:52Z",
+          "duration": "3h 25m",
           "acknowledgement": "warn icon Warn",
+          "url": "https://slack-status.com/"
+        },
+        {
+          "id": "e4898f5d1d19ab67",
+          "title": "Users May Not Receive Notifications on Slack Thread Replies",
+          "started_at": "2026-04-27T10:11:53-07:00",
+          "duration": "3h 24m",
+          "acknowledgement": "Incident / Resolved / Notifications",
           "url": "https://slack-status.com/"
         }
       ]
@@ -1645,20 +1677,28 @@
     "reports": {
       "new": [
         {
-          "id": "dfe057bef69f88d8",
-          "title": "Scheduled Grid Migrations are experiencing extended downtime",
-          "url": "https://slack-status.com/#2026-05-08T17:45:02Z",
-          "published_at": "2026-05-08T17:45:02Z",
+          "id": "9675775f0847c0ca",
+          "title": "EKM customers experiencing issues with channel loading and message delivery",
+          "url": "https://slack-status.com/#2026-05-08T18:34:46Z",
+          "published_at": "2026-05-08T18:34:46Z",
           "source": "StatusGator",
           "meta": "warn icon Warn"
+        },
+        {
+          "id": "3d3afaf9f587ef4d",
+          "title": "EKM customers experiencing issues with channel loading and message delivery",
+          "url": "https://slack-status.com/2026-05/d284d808ed66c511",
+          "published_at": "2026-05-08T11:31:22-07:00",
+          "source": "Slack Status API",
+          "meta": "Incident / Active / Messaging, Apps/Integrations/APIs, Notifications"
         }
       ]
     },
     "summary": {
-      "new_incidents": 1,
-      "updated_incidents": 2,
-      "resolved_incidents": 1,
-      "new_reports": 1
+      "new_incidents": 2,
+      "updated_incidents": 0,
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
