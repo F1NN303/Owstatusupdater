@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T15:55:54.746520Z",
+  "generated_at": "2026-05-09T16:58:48.051910Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -10,26 +10,26 @@
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.895,
+      "incidents": 5.295,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.504,
-      "profile_adjustment": 2.455
+      "support_score": 0.243,
+      "profile_adjustment": 3.555
     },
     "signal_metrics": {
-      "reports_24h": 13,
-      "recent_incidents_6h": 0,
+      "reports_24h": 107,
+      "recent_incidents_6h": 2,
       "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
-        "news_score": 0.504,
+        "news_score": 0.243,
         "social_score": 0.0,
-        "combined_score": 0.504,
+        "combined_score": 0.243,
         "report_hits_24h": 0
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
@@ -40,14 +40,14 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "degraded",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
+      "official_status": "operational",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
@@ -68,15 +68,23 @@
     }
   },
   "official": {
-    "summary": "Reddit Statuspage API: Partially Degraded Service",
+    "summary": "Reddit Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "Reddit Statuspage API: Partially Degraded Service",
+        "title": "Reddit Statuspage API: All Systems Operational",
         "url": "https://redditstatus.com/",
-        "published_at": "2026-05-09T15:55:53.697201Z",
+        "published_at": "2026-05-09T16:58:47.118584Z",
         "source": "Reddit Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "AWS availability causing degradation in user experiences for various services",
+        "url": "https://redditstatus.com/incidents/k9ycmsw7k868#bj5y2y8b2x4f",
+        "published_at": "2026-05-09T09:32:46.110-07:00",
+        "source": "Reddit Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
       },
       {
         "title": "AWS availability causing degradation in user experiences for various services",
@@ -84,7 +92,7 @@
         "published_at": "2026-05-08T04:12:24.574-07:00",
         "source": "Reddit Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Minor / Identified / We have mitigated issues caused by the AWS us-east-1 outage but continue to monitor as AWS has not yet fully recovered."
+        "meta": "Identified / Minor / Monitoring / We have mitigated issues caused by the AWS us-east-1 outage but continue to monitor as AWS has not yet fully recovered."
       },
       {
         "title": "AWS availability causing degradation in user experiences for various services",
@@ -92,7 +100,7 @@
         "published_at": "2026-05-07T19:52:34.565-07:00",
         "source": "Reddit Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Minor / Identified / The issue has been identified and a fix is being implemented."
+        "meta": "Identified / Minor / Monitoring / The issue has been identified and a fix is being implemented."
       },
       {
         "title": "AWS availability causing degradation in user experiences for various services",
@@ -100,7 +108,7 @@
         "published_at": "2026-05-07T17:47:39.624-07:00",
         "source": "Reddit Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Identified / We are currently investigating some degradation in user experience which are being caused due to AWS issues in us-east-1"
+        "meta": "Investigating / Minor / Monitoring / We are currently investigating some degradation in user experience which are being caused due to AWS issues in us-east-1"
       },
       {
         "title": "Search experience and subreddit experience is degraded",
@@ -141,43 +149,35 @@
         "source": "Reddit Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Major / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Issues with reporting",
-        "url": "https://redditstatus.com/incidents/wt5dz5yw7501#x5c6y0194whd",
-        "published_at": "2026-04-30T12:53:43.315-07:00",
-        "source": "Reddit Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
       }
     ],
-    "last_statement_at": "2026-05-09T15:55:53.697201Z"
+    "last_statement_at": "2026-05-09T16:58:47.118584Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://redditstatus.com/",
     "summary": "Reddit Statuspage reports an active incident: AWS availability causing degradation in user experiences for various services.",
-    "current_status": "degraded",
-    "reports_24h": 13,
+    "current_status": "operational",
+    "reports_24h": 107,
     "incidents": [
       {
         "title": "AWS availability causing degradation in user experiences for various services",
-        "started_at": "2026-05-09T03:12:38Z",
-        "duration": "12h 43m",
+        "started_at": "2026-05-09T16:32:34Z",
+        "duration": "5m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "AWS availability causing degradation in user experiences for various services",
-        "started_at": "2026-05-08T18:22:39Z",
-        "duration": "8h 50m",
+        "started_at": "2026-05-09T16:17:35Z",
+        "duration": "15m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "AWS availability causing degradation in user experiences for various services",
         "started_at": "2026-05-07T17:47:39.533-07:00",
-        "duration": "1d 15h 8m ongoing",
-        "acknowledgement": "Minor / Identified",
+        "duration": "1d 16h 11m ongoing",
+        "acknowledgement": "Minor / Monitoring",
         "source": "Reddit Statuspage API",
         "url": "https://redditstatus.com/incidents/k9ycmsw7k868"
       },
@@ -216,58 +216,13 @@
         "acknowledgement": "Never acknowledged"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Desktop Web",
-        "count": 1
-      },
-      {
-        "label": "reddit.com",
-        "count": 1
-      },
-      {
-        "label": "Reddit Ads",
-        "count": 1
-      },
-      {
-        "label": "ads.reddit.com",
-        "count": 1
-      },
-      {
-        "label": "Mobile Web",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "Reddit Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-05-08T16:00:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-08T16:15:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-08T16:30:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-08T16:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-05-08T17:00:00Z",
         "signal_value": 8.0,
@@ -819,6 +774,30 @@
         "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-09T16:00:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-09T16:15:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-09T16:30:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-09T16:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -827,21 +806,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-05-09T15:45:00Z"
+      "last_sample_at": "2026-05-09T16:45:00Z"
     },
+    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "16:00",
-        "count": 1
-      },
-      {
-        "label": "16:20",
-        "count": 3
-      },
-      {
-        "label": "16:40",
-        "count": 3
-      },
       {
         "label": "17:00",
         "count": 2
@@ -1117,6 +1085,18 @@
       {
         "label": "15:40",
         "count": 1
+      },
+      {
+        "label": "16:00",
+        "count": 2
+      },
+      {
+        "label": "16:20",
+        "count": 0
+      },
+      {
+        "label": "16:40",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1125,14 +1105,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-05-09T11:55:53-04:00"
+      "last_reviewed_at": "2026-05-09T12:58:46-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 110,
-        "last_reviewed_at": "2026-05-09T11:55:53-04:00"
+        "reports_24h": 107,
+        "last_reviewed_at": "2026-05-09T12:58:46-04:00"
       }
     ],
     "current_status_origin": "Reddit Statuspage API",
@@ -1140,29 +1120,29 @@
     "components": [
       {
         "name": "Desktop Web",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-05-07T17:47:39.562-07:00",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-05-09T09:12:59.004-07:00",
         "source": "Reddit Statuspage API"
       },
       {
         "name": "reddit.com",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2018-06-11T10:08:55.020-07:00",
         "source": "Reddit Statuspage API"
       },
       {
         "name": "Reddit Ads",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-05-07T17:47:39.576-07:00",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-05-09T09:31:03.294-07:00",
         "source": "Reddit Statuspage API"
       },
       {
         "name": "ads.reddit.com",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2023-09-19T15:20:29.793-07:00",
         "source": "Reddit Statuspage API"
       },
@@ -1175,9 +1155,9 @@
       },
       {
         "name": "Mobile Web",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-05-07T17:47:39.590-07:00",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-05-09T09:13:17.987-07:00",
         "source": "Reddit Statuspage API"
       },
       {
@@ -1262,15 +1242,15 @@
   "reports": [
     {
       "title": "AWS availability causing degradation in user experiences for various services",
-      "url": "https://redditstatus.com/#2026-05-09T03:12:38Z",
-      "published_at": "2026-05-09T03:12:38Z",
+      "url": "https://redditstatus.com/#2026-05-09T16:32:34Z",
+      "published_at": "2026-05-09T16:32:34Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
     {
       "title": "AWS availability causing degradation in user experiences for various services",
-      "url": "https://redditstatus.com/#2026-05-08T18:22:39Z",
-      "published_at": "2026-05-08T18:22:39Z",
+      "url": "https://redditstatus.com/#2026-05-09T16:17:35Z",
+      "published_at": "2026-05-09T16:17:35Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
@@ -1279,7 +1259,7 @@
       "url": "https://redditstatus.com/incidents/k9ycmsw7k868",
       "published_at": "2026-05-07T17:47:39.533-07:00",
       "source": "Reddit Statuspage API",
-      "meta": "Minor / Identified"
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "Search experience and subreddit experience is degraded",
@@ -1323,52 +1303,60 @@
       "url": "https://redditstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-05-09T15:55:54.746520Z"
+      "published_at": "2026-05-09T16:58:48.051910Z"
     },
     {
       "title": "Reddit Status API (Statuspage v2)",
       "url": "https://redditstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-05-09T15:55:54.746520Z"
+      "published_at": "2026-05-09T16:58:48.051910Z"
     },
     {
       "title": "Reddit Status history RSS",
       "url": "https://redditstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-05-09T15:55:54.746520Z"
+      "published_at": "2026-05-09T16:58:48.051910Z"
     },
     {
       "title": "Reddit Status API docs",
       "url": "https://redditstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-05-09T15:55:54.746520Z"
+      "published_at": "2026-05-09T16:58:48.051910Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-05-09T15:55:54.746520Z"
+      "published_at": "2026-05-09T16:58:48.051910Z"
     },
     {
       "title": "Reddit Help",
       "url": "https://support.reddithelp.com/hc/en-us",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-05-09T15:55:54.746520Z"
+      "published_at": "2026-05-09T16:58:48.051910Z"
     }
   ],
   "news": [
     {
-      "title": "Reddit Statuspage API: Partially Degraded Service",
+      "title": "Reddit Statuspage API: All Systems Operational",
       "url": "https://redditstatus.com/",
-      "published_at": "2026-05-09T15:55:53.697201Z",
+      "published_at": "2026-05-09T16:58:47.118584Z",
       "source": "Reddit Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "AWS availability causing degradation in user experiences for various services",
+      "url": "https://redditstatus.com/incidents/k9ycmsw7k868#bj5y2y8b2x4f",
+      "published_at": "2026-05-09T09:32:46.110-07:00",
+      "source": "Reddit Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
     },
     {
       "title": "AWS availability causing degradation in user experiences for various services",
@@ -1376,7 +1364,7 @@
       "published_at": "2026-05-08T04:12:24.574-07:00",
       "source": "Reddit Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Minor / Identified / We have mitigated issues caused by the AWS us-east-1 outage but continue to monitor as AWS has not yet fully recovered."
+      "meta": "Identified / Minor / Monitoring / We have mitigated issues caused by the AWS us-east-1 outage but continue to monitor as AWS has not yet fully recovered."
     },
     {
       "title": "AWS availability causing degradation in user experiences for various services",
@@ -1384,7 +1372,7 @@
       "published_at": "2026-05-07T19:52:34.565-07:00",
       "source": "Reddit Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Minor / Identified / The issue has been identified and a fix is being implemented."
+      "meta": "Identified / Minor / Monitoring / The issue has been identified and a fix is being implemented."
     },
     {
       "title": "AWS availability causing degradation in user experiences for various services",
@@ -1392,7 +1380,7 @@
       "published_at": "2026-05-07T17:47:39.624-07:00",
       "source": "Reddit Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Identified / We are currently investigating some degradation in user experience which are being caused due to AWS issues in us-east-1"
+      "meta": "Investigating / Minor / Monitoring / We are currently investigating some degradation in user experience which are being caused due to AWS issues in us-east-1"
     },
     {
       "title": "Search experience and subreddit experience is degraded",
@@ -1417,14 +1405,6 @@
       "source": "Reddit Statuspage API",
       "channel": "official-status-page",
       "meta": "Identified / None / Resolved / We have identified the issue and a fix is being implemented."
-    },
-    {
-      "title": "Search experience and subreddit experience is degraded",
-      "url": "https://redditstatus.com/incidents/4xtn9kzpw2v8#9fldby7dyb2b",
-      "published_at": "2026-05-05T16:44:02.967-07:00",
-      "source": "Reddit Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / None / Resolved / We are currently investigating an issue which has caused bad search and subreddit feed experience"
     }
   ],
   "social": [],
@@ -1440,11 +1420,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-05-09T15:55:52.878023Z",
+      "last_item_at": "2026-05-09T16:58:46.309994Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 776,
-      "fetched_at": "2026-05-09T15:55:52.878044Z",
+      "duration_ms": 889,
+      "fetched_at": "2026-05-09T16:58:46.310021Z",
       "cache_hit": false
     },
     {
@@ -1458,11 +1438,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-05-09T11:55:53-04:00",
+      "last_item_at": "2026-05-09T12:58:46-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 818,
-      "fetched_at": "2026-05-09T15:55:53.696637Z",
+      "duration_ms": 807,
+      "fetched_at": "2026-05-09T16:58:47.118021Z",
       "cache_hit": false
     },
     {
@@ -1476,17 +1456,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-05-09T15:55:53.697201Z",
+      "last_item_at": "2026-05-09T16:58:47.118584Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1047,
-      "fetched_at": "2026-05-09T15:55:54.744703Z",
+      "duration_ms": 931,
+      "fetched_at": "2026-05-09T16:58:48.050169Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-05-09T15:55:54.746520Z",
+    "generated_at": "2026-05-09T16:58:48.051910Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1523,9 +1503,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 776,
+          "duration_ms": 889,
           "cache_hit": false,
-          "at": "2026-05-09T15:55:52Z"
+          "at": "2026-05-09T16:58:45Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1534,7 +1514,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 569.3
+          "avg_duration_ms": 604.6
         },
         "metrics_7d": {
           "runs": 117,
@@ -1543,10 +1523,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 528.2
+          "avg_duration_ms": 533.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-09T15:55:52Z",
+        "last_success_at": "2026-05-09T16:58:45Z",
         "last_failure_at": null
       },
       {
@@ -1560,9 +1540,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 818,
+          "duration_ms": 807,
           "cache_hit": false,
-          "at": "2026-05-09T15:55:52Z"
+          "at": "2026-05-09T16:58:45Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1571,7 +1551,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1191.4
+          "avg_duration_ms": 1188.4
         },
         "metrics_7d": {
           "runs": 117,
@@ -1580,10 +1560,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1043.7
+          "avg_duration_ms": 1043.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-09T15:55:52Z",
+        "last_success_at": "2026-05-09T16:58:45Z",
         "last_failure_at": null
       },
       {
@@ -1597,9 +1577,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1047,
+          "duration_ms": 931,
           "cache_hit": false,
-          "at": "2026-05-09T15:55:52Z"
+          "at": "2026-05-09T16:58:45Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1608,7 +1588,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1408.2
+          "avg_duration_ms": 1370.7
         },
         "metrics_7d": {
           "runs": 117,
@@ -1617,19 +1597,46 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1263.5
+          "avg_duration_ms": 1262.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-09T15:55:52Z",
+        "last_success_at": "2026-05-09T16:58:45Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-05-09T15:55:54.746520Z",
+    "generated_at": "2026-05-09T16:58:48.051910Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "b93228d43ee8a239",
+          "title": "AWS availability causing degradation in user experiences for various services",
+          "started_at": "2026-05-09T16:32:34Z",
+          "duration": "5m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://redditstatus.com/"
+        },
+        {
+          "id": "702f66b9d5beea9d",
+          "title": "AWS availability causing degradation in user experiences for various services",
+          "started_at": "2026-05-09T16:17:35Z",
+          "duration": "15m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://redditstatus.com/"
+        }
+      ],
       "updated": [
+        {
+          "id": "e410d827ae2248a3",
+          "title": "AWS availability causing degradation in user experiences for various services",
+          "started_at": "2026-05-07T17:47:39.533-07:00",
+          "duration": "1d 16h 11m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://redditstatus.com/"
+        }
+      ],
+      "resolved": [
         {
           "id": "a185a63854acc0f8",
           "title": "AWS availability causing degradation in user experiences for various services",
@@ -1639,24 +1646,40 @@
           "url": "https://redditstatus.com/"
         },
         {
-          "id": "e410d827ae2248a3",
+          "id": "2e72f6f92bdbe60b",
           "title": "AWS availability causing degradation in user experiences for various services",
-          "started_at": "2026-05-07T17:47:39.533-07:00",
-          "duration": "1d 15h 8m ongoing",
-          "acknowledgement": "Minor / Identified",
+          "started_at": "2026-05-08T18:22:39Z",
+          "duration": "8h 50m",
+          "acknowledgement": "warn icon Warn",
           "url": "https://redditstatus.com/"
         }
-      ],
-      "resolved": []
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "53011181865e46e5",
+          "title": "AWS availability causing degradation in user experiences for various services",
+          "url": "https://redditstatus.com/#2026-05-09T16:32:34Z",
+          "published_at": "2026-05-09T16:32:34Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "0d62852839500ef7",
+          "title": "AWS availability causing degradation in user experiences for various services",
+          "url": "https://redditstatus.com/#2026-05-09T16:17:35Z",
+          "published_at": "2026-05-09T16:17:35Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 2,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 2,
+      "updated_incidents": 1,
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
