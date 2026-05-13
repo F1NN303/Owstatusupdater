@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-05-13T21:42:09.255964Z",
+  "generated_at": "2026-05-13T23:06:37.609147Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 2,
+    "severity_key": "major",
+    "severity_score": 8,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 4.945,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.05
     },
     "signal_metrics": {
-      "reports_24h": 137,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 4,
+      "reports_24h": 200,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 5,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,22 +29,22 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "major outage",
+      "derived_severity": "major",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Major System Outage",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Major System Outage",
         "url": "https://status.openai.com/",
-        "published_at": "2026-05-13T21:42:08.463935Z",
+        "published_at": "2026-05-13T23:06:36.824913Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: critical"
+      },
+      {
+        "title": "Issues accessing ChatGPT for logged-out users",
+        "url": "https://status.openai.com/incidents/01KRHSDQP7DZPAVANG3R1RCNVW#01KRHSDQP70S47VAY87C141RY2",
+        "published_at": "2026-05-13T23:05:50Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Investigating"
       },
       {
         "title": "Codex 5.5 engines are experiencing high error rate",
@@ -141,26 +149,26 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved"
-      },
-      {
-        "title": "Elevated error rates with GPT 5.5",
-        "url": "https://status.openai.com/incidents/01KRBZTV511HR7SWVFZJ0438D6#01KRBZXTVVZ6YAYC6QGX4X54BP",
-        "published_at": "2026-05-11T16:54:00Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved"
       }
     ],
-    "last_statement_at": "2026-05-13T21:42:08.463935Z"
+    "last_statement_at": "2026-05-13T23:06:36.824913Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 137,
+    "summary": "OpenAI Statuspage reports an active incident: Issues accessing ChatGPT for logged-out users.",
+    "current_status": "major outage",
+    "reports_24h": 200,
     "incidents": [
+      {
+        "title": "Issues accessing ChatGPT for logged-out users",
+        "started_at": "2026-05-13T23:05:50Z",
+        "duration": "0m ongoing",
+        "acknowledgement": "Critical / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01KRHSDQP7DZPAVANG3R1RCNVW"
+      },
       {
         "title": "Codex 5.5 engines are experiencing high error rate",
         "started_at": "2026-05-13T09:26:56Z",
@@ -212,59 +220,20 @@
         "acknowledgement": "Major / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KR50YN2DBMTXGPC6BQSJN48J"
-      },
-      {
-        "title": "Degraded Performance with Codex Cloud Tasks",
-        "started_at": "2026-05-08T15:07:16Z",
-        "duration": "1h 10m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KR421V8PCTFKA8EJJC2VCGA3"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Login",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-05-12T21:45:00Z",
-        "signal_value": 41.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-12T22:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-12T22:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-12T22:30:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-12T22:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-12T23:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-05-12T23:15:00Z",
         "signal_value": 2.0,
@@ -801,9 +770,45 @@
       },
       {
         "timestamp": "2026-05-13T21:30:00Z",
-        "signal_value": 12.0,
+        "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-13T21:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-13T22:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-13T22:15:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-13T22:30:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-13T22:45:00Z",
+        "signal_value": 142.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-05-13T23:00:00Z",
+        "signal_value": 70.0,
+        "status_code": 1,
+        "status_label": "possible outage"
       }
     ],
     "service_health_24h_meta": {
@@ -812,26 +817,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-05-13T21:30:00Z"
+      "last_sample_at": "2026-05-13T23:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "22:00",
-        "count": 1
-      },
-      {
-        "label": "22:20",
-        "count": 4
-      },
-      {
-        "label": "22:40",
-        "count": 1
-      },
-      {
-        "label": "23:00",
-        "count": 2
-      },
       {
         "label": "23:20",
         "count": 0
@@ -1103,6 +1092,22 @@
       {
         "label": "21:40",
         "count": 1
+      },
+      {
+        "label": "22:00",
+        "count": 2
+      },
+      {
+        "label": "22:20",
+        "count": 0
+      },
+      {
+        "label": "22:40",
+        "count": 52
+      },
+      {
+        "label": "23:00",
+        "count": 17
       }
     ],
     "user_reports_24h_meta": {
@@ -1111,14 +1116,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-05-13T16:42:07-05:00"
+      "last_reviewed_at": "2026-05-13T19:06:36-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 137,
-        "last_reviewed_at": "2026-05-13T16:42:07-05:00"
+        "reports_24h": 200,
+        "last_reviewed_at": "2026-05-13T19:06:36-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1315,8 +1320,8 @@
       },
       {
         "name": "Login",
-        "status": "operational",
-        "health": "operational",
+        "status": "full_outage",
+        "health": "full_outage",
         "updated_at": "2026-04-27T15:52:49Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1339,15 +1344,15 @@
     "top_reported_issues_provider": [
       {
         "label": "Service down",
-        "count": 13
-      },
-      {
-        "label": "App not loading",
-        "count": 7
+        "count": 16
       },
       {
         "label": "Error message",
-        "count": 5
+        "count": 8
+      },
+      {
+        "label": "App not loading",
+        "count": 6
       },
       {
         "label": "Connectivity issue",
@@ -1355,7 +1360,7 @@
       },
       {
         "label": "Slow performance",
-        "count": 3
+        "count": 4
       },
       {
         "label": "Server not responding",
@@ -1372,6 +1377,13 @@
     ]
   },
   "reports": [
+    {
+      "title": "Issues accessing ChatGPT for logged-out users",
+      "url": "https://status.openai.com/incidents/01KRHSDQP7DZPAVANG3R1RCNVW",
+      "published_at": "2026-05-13T23:05:50Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Critical / Investigating"
+    },
     {
       "title": "Codex 5.5 engines are experiencing high error rate",
       "url": "https://status.openai.com/#2026-05-13T09:26:56Z",
@@ -1420,13 +1432,6 @@
       "published_at": "2026-05-09T00:07:17Z",
       "source": "OpenAI Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Degraded Performance with Codex Cloud Tasks",
-      "url": "https://status.openai.com/incidents/01KR421V8PCTFKA8EJJC2VCGA3",
-      "published_at": "2026-05-08T15:07:16Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1435,45 +1440,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-05-13T21:42:09.255964Z"
+      "published_at": "2026-05-13T23:06:37.609147Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-05-13T21:42:09.255964Z"
+      "published_at": "2026-05-13T23:06:37.609147Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-05-13T21:42:09.255964Z"
+      "published_at": "2026-05-13T23:06:37.609147Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-05-13T21:42:09.255964Z"
+      "published_at": "2026-05-13T23:06:37.609147Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-05-13T21:42:09.255964Z"
+      "published_at": "2026-05-13T23:06:37.609147Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Major System Outage",
       "url": "https://status.openai.com/",
-      "published_at": "2026-05-13T21:42:08.463935Z",
+      "published_at": "2026-05-13T23:06:36.824913Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: critical"
+    },
+    {
+      "title": "Issues accessing ChatGPT for logged-out users",
+      "url": "https://status.openai.com/incidents/01KRHSDQP7DZPAVANG3R1RCNVW#01KRHSDQP70S47VAY87C141RY2",
+      "published_at": "2026-05-13T23:05:50Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Investigating"
     },
     {
       "title": "Codex 5.5 engines are experiencing high error rate",
@@ -1522,14 +1535,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved"
-    },
-    {
-      "title": "Realtime API - SIP/WebRTC flow are down",
-      "url": "https://status.openai.com/incidents/01KRG0AZKH41DV4D9SNJSXM33Q#01KRG0AZKHH37CKBST5E3WBQW6",
-      "published_at": "2026-05-13T06:28:11Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved"
     }
   ],
   "social": [],
@@ -1545,11 +1550,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-05-13T21:42:07.461169Z",
+      "last_item_at": "2026-05-13T23:06:35.826974Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 186,
-      "fetched_at": "2026-05-13T21:42:07.461192Z",
+      "duration_ms": 293,
+      "fetched_at": "2026-05-13T23:06:35.826987Z",
       "cache_hit": false
     },
     {
@@ -1563,11 +1568,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-05-13T16:42:07-05:00",
+      "last_item_at": "2026-05-13T19:06:36-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1002,
-      "fetched_at": "2026-05-13T21:42:08.463488Z",
+      "duration_ms": 997,
+      "fetched_at": "2026-05-13T23:06:36.824475Z",
       "cache_hit": false
     },
     {
@@ -1581,17 +1586,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-05-13T21:42:08.463935Z",
+      "last_item_at": "2026-05-13T23:06:36.824913Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 790,
-      "fetched_at": "2026-05-13T21:42:09.254658Z",
+      "duration_ms": 782,
+      "fetched_at": "2026-05-13T23:06:37.607834Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-05-13T21:42:09.255964Z",
+    "generated_at": "2026-05-13T23:06:37.609147Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1613,7 +1618,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "major",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1628,9 +1633,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 186,
+          "duration_ms": 293,
           "cache_hit": false,
-          "at": "2026-05-13T21:42:07Z"
+          "at": "2026-05-13T23:06:35Z"
         },
         "metrics_24h": {
           "runs": 14,
@@ -1639,7 +1644,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 493.2
+          "avg_duration_ms": 499.6
         },
         "metrics_7d": {
           "runs": 111,
@@ -1648,10 +1653,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 661.5
+          "avg_duration_ms": 654.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-13T21:42:07Z",
+        "last_success_at": "2026-05-13T23:06:35Z",
         "last_failure_at": null
       },
       {
@@ -1665,9 +1670,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1002,
+          "duration_ms": 997,
           "cache_hit": false,
-          "at": "2026-05-13T21:42:07Z"
+          "at": "2026-05-13T23:06:35Z"
         },
         "metrics_24h": {
           "runs": 14,
@@ -1676,7 +1681,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 856.4
+          "avg_duration_ms": 871.6
         },
         "metrics_7d": {
           "runs": 111,
@@ -1685,10 +1690,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 890.8
+          "avg_duration_ms": 894.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-13T21:42:07Z",
+        "last_success_at": "2026-05-13T23:06:35Z",
         "last_failure_at": null
       },
       {
@@ -1702,9 +1707,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 790,
+          "duration_ms": 782,
           "cache_hit": false,
-          "at": "2026-05-13T21:42:07Z"
+          "at": "2026-05-13T23:06:35Z"
         },
         "metrics_24h": {
           "runs": 14,
@@ -1713,7 +1718,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 683.5
+          "avg_duration_ms": 692.2
         },
         "metrics_7d": {
           "runs": 111,
@@ -1722,29 +1727,56 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 699.7
+          "avg_duration_ms": 701.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-13T21:42:07Z",
+        "last_success_at": "2026-05-13T23:06:35Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-05-13T21:42:09.255964Z",
+    "generated_at": "2026-05-13T23:06:37.609147Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "e943a3639b23d1f1",
+          "title": "Issues accessing ChatGPT for logged-out users",
+          "started_at": "2026-05-13T23:05:50Z",
+          "duration": "0m ongoing",
+          "acknowledgement": "Critical / Investigating",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "83da579d685b3fbb",
+          "title": "Degraded Performance with Codex Cloud Tasks",
+          "started_at": "2026-05-08T15:07:16Z",
+          "duration": "1h 10m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "94e6774d9364d0d4",
+          "title": "Issues accessing ChatGPT for logged-out users",
+          "url": "https://status.openai.com/incidents/01KRHSDQP7DZPAVANG3R1RCNVW",
+          "published_at": "2026-05-13T23:05:50Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Critical / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
