@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-05-24T20:07:06.513536Z",
+  "generated_at": "2026-05-24T21:29:46.020504Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 1,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,10 +14,10 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 3.75
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 5,
+      "reports_24h": 110,
       "recent_incidents_6h": 0,
       "recent_incidents_24h": 0,
       "cross_source": {
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_degraded_vs_aggregate_normal",
       "official_status": "degraded",
-      "derived_severity": "degraded",
+      "derived_severity": "stable",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status indicates degradation while aggregate severity is low."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-05-24T20:07:06.147701Z",
+        "published_at": "2026-05-24T21:29:45.527083Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "API Errors",
+        "url": "https://www.cloudflarestatus.com/incidents/70f2dztfcdcl#zgb3lccft0d3",
+        "published_at": "2026-05-24T20:30:39.315Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       },
       {
         "title": "API Errors",
@@ -84,7 +92,7 @@
         "published_at": "2026-05-23T20:57:43.317Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+        "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
       },
       {
         "title": "API Errors",
@@ -92,7 +100,7 @@
         "published_at": "2026-05-23T19:41:04.475Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring / We are investigating elevated error rates for API requests. Customers may experience failures when making API calls."
+        "meta": "Investigating / Minor / Resolved / We are investigating elevated error rates for API requests. Customers may experience failures when making API calls."
       },
       {
         "title": "Cloudflare Zero Trust Gateway Issues — FedRAMP High",
@@ -141,37 +149,29 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are currently monitoring the results."
-      },
-      {
-        "title": "Worker Pages Post-Deployment Errors",
-        "url": "https://www.cloudflarestatus.com/incidents/znxrxl4ptjmh#7pzby09lpv2m",
-        "published_at": "2026-05-22T20:55:39.552Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved. Customers experiencing 5xx errors with Pages deployments should redeploy to resolve."
       }
     ],
-    "last_statement_at": "2026-05-24T20:07:06.147701Z"
+    "last_statement_at": "2026-05-24T21:29:45.527083Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports an active incident: API Errors.",
+    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident was about 26h ago.",
     "current_status": "degraded",
-    "reports_24h": 5,
+    "reports_24h": 110,
     "incidents": [
       {
         "title": "API Errors",
         "started_at": "2026-05-23T19:45:15Z",
-        "duration": "1m",
+        "duration": "1d 55m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "API Errors",
         "started_at": "2026-05-23T19:41:04.385Z",
-        "duration": "1d 26m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "1d 49m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/70f2dztfcdcl"
       },
@@ -222,10 +222,6 @@
         "count": 1
       },
       {
-        "label": "Cloudflare Sites and Services",
-        "count": 1
-      },
-      {
         "label": "Africa",
         "count": 1
       },
@@ -248,44 +244,18 @@
       {
         "label": "Bangalore, India - (BLR)",
         "count": 1
+      },
+      {
+        "label": "Europe",
+        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-05-23T20:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-23T20:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-23T20:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-23T21:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-23T21:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-05-23T21:30:00Z",
         "signal_value": 11.0,
@@ -831,6 +801,36 @@
         "signal_value": 18.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-24T20:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-24T20:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-24T20:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-24T21:00:00Z",
+        "signal_value": 18.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-24T21:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,25 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-05-24T20:00:00Z"
+      "last_sample_at": "2026-05-24T21:15:00Z"
     },
+    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "20:20",
-        "count": 3
-      },
-      {
-        "label": "20:40",
-        "count": 1
-      },
-      {
-        "label": "21:00",
-        "count": 2
-      },
-      {
-        "label": "21:20",
-        "count": 0
-      },
       {
         "label": "21:40",
         "count": 2
@@ -1129,6 +1114,22 @@
       {
         "label": "20:00",
         "count": 2
+      },
+      {
+        "label": "20:20",
+        "count": 0
+      },
+      {
+        "label": "20:40",
+        "count": 2
+      },
+      {
+        "label": "21:00",
+        "count": 3
+      },
+      {
+        "label": "21:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1137,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-05-24T16:06:49-04:00"
+      "last_reviewed_at": "2026-05-24T17:29:44-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 110,
-        "last_reviewed_at": "2026-05-24T16:06:49-04:00"
+        "last_reviewed_at": "2026-05-24T17:29:44-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1159,8 +1160,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -1509,9 +1510,9 @@
       },
       {
         "name": "API",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-05-23T19:41:04.420Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-05-24T20:30:39.266Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2636,9 +2637,9 @@
       },
       {
         "name": "Kampala, Uganda - (EBB)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-24T09:58:18.368Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-05-24T21:25:03.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4455,7 +4456,7 @@
       "url": "https://www.cloudflarestatus.com/incidents/70f2dztfcdcl",
       "published_at": "2026-05-23T19:41:04.385Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Cloudflare Zero Trust Gateway Issues — FedRAMP High",
@@ -4506,52 +4507,60 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-05-24T20:07:06.513536Z"
+      "published_at": "2026-05-24T21:29:46.020504Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-05-24T20:07:06.513536Z"
+      "published_at": "2026-05-24T21:29:46.020504Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-05-24T20:07:06.513536Z"
+      "published_at": "2026-05-24T21:29:46.020504Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-05-24T20:07:06.513536Z"
+      "published_at": "2026-05-24T21:29:46.020504Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-05-24T20:07:06.513536Z"
+      "published_at": "2026-05-24T21:29:46.020504Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-05-24T20:07:06.513536Z"
+      "published_at": "2026-05-24T21:29:46.020504Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-05-24T20:07:06.147701Z",
+      "published_at": "2026-05-24T21:29:45.527083Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "API Errors",
+      "url": "https://www.cloudflarestatus.com/incidents/70f2dztfcdcl#zgb3lccft0d3",
+      "published_at": "2026-05-24T20:30:39.315Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     },
     {
       "title": "API Errors",
@@ -4559,7 +4568,7 @@
       "published_at": "2026-05-23T20:57:43.317Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+      "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
     },
     {
       "title": "API Errors",
@@ -4567,7 +4576,7 @@
       "published_at": "2026-05-23T19:41:04.475Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring / We are investigating elevated error rates for API requests. Customers may experience failures when making API calls."
+      "meta": "Investigating / Minor / Resolved / We are investigating elevated error rates for API requests. Customers may experience failures when making API calls."
     },
     {
       "title": "Cloudflare Zero Trust Gateway Issues — FedRAMP High",
@@ -4600,14 +4609,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Major / Resolved / Cloudflare is investigating issues with the DNS resolver component within Gateway for customers in the FedRAMP High environment. Affected customers using WARP may experience DNS lookup failures and be unable to reach sites through Gateway. "
-    },
-    {
-      "title": "Audit Log Delays",
-      "url": "https://www.cloudflarestatus.com/incidents/mms05jc4jw5g#3j1b0dwvp7w9",
-      "published_at": "2026-05-22T23:46:26.908Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident is now resolved."
     }
   ],
   "social": [],
@@ -4623,11 +4624,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-05-24T20:07:06.015422Z",
+      "last_item_at": "2026-05-24T21:29:44.338668Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 138,
-      "fetched_at": "2026-05-24T20:07:06.015445Z",
+      "duration_ms": 1022,
+      "fetched_at": "2026-05-24T21:29:44.338690Z",
       "cache_hit": false
     },
     {
@@ -4641,11 +4642,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-05-24T16:06:49-04:00",
+      "last_item_at": "2026-05-24T17:29:44-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 131,
-      "fetched_at": "2026-05-24T20:07:06.147156Z",
+      "duration_ms": 1188,
+      "fetched_at": "2026-05-24T21:29:45.526756Z",
       "cache_hit": false
     },
     {
@@ -4659,17 +4660,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-05-24T20:07:06.147701Z",
+      "last_item_at": "2026-05-24T21:29:45.527083Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 364,
-      "fetched_at": "2026-05-24T20:07:06.511981Z",
+      "duration_ms": 492,
+      "fetched_at": "2026-05-24T21:29:46.019498Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-05-24T20:07:06.513536Z",
+    "generated_at": "2026-05-24T21:29:46.020504Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4691,7 +4692,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4706,18 +4707,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 138,
+          "duration_ms": 1022,
           "cache_hit": false,
-          "at": "2026-05-24T20:07:05Z"
+          "at": "2026-05-24T21:29:43Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 647.9
+          "avg_duration_ms": 683.7
         },
         "metrics_7d": {
           "runs": 98,
@@ -4726,10 +4727,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 586.4
+          "avg_duration_ms": 591.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-24T20:07:05Z",
+        "last_success_at": "2026-05-24T21:29:43Z",
         "last_failure_at": null
       },
       {
@@ -4743,18 +4744,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 131,
+          "duration_ms": 1188,
           "cache_hit": false,
-          "at": "2026-05-24T20:07:05Z"
+          "at": "2026-05-24T21:29:43Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 762.4
+          "avg_duration_ms": 731.2
         },
         "metrics_7d": {
           "runs": 98,
@@ -4763,10 +4764,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 814.7
+          "avg_duration_ms": 814.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-24T20:07:05Z",
+        "last_success_at": "2026-05-24T21:29:43Z",
         "last_failure_at": null
       },
       {
@@ -4780,18 +4781,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 364,
+          "duration_ms": 492,
           "cache_hit": false,
-          "at": "2026-05-24T20:07:05Z"
+          "at": "2026-05-24T21:29:43Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 384.0
+          "avg_duration_ms": 377.2
         },
         "metrics_7d": {
           "runs": 98,
@@ -4800,25 +4801,33 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 395.6
+          "avg_duration_ms": 395.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-24T20:07:05Z",
+        "last_success_at": "2026-05-24T21:29:43Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-05-24T20:07:06.513536Z",
+    "generated_at": "2026-05-24T21:29:46.020504Z",
     "incidents": {
       "new": [],
       "updated": [
         {
+          "id": "46003c81582759f1",
+          "title": "API Errors",
+          "started_at": "2026-05-23T19:45:15Z",
+          "duration": "1d 55m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
           "id": "1724d10a5c7de0b1",
           "title": "API Errors",
           "started_at": "2026-05-23T19:41:04.385Z",
-          "duration": "1d 26m ongoing",
-          "acknowledgement": "Minor / Monitoring",
+          "duration": "1d 49m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://www.cloudflarestatus.com/"
         }
       ],
@@ -4829,7 +4838,7 @@
     },
     "summary": {
       "new_incidents": 0,
-      "updated_incidents": 1,
+      "updated_incidents": 2,
       "resolved_incidents": 0,
       "new_reports": 0
     }
