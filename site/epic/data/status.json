@@ -1,82 +1,82 @@
 {
-  "generated_at": "2026-05-28T04:50:28.726862Z",
+  "generated_at": "2026-05-28T08:29:25.894417Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "minor",
+    "severity_score": 3,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "epic-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 1.435,
+      "incidents": 3.8,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.075,
+      "support_score": 0.489,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 148,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 20,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 1,
       "cross_source": {
-        "report_score": 0.075,
-        "news_score": 0.0,
+        "report_score": 0.309,
+        "news_score": 0.18,
         "social_score": 0.0,
-        "combined_score": 0.075,
-        "report_hits_24h": 0
+        "combined_score": 0.489,
+        "report_hits_24h": 1
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_degraded_vs_aggregate_normal",
+      "official_status": "degraded",
+      "derived_severity": "minor",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status indicates degradation while aggregate severity is low."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Epic Games Statuspage API: All Systems Operational",
+    "summary": "Epic Games Statuspage API: Service Under Maintenance",
     "updates": [
       {
-        "title": "Epic Games Statuspage API: All Systems Operational",
+        "title": "Epic Games Statuspage API: Service Under Maintenance",
         "url": "https://status.epicgames.com/",
-        "published_at": "2026-05-28T04:50:28.065290Z",
+        "published_at": "2026-05-28T08:29:25.444948Z",
         "source": "Epic Games Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: maintenance"
       },
       {
         "title": "Login failure to EOS Game Services with certain valid OpenId tokens.",
@@ -151,16 +151,22 @@
         "meta": "Resolved / Major / Resolved / Matchmaking issues have been resolved. Players should now be able to queue into matches normally."
       }
     ],
-    "last_statement_at": "2026-05-28T04:50:28.065290Z"
+    "last_statement_at": "2026-05-28T08:29:25.444948Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.epicgames.com/",
-    "summary": "Epic Games Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 148,
+    "summary": "Epic Games Statuspage reports Service Under Maintenance. Latest listed incident was about 38h ago.",
+    "current_status": "degraded",
+    "reports_24h": 20,
     "incidents": [
+      {
+        "title": "Maintenance",
+        "started_at": "2026-05-28T08:01:58Z",
+        "duration": "2m",
+        "acknowledgement": "maintenance icon Maint"
+      },
       {
         "title": "Login failure to EOS Game Services with certain valid OpenId tokens.",
         "started_at": "2026-05-26T18:30:00.000Z",
@@ -174,12 +180,6 @@
         "started_at": "2026-05-26T06:01:51Z",
         "duration": "2h",
         "acknowledgement": "maintenance icon Maint"
-      },
-      {
-        "title": "Stats Delayed",
-        "started_at": "2026-05-18T23:16:59Z",
-        "duration": "35m",
-        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Stats Delayed",
@@ -220,97 +220,46 @@
         "url": "https://status.epicgames.com/incidents/rhqvt6zhynl9"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Fortnite",
+        "count": 1
+      },
+      {
+        "label": "Matchmaking",
+        "count": 1
+      },
+      {
+        "label": "Matchmaking",
+        "count": 1
+      },
+      {
+        "label": "Matchmaking",
+        "count": 1
+      },
+      {
+        "label": "Game Services",
+        "count": 1
+      },
+      {
+        "label": "LEGO Fortnite",
+        "count": 1
+      },
+      {
+        "label": "Login",
+        "count": 1
+      },
+      {
+        "label": "Fortnite Festival",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Epic Games Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-05-27T05:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T05:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T05:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T05:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T06:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T06:15:00Z",
-        "signal_value": 18.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T06:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T06:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T07:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T07:15:00Z",
-        "signal_value": 21.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T07:30:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T07:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T08:00:00Z",
-        "signal_value": 15.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-05-27T08:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-05-27T08:30:00Z",
         "signal_value": 1.0,
@@ -799,9 +748,93 @@
       },
       {
         "timestamp": "2026-05-28T04:45:00Z",
-        "signal_value": 19.0,
+        "signal_value": 3.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T05:00:00Z",
+        "signal_value": 21.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T05:15:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T05:30:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T05:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T06:00:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T06:15:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T06:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T06:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T07:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T07:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T07:30:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T07:45:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T08:00:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-05-28T08:15:00Z",
+        "signal_value": 47.0,
+        "status_code": 1,
+        "status_label": "possible outage"
       }
     ],
     "service_health_24h_meta": {
@@ -810,54 +843,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-05-28T04:45:00Z"
+      "last_sample_at": "2026-05-28T08:15:00Z"
     },
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "05:00",
-        "count": 4
-      },
-      {
-        "label": "05:20",
-        "count": 2
-      },
-      {
-        "label": "05:40",
-        "count": 0
-      },
-      {
-        "label": "06:00",
-        "count": 2
-      },
-      {
-        "label": "06:20",
-        "count": 3
-      },
-      {
-        "label": "06:40",
-        "count": 1
-      },
-      {
-        "label": "07:00",
-        "count": 2
-      },
-      {
-        "label": "07:20",
-        "count": 0
-      },
-      {
-        "label": "07:40",
-        "count": 3
-      },
-      {
-        "label": "08:00",
-        "count": 3
-      },
-      {
-        "label": "08:20",
-        "count": 1
-      },
       {
         "label": "08:40",
         "count": 4
@@ -1101,6 +1089,50 @@
       {
         "label": "04:40",
         "count": 0
+      },
+      {
+        "label": "05:00",
+        "count": 4
+      },
+      {
+        "label": "05:20",
+        "count": 5
+      },
+      {
+        "label": "05:40",
+        "count": 1
+      },
+      {
+        "label": "06:00",
+        "count": 3
+      },
+      {
+        "label": "06:20",
+        "count": 0
+      },
+      {
+        "label": "06:40",
+        "count": 4
+      },
+      {
+        "label": "07:00",
+        "count": 3
+      },
+      {
+        "label": "07:20",
+        "count": 1
+      },
+      {
+        "label": "07:40",
+        "count": 13
+      },
+      {
+        "label": "08:00",
+        "count": 13
+      },
+      {
+        "label": "08:20",
+        "count": 5
       }
     ],
     "user_reports_24h_meta": {
@@ -1109,14 +1141,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-05-28T00:50:27-04:00"
+      "last_reviewed_at": "2026-05-28T04:29:01-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 148,
-        "last_reviewed_at": "2026-05-28T00:50:27-04:00"
+        "reports_24h": 179,
+        "last_reviewed_at": "2026-05-28T04:29:01-04:00"
       }
     ],
     "current_status_origin": "Epic Games Statuspage API",
@@ -1124,8 +1156,8 @@
     "components": [
       {
         "name": "Fortnite",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "under_maintenance",
         "updated_at": "2019-11-15T19:06:39.863Z",
         "source": "Epic Games Statuspage API"
       },
@@ -1194,23 +1226,23 @@
       },
       {
         "name": "Matchmaking",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T11:20:49.396Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:13.145Z",
         "source": "Epic Games Statuspage API"
       },
       {
         "name": "Matchmaking",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T11:20:49.414Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:14.107Z",
         "source": "Epic Games Statuspage API"
       },
       {
         "name": "Matchmaking",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T11:20:49.429Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:15.174Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1229,9 +1261,9 @@
       },
       {
         "name": "Game Services",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T11:20:49.443Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:16.210Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1278,8 +1310,8 @@
       },
       {
         "name": "LEGO Fortnite",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "under_maintenance",
         "updated_at": "2024-02-16T19:44:04.839Z",
         "source": "Epic Games Statuspage API"
       },
@@ -1299,9 +1331,9 @@
       },
       {
         "name": "Login",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T12:37:17.010Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:16.746Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1348,8 +1380,8 @@
       },
       {
         "name": "Fortnite Festival",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "under_maintenance",
         "updated_at": "2024-02-16T19:44:18.761Z",
         "source": "Epic Games Statuspage API"
       },
@@ -1362,9 +1394,9 @@
       },
       {
         "name": "Parties, Friends, and Messaging",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T11:20:49.475Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:18.366Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1404,8 +1436,8 @@
       },
       {
         "name": "Rocket Racing",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "under_maintenance",
         "updated_at": "2025-11-20T19:58:46.311Z",
         "source": "Epic Games Statuspage API"
       },
@@ -1418,9 +1450,9 @@
       },
       {
         "name": "Voice Chat",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T11:20:49.491Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:19.113Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1516,9 +1548,9 @@
       },
       {
         "name": "Matchmaking",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T12:37:17.028Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:20.367Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1565,9 +1597,9 @@
       },
       {
         "name": "Stats and Leaderboards",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T11:20:49.525Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:20.955Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1600,9 +1632,9 @@
       },
       {
         "name": "Item Shop",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T17:26:14.589Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:21.517Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1628,9 +1660,9 @@
       },
       {
         "name": "Fortnite Crew",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-14T11:20:49.557Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-05-28T08:00:21.949Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1792,19 +1824,19 @@
     "top_reported_issues_provider": [
       {
         "label": "Connectivity issue",
-        "count": 4
+        "count": 5
+      },
+      {
+        "label": "Service down",
+        "count": 3
+      },
+      {
+        "label": "Sign in problem",
+        "count": 2
       },
       {
         "label": "App not loading",
         "count": 2
-      },
-      {
-        "label": "Sign in problem",
-        "count": 1
-      },
-      {
-        "label": "Service down",
-        "count": 1
       },
       {
         "label": "Other",
@@ -1826,6 +1858,13 @@
   },
   "reports": [
     {
+      "title": "Maintenance",
+      "url": "https://status.epicgames.com/#2026-05-28T08:01:58Z",
+      "published_at": "2026-05-28T08:01:58Z",
+      "source": "StatusGator",
+      "meta": "maintenance icon Maint"
+    },
+    {
       "title": "Login failure to EOS Game Services with certain valid OpenId tokens.",
       "url": "https://status.epicgames.com/incidents/hxmpfzx7jntz",
       "published_at": "2026-05-26T18:30:00.000Z",
@@ -1838,13 +1877,6 @@
       "published_at": "2026-05-26T06:01:51Z",
       "source": "StatusGator",
       "meta": "maintenance icon Maint"
-    },
-    {
-      "title": "Stats Delayed",
-      "url": "https://status.epicgames.com/#2026-05-18T23:16:59Z",
-      "published_at": "2026-05-18T23:16:59Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     },
     {
       "title": "Stats Delayed",
@@ -1888,52 +1920,52 @@
       "url": "https://status.epicgames.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-05-28T04:50:28.726862Z"
+      "published_at": "2026-05-28T08:29:25.894417Z"
     },
     {
       "title": "Epic Games Status API (Statuspage v2)",
       "url": "https://status.epicgames.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-05-28T04:50:28.726862Z"
+      "published_at": "2026-05-28T08:29:25.894417Z"
     },
     {
       "title": "Epic Games Status history RSS",
       "url": "https://status.epicgames.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-05-28T04:50:28.726862Z"
+      "published_at": "2026-05-28T08:29:25.894417Z"
     },
     {
       "title": "Epic Games Status API docs",
       "url": "https://status.epicgames.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-05-28T04:50:28.726862Z"
+      "published_at": "2026-05-28T08:29:25.894417Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-05-28T04:50:28.726862Z"
+      "published_at": "2026-05-28T08:29:25.894417Z"
     },
     {
       "title": "Epic Games Player Support",
       "url": "https://www.epicgames.com/help/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-05-28T04:50:28.726862Z"
+      "published_at": "2026-05-28T08:29:25.894417Z"
     }
   ],
   "news": [
     {
-      "title": "Epic Games Statuspage API: All Systems Operational",
+      "title": "Epic Games Statuspage API: Service Under Maintenance",
       "url": "https://status.epicgames.com/",
-      "published_at": "2026-05-28T04:50:28.065290Z",
+      "published_at": "2026-05-28T08:29:25.444948Z",
       "source": "Epic Games Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: maintenance"
     },
     {
       "title": "Login failure to EOS Game Services with certain valid OpenId tokens.",
@@ -2005,11 +2037,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-05-28T04:50:26.937789Z",
+      "last_item_at": "2026-05-28T08:29:25.321907Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 332,
-      "fetched_at": "2026-05-28T04:50:26.937806Z",
+      "duration_ms": 148,
+      "fetched_at": "2026-05-28T08:29:25.321933Z",
       "cache_hit": false
     },
     {
@@ -2023,11 +2055,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-05-28T00:50:27-04:00",
+      "last_item_at": "2026-05-28T04:29:01-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1126,
-      "fetched_at": "2026-05-28T04:50:28.064672Z",
+      "duration_ms": 122,
+      "fetched_at": "2026-05-28T08:29:25.444374Z",
       "cache_hit": false
     },
     {
@@ -2041,17 +2073,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-05-28T04:50:28.065290Z",
+      "last_item_at": "2026-05-28T08:29:25.444948Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 660,
-      "fetched_at": "2026-05-28T04:50:28.725778Z",
+      "duration_ms": 448,
+      "fetched_at": "2026-05-28T08:29:25.893258Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-05-28T04:50:28.726862Z",
+    "generated_at": "2026-05-28T08:29:25.894417Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -2073,7 +2105,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "minor",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -2088,30 +2120,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 332,
+          "duration_ms": 148,
           "cache_hit": false,
-          "at": "2026-05-28T04:50:26Z"
+          "at": "2026-05-28T08:29:25Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 13,
+          "ok": 13,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 753.1
+          "avg_duration_ms": 730.0
         },
         "metrics_7d": {
-          "runs": 100,
-          "ok": 100,
+          "runs": 99,
+          "ok": 99,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 663.8
+          "avg_duration_ms": 657.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-28T04:50:26Z",
+        "last_success_at": "2026-05-28T08:29:25Z",
         "last_failure_at": null
       },
       {
@@ -2125,30 +2157,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1126,
+          "duration_ms": 122,
           "cache_hit": false,
-          "at": "2026-05-28T04:50:26Z"
+          "at": "2026-05-28T08:29:25Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 13,
+          "ok": 13,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 970.3
+          "avg_duration_ms": 893.2
         },
         "metrics_7d": {
-          "runs": 100,
-          "ok": 100,
+          "runs": 99,
+          "ok": 99,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 906.9
+          "avg_duration_ms": 902.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-28T04:50:26Z",
+        "last_success_at": "2026-05-28T08:29:25Z",
         "last_failure_at": null
       },
       {
@@ -2162,49 +2194,76 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 660,
+          "duration_ms": 448,
           "cache_hit": false,
-          "at": "2026-05-28T04:50:26Z"
+          "at": "2026-05-28T08:29:25Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 13,
+          "ok": 13,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 562.7
+          "avg_duration_ms": 563.0
         },
         "metrics_7d": {
-          "runs": 100,
-          "ok": 100,
+          "runs": 99,
+          "ok": 99,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 500.8
+          "avg_duration_ms": 501.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-05-28T04:50:26Z",
+        "last_success_at": "2026-05-28T08:29:25Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-05-28T04:50:28.726862Z",
+    "generated_at": "2026-05-28T08:29:25.894417Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "0a828fab8233c409",
+          "title": "Maintenance",
+          "started_at": "2026-05-28T08:01:58Z",
+          "duration": "2m",
+          "acknowledgement": "maintenance icon Maint",
+          "url": "https://status.epicgames.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "734633793e98adba",
+          "title": "Stats Delayed",
+          "started_at": "2026-05-18T23:16:59Z",
+          "duration": "35m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.epicgames.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "a1c4828e50f13362",
+          "title": "Maintenance",
+          "url": "https://status.epicgames.com/#2026-05-28T08:01:58Z",
+          "published_at": "2026-05-28T08:01:58Z",
+          "source": "StatusGator",
+          "meta": "maintenance icon Maint"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
