@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-03T17:04:26.314197Z",
+  "generated_at": "2026-06-03T20:27:30.164367Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "minor",
+    "severity_score": 3,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "slack-1.0",
@@ -17,7 +17,7 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 106,
+      "reports_24h": 112,
       "recent_incidents_6h": 2,
       "recent_incidents_24h": 4,
       "cross_source": {
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
+      "official_operational_cap_applied": true,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "minor",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,47 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "major",
-      "severity_score": 9,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 1.0
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 0.0
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 0.0
     }
   },
   "official": {
-    "summary": "Slack Status API: Administrators may experience errors in member management.",
+    "summary": "Slack Status API: Slack is up and running",
     "updates": [
       {
-        "title": "Slack Status API: Administrators may experience errors in member management.",
+        "title": "Slack Status API: Slack is up and running",
         "url": "https://slack-status.com/",
-        "published_at": "2026-06-03T17:04:25.894209Z",
+        "published_at": "2026-06-03T20:27:29.762631Z",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Indicator: active"
+        "meta": "Indicator: ok"
+      },
+      {
+        "title": "Administrators may experience errors in member management.",
+        "url": "https://slack-status.com/2026-06/898527c2a0f5c9be#note-4",
+        "published_at": "2026-06-03T10:35:07-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Incident / Services: Workspace/Org Administration / The Slack engineering team identified the cause as a recent update that introduced a code change which caused the invite modal to fail when accessed from the Admin page. We rolled back the change and have confirmed the fix is fully deployed"
+      },
+      {
+        "title": "Administrators may experience errors in member management.",
+        "url": "https://slack-status.com/2026-06/898527c2a0f5c9be#note-3",
+        "published_at": "2026-06-03T10:12:03-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Incident / Services: Workspace/Org Administration / We have identified the cause of the issue preventing some workspace admins from adding new members via the Admin page as a recent change and are in the process of rolling back this change. Current impact to end users: Some users may encount"
       },
       {
         "title": "Administrators may experience errors in member management.",
@@ -84,7 +100,7 @@
         "published_at": "2026-06-03T09:49:12-07:00",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Active / Incident / Services: Workspace/Org Administration / We're looking into an issue where some users may be unable to add new members, send invites, or run macros on their workspaces. We're on the case and will provide another update as soon as we have more details to share. We apologize for any"
+        "meta": "Resolved / Incident / Services: Workspace/Org Administration / We're looking into an issue where some users may be unable to add new members, send invites, or run macros on their workspaces. We're on the case and will provide another update as soon as we have more details to share. We apologize for any"
       },
       {
         "title": "Administrators may experience errors in member management.",
@@ -92,7 +108,7 @@
         "published_at": "2026-06-03T09:33:16-07:00",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Active / Incident / Services: Workspace/Org Administration / We're investigating a new incident. Current impact to end users: Some administrators may be experiencing errors managing members. We'll provide an update within 30 minutes including further details on current actions being taken."
+        "meta": "Resolved / Incident / Services: Workspace/Org Administration / We're investigating a new incident. Current impact to end users: Some administrators may be experiencing errors managing members. We'll provide an update within 30 minutes including further details on current actions being taken."
       },
       {
         "title": "Trouble connecting or loading Slack",
@@ -133,45 +149,29 @@
         "source": "Slack Status API",
         "channel": "official-status-page",
         "meta": "Resolved / Incident / Our investigation has determined that the issue is isolated to a single customer environment and is not impacting the broader service. As a result, this incident will be removed from the status page and we will continue to work directly wit"
-      },
-      {
-        "title": "Partial Degradation Impacting Usergroups",
-        "url": "https://slack-status.com/2026-05/8f583746d60de2fc#note-2",
-        "published_at": "2026-05-31T19:38:01-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / We continue to investigate the issue and have identified a recent deployment as a likely trigger. Users may experience issues with user groups, including failed @mentions or groups appearing unavailable. We are actively working on restoring"
-      },
-      {
-        "title": "Partial Degradation Impacting Usergroups",
-        "url": "https://slack-status.com/2026-05/8f583746d60de2fc#note-1",
-        "published_at": "2026-05-31T19:08:09-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / We are currently investigating a partial degradation impacting usergroups. We’ll provide an update as soon as we have more information to share and are sorry for any inconvenience this issue is causing."
       }
     ],
-    "last_statement_at": "2026-06-03T17:04:25.894209Z"
+    "last_statement_at": "2026-06-03T20:27:29.762631Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://slack-status.com/",
-    "summary": "Slack Status reports an active incident: Administrators may experience errors in member management..",
-    "current_status": "degraded",
-    "reports_24h": 106,
+    "summary": "Slack Status reports Slack is up and running. No active incidents are listed.",
+    "current_status": "operational",
+    "reports_24h": 112,
     "incidents": [
       {
         "title": "Administrators may experience errors in member management.",
         "started_at": "2026-06-03T16:39:52Z",
-        "duration": "1m",
+        "duration": "1h",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Administrators may experience errors in member management.",
         "started_at": "2026-06-03T09:33:16-07:00",
-        "duration": "31m ongoing",
-        "acknowledgement": "Incident / Active / Workspace/Org Administration",
+        "duration": "1h 1m",
+        "acknowledgement": "Incident / Resolved / Workspace/Org Administration",
         "source": "Slack Status API",
         "url": "https://slack-status.com/2026-06/898527c2a0f5c9be"
       },
@@ -218,100 +218,13 @@
         "url": "https://slack-status.com/2026-05/8f583746d60de2fc"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Workspace/Org Administration",
-        "count": 1
-      },
-      {
-        "label": "Workspace/Org Administration",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "Slack Status API",
       "kind": "component-grid",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-02T17:15:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T17:30:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T17:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T18:00:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T18:15:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T18:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T18:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T19:00:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T19:15:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T19:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T19:45:00Z",
-        "signal_value": 17.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T20:00:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-02T20:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-02T20:30:00Z",
         "signal_value": 1.0,
@@ -809,6 +722,84 @@
         "signal_value": 19.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T17:15:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T17:30:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T17:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T18:00:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T18:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T18:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T18:45:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T19:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T19:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T19:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T19:45:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T20:00:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-03T20:15:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -817,50 +808,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-03T17:00:00Z"
+      "last_sample_at": "2026-06-03T20:15:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "17:20",
-        "count": 2
-      },
-      {
-        "label": "17:40",
-        "count": 0
-      },
-      {
-        "label": "18:00",
-        "count": 1
-      },
-      {
-        "label": "18:20",
-        "count": 3
-      },
-      {
-        "label": "18:40",
-        "count": 1
-      },
-      {
-        "label": "19:00",
-        "count": 2
-      },
-      {
-        "label": "19:20",
-        "count": 0
-      },
-      {
-        "label": "19:40",
-        "count": 2
-      },
-      {
-        "label": "20:00",
-        "count": 2
-      },
-      {
-        "label": "20:20",
-        "count": 0
-      },
       {
         "label": "20:40",
         "count": 2
@@ -1108,6 +1059,46 @@
       {
         "label": "17:00",
         "count": 1
+      },
+      {
+        "label": "17:20",
+        "count": 3
+      },
+      {
+        "label": "17:40",
+        "count": 1
+      },
+      {
+        "label": "18:00",
+        "count": 2
+      },
+      {
+        "label": "18:20",
+        "count": 0
+      },
+      {
+        "label": "18:40",
+        "count": 2
+      },
+      {
+        "label": "19:00",
+        "count": 3
+      },
+      {
+        "label": "19:20",
+        "count": 1
+      },
+      {
+        "label": "19:40",
+        "count": 3
+      },
+      {
+        "label": "20:00",
+        "count": 3
+      },
+      {
+        "label": "20:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1116,14 +1107,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-03T13:04:25-04:00"
+      "last_reviewed_at": "2026-06-03T16:27:28-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 106,
-        "last_reviewed_at": "2026-06-03T13:04:25-04:00"
+        "reports_24h": 112,
+        "last_reviewed_at": "2026-06-03T16:27:28-04:00"
       }
     ],
     "current_status_origin": "Slack Status API",
@@ -1133,86 +1124,82 @@
         "name": "Login/SSO",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Connectivity",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Messaging",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Files",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Notifications",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Huddles",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Search",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Apps/Integrations/APIs",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workspace/Org Administration",
-        "status": "something's not quite right. view details",
-        "health": "Something's not quite right. View details",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "status": "operational",
+        "health": "No issues",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workflows",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Canvases",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-06-03T09:49:12-07:00",
+        "updated_at": "2026-06-03T10:35:07-07:00",
         "source": "Slack Status API"
       }
     ],
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
-      {
-        "label": "Service down",
-        "count": 1
-      },
       {
         "label": "Connectivity issue",
         "count": 0
@@ -1227,6 +1214,10 @@
       },
       {
         "label": "Sign in problem",
+        "count": 0
+      },
+      {
+        "label": "Service down",
         "count": 0
       },
       {
@@ -1256,7 +1247,7 @@
       "url": "https://slack-status.com/2026-06/898527c2a0f5c9be",
       "published_at": "2026-06-03T09:33:16-07:00",
       "source": "Slack Status API",
-      "meta": "Incident / Active / Workspace/Org Administration"
+      "meta": "Incident / Resolved / Workspace/Org Administration"
     },
     {
       "title": "Trouble connecting or loading Slack",
@@ -1307,52 +1298,68 @@
       "url": "https://slack-status.com/",
       "source": "Official",
       "meta": "Dashboard",
-      "published_at": "2026-06-03T17:04:26.314197Z"
+      "published_at": "2026-06-03T20:27:30.164367Z"
     },
     {
       "title": "Slack Status API docs",
       "url": "https://slack-status.com/api",
       "source": "Official",
       "meta": "API docs",
-      "published_at": "2026-06-03T17:04:26.314197Z"
+      "published_at": "2026-06-03T20:27:30.164367Z"
     },
     {
       "title": "Slack Status current API",
       "url": "https://slack-status.com/api/v2.0.0/current",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-03T17:04:26.314197Z"
+      "published_at": "2026-06-03T20:27:30.164367Z"
     },
     {
       "title": "Slack Status history API",
       "url": "https://slack-status.com/api/v2.0.0/history",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-03T17:04:26.314197Z"
+      "published_at": "2026-06-03T20:27:30.164367Z"
     },
     {
       "title": "Slack Status history RSS",
       "url": "https://slack-status.com/feed/rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-06-03T17:04:26.314197Z"
+      "published_at": "2026-06-03T20:27:30.164367Z"
     },
     {
       "title": "Slack connection troubleshooting",
       "url": "https://slack.com/help/articles/205138367-Troubleshoot-connection-issues",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-06-03T17:04:26.314197Z"
+      "published_at": "2026-06-03T20:27:30.164367Z"
     }
   ],
   "news": [
     {
-      "title": "Slack Status API: Administrators may experience errors in member management.",
+      "title": "Slack Status API: Slack is up and running",
       "url": "https://slack-status.com/",
-      "published_at": "2026-06-03T17:04:25.894209Z",
+      "published_at": "2026-06-03T20:27:29.762631Z",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Indicator: active"
+      "meta": "Indicator: ok"
+    },
+    {
+      "title": "Administrators may experience errors in member management.",
+      "url": "https://slack-status.com/2026-06/898527c2a0f5c9be#note-4",
+      "published_at": "2026-06-03T10:35:07-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Incident / Services: Workspace/Org Administration / The Slack engineering team identified the cause as a recent update that introduced a code change which caused the invite modal to fail when accessed from the Admin page. We rolled back the change and have confirmed the fix is fully deployed"
+    },
+    {
+      "title": "Administrators may experience errors in member management.",
+      "url": "https://slack-status.com/2026-06/898527c2a0f5c9be#note-3",
+      "published_at": "2026-06-03T10:12:03-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Incident / Services: Workspace/Org Administration / We have identified the cause of the issue preventing some workspace admins from adding new members via the Admin page as a recent change and are in the process of rolling back this change. Current impact to end users: Some users may encount"
     },
     {
       "title": "Administrators may experience errors in member management.",
@@ -1360,7 +1367,7 @@
       "published_at": "2026-06-03T09:49:12-07:00",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Active / Incident / Services: Workspace/Org Administration / We're looking into an issue where some users may be unable to add new members, send invites, or run macros on their workspaces. We're on the case and will provide another update as soon as we have more details to share. We apologize for any"
+      "meta": "Resolved / Incident / Services: Workspace/Org Administration / We're looking into an issue where some users may be unable to add new members, send invites, or run macros on their workspaces. We're on the case and will provide another update as soon as we have more details to share. We apologize for any"
     },
     {
       "title": "Administrators may experience errors in member management.",
@@ -1368,7 +1375,7 @@
       "published_at": "2026-06-03T09:33:16-07:00",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Active / Incident / Services: Workspace/Org Administration / We're investigating a new incident. Current impact to end users: Some administrators may be experiencing errors managing members. We'll provide an update within 30 minutes including further details on current actions being taken."
+      "meta": "Resolved / Incident / Services: Workspace/Org Administration / We're investigating a new incident. Current impact to end users: Some administrators may be experiencing errors managing members. We'll provide an update within 30 minutes including further details on current actions being taken."
     },
     {
       "title": "Trouble connecting or loading Slack",
@@ -1393,22 +1400,6 @@
       "source": "Slack Status API",
       "channel": "official-status-page",
       "meta": "Resolved / Incident / Services: Connectivity, Messaging / We're investigating a new incident. Current impact to end users: Some users may be experiencing trouble loading or connecting to Slack. We're on the case. We'll provide an update within 30 minutes including further details on current action"
-    },
-    {
-      "title": "Connectivity Issues Affecting Some Users in Europe",
-      "url": "https://slack-status.com/2026-06/2e2e3eb0560b8566#note-1",
-      "published_at": "2026-06-02T09:16:37-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Services: Connectivity, Messaging / Current status: The Slack engineering team investigated connectivity issues that affected some users between approximately 13:30 and 14:00 UTC on June 2, 2026. The issue has been resolved and no further impact has been reported. Scope : Som"
-    },
-    {
-      "title": "Partial Degradation Impacting Usergroups",
-      "url": "https://slack-status.com/2026-05/8f583746d60de2fc#note-3",
-      "published_at": "2026-05-31T20:05:22-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Our investigation has determined that the issue is isolated to a single customer environment and is not impacting the broader service. As a result, this incident will be removed from the status page and we will continue to work directly wit"
     }
   ],
   "social": [],
@@ -1424,11 +1415,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-06-03T17:04:25.041070Z",
+      "last_item_at": "2026-06-03T20:27:28.329520Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 121,
-      "fetched_at": "2026-06-03T17:04:25.041095Z",
+      "duration_ms": 685,
+      "fetched_at": "2026-06-03T20:27:28.329537Z",
       "cache_hit": false
     },
     {
@@ -1442,11 +1433,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-03T13:04:25-04:00",
+      "last_item_at": "2026-06-03T16:27:28-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 852,
-      "fetched_at": "2026-06-03T17:04:25.893579Z",
+      "duration_ms": 1432,
+      "fetched_at": "2026-06-03T20:27:29.762121Z",
       "cache_hit": false
     },
     {
@@ -1460,17 +1451,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-06-03T17:04:25.894209Z",
+      "last_item_at": "2026-06-03T20:27:29.762631Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 418,
-      "fetched_at": "2026-06-03T17:04:26.312463Z",
+      "duration_ms": 400,
+      "fetched_at": "2026-06-03T20:27:30.162805Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-03T17:04:26.314197Z",
+    "generated_at": "2026-06-03T20:27:30.164367Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1492,7 +1483,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "minor",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1507,30 +1498,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 121,
+          "duration_ms": 685,
           "cache_hit": false,
-          "at": "2026-06-03T17:04:24Z"
+          "at": "2026-06-03T20:27:27Z"
         },
         "metrics_24h": {
-          "runs": 7,
-          "ok": 7,
+          "runs": 6,
+          "ok": 6,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 188.6
+          "avg_duration_ms": 267.0
         },
         "metrics_7d": {
-          "runs": 83,
-          "ok": 83,
+          "runs": 81,
+          "ok": 81,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 209.6
+          "avg_duration_ms": 217.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-03T17:04:24Z",
+        "last_success_at": "2026-06-03T20:27:27Z",
         "last_failure_at": null
       },
       {
@@ -1544,30 +1535,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 852,
+          "duration_ms": 1432,
           "cache_hit": false,
-          "at": "2026-06-03T17:04:24Z"
+          "at": "2026-06-03T20:27:27Z"
         },
         "metrics_24h": {
-          "runs": 7,
-          "ok": 7,
+          "runs": 6,
+          "ok": 6,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1210.9
+          "avg_duration_ms": 1206.8
         },
         "metrics_7d": {
-          "runs": 83,
-          "ok": 83,
+          "runs": 81,
+          "ok": 81,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1084.0
+          "avg_duration_ms": 1092.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-03T17:04:24Z",
+        "last_success_at": "2026-06-03T20:27:27Z",
         "last_failure_at": null
       },
       {
@@ -1581,43 +1572,44 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 418,
+          "duration_ms": 400,
           "cache_hit": false,
-          "at": "2026-06-03T17:04:24Z"
+          "at": "2026-06-03T20:27:27Z"
         },
         "metrics_24h": {
-          "runs": 7,
-          "ok": 7,
+          "runs": 6,
+          "ok": 6,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 475.0
+          "avg_duration_ms": 469.2
         },
         "metrics_7d": {
-          "runs": 83,
-          "ok": 83,
+          "runs": 81,
+          "ok": 81,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 542.3
+          "avg_duration_ms": 542.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-03T17:04:24Z",
+        "last_success_at": "2026-06-03T20:27:27Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-03T17:04:26.314197Z",
+    "generated_at": "2026-06-03T20:27:30.164367Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "7c28adcc01adf6f9",
           "title": "Administrators may experience errors in member management.",
           "started_at": "2026-06-03T16:39:52Z",
-          "duration": "1m",
+          "duration": "1h",
           "acknowledgement": "warn icon Warn",
           "url": "https://slack-status.com/"
         },
@@ -1625,56 +1617,21 @@
           "id": "aee9b29ec8c09a7c",
           "title": "Administrators may experience errors in member management.",
           "started_at": "2026-06-03T09:33:16-07:00",
-          "duration": "31m ongoing",
-          "acknowledgement": "Incident / Active / Workspace/Org Administration",
+          "duration": "1h 1m",
+          "acknowledgement": "Incident / Resolved / Workspace/Org Administration",
           "url": "https://slack-status.com/"
         }
       ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "c3951c952ec5fe8e",
-          "title": "Services restored, final recovery activities underway",
-          "started_at": "2026-05-28T10:04:50Z",
-          "duration": "5h 20m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://slack-status.com/"
-        },
-        {
-          "id": "02f064dc55e188c3",
-          "title": "Issues affecting workflows, message edits, channel renames, apps, and channel creations",
-          "started_at": "2026-05-28T03:59:53Z",
-          "duration": "6h 5m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://slack-status.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "4bd63075a76cf554",
-          "title": "Administrators may experience errors in member management.",
-          "url": "https://slack-status.com/#2026-06-03T16:39:52Z",
-          "published_at": "2026-06-03T16:39:52Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "ea1db523111463d2",
-          "title": "Administrators may experience errors in member management.",
-          "url": "https://slack-status.com/2026-06/898527c2a0f5c9be",
-          "published_at": "2026-06-03T09:33:16-07:00",
-          "source": "Slack Status API",
-          "meta": "Incident / Active / Workspace/Org Administration"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 2,
-      "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "new_incidents": 0,
+      "updated_incidents": 2,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
