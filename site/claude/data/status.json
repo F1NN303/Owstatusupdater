@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-08T17:43:02.645806Z",
+  "generated_at": "2026-06-08T18:42:17.949602Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -13,41 +13,41 @@
       "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.492,
-      "profile_adjustment": 0.0
+      "support_score": 0.231,
+      "profile_adjustment": 3.35
     },
     "signal_metrics": {
-      "reports_24h": 3,
+      "reports_24h": 115,
       "recent_incidents_6h": 2,
       "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.15,
-        "news_score": 0.342,
+        "news_score": 0.081,
         "social_score": 0.0,
-        "combined_score": 0.492,
+        "combined_score": 0.231,
         "report_hits_24h": 0
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "degraded",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
+      "official_status": "operational",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
@@ -68,15 +68,23 @@
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: Partially Degraded Service",
+    "summary": "Claude Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "Claude Statuspage API: Partially Degraded Service",
+        "title": "Claude Statuspage API: All Systems Operational",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-06-08T17:43:01.835533Z",
+        "published_at": "2026-06-08T18:42:17.192374Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Elevated errors on Claude Opus 4.7",
+        "url": "https://status.anthropic.com/incidents/3n1flr3mnpgl#g1zv2nthmvfb",
+        "published_at": "2026-06-08T17:55:02.932Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
       },
       {
         "title": "Elevated errors on Claude Opus 4.7",
@@ -84,7 +92,7 @@
         "published_at": "2026-06-08T17:15:04.004Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / We are currently investigating this issue."
+        "meta": "Investigating / Minor / Monitoring / We are currently investigating this issue."
       },
       {
         "title": "Elevated errors on Claude Opus 4.7",
@@ -141,37 +149,29 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / We are investigating elevated errors on requests to Claude Opus 4.7. We will provide an update as soon as possible."
-      },
-      {
-        "title": "Elevated errors on Claude Opus 4.8",
-        "url": "https://status.anthropic.com/incidents/6ptd5skgmy3v#p4bsw5jqlcv7",
-        "published_at": "2026-06-06T19:05:27.178Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / From 18:12–18:55, we saw elevated errors on requests to Claude Opus 4.8. This issue has been resolved."
       }
     ],
-    "last_statement_at": "2026-06-08T17:43:01.835533Z"
+    "last_statement_at": "2026-06-08T18:42:17.192374Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
     "summary": "Claude Statuspage reports an active incident: Elevated errors on Claude Opus 4.7.",
-    "current_status": "degraded",
-    "reports_24h": 3,
+    "current_status": "operational",
+    "reports_24h": 115,
     "incidents": [
       {
         "title": "Elevated errors on Claude Opus 4.7",
         "started_at": "2026-06-08T17:18:07Z",
-        "duration": "1m",
+        "duration": "40m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Elevated errors on Claude Opus 4.7",
         "started_at": "2026-06-08T17:15:03.849Z",
-        "duration": "27m ongoing",
-        "acknowledgement": "Minor / Investigating",
+        "duration": "1h 27m ongoing",
+        "acknowledgement": "Minor / Monitoring",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/3n1flr3mnpgl"
       },
@@ -222,54 +222,13 @@
         "url": "https://status.anthropic.com/incidents/fprlnsvdnr2k"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "claude.ai",
-        "count": 1
-      },
-      {
-        "label": "Claude API (api.anthropic.com)",
-        "count": 1
-      },
-      {
-        "label": "Claude Code",
-        "count": 1
-      },
-      {
-        "label": "Claude Cowork",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-07T17:45:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T18:00:00Z",
-        "signal_value": 17.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T18:15:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T18:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-07T18:45:00Z",
         "signal_value": 15.0,
@@ -818,7 +777,31 @@
       },
       {
         "timestamp": "2026-06-08T17:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T17:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T18:00:00Z",
         "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T18:15:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T18:30:00Z",
+        "signal_value": 10.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -829,21 +812,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-08T17:30:00Z"
+      "last_sample_at": "2026-06-08T18:30:00Z"
     },
+    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "18:00",
-        "count": 2
-      },
-      {
-        "label": "18:20",
-        "count": 0
-      },
-      {
-        "label": "18:40",
-        "count": 2
-      },
       {
         "label": "19:00",
         "count": 3
@@ -1119,6 +1091,18 @@
       {
         "label": "17:40",
         "count": 2
+      },
+      {
+        "label": "18:00",
+        "count": 3
+      },
+      {
+        "label": "18:20",
+        "count": 1
+      },
+      {
+        "label": "18:40",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1127,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-08T13:43:01-04:00"
+      "last_reviewed_at": "2026-06-08T14:42:16-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 112,
-        "last_reviewed_at": "2026-06-08T13:43:01-04:00"
+        "reports_24h": 115,
+        "last_reviewed_at": "2026-06-08T14:42:16-04:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -1142,9 +1126,9 @@
     "components": [
       {
         "name": "claude.ai",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-06-08T17:15:03.903Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T17:55:02.862Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1156,23 +1140,23 @@
       },
       {
         "name": "Claude API (api.anthropic.com)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-06-08T17:15:03.923Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T17:55:02.877Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Code",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-06-08T17:15:03.941Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T17:55:02.892Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Cowork",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-06-08T17:15:03.958Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T17:55:02.906Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1190,6 +1174,10 @@
         "count": 2
       },
       {
+        "label": "Sign in problem",
+        "count": 1
+      },
+      {
         "label": "Slow performance",
         "count": 1
       },
@@ -1203,10 +1191,6 @@
       },
       {
         "label": "Server not responding",
-        "count": 0
-      },
-      {
-        "label": "Sign in problem",
         "count": 0
       },
       {
@@ -1232,7 +1216,7 @@
       "url": "https://status.anthropic.com/incidents/3n1flr3mnpgl",
       "published_at": "2026-06-08T17:15:03.849Z",
       "source": "Claude Statuspage API",
-      "meta": "Minor / Investigating"
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "Elevated errors on Claude Opus 4.7",
@@ -1283,45 +1267,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-06-08T17:43:02.645806Z"
+      "published_at": "2026-06-08T18:42:17.949602Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-08T17:43:02.645806Z"
+      "published_at": "2026-06-08T18:42:17.949602Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-06-08T17:43:02.645806Z"
+      "published_at": "2026-06-08T18:42:17.949602Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-06-08T17:43:02.645806Z"
+      "published_at": "2026-06-08T18:42:17.949602Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-06-08T17:43:02.645806Z"
+      "published_at": "2026-06-08T18:42:17.949602Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: Partially Degraded Service",
+      "title": "Claude Statuspage API: All Systems Operational",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-06-08T17:43:01.835533Z",
+      "published_at": "2026-06-08T18:42:17.192374Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Elevated errors on Claude Opus 4.7",
+      "url": "https://status.anthropic.com/incidents/3n1flr3mnpgl#g1zv2nthmvfb",
+      "published_at": "2026-06-08T17:55:02.932Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
     },
     {
       "title": "Elevated errors on Claude Opus 4.7",
@@ -1329,7 +1321,7 @@
       "published_at": "2026-06-08T17:15:04.004Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / We are currently investigating this issue."
+      "meta": "Investigating / Minor / Monitoring / We are currently investigating this issue."
     },
     {
       "title": "Elevated errors on Claude Opus 4.7",
@@ -1370,14 +1362,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / We have resolved an issue resulting in elevated errors on requests to some Claude Models."
-    },
-    {
-      "title": "Degraded performance for multiple models",
-      "url": "https://status.anthropic.com/incidents/s4pq658bt69h#zwcpgj0mr9vg",
-      "published_at": "2026-06-07T03:41:42.693Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / We have identified the cause of elevated errors on requests to several Claude models and are working to resolve these issues."
     }
   ],
   "social": [],
@@ -1393,11 +1377,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-06-08T17:43:01.032565Z",
+      "last_item_at": "2026-06-08T18:42:16.461121Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 154,
-      "fetched_at": "2026-06-08T17:43:01.032592Z",
+      "duration_ms": 139,
+      "fetched_at": "2026-06-08T18:42:16.461141Z",
       "cache_hit": false
     },
     {
@@ -1411,11 +1395,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-08T13:43:01-04:00",
+      "last_item_at": "2026-06-08T14:42:16-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 802,
-      "fetched_at": "2026-06-08T17:43:01.834966Z",
+      "duration_ms": 730,
+      "fetched_at": "2026-06-08T18:42:17.191768Z",
       "cache_hit": false
     },
     {
@@ -1429,17 +1413,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-06-08T17:43:01.835533Z",
+      "last_item_at": "2026-06-08T18:42:17.192374Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 808,
-      "fetched_at": "2026-06-08T17:43:02.644254Z",
+      "duration_ms": 755,
+      "fetched_at": "2026-06-08T18:42:17.948093Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-08T17:43:02.645806Z",
+    "generated_at": "2026-06-08T18:42:17.949602Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1476,18 +1460,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 154,
+          "duration_ms": 139,
           "cache_hit": false,
-          "at": "2026-06-08T17:43:00Z"
+          "at": "2026-06-08T18:42:16Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 351.6
+          "avg_duration_ms": 337.5
         },
         "metrics_7d": {
           "runs": 88,
@@ -1496,10 +1480,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 328.0
+          "avg_duration_ms": 326.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-08T17:43:00Z",
+        "last_success_at": "2026-06-08T18:42:16Z",
         "last_failure_at": null
       },
       {
@@ -1513,18 +1497,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 802,
+          "duration_ms": 730,
           "cache_hit": false,
-          "at": "2026-06-08T17:43:00Z"
+          "at": "2026-06-08T18:42:16Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 822.1
+          "avg_duration_ms": 816.0
         },
         "metrics_7d": {
           "runs": 88,
@@ -1533,10 +1517,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 858.7
+          "avg_duration_ms": 864.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-08T17:43:00Z",
+        "last_success_at": "2026-06-08T18:42:16Z",
         "last_failure_at": null
       },
       {
@@ -1550,18 +1534,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 808,
+          "duration_ms": 755,
           "cache_hit": false,
-          "at": "2026-06-08T17:43:00Z"
+          "at": "2026-06-08T18:42:16Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 884.8
+          "avg_duration_ms": 876.1
         },
         "metrics_7d": {
           "runs": 88,
@@ -1570,23 +1554,24 @@
           "success_rate": 84.1,
           "stale_rate": 15.9,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 747.2
+          "avg_duration_ms": 745.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-08T17:43:00Z",
+        "last_success_at": "2026-06-08T18:42:16Z",
         "last_failure_at": "2026-06-06T21:34:21Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-08T17:43:02.645806Z",
+    "generated_at": "2026-06-08T18:42:17.949602Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "851ee3df7fc86ac5",
           "title": "Elevated errors on Claude Opus 4.7",
           "started_at": "2026-06-08T17:18:07Z",
-          "duration": "1m",
+          "duration": "40m",
           "acknowledgement": "warn icon Warn",
           "url": "https://status.anthropic.com/"
         },
@@ -1594,56 +1579,21 @@
           "id": "e2bc5d2b27b9bcfc",
           "title": "Elevated errors on Claude Opus 4.7",
           "started_at": "2026-06-08T17:15:03.849Z",
-          "duration": "27m ongoing",
-          "acknowledgement": "Minor / Investigating",
+          "duration": "1h 27m ongoing",
+          "acknowledgement": "Minor / Monitoring",
           "url": "https://status.anthropic.com/"
         }
       ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "3a85799189f3156e",
-          "title": "Degraded performance for Claude Opus 4.7",
-          "started_at": "2026-06-07T03:33:12Z",
-          "duration": "1h",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "7606f1858c8f1e29",
-          "title": "Elevated errors on Opus 4.7",
-          "started_at": "2026-06-03T07:10:01.269Z",
-          "duration": "28m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.anthropic.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "3de93040f0592494",
-          "title": "Elevated errors on Claude Opus 4.7",
-          "url": "https://status.anthropic.com/#2026-06-08T17:18:07Z",
-          "published_at": "2026-06-08T17:18:07Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "941035d6a35d38ba",
-          "title": "Elevated errors on Claude Opus 4.7",
-          "url": "https://status.anthropic.com/incidents/3n1flr3mnpgl",
-          "published_at": "2026-06-08T17:15:03.849Z",
-          "source": "Claude Statuspage API",
-          "meta": "Minor / Investigating"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 2,
-      "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "new_incidents": 0,
+      "updated_incidents": 2,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
