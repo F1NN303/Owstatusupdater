@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-06-08T01:41:03.940895Z",
+  "generated_at": "2026-06-08T06:45:26.556940Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 1,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.8,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 112,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 107,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,7 +31,7 @@
     "safeguards": {
       "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
@@ -40,30 +40,30 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-06-08T01:41:03.489258Z",
+        "published_at": "2026-06-08T06:45:26.003974Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "DNS Resolver issue",
+        "url": "https://www.cloudflarestatus.com/incidents/f0wj1b256w73#zj0qqb7mp608",
+        "published_at": "2026-06-08T06:32:05.245Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+      },
+      {
+        "title": "DNS Resolver issue",
+        "url": "https://www.cloudflarestatus.com/incidents/f0wj1b256w73#wrjgz7q1bbh3",
+        "published_at": "2026-06-08T05:56:24.944Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / Cloudflare is investigating an issue with DNS resolution for `.co` and `.xyz` TLDs in Dallas, US. We are working to analyze and mitigate this problem. More updates to follow shortly."
       },
       {
         "title": "Network Connectivity Issues observed in Dallas (DFW)",
@@ -133,34 +149,32 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Cloudflare related APIs. These issues do not affect the serving of cached files via the Cloudflare CDN or other security features at the Cloudflare Edge. Some customers using the Cloudflare APIs might"
-      },
-      {
-        "title": "WARP connectivity",
-        "url": "https://www.cloudflarestatus.com/incidents/sw78wr5jqrgm#p4tr595fpd2y",
-        "published_at": "2026-06-05T10:35:13.029Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "WARP connectivity",
-        "url": "https://www.cloudflarestatus.com/incidents/sw78wr5jqrgm#2nz2641lcqm0",
-        "published_at": "2026-06-05T09:43:56.709Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Cloudflare WARP and Cloudflare Zero Trust. Cloudflare WARP and Zero Trust users may experience connectivity issues or a degraded Internet experience."
       }
     ],
-    "last_statement_at": "2026-06-08T01:41:03.489258Z"
+    "last_statement_at": "2026-06-08T06:45:26.003974Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident was about 29h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: DNS Resolver issue.",
     "current_status": "degraded",
-    "reports_24h": 112,
+    "reports_24h": 107,
     "incidents": [
+      {
+        "title": "DNS Resolver issue",
+        "started_at": "2026-06-08T06:00:36Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "DNS Resolver issue",
+        "started_at": "2026-06-08T05:56:24.833Z",
+        "duration": "49m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/f0wj1b256w73"
+      },
       {
         "title": "Network Connectivity Issues observed in Dallas (DFW)",
         "started_at": "2026-06-06T20:45:40.000Z",
@@ -202,18 +216,6 @@
         "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/cjbxlmzrk6tr"
-      },
-      {
-        "title": "SEA (Seattle) on 2026-06-05",
-        "started_at": "2026-06-05T10:40:19Z",
-        "duration": "2h 20m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "WARP connectivity",
-        "started_at": "2026-06-05T09:45:18Z",
-        "duration": "55m",
-        "acknowledgement": "warn icon Warn"
       }
     ],
     "top_reported_issues": [
@@ -222,7 +224,7 @@
         "count": 1
       },
       {
-        "label": "Amman, Jordan - (AMM)",
+        "label": "Cloudflare Sites and Services",
         "count": 1
       },
       {
@@ -238,144 +240,24 @@
         "count": 1
       },
       {
-        "label": "Almaty, Kazakhstan - (ALA)",
-        "count": 1
-      },
-      {
         "label": "Anchorage, AK, United States - (ANC)",
         "count": 1
       },
       {
         "label": "Baghdad, Iraq - (BGW)",
         "count": 1
+      },
+      {
+        "label": "Annaba, Algeria - (AAE)",
+        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-07T01:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T02:00:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T02:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T02:30:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T02:45:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T03:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T03:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T03:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T03:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T04:00:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T04:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T04:30:00Z",
-        "signal_value": 17.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T04:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T05:00:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T05:15:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T05:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T05:45:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T06:00:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T06:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-07T06:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-07T06:45:00Z",
         "signal_value": 1.0,
@@ -828,7 +710,127 @@
       },
       {
         "timestamp": "2026-06-08T01:30:00Z",
-        "signal_value": 14.0,
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T01:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T02:00:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T02:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T02:30:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T02:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T03:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T03:15:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T03:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T03:45:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T04:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T04:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T04:30:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T04:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T05:00:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T05:15:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T05:30:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T05:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T06:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T06:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-08T06:30:00Z",
+        "signal_value": 6.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -839,70 +841,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-08T01:30:00Z"
+      "last_sample_at": "2026-06-08T06:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "02:00",
-        "count": 3
-      },
-      {
-        "label": "02:20",
-        "count": 1
-      },
-      {
-        "label": "02:40",
-        "count": 3
-      },
-      {
-        "label": "03:00",
-        "count": 0
-      },
-      {
-        "label": "03:20",
-        "count": 2
-      },
-      {
-        "label": "03:40",
-        "count": 0
-      },
-      {
-        "label": "04:00",
-        "count": 1
-      },
-      {
-        "label": "04:20",
-        "count": 3
-      },
-      {
-        "label": "04:40",
-        "count": 1
-      },
-      {
-        "label": "05:00",
-        "count": 2
-      },
-      {
-        "label": "05:20",
-        "count": 0
-      },
-      {
-        "label": "05:40",
-        "count": 2
-      },
-      {
-        "label": "06:00",
-        "count": 3
-      },
-      {
-        "label": "06:20",
-        "count": 1
-      },
-      {
-        "label": "06:40",
-        "count": 3
-      },
       {
         "label": "07:00",
         "count": 0
@@ -1130,6 +1072,66 @@
       {
         "label": "01:40",
         "count": 3
+      },
+      {
+        "label": "02:00",
+        "count": 0
+      },
+      {
+        "label": "02:20",
+        "count": 2
+      },
+      {
+        "label": "02:40",
+        "count": 0
+      },
+      {
+        "label": "03:00",
+        "count": 1
+      },
+      {
+        "label": "03:20",
+        "count": 3
+      },
+      {
+        "label": "03:40",
+        "count": 1
+      },
+      {
+        "label": "04:00",
+        "count": 2
+      },
+      {
+        "label": "04:20",
+        "count": 0
+      },
+      {
+        "label": "04:40",
+        "count": 2
+      },
+      {
+        "label": "05:00",
+        "count": 3
+      },
+      {
+        "label": "05:20",
+        "count": 1
+      },
+      {
+        "label": "05:40",
+        "count": 3
+      },
+      {
+        "label": "06:00",
+        "count": 0
+      },
+      {
+        "label": "06:20",
+        "count": 2
+      },
+      {
+        "label": "06:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1140,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-08T13:41:02+12:00"
+      "last_reviewed_at": "2026-06-08T02:45:25-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 112,
-        "last_reviewed_at": "2026-06-08T13:41:02+12:00"
+        "reports_24h": 107,
+        "last_reviewed_at": "2026-06-08T02:45:25-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,16 +1162,16 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Amman, Jordan - (AMM)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-06-08T01:34:47.692Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T02:58:00.629Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1258,9 +1260,9 @@
       },
       {
         "name": "Almaty, Kazakhstan - (ALA)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-06-05T00:31:19.655Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T03:08:25.976Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1349,9 +1351,9 @@
       },
       {
         "name": "Baku, Azerbaijan - (GYD)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-06-08T00:06:22.983Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T02:00:46.232Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1594,9 +1596,9 @@
       },
       {
         "name": "Dar Es Salaam, Tanzania - (DAR)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-06-08T01:34:47.213Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T03:18:48.598Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1624,7 +1626,7 @@
         "name": "Buenos Aires, Argentina - (EZE)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-02T06:45:26.467Z",
+        "updated_at": "2026-06-08T06:41:38.261Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1750,7 +1752,7 @@
         "name": "Chișinău, Moldova - (KIV)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-05T00:05:28.779Z",
+        "updated_at": "2026-06-08T06:10:29.204Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1867,9 +1869,9 @@
       },
       {
         "name": "Córdoba, Argentina - (COR)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-06-04T15:09:32.358Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T03:08:26.425Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1888,9 +1890,9 @@
       },
       {
         "name": "Dallas, TX, United States - (DFW)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-21T05:27:15.407Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-06-08T05:56:24.867Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2154,9 +2156,9 @@
       },
       {
         "name": "Nairobi, Kenya - (NBO)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-06-08T00:06:21.908Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T02:05:57.524Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2310,7 +2312,7 @@
         "name": "Hanoi, Vietnam - (HAN)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-01T19:02:52.228Z",
+        "updated_at": "2026-06-08T05:23:39.773Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2476,9 +2478,9 @@
       },
       {
         "name": "Cairo, Egypt - (CAI)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-06-05T21:15:42.835Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T03:13:37.144Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2637,9 +2639,9 @@
       },
       {
         "name": "Kampala, Uganda - (EBB)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-06-06T09:15:34.672Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T03:18:49.063Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2679,9 +2681,9 @@
       },
       {
         "name": "Moscow, Russia - (DME)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-06-08T00:06:23.502Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-08T01:50:23.674Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2812,9 +2814,9 @@
       },
       {
         "name": "Rio de Janeiro, Brazil - (GIG)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-03T17:20:25.994Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-06-08T04:10:48.654Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3115,7 +3117,7 @@
         "name": "Skopje, North Macedonia - (SKP)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-06T10:25:28.176Z",
+        "updated_at": "2026-06-08T06:15:40.563Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3862,9 +3864,9 @@
       },
       {
         "name": "Recursive DNS",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-19T22:09:32.950Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-06-08T05:56:24.896Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3920,7 +3922,7 @@
         "name": "Denpasar, Indonesia - (DPS)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-28T18:34:42.187Z",
+        "updated_at": "2026-06-08T06:00:04.333Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4445,6 +4447,20 @@
   },
   "reports": [
     {
+      "title": "DNS Resolver issue",
+      "url": "https://www.cloudflarestatus.com/#2026-06-08T06:00:36Z",
+      "published_at": "2026-06-08T06:00:36Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "DNS Resolver issue",
+      "url": "https://www.cloudflarestatus.com/incidents/f0wj1b256w73",
+      "published_at": "2026-06-08T05:56:24.833Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Monitoring"
+    },
+    {
       "title": "Network Connectivity Issues observed in Dallas (DFW)",
       "url": "https://www.cloudflarestatus.com/incidents/yw1xwkxv3dh3",
       "published_at": "2026-06-06T20:45:40.000Z",
@@ -4485,20 +4501,6 @@
       "published_at": "2026-06-05T14:58:59.344Z",
       "source": "Cloudflare Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "SEA (Seattle) on 2026-06-05",
-      "url": "https://www.cloudflarestatus.com/#2026-06-05T10:40:19Z",
-      "published_at": "2026-06-05T10:40:19Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "WARP connectivity",
-      "url": "https://www.cloudflarestatus.com/#2026-06-05T09:45:18Z",
-      "published_at": "2026-06-05T09:45:18Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     }
   ],
   "known_resources": [
@@ -4507,52 +4509,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-06-08T01:41:03.940895Z"
+      "published_at": "2026-06-08T06:45:26.556940Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-08T01:41:03.940895Z"
+      "published_at": "2026-06-08T06:45:26.556940Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-06-08T01:41:03.940895Z"
+      "published_at": "2026-06-08T06:45:26.556940Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-06-08T01:41:03.940895Z"
+      "published_at": "2026-06-08T06:45:26.556940Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-06-08T01:41:03.940895Z"
+      "published_at": "2026-06-08T06:45:26.556940Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-06-08T01:41:03.940895Z"
+      "published_at": "2026-06-08T06:45:26.556940Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-06-08T01:41:03.489258Z",
+      "published_at": "2026-06-08T06:45:26.003974Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "DNS Resolver issue",
+      "url": "https://www.cloudflarestatus.com/incidents/f0wj1b256w73#zj0qqb7mp608",
+      "published_at": "2026-06-08T06:32:05.245Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+    },
+    {
+      "title": "DNS Resolver issue",
+      "url": "https://www.cloudflarestatus.com/incidents/f0wj1b256w73#wrjgz7q1bbh3",
+      "published_at": "2026-06-08T05:56:24.944Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / Cloudflare is investigating an issue with DNS resolution for `.co` and `.xyz` TLDs in Dallas, US. We are working to analyze and mitigate this problem. More updates to follow shortly."
     },
     {
       "title": "Network Connectivity Issues observed in Dallas (DFW)",
@@ -4593,22 +4611,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Identified / Minor / Resolved / Cloudflare has identified an issue affecting a subset of Let's Encrypt certificates, in which unsupported CA bundling may result in TLS connectivity issues for some visitors. Customers requiring immediate resolution may order a replacement "
-    },
-    {
-      "title": "TLS Connectivity Issues Affecting Subset of Let's Encrypt Certificates",
-      "url": "https://www.cloudflarestatus.com/incidents/rsb9bsncwr64#809m1hsxmdwv",
-      "published_at": "2026-06-05T17:22:51.645Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / Cloudflare has identified an issue affecting a subset of Let's Encrypt certificates, in which unsupported CA bundling may result in TLS connectivity issues for some visitors."
-    },
-    {
-      "title": "Cloudflare API service issues",
-      "url": "https://www.cloudflarestatus.com/incidents/cjbxlmzrk6tr#0rfm6qy1bz50",
-      "published_at": "2026-06-05T14:58:59.451Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Cloudflare related APIs. These issues do not affect the serving of cached files via the Cloudflare CDN or other security features at the Cloudflare Edge. Some customers using the Cloudflare APIs might"
     }
   ],
   "social": [],
@@ -4624,11 +4626,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-06-08T01:41:02.256891Z",
+      "last_item_at": "2026-06-08T06:45:24.780902Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 159,
-      "fetched_at": "2026-06-08T01:41:02.256909Z",
+      "duration_ms": 358,
+      "fetched_at": "2026-06-08T06:45:24.780923Z",
       "cache_hit": false
     },
     {
@@ -4642,11 +4644,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-08T13:41:02+12:00",
+      "last_item_at": "2026-06-08T02:45:25-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1231,
-      "fetched_at": "2026-06-08T01:41:03.488737Z",
+      "duration_ms": 1222,
+      "fetched_at": "2026-06-08T06:45:26.003427Z",
       "cache_hit": false
     },
     {
@@ -4660,17 +4662,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-06-08T01:41:03.489258Z",
+      "last_item_at": "2026-06-08T06:45:26.003974Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 449,
-      "fetched_at": "2026-06-08T01:41:03.939182Z",
+      "duration_ms": 551,
+      "fetched_at": "2026-06-08T06:45:26.555393Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-08T01:41:03.940895Z",
+    "generated_at": "2026-06-08T06:45:26.556940Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4692,7 +4694,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4707,30 +4709,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 159,
+          "duration_ms": 358,
           "cache_hit": false,
-          "at": "2026-06-08T01:41:02Z"
+          "at": "2026-06-08T06:45:24Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 243.3
+          "avg_duration_ms": 256.9
         },
         "metrics_7d": {
-          "runs": 83,
-          "ok": 83,
+          "runs": 84,
+          "ok": 84,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 297.7
+          "avg_duration_ms": 298.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-08T01:41:02Z",
+        "last_success_at": "2026-06-08T06:45:24Z",
         "last_failure_at": null
       },
       {
@@ -4744,30 +4746,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1231,
+          "duration_ms": 1222,
           "cache_hit": false,
-          "at": "2026-06-08T01:41:02Z"
+          "at": "2026-06-08T06:45:24Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 607.9
+          "avg_duration_ms": 640.4
         },
         "metrics_7d": {
-          "runs": 83,
-          "ok": 83,
+          "runs": 84,
+          "ok": 84,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 708.1
+          "avg_duration_ms": 714.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-08T01:41:02Z",
+        "last_success_at": "2026-06-08T06:45:24Z",
         "last_failure_at": null
       },
       {
@@ -4781,49 +4783,100 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 449,
+          "duration_ms": 551,
           "cache_hit": false,
-          "at": "2026-06-08T01:41:02Z"
+          "at": "2026-06-08T06:45:24Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 16,
+          "ok": 16,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 366.1
+          "avg_duration_ms": 384.4
         },
         "metrics_7d": {
-          "runs": 83,
-          "ok": 69,
+          "runs": 84,
+          "ok": 70,
           "stale": 14,
-          "success_rate": 83.1,
-          "stale_rate": 16.9,
+          "success_rate": 83.3,
+          "stale_rate": 16.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 351.7
+          "avg_duration_ms": 354.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-08T01:41:02Z",
+        "last_success_at": "2026-06-08T06:45:24Z",
         "last_failure_at": "2026-06-06T21:34:32Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-08T01:41:03.940895Z",
+    "generated_at": "2026-06-08T06:45:26.556940Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "8542f821e384a7f5",
+          "title": "DNS Resolver issue",
+          "started_at": "2026-06-08T06:00:36Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "2e8fbc8493650573",
+          "title": "DNS Resolver issue",
+          "started_at": "2026-06-08T05:56:24.833Z",
+          "duration": "49m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "b361b08825a07dcc",
+          "title": "SEA (Seattle) on 2026-06-05",
+          "started_at": "2026-06-05T10:40:19Z",
+          "duration": "2h 20m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "05169a3a40d051f0",
+          "title": "WARP connectivity",
+          "started_at": "2026-06-05T09:45:18Z",
+          "duration": "55m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "c45c2e66e8f1c824",
+          "title": "DNS Resolver issue",
+          "url": "https://www.cloudflarestatus.com/#2026-06-08T06:00:36Z",
+          "published_at": "2026-06-08T06:00:36Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "1aaad8e067130ff5",
+          "title": "DNS Resolver issue",
+          "url": "https://www.cloudflarestatus.com/incidents/f0wj1b256w73",
+          "published_at": "2026-06-08T05:56:24.833Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Monitoring"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
