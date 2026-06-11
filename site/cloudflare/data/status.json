@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-11T14:52:42.599581Z",
+  "generated_at": "2026-06-11T16:06:36.169160Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -17,8 +17,8 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 109,
-      "recent_incidents_6h": 0,
+      "reports_24h": 108,
+      "recent_incidents_6h": 3,
       "recent_incidents_24h": 8,
       "cross_source": {
         "report_score": 0.0,
@@ -40,30 +40,30 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-06-11T14:52:42.098408Z",
+        "published_at": "2026-06-11T16:06:35.901278Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Workers Observability query failures",
+        "url": "https://www.cloudflarestatus.com/incidents/qr3q2sz45wh9#xg61p0r5j0dk",
+        "published_at": "2026-06-11T15:52:03.063Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+      },
+      {
+        "title": "Workers Observability query failures",
+        "url": "https://www.cloudflarestatus.com/incidents/qr3q2sz45wh9#p9zdj4ndjjyb",
+        "published_at": "2026-06-11T15:39:21.912Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Monitoring / Cloudflare has identified an issue impacting some customers where Workers Observability queries may be returning errors. We are working to mitigate the impact."
       },
       {
         "title": "Title: Network issues in Saskatoon and Calgary",
@@ -133,34 +149,38 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / Cloudflare Pages customers may be experiencing delays in builds, project creation, or deployments."
-      },
-      {
-        "title": "Cloudflare Images upload failures",
-        "url": "https://www.cloudflarestatus.com/incidents/fpxb33vnw9bw#rwrx8bkv388r",
-        "published_at": "2026-06-10T21:34:07.387Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Cloudflare Images upload failures",
-        "url": "https://www.cloudflarestatus.com/incidents/fpxb33vnw9bw#p3x1lzw12nfm",
-        "published_at": "2026-06-10T21:33:44.321Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
       }
     ],
-    "last_statement_at": "2026-06-11T14:52:42.098408Z"
+    "last_statement_at": "2026-06-11T16:06:35.901278Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 10h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: Workers Observability query failures.",
     "current_status": "degraded",
-    "reports_24h": 109,
+    "reports_24h": 108,
     "incidents": [
+      {
+        "title": "Workers Observability query failures",
+        "started_at": "2026-06-11T15:40:17Z",
+        "duration": "3m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Workers Observability query failures",
+        "started_at": "2026-06-11T15:39:21.823Z",
+        "duration": "27m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/qr3q2sz45wh9"
+      },
+      {
+        "title": "NRT (Tokyo) on 2026-06-11",
+        "started_at": "2026-06-11T15:05:30Z",
+        "duration": "35m",
+        "acknowledgement": "warn icon Warn"
+      },
       {
         "title": "Title: Network issues in Saskatoon and Calgary",
         "started_at": "2026-06-11T04:30:00.000Z",
@@ -194,31 +214,15 @@
         "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/9mqypymjn3xp"
-      },
-      {
-        "title": "Pages Build & Deployment Delays",
-        "started_at": "2026-06-10T22:20:21Z",
-        "duration": "1h 25m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Pages Build & Deployment Delays",
-        "started_at": "2026-06-10T22:18:31.630Z",
-        "duration": "1h 28m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/kkgsshh4mg2x"
-      },
-      {
-        "title": "Cloudflare Images upload failures",
-        "started_at": "2026-06-10T21:25:33Z",
-        "duration": "10m",
-        "acknowledgement": "warn icon Warn"
       }
     ],
     "top_reported_issues": [
       {
         "label": "Amsterdam, Netherlands - (AMS)",
+        "count": 1
+      },
+      {
+        "label": "Cloudflare Sites and Services",
         "count": 1
       },
       {
@@ -244,48 +248,14 @@
       {
         "label": "Annaba, Algeria - (AAE)",
         "count": 1
-      },
-      {
-        "label": "Asia",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-10T15:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T15:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T15:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T15:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T16:00:00Z",
-        "signal_value": 17.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-10T16:15:00Z",
         "signal_value": 1.0,
@@ -831,6 +801,36 @@
         "signal_value": 4.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T15:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T15:15:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T15:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T15:45:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T16:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,26 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-11T14:45:00Z"
+      "last_sample_at": "2026-06-11T16:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "15:00",
-        "count": 1
-      },
-      {
-        "label": "15:20",
-        "count": 4
-      },
-      {
-        "label": "15:40",
-        "count": 1
-      },
-      {
-        "label": "16:00",
-        "count": 2
-      },
       {
         "label": "16:20",
         "count": 0
@@ -1130,6 +1114,22 @@
       {
         "label": "14:40",
         "count": 1
+      },
+      {
+        "label": "15:00",
+        "count": 2
+      },
+      {
+        "label": "15:20",
+        "count": 0
+      },
+      {
+        "label": "15:40",
+        "count": 2
+      },
+      {
+        "label": "16:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-11T08:52:41-06:00"
+      "last_reviewed_at": "2026-06-11T10:06:35-06:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 109,
-        "last_reviewed_at": "2026-06-11T08:52:41-06:00"
+        "reports_24h": 108,
+        "last_reviewed_at": "2026-06-11T10:06:35-06:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,8 +1160,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -1713,9 +1713,9 @@
       },
       {
         "name": "Erbil, Iraq - (EBL)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-11T14:47:32.100Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-06-11T14:52:45.367Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4121,9 +4121,9 @@
       },
       {
         "name": "Workers Observability",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-19T22:09:16.675Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-06-11T15:39:21.859Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4445,6 +4445,27 @@
   },
   "reports": [
     {
+      "title": "Workers Observability query failures",
+      "url": "https://www.cloudflarestatus.com/#2026-06-11T15:40:17Z",
+      "published_at": "2026-06-11T15:40:17Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Workers Observability query failures",
+      "url": "https://www.cloudflarestatus.com/incidents/qr3q2sz45wh9",
+      "published_at": "2026-06-11T15:39:21.823Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Monitoring"
+    },
+    {
+      "title": "NRT (Tokyo) on 2026-06-11",
+      "url": "https://www.cloudflarestatus.com/#2026-06-11T15:05:30Z",
+      "published_at": "2026-06-11T15:05:30Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
       "title": "Title: Network issues in Saskatoon and Calgary",
       "url": "https://www.cloudflarestatus.com/incidents/3hw9f94pwqbh",
       "published_at": "2026-06-11T04:30:00.000Z",
@@ -4478,27 +4499,6 @@
       "published_at": "2026-06-10T23:44:18.034Z",
       "source": "Cloudflare Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Pages Build & Deployment Delays",
-      "url": "https://www.cloudflarestatus.com/#2026-06-10T22:20:21Z",
-      "published_at": "2026-06-10T22:20:21Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Pages Build & Deployment Delays",
-      "url": "https://www.cloudflarestatus.com/incidents/kkgsshh4mg2x",
-      "published_at": "2026-06-10T22:18:31.630Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Cloudflare Images upload failures",
-      "url": "https://www.cloudflarestatus.com/#2026-06-10T21:25:33Z",
-      "published_at": "2026-06-10T21:25:33Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     }
   ],
   "known_resources": [
@@ -4507,52 +4507,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-06-11T14:52:42.599581Z"
+      "published_at": "2026-06-11T16:06:36.169160Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-11T14:52:42.599581Z"
+      "published_at": "2026-06-11T16:06:36.169160Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-06-11T14:52:42.599581Z"
+      "published_at": "2026-06-11T16:06:36.169160Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-06-11T14:52:42.599581Z"
+      "published_at": "2026-06-11T16:06:36.169160Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-06-11T14:52:42.599581Z"
+      "published_at": "2026-06-11T16:06:36.169160Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-06-11T14:52:42.599581Z"
+      "published_at": "2026-06-11T16:06:36.169160Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-06-11T14:52:42.098408Z",
+      "published_at": "2026-06-11T16:06:35.901278Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Workers Observability query failures",
+      "url": "https://www.cloudflarestatus.com/incidents/qr3q2sz45wh9#xg61p0r5j0dk",
+      "published_at": "2026-06-11T15:52:03.063Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+    },
+    {
+      "title": "Workers Observability query failures",
+      "url": "https://www.cloudflarestatus.com/incidents/qr3q2sz45wh9#p9zdj4ndjjyb",
+      "published_at": "2026-06-11T15:39:21.912Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Monitoring / Cloudflare has identified an issue impacting some customers where Workers Observability queries may be returning errors. We are working to mitigate the impact."
     },
     {
       "title": "Title: Network issues in Saskatoon and Calgary",
@@ -4593,22 +4609,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Identified / Minor / Resolved / The issue has been identified and a fix is being implemented."
-    },
-    {
-      "title": "Image Resizing on R2 issues",
-      "url": "https://www.cloudflarestatus.com/incidents/9mqypymjn3xp#m9mntv43nn5l",
-      "published_at": "2026-06-10T23:44:18.138Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / Cloudflare has identified an issue where some customers may experience failures using Image Resizing with R2. We are working to analyze and mitigate this problem. More updates to follow shortly."
-    },
-    {
-      "title": "Pages Build & Deployment Delays",
-      "url": "https://www.cloudflarestatus.com/incidents/kkgsshh4mg2x#gng5n2q1bsvj",
-      "published_at": "2026-06-10T22:18:31.734Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / Cloudflare Pages customers may be experiencing delays in builds, project creation, or deployments."
     }
   ],
   "social": [],
@@ -4624,11 +4624,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-06-11T14:52:40.865956Z",
+      "last_item_at": "2026-06-11T16:06:35.265010Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1198,
-      "fetched_at": "2026-06-11T14:52:40.865978Z",
+      "duration_ms": 988,
+      "fetched_at": "2026-06-11T16:06:35.265028Z",
       "cache_hit": false
     },
     {
@@ -4642,11 +4642,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-11T08:52:41-06:00",
+      "last_item_at": "2026-06-11T10:06:35-06:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1231,
-      "fetched_at": "2026-06-11T14:52:42.097836Z",
+      "duration_ms": 635,
+      "fetched_at": "2026-06-11T16:06:35.900763Z",
       "cache_hit": false
     },
     {
@@ -4660,17 +4660,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-06-11T14:52:42.098408Z",
+      "last_item_at": "2026-06-11T16:06:35.901278Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 499,
-      "fetched_at": "2026-06-11T14:52:42.598055Z",
+      "duration_ms": 266,
+      "fetched_at": "2026-06-11T16:06:36.167740Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-11T14:52:42.599581Z",
+    "generated_at": "2026-06-11T16:06:36.169160Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4692,7 +4692,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4707,9 +4707,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1198,
+          "duration_ms": 988,
           "cache_hit": false,
-          "at": "2026-06-11T14:52:39Z"
+          "at": "2026-06-11T16:06:34Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -4718,7 +4718,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 411.9
+          "avg_duration_ms": 475.6
         },
         "metrics_7d": {
           "runs": 96,
@@ -4727,10 +4727,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 348.1
+          "avg_duration_ms": 352.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-11T14:52:39Z",
+        "last_success_at": "2026-06-11T16:06:34Z",
         "last_failure_at": null
       },
       {
@@ -4744,9 +4744,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1231,
+          "duration_ms": 635,
           "cache_hit": false,
-          "at": "2026-06-11T14:52:39Z"
+          "at": "2026-06-11T16:06:34Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -4755,7 +4755,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 702.5
+          "avg_duration_ms": 704.1
         },
         "metrics_7d": {
           "runs": 96,
@@ -4764,10 +4764,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 694.1
+          "avg_duration_ms": 698.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-11T14:52:39Z",
+        "last_success_at": "2026-06-11T16:06:34Z",
         "last_failure_at": null
       },
       {
@@ -4781,9 +4781,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 499,
+          "duration_ms": 266,
           "cache_hit": false,
-          "at": "2026-06-11T14:52:39Z"
+          "at": "2026-06-11T16:06:34Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -4792,7 +4792,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 639.1
+          "avg_duration_ms": 627.6
         },
         "metrics_7d": {
           "runs": 96,
@@ -4801,38 +4801,104 @@
           "success_rate": 90.6,
           "stale_rate": 9.4,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 400.1
+          "avg_duration_ms": 397.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-11T14:52:39Z",
+        "last_success_at": "2026-06-11T16:06:34Z",
         "last_failure_at": "2026-06-06T21:34:32Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-11T14:52:42.599581Z",
+    "generated_at": "2026-06-11T16:06:36.169160Z",
     "incidents": {
-      "new": [],
-      "updated": [
+      "new": [
         {
-          "id": "2f3732031ceb7891",
-          "title": "CDG (Paris) on 2026-06-11",
-          "started_at": "2026-06-11T01:45:28Z",
-          "duration": "12h 20m",
+          "id": "d8c8928a60c6f42a",
+          "title": "Workers Observability query failures",
+          "started_at": "2026-06-11T15:40:17Z",
+          "duration": "3m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "ab0c29d63f7eecd2",
+          "title": "Workers Observability query failures",
+          "started_at": "2026-06-11T15:39:21.823Z",
+          "duration": "27m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "58f1fe248477c1e3",
+          "title": "NRT (Tokyo) on 2026-06-11",
+          "started_at": "2026-06-11T15:05:30Z",
+          "duration": "35m",
           "acknowledgement": "warn icon Warn",
           "url": "https://www.cloudflarestatus.com/"
         }
       ],
-      "resolved": []
+      "updated": [],
+      "resolved": [
+        {
+          "id": "a143a6a09c25703b",
+          "title": "Pages Build & Deployment Delays",
+          "started_at": "2026-06-10T22:20:21Z",
+          "duration": "1h 25m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "dcb9df24c83864b0",
+          "title": "Pages Build & Deployment Delays",
+          "started_at": "2026-06-10T22:18:31.630Z",
+          "duration": "1h 28m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "dbc1e7c4cdca8ab6",
+          "title": "Cloudflare Images upload failures",
+          "started_at": "2026-06-10T21:25:33Z",
+          "duration": "10m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "01723410c4b122c1",
+          "title": "Workers Observability query failures",
+          "url": "https://www.cloudflarestatus.com/#2026-06-11T15:40:17Z",
+          "published_at": "2026-06-11T15:40:17Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "98cfe14fdb8b5a20",
+          "title": "Workers Observability query failures",
+          "url": "https://www.cloudflarestatus.com/incidents/qr3q2sz45wh9",
+          "published_at": "2026-06-11T15:39:21.823Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Monitoring"
+        },
+        {
+          "id": "9e8b1e91e14d21cb",
+          "title": "NRT (Tokyo) on 2026-06-11",
+          "url": "https://www.cloudflarestatus.com/#2026-06-11T15:05:30Z",
+          "published_at": "2026-06-11T15:05:30Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 1,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 3,
+      "updated_incidents": 0,
+      "resolved_incidents": 3,
+      "new_reports": 3
     }
   }
 }
