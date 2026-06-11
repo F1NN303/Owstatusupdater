@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-06-11T19:18:41.816460Z",
+  "generated_at": "2026-06-11T21:35:06.475575Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 1.705,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.35
     },
     "signal_metrics": {
       "reports_24h": 115,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,41 +31,41 @@
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
-      "report_weight": 1.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
-      "report_weight": 0.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
-      "report_weight": 0.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     }
   },
   "official": {
@@ -74,10 +74,42 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-06-11T19:18:41.571366Z",
+        "published_at": "2026-06-11T21:35:06.206671Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Incident with Webhooks",
+        "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn#pzm72qc62z2p",
+        "published_at": "2026-06-11T20:00:29.040Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / The degradation affecting Webhooks has been mitigated. We are monitoring to ensure stability."
+      },
+      {
+        "title": "Incident with Webhooks",
+        "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn#cjnxx9ps0l26",
+        "published_at": "2026-06-11T19:58:11.548Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We have applied a mitigation and are monitoring for recovery."
+      },
+      {
+        "title": "Incident with Webhooks",
+        "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn#3dnwrwk723bv",
+        "published_at": "2026-06-11T19:42:41.935Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We are currently experiencing delays in Web Hook delivery and are actively investigating the root cause."
+      },
+      {
+        "title": "Incident with Webhooks",
+        "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn#97dg5g72skmt",
+        "published_at": "2026-06-11T19:42:05.950Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We are investigating reports of degraded performance for Webhooks"
       },
       {
         "title": "Authentication issues related to API requests",
@@ -118,60 +150,36 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Critical / Resolved / The degradation affecting Issues has been mitigated. We are monitoring to ensure stability."
-      },
-      {
-        "title": "Authentication issues related to API requests",
-        "url": "https://www.githubstatus.com/incidents/fcj3088jg1wx#m2d96dj3ls2m",
-        "published_at": "2026-06-10T15:46:22.919Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / We continue to investigate issues related to sporadic authentication failures, impacting approximately 15% of API traffic. Further updates will be provided as we work to mitigate."
-      },
-      {
-        "title": "Authentication issues related to API requests",
-        "url": "https://www.githubstatus.com/incidents/fcj3088jg1wx#73lkzt1224f3",
-        "published_at": "2026-06-10T15:27:46.300Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / We are investigating issues related to sporadic authentication failures impacting approximately 15% of API traffic. We will continue to investigate and provide updates."
-      },
-      {
-        "title": "Authentication issues related to API requests",
-        "url": "https://www.githubstatus.com/incidents/fcj3088jg1wx#95g17dpvqbr3",
-        "published_at": "2026-06-10T15:27:00.420Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / Issues is experiencing degraded performance. We are continuing to investigate."
-      },
-      {
-        "title": "Authentication issues related to API requests",
-        "url": "https://www.githubstatus.com/incidents/fcj3088jg1wx#zwj43dw35hdg",
-        "published_at": "2026-06-10T15:23:58.740Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / API Requests is experiencing degraded availability. We are continuing to investigate."
       }
     ],
-    "last_statement_at": "2026-06-11T19:18:41.571366Z"
+    "last_statement_at": "2026-06-11T21:35:06.206671Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "GitHub Statuspage reports an active incident: Incident with Webhooks.",
     "current_status": "operational",
     "reports_24h": 115,
     "incidents": [
       {
-        "title": "Authentication issues related to API requests",
-        "started_at": "2026-06-10T15:51:39Z",
-        "duration": "50m",
-        "acknowledgement": "down icon Down"
+        "title": "Incident with Webhooks",
+        "started_at": "2026-06-11T19:46:36Z",
+        "duration": "15m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Incident with Webhooks",
+        "started_at": "2026-06-11T19:42:05.864Z",
+        "duration": "1h 53m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn"
       },
       {
         "title": "Authentication issues related to API requests",
-        "started_at": "2026-06-10T15:31:32Z",
-        "duration": "20m",
+        "started_at": "2026-06-10T15:51:39Z",
+        "duration": "50m",
         "acknowledgement": "down icon Down"
       },
       {
@@ -211,14 +219,6 @@
         "started_at": "2026-06-08T06:33:01Z",
         "duration": "2h 17m",
         "acknowledgement": "44m later"
-      },
-      {
-        "title": "Disruption with some GitHub services in the EU region",
-        "started_at": "2026-06-06T16:53:35.825Z",
-        "duration": "14m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/b0plzff6yl6f"
       }
     ],
     "top_reported_issues": [],
@@ -228,60 +228,6 @@
       "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-10T19:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T19:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T20:00:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T20:15:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T20:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T20:45:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T21:00:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T21:15:00Z",
-        "signal_value": 28.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-10T21:30:00Z",
-        "signal_value": 39.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-10T21:45:00Z",
         "signal_value": 115.0,
@@ -800,7 +746,61 @@
       },
       {
         "timestamp": "2026-06-11T19:15:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T19:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T19:45:00Z",
+        "signal_value": 43.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T20:00:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T20:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T20:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T20:45:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T21:00:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T21:15:00Z",
         "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-11T21:30:00Z",
+        "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -811,38 +811,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-11T19:15:00Z"
+      "last_sample_at": "2026-06-11T21:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "19:20",
-        "count": 3
-      },
-      {
-        "label": "19:40",
-        "count": 1
-      },
-      {
-        "label": "20:00",
-        "count": 1
-      },
-      {
-        "label": "20:20",
-        "count": 3
-      },
-      {
-        "label": "20:40",
-        "count": 1
-      },
-      {
-        "label": "21:00",
-        "count": 2
-      },
-      {
-        "label": "21:20",
-        "count": 0
-      },
       {
         "label": "21:40",
         "count": 2
@@ -1102,6 +1074,34 @@
       {
         "label": "19:00",
         "count": 2
+      },
+      {
+        "label": "19:20",
+        "count": 0
+      },
+      {
+        "label": "19:40",
+        "count": 2
+      },
+      {
+        "label": "20:00",
+        "count": 2
+      },
+      {
+        "label": "20:20",
+        "count": 0
+      },
+      {
+        "label": "20:40",
+        "count": 2
+      },
+      {
+        "label": "21:00",
+        "count": 4
+      },
+      {
+        "label": "21:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1110,14 +1110,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-11T15:18:41-04:00"
+      "last_reviewed_at": "2026-06-11T17:35:05-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 115,
-        "last_reviewed_at": "2026-06-11T15:18:41-04:00"
+        "last_reviewed_at": "2026-06-11T17:35:05-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -1134,7 +1134,7 @@
         "name": "Webhooks",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-28T01:27:22.071Z",
+        "updated_at": "2026-06-11T20:00:28.983Z",
         "source": "GitHub Statuspage API"
       },
       {
@@ -1216,23 +1216,23 @@
       },
       {
         "label": "Server not responding",
-        "count": 19
+        "count": 18
       },
       {
         "label": "Service down",
-        "count": 12
+        "count": 13
       },
       {
         "label": "Connectivity issue",
         "count": 4
       },
       {
-        "label": "App not loading",
+        "label": "Error message",
         "count": 3
       },
       {
-        "label": "Error message",
-        "count": 2
+        "label": "App not loading",
+        "count": 3
       },
       {
         "label": "Unable to download",
@@ -1246,16 +1246,23 @@
   },
   "reports": [
     {
-      "title": "Authentication issues related to API requests",
-      "url": "https://www.githubstatus.com/#2026-06-10T15:51:39Z",
-      "published_at": "2026-06-10T15:51:39Z",
+      "title": "Incident with Webhooks",
+      "url": "https://www.githubstatus.com/#2026-06-11T19:46:36Z",
+      "published_at": "2026-06-11T19:46:36Z",
       "source": "StatusGator",
-      "meta": "down icon Down"
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Incident with Webhooks",
+      "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn",
+      "published_at": "2026-06-11T19:42:05.864Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "Authentication issues related to API requests",
-      "url": "https://www.githubstatus.com/#2026-06-10T15:31:32Z",
-      "published_at": "2026-06-10T15:31:32Z",
+      "url": "https://www.githubstatus.com/#2026-06-10T15:51:39Z",
+      "published_at": "2026-06-10T15:51:39Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
@@ -1293,13 +1300,6 @@
       "published_at": "2026-06-08T06:33:01Z",
       "source": "StatusGator",
       "meta": "44m later"
-    },
-    {
-      "title": "Disruption with some GitHub services in the EU region",
-      "url": "https://www.githubstatus.com/incidents/b0plzff6yl6f",
-      "published_at": "2026-06-06T16:53:35.825Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1308,52 +1308,84 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-06-11T19:18:41.816460Z"
+      "published_at": "2026-06-11T21:35:06.475575Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-11T19:18:41.816460Z"
+      "published_at": "2026-06-11T21:35:06.475575Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-06-11T19:18:41.816460Z"
+      "published_at": "2026-06-11T21:35:06.475575Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-06-11T19:18:41.816460Z"
+      "published_at": "2026-06-11T21:35:06.475575Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-06-11T19:18:41.816460Z"
+      "published_at": "2026-06-11T21:35:06.475575Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-06-11T19:18:41.816460Z"
+      "published_at": "2026-06-11T21:35:06.475575Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-06-11T19:18:41.571366Z",
+      "published_at": "2026-06-11T21:35:06.206671Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Incident with Webhooks",
+      "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn#pzm72qc62z2p",
+      "published_at": "2026-06-11T20:00:29.040Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / The degradation affecting Webhooks has been mitigated. We are monitoring to ensure stability."
+    },
+    {
+      "title": "Incident with Webhooks",
+      "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn#cjnxx9ps0l26",
+      "published_at": "2026-06-11T19:58:11.548Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We have applied a mitigation and are monitoring for recovery."
+    },
+    {
+      "title": "Incident with Webhooks",
+      "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn#3dnwrwk723bv",
+      "published_at": "2026-06-11T19:42:41.935Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We are currently experiencing delays in Web Hook delivery and are actively investigating the root cause."
+    },
+    {
+      "title": "Incident with Webhooks",
+      "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn#97dg5g72skmt",
+      "published_at": "2026-06-11T19:42:05.950Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We are investigating reports of degraded performance for Webhooks"
     },
     {
       "title": "Authentication issues related to API requests",
@@ -1378,38 +1410,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Critical / Resolved / The degradation affecting API Requests has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Authentication issues related to API requests",
-      "url": "https://www.githubstatus.com/incidents/fcj3088jg1wx#bfw8bk7bs147",
-      "published_at": "2026-06-10T16:21:01.278Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / We continue to investigate issues related to sporadic authentication failures, impacting approximately 15% of API traffic. Erroneous 401 responses are causing app integrations to trigger authentication flows. We have identified a problemati"
-    },
-    {
-      "title": "Authentication issues related to API requests",
-      "url": "https://www.githubstatus.com/incidents/fcj3088jg1wx#0y86lw6xn6x8",
-      "published_at": "2026-06-10T15:46:53.107Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / The degradation affecting Issues has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Authentication issues related to API requests",
-      "url": "https://www.githubstatus.com/incidents/fcj3088jg1wx#m2d96dj3ls2m",
-      "published_at": "2026-06-10T15:46:22.919Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / We continue to investigate issues related to sporadic authentication failures, impacting approximately 15% of API traffic. Further updates will be provided as we work to mitigate."
-    },
-    {
-      "title": "Authentication issues related to API requests",
-      "url": "https://www.githubstatus.com/incidents/fcj3088jg1wx#73lkzt1224f3",
-      "published_at": "2026-06-10T15:27:46.300Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / We are investigating issues related to sporadic authentication failures impacting approximately 15% of API traffic. We will continue to investigate and provide updates."
     }
   ],
   "social": [],
@@ -1425,11 +1425,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-06-11T19:18:40.751016Z",
+      "last_item_at": "2026-06-11T21:35:05.363375Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 194,
-      "fetched_at": "2026-06-11T19:18:40.751035Z",
+      "duration_ms": 193,
+      "fetched_at": "2026-06-11T21:35:05.363396Z",
       "cache_hit": false
     },
     {
@@ -1443,11 +1443,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-11T15:18:41-04:00",
+      "last_item_at": "2026-06-11T17:35:05-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 819,
-      "fetched_at": "2026-06-11T19:18:41.570779Z",
+      "duration_ms": 842,
+      "fetched_at": "2026-06-11T21:35:06.206107Z",
       "cache_hit": false
     },
     {
@@ -1461,17 +1461,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-06-11T19:18:41.571366Z",
+      "last_item_at": "2026-06-11T21:35:06.206671Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 243,
-      "fetched_at": "2026-06-11T19:18:41.814968Z",
+      "duration_ms": 267,
+      "fetched_at": "2026-06-11T21:35:06.474135Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-11T19:18:41.816460Z",
+    "generated_at": "2026-06-11T21:35:06.475575Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1493,7 +1493,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1508,18 +1508,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 194,
+          "duration_ms": 193,
           "cache_hit": false,
-          "at": "2026-06-11T19:18:40Z"
+          "at": "2026-06-11T21:35:05Z"
         },
         "metrics_24h": {
-          "runs": 13,
-          "ok": 13,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 320.4
+          "avg_duration_ms": 313.7
         },
         "metrics_7d": {
           "runs": 97,
@@ -1528,10 +1528,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 297.3
+          "avg_duration_ms": 297.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-11T19:18:40Z",
+        "last_success_at": "2026-06-11T21:35:05Z",
         "last_failure_at": null
       },
       {
@@ -1545,18 +1545,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 819,
+          "duration_ms": 842,
           "cache_hit": false,
-          "at": "2026-06-11T19:18:40Z"
+          "at": "2026-06-11T21:35:05Z"
         },
         "metrics_24h": {
-          "runs": 13,
-          "ok": 13,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1040.0
+          "avg_duration_ms": 993.8
         },
         "metrics_7d": {
           "runs": 97,
@@ -1565,10 +1565,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 927.6
+          "avg_duration_ms": 928.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-11T19:18:40Z",
+        "last_success_at": "2026-06-11T21:35:05Z",
         "last_failure_at": null
       },
       {
@@ -1582,49 +1582,100 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 243,
+          "duration_ms": 267,
           "cache_hit": false,
-          "at": "2026-06-11T19:18:40Z"
+          "at": "2026-06-11T21:35:05Z"
         },
         "metrics_24h": {
-          "runs": 13,
-          "ok": 13,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 353.2
+          "avg_duration_ms": 340.3
         },
         "metrics_7d": {
           "runs": 97,
-          "ok": 88,
-          "stale": 9,
-          "success_rate": 90.7,
-          "stale_rate": 9.3,
+          "ok": 89,
+          "stale": 8,
+          "success_rate": 91.8,
+          "stale_rate": 8.2,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 320.2
+          "avg_duration_ms": 321.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-11T19:18:40Z",
+        "last_success_at": "2026-06-11T21:35:05Z",
         "last_failure_at": "2026-06-06T21:34:30Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-11T19:18:41.816460Z",
+    "generated_at": "2026-06-11T21:35:06.475575Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "9d6e5e43d3b12bd0",
+          "title": "Incident with Webhooks",
+          "started_at": "2026-06-11T19:46:36Z",
+          "duration": "15m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "bd4179b4d98cd35c",
+          "title": "Incident with Webhooks",
+          "started_at": "2026-06-11T19:42:05.864Z",
+          "duration": "1h 53m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "f3cbef31bb208956",
+          "title": "Authentication issues related to API requests",
+          "started_at": "2026-06-10T15:31:32Z",
+          "duration": "20m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "00d7c4a351cdc1fd",
+          "title": "Disruption with some GitHub services in the EU region",
+          "started_at": "2026-06-06T16:53:35.825Z",
+          "duration": "14m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "aecf27a245301bf0",
+          "title": "Incident with Webhooks",
+          "url": "https://www.githubstatus.com/#2026-06-11T19:46:36Z",
+          "published_at": "2026-06-11T19:46:36Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "d81f64f11a250e5c",
+          "title": "Incident with Webhooks",
+          "url": "https://www.githubstatus.com/incidents/4yz3c18qmdxn",
+          "published_at": "2026-06-11T19:42:05.864Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Monitoring"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
