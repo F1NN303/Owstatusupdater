@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T21:25:51.342284Z",
+  "generated_at": "2026-06-16T23:05:06.254112Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -14,10 +14,10 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 2.15
     },
     "signal_metrics": {
-      "reports_24h": 111,
+      "reports_24h": 112,
       "recent_incidents_6h": 5,
       "recent_incidents_24h": 5,
       "cross_source": {
@@ -29,25 +29,25 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "degraded",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
+      "official_status": "operational",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
@@ -68,15 +68,23 @@
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: Minor Service Outage",
+    "summary": "Claude Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "Claude Statuspage API: Minor Service Outage",
+        "title": "Claude Statuspage API: All Systems Operational",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-06-16T21:25:50.516768Z",
+        "published_at": "2026-06-16T23:05:05.308657Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Elevated errors for Claude Opus 4.8",
+        "url": "https://status.anthropic.com/incidents/41395mspl1rf#9sprp2q7j2qn",
+        "published_at": "2026-06-16T22:02:34.876Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Major / Resolved / This issue has been resolved. We saw elevated errors on requests to Claude Opus 4.8 between 1:45pm PT / 20:45 UTC and 1:58pm PT / 20:58 UTC."
       },
       {
         "title": "Elevated errors for Claude Opus 4.8",
@@ -84,7 +92,7 @@
         "published_at": "2026-06-16T21:01:31.279Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Major / Monitoring / We have resolved the issue resulting in elevated errors on requests to Claude Opus 4.8, and are currently monitoring closely to prevent any further issues."
+        "meta": "Monitoring / Major / Resolved / We have resolved the issue resulting in elevated errors on requests to Claude Opus 4.8, and are currently monitoring closely to prevent any further issues."
       },
       {
         "title": "Elevated errors for Claude Opus 4.8",
@@ -92,7 +100,7 @@
         "published_at": "2026-06-16T20:50:02.320Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Major / Monitoring / We are investigating elevated errors on requests to Claude Opus 4.8. We will provide an update as soon as possible."
+        "meta": "Investigating / Major / Resolved / We are investigating elevated errors on requests to Claude Opus 4.8. We will provide an update as soon as possible."
       },
       {
         "title": "Opus 4.8 errors",
@@ -141,37 +149,29 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Minor / Resolved / We are continuing to work to resolve an elevated rate of errors on requests to Claude Opus 4.8, and will provide an additional update as soon as possible."
-      },
-      {
-        "title": "Elevated errors across many models",
-        "url": "https://status.anthropic.com/incidents/xmhsglsz3h3w#x5x5nf5tntd8",
-        "published_at": "2026-06-16T18:15:46.872Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / We are still seeing errors on Opus 4.8 and Haiku 4.5."
       }
     ],
-    "last_statement_at": "2026-06-16T21:25:50.516768Z"
+    "last_statement_at": "2026-06-16T23:05:05.308657Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports 2 active incidents. Latest: Elevated errors for Claude Opus 4.8.",
-    "current_status": "degraded",
-    "reports_24h": 111,
+    "summary": "Claude Statuspage reports an active incident: We’ve suspended access to Claude Mythos 5 and Claude Fable 5.",
+    "current_status": "operational",
+    "reports_24h": 112,
     "incidents": [
       {
         "title": "Elevated errors for Claude Opus 4.8",
         "started_at": "2026-06-16T20:53:14Z",
-        "duration": "1m",
+        "duration": "45m",
         "acknowledgement": "down icon Down"
       },
       {
         "title": "Elevated errors for Claude Opus 4.8",
         "started_at": "2026-06-16T20:50:01.946Z",
-        "duration": "35m ongoing",
-        "acknowledgement": "Major / Monitoring",
+        "duration": "1h 12m",
+        "acknowledgement": "Major / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/41395mspl1rf"
       },
@@ -216,78 +216,19 @@
       {
         "title": "We’ve suspended access to Claude Mythos 5 and Claude Fable 5",
         "started_at": "2026-06-13T00:50:43.835Z",
-        "duration": "3d 20h 35m ongoing",
+        "duration": "3d 22h 14m ongoing",
         "acknowledgement": "Major / Monitoring",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/s9w82lp9dcn9"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "claude.ai",
-        "count": 1
-      },
-      {
-        "label": "Claude API (api.anthropic.com)",
-        "count": 1
-      },
-      {
-        "label": "Claude Code",
-        "count": 1
-      },
-      {
-        "label": "Claude Cowork",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-15T21:30:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-15T21:45:00Z",
-        "signal_value": 18.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-15T22:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-15T22:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-15T22:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-15T22:45:00Z",
-        "signal_value": 19.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-15T23:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-15T23:15:00Z",
         "signal_value": 1.0,
@@ -818,7 +759,49 @@
       },
       {
         "timestamp": "2026-06-16T21:15:00Z",
-        "signal_value": 8.0,
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-16T21:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-16T21:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-16T22:00:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-16T22:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-16T22:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-16T22:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-16T23:00:00Z",
+        "signal_value": 9.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -829,30 +812,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-16T21:15:00Z"
+      "last_sample_at": "2026-06-16T23:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "21:40",
-        "count": 3
-      },
-      {
-        "label": "22:00",
-        "count": 0
-      },
-      {
-        "label": "22:20",
-        "count": 2
-      },
-      {
-        "label": "22:40",
-        "count": 0
-      },
-      {
-        "label": "23:00",
-        "count": 1
-      },
       {
         "label": "23:20",
         "count": 3
@@ -1120,6 +1083,26 @@
       {
         "label": "21:20",
         "count": 2
+      },
+      {
+        "label": "21:40",
+        "count": 0
+      },
+      {
+        "label": "22:00",
+        "count": 1
+      },
+      {
+        "label": "22:20",
+        "count": 3
+      },
+      {
+        "label": "22:40",
+        "count": 1
+      },
+      {
+        "label": "23:00",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1128,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-16T17:25:50-04:00"
+      "last_reviewed_at": "2026-06-16T19:05:04-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 111,
-        "last_reviewed_at": "2026-06-16T17:25:50-04:00"
+        "reports_24h": 112,
+        "last_reviewed_at": "2026-06-16T19:05:04-04:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -1143,9 +1126,9 @@
     "components": [
       {
         "name": "claude.ai",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-06-16T20:50:02.032Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-16T21:35:52.364Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1157,23 +1140,23 @@
       },
       {
         "name": "Claude API (api.anthropic.com)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-06-16T20:50:02.069Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-16T21:36:30.277Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Code",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-06-16T20:50:02.102Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-16T21:36:49.959Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Cowork",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-06-16T20:50:02.156Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-06-16T21:36:39.593Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1233,7 +1216,7 @@
       "url": "https://status.anthropic.com/incidents/41395mspl1rf",
       "published_at": "2026-06-16T20:50:01.946Z",
       "source": "Claude Statuspage API",
-      "meta": "Major / Monitoring"
+      "meta": "Major / Resolved"
     },
     {
       "title": "Opus 4.8 errors",
@@ -1284,45 +1267,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-06-16T21:25:51.342284Z"
+      "published_at": "2026-06-16T23:05:06.254112Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-16T21:25:51.342284Z"
+      "published_at": "2026-06-16T23:05:06.254112Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-06-16T21:25:51.342284Z"
+      "published_at": "2026-06-16T23:05:06.254112Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-06-16T21:25:51.342284Z"
+      "published_at": "2026-06-16T23:05:06.254112Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-06-16T21:25:51.342284Z"
+      "published_at": "2026-06-16T23:05:06.254112Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: Minor Service Outage",
+      "title": "Claude Statuspage API: All Systems Operational",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-06-16T21:25:50.516768Z",
+      "published_at": "2026-06-16T23:05:05.308657Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Elevated errors for Claude Opus 4.8",
+      "url": "https://status.anthropic.com/incidents/41395mspl1rf#9sprp2q7j2qn",
+      "published_at": "2026-06-16T22:02:34.876Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Major / Resolved / This issue has been resolved. We saw elevated errors on requests to Claude Opus 4.8 between 1:45pm PT / 20:45 UTC and 1:58pm PT / 20:58 UTC."
     },
     {
       "title": "Elevated errors for Claude Opus 4.8",
@@ -1330,7 +1321,7 @@
       "published_at": "2026-06-16T21:01:31.279Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Major / Monitoring / We have resolved the issue resulting in elevated errors on requests to Claude Opus 4.8, and are currently monitoring closely to prevent any further issues."
+      "meta": "Monitoring / Major / Resolved / We have resolved the issue resulting in elevated errors on requests to Claude Opus 4.8, and are currently monitoring closely to prevent any further issues."
     },
     {
       "title": "Elevated errors for Claude Opus 4.8",
@@ -1338,7 +1329,7 @@
       "published_at": "2026-06-16T20:50:02.320Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Major / Monitoring / We are investigating elevated errors on requests to Claude Opus 4.8. We will provide an update as soon as possible."
+      "meta": "Investigating / Major / Resolved / We are investigating elevated errors on requests to Claude Opus 4.8. We will provide an update as soon as possible."
     },
     {
       "title": "Opus 4.8 errors",
@@ -1371,14 +1362,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "Elevated errors across many models",
-      "url": "https://status.anthropic.com/incidents/xmhsglsz3h3w#5z668mt5jdv3",
-      "published_at": "2026-06-16T19:08:55.072Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / We are continuing to work on a fix for this issue."
     }
   ],
   "social": [],
@@ -1394,11 +1377,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-06-16T21:25:49.754511Z",
+      "last_item_at": "2026-06-16T23:05:04.538403Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 153,
-      "fetched_at": "2026-06-16T21:25:49.754529Z",
+      "duration_ms": 151,
+      "fetched_at": "2026-06-16T23:05:04.538437Z",
       "cache_hit": false
     },
     {
@@ -1412,11 +1395,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-16T17:25:50-04:00",
+      "last_item_at": "2026-06-16T19:05:04-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 761,
-      "fetched_at": "2026-06-16T21:25:50.516178Z",
+      "duration_ms": 769,
+      "fetched_at": "2026-06-16T23:05:05.308071Z",
       "cache_hit": false
     },
     {
@@ -1430,17 +1413,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-06-16T21:25:50.516768Z",
+      "last_item_at": "2026-06-16T23:05:05.308657Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 823,
-      "fetched_at": "2026-06-16T21:25:51.340756Z",
+      "duration_ms": 943,
+      "fetched_at": "2026-06-16T23:05:06.252581Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-16T21:25:51.342284Z",
+    "generated_at": "2026-06-16T23:05:06.254112Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1477,18 +1460,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 153,
+          "duration_ms": 151,
           "cache_hit": false,
-          "at": "2026-06-16T21:25:49Z"
+          "at": "2026-06-16T23:05:04Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 363.6
+          "avg_duration_ms": 340.0
         },
         "metrics_7d": {
           "runs": 86,
@@ -1497,10 +1480,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 383.5
+          "avg_duration_ms": 380.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-16T21:25:49Z",
+        "last_success_at": "2026-06-16T23:05:04Z",
         "last_failure_at": null
       },
       {
@@ -1514,18 +1497,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 761,
+          "duration_ms": 769,
           "cache_hit": false,
-          "at": "2026-06-16T21:25:49Z"
+          "at": "2026-06-16T23:05:04Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 836.8
+          "avg_duration_ms": 829.2
         },
         "metrics_7d": {
           "runs": 86,
@@ -1534,10 +1517,10 @@
           "success_rate": 98.8,
           "stale_rate": 1.2,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1345.2
+          "avg_duration_ms": 1342.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-16T21:25:49Z",
+        "last_success_at": "2026-06-16T23:05:04Z",
         "last_failure_at": "2026-06-12T14:15:56Z"
       },
       {
@@ -1551,18 +1534,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 823,
+          "duration_ms": 943,
           "cache_hit": false,
-          "at": "2026-06-16T21:25:49Z"
+          "at": "2026-06-16T23:05:04Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 882.9
+          "avg_duration_ms": 889.6
         },
         "metrics_7d": {
           "runs": 86,
@@ -1571,23 +1554,24 @@
           "success_rate": 98.8,
           "stale_rate": 1.2,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 914.8
+          "avg_duration_ms": 910.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-16T21:25:49Z",
+        "last_success_at": "2026-06-16T23:05:04Z",
         "last_failure_at": "2026-06-11T23:24:49Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-16T21:25:51.342284Z",
+    "generated_at": "2026-06-16T23:05:06.254112Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "30056eff23a89b7d",
           "title": "Elevated errors for Claude Opus 4.8",
           "started_at": "2026-06-16T20:53:14Z",
-          "duration": "1m",
+          "duration": "45m",
           "acknowledgement": "down icon Down",
           "url": "https://status.anthropic.com/"
         },
@@ -1595,121 +1579,29 @@
           "id": "c2f196f714078669",
           "title": "Elevated errors for Claude Opus 4.8",
           "started_at": "2026-06-16T20:50:01.946Z",
-          "duration": "35m ongoing",
-          "acknowledgement": "Major / Monitoring",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "c3bcdd722887e667",
-          "title": "Opus 4.8 errors",
-          "started_at": "2026-06-16T19:59:26.511Z",
-          "duration": "16m",
-          "acknowledgement": "None / Resolved",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "e3b43db08c477517",
-          "title": "Elevated errors across many models",
-          "started_at": "2026-06-16T18:18:29Z",
-          "duration": "1h 5m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.anthropic.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "f71daf82f90e57f7",
-          "title": "Elevated errors across many models",
-          "started_at": "2026-06-16T17:29:52.486Z",
-          "duration": "2h 2m",
-          "acknowledgement": "Minor / Resolved",
+          "duration": "1h 12m",
+          "acknowledgement": "Major / Resolved",
           "url": "https://status.anthropic.com/"
         },
         {
           "id": "6363a504621bc100",
           "title": "We’ve suspended access to Claude Mythos 5 and Claude Fable 5",
           "started_at": "2026-06-13T00:50:43.835Z",
-          "duration": "3d 20h 35m ongoing",
+          "duration": "3d 22h 14m ongoing",
           "acknowledgement": "Major / Monitoring",
           "url": "https://status.anthropic.com/"
         }
       ],
-      "resolved": [
-        {
-          "id": "d004c885628a6258",
-          "title": "Elevated errors across many models",
-          "started_at": "2026-06-16T17:33:20Z",
-          "duration": "30m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "3bbd475544486fb4",
-          "title": "Elevated errors on Claude Opus 4.8",
-          "started_at": "2026-06-15T06:23:15Z",
-          "duration": "1h 55m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "8a42df93d5eb9329",
-          "title": "Elevated errors across models",
-          "started_at": "2026-06-11T16:54:52.467Z",
-          "duration": "1h 1m",
-          "acknowledgement": "Major / Resolved",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "c007b08d7a77c36b",
-          "title": "Elevated errors on Claude Opus 4.6",
-          "started_at": "2026-06-11T14:37:07.546Z",
-          "duration": "24m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.anthropic.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "0a893ffeb4b69f02",
-          "title": "Elevated errors for Claude Opus 4.8",
-          "url": "https://status.anthropic.com/#2026-06-16T20:53:14Z",
-          "published_at": "2026-06-16T20:53:14Z",
-          "source": "StatusGator",
-          "meta": "down icon Down"
-        },
-        {
-          "id": "17cc4852bb681398",
-          "title": "Elevated errors for Claude Opus 4.8",
-          "url": "https://status.anthropic.com/incidents/41395mspl1rf",
-          "published_at": "2026-06-16T20:50:01.946Z",
-          "source": "Claude Statuspage API",
-          "meta": "Major / Monitoring"
-        },
-        {
-          "id": "6336d09ea62679c2",
-          "title": "Opus 4.8 errors",
-          "url": "https://status.anthropic.com/incidents/8q88rrz9rjd0",
-          "published_at": "2026-06-16T19:59:26.511Z",
-          "source": "Claude Statuspage API",
-          "meta": "None / Resolved"
-        },
-        {
-          "id": "721ea8c23e475c1b",
-          "title": "Elevated errors across many models",
-          "url": "https://status.anthropic.com/#2026-06-16T18:18:29Z",
-          "published_at": "2026-06-16T18:18:29Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 4,
-      "updated_incidents": 2,
-      "resolved_incidents": 4,
-      "new_reports": 4
+      "new_incidents": 0,
+      "updated_incidents": 3,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
