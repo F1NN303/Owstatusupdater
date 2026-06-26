@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-26T16:32:47.312613Z",
+  "generated_at": "2026-06-26T18:53:58.050719Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -10,16 +10,16 @@
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 3.15,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.159,
-      "profile_adjustment": 2.7
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
       "reports_24h": 28,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 1,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.159,
         "news_score": 0.0,
@@ -36,7 +36,7 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
@@ -73,10 +73,18 @@
       {
         "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-06-26T16:32:46.358391Z",
+        "published_at": "2026-06-26T18:53:57.430282Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Codex Usage Limits Depleting Faster Than Expected",
+        "url": "https://status.openai.com/incidents/01KW2E6W0503W4NXJNCVAG8V6T#01KW2E6W05PQTV3H634X8ZG46Z",
+        "published_at": "2026-06-26T17:04:02Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating reports that Codex usage limits are being consumed faster than expected."
       },
       {
         "title": "Small Number of Users Have Incorrectly Cancelled Subscription",
@@ -141,36 +149,36 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-      },
-      {
-        "title": "Users may experience elevated errors in ChatGPT uploading and downloading files",
-        "url": "https://status.openai.com/incidents/01KVTDW6E1PXBTY2A9XEBT4MY4#01KVTNHN0H7D2EJBKTCN2BN54B",
-        "published_at": "2026-06-23T16:38:19Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / All impacted services have now fully recovered."
       }
     ],
-    "last_statement_at": "2026-06-26T16:32:46.358391Z"
+    "last_statement_at": "2026-06-26T18:53:57.430282Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports an active incident: FedRAMP workspaces and API orgs have degraded performance.",
+    "summary": "OpenAI Statuspage reports 2 active incidents. Latest: Codex Usage Limits Depleting Faster Than Expected.",
     "current_status": "degraded",
     "reports_24h": 28,
     "incidents": [
       {
-        "title": "FedRAMP workspaces and API orgs have degraded performance",
-        "started_at": "2026-06-26T02:21:55Z",
+        "title": "Codex Usage Limits Depleting Faster Than Expected",
+        "started_at": "2026-06-26T17:08:05Z",
         "duration": "1m",
         "acknowledgement": "warn icon Warn"
       },
       {
-        "title": "Small Number of Users Have Incorrectly Cancelled Subscription",
-        "started_at": "2026-06-25T16:06:59Z",
-        "duration": "10h 15m",
+        "title": "Codex Usage Limits Depleting Faster Than Expected",
+        "started_at": "2026-06-26T17:04:02Z",
+        "duration": "1h 49m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01KW2E6W0503W4NXJNCVAG8V6T"
+      },
+      {
+        "title": "FedRAMP workspaces and API orgs have degraded performance",
+        "started_at": "2026-06-26T02:21:55Z",
+        "duration": "14h 46m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -212,19 +220,31 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KVEZD06ZFM2CMDZQMQYDV9RK"
-      },
-      {
-        "title": "SSO login errors for some ChatGPT Enterprise workspaces",
-        "started_at": "2026-06-18T08:55:52Z",
-        "duration": "2h 59m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KVCZ38K0RJZTSX7Y70RQMV2D"
       }
     ],
     "top_reported_issues": [
       {
+        "label": "Codex Web",
+        "count": 1
+      },
+      {
+        "label": "App",
+        "count": 1
+      },
+      {
+        "label": "Codex API",
+        "count": 1
+      },
+      {
         "label": "FedRAMP",
+        "count": 1
+      },
+      {
+        "label": "CLI",
+        "count": 1
+      },
+      {
+        "label": "VS Code extension",
         "count": 1
       }
     ],
@@ -234,60 +254,6 @@
       "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-25T16:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-25T17:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-25T17:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-25T17:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-25T17:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-25T18:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-25T18:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-25T18:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-25T18:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-25T19:00:00Z",
         "signal_value": 3.0,
@@ -809,6 +775,60 @@
         "signal_value": 19.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T16:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T17:00:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T17:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T17:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T17:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T18:00:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T18:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T18:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T18:45:00Z",
+        "signal_value": 18.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -817,37 +837,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-26T16:30:00Z"
+      "last_sample_at": "2026-06-26T18:45:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "16:40",
-        "count": 0
-      },
-      {
-        "label": "17:00",
-        "count": 1
-      },
-      {
-        "label": "17:20",
-        "count": 3
-      },
-      {
-        "label": "17:40",
-        "count": 4
-      },
-      {
-        "label": "18:00",
-        "count": 2
-      },
-      {
-        "label": "18:20",
-        "count": 0
-      },
-      {
-        "label": "18:40",
-        "count": 2
-      },
       {
         "label": "19:00",
         "count": 3
@@ -1107,6 +1099,34 @@
       {
         "label": "16:20",
         "count": 3
+      },
+      {
+        "label": "16:40",
+        "count": 1
+      },
+      {
+        "label": "17:00",
+        "count": 2
+      },
+      {
+        "label": "17:20",
+        "count": 0
+      },
+      {
+        "label": "17:40",
+        "count": 2
+      },
+      {
+        "label": "18:00",
+        "count": 3
+      },
+      {
+        "label": "18:20",
+        "count": 1
+      },
+      {
+        "label": "18:40",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1115,14 +1135,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-26T16:32:45Z"
+      "last_reviewed_at": "2026-06-26T14:53:56-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 121,
-        "last_reviewed_at": "2026-06-26T16:32:45Z"
+        "last_reviewed_at": "2026-06-26T14:53:56-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1262,23 +1282,9 @@
         "source": "OpenAI Statuspage API"
       },
       {
-        "name": "CLI",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-23T18:25:14Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "VS Code extension",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-23T18:25:14Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
         "name": "Codex Web",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-06-23T18:25:14Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1298,15 +1304,15 @@
       },
       {
         "name": "App",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-06-23T18:25:14Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Codex API",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-06-23T18:25:14Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1351,6 +1357,20 @@
         "health": "operational",
         "updated_at": "2026-06-23T18:25:13Z",
         "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "CLI",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-06-23T18:25:14Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
+        "name": "VS Code extension",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-06-23T18:25:14Z",
+        "source": "OpenAI Statuspage API"
       }
     ],
     "scheduled_maintenances": [],
@@ -1391,16 +1411,23 @@
   },
   "reports": [
     {
-      "title": "FedRAMP workspaces and API orgs have degraded performance",
-      "url": "https://status.openai.com/#2026-06-26T02:21:55Z",
-      "published_at": "2026-06-26T02:21:55Z",
+      "title": "Codex Usage Limits Depleting Faster Than Expected",
+      "url": "https://status.openai.com/#2026-06-26T17:08:05Z",
+      "published_at": "2026-06-26T17:08:05Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
     {
-      "title": "Small Number of Users Have Incorrectly Cancelled Subscription",
-      "url": "https://status.openai.com/#2026-06-25T16:06:59Z",
-      "published_at": "2026-06-25T16:06:59Z",
+      "title": "Codex Usage Limits Depleting Faster Than Expected",
+      "url": "https://status.openai.com/incidents/01KW2E6W0503W4NXJNCVAG8V6T",
+      "published_at": "2026-06-26T17:04:02Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
+      "title": "FedRAMP workspaces and API orgs have degraded performance",
+      "url": "https://status.openai.com/#2026-06-26T02:21:55Z",
+      "published_at": "2026-06-26T02:21:55Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
@@ -1438,13 +1465,6 @@
       "published_at": "2026-06-19T03:39:40Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "SSO login errors for some ChatGPT Enterprise workspaces",
-      "url": "https://status.openai.com/incidents/01KVCZ38K0RJZTSX7Y70RQMV2D",
-      "published_at": "2026-06-18T08:55:52Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1453,45 +1473,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-06-26T16:32:47.312613Z"
+      "published_at": "2026-06-26T18:53:58.050719Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-26T16:32:47.312613Z"
+      "published_at": "2026-06-26T18:53:58.050719Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-06-26T16:32:47.312613Z"
+      "published_at": "2026-06-26T18:53:58.050719Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-06-26T16:32:47.312613Z"
+      "published_at": "2026-06-26T18:53:58.050719Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-06-26T16:32:47.312613Z"
+      "published_at": "2026-06-26T18:53:58.050719Z"
     }
   ],
   "news": [
     {
       "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-06-26T16:32:46.358391Z",
+      "published_at": "2026-06-26T18:53:57.430282Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Codex Usage Limits Depleting Faster Than Expected",
+      "url": "https://status.openai.com/incidents/01KW2E6W0503W4NXJNCVAG8V6T#01KW2E6W05PQTV3H634X8ZG46Z",
+      "published_at": "2026-06-26T17:04:02Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating reports that Codex usage limits are being consumed faster than expected."
     },
     {
       "title": "Small Number of Users Have Incorrectly Cancelled Subscription",
@@ -1540,14 +1568,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
-    },
-    {
-      "title": "gpt-4o-mini high error rate",
-      "url": "https://status.openai.com/incidents/01KVW3CQQ51SWCV4A1SWA6ATVM#01KVW3VC15WNPK3V2AZ87MKYSD",
-      "published_at": "2026-06-24T06:07:32Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
     }
   ],
   "social": [],
@@ -1563,11 +1583,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-06-26T16:32:45.332425Z",
+      "last_item_at": "2026-06-26T18:53:56.723279Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 302,
-      "fetched_at": "2026-06-26T16:32:45.332455Z",
+      "duration_ms": 284,
+      "fetched_at": "2026-06-26T18:53:56.723299Z",
       "cache_hit": false
     },
     {
@@ -1581,11 +1601,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-26T16:32:45Z",
+      "last_item_at": "2026-06-26T14:53:56-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1025,
-      "fetched_at": "2026-06-26T16:32:46.357847Z",
+      "duration_ms": 706,
+      "fetched_at": "2026-06-26T18:53:57.429739Z",
       "cache_hit": false
     },
     {
@@ -1599,17 +1619,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-06-26T16:32:46.358391Z",
+      "last_item_at": "2026-06-26T18:53:57.430282Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 952,
-      "fetched_at": "2026-06-26T16:32:47.310961Z",
+      "duration_ms": 618,
+      "fetched_at": "2026-06-26T18:53:58.049033Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-26T16:32:47.312613Z",
+    "generated_at": "2026-06-26T18:53:58.050719Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1646,9 +1666,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 302,
+          "duration_ms": 284,
           "cache_hit": false,
-          "at": "2026-06-26T16:32:45Z"
+          "at": "2026-06-26T18:53:56Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -1657,19 +1677,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 408.6
+          "avg_duration_ms": 411.7
         },
         "metrics_7d": {
-          "runs": 97,
-          "ok": 97,
+          "runs": 95,
+          "ok": 95,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 443.9
+          "avg_duration_ms": 449.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-26T16:32:45Z",
+        "last_success_at": "2026-06-26T18:53:56Z",
         "last_failure_at": null
       },
       {
@@ -1683,9 +1703,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1025,
+          "duration_ms": 706,
           "cache_hit": false,
-          "at": "2026-06-26T16:32:45Z"
+          "at": "2026-06-26T18:53:56Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -1694,19 +1714,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 909.9
+          "avg_duration_ms": 905.9
         },
         "metrics_7d": {
-          "runs": 97,
-          "ok": 97,
+          "runs": 95,
+          "ok": 95,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 869.2
+          "avg_duration_ms": 867.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-26T16:32:45Z",
+        "last_success_at": "2026-06-26T18:53:56Z",
         "last_failure_at": null
       },
       {
@@ -1720,9 +1740,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 952,
+          "duration_ms": 618,
           "cache_hit": false,
-          "at": "2026-06-26T16:32:45Z"
+          "at": "2026-06-26T18:53:56Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -1731,38 +1751,98 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 741.5
+          "avg_duration_ms": 739.8
         },
         "metrics_7d": {
-          "runs": 97,
-          "ok": 97,
+          "runs": 95,
+          "ok": 95,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 725.5
+          "avg_duration_ms": 726.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-26T16:32:45Z",
+        "last_success_at": "2026-06-26T18:53:56Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-26T16:32:47.312613Z",
+    "generated_at": "2026-06-26T18:53:58.050719Z",
     "incidents": {
-      "new": [],
-      "updated": [],
-      "resolved": []
+      "new": [
+        {
+          "id": "3b1fb6cfbce7ed46",
+          "title": "Codex Usage Limits Depleting Faster Than Expected",
+          "started_at": "2026-06-26T17:08:05Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "56690db6f71fbe25",
+          "title": "Codex Usage Limits Depleting Faster Than Expected",
+          "started_at": "2026-06-26T17:04:02Z",
+          "duration": "1h 49m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://status.openai.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "c74f79592eba3aeb",
+          "title": "FedRAMP workspaces and API orgs have degraded performance",
+          "started_at": "2026-06-26T02:21:55Z",
+          "duration": "14h 46m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        }
+      ],
+      "resolved": [
+        {
+          "id": "23a082b49d959669",
+          "title": "Small Number of Users Have Incorrectly Cancelled Subscription",
+          "started_at": "2026-06-25T16:06:59Z",
+          "duration": "10h 15m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "62c67c55569ff23b",
+          "title": "SSO login errors for some ChatGPT Enterprise workspaces",
+          "started_at": "2026-06-18T08:55:52Z",
+          "duration": "2h 59m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "a0adcafed248d78c",
+          "title": "Codex Usage Limits Depleting Faster Than Expected",
+          "url": "https://status.openai.com/#2026-06-26T17:08:05Z",
+          "published_at": "2026-06-26T17:08:05Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "add0a4d87c06c526",
+          "title": "Codex Usage Limits Depleting Faster Than Expected",
+          "url": "https://status.openai.com/incidents/01KW2E6W0503W4NXJNCVAG8V6T",
+          "published_at": "2026-06-26T17:04:02Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 2,
+      "updated_incidents": 1,
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
