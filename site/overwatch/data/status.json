@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-06-25T23:57:34.953762Z",
+  "generated_at": "2026-06-26T00:11:40.691530Z",
   "health": "degraded",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 5,
     "source_total_count": 6,
     "model_version": "2.4",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 3.075,
+      "incidents": 5.175,
       "source_health": 0.35,
       "corroboration_bonus": 0.0,
       "support_score": 0.584
     },
     "signal_metrics": {
-      "reports_24h": 41,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 1,
+      "reports_24h": 111,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.584,
         "news_score": 0.0,
@@ -27,7 +27,7 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
@@ -38,8 +38,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 5,
       "source_total": 6,
       "summary": "Official and aggregate status signals are aligned."
@@ -47,18 +47,18 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -113,10 +113,16 @@
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://statusgator.com/services/overwatch-2",
-    "summary": "StatusGator reports that Overwatch 2 is currently operational. There have been 41 user-submitted reports of outages in the past 24 hours.",
-    "current_status": "operational",
-    "reports_24h": 41,
+    "summary": "StatusGator incident table is available. Latest listed incident: Service outage..",
+    "current_status": "degraded",
+    "reports_24h": 111,
     "incidents": [
+      {
+        "title": "Service outage.",
+        "started_at": "2026-06-26T00:05:00Z",
+        "duration": "",
+        "acknowledgement": "Never acknowledged"
+      },
       {
         "title": "Service outage",
         "started_at": "2026-06-25T11:52:00Z",
@@ -158,26 +164,20 @@
         "started_at": "2026-06-21T00:39:04Z",
         "duration": "1h 7m",
         "acknowledgement": "Never acknowledged"
-      },
-      {
-        "title": "Server connection issues in Overwatch.",
-        "started_at": "2026-06-18T00:22:00Z",
-        "duration": "1h 18m",
-        "acknowledgement": "Never acknowledged"
       }
     ],
     "top_reported_issues": [
       {
         "label": "Connectivity issue",
-        "count": 14
+        "count": 18
+      },
+      {
+        "label": "Sign in problem",
+        "count": 2
       },
       {
         "label": "Slow performance",
         "count": 2
-      },
-      {
-        "label": "Sign in problem",
-        "count": 1
       },
       {
         "label": "Error message",
@@ -205,12 +205,6 @@
       "kind": "community-labels"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-25T00:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-25T00:15:00Z",
         "signal_value": 2.0,
@@ -777,9 +771,15 @@
       },
       {
         "timestamp": "2026-06-25T23:45:00Z",
-        "signal_value": 14.0,
+        "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-26T00:00:00Z",
+        "signal_value": 367.0,
+        "status_code": 1,
+        "status_label": "possible outage"
       }
     ],
     "service_health_24h_meta": {
@@ -788,13 +788,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-25T23:45:00Z"
+      "last_sample_at": "2026-06-26T00:00:00Z"
     },
+    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "00:00",
-        "count": 1
-      },
       {
         "label": "00:20",
         "count": 3
@@ -1078,6 +1075,10 @@
       {
         "label": "23:40",
         "count": 2
+      },
+      {
+        "label": "00:00",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1086,14 +1087,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-25T19:57:33-04:00"
+      "last_reviewed_at": "2026-06-25T20:11:40-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 110,
-        "last_reviewed_at": "2026-06-25T19:57:33-04:00"
+        "reports_24h": 111,
+        "last_reviewed_at": "2026-06-25T20:11:40-04:00"
       }
     ],
     "services": [
@@ -1101,9 +1102,9 @@
         "service_id": "region-eu",
         "name": "Europe Region",
         "label": "Europe",
-        "status": "online",
-        "severity_key": "stable",
-        "score": 0,
+        "status": "degraded",
+        "severity_key": "degraded",
+        "score": 5,
         "weight": 33.3,
         "source": "Derived regional blend"
       },
@@ -1111,9 +1112,9 @@
         "service_id": "region-na",
         "name": "North America Region",
         "label": "North America",
-        "status": "online",
-        "severity_key": "stable",
-        "score": 0,
+        "status": "degraded",
+        "severity_key": "degraded",
+        "score": 5,
         "weight": 33.3,
         "source": "Derived regional blend"
       },
@@ -1121,9 +1122,9 @@
         "service_id": "region-apac",
         "name": "Asia Pacific Region",
         "label": "Asia Pacific",
-        "status": "online",
-        "severity_key": "stable",
-        "score": 0,
+        "status": "degraded",
+        "severity_key": "degraded",
+        "score": 5,
         "weight": 33.3,
         "source": "Derived regional blend"
       }
@@ -1135,11 +1136,25 @@
   },
   "reports": [
     {
+      "title": "Unable to load into Busan and supports not appearing",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/unable-to-load-into-busan-and-supports-not-appearing/1026393",
+      "published_at": "2026-06-26T00:09:28.010Z",
+      "source": "Blizzard Forums - Bug Report",
+      "meta": "1 posts | 1 views"
+    },
+    {
+      "title": "Possible Excavation Initiative Bug?",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/possible-excavation-initiative-bug/1025097",
+      "published_at": "2026-06-26T00:08:34.650Z",
+      "source": "Blizzard Forums - Bug Report",
+      "meta": "56 posts | 894 views"
+    },
+    {
       "title": "Mythic Orisa Weapon Locked",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/mythic-orisa-weapon-locked/1026389",
       "published_at": "2026-06-25T23:45:30.375Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 1 views"
+      "meta": "1 posts | 3 views"
     },
     {
       "title": "Mythic bow bugged + frost arrow",
@@ -1153,7 +1168,7 @@
       "url": "https://us.forums.blizzard.com/en/overwatch/t/devs-need-help/1026388",
       "published_at": "2026-06-25T23:40:50.701Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 5 views"
+      "meta": "1 posts | 6 views"
     },
     {
       "title": "Overwatch reverts to dx11 on startup",
@@ -1174,14 +1189,7 @@
       "url": "https://us.forums.blizzard.com/en/overwatch/t/massive-fps-drops-and-input-lag-after-recent-2026-updates-s3/1024535",
       "published_at": "2026-06-25T23:13:47.416Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "80 posts | 6861 views"
-    },
-    {
-      "title": "No rewards from the Anima Event track",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/no-rewards-from-the-anima-event-track/1026314",
-      "published_at": "2026-06-25T23:06:46.720Z",
-      "source": "Blizzard Forums - Bug Report",
-      "meta": "3 posts | 17 views"
+      "meta": "80 posts | 6863 views"
     },
     {
       "title": "Lost data afte account link",
@@ -1195,14 +1203,7 @@
       "url": "https://us.forums.blizzard.com/en/overwatch/t/high-pingwrong-server-since-s3-launch/1025594",
       "published_at": "2026-06-25T22:28:07.179Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "3 posts | 52 views"
-    },
-    {
-      "title": "Overwatch support e-mail?",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-support-e-mail/1026363",
-      "published_at": "2026-06-25T22:27:07.520Z",
-      "source": "Blizzard Forums - Technical Support",
-      "meta": "3 posts | 8 views"
+      "meta": "3 posts | 53 views"
     }
   ],
   "known_resources": [
@@ -1211,7 +1212,7 @@
       "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-known-issues-june-23-2026/942905",
       "published_at": "2025-04-23T21:47:27.953Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "2 posts | 217980 views"
+      "meta": "2 posts | 217983 views"
     },
     {
       "title": "Known Technical Support Issues",
@@ -1264,11 +1265,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-06-25T23:57:34.182071Z",
+      "last_item_at": "2026-06-26T00:11:40.174140Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 942,
-      "fetched_at": "2026-06-25T23:57:34.182093Z",
+      "duration_ms": 399,
+      "fetched_at": "2026-06-26T00:11:40.174162Z",
       "cache_hit": false
     },
     {
@@ -1282,11 +1283,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-25T19:57:33-04:00",
+      "last_item_at": "2026-06-25T20:11:40-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 985,
-      "fetched_at": "2026-06-25T23:57:34.225616Z",
+      "duration_ms": 912,
+      "fetched_at": "2026-06-26T00:11:40.688166Z",
       "cache_hit": false
     },
     {
@@ -1302,9 +1303,9 @@
       "item_count": 8,
       "last_item_at": "2026-06-25T22:46:21.296Z",
       "freshness": "fresh",
-      "age_minutes": 71,
-      "duration_ms": 348,
-      "fetched_at": "2026-06-25T23:57:33.589013Z",
+      "age_minutes": 85,
+      "duration_ms": 192,
+      "fetched_at": "2026-06-26T00:11:39.968247Z",
       "cache_hit": false
     },
     {
@@ -1318,11 +1319,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-06-25T23:45:30.375Z",
+      "last_item_at": "2026-06-26T00:09:28.010Z",
       "freshness": "fresh",
-      "age_minutes": 12,
-      "duration_ms": 341,
-      "fetched_at": "2026-06-25T23:57:33.584271Z",
+      "age_minutes": 2,
+      "duration_ms": 208,
+      "fetched_at": "2026-06-26T00:11:39.984954Z",
       "cache_hit": false
     },
     {
@@ -1336,11 +1337,11 @@
       "ok": true,
       "error": null,
       "item_count": 4,
-      "last_item_at": "2026-06-25T23:57:34.950551Z",
+      "last_item_at": "2026-06-26T00:11:40.472047Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1706,
-      "fetched_at": "2026-06-25T23:57:34.950579Z",
+      "duration_ms": 694,
+      "fetched_at": "2026-06-26T00:11:40.472072Z",
       "cache_hit": false
     },
     {
@@ -1352,19 +1353,19 @@
       "criticality": "optional",
       "used_for_scoring": true,
       "ok": false,
-      "error": "451 Client Error: Unavailable For Legal Reasons for url: https://r.jina.ai/http://x.com/PlayOverwatch",
+      "error": "401 Client Error: Unauthorized for url: https://r.jina.ai/http://x.com/PlayOverwatch",
       "item_count": 0,
       "last_item_at": null,
       "freshness": "unknown",
       "age_minutes": null,
-      "duration_ms": 199,
-      "fetched_at": "2026-06-25T23:57:33.444286Z",
+      "duration_ms": 206,
+      "fetched_at": "2026-06-26T00:11:39.986151Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-25T23:57:34.953762Z",
+    "generated_at": "2026-06-26T00:11:40.691530Z",
     "overview": {
       "confidence_score": 83.8,
       "confidence_tier": "medium",
@@ -1383,13 +1384,13 @@
       "ratios": {
         "required_ratio": 0.833,
         "scoring_ratio": 0.833,
-        "recent_success_ratio": 0.857,
+        "recent_success_ratio": 0.856,
         "freshness_ratio": 0.833
       }
     },
     "decision": {
       "health": "degraded",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "Reliability constraints detected: partial source failure, repeated source failures."
     },
     "sources": [
@@ -1404,18 +1405,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 942,
+          "duration_ms": 399,
           "cache_hit": false,
-          "at": "2026-06-25T23:57:33Z"
+          "at": "2026-06-26T00:11:39Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 677.2
+          "avg_duration_ms": 658.7
         },
         "metrics_7d": {
           "runs": 94,
@@ -1424,10 +1425,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 503.4
+          "avg_duration_ms": 497.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-25T23:57:33Z",
+        "last_success_at": "2026-06-26T00:11:39Z",
         "last_failure_at": null
       },
       {
@@ -1441,18 +1442,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 985,
+          "duration_ms": 912,
           "cache_hit": false,
-          "at": "2026-06-25T23:57:33Z"
+          "at": "2026-06-26T00:11:39Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 866.6
+          "avg_duration_ms": 869.6
         },
         "metrics_7d": {
           "runs": 94,
@@ -1461,10 +1462,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 837.4
+          "avg_duration_ms": 836.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-25T23:57:33Z",
+        "last_success_at": "2026-06-26T00:11:39Z",
         "last_failure_at": null
       },
       {
@@ -1478,18 +1479,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 348,
+          "duration_ms": 192,
           "cache_hit": false,
-          "at": "2026-06-25T23:57:33Z"
+          "at": "2026-06-26T00:11:39Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 405.6
+          "avg_duration_ms": 391.3
         },
         "metrics_7d": {
           "runs": 94,
@@ -1501,7 +1502,7 @@
           "avg_duration_ms": 438.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-25T23:57:33Z",
+        "last_success_at": "2026-06-26T00:11:39Z",
         "last_failure_at": null
       },
       {
@@ -1515,18 +1516,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 341,
+          "duration_ms": 208,
           "cache_hit": false,
-          "at": "2026-06-25T23:57:33Z"
+          "at": "2026-06-26T00:11:39Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 392.5
+          "avg_duration_ms": 380.2
         },
         "metrics_7d": {
           "runs": 94,
@@ -1535,10 +1536,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 437.0
+          "avg_duration_ms": 437.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-25T23:57:33Z",
+        "last_success_at": "2026-06-26T00:11:39Z",
         "last_failure_at": null
       },
       {
@@ -1552,18 +1553,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1706,
+          "duration_ms": 694,
           "cache_hit": false,
-          "at": "2026-06-25T23:57:33Z"
+          "at": "2026-06-26T00:11:39Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 15,
+          "ok": 15,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 360.4
+          "avg_duration_ms": 382.6
         },
         "metrics_7d": {
           "runs": 94,
@@ -1572,10 +1573,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 273.3
+          "avg_duration_ms": 278.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-25T23:57:33Z",
+        "last_success_at": "2026-06-26T00:11:39Z",
         "last_failure_at": null
       },
       {
@@ -1589,106 +1590,84 @@
         "latest": {
           "ok": false,
           "freshness": "unknown",
-          "duration_ms": 199,
+          "duration_ms": 206,
           "cache_hit": false,
-          "at": "2026-06-25T23:57:33Z"
+          "at": "2026-06-26T00:11:39Z"
         },
         "metrics_24h": {
-          "runs": 14,
+          "runs": 15,
           "ok": 2,
-          "stale": 12,
-          "success_rate": 14.3,
-          "stale_rate": 85.7,
+          "stale": 13,
+          "success_rate": 13.3,
+          "stale_rate": 86.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 789.9
+          "avg_duration_ms": 750.9
         },
         "metrics_7d": {
           "runs": 94,
-          "ok": 28,
-          "stale": 66,
-          "success_rate": 29.8,
-          "stale_rate": 70.2,
+          "ok": 27,
+          "stale": 67,
+          "success_rate": 28.7,
+          "stale_rate": 71.3,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1801.0
+          "avg_duration_ms": 1698.6
         },
-        "consecutive_failures": 4,
+        "consecutive_failures": 5,
         "last_success_at": "2026-06-25T16:26:44Z",
-        "last_failure_at": "2026-06-25T23:57:33Z"
+        "last_failure_at": "2026-06-26T00:11:39Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-25T23:57:34.953762Z",
+    "generated_at": "2026-06-26T00:11:40.691530Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "bc3ac929f2bc81cb",
+          "title": "Service outage.",
+          "started_at": "2026-06-26T00:05:00Z",
+          "duration": "",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://statusgator.com/services/overwatch-2"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "b12adbb3388042b6",
+          "title": "Server connection issues in Overwatch.",
+          "started_at": "2026-06-18T00:22:00Z",
+          "duration": "1h 18m",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://statusgator.com/services/overwatch-2"
+        }
+      ]
     },
     "reports": {
       "new": [
         {
-          "id": "328a6cf20a11d0e8",
-          "title": "Mythic Orisa Weapon Locked",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/mythic-orisa-weapon-locked/1026389",
-          "published_at": "2026-06-25T23:45:30.375Z",
+          "id": "c3bd1f668532a5d5",
+          "title": "Unable to load into Busan and supports not appearing",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/unable-to-load-into-busan-and-supports-not-appearing/1026393",
+          "published_at": "2026-06-26T00:09:28.010Z",
           "source": "Blizzard Forums - Bug Report",
           "meta": "1 posts | 1 views"
         },
         {
-          "id": "b2dee6ce7a81f0e0",
-          "title": "Mythic bow bugged + frost arrow",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/mythic-bow-bugged-frost-arrow/1026309",
-          "published_at": "2026-06-25T23:43:21.417Z",
+          "id": "8d18d9952b698471",
+          "title": "Possible Excavation Initiative Bug?",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/possible-excavation-initiative-bug/1025097",
+          "published_at": "2026-06-26T00:08:34.650Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "5 posts | 24 views"
-        },
-        {
-          "id": "799ebd361fce2507",
-          "title": "Devs need HELP!",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/devs-need-help/1026388",
-          "published_at": "2026-06-25T23:40:50.701Z",
-          "source": "Blizzard Forums - Bug Report",
-          "meta": "1 posts | 5 views"
-        },
-        {
-          "id": "d54fe5100eb4c347",
-          "title": "Overwatch reverts to dx11 on startup",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-reverts-to-dx11-on-startup/1024953",
-          "published_at": "2026-06-25T23:36:45.340Z",
-          "source": "Blizzard Forums - Bug Report",
-          "meta": "10 posts | 577 views"
-        },
-        {
-          "id": "2d09877a1900dacb",
-          "title": "Bug With ultimate",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/bug-with-ultimate/1026382",
-          "published_at": "2026-06-25T23:25:04.289Z",
-          "source": "Blizzard Forums - Bug Report",
-          "meta": "1 posts | 5 views"
-        },
-        {
-          "id": "bdcfe6eef8d128b3",
-          "title": "No rewards from the Anima Event track",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/no-rewards-from-the-anima-event-track/1026314",
-          "published_at": "2026-06-25T23:06:46.720Z",
-          "source": "Blizzard Forums - Bug Report",
-          "meta": "3 posts | 17 views"
-        },
-        {
-          "id": "83b52978217f25ab",
-          "title": "Lost data afte account link",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/lost-data-afte-account-link/1026374",
-          "published_at": "2026-06-25T22:46:21.296Z",
-          "source": "Blizzard Forums - Technical Support",
-          "meta": "1 posts | 2 views"
+          "meta": "56 posts | 894 views"
         }
       ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 7
+      "resolved_incidents": 1,
+      "new_reports": 2
     }
   }
 }
