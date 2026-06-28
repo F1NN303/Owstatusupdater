@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T01:49:57.866663Z",
+  "generated_at": "2026-06-28T04:02:57.553360Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -10,16 +10,16 @@
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 5.2,
+      "incidents": 5.45,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.081,
-      "profile_adjustment": 0.15
+      "profile_adjustment": 2.2
     },
     "signal_metrics": {
-      "reports_24h": 148,
-      "recent_incidents_6h": 2,
-      "recent_incidents_24h": 2,
+      "reports_24h": 156,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.081,
@@ -29,7 +29,7 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
@@ -40,14 +40,14 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "degraded",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
+      "official_status": "operational",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
@@ -68,15 +68,23 @@
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: Partial System Degradation",
+    "summary": "OpenAI Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: Partial System Degradation",
+        "title": "OpenAI Statuspage API: All Systems Operational",
         "url": "https://status.openai.com/",
-        "published_at": "2026-06-28T01:49:56.992264Z",
+        "published_at": "2026-06-28T04:02:56.841923Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Issues with ChatGPT Windows desktop app",
+        "url": "https://status.openai.com/incidents/01KW5HJAH5X1A2V62HP4ZST1V7#01KW64CGB87DHRKCVKD3MAVYQB",
+        "published_at": "2026-06-28T03:29:18Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
       },
       {
         "title": "Issues with ChatGPT Windows desktop app",
@@ -84,7 +92,7 @@
         "published_at": "2026-06-27T22:00:26Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / We are investigating an issue affecting some users of the ChatGPT Windows desktop app on Windows. Affected users may see chat history or conversations fail to load, missing sidebar icons, or login/sign-up controls that do not respond. ChatG"
+        "meta": "Investigating / Minor / Resolved / We are investigating an issue affecting some users of the ChatGPT Windows desktop app on Windows. Affected users may see chat history or conversations fail to load, missing sidebar icons, or login/sign-up controls that do not respond. ChatG"
       },
       {
         "title": "Codex Usage Limits Depleting Faster Than Expected",
@@ -141,50 +149,42 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / This is now resolved."
-      },
-      {
-        "title": "Users may encounter issues using access token with Codex",
-        "url": "https://status.openai.com/incidents/01KVYNAMMJ7AMF94YBECG6JG6Q#01KVYWTV5KCKV8KSB1YBE8088X",
-        "published_at": "2026-06-25T08:02:38Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
       }
     ],
-    "last_statement_at": "2026-06-28T01:49:56.992264Z"
+    "last_statement_at": "2026-06-28T04:02:56.841923Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports 2 active incidents. Latest: Issues with ChatGPT Windows desktop app.",
-    "current_status": "degraded",
-    "reports_24h": 148,
+    "summary": "OpenAI Statuspage reports an active incident: Codex Usage Limits Depleting Faster Than Expected.",
+    "current_status": "operational",
+    "reports_24h": 156,
     "incidents": [
+      {
+        "title": "Codex Usage Limits Depleting Faster Than Expected",
+        "started_at": "2026-06-28T03:32:04Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
       {
         "title": "Issues with ChatGPT Windows desktop app",
         "started_at": "2026-06-27T22:01:52Z",
-        "duration": "3m",
+        "duration": "5h 30m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Issues with ChatGPT Windows desktop app",
         "started_at": "2026-06-27T22:00:26Z",
-        "duration": "3h 49m ongoing",
-        "acknowledgement": "Minor / Investigating",
+        "duration": "5h 28m",
+        "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KW5HJAH5X1A2V62HP4ZST1V7"
       },
       {
         "title": "Codex Usage Limits Depleting Faster Than Expected",
-        "started_at": "2026-06-26T23:27:04Z",
-        "duration": "22h 35m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Codex Usage Limits Depleting Faster Than Expected",
         "started_at": "2026-06-26T17:04:02Z",
-        "duration": "1d 8h 45m ongoing",
+        "duration": "1d 10h 58m ongoing",
         "acknowledgement": "Minor / Monitoring",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KW2E6W0503W4NXJNCVAG8V6T"
@@ -222,72 +222,13 @@
         "url": "https://status.openai.com/incidents/01KVTDW6E1PXBTY2A9XEBT4MY4"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Conversations",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-06-27T02:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-27T02:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-27T02:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-27T02:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-27T03:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-27T03:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-27T03:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-27T03:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-06-27T04:00:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-06-27T04:15:00Z",
         "signal_value": 50.0,
@@ -806,7 +747,61 @@
       },
       {
         "timestamp": "2026-06-28T01:45:00Z",
-        "signal_value": 68.0,
+        "signal_value": 73.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-28T02:00:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-28T02:15:00Z",
+        "signal_value": 24.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-28T02:30:00Z",
+        "signal_value": 74.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-06-28T02:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-28T03:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-28T03:15:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-28T03:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-28T03:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-06-28T04:00:00Z",
+        "signal_value": 10.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -817,37 +812,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-06-28T01:45:00Z"
+      "last_sample_at": "2026-06-28T04:00:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "02:00",
-        "count": 1
-      },
-      {
-        "label": "02:20",
-        "count": 3
-      },
-      {
-        "label": "02:40",
-        "count": 1
-      },
-      {
-        "label": "03:00",
-        "count": 2
-      },
-      {
-        "label": "03:20",
-        "count": 2
-      },
-      {
-        "label": "03:40",
-        "count": 3
-      },
-      {
-        "label": "04:00",
-        "count": 5
-      },
       {
         "label": "04:20",
         "count": 3
@@ -1106,7 +1073,35 @@
       },
       {
         "label": "01:40",
+        "count": 5
+      },
+      {
+        "label": "02:00",
+        "count": 5
+      },
+      {
+        "label": "02:20",
+        "count": 1
+      },
+      {
+        "label": "02:40",
         "count": 4
+      },
+      {
+        "label": "03:00",
+        "count": 3
+      },
+      {
+        "label": "03:20",
+        "count": 1
+      },
+      {
+        "label": "03:40",
+        "count": 3
+      },
+      {
+        "label": "04:00",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1115,14 +1110,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-06-27T21:49:56-04:00"
+      "last_reviewed_at": "2026-06-28T00:02:56-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 302,
-        "last_reviewed_at": "2026-06-27T21:49:56-04:00"
+        "reports_24h": 303,
+        "last_reviewed_at": "2026-06-28T00:02:56-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1235,8 +1230,8 @@
       },
       {
         "name": "Conversations",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-06-23T18:25:13Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1357,23 +1352,23 @@
     "top_reported_issues_provider": [
       {
         "label": "Server not responding",
-        "count": 41
+        "count": 42
       },
       {
         "label": "App not loading",
-        "count": 27
+        "count": 28
       },
       {
         "label": "Service down",
-        "count": 18
+        "count": 19
       },
       {
         "label": "Error message",
-        "count": 10
+        "count": 11
       },
       {
         "label": "Sign in problem",
-        "count": 7
+        "count": 8
       },
       {
         "label": "Unable to download",
@@ -1391,6 +1386,13 @@
   },
   "reports": [
     {
+      "title": "Codex Usage Limits Depleting Faster Than Expected",
+      "url": "https://status.openai.com/#2026-06-28T03:32:04Z",
+      "published_at": "2026-06-28T03:32:04Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
       "title": "Issues with ChatGPT Windows desktop app",
       "url": "https://status.openai.com/#2026-06-27T22:01:52Z",
       "published_at": "2026-06-27T22:01:52Z",
@@ -1402,14 +1404,7 @@
       "url": "https://status.openai.com/incidents/01KW5HJAH5X1A2V62HP4ZST1V7",
       "published_at": "2026-06-27T22:00:26Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Investigating"
-    },
-    {
-      "title": "Codex Usage Limits Depleting Faster Than Expected",
-      "url": "https://status.openai.com/#2026-06-26T23:27:04Z",
-      "published_at": "2026-06-26T23:27:04Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Codex Usage Limits Depleting Faster Than Expected",
@@ -1453,45 +1448,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-06-28T01:49:57.866663Z"
+      "published_at": "2026-06-28T04:02:57.553360Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-06-28T01:49:57.866663Z"
+      "published_at": "2026-06-28T04:02:57.553360Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-06-28T01:49:57.866663Z"
+      "published_at": "2026-06-28T04:02:57.553360Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-06-28T01:49:57.866663Z"
+      "published_at": "2026-06-28T04:02:57.553360Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-06-28T01:49:57.866663Z"
+      "published_at": "2026-06-28T04:02:57.553360Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: Partial System Degradation",
+      "title": "OpenAI Statuspage API: All Systems Operational",
       "url": "https://status.openai.com/",
-      "published_at": "2026-06-28T01:49:56.992264Z",
+      "published_at": "2026-06-28T04:02:56.841923Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Issues with ChatGPT Windows desktop app",
+      "url": "https://status.openai.com/incidents/01KW5HJAH5X1A2V62HP4ZST1V7#01KW64CGB87DHRKCVKD3MAVYQB",
+      "published_at": "2026-06-28T03:29:18Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
     },
     {
       "title": "Issues with ChatGPT Windows desktop app",
@@ -1499,7 +1502,7 @@
       "published_at": "2026-06-27T22:00:26Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / We are investigating an issue affecting some users of the ChatGPT Windows desktop app on Windows. Affected users may see chat history or conversations fail to load, missing sidebar icons, or login/sign-up controls that do not respond. ChatG"
+      "meta": "Investigating / Minor / Resolved / We are investigating an issue affecting some users of the ChatGPT Windows desktop app on Windows. Affected users may see chat history or conversations fail to load, missing sidebar icons, or login/sign-up controls that do not respond. ChatG"
     },
     {
       "title": "Codex Usage Limits Depleting Faster Than Expected",
@@ -1540,14 +1543,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Identified / Minor / Resolved / A small number of Users have incorrectly cancelled subscription."
-    },
-    {
-      "title": "Users may encounter issues using access token with Codex",
-      "url": "https://status.openai.com/incidents/01KVYNAMMJ7AMF94YBECG6JG6Q#01KVZ76V6H28EXYTS04F5MDYWZ",
-      "published_at": "2026-06-25T11:03:57Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This is now resolved"
     }
   ],
   "social": [],
@@ -1563,11 +1558,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-06-28T01:49:55.892614Z",
+      "last_item_at": "2026-06-28T04:02:55.839516Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 275,
-      "fetched_at": "2026-06-28T01:49:55.892645Z",
+      "duration_ms": 282,
+      "fetched_at": "2026-06-28T04:02:55.839546Z",
       "cache_hit": false
     },
     {
@@ -1581,11 +1576,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-06-27T21:49:56-04:00",
+      "last_item_at": "2026-06-28T00:02:56-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1099,
-      "fetched_at": "2026-06-28T01:49:56.991751Z",
+      "duration_ms": 1001,
+      "fetched_at": "2026-06-28T04:02:56.841371Z",
       "cache_hit": false
     },
     {
@@ -1599,17 +1594,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-06-28T01:49:56.992264Z",
+      "last_item_at": "2026-06-28T04:02:56.841923Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 872,
-      "fetched_at": "2026-06-28T01:49:57.865067Z",
+      "duration_ms": 709,
+      "fetched_at": "2026-06-28T04:02:57.551640Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-06-28T01:49:57.866663Z",
+    "generated_at": "2026-06-28T04:02:57.553360Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1646,9 +1641,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 275,
+          "duration_ms": 282,
           "cache_hit": false,
-          "at": "2026-06-28T01:49:55Z"
+          "at": "2026-06-28T04:02:55Z"
         },
         "metrics_24h": {
           "runs": 16,
@@ -1657,7 +1652,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 365.8
+          "avg_duration_ms": 325.2
         },
         "metrics_7d": {
           "runs": 94,
@@ -1666,10 +1661,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 437.0
+          "avg_duration_ms": 437.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-28T01:49:55Z",
+        "last_success_at": "2026-06-28T04:02:55Z",
         "last_failure_at": null
       },
       {
@@ -1683,9 +1678,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1099,
+          "duration_ms": 1001,
           "cache_hit": false,
-          "at": "2026-06-28T01:49:55Z"
+          "at": "2026-06-28T04:02:55Z"
         },
         "metrics_24h": {
           "runs": 16,
@@ -1694,7 +1689,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 823.2
+          "avg_duration_ms": 821.2
         },
         "metrics_7d": {
           "runs": 94,
@@ -1703,10 +1698,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 865.3
+          "avg_duration_ms": 868.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-28T01:49:55Z",
+        "last_success_at": "2026-06-28T04:02:55Z",
         "last_failure_at": null
       },
       {
@@ -1720,9 +1715,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 872,
+          "duration_ms": 709,
           "cache_hit": false,
-          "at": "2026-06-28T01:49:55Z"
+          "at": "2026-06-28T04:02:55Z"
         },
         "metrics_24h": {
           "runs": 16,
@@ -1731,7 +1726,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 692.3
+          "avg_duration_ms": 691.3
         },
         "metrics_7d": {
           "runs": 94,
@@ -1740,46 +1735,81 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 727.2
+          "avg_duration_ms": 728.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-06-28T01:49:55Z",
+        "last_success_at": "2026-06-28T04:02:55Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-06-28T01:49:57.866663Z",
+    "generated_at": "2026-06-28T04:02:57.553360Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "413fe785b4af21b7",
+          "title": "Codex Usage Limits Depleting Faster Than Expected",
+          "started_at": "2026-06-28T03:32:04Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [
+        {
+          "id": "986b637281699720",
+          "title": "Issues with ChatGPT Windows desktop app",
+          "started_at": "2026-06-27T22:01:52Z",
+          "duration": "5h 30m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
         {
           "id": "9af0bef85c52b7c6",
           "title": "Issues with ChatGPT Windows desktop app",
           "started_at": "2026-06-27T22:00:26Z",
-          "duration": "3h 49m ongoing",
-          "acknowledgement": "Minor / Investigating",
+          "duration": "5h 28m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         },
         {
           "id": "56690db6f71fbe25",
           "title": "Codex Usage Limits Depleting Faster Than Expected",
           "started_at": "2026-06-26T17:04:02Z",
-          "duration": "1d 8h 45m ongoing",
+          "duration": "1d 10h 58m ongoing",
           "acknowledgement": "Minor / Monitoring",
           "url": "https://status.openai.com/"
         }
       ],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "703d5e874206e2e7",
+          "title": "Codex Usage Limits Depleting Faster Than Expected",
+          "started_at": "2026-06-26T23:27:04Z",
+          "duration": "22h 35m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "f733cd2a706f813c",
+          "title": "Codex Usage Limits Depleting Faster Than Expected",
+          "url": "https://status.openai.com/#2026-06-28T03:32:04Z",
+          "published_at": "2026-06-28T03:32:04Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 2,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 1,
+      "updated_incidents": 3,
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
