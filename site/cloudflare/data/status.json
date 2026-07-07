@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-07T07:41:11.505269Z",
+  "generated_at": "2026-07-07T11:09:26.117620Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -17,9 +17,9 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 106,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 6,
+      "reports_24h": 108,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 4,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -40,26 +40,26 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
-      "report_weight": 0.5
+      "severity_key": "minor",
+      "severity_score": 3,
+      "report_weight": 0.0
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
-      "report_weight": 0.5
+      "severity_key": "major",
+      "severity_score": 9,
+      "report_weight": 1.0
     },
     "apac": {
       "severity_key": "minor",
@@ -73,10 +73,18 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-07-07T07:41:11.223476Z",
+        "published_at": "2026-07-07T11:09:25.705448Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "New members invitations to accounts not being sent",
+        "url": "https://www.cloudflarestatus.com/incidents/zj0cg616009f#v85f8wl4ncld",
+        "published_at": "2026-07-07T10:22:42.617Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / Cloudflare is investigating issues with invites for new members of accounts that are not being sent to the invitees, impacting their ability to join organizations. We are working to mitigate this problem. More updates to follow shortly."
       },
       {
         "title": "Durable Objects Increased Error Rate in ENAM",
@@ -141,26 +149,26 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Cloudflare Vectorize Issues",
-        "url": "https://www.cloudflarestatus.com/incidents/xg47100zs4zw#nnt3rzd042sb",
-        "published_at": "2026-07-04T21:25:08.258Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with the Vectorize service. Customers may receive an \"Internal Server Error\" (HTTP 500) response when sending requests to a Vectorize index that has been deleted, instead of the expected \"Not Found\" (HTTP "
       }
     ],
-    "last_statement_at": "2026-07-07T07:41:11.223476Z"
+    "last_statement_at": "2026-07-07T11:09:25.705448Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 9h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: New members invitations to accounts not being sent.",
     "current_status": "degraded",
-    "reports_24h": 106,
+    "reports_24h": 108,
     "incidents": [
+      {
+        "title": "New members invitations to accounts not being sent",
+        "started_at": "2026-07-07T10:22:42.514Z",
+        "duration": "46m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/zj0cg616009f"
+      },
       {
         "title": "CDG (Paris) on 2026-07-07",
         "started_at": "2026-07-07T00:45:21Z",
@@ -206,14 +214,6 @@
         "started_at": "2026-07-06T01:50:25Z",
         "duration": "6h 25m",
         "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Elevated number of errors in Munich, Germany",
-        "started_at": "2026-07-05T05:35:53.000Z",
-        "duration": "0m",
-        "acknowledgement": "None / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/l00dw0ljst7t"
       }
     ],
     "top_reported_issues": [
@@ -242,104 +242,20 @@
         "count": 1
       },
       {
-        "label": "Asia",
+        "label": "Account Management",
         "count": 1
       },
       {
-        "label": "Europe",
+        "label": "Asia",
         "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-07-06T07:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T08:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T08:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T08:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T08:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T09:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T09:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T09:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T09:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T10:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T10:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T10:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T10:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-06T11:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-07-06T11:15:00Z",
         "signal_value": 2.0,
@@ -828,7 +744,91 @@
       },
       {
         "timestamp": "2026-07-07T07:30:00Z",
-        "signal_value": 11.0,
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T07:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T08:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T08:15:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T08:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T08:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T09:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T09:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T09:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T09:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T10:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T10:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T10:30:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-07T10:45:00Z",
+        "signal_value": 30.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-07-07T11:00:00Z",
+        "signal_value": 6.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -839,50 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-07-07T07:30:00Z"
+      "last_sample_at": "2026-07-07T11:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "08:00",
-        "count": 0
-      },
-      {
-        "label": "08:20",
-        "count": 2
-      },
-      {
-        "label": "08:40",
-        "count": 0
-      },
-      {
-        "label": "09:00",
-        "count": 1
-      },
-      {
-        "label": "09:20",
-        "count": 3
-      },
-      {
-        "label": "09:40",
-        "count": 1
-      },
-      {
-        "label": "10:00",
-        "count": 1
-      },
-      {
-        "label": "10:20",
-        "count": 3
-      },
-      {
-        "label": "10:40",
-        "count": 1
-      },
-      {
-        "label": "11:00",
-        "count": 2
-      },
       {
         "label": "11:20",
         "count": 0
@@ -1130,6 +1090,46 @@
       {
         "label": "07:40",
         "count": 0
+      },
+      {
+        "label": "08:00",
+        "count": 1
+      },
+      {
+        "label": "08:20",
+        "count": 3
+      },
+      {
+        "label": "08:40",
+        "count": 1
+      },
+      {
+        "label": "09:00",
+        "count": 2
+      },
+      {
+        "label": "09:20",
+        "count": 0
+      },
+      {
+        "label": "09:40",
+        "count": 2
+      },
+      {
+        "label": "10:00",
+        "count": 2
+      },
+      {
+        "label": "10:20",
+        "count": 0
+      },
+      {
+        "label": "10:40",
+        "count": 2
+      },
+      {
+        "label": "11:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-07T03:41:09-04:00"
+      "last_reviewed_at": "2026-07-07T07:09:24-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 106,
-        "last_reviewed_at": "2026-07-07T03:41:09-04:00"
+        "reports_24h": 108,
+        "last_reviewed_at": "2026-07-07T07:09:24-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1320,10 +1320,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "AI Gateway",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-26T19:52:50.296Z",
+        "name": "Account Management",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-07-07T10:22:42.554Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1383,10 +1383,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "AI Search",
+        "name": "AI Gateway",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-04-02T10:29:03.492Z",
+        "updated_at": "2026-07-07T10:22:08.802Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1401,13 +1401,6 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-02T12:26:12.212Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Always Online",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.148Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1453,6 +1446,13 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "AI Search",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:08.816Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Latin America & the Caribbean",
         "status": "degraded",
         "health": "partial_outage",
@@ -1460,10 +1460,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Analytics",
+        "name": "Always Online",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-30T14:02:01.625Z",
+        "updated_at": "2026-07-07T10:22:08.828Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1502,10 +1502,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "API",
+        "name": "Analytics",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-12T15:27:46.688Z",
+        "updated_at": "2026-07-07T10:22:08.840Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1540,7 +1540,7 @@
         "name": "Dammam, Saudi Arabia - (DMM)",
         "status": "degraded",
         "health": "under_maintenance",
-        "updated_at": "2026-07-02T04:55:11.420Z",
+        "updated_at": "2026-07-07T10:20:37.158Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1548,6 +1548,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-06T04:17:15.616Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "API",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:08.853Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1568,7 +1575,7 @@
         "name": "Doha, Qatar - (DOH)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-06T08:20:34.738Z",
+        "updated_at": "2026-07-07T09:54:38.115Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1589,7 +1596,7 @@
         "name": "Dar Es Salaam, Tanzania - (DAR)",
         "status": "degraded",
         "health": "under_maintenance",
-        "updated_at": "2026-07-07T07:39:18.745Z",
+        "updated_at": "2026-07-07T10:57:23.046Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1597,13 +1604,6 @@
         "status": "degraded",
         "health": "under_maintenance",
         "updated_at": "2026-06-17T00:04:21.807Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "API Shield",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-01T13:00:11.197Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1663,10 +1663,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Apps Marketplace",
+        "name": "API Shield",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.187Z",
+        "updated_at": "2026-07-07T10:22:08.865Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1692,9 +1692,16 @@
       },
       {
         "name": "Charlotte, NC, United States - (CLT)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-07-07T06:33:16.797Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T07:49:42.856Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Apps Marketplace",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:08.879Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1716,13 +1723,6 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-11T07:25:26.251Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Area 1 - API",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.197Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1771,14 +1771,14 @@
         "name": "Gaborone, Botswana - (GBE)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-07T04:21:35.683Z",
+        "updated_at": "2026-07-07T10:57:22.604Z",
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Area 1 - Dash",
+        "name": "Area 1 - API",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.207Z",
+        "updated_at": "2026-07-07T10:22:08.893Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1796,13 +1796,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Argo Smart Routing",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-03T13:00:17.362Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Harare, Zimbabwe - (HRE)",
         "status": "degraded",
         "health": "partial_outage",
@@ -1813,7 +1806,7 @@
         "name": "Jeddah, Saudi Arabia - (JED)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-06T08:20:35.161Z",
+        "updated_at": "2026-07-07T10:20:36.745Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1828,6 +1821,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-26T07:10:16.914Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Area 1 - Dash",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:08.905Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1859,17 +1859,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Argo Smart Routing",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:08.917Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Córdoba, Argentina - (COR)",
         "status": "degraded",
         "health": "partial_outage",
         "updated_at": "2026-07-03T20:24:33.408Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Audit Logs",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-03T21:25:18.381Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1901,13 +1901,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Authoritative DNS",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-20T22:23:11.569Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Kigali, Rwanda - (KGL)",
         "status": "degraded",
         "health": "partial_outage",
@@ -1919,6 +1912,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-22T23:39:03.237Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Audit Logs",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:08.929Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1943,13 +1943,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Billing",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-19T23:18:52.054Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Denver, CO, United States - (DEN)",
         "status": "operational",
         "health": "operational",
@@ -1971,6 +1964,13 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Authoritative DNS",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:08.941Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Curitiba, Brazil - (CWB)",
         "status": "operational",
         "health": "operational",
@@ -1982,6 +1982,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-26T17:50:54.504Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Billing",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.390Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2027,13 +2034,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Blog",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.293Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Fortaleza, Brazil - (FOR)",
         "status": "degraded",
         "health": "under_maintenance",
@@ -2052,13 +2052,6 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-08T01:03:36.018Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Bring Your Own IP (BYOIP)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-04T01:00:07.122Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2083,6 +2076,13 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Blog",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.400Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Mombasa, Kenya - (MBA)",
         "status": "degraded",
         "health": "under_maintenance",
@@ -2104,10 +2104,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Browser Isolation",
+        "name": "Bring Your Own IP (BYOIP)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-19T21:05:15.299Z",
+        "updated_at": "2026-07-07T10:22:03.410Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2142,7 +2142,7 @@
         "name": "Riyadh, Saudi Arabia - (RUH)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-05T11:11:46.459Z",
+        "updated_at": "2026-07-07T09:49:23.240Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2150,6 +2150,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-05T09:38:33.054Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Browser Isolation",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.419Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2171,13 +2178,6 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-18T07:45:59.752Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Browser Run",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-09T21:13:41.083Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2216,17 +2216,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Bot Management",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-04T00:12:49.914Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Oran, Algeria - (ORN)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-06T10:50:17.046Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Browser Run",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.429Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2265,17 +2265,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Bot Management",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.438Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Izmir, Turkey - (ADB)",
         "status": "degraded",
         "health": "partial_outage",
         "updated_at": "2026-06-20T21:44:49.793Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Brand Protection",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.343Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2307,10 +2307,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Cache Reserve",
+        "name": "Brand Protection",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-02T02:53:55.382Z",
+        "updated_at": "2026-07-07T10:22:03.448Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2328,13 +2328,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "CDN/Cache",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-30T13:48:01.713Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Hengshui, China - (SJW)",
         "status": "operational",
         "health": "operational",
@@ -2346,6 +2339,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-24T02:33:26.062Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Cache Reserve",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.458Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2370,10 +2370,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "CDN Cache Purge",
+        "name": "CDN/Cache",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-13T15:26:38.855Z",
+        "updated_at": "2026-07-07T10:22:03.467Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2385,9 +2385,9 @@
       },
       {
         "name": "Juazeiro do Norte, Brazil - (JDO)",
-        "status": "degraded",
-        "health": "partial_outage",
-        "updated_at": "2026-07-07T01:25:29.809Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T09:18:06.427Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2399,9 +2399,9 @@
       },
       {
         "name": "Lima, Peru - (LIM)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-07T06:37:00.254Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-07-07T09:07:43.028Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2409,6 +2409,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-04T18:17:47.939Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "CDN Cache Purge",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.477Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2423,13 +2430,6 @@
         "status": "degraded",
         "health": "partial_outage",
         "updated_at": "2026-06-03T10:23:07.665Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Challenge Platform",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-02T17:28:59.532Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2454,17 +2454,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Cloud Access Security Broker (CASB)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-08T22:25:53.443Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Lyon, France - (LYS)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-05-05T18:36:05.433Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Challenge Platform",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.487Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2499,7 +2499,14 @@
         "name": "Islamabad, Pakistan - (ISB)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-06T13:10:30.300Z",
+        "updated_at": "2026-07-07T10:15:25.631Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Cloud Access Security Broker (CASB)",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.498Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2507,13 +2514,6 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-26T21:48:36.201Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Cloud App Control / Kivera",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.398Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2552,10 +2552,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Cloud Connector",
+        "name": "Cloud App Control / Kivera",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.406Z",
+        "updated_at": "2026-07-07T10:22:03.508Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2587,10 +2587,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Cloud Network Interconnect (CNI)",
+        "name": "Cloud Connector",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-17T12:57:30.290Z",
+        "updated_at": "2026-07-07T10:22:03.518Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2622,17 +2622,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Cloudforce One Reports",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.424Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Kampala, Uganda - (EBB)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-06T00:24:25.829Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Cloud Network Interconnect (CNI)",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.529Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2650,17 +2650,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Community Site",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.433Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Minsk, Belarus - (MSQ)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-06T02:33:49.561Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Cloudforce One Reports",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:22:03.539Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2685,17 +2685,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Community Site",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.785Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Saint-Denis, Réunion - (RUN)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-17T11:46:38.631Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Containers",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-03T20:30:50.576Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2727,10 +2727,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Custom Pages",
+        "name": "Containers",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-02-27T05:23:35.966Z",
+        "updated_at": "2026-07-07T10:21:57.800Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2762,10 +2762,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "D1",
+        "name": "Custom Pages",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T20:30:50.602Z",
+        "updated_at": "2026-07-07T10:21:57.813Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2791,23 +2791,23 @@
       },
       {
         "name": "Ribeirao Preto, Brazil - (RAO)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-03T13:04:05.443Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-07-07T09:23:18.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Data Localization Suite",
+        "name": "D1",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.468Z",
+        "updated_at": "2026-07-07T10:21:57.828Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Rio de Janeiro, Brazil - (GIG)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-07-07T06:37:01.277Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T09:07:41.599Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2825,13 +2825,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Data Loss Prevention (DLP)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-04-29T23:48:58.743Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Oklahoma City, OK, United States - (OKC)",
         "status": "operational",
         "health": "operational",
@@ -2839,10 +2832,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Dashboard",
+        "name": "Data Localization Suite",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-04T15:32:43.999Z",
+        "updated_at": "2026-07-07T10:21:57.842Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2860,17 +2853,24 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Data Loss Prevention (DLP)",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.855Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Dashboard",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.868Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Prague, Czech Republic - (PRG)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-03-24T05:27:12.784Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Developer's Site",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.493Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2902,6 +2902,13 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Developer's Site",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.883Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Philadelphia, United States - (PHL)",
         "status": "operational",
         "health": "operational",
@@ -2913,13 +2920,6 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-03T19:58:38.442Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Digital Experience Monitoring (DEX)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-19T15:57:59.204Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2951,17 +2951,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Distributed Web Gateway",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.511Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Santo Domingo, Dominican Republic - (SDQ)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-19T03:05:46.884Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Digital Experience Monitoring (DEX)",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.897Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2986,17 +2986,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Distributed Web Gateway",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.910Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "São José do Rio Preto, Brazil - (SJP)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-03T06:30:58.254Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "DNS Firewall",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.520Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3021,13 +3021,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "DNS Root Servers",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-05T22:01:04.555Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Langfang, China - (PKX)",
         "status": "operational",
         "health": "operational",
@@ -3039,6 +3032,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-06T11:42:15.579Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "DNS Firewall",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.924Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3056,17 +3056,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "DNS Updates",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.537Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Queretaro, MX, Mexico - (QRO)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-29T21:50:15.605Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "DNS Root Servers",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.937Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3084,17 +3084,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "DNS Updates",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:57.950Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Sorocaba, Brazil - (SOD)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-24T09:44:23.108Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Durable Objects",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-07T00:42:23.032Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3126,10 +3126,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Email Routing",
+        "name": "Durable Objects",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-19T22:27:24.000Z",
+        "updated_at": "2026-07-07T10:21:57.962Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3157,14 +3157,14 @@
         "name": "Tegucigalpa, Honduras - (TGU)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-30T18:02:25.594Z",
+        "updated_at": "2026-07-07T08:52:11.839Z",
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Email Security (Area1)",
+        "name": "Email Routing",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.562Z",
+        "updated_at": "2026-07-07T10:21:57.974Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3189,10 +3189,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Email Security (Zero Trust)",
+        "name": "Email Security (Area1)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-02-13T13:31:15.569Z",
+        "updated_at": "2026-07-07T10:21:57.986Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3224,10 +3224,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Email Sending",
+        "name": "Email Security (Zero Trust)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-14T04:48:38.144Z",
+        "updated_at": "2026-07-07T10:21:52.446Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3252,17 +3252,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Ethereum Gateway",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-13T14:42:55.871Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Vitoria, Brazil - (VIX)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-06T09:01:41.139Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Email Sending",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.461Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3287,10 +3287,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Firewall",
+        "name": "Ethereum Gateway",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-22T15:15:34.024Z",
+        "updated_at": "2026-07-07T10:21:52.475Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3298,6 +3298,13 @@
         "status": "degraded",
         "health": "partial_outage",
         "updated_at": "2026-06-12T07:37:28.642Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Firewall",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.489Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3312,13 +3319,6 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-07T03:13:50.649Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Gateway",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-13T14:42:55.894Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3350,10 +3350,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Geo-Key Manager",
+        "name": "Gateway",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-13T14:42:55.905Z",
+        "updated_at": "2026-07-07T10:21:52.504Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3378,6 +3378,13 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Geo-Key Manager",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.518Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Sioux Falls, SD, United States - (FSD)",
         "status": "degraded",
         "health": "under_maintenance",
@@ -3389,13 +3396,6 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-06T16:32:45.456Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Health Checks",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-03T21:56:52.971Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3420,17 +3420,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Health Checks",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.532Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "St. George's, Grenada - (GND)",
         "status": "degraded",
         "health": "partial_outage",
         "updated_at": "2026-06-30T16:03:10.429Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Hyperdrive",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-09T15:05:42.409Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3448,17 +3448,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Image Resizing",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-11T01:43:19.402Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Santiago de los Caballeros, Dominican Republic - (STI)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-03T19:11:57.267Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Hyperdrive",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.546Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3476,17 +3476,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Image Resizing",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.560Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Qingdao, China - (TAO)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2025-02-11T18:43:30.908Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Images",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-10T21:33:44.273Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3518,10 +3518,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Infrastructure",
+        "name": "Images",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-13T14:42:55.960Z",
+        "updated_at": "2026-07-07T10:21:52.575Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3546,17 +3546,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Infrastructure",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.589Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "San Juan, Puerto Rico - (SJU)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-02T09:41:37.869Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "IP Geolocation",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-13T14:42:55.971Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3574,13 +3574,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Load Balancing and Monitoring",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-03T21:56:52.992Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Barranquilla, Colombia - (BAQ)",
         "status": "operational",
         "health": "operational",
@@ -3588,17 +3581,24 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "IP Geolocation",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.603Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Load Balancing and Monitoring",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.618Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Surat Thani, Thailand - (URT)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-02T21:38:38.194Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Lists",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-13T14:42:55.993Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3623,24 +3623,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Lists",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:52.632Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Aracatuba, Brazil - (ARU)",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-07T00:47:46.590Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Log Explorer",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-10T12:46:56.600Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Logs",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-06-08T16:57:30.682Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3651,10 +3644,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Cloudflare Network Firewall",
+        "name": "Log Explorer",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-13T14:42:42.900Z",
+        "updated_at": "2026-07-07T10:21:52.648Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "Logs",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:46.962Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3665,10 +3665,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Magic Transit",
+        "name": "Cloudflare Network Firewall",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-13T14:42:42.910Z",
+        "updated_at": "2026-07-07T10:21:46.976Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3679,10 +3679,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Cloudflare WAN",
+        "name": "Magic Transit",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-22T08:06:41.488Z",
+        "updated_at": "2026-07-07T10:21:46.989Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3693,17 +3693,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Cloudflare One Appliance",
+        "name": "Cloudflare WAN",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-13T14:42:42.928Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Marketing Site",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-05-13T14:42:42.937Z",
+        "updated_at": "2026-07-07T10:21:47.004Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3714,17 +3707,24 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "MCP Portal",
+        "name": "Cloudflare One Appliance",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-21T11:50:29.829Z",
+        "updated_at": "2026-07-07T10:21:47.017Z",
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Mesh",
+        "name": "Marketing Site",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-24T17:30:29.043Z",
+        "updated_at": "2026-07-07T10:21:47.031Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "MCP Portal",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:47.044Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3735,17 +3735,17 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Mirage",
+        "name": "Mesh",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-19T22:09:38.471Z",
+        "updated_at": "2026-07-07T10:21:47.058Z",
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Network",
+        "name": "Mirage",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-06T01:49:27.899Z",
+        "updated_at": "2026-07-07T10:21:47.074Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3756,10 +3756,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Notifications",
+        "name": "Network",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-09T13:00:07.286Z",
+        "updated_at": "2026-07-07T10:21:47.089Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3770,52 +3770,59 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Notifications",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:47.105Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Observatory",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-19T22:09:32.872Z",
+        "updated_at": "2026-07-07T10:21:47.120Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Page Shield",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-26T13:00:09.897Z",
+        "updated_at": "2026-07-07T10:21:47.137Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Pages",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-07-02T00:35:16.909Z",
+        "updated_at": "2026-07-07T10:21:47.151Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Queues",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-22T13:00:10.699Z",
+        "updated_at": "2026-07-07T10:21:47.166Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "R2",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-30T22:16:24.441Z",
+        "updated_at": "2026-07-07T10:21:47.180Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Radar",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-19T22:09:32.912Z",
+        "updated_at": "2026-07-07T10:21:41.046Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Randomness Beacon",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-19T22:09:32.920Z",
+        "updated_at": "2026-07-07T10:21:41.057Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3826,13 +3833,6 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Realtime SFU",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-03T20:30:50.661Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
         "name": "Ljubljana, Slovenia - (LJU)",
         "status": "operational",
         "health": "operational",
@@ -3840,38 +3840,45 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Realtime SFU",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:41.068Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Realtime TURN Service",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-06-19T00:33:16.771Z",
+        "updated_at": "2026-07-07T10:21:41.079Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "RealtimeKit",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T20:30:50.685Z",
+        "updated_at": "2026-07-07T10:21:41.089Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Recursive DNS",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-04T08:22:52.294Z",
+        "updated_at": "2026-07-07T10:21:41.100Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Registrar",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-05-19T22:09:32.957Z",
+        "updated_at": "2026-07-07T10:21:41.112Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Registration Data Access Protocol (RDAP)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:20.455Z",
+        "updated_at": "2026-07-07T10:21:41.130Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3892,21 +3899,14 @@
         "name": "Replicate",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:20.470Z",
+        "updated_at": "2026-07-07T10:21:41.143Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Rules",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:20.485Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "Secondary DNS",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-03T21:21:20.501Z",
+        "updated_at": "2026-07-07T10:21:41.158Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3917,10 +3917,10 @@
         "source": "Cloudflare Statuspage API"
       },
       {
-        "name": "Security Center",
+        "name": "Secondary DNS",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:20.516Z",
+        "updated_at": "2026-07-07T10:21:41.171Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3931,94 +3931,94 @@
         "source": "Cloudflare Statuspage API"
       },
       {
+        "name": "Security Center",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:41.182Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
         "name": "Snippets",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:20.532Z",
+        "updated_at": "2026-07-07T10:21:41.193Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Spectrum",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:20.547Z",
+        "updated_at": "2026-07-07T10:21:41.207Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Speed Optimizations",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:29.954Z",
+        "updated_at": "2026-07-07T10:21:41.218Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Stream",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:29.963Z",
+        "updated_at": "2026-07-07T10:21:41.229Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "SSL Certificate Provisioning",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:29.972Z",
+        "updated_at": "2026-07-07T10:21:35.971Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "SSL for SaaS Provisioning",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:29.981Z",
+        "updated_at": "2026-07-07T10:21:35.981Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Subscriptions",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:29.991Z",
+        "updated_at": "2026-07-07T10:21:35.991Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Support Site",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:30.001Z",
+        "updated_at": "2026-07-07T10:21:36.001Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Time Services",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:30.010Z",
+        "updated_at": "2026-07-07T10:21:36.013Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Trace",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:30.019Z",
+        "updated_at": "2026-07-07T10:21:36.024Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Tunnel",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:30.028Z",
+        "updated_at": "2026-07-07T10:21:36.033Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Turnstile",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:30.037Z",
-        "source": "Cloudflare Statuspage API"
-      },
-      {
-        "name": "User Profiles",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-03T21:21:30.046Z",
+        "updated_at": "2026-07-07T10:21:36.043Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4026,6 +4026,13 @@
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-06-22T17:46:45.944Z",
+        "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "User Profiles",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-07T10:21:36.052Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4039,140 +4046,140 @@
         "name": "URL Scanner",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:30.055Z",
+        "updated_at": "2026-07-07T10:21:36.062Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Vectorize",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-04T22:47:19.949Z",
+        "updated_at": "2026-07-07T10:21:36.071Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Waiting Room",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:37.529Z",
+        "updated_at": "2026-07-07T10:21:36.081Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Cloudflare One Client",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:21:37.541Z",
+        "updated_at": "2026-07-07T10:21:36.091Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "WARP",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T22:57:09.185Z",
+        "updated_at": "2026-07-07T10:21:36.100Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Web Analytics",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:20:05.952Z",
+        "updated_at": "2026-07-07T10:21:36.110Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "WebSockets",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:54.906Z",
+        "updated_at": "2026-07-07T10:21:30.085Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Workers",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:54.921Z",
+        "updated_at": "2026-07-07T10:21:30.099Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Workers AI",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:54.936Z",
+        "updated_at": "2026-07-07T10:21:30.113Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Workers Assets",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:54.950Z",
+        "updated_at": "2026-07-07T10:21:30.127Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Workers Builds",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:54.964Z",
+        "updated_at": "2026-07-07T10:21:30.142Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Workers Preview",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:54.979Z",
+        "updated_at": "2026-07-07T10:21:30.157Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Workers KV",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:54.993Z",
+        "updated_at": "2026-07-07T10:21:30.172Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Workers Observability",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:55.007Z",
+        "updated_at": "2026-07-07T10:21:30.185Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Workflows",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:55.021Z",
+        "updated_at": "2026-07-07T10:21:30.197Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Wrangler",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:55.036Z",
+        "updated_at": "2026-07-07T10:21:30.209Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Zaraz",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:55.051Z",
+        "updated_at": "2026-07-07T10:21:30.221Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Zero Trust",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:55.065Z",
+        "updated_at": "2026-07-07T10:21:30.233Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Zero Trust Dashboard",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-06T09:54:34.423Z",
+        "updated_at": "2026-07-07T10:21:30.248Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Zone Versioning",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-03T21:19:55.093Z",
+        "updated_at": "2026-07-07T10:21:30.263Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4452,6 +4459,13 @@
   },
   "reports": [
     {
+      "title": "New members invitations to accounts not being sent",
+      "url": "https://www.cloudflarestatus.com/incidents/zj0cg616009f",
+      "published_at": "2026-07-07T10:22:42.514Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "CDG (Paris) on 2026-07-07",
       "url": "https://www.cloudflarestatus.com/#2026-07-07T00:45:21Z",
       "published_at": "2026-07-07T00:45:21Z",
@@ -4499,13 +4513,6 @@
       "published_at": "2026-07-06T01:50:25Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
-    },
-    {
-      "title": "Elevated number of errors in Munich, Germany",
-      "url": "https://www.cloudflarestatus.com/incidents/l00dw0ljst7t",
-      "published_at": "2026-07-05T05:35:53.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "None / Resolved"
     }
   ],
   "known_resources": [
@@ -4514,52 +4521,60 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-07-07T07:41:11.505269Z"
+      "published_at": "2026-07-07T11:09:26.117620Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-07T07:41:11.505269Z"
+      "published_at": "2026-07-07T11:09:26.117620Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-07T07:41:11.505269Z"
+      "published_at": "2026-07-07T11:09:26.117620Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-07-07T07:41:11.505269Z"
+      "published_at": "2026-07-07T11:09:26.117620Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-07-07T07:41:11.505269Z"
+      "published_at": "2026-07-07T11:09:26.117620Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-07T07:41:11.505269Z"
+      "published_at": "2026-07-07T11:09:26.117620Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-07-07T07:41:11.223476Z",
+      "published_at": "2026-07-07T11:09:25.705448Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "New members invitations to accounts not being sent",
+      "url": "https://www.cloudflarestatus.com/incidents/zj0cg616009f#v85f8wl4ncld",
+      "published_at": "2026-07-07T10:22:42.617Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / Cloudflare is investigating issues with invites for new members of accounts that are not being sent to the invitees, impacting their ability to join organizations. We are working to mitigate this problem. More updates to follow shortly."
     },
     {
       "title": "Durable Objects Increased Error Rate in ENAM",
@@ -4608,14 +4623,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Major / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Elevated number of errors in Munich, Germany",
-      "url": "https://www.cloudflarestatus.com/incidents/l00dw0ljst7t#hp29q7qr7xkg",
-      "published_at": "2026-07-05T05:35:53.000Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / None / Resolved / Between 05:07-05:19 UTC customers reaching Munich may have experienced an elevated number of 4XX or 5XX errors. The issue is now resolved"
     }
   ],
   "social": [],
@@ -4631,11 +4638,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-07-07T07:41:09.270787Z",
+      "last_item_at": "2026-07-07T11:09:24.531674Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 354,
-      "fetched_at": "2026-07-07T07:41:09.270805Z",
+      "duration_ms": 206,
+      "fetched_at": "2026-07-07T11:09:24.531695Z",
       "cache_hit": false
     },
     {
@@ -4649,11 +4656,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-07T03:41:09-04:00",
+      "last_item_at": "2026-07-07T07:09:24-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1952,
-      "fetched_at": "2026-07-07T07:41:11.222928Z",
+      "duration_ms": 1173,
+      "fetched_at": "2026-07-07T11:09:25.704943Z",
       "cache_hit": false
     },
     {
@@ -4667,17 +4674,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-07T07:41:11.223476Z",
+      "last_item_at": "2026-07-07T11:09:25.705448Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 280,
-      "fetched_at": "2026-07-07T07:41:11.503593Z",
+      "duration_ms": 410,
+      "fetched_at": "2026-07-07T11:09:26.116093Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-07T07:41:11.505269Z",
+    "generated_at": "2026-07-07T11:09:26.117620Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4699,7 +4706,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4714,9 +4721,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 354,
+          "duration_ms": 206,
           "cache_hit": false,
-          "at": "2026-07-07T07:41:08Z"
+          "at": "2026-07-07T11:09:24Z"
         },
         "metrics_24h": {
           "runs": 14,
@@ -4725,19 +4732,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 533.1
+          "avg_duration_ms": 530.8
         },
         "metrics_7d": {
-          "runs": 112,
-          "ok": 112,
+          "runs": 111,
+          "ok": 111,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 455.1
+          "avg_duration_ms": 456.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-07T07:41:08Z",
+        "last_success_at": "2026-07-07T11:09:24Z",
         "last_failure_at": null
       },
       {
@@ -4751,9 +4758,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1952,
+          "duration_ms": 1173,
           "cache_hit": false,
-          "at": "2026-07-07T07:41:08Z"
+          "at": "2026-07-07T11:09:24Z"
         },
         "metrics_24h": {
           "runs": 14,
@@ -4762,19 +4769,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1618.7
+          "avg_duration_ms": 1515.3
         },
         "metrics_7d": {
-          "runs": 112,
-          "ok": 112,
+          "runs": 111,
+          "ok": 111,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1273.2
+          "avg_duration_ms": 1272.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-07T07:41:08Z",
+        "last_success_at": "2026-07-07T11:09:24Z",
         "last_failure_at": null
       },
       {
@@ -4788,9 +4795,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 280,
+          "duration_ms": 410,
           "cache_hit": false,
-          "at": "2026-07-07T07:41:08Z"
+          "at": "2026-07-07T11:09:24Z"
         },
         "metrics_24h": {
           "runs": 14,
@@ -4799,38 +4806,65 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 407.4
+          "avg_duration_ms": 413.6
         },
         "metrics_7d": {
-          "runs": 112,
-          "ok": 111,
+          "runs": 111,
+          "ok": 110,
           "stale": 1,
           "success_rate": 99.1,
           "stale_rate": 0.9,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 369.7
+          "avg_duration_ms": 370.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-07T07:41:08Z",
+        "last_success_at": "2026-07-07T11:09:24Z",
         "last_failure_at": "2026-06-30T17:23:12Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-07T07:41:11.505269Z",
+    "generated_at": "2026-07-07T11:09:26.117620Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "ebc1f1bf05d601f1",
+          "title": "New members invitations to accounts not being sent",
+          "started_at": "2026-07-07T10:22:42.514Z",
+          "duration": "46m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "c0ddc81dcb4b40ee",
+          "title": "Elevated number of errors in Munich, Germany",
+          "started_at": "2026-07-05T05:35:53.000Z",
+          "duration": "0m",
+          "acknowledgement": "None / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "7d0aef362926e6c3",
+          "title": "New members invitations to accounts not being sent",
+          "url": "https://www.cloudflarestatus.com/incidents/zj0cg616009f",
+          "published_at": "2026-07-07T10:22:42.514Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
