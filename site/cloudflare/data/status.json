@@ -1,30 +1,30 @@
 {
-  "generated_at": "2026-07-14T03:29:25.222284Z",
+  "generated_at": "2026-07-14T03:57:57.962865Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "degraded",
+    "severity_score": 6,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 3.8,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.4,
-      "support_score": 1.435,
+      "support_score": 1.36,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
       "reports_24h": 3,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 1,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 3,
       "cross_source": {
-        "report_score": 0.607,
+        "report_score": 0.532,
         "news_score": 0.828,
         "social_score": 0.0,
-        "combined_score": 1.435,
+        "combined_score": 1.36,
         "report_hits_24h": 0
       }
     },
@@ -40,31 +40,31 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 4,
-      "report_weight": 0.333
+      "severity_key": "major",
+      "severity_score": 11,
+      "report_weight": 1.0
     },
     "na": {
       "severity_key": "minor",
       "severity_score": 4,
-      "report_weight": 0.333
+      "report_weight": 0.0
     },
     "apac": {
       "severity_key": "minor",
       "severity_score": 4,
-      "report_weight": 0.333
+      "report_weight": 0.0
     }
   },
   "official": {
@@ -73,10 +73,18 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-07-14T03:29:24.955141Z",
+        "published_at": "2026-07-14T03:57:57.750254Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Elevated R2 errors in EU region",
+        "url": "https://www.cloudflarestatus.com/incidents/vdqxvlfyjqx2#qd8ctkccm4bg",
+        "published_at": "2026-07-14T03:46:39.817Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / Cloudflare is observing issues with Cloudflare R2 service. We are currently working on a resolution. More updates to follow shortly."
       },
       {
         "title": "Incorrect zone limits impacting some customers",
@@ -141,26 +149,32 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
-      },
-      {
-        "title": "Cloudflare Dashboard login issue",
-        "url": "https://www.cloudflarestatus.com/incidents/1lyqqs442bqf#qqjhrgw5j1q7",
-        "published_at": "2026-07-12T12:03:58.134Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are continuing to investigate this issue."
       }
     ],
-    "last_statement_at": "2026-07-14T03:29:24.955141Z"
+    "last_statement_at": "2026-07-14T03:57:57.750254Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 11h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: Elevated R2 errors in EU region.",
     "current_status": "degraded",
     "reports_24h": 3,
     "incidents": [
+      {
+        "title": "Elevated R2 errors in EU region",
+        "started_at": "2026-07-14T03:50:32Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Elevated R2 errors in EU region",
+        "started_at": "2026-07-14T03:46:39.716Z",
+        "duration": "11m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/vdqxvlfyjqx2"
+      },
       {
         "title": "Incorrect zone limits impacting some customers",
         "started_at": "2026-07-13T16:36:03.230Z",
@@ -172,7 +186,7 @@
       {
         "title": "Workers AI experiencing degraded availability in some models",
         "started_at": "2026-07-12T22:35:18Z",
-        "duration": "1m",
+        "duration": "1d 5h 15m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -200,25 +214,15 @@
         "started_at": "2026-07-12T09:45:35Z",
         "duration": "4h 10m",
         "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Cloudflare Dashboard login issue",
-        "started_at": "2026-07-12T09:43:31.104Z",
-        "duration": "4h 10m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/1lyqqs442bqf"
-      },
-      {
-        "title": "Workers AI experiencing degraded availability in some models",
-        "started_at": "2026-07-11T10:50:24Z",
-        "duration": "22h 55m",
-        "acknowledgement": "warn icon Warn"
       }
     ],
     "top_reported_issues": [
       {
         "label": "Amsterdam, Netherlands - (AMS)",
+        "count": 1
+      },
+      {
+        "label": "Cloudflare Sites and Services",
         "count": 1
       },
       {
@@ -238,36 +242,20 @@
         "count": 1
       },
       {
+        "label": "Algiers, Algeria - (ALG)",
+        "count": 1
+      },
+      {
         "label": "Annaba, Algeria - (AAE)",
-        "count": 1
-      },
-      {
-        "label": "Asia",
-        "count": 1
-      },
-      {
-        "label": "Europe",
         "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-07-13T03:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-13T03:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-07-13T04:00:00Z",
         "signal_value": 4.0,
@@ -828,6 +816,18 @@
       },
       {
         "timestamp": "2026-07-14T03:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-14T03:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-14T03:45:00Z",
         "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
@@ -839,13 +839,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-07-14T03:15:00Z"
+      "last_sample_at": "2026-07-14T03:45:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "03:40",
-        "count": 1
-      },
       {
         "label": "04:00",
         "count": 2
@@ -1129,6 +1125,10 @@
       {
         "label": "03:20",
         "count": 0
+      },
+      {
+        "label": "03:40",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1137,14 +1137,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-13T23:29:24-04:00"
+      "last_reviewed_at": "2026-07-13T23:57:56-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 109,
-        "last_reviewed_at": "2026-07-13T23:29:24-04:00"
+        "reports_24h": 110,
+        "last_reviewed_at": "2026-07-13T23:57:56-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1159,8 +1159,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -1250,9 +1250,9 @@
       },
       {
         "name": "Algiers, Algeria - (ALG)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-09T22:50:41.402Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-07-14T03:48:34.415Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1544,9 +1544,9 @@
       },
       {
         "name": "Bratislava, Slovakia - (BTS)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-13T23:46:15.012Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-07-14T03:34:23.893Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2013,9 +2013,9 @@
       },
       {
         "name": "Dhaka, Bangladesh - (DAC)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-07-14T02:46:43.710Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-07-14T03:33:08.453Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2174,9 +2174,9 @@
       },
       {
         "name": "Halifax, Canada - (YHZ)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-12T11:31:35.194Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-07-14T03:30:52.302Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3812,9 +3812,9 @@
       },
       {
         "name": "R2",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-07T10:21:47.180Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-07-14T03:46:39.757Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4472,6 +4472,20 @@
   },
   "reports": [
     {
+      "title": "Elevated R2 errors in EU region",
+      "url": "https://www.cloudflarestatus.com/#2026-07-14T03:50:32Z",
+      "published_at": "2026-07-14T03:50:32Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Elevated R2 errors in EU region",
+      "url": "https://www.cloudflarestatus.com/incidents/vdqxvlfyjqx2",
+      "published_at": "2026-07-14T03:46:39.716Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "Incorrect zone limits impacting some customers",
       "url": "https://www.cloudflarestatus.com/incidents/d69bslyqmk6k",
       "published_at": "2026-07-13T16:36:03.230Z",
@@ -4512,20 +4526,6 @@
       "published_at": "2026-07-12T09:45:35Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
-    },
-    {
-      "title": "Cloudflare Dashboard login issue",
-      "url": "https://www.cloudflarestatus.com/incidents/1lyqqs442bqf",
-      "published_at": "2026-07-12T09:43:31.104Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Workers AI experiencing degraded availability in some models",
-      "url": "https://www.cloudflarestatus.com/#2026-07-11T10:50:24Z",
-      "published_at": "2026-07-11T10:50:24Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     }
   ],
   "known_resources": [
@@ -4534,52 +4534,60 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-07-14T03:29:25.222284Z"
+      "published_at": "2026-07-14T03:57:57.962865Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-14T03:29:25.222284Z"
+      "published_at": "2026-07-14T03:57:57.962865Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-14T03:29:25.222284Z"
+      "published_at": "2026-07-14T03:57:57.962865Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-07-14T03:29:25.222284Z"
+      "published_at": "2026-07-14T03:57:57.962865Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-07-14T03:29:25.222284Z"
+      "published_at": "2026-07-14T03:57:57.962865Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-14T03:29:25.222284Z"
+      "published_at": "2026-07-14T03:57:57.962865Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-07-14T03:29:24.955141Z",
+      "published_at": "2026-07-14T03:57:57.750254Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Elevated R2 errors in EU region",
+      "url": "https://www.cloudflarestatus.com/incidents/vdqxvlfyjqx2#qd8ctkccm4bg",
+      "published_at": "2026-07-14T03:46:39.817Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / Cloudflare is observing issues with Cloudflare R2 service. We are currently working on a resolution. More updates to follow shortly."
     },
     {
       "title": "Incorrect zone limits impacting some customers",
@@ -4628,14 +4636,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Cloudflare Dashboard and related APIs. These issues do not affect the serving of cached files via the Cloudflare CDN or other security features at the Cloudflare Edge. Customers using the Dashboard / "
-    },
-    {
-      "title": "Cloudflare Dashboard login issue",
-      "url": "https://www.cloudflarestatus.com/incidents/1lyqqs442bqf#qt81jnb54b03",
-      "published_at": "2026-07-12T13:53:33.368Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     }
   ],
   "social": [],
@@ -4651,11 +4651,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-07-14T03:29:23.833680Z",
+      "last_item_at": "2026-07-14T03:57:56.344857Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 483,
-      "fetched_at": "2026-07-14T03:29:23.833702Z",
+      "duration_ms": 1076,
+      "fetched_at": "2026-07-14T03:57:56.344877Z",
       "cache_hit": false
     },
     {
@@ -4669,11 +4669,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-13T23:29:24-04:00",
+      "last_item_at": "2026-07-13T23:57:56-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1120,
-      "fetched_at": "2026-07-14T03:29:24.954603Z",
+      "duration_ms": 1404,
+      "fetched_at": "2026-07-14T03:57:57.749714Z",
       "cache_hit": false
     },
     {
@@ -4687,17 +4687,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-14T03:29:24.955141Z",
+      "last_item_at": "2026-07-14T03:57:57.750254Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 265,
-      "fetched_at": "2026-07-14T03:29:25.220674Z",
+      "duration_ms": 211,
+      "fetched_at": "2026-07-14T03:57:57.961265Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-14T03:29:25.222284Z",
+    "generated_at": "2026-07-14T03:57:57.962865Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4719,7 +4719,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4734,9 +4734,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 483,
+          "duration_ms": 1076,
           "cache_hit": false,
-          "at": "2026-07-14T03:29:23Z"
+          "at": "2026-07-14T03:57:55Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -4745,7 +4745,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 466.5
+          "avg_duration_ms": 510.2
         },
         "metrics_7d": {
           "runs": 109,
@@ -4754,10 +4754,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 470.0
+          "avg_duration_ms": 469.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-14T03:29:23Z",
+        "last_success_at": "2026-07-14T03:57:55Z",
         "last_failure_at": null
       },
       {
@@ -4771,9 +4771,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1120,
+          "duration_ms": 1404,
           "cache_hit": false,
-          "at": "2026-07-14T03:29:23Z"
+          "at": "2026-07-14T03:57:55Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -4782,7 +4782,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1127.5
+          "avg_duration_ms": 1166.4
         },
         "metrics_7d": {
           "runs": 109,
@@ -4791,10 +4791,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1208.0
+          "avg_duration_ms": 1202.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-14T03:29:23Z",
+        "last_success_at": "2026-07-14T03:57:55Z",
         "last_failure_at": null
       },
       {
@@ -4808,9 +4808,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 265,
+          "duration_ms": 211,
           "cache_hit": false,
-          "at": "2026-07-14T03:29:23Z"
+          "at": "2026-07-14T03:57:55Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -4819,7 +4819,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 407.2
+          "avg_duration_ms": 399.6
         },
         "metrics_7d": {
           "runs": 109,
@@ -4828,29 +4828,89 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 375.8
+          "avg_duration_ms": 372.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-14T03:29:23Z",
+        "last_success_at": "2026-07-14T03:57:55Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-14T03:29:25.222284Z",
+    "generated_at": "2026-07-14T03:57:57.962865Z",
     "incidents": {
-      "new": [],
-      "updated": [],
-      "resolved": []
+      "new": [
+        {
+          "id": "933721ecf2a1329c",
+          "title": "Elevated R2 errors in EU region",
+          "started_at": "2026-07-14T03:50:32Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "dbae60d878d3e5dd",
+          "title": "Elevated R2 errors in EU region",
+          "started_at": "2026-07-14T03:46:39.716Z",
+          "duration": "11m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "6fb58a8a1fb79dca",
+          "title": "Workers AI experiencing degraded availability in some models",
+          "started_at": "2026-07-12T22:35:18Z",
+          "duration": "1d 5h 15m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "resolved": [
+        {
+          "id": "a26cf63b9afee0fd",
+          "title": "Cloudflare Dashboard login issue",
+          "started_at": "2026-07-12T09:43:31.104Z",
+          "duration": "4h 10m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "344de282be48d251",
+          "title": "Workers AI experiencing degraded availability in some models",
+          "started_at": "2026-07-11T10:50:24Z",
+          "duration": "22h 55m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "bf2dfef07f18831e",
+          "title": "Elevated R2 errors in EU region",
+          "url": "https://www.cloudflarestatus.com/#2026-07-14T03:50:32Z",
+          "published_at": "2026-07-14T03:50:32Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "641bf814396141a1",
+          "title": "Elevated R2 errors in EU region",
+          "url": "https://www.cloudflarestatus.com/incidents/vdqxvlfyjqx2",
+          "published_at": "2026-07-14T03:46:39.716Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 2,
+      "updated_incidents": 1,
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
