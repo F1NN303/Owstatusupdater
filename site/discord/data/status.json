@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-17T00:05:49.957119Z",
+  "generated_at": "2026-07-17T03:47:13.340901Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "discord-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.8,
+      "incidents": 5.0,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.85
     },
     "signal_metrics": {
-      "reports_24h": 118,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 136,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,39 +31,39 @@
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Discord Statuspage API: All Systems Operational",
         "url": "https://discordstatus.com/",
-        "published_at": "2026-07-17T00:05:49.517522Z",
+        "published_at": "2026-07-17T03:47:13.019395Z",
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "API Errors",
+        "url": "https://discordstatus.com/incidents/vwmnnymc48b9#v92w1vprcxcx",
+        "published_at": "2026-07-16T18:51:51.275-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Major / Identified / We've identified an upstream latency issue, and we're working to mitigate its impacts."
+      },
+      {
+        "title": "API Errors",
+        "url": "https://discordstatus.com/incidents/vwmnnymc48b9#ks4tb3rh2544",
+        "published_at": "2026-07-16T17:49:10.679-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Identified / We are currently investigating this issue."
       },
       {
         "title": "Issues with billing operations",
@@ -133,34 +149,32 @@
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Major / Resolved / We are ramping up traffic for activities"
-      },
-      {
-        "title": "Activities cannot be launched",
-        "url": "https://discordstatus.com/incidents/rtskh59jhdp2#z3w276y2wchz",
-        "published_at": "2026-06-10T10:15:38.441-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Major / Resolved / We have currently disabled activities and are working towards a resolution"
-      },
-      {
-        "title": "All clients may see issues connecting to Discord",
-        "url": "https://discordstatus.com/incidents/w13pp3bc12v3#2chx69m1gw2j",
-        "published_at": "2026-06-09T14:44:14.070-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / This incident has been resolved."
       }
     ],
-    "last_statement_at": "2026-07-17T00:05:49.517522Z"
+    "last_statement_at": "2026-07-17T03:47:13.019395Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://discordstatus.com/",
-    "summary": "Discord Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "Discord Statuspage reports an active incident: API Errors.",
     "current_status": "operational",
-    "reports_24h": 118,
+    "reports_24h": 136,
     "incidents": [
+      {
+        "title": "API Errors",
+        "started_at": "2026-07-17T00:52:28Z",
+        "duration": "1m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "API Errors",
+        "started_at": "2026-07-16T17:49:10.632-07:00",
+        "duration": "2h 58m ongoing",
+        "acknowledgement": "Major / Identified",
+        "source": "Discord Statuspage API",
+        "url": "https://discordstatus.com/incidents/vwmnnymc48b9"
+      },
       {
         "title": "Issues with billing operations",
         "started_at": "2026-07-10T16:52:23Z",
@@ -174,12 +188,6 @@
         "acknowledgement": "Major / Resolved",
         "source": "Discord Statuspage API",
         "url": "https://discordstatus.com/incidents/yj1xklr7ynwg"
-      },
-      {
-        "title": "Intermittent chat functionality issues",
-        "started_at": "2026-06-29T19:27:29Z",
-        "duration": "1h",
-        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Intermittent chat functionality issues",
@@ -208,14 +216,6 @@
         "acknowledgement": "Major / Resolved",
         "source": "Discord Statuspage API",
         "url": "https://discordstatus.com/incidents/rtskh59jhdp2"
-      },
-      {
-        "title": "All clients may see issues connecting to Discord",
-        "started_at": "2026-06-09T14:24:31.040-07:00",
-        "duration": "19m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Discord Statuspage API",
-        "url": "https://discordstatus.com/incidents/w13pp3bc12v3"
       }
     ],
     "top_reported_issues": [],
@@ -225,90 +225,6 @@
       "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-07-16T00:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T00:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T00:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T01:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T01:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T01:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T01:45:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T02:00:00Z",
-        "signal_value": 19.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T02:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T02:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T02:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T03:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T03:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-16T03:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-07-16T03:45:00Z",
         "signal_value": 8.0,
@@ -800,6 +716,90 @@
         "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-17T00:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-17T00:30:00Z",
+        "signal_value": 29.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-17T00:45:00Z",
+        "signal_value": 85.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T01:00:00Z",
+        "signal_value": 171.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T01:15:00Z",
+        "signal_value": 258.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T01:30:00Z",
+        "signal_value": 151.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T01:45:00Z",
+        "signal_value": 389.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T02:00:00Z",
+        "signal_value": 357.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T02:15:00Z",
+        "signal_value": 252.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T02:30:00Z",
+        "signal_value": 206.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T02:45:00Z",
+        "signal_value": 293.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-07-17T03:00:00Z",
+        "signal_value": 124.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-07-17T03:15:00Z",
+        "signal_value": 30.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-17T03:30:00Z",
+        "signal_value": 18.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -808,54 +808,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-07-17T00:00:00Z"
+      "last_sample_at": "2026-07-17T03:30:00Z"
     },
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "00:20",
-        "count": 3
-      },
-      {
-        "label": "00:40",
-        "count": 2
-      },
-      {
-        "label": "01:00",
-        "count": 2
-      },
-      {
-        "label": "01:20",
-        "count": 0
-      },
-      {
-        "label": "01:40",
-        "count": 2
-      },
-      {
-        "label": "02:00",
-        "count": 3
-      },
-      {
-        "label": "02:20",
-        "count": 1
-      },
-      {
-        "label": "02:40",
-        "count": 4
-      },
-      {
-        "label": "03:00",
-        "count": 0
-      },
-      {
-        "label": "03:20",
-        "count": 2
-      },
-      {
-        "label": "03:40",
-        "count": 0
-      },
       {
         "label": "04:00",
         "count": 1
@@ -1099,6 +1054,50 @@
       {
         "label": "00:00",
         "count": 2
+      },
+      {
+        "label": "00:20",
+        "count": 0
+      },
+      {
+        "label": "00:40",
+        "count": 5
+      },
+      {
+        "label": "01:00",
+        "count": 4
+      },
+      {
+        "label": "01:20",
+        "count": 5
+      },
+      {
+        "label": "01:40",
+        "count": 31
+      },
+      {
+        "label": "02:00",
+        "count": 22
+      },
+      {
+        "label": "02:20",
+        "count": 14
+      },
+      {
+        "label": "02:40",
+        "count": 8
+      },
+      {
+        "label": "03:00",
+        "count": 5
+      },
+      {
+        "label": "03:20",
+        "count": 3
+      },
+      {
+        "label": "03:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1107,14 +1106,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-16T20:05:48-04:00"
+      "last_reviewed_at": "2026-07-16T23:47:12-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 118,
-        "last_reviewed_at": "2026-07-16T20:05:48-04:00"
+        "reports_24h": 197,
+        "last_reviewed_at": "2026-07-16T23:47:12-04:00"
       }
     ],
     "current_status_origin": "Discord Statuspage API",
@@ -1355,40 +1354,54 @@
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
-        "label": "Connectivity issue",
-        "count": 2
-      },
-      {
         "label": "App not loading",
-        "count": 2
-      },
-      {
-        "label": "Service down",
-        "count": 1
+        "count": 26
       },
       {
         "label": "Error message",
-        "count": 0
-      },
-      {
-        "label": "Server not responding",
-        "count": 0
-      },
-      {
-        "label": "Sign in problem",
-        "count": 0
+        "count": 18
       },
       {
         "label": "Slow performance",
-        "count": 0
+        "count": 17
       },
       {
-        "label": "Unable to download",
+        "label": "Service down",
+        "count": 15
+      },
+      {
+        "label": "Connectivity issue",
+        "count": 10
+      },
+      {
+        "label": "Other",
+        "count": 4
+      },
+      {
+        "label": "Server not responding",
+        "count": 1
+      },
+      {
+        "label": "Sign in problem",
         "count": 0
       }
     ]
   },
   "reports": [
+    {
+      "title": "API Errors",
+      "url": "https://discordstatus.com/#2026-07-17T00:52:28Z",
+      "published_at": "2026-07-17T00:52:28Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "API Errors",
+      "url": "https://discordstatus.com/incidents/vwmnnymc48b9",
+      "published_at": "2026-07-16T17:49:10.632-07:00",
+      "source": "Discord Statuspage API",
+      "meta": "Major / Identified"
+    },
     {
       "title": "Issues with billing operations",
       "url": "https://discordstatus.com/#2026-07-10T16:52:23Z",
@@ -1402,13 +1415,6 @@
       "published_at": "2026-07-10T09:49:33.987-07:00",
       "source": "Discord Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Intermittent chat functionality issues",
-      "url": "https://discordstatus.com/#2026-06-29T19:27:29Z",
-      "published_at": "2026-06-29T19:27:29Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     },
     {
       "title": "Intermittent chat functionality issues",
@@ -1437,13 +1443,6 @@
       "published_at": "2026-06-10T10:15:38.349-07:00",
       "source": "Discord Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "All clients may see issues connecting to Discord",
-      "url": "https://discordstatus.com/incidents/w13pp3bc12v3",
-      "published_at": "2026-06-09T14:24:31.040-07:00",
-      "source": "Discord Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -1452,45 +1451,61 @@
       "url": "https://discordstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-07-17T00:05:49.957119Z"
+      "published_at": "2026-07-17T03:47:13.340901Z"
     },
     {
       "title": "Discord Status API (Statuspage v2)",
       "url": "https://discordstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-17T00:05:49.957119Z"
+      "published_at": "2026-07-17T03:47:13.340901Z"
     },
     {
       "title": "Discord Status history RSS",
       "url": "https://discordstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-17T00:05:49.957119Z"
+      "published_at": "2026-07-17T03:47:13.340901Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-07-17T00:05:49.957119Z"
+      "published_at": "2026-07-17T03:47:13.340901Z"
     },
     {
       "title": "Discord Help Center",
       "url": "https://support.discord.com/hc/en-us",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-17T00:05:49.957119Z"
+      "published_at": "2026-07-17T03:47:13.340901Z"
     }
   ],
   "news": [
     {
       "title": "Discord Statuspage API: All Systems Operational",
       "url": "https://discordstatus.com/",
-      "published_at": "2026-07-17T00:05:49.517522Z",
+      "published_at": "2026-07-17T03:47:13.019395Z",
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "API Errors",
+      "url": "https://discordstatus.com/incidents/vwmnnymc48b9#v92w1vprcxcx",
+      "published_at": "2026-07-16T18:51:51.275-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Major / Identified / We've identified an upstream latency issue, and we're working to mitigate its impacts."
+    },
+    {
+      "title": "API Errors",
+      "url": "https://discordstatus.com/incidents/vwmnnymc48b9#ks4tb3rh2544",
+      "published_at": "2026-07-16T17:49:10.679-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Identified / We are currently investigating this issue."
     },
     {
       "title": "Issues with billing operations",
@@ -1531,22 +1546,6 @@
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are currently investigating the issue."
-    },
-    {
-      "title": "Activities cannot be launched",
-      "url": "https://discordstatus.com/incidents/rtskh59jhdp2#fdnt2kc2qqr6",
-      "published_at": "2026-06-10T11:35:12.294-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Major / Resolved / This incident has been resolved"
-    },
-    {
-      "title": "Activities cannot be launched",
-      "url": "https://discordstatus.com/incidents/rtskh59jhdp2#sqmhwg834k1j",
-      "published_at": "2026-06-10T11:21:09.588-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Major / Resolved / We are ramping up traffic for activities"
     }
   ],
   "social": [],
@@ -1562,11 +1561,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-07-17T00:05:48.347136Z",
+      "last_item_at": "2026-07-17T03:47:12.314933Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 892,
-      "fetched_at": "2026-07-17T00:05:48.347149Z",
+      "duration_ms": 184,
+      "fetched_at": "2026-07-17T03:47:12.314953Z",
       "cache_hit": false
     },
     {
@@ -1580,11 +1579,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-16T20:05:48-04:00",
+      "last_item_at": "2026-07-16T23:47:12-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1169,
-      "fetched_at": "2026-07-17T00:05:49.517083Z",
+      "duration_ms": 703,
+      "fetched_at": "2026-07-17T03:47:13.018825Z",
       "cache_hit": false
     },
     {
@@ -1598,17 +1597,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-17T00:05:49.517522Z",
+      "last_item_at": "2026-07-17T03:47:13.019395Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 438,
-      "fetched_at": "2026-07-17T00:05:49.956224Z",
+      "duration_ms": 320,
+      "fetched_at": "2026-07-17T03:47:13.339714Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-17T00:05:49.957119Z",
+    "generated_at": "2026-07-17T03:47:13.340901Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1630,7 +1629,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1645,9 +1644,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 892,
+          "duration_ms": 184,
           "cache_hit": false,
-          "at": "2026-07-17T00:05:47Z"
+          "at": "2026-07-17T03:47:12Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1656,7 +1655,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 838.1
+          "avg_duration_ms": 796.6
         },
         "metrics_7d": {
           "runs": 117,
@@ -1665,10 +1664,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 765.0
+          "avg_duration_ms": 757.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-17T00:05:47Z",
+        "last_success_at": "2026-07-17T03:47:12Z",
         "last_failure_at": null
       },
       {
@@ -1682,9 +1681,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1169,
+          "duration_ms": 703,
           "cache_hit": false,
-          "at": "2026-07-17T00:05:47Z"
+          "at": "2026-07-17T03:47:12Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1693,7 +1692,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 851.1
+          "avg_duration_ms": 852.1
         },
         "metrics_7d": {
           "runs": 117,
@@ -1702,10 +1701,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 839.5
+          "avg_duration_ms": 834.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-17T00:05:47Z",
+        "last_success_at": "2026-07-17T03:47:12Z",
         "last_failure_at": null
       },
       {
@@ -1719,9 +1718,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 438,
+          "duration_ms": 320,
           "cache_hit": false,
-          "at": "2026-07-17T00:05:47Z"
+          "at": "2026-07-17T03:47:12Z"
         },
         "metrics_24h": {
           "runs": 18,
@@ -1730,7 +1729,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 374.3
+          "avg_duration_ms": 377.6
         },
         "metrics_7d": {
           "runs": 117,
@@ -1739,29 +1738,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 398.9
+          "avg_duration_ms": 397.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-17T00:05:47Z",
+        "last_success_at": "2026-07-17T03:47:12Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-17T00:05:49.957119Z",
+    "generated_at": "2026-07-17T03:47:13.340901Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "b13d926c9fe36c77",
+          "title": "API Errors",
+          "started_at": "2026-07-17T00:52:28Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "87be8bbebf887b48",
+          "title": "API Errors",
+          "started_at": "2026-07-16T17:49:10.632-07:00",
+          "duration": "2h 58m ongoing",
+          "acknowledgement": "Major / Identified",
+          "url": "https://discordstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "4ac880c8edd5aa02",
+          "title": "Intermittent chat functionality issues",
+          "started_at": "2026-06-29T19:27:29Z",
+          "duration": "1h",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "3099b02d6d87f66f",
+          "title": "All clients may see issues connecting to Discord",
+          "started_at": "2026-06-09T14:24:31.040-07:00",
+          "duration": "19m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://discordstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "c2ca63cb116fbd2e",
+          "title": "API Errors",
+          "url": "https://discordstatus.com/#2026-07-17T00:52:28Z",
+          "published_at": "2026-07-17T00:52:28Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "e3001c8de879975f",
+          "title": "API Errors",
+          "url": "https://discordstatus.com/incidents/vwmnnymc48b9",
+          "published_at": "2026-07-16T17:49:10.632-07:00",
+          "source": "Discord Statuspage API",
+          "meta": "Major / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
