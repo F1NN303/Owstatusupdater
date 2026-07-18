@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-18T08:20:27.799996Z",
+  "generated_at": "2026-07-18T09:57:20.922172Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "major",
-    "severity_score": 8,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
@@ -14,10 +14,10 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 3.05
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 118,
+      "reports_24h": 114,
       "recent_incidents_6h": 3,
       "recent_incidents_24h": 5,
       "cross_source": {
@@ -36,15 +36,15 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "major outage",
-      "derived_severity": "major",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,47 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: Partial System Outage",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: Partial System Outage",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-07-18T08:20:26.855971Z",
+        "published_at": "2026-07-18T09:57:19.853153Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: major"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Some users are unable to access Codex",
+        "url": "https://status.openai.com/incidents/01KXT44TAQQ2R0AZDDVSJGAC4H#01KXT5MK9M5JDR7DCST5RGHAV4",
+        "published_at": "2026-07-18T08:31:42Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We have applied the mitigation and are monitoring the recovery."
+      },
+      {
+        "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
+        "url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1#01KXT56HCR44KXBFFM5M7XT5NX",
+        "published_at": "2026-07-18T08:24:02Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Major / Resolved / All impacted services have now fully recovered."
       },
       {
         "title": "Some users are unable to access Codex",
@@ -84,7 +100,7 @@
         "published_at": "2026-07-18T08:05:37Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Minor / Identified / We have identified an issue causing some users to receive access-denied errors when using the Codex desktop app and CLI."
+        "meta": "Identified / Minor / Monitoring / We have identified an issue causing some users to receive access-denied errors when using the Codex desktop app and CLI."
       },
       {
         "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
@@ -92,7 +108,7 @@
         "published_at": "2026-07-18T07:43:22Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Major / Identified / We have identified that this issue has recurred for some Enterprise users. We are working to resolve this."
+        "meta": "Identified / Major / Resolved / We have identified that this issue has recurred for some Enterprise users. We are working to resolve this."
       },
       {
         "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
@@ -100,7 +116,7 @@
         "published_at": "2026-07-18T05:45:25Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Resolved / Major / Identified / A fix has been released. Please update to the latest version of the ChatGPT app to receive the fix."
+        "meta": "Resolved / Major / Resolved / A fix has been released. Please update to the latest version of the ChatGPT app to receive the fix."
       },
       {
         "title": "Codex 5.6-sol Experiencing Increased Server-Overload Errors",
@@ -132,34 +148,18 @@
         "published_at": "2026-07-17T15:32:26Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Major / Identified / Enterprise users who do not have Codex RBAC enabled may see a \"codex_cli_workspace_disabled\" error when trying to log into the new ChatGPT app post-install. Please use our ChatGPT Classic while we work to implement a fix."
-      },
-      {
-        "title": "Elevated errors for Github connector",
-        "url": "https://status.openai.com/incidents/01KXPJ62Z704GE0SRNKQA64X4X#01KXPPZH28A5NHSTHCR2FVAD5D",
-        "published_at": "2026-07-17T00:17:49Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Elevated errors for Github connector",
-        "url": "https://status.openai.com/incidents/01KXPJ62Z704GE0SRNKQA64X4X#01KXPK7TAZ8T337TSAHFPRNZN3",
-        "published_at": "2026-07-16T23:12:26Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors when using the Github connector. Github is experiencing system-wide service-availability issues. We are monitoring their recovery: <https://www.githubstatus.com/>"
+        "meta": "Identified / Major / Resolved / Enterprise users who do not have Codex RBAC enabled may see a \"codex_cli_workspace_disabled\" error when trying to log into the new ChatGPT app post-install. Please use our ChatGPT Classic while we work to implement a fix."
       }
     ],
-    "last_statement_at": "2026-07-18T08:20:26.855971Z"
+    "last_statement_at": "2026-07-18T09:57:19.853153Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports 2 active incidents. Latest: Some users are unable to access Codex.",
-    "current_status": "major outage",
-    "reports_24h": 118,
+    "summary": "OpenAI Statuspage reports an active incident: Some users are unable to access Codex.",
+    "current_status": "degraded",
+    "reports_24h": 114,
     "incidents": [
       {
         "title": "Some users are unable to access Codex",
@@ -170,8 +170,8 @@
       {
         "title": "Some users are unable to access Codex",
         "started_at": "2026-07-18T08:05:37Z",
-        "duration": "14m ongoing",
-        "acknowledgement": "Minor / Identified",
+        "duration": "1h 51m ongoing",
+        "acknowledgement": "Minor / Monitoring",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KXT44TAQQ2R0AZDDVSJGAC4H"
       },
@@ -192,8 +192,8 @@
       {
         "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
         "started_at": "2026-07-17T15:32:26Z",
-        "duration": "16h 48m ongoing",
-        "acknowledgement": "Major / Identified",
+        "duration": "14h 12m",
+        "acknowledgement": "Major / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1"
       },
@@ -238,42 +238,6 @@
       "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-07-17T08:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-17T08:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-17T09:00:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-17T09:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-17T09:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-17T09:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-07-17T10:00:00Z",
         "signal_value": 3.0,
@@ -810,6 +774,42 @@
       },
       {
         "timestamp": "2026-07-18T08:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T08:30:00Z",
+        "signal_value": 18.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T08:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T09:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T09:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T09:30:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T09:45:00Z",
         "signal_value": 2.0,
         "status_code": 0,
         "status_label": "service up"
@@ -821,26 +821,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-07-18T08:15:00Z"
+      "last_sample_at": "2026-07-18T09:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "08:40",
-        "count": 2
-      },
-      {
-        "label": "09:00",
-        "count": 3
-      },
-      {
-        "label": "09:20",
-        "count": 1
-      },
-      {
-        "label": "09:40",
-        "count": 3
-      },
       {
         "label": "10:00",
         "count": 3
@@ -1112,6 +1096,22 @@
       {
         "label": "08:20",
         "count": 1
+      },
+      {
+        "label": "08:40",
+        "count": 3
+      },
+      {
+        "label": "09:00",
+        "count": 0
+      },
+      {
+        "label": "09:20",
+        "count": 2
+      },
+      {
+        "label": "09:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1120,14 +1120,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-18T04:20:26-04:00"
+      "last_reviewed_at": "2026-07-18T05:57:19-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 118,
-        "last_reviewed_at": "2026-07-18T04:20:26-04:00"
+        "reports_24h": 114,
+        "last_reviewed_at": "2026-07-18T05:57:19-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1136,7 +1136,7 @@
       {
         "name": "Codex in ChatGPT Desktop",
         "status": "degraded",
-        "health": "partial_outage",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1421,7 +1421,7 @@
       "url": "https://status.openai.com/incidents/01KXT44TAQQ2R0AZDDVSJGAC4H",
       "published_at": "2026-07-18T08:05:37Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Identified"
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
@@ -1442,7 +1442,7 @@
       "url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1",
       "published_at": "2026-07-17T15:32:26Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Major / Identified"
+      "meta": "Major / Resolved"
     },
     {
       "title": "Elevated errors for Github connector",
@@ -1472,45 +1472,61 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-07-18T08:20:27.799996Z"
+      "published_at": "2026-07-18T09:57:20.922172Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-18T08:20:27.799996Z"
+      "published_at": "2026-07-18T09:57:20.922172Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-18T08:20:27.799996Z"
+      "published_at": "2026-07-18T09:57:20.922172Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-07-18T08:20:27.799996Z"
+      "published_at": "2026-07-18T09:57:20.922172Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-18T08:20:27.799996Z"
+      "published_at": "2026-07-18T09:57:20.922172Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: Partial System Outage",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-07-18T08:20:26.855971Z",
+      "published_at": "2026-07-18T09:57:19.853153Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: major"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Some users are unable to access Codex",
+      "url": "https://status.openai.com/incidents/01KXT44TAQQ2R0AZDDVSJGAC4H#01KXT5MK9M5JDR7DCST5RGHAV4",
+      "published_at": "2026-07-18T08:31:42Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We have applied the mitigation and are monitoring the recovery."
+    },
+    {
+      "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
+      "url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1#01KXT56HCR44KXBFFM5M7XT5NX",
+      "published_at": "2026-07-18T08:24:02Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Major / Resolved / All impacted services have now fully recovered."
     },
     {
       "title": "Some users are unable to access Codex",
@@ -1518,7 +1534,7 @@
       "published_at": "2026-07-18T08:05:37Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Minor / Identified / We have identified an issue causing some users to receive access-denied errors when using the Codex desktop app and CLI."
+      "meta": "Identified / Minor / Monitoring / We have identified an issue causing some users to receive access-denied errors when using the Codex desktop app and CLI."
     },
     {
       "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
@@ -1526,7 +1542,7 @@
       "published_at": "2026-07-18T07:43:22Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Major / Identified / We have identified that this issue has recurred for some Enterprise users. We are working to resolve this."
+      "meta": "Identified / Major / Resolved / We have identified that this issue has recurred for some Enterprise users. We are working to resolve this."
     },
     {
       "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
@@ -1534,7 +1550,7 @@
       "published_at": "2026-07-18T05:45:25Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Resolved / Major / Identified / A fix has been released. Please update to the latest version of the ChatGPT app to receive the fix."
+      "meta": "Resolved / Major / Resolved / A fix has been released. Please update to the latest version of the ChatGPT app to receive the fix."
     },
     {
       "title": "Codex 5.6-sol Experiencing Increased Server-Overload Errors",
@@ -1551,22 +1567,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / None / Resolved / We have applied the mitigation and are monitoring the recovery."
-    },
-    {
-      "title": "Codex 5.6-sol Experiencing Increased Server-Overload Errors",
-      "url": "https://status.openai.com/incidents/01KXRHE25717D2WQ1WFMT2B7WZ#01KXRHE257N5R9YR9YAX5B2RXM",
-      "published_at": "2026-07-17T17:19:22Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / None / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
-    },
-    {
-      "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
-      "url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1#01KXRBA8B93PHVN84R283RAKH5",
-      "published_at": "2026-07-17T15:32:26Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Major / Identified / Enterprise users who do not have Codex RBAC enabled may see a \"codex_cli_workspace_disabled\" error when trying to log into the new ChatGPT app post-install. Please use our ChatGPT Classic while we work to implement a fix."
     }
   ],
   "social": [],
@@ -1582,11 +1582,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-07-18T08:20:25.757760Z",
+      "last_item_at": "2026-07-18T09:57:18.767873Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 267,
-      "fetched_at": "2026-07-18T08:20:25.757777Z",
+      "duration_ms": 250,
+      "fetched_at": "2026-07-18T09:57:18.767890Z",
       "cache_hit": false
     },
     {
@@ -1600,11 +1600,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-18T04:20:26-04:00",
+      "last_item_at": "2026-07-18T05:57:19-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1097,
-      "fetched_at": "2026-07-18T08:20:26.855437Z",
+      "duration_ms": 1084,
+      "fetched_at": "2026-07-18T09:57:19.852686Z",
       "cache_hit": false
     },
     {
@@ -1618,17 +1618,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-18T08:20:26.855971Z",
+      "last_item_at": "2026-07-18T09:57:19.853153Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 942,
-      "fetched_at": "2026-07-18T08:20:27.798270Z",
+      "duration_ms": 1067,
+      "fetched_at": "2026-07-18T09:57:20.920524Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-18T08:20:27.799996Z",
+    "generated_at": "2026-07-18T09:57:20.922172Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1650,7 +1650,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "major",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1665,9 +1665,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 267,
+          "duration_ms": 250,
           "cache_hit": false,
-          "at": "2026-07-18T08:20:25Z"
+          "at": "2026-07-18T09:57:18Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1676,7 +1676,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 601.0
+          "avg_duration_ms": 591.9
         },
         "metrics_7d": {
           "runs": 117,
@@ -1685,10 +1685,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 584.7
+          "avg_duration_ms": 585.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T08:20:25Z",
+        "last_success_at": "2026-07-18T09:57:18Z",
         "last_failure_at": null
       },
       {
@@ -1702,9 +1702,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1097,
+          "duration_ms": 1084,
           "cache_hit": false,
-          "at": "2026-07-18T08:20:25Z"
+          "at": "2026-07-18T09:57:18Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1713,7 +1713,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1012.7
+          "avg_duration_ms": 1012.1
         },
         "metrics_7d": {
           "runs": 117,
@@ -1722,10 +1722,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 912.6
+          "avg_duration_ms": 916.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T08:20:25Z",
+        "last_success_at": "2026-07-18T09:57:18Z",
         "last_failure_at": null
       },
       {
@@ -1739,9 +1739,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 942,
+          "duration_ms": 1067,
           "cache_hit": false,
-          "at": "2026-07-18T08:20:25Z"
+          "at": "2026-07-18T09:57:18Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1750,7 +1750,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 833.1
+          "avg_duration_ms": 838.8
         },
         "metrics_7d": {
           "runs": 117,
@@ -1759,113 +1759,46 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 769.6
+          "avg_duration_ms": 772.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T08:20:25Z",
+        "last_success_at": "2026-07-18T09:57:18Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-18T08:20:27.799996Z",
+    "generated_at": "2026-07-18T09:57:20.922172Z",
     "incidents": {
-      "new": [
-        {
-          "id": "f4bd24c558ca2971",
-          "title": "Some users are unable to access Codex",
-          "started_at": "2026-07-18T08:07:10Z",
-          "duration": "1m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
+      "new": [],
+      "updated": [
         {
           "id": "602a46024e37c371",
           "title": "Some users are unable to access Codex",
           "started_at": "2026-07-18T08:05:37Z",
-          "duration": "14m ongoing",
-          "acknowledgement": "Minor / Identified",
+          "duration": "1h 51m ongoing",
+          "acknowledgement": "Minor / Monitoring",
           "url": "https://status.openai.com/"
         },
-        {
-          "id": "edf1d84e0771aabe",
-          "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
-          "started_at": "2026-07-18T07:46:54Z",
-          "duration": "20m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "updated": [
         {
           "id": "faeb26e564d2a6f8",
           "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
           "started_at": "2026-07-17T15:32:26Z",
-          "duration": "16h 48m ongoing",
-          "acknowledgement": "Major / Identified",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "resolved": [
-        {
-          "id": "af072023e462ad4b",
-          "title": "New ChatGPT App Not Available For Users Without Codex Permissions",
-          "started_at": "2026-07-17T15:37:06Z",
-          "duration": "14h 10m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "a8bc9df64601f826",
-          "title": "Elevated errors for Github connector",
-          "started_at": "2026-07-16T22:56:54Z",
-          "duration": "1h 25m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "456c54b789c2161f",
-          "title": "Elevated errors affecting ChatGPT",
-          "started_at": "2026-07-14T23:57:45Z",
-          "duration": "41m",
+          "duration": "14h 12m",
           "acknowledgement": "Major / Resolved",
           "url": "https://status.openai.com/"
         }
-      ]
+      ],
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "c26c29236d3f42e9",
-          "title": "Some users are unable to access Codex",
-          "url": "https://status.openai.com/#2026-07-18T08:07:10Z",
-          "published_at": "2026-07-18T08:07:10Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "97d1dd684cb21de2",
-          "title": "Some users are unable to access Codex",
-          "url": "https://status.openai.com/incidents/01KXT44TAQQ2R0AZDDVSJGAC4H",
-          "published_at": "2026-07-18T08:05:37Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Identified"
-        },
-        {
-          "id": "cb0525db5cd81bad",
-          "title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
-          "url": "https://status.openai.com/#2026-07-18T07:46:54Z",
-          "published_at": "2026-07-18T07:46:54Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 3,
-      "updated_incidents": 1,
-      "resolved_incidents": 3,
-      "new_reports": 3
+      "new_incidents": 0,
+      "updated_incidents": 2,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
