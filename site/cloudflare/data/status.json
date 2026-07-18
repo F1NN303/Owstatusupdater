@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-18T16:27:08.728535Z",
+  "generated_at": "2026-07-18T17:31:57.010287Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -18,8 +18,8 @@
     },
     "signal_metrics": {
       "reports_24h": 3,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 7,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 6,
       "cross_source": {
         "report_score": 0.159,
         "news_score": 0.0,
@@ -40,20 +40,20 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
       "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_score": 6,
       "report_weight": 0.5
     },
     "na": {
@@ -63,7 +63,7 @@
     },
     "apac": {
       "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_score": 6,
       "report_weight": 0.5
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-07-18T16:27:08.483291Z",
+        "published_at": "2026-07-18T17:31:56.556034Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Workers and Pages builds unable to start",
+        "url": "https://www.cloudflarestatus.com/incidents/5169hjl09gpm#nzf13pbgpdm2",
+        "published_at": "2026-07-18T17:21:20.538Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / The issue has been identified and a fix is being implemented."
+      },
+      {
+        "title": "Workers and Pages builds unable to start",
+        "url": "https://www.cloudflarestatus.com/incidents/5169hjl09gpm#lhbq7tdx2374",
+        "published_at": "2026-07-18T16:46:59.853Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Identified / Cloudflare is aware of and investigating an issue impacting Workers & Pages Builds from starting. We are working to analyze and mitigate this problem. More updates to follow shortly."
       },
       {
         "title": "Containers Logs Issues",
@@ -133,38 +149,36 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Containers Logs Issues",
-        "url": "https://www.cloudflarestatus.com/incidents/266jj43lsnm3#slnmt07dzx3f",
-        "published_at": "2026-07-17T16:40:07.604Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / A subset of Containers logs for Containers applications that are configured with 'observability.enabled: true' are getting dropped."
-      },
-      {
-        "title": "POST requests not succeeding",
-        "url": "https://www.cloudflarestatus.com/incidents/652w59bvnbsj#vfjcdk19dl8l",
-        "published_at": "2026-07-17T16:30:40.319Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
       }
     ],
-    "last_statement_at": "2026-07-18T16:27:08.483291Z"
+    "last_statement_at": "2026-07-18T17:31:56.556034Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 24h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: Workers and Pages builds unable to start.",
     "current_status": "degraded",
     "reports_24h": 3,
     "incidents": [
       {
+        "title": "Workers and Pages builds unable to start",
+        "started_at": "2026-07-18T16:50:21Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Workers and Pages builds unable to start",
+        "started_at": "2026-07-18T16:46:59.689Z",
+        "duration": "44m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/5169hjl09gpm"
+      },
+      {
         "title": "Workers AI experiencing degraded availability in some models",
         "started_at": "2026-07-17T20:00:22Z",
-        "duration": "2m",
+        "duration": "20h 50m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -195,30 +209,20 @@
       },
       {
         "title": "Containers Logs Issues",
-        "started_at": "2026-07-17T16:45:28Z",
-        "duration": "5m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Containers Logs Issues",
         "started_at": "2026-07-17T16:40:07.477Z",
         "duration": "3h 12m",
         "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/266jj43lsnm3"
-      },
-      {
-        "title": "POST requests not succeeding",
-        "started_at": "2026-07-17T15:02:12.667Z",
-        "duration": "1h 43m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/652w59bvnbsj"
       }
     ],
     "top_reported_issues": [
       {
         "label": "Amsterdam, Netherlands - (AMS)",
+        "count": 1
+      },
+      {
+        "label": "Cloudflare Sites and Services",
         "count": 1
       },
       {
@@ -244,42 +248,14 @@
       {
         "label": "Bangalore, India - (BLR)",
         "count": 1
-      },
-      {
-        "label": "Europe",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-07-17T16:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-17T16:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-17T17:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-17T17:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-07-17T17:30:00Z",
         "signal_value": 3.0,
@@ -828,7 +804,31 @@
       },
       {
         "timestamp": "2026-07-18T16:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T16:30:00Z",
         "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T16:45:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T17:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-18T17:15:00Z",
+        "signal_value": 4.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -839,21 +839,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-07-18T16:15:00Z"
+      "last_sample_at": "2026-07-18T17:15:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "16:40",
-        "count": 1
-      },
-      {
-        "label": "17:00",
-        "count": 2
-      },
-      {
-        "label": "17:20",
-        "count": 0
-      },
       {
         "label": "17:40",
         "count": 2
@@ -1129,6 +1117,18 @@
       {
         "label": "16:20",
         "count": 0
+      },
+      {
+        "label": "16:40",
+        "count": 2
+      },
+      {
+        "label": "17:00",
+        "count": 3
+      },
+      {
+        "label": "17:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1137,14 +1137,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-18T12:26:38-04:00"
+      "last_reviewed_at": "2026-07-18T13:31:55-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 105,
-        "last_reviewed_at": "2026-07-18T12:26:38-04:00"
+        "reports_24h": 108,
+        "last_reviewed_at": "2026-07-18T13:31:55-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1159,8 +1159,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -1420,7 +1420,7 @@
         "name": "Belo Horizonte, Brazil - (CNF)",
         "status": "degraded",
         "health": "under_maintenance",
-        "updated_at": "2026-07-18T16:10:36.474Z",
+        "updated_at": "2026-07-18T17:28:11.400Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1691,9 +1691,9 @@
       },
       {
         "name": "Charlotte, NC, United States - (CLT)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-18T01:57:04.011Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-07-18T16:37:13.789Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3812,9 +3812,9 @@
       },
       {
         "name": "Pages",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-16T17:09:19.269Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-07-18T16:46:59.755Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4127,9 +4127,9 @@
       },
       {
         "name": "Workers Builds",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-16T17:08:45.844Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-07-18T16:46:59.779Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4479,6 +4479,20 @@
   },
   "reports": [
     {
+      "title": "Workers and Pages builds unable to start",
+      "url": "https://www.cloudflarestatus.com/#2026-07-18T16:50:21Z",
+      "published_at": "2026-07-18T16:50:21Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Workers and Pages builds unable to start",
+      "url": "https://www.cloudflarestatus.com/incidents/5169hjl09gpm",
+      "published_at": "2026-07-18T16:46:59.689Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Identified"
+    },
+    {
       "title": "Workers AI experiencing degraded availability in some models",
       "url": "https://www.cloudflarestatus.com/#2026-07-17T20:00:22Z",
       "published_at": "2026-07-17T20:00:22Z",
@@ -4515,22 +4529,8 @@
     },
     {
       "title": "Containers Logs Issues",
-      "url": "https://www.cloudflarestatus.com/#2026-07-17T16:45:28Z",
-      "published_at": "2026-07-17T16:45:28Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Containers Logs Issues",
       "url": "https://www.cloudflarestatus.com/incidents/266jj43lsnm3",
       "published_at": "2026-07-17T16:40:07.477Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "POST requests not succeeding",
-      "url": "https://www.cloudflarestatus.com/incidents/652w59bvnbsj",
-      "published_at": "2026-07-17T15:02:12.667Z",
       "source": "Cloudflare Statuspage API",
       "meta": "Minor / Resolved"
     }
@@ -4541,52 +4541,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-07-18T16:27:08.728535Z"
+      "published_at": "2026-07-18T17:31:57.010287Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-18T16:27:08.728535Z"
+      "published_at": "2026-07-18T17:31:57.010287Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-18T16:27:08.728535Z"
+      "published_at": "2026-07-18T17:31:57.010287Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-07-18T16:27:08.728535Z"
+      "published_at": "2026-07-18T17:31:57.010287Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-07-18T16:27:08.728535Z"
+      "published_at": "2026-07-18T17:31:57.010287Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-18T16:27:08.728535Z"
+      "published_at": "2026-07-18T17:31:57.010287Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-07-18T16:27:08.483291Z",
+      "published_at": "2026-07-18T17:31:56.556034Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Workers and Pages builds unable to start",
+      "url": "https://www.cloudflarestatus.com/incidents/5169hjl09gpm#nzf13pbgpdm2",
+      "published_at": "2026-07-18T17:21:20.538Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / The issue has been identified and a fix is being implemented."
+    },
+    {
+      "title": "Workers and Pages builds unable to start",
+      "url": "https://www.cloudflarestatus.com/incidents/5169hjl09gpm#lhbq7tdx2374",
+      "published_at": "2026-07-18T16:46:59.853Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Identified / Cloudflare is aware of and investigating an issue impacting Workers & Pages Builds from starting. We are working to analyze and mitigate this problem. More updates to follow shortly."
     },
     {
       "title": "Containers Logs Issues",
@@ -4627,22 +4643,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are investigating an increase in write errors for the R2 cache reserve service"
-    },
-    {
-      "title": "Containers Logs Issues",
-      "url": "https://www.cloudflarestatus.com/incidents/266jj43lsnm3#0xxlsbhc766c",
-      "published_at": "2026-07-17T17:21:41.571Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "POST requests not succeeding",
-      "url": "https://www.cloudflarestatus.com/incidents/652w59bvnbsj#tjw7p7mxslfg",
-      "published_at": "2026-07-17T16:45:25.669Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     }
   ],
   "social": [],
@@ -4658,11 +4658,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-07-18T16:27:08.247652Z",
+      "last_item_at": "2026-07-18T17:31:55.324135Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1242,
-      "fetched_at": "2026-07-18T16:27:08.247680Z",
+      "duration_ms": 360,
+      "fetched_at": "2026-07-18T17:31:55.324155Z",
       "cache_hit": false
     },
     {
@@ -4676,11 +4676,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-18T12:26:38-04:00",
+      "last_item_at": "2026-07-18T13:31:55-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 235,
-      "fetched_at": "2026-07-18T16:27:08.482732Z",
+      "duration_ms": 1231,
+      "fetched_at": "2026-07-18T17:31:56.555474Z",
       "cache_hit": false
     },
     {
@@ -4694,17 +4694,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-18T16:27:08.483291Z",
+      "last_item_at": "2026-07-18T17:31:56.556034Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 243,
-      "fetched_at": "2026-07-18T16:27:08.726883Z",
+      "duration_ms": 452,
+      "fetched_at": "2026-07-18T17:31:57.008556Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-18T16:27:08.728535Z",
+    "generated_at": "2026-07-18T17:31:57.010287Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4726,7 +4726,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4741,9 +4741,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1242,
+          "duration_ms": 360,
           "cache_hit": false,
-          "at": "2026-07-18T16:27:07Z"
+          "at": "2026-07-18T17:31:54Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -4752,7 +4752,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 542.4
+          "avg_duration_ms": 549.7
         },
         "metrics_7d": {
           "runs": 118,
@@ -4761,10 +4761,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 449.7
+          "avg_duration_ms": 451.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T16:27:07Z",
+        "last_success_at": "2026-07-18T17:31:54Z",
         "last_failure_at": null
       },
       {
@@ -4778,9 +4778,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 235,
+          "duration_ms": 1231,
           "cache_hit": false,
-          "at": "2026-07-18T16:27:07Z"
+          "at": "2026-07-18T17:31:54Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -4789,7 +4789,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1136.7
+          "avg_duration_ms": 1158.3
         },
         "metrics_7d": {
           "runs": 118,
@@ -4798,10 +4798,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1240.8
+          "avg_duration_ms": 1244.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T16:27:07Z",
+        "last_success_at": "2026-07-18T17:31:54Z",
         "last_failure_at": null
       },
       {
@@ -4815,9 +4815,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 243,
+          "duration_ms": 452,
           "cache_hit": false,
-          "at": "2026-07-18T16:27:07Z"
+          "at": "2026-07-18T17:31:54Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -4826,7 +4826,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 408.6
+          "avg_duration_ms": 413.4
         },
         "metrics_7d": {
           "runs": 118,
@@ -4835,29 +4835,89 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 379.9
+          "avg_duration_ms": 381.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T16:27:07Z",
+        "last_success_at": "2026-07-18T17:31:54Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-18T16:27:08.728535Z",
+    "generated_at": "2026-07-18T17:31:57.010287Z",
     "incidents": {
-      "new": [],
-      "updated": [],
-      "resolved": []
+      "new": [
+        {
+          "id": "bdcacdbb046f7e1d",
+          "title": "Workers and Pages builds unable to start",
+          "started_at": "2026-07-18T16:50:21Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "dd30ac5376bb878a",
+          "title": "Workers and Pages builds unable to start",
+          "started_at": "2026-07-18T16:46:59.689Z",
+          "duration": "44m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "b73a2b5bffbe7c78",
+          "title": "Workers AI experiencing degraded availability in some models",
+          "started_at": "2026-07-17T20:00:22Z",
+          "duration": "20h 50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "resolved": [
+        {
+          "id": "c9b833d660cfcdb1",
+          "title": "Containers Logs Issues",
+          "started_at": "2026-07-17T16:45:28Z",
+          "duration": "5m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "275db35917b1d773",
+          "title": "POST requests not succeeding",
+          "started_at": "2026-07-17T15:02:12.667Z",
+          "duration": "1h 43m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "6f2612716e5372c0",
+          "title": "Workers and Pages builds unable to start",
+          "url": "https://www.cloudflarestatus.com/#2026-07-18T16:50:21Z",
+          "published_at": "2026-07-18T16:50:21Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "2d9f91c61df22180",
+          "title": "Workers and Pages builds unable to start",
+          "url": "https://www.cloudflarestatus.com/incidents/5169hjl09gpm",
+          "published_at": "2026-07-18T16:46:59.689Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 2,
+      "updated_incidents": 1,
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
