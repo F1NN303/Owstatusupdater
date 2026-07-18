@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-18T03:27:16.769678Z",
+  "generated_at": "2026-07-18T03:57:28.502671Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 6,
     "source_total_count": 6,
     "model_version": "steam-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.0,
+      "incidents": 2.2,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.598,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.65
     },
     "signal_metrics": {
-      "reports_24h": 111,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 112,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 1,
       "cross_source": {
         "report_score": 0.598,
         "news_score": 0.0,
@@ -29,22 +29,22 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": true,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 6,
       "source_total": 6,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,36 +52,36 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Steam Community: HTTP 200 in 187ms.",
+    "summary": "Steam Community: HTTP 200 in 149ms.",
     "updates": [
       {
-        "title": "Steam Community: HTTP 200 in 187ms.",
+        "title": "Steam Community: HTTP 200 in 149ms.",
         "url": "https://steamcommunity.com/",
-        "published_at": "2026-07-18T03:27:15.938700Z",
+        "published_at": "2026-07-18T03:57:27.576057Z",
         "source": "Steam Community",
         "channel": "official-probe",
         "meta": "operational"
       },
       {
-        "title": "Steam Store: HTTP 200 in 255ms.",
+        "title": "Steam Store: HTTP 200 in 233ms.",
         "url": "https://store.steampowered.com/",
-        "published_at": "2026-07-18T03:27:15.750184Z",
+        "published_at": "2026-07-18T03:57:27.425546Z",
         "source": "Steam Store",
         "channel": "official-probe",
         "meta": "operational"
@@ -89,53 +89,67 @@
       {
         "title": "Steam CM Directory: 100 CM endpoints listed.",
         "url": "https://api.steampowered.com/ISteamDirectory/GetCMList/v1/?cellid=0&maxcount=50",
-        "published_at": "2026-07-18T03:27:15.495027Z",
+        "published_at": "2026-07-18T03:57:27.191491Z",
         "source": "Valve Directory API",
         "channel": "official-probe",
         "meta": "operational"
       },
       {
-        "title": "Steam Connection Managers: CM load stable (avg 18.8% / max 52.3%).",
+        "title": "Steam Connection Managers: High CM load (avg 43.6% / max 96.6%).",
         "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
-        "published_at": "2026-07-18T03:27:15.318000Z",
+        "published_at": "2026-07-18T03:57:27.069294Z",
         "source": "Valve Directory API",
         "channel": "official-probe",
-        "meta": "operational"
+        "meta": "major outage"
       },
       {
-        "title": "Steam Web API: API reachable (Fri Jul 17 20:27:15 2026).",
+        "title": "Steam Web API: API reachable (Fri Jul 17 20:57:26 2026).",
         "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/",
-        "published_at": "2026-07-18T03:27:15.168670Z",
+        "published_at": "2026-07-18T03:57:26.959261Z",
         "source": "Valve Web API",
         "channel": "official-probe",
         "meta": "operational"
       }
     ],
-    "last_statement_at": "2026-07-18T03:27:15.938700Z"
+    "last_statement_at": "2026-07-18T03:57:27.576057Z"
   },
   "outage": {
     "source": "Valve probes",
     "source_type": "Official API/Web probe",
     "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/",
-    "summary": "Valve API probes indicate Steam services are operational. CM average load is 18.8% across 12 sampled endpoints.",
+    "summary": "Valve probes indicate partial Steam issues affecting Steam Connection Managers.",
     "summary_origin": "Valve probes",
-    "current_status": "operational",
+    "current_status": "degraded",
     "current_status_origin": "Valve probes",
-    "reports_24h": 111,
-    "incidents": [],
-    "top_reported_issues": [],
+    "reports_24h": 112,
+    "incidents": [
+      {
+        "title": "Steam Connection Managers: High CM load (avg 43.6% / max 96.6%).",
+        "started_at": "2026-07-18T03:57:27.069294Z",
+        "duration": "ongoing",
+        "acknowledgement": "Valve probe signal",
+        "source": "Valve probes",
+        "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50"
+      }
+    ],
+    "top_reported_issues": [
+      {
+        "label": "Steam Connection Managers",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Valve probes",
       "kind": "component-status",
-      "mode": "none"
+      "mode": "active"
     },
     "components": [
       {
         "name": "Steam Store",
         "service": "Steam Store",
         "status": "operational",
-        "health": "HTTP 200 in 255ms.",
-        "updated_at": "2026-07-18T03:27:15.750184Z",
+        "health": "HTTP 200 in 233ms.",
+        "updated_at": "2026-07-18T03:57:27.425546Z",
         "source": "Steam Store",
         "url": "https://store.steampowered.com/"
       },
@@ -143,8 +157,8 @@
         "name": "Steam Community",
         "service": "Steam Community",
         "status": "operational",
-        "health": "HTTP 200 in 187ms.",
-        "updated_at": "2026-07-18T03:27:15.938700Z",
+        "health": "HTTP 200 in 149ms.",
+        "updated_at": "2026-07-18T03:57:27.576057Z",
         "source": "Steam Community",
         "url": "https://steamcommunity.com/"
       },
@@ -152,17 +166,17 @@
         "name": "Steam Web API",
         "service": "Steam Web API",
         "status": "operational",
-        "health": "API reachable (Fri Jul 17 20:27:15 2026).",
-        "updated_at": "2026-07-18T03:27:15.168670Z",
+        "health": "API reachable (Fri Jul 17 20:57:26 2026).",
+        "updated_at": "2026-07-18T03:57:26.959261Z",
         "source": "Valve Web API",
         "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/"
       },
       {
         "name": "Steam Connection Managers",
         "service": "Steam Connection Managers",
-        "status": "operational",
-        "health": "CM load stable (avg 18.8% / max 52.3%).",
-        "updated_at": "2026-07-18T03:27:15.318000Z",
+        "status": "major outage",
+        "health": "High CM load (avg 43.6% / max 96.6%).",
+        "updated_at": "2026-07-18T03:57:27.069294Z",
         "source": "Valve Directory API",
         "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50"
       },
@@ -171,17 +185,13 @@
         "service": "Steam CM Directory",
         "status": "operational",
         "health": "100 CM endpoints listed.",
-        "updated_at": "2026-07-18T03:27:15.495027Z",
+        "updated_at": "2026-07-18T03:57:27.191491Z",
         "source": "Valve Directory API",
         "url": "https://api.steampowered.com/ISteamDirectory/GetCMList/v1/?cellid=0&maxcount=50"
       }
     ],
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "03:40",
-        "count": 1
-      },
       {
         "label": "04:00",
         "count": 2
@@ -465,6 +475,10 @@
       {
         "label": "03:20",
         "count": 0
+      },
+      {
+        "label": "03:40",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -473,24 +487,31 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-17T23:27:16-04:00"
+      "last_reviewed_at": "2026-07-17T23:57:27-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 111,
-        "last_reviewed_at": "2026-07-17T23:27:16-04:00"
+        "reports_24h": 112,
+        "last_reviewed_at": "2026-07-17T23:57:27-04:00"
       }
     ]
   },
   "reports": [
     {
+      "title": "Steam Connection Managers: High CM load (avg 43.6% / max 96.6%).",
+      "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
+      "published_at": "2026-07-18T03:57:27.069294Z",
+      "source": "Valve probes",
+      "meta": "Valve probe signal"
+    },
+    {
       "title": "Status summary unavailable.",
       "url": "https://isdown.app/status/steam",
-      "published_at": "2026-07-17T23:27:16-04:00",
+      "published_at": "2026-07-17T23:57:27-04:00",
       "source": "IsDown (Steam)",
-      "meta": "111 user reports in 24h"
+      "meta": "112 user reports in 24h"
     }
   ],
   "known_resources": [
@@ -499,77 +520,77 @@
       "url": "https://steamcommunity.com/dev",
       "source": "Official",
       "meta": "Valve Developer",
-      "published_at": "2026-07-18T03:27:16.769678Z"
+      "published_at": "2026-07-18T03:57:28.502671Z"
     },
     {
       "title": "Steam API GetServerInfo",
       "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-18T03:27:16.769678Z"
+      "published_at": "2026-07-18T03:57:28.502671Z"
     },
     {
       "title": "Steam API GetCMListForConnect",
       "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-18T03:27:16.769678Z"
+      "published_at": "2026-07-18T03:57:28.502671Z"
     },
     {
       "title": "Steam API GetCMList",
       "url": "https://api.steampowered.com/ISteamDirectory/GetCMList/v1/?cellid=0&maxcount=50",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-18T03:27:16.769678Z"
+      "published_at": "2026-07-18T03:57:28.502671Z"
     },
     {
       "title": "Steam planned maintenance FAQ",
       "url": "https://help.steampowered.com/en/faqs/view/5814-D9A3-BE42-62DF",
       "source": "Official",
       "meta": "Steam Support",
-      "published_at": "2026-07-18T03:27:16.769678Z"
+      "published_at": "2026-07-18T03:57:28.502671Z"
     },
     {
       "title": "Steamstat.us community monitor",
       "url": "https://steamstat.us/",
       "source": "Community",
       "meta": "Third-party monitor",
-      "published_at": "2026-07-18T03:27:16.769678Z"
+      "published_at": "2026-07-18T03:57:28.502671Z"
     }
   ],
   "news": [
     {
-      "title": "Steam Community: HTTP 200 in 187ms.",
+      "title": "Steam Community: HTTP 200 in 149ms.",
       "url": "https://steamcommunity.com/",
-      "published_at": "2026-07-18T03:27:15.938700Z",
+      "published_at": "2026-07-18T03:57:27.576057Z",
       "source": "Steam Community",
       "meta": "operational"
     },
     {
-      "title": "Steam Store: HTTP 200 in 255ms.",
+      "title": "Steam Store: HTTP 200 in 233ms.",
       "url": "https://store.steampowered.com/",
-      "published_at": "2026-07-18T03:27:15.750184Z",
+      "published_at": "2026-07-18T03:57:27.425546Z",
       "source": "Steam Store",
       "meta": "operational"
     },
     {
       "title": "Steam CM Directory: 100 CM endpoints listed.",
       "url": "https://api.steampowered.com/ISteamDirectory/GetCMList/v1/?cellid=0&maxcount=50",
-      "published_at": "2026-07-18T03:27:15.495027Z",
+      "published_at": "2026-07-18T03:57:27.191491Z",
       "source": "Valve Directory API",
       "meta": "operational"
     },
     {
-      "title": "Steam Connection Managers: CM load stable (avg 18.8% / max 52.3%).",
+      "title": "Steam Connection Managers: High CM load (avg 43.6% / max 96.6%).",
       "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
-      "published_at": "2026-07-18T03:27:15.318000Z",
+      "published_at": "2026-07-18T03:57:27.069294Z",
       "source": "Valve Directory API",
-      "meta": "operational"
+      "meta": "major outage"
     },
     {
-      "title": "Steam Web API: API reachable (Fri Jul 17 20:27:15 2026).",
+      "title": "Steam Web API: API reachable (Fri Jul 17 20:57:26 2026).",
       "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/",
-      "published_at": "2026-07-18T03:27:15.168670Z",
+      "published_at": "2026-07-18T03:57:26.959261Z",
       "source": "Valve Web API",
       "meta": "operational"
     }
@@ -587,11 +608,11 @@
       "ok": true,
       "error": null,
       "item_count": 1,
-      "last_item_at": "2026-07-18T03:27:15.168670Z",
+      "last_item_at": "2026-07-18T03:57:26.959261Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 153,
-      "fetched_at": "2026-07-18T03:27:15.168977Z",
+      "duration_ms": 131,
+      "fetched_at": "2026-07-18T03:57:26.959509Z",
       "cache_hit": false
     },
     {
@@ -604,12 +625,12 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 12,
-      "last_item_at": "2026-07-18T03:27:15.318000Z",
+      "item_count": 27,
+      "last_item_at": "2026-07-18T03:57:27.069294Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 149,
-      "fetched_at": "2026-07-18T03:27:15.318088Z",
+      "duration_ms": 109,
+      "fetched_at": "2026-07-18T03:57:27.069375Z",
       "cache_hit": false
     },
     {
@@ -623,11 +644,11 @@
       "ok": true,
       "error": null,
       "item_count": 100,
-      "last_item_at": "2026-07-18T03:27:15.495027Z",
+      "last_item_at": "2026-07-18T03:57:27.191491Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 176,
-      "fetched_at": "2026-07-18T03:27:15.495099Z",
+      "duration_ms": 122,
+      "fetched_at": "2026-07-18T03:57:27.191734Z",
       "cache_hit": false
     },
     {
@@ -641,11 +662,11 @@
       "ok": true,
       "error": null,
       "item_count": 1,
-      "last_item_at": "2026-07-18T03:27:15.750184Z",
+      "last_item_at": "2026-07-18T03:57:27.425546Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 256,
-      "fetched_at": "2026-07-18T03:27:15.751237Z",
+      "duration_ms": 234,
+      "fetched_at": "2026-07-18T03:57:27.426291Z",
       "cache_hit": false
     },
     {
@@ -659,11 +680,11 @@
       "ok": true,
       "error": null,
       "item_count": 1,
-      "last_item_at": "2026-07-18T03:27:15.938700Z",
+      "last_item_at": "2026-07-18T03:57:27.576057Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 188,
-      "fetched_at": "2026-07-18T03:27:15.939742Z",
+      "duration_ms": 150,
+      "fetched_at": "2026-07-18T03:57:27.576647Z",
       "cache_hit": false
     },
     {
@@ -677,17 +698,17 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-17T23:27:16-04:00",
+      "last_item_at": "2026-07-17T23:57:27-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 828,
-      "fetched_at": "2026-07-18T03:27:16.768681Z",
+      "duration_ms": 924,
+      "fetched_at": "2026-07-18T03:57:28.501598Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-18T03:27:16.769678Z",
+    "generated_at": "2026-07-18T03:57:28.502671Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -709,7 +730,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -724,9 +745,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 153,
+          "duration_ms": 131,
           "cache_hit": false,
-          "at": "2026-07-18T03:27:15Z"
+          "at": "2026-07-18T03:57:26Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -735,19 +756,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 158.6
+          "avg_duration_ms": 160.1
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 117,
+          "runs": 118,
+          "ok": 118,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 146.3
+          "avg_duration_ms": 146.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T03:27:15Z",
+        "last_success_at": "2026-07-18T03:57:26Z",
         "last_failure_at": null
       },
       {
@@ -761,9 +782,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 149,
+          "duration_ms": 109,
           "cache_hit": false,
-          "at": "2026-07-18T03:27:15Z"
+          "at": "2026-07-18T03:57:26Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -772,19 +793,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 181.4
+          "avg_duration_ms": 179.6
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 117,
+          "runs": 118,
+          "ok": 118,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 191.6
+          "avg_duration_ms": 190.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T03:27:15Z",
+        "last_success_at": "2026-07-18T03:57:26Z",
         "last_failure_at": null
       },
       {
@@ -798,9 +819,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 176,
+          "duration_ms": 122,
           "cache_hit": false,
-          "at": "2026-07-18T03:27:15Z"
+          "at": "2026-07-18T03:57:26Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -809,19 +830,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 196.4
+          "avg_duration_ms": 195.6
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 117,
+          "runs": 118,
+          "ok": 118,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 258.0
+          "avg_duration_ms": 256.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T03:27:15Z",
+        "last_success_at": "2026-07-18T03:57:26Z",
         "last_failure_at": null
       },
       {
@@ -835,9 +856,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 256,
+          "duration_ms": 234,
           "cache_hit": false,
-          "at": "2026-07-18T03:27:15Z"
+          "at": "2026-07-18T03:57:26Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -846,19 +867,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 286.7
+          "avg_duration_ms": 288.8
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 117,
+          "runs": 118,
+          "ok": 118,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 276.9
+          "avg_duration_ms": 276.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T03:27:15Z",
+        "last_success_at": "2026-07-18T03:57:26Z",
         "last_failure_at": null
       },
       {
@@ -872,9 +893,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 188,
+          "duration_ms": 150,
           "cache_hit": false,
-          "at": "2026-07-18T03:27:15Z"
+          "at": "2026-07-18T03:57:26Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -883,19 +904,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 187.4
+          "avg_duration_ms": 187.8
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 115,
+          "runs": 118,
+          "ok": 116,
           "stale": 2,
           "success_rate": 98.3,
           "stale_rate": 1.7,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 217.9
+          "avg_duration_ms": 217.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T03:27:15Z",
+        "last_success_at": "2026-07-18T03:57:26Z",
         "last_failure_at": "2026-07-16T01:00:49Z"
       },
       {
@@ -909,9 +930,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 828,
+          "duration_ms": 924,
           "cache_hit": false,
-          "at": "2026-07-18T03:27:15Z"
+          "at": "2026-07-18T03:57:26Z"
         },
         "metrics_24h": {
           "runs": 17,
@@ -920,38 +941,56 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 838.9
+          "avg_duration_ms": 842.1
         },
         "metrics_7d": {
-          "runs": 117,
-          "ok": 117,
+          "runs": 118,
+          "ok": 118,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 860.6
+          "avg_duration_ms": 861.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-18T03:27:15Z",
+        "last_success_at": "2026-07-18T03:57:26Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-18T03:27:16.769678Z",
+    "generated_at": "2026-07-18T03:57:28.502671Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "dbce9b2eac7e5f7f",
+          "title": "Steam Connection Managers: High CM load (avg 43.6% / max 96.6%).",
+          "started_at": "2026-07-18T03:57:27.069294Z",
+          "duration": "ongoing",
+          "acknowledgement": "Valve probe signal",
+          "url": "https://api.steampowered.com/ISteamWebAPIUtil/GetServerInfo/v1/"
+        }
+      ],
       "updated": [],
       "resolved": []
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "76dc61ef23c8df88",
+          "title": "Steam Connection Managers: High CM load (avg 43.6% / max 96.6%).",
+          "url": "https://api.steampowered.com/ISteamDirectory/GetCMListForConnect/v1/?cellid=0&maxcount=50",
+          "published_at": "2026-07-18T03:57:27.069294Z",
+          "source": "Valve probes",
+          "meta": "Valve probe signal"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
       "resolved_incidents": 0,
-      "new_reports": 0
+      "new_reports": 1
     }
   }
 }
