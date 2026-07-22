@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-22T20:38:57.490197Z",
+  "generated_at": "2026-07-22T22:04:48.824714Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.595,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.35
     },
     "signal_metrics": {
-      "reports_24h": 108,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 109,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,40 +31,40 @@
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -74,10 +74,42 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-07-22T20:38:57.192794Z",
+        "published_at": "2026-07-22T22:04:48.607774Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Disruption with actions hosted runners",
+        "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6#bbdq20tkd55c",
+        "published_at": "2026-07-22T22:01:57.549Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / The degradation affecting Actions has been mitigated. We are monitoring to ensure stability."
+      },
+      {
+        "title": "Disruption with actions hosted runners",
+        "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6#hsnkhygj7qpy",
+        "published_at": "2026-07-22T22:01:51.972Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / The degradation affecting Actions has been mitigated. We are monitoring to ensure stability."
+      },
+      {
+        "title": "Disruption with actions hosted runners",
+        "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6#70q12wmx3ckx",
+        "published_at": "2026-07-22T20:47:02.375Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / Approximately 3% of GitHub Actions runs on GitHub-hosted runners are experiencing run start delays exceeding 5 minutes. A small portion of these runs may fail after extended delays. We have identified the cause and are working on a mitigati"
+      },
+      {
+        "title": "Disruption with actions hosted runners",
+        "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6#0nkb28qlrqrw",
+        "published_at": "2026-07-22T20:43:43.871Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We are investigating reports of degraded performance for Actions"
       },
       {
         "title": "Some SSH connections using deploy keys are failing",
@@ -118,50 +150,32 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
-      },
-      {
-        "title": "Disruption with GPT 5.3 Codex",
-        "url": "https://www.githubstatus.com/incidents/fd7j2mw8xw94#byh7r7nq0t7p",
-        "published_at": "2026-07-20T18:25:51.982Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are seeing signs of sustained recovery from the upstream provider for GPT 5.3 Codex requests. Requests are succeeding as expected. We are awaiting confirmation from the provider that the issue is fully mitigated before resolving this inc"
-      },
-      {
-        "title": "Disruption with GPT 5.3 Codex",
-        "url": "https://www.githubstatus.com/incidents/fd7j2mw8xw94#lnp080gypymx",
-        "published_at": "2026-07-20T17:21:18.855Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / The upstream provider continues to return intermittent errors for GPT 5.3 Codex requests. Some users may experience failed or interrupted responses when using this model. Traffic continues to be automatically rerouted to reduce impact, and "
-      },
-      {
-        "title": "Disruption with GPT 5.3 Codex",
-        "url": "https://www.githubstatus.com/incidents/fd7j2mw8xw94#yc012530pl6v",
-        "published_at": "2026-07-20T16:39:46.794Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We identified that an upstream provider is returning errors for GPT 5.3 Codex requests, causing some users to experience failed or interrupted responses. Traffic is being automatically rerouted to mitigate impact. We are working with the up"
-      },
-      {
-        "title": "Disruption with GPT 5.3 Codex",
-        "url": "https://www.githubstatus.com/incidents/fd7j2mw8xw94#0c63ygxm7kkx",
-        "published_at": "2026-07-20T16:04:26.517Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are investigating GPT Codex 5.3 performance."
       }
     ],
-    "last_statement_at": "2026-07-22T20:38:57.192794Z"
+    "last_statement_at": "2026-07-22T22:04:48.607774Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "GitHub Statuspage reports an active incident: Disruption with actions hosted runners.",
     "current_status": "operational",
-    "reports_24h": 108,
+    "reports_24h": 109,
     "incidents": [
+      {
+        "title": "Disruption with actions hosted runners",
+        "started_at": "2026-07-22T20:46:35Z",
+        "duration": "",
+        "acknowledgement": "Yes"
+      },
+      {
+        "title": "Disruption with actions hosted runners",
+        "started_at": "2026-07-22T20:43:43.797Z",
+        "duration": "1h 21m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6"
+      },
       {
         "title": "Some SSH connections using deploy keys are failing",
         "started_at": "2026-07-21T10:37:13Z",
@@ -203,20 +217,6 @@
         "started_at": "2026-07-19T23:36:39Z",
         "duration": "4h",
         "acknowledgement": "Yes"
-      },
-      {
-        "title": "Incident with GitHub Actions",
-        "started_at": "2026-07-19T23:34:03.457Z",
-        "duration": "5h 9m",
-        "acknowledgement": "Critical / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/8vfyvq16hzh9"
-      },
-      {
-        "title": "Copilot Coding Agent Degraded Job Completion",
-        "started_at": "2026-07-16T22:51:41Z",
-        "duration": "1h 10m",
-        "acknowledgement": "Yes"
       }
     ],
     "top_reported_issues": [],
@@ -229,26 +229,6 @@
     "service_health_24h_meta": null,
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "20:40",
-        "count": 3
-      },
-      {
-        "label": "21:00",
-        "count": 0
-      },
-      {
-        "label": "21:20",
-        "count": 2
-      },
-      {
-        "label": "21:40",
-        "count": 0
-      },
-      {
-        "label": "22:00",
-        "count": 1
-      },
       {
         "label": "22:20",
         "count": 3
@@ -516,6 +496,26 @@
       {
         "label": "20:20",
         "count": 2
+      },
+      {
+        "label": "20:40",
+        "count": 0
+      },
+      {
+        "label": "21:00",
+        "count": 1
+      },
+      {
+        "label": "21:20",
+        "count": 3
+      },
+      {
+        "label": "21:40",
+        "count": 1
+      },
+      {
+        "label": "22:00",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -524,14 +524,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-22T15:38:56-05:00"
+      "last_reviewed_at": "2026-07-22T17:04:48-05:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 108,
-        "last_reviewed_at": "2026-07-22T15:38:56-05:00"
+        "reports_24h": 109,
+        "last_reviewed_at": "2026-07-22T17:04:48-05:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -583,7 +583,7 @@
         "name": "Actions",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-07-20T03:34:48.498Z",
+        "updated_at": "2026-07-22T22:01:57.515Z",
         "source": "GitHub Statuspage API"
       },
       {
@@ -626,6 +626,20 @@
   },
   "reports": [
     {
+      "title": "Disruption with actions hosted runners",
+      "url": "https://www.githubstatus.com/#2026-07-22T20:46:35Z",
+      "published_at": "2026-07-22T20:46:35Z",
+      "source": "StatusGator",
+      "meta": "Yes"
+    },
+    {
+      "title": "Disruption with actions hosted runners",
+      "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6",
+      "published_at": "2026-07-22T20:43:43.797Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Monitoring"
+    },
+    {
       "title": "Some SSH connections using deploy keys are failing",
       "url": "https://www.githubstatus.com/#2026-07-21T10:37:13Z",
       "published_at": "2026-07-21T10:37:13Z",
@@ -666,20 +680,6 @@
       "published_at": "2026-07-19T23:36:39Z",
       "source": "StatusGator",
       "meta": "Yes"
-    },
-    {
-      "title": "Incident with GitHub Actions",
-      "url": "https://www.githubstatus.com/incidents/8vfyvq16hzh9",
-      "published_at": "2026-07-19T23:34:03.457Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Critical / Resolved"
-    },
-    {
-      "title": "Copilot Coding Agent Degraded Job Completion",
-      "url": "https://www.githubstatus.com/#2026-07-16T22:51:41Z",
-      "published_at": "2026-07-16T22:51:41Z",
-      "source": "StatusGator",
-      "meta": "Yes"
     }
   ],
   "known_resources": [
@@ -688,52 +688,84 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-07-22T20:38:57.490197Z"
+      "published_at": "2026-07-22T22:04:48.824714Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-22T20:38:57.490197Z"
+      "published_at": "2026-07-22T22:04:48.824714Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-22T20:38:57.490197Z"
+      "published_at": "2026-07-22T22:04:48.824714Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-07-22T20:38:57.490197Z"
+      "published_at": "2026-07-22T22:04:48.824714Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-07-22T20:38:57.490197Z"
+      "published_at": "2026-07-22T22:04:48.824714Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-22T20:38:57.490197Z"
+      "published_at": "2026-07-22T22:04:48.824714Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-07-22T20:38:57.192794Z",
+      "published_at": "2026-07-22T22:04:48.607774Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Disruption with actions hosted runners",
+      "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6#bbdq20tkd55c",
+      "published_at": "2026-07-22T22:01:57.549Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / The degradation affecting Actions has been mitigated. We are monitoring to ensure stability."
+    },
+    {
+      "title": "Disruption with actions hosted runners",
+      "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6#hsnkhygj7qpy",
+      "published_at": "2026-07-22T22:01:51.972Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / The degradation affecting Actions has been mitigated. We are monitoring to ensure stability."
+    },
+    {
+      "title": "Disruption with actions hosted runners",
+      "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6#70q12wmx3ckx",
+      "published_at": "2026-07-22T20:47:02.375Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / Approximately 3% of GitHub Actions runs on GitHub-hosted runners are experiencing run start delays exceeding 5 minutes. A small portion of these runs may fail after extended delays. We have identified the cause and are working on a mitigati"
+    },
+    {
+      "title": "Disruption with actions hosted runners",
+      "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6#0nkb28qlrqrw",
+      "published_at": "2026-07-22T20:43:43.871Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We are investigating reports of degraded performance for Actions"
     },
     {
       "title": "Some SSH connections using deploy keys are failing",
@@ -758,38 +790,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Critical / Resolved / We are investigating reports of intermittent SSH authentication failures affecting connections that use deploy keys. Customers may experience failed SSH connections when interacting with repositories via deploy keys. Our engineering team is"
-    },
-    {
-      "title": "Some SSH connections using deploy keys are failing",
-      "url": "https://www.githubstatus.com/incidents/g40zcbvchny4#qb0gklk516dl",
-      "published_at": "2026-07-21T10:31:44.156Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / We are investigating reports of impacted performance for some GitHub services."
-    },
-    {
-      "title": "Disruption with GPT 5.3 Codex",
-      "url": "https://www.githubstatus.com/incidents/fd7j2mw8xw94#gd7fy9kr96rr",
-      "published_at": "2026-07-20T18:37:08.022Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
-    },
-    {
-      "title": "Disruption with GPT 5.3 Codex",
-      "url": "https://www.githubstatus.com/incidents/fd7j2mw8xw94#byh7r7nq0t7p",
-      "published_at": "2026-07-20T18:25:51.982Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are seeing signs of sustained recovery from the upstream provider for GPT 5.3 Codex requests. Requests are succeeding as expected. We are awaiting confirmation from the provider that the issue is fully mitigated before resolving this inc"
-    },
-    {
-      "title": "Disruption with GPT 5.3 Codex",
-      "url": "https://www.githubstatus.com/incidents/fd7j2mw8xw94#lnp080gypymx",
-      "published_at": "2026-07-20T17:21:18.855Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / The upstream provider continues to return intermittent errors for GPT 5.3 Codex requests. Some users may experience failed or interrupted responses when using this model. Traffic continues to be automatically rerouted to reduce impact, and "
     }
   ],
   "social": [],
@@ -805,11 +805,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-07-22T20:38:55.825908Z",
+      "last_item_at": "2026-07-22T22:04:47.880057Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 381,
-      "fetched_at": "2026-07-22T20:38:55.825930Z",
+      "duration_ms": 1139,
+      "fetched_at": "2026-07-22T22:04:47.880084Z",
       "cache_hit": false
     },
     {
@@ -823,11 +823,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-22T15:38:56-05:00",
+      "last_item_at": "2026-07-22T17:04:48-05:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1366,
-      "fetched_at": "2026-07-22T20:38:57.192548Z",
+      "duration_ms": 727,
+      "fetched_at": "2026-07-22T22:04:48.607528Z",
       "cache_hit": false
     },
     {
@@ -841,17 +841,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-22T20:38:57.192794Z",
+      "last_item_at": "2026-07-22T22:04:48.607774Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 295,
-      "fetched_at": "2026-07-22T20:38:57.488659Z",
+      "duration_ms": 215,
+      "fetched_at": "2026-07-22T22:04:48.823142Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-22T20:38:57.490197Z",
+    "generated_at": "2026-07-22T22:04:48.824714Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -873,7 +873,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -888,9 +888,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 381,
+          "duration_ms": 1139,
           "cache_hit": false,
-          "at": "2026-07-22T20:38:55Z"
+          "at": "2026-07-22T22:04:46Z"
         },
         "metrics_24h": {
           "runs": 16,
@@ -899,7 +899,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 329.2
+          "avg_duration_ms": 315.9
         },
         "metrics_7d": {
           "runs": 118,
@@ -908,10 +908,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 457.9
+          "avg_duration_ms": 465.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-22T20:38:55Z",
+        "last_success_at": "2026-07-22T22:04:46Z",
         "last_failure_at": null
       },
       {
@@ -925,9 +925,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1366,
+          "duration_ms": 727,
           "cache_hit": false,
-          "at": "2026-07-22T20:38:55Z"
+          "at": "2026-07-22T22:04:46Z"
         },
         "metrics_24h": {
           "runs": 16,
@@ -936,7 +936,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1174.1
+          "avg_duration_ms": 1137.8
         },
         "metrics_7d": {
           "runs": 118,
@@ -945,10 +945,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1084.6
+          "avg_duration_ms": 1080.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-22T20:38:55Z",
+        "last_success_at": "2026-07-22T22:04:46Z",
         "last_failure_at": null
       },
       {
@@ -962,9 +962,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 295,
+          "duration_ms": 215,
           "cache_hit": false,
-          "at": "2026-07-22T20:38:55Z"
+          "at": "2026-07-22T22:04:46Z"
         },
         "metrics_24h": {
           "runs": 16,
@@ -973,7 +973,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 287.3
+          "avg_duration_ms": 283.4
         },
         "metrics_7d": {
           "runs": 118,
@@ -985,26 +985,77 @@
           "avg_duration_ms": 299.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-22T20:38:55Z",
+        "last_success_at": "2026-07-22T22:04:46Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-22T20:38:57.490197Z",
+    "generated_at": "2026-07-22T22:04:48.824714Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "8114a5d60a9b6c58",
+          "title": "Disruption with actions hosted runners",
+          "started_at": "2026-07-22T20:46:35Z",
+          "duration": "",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "b62650d89428ba8a",
+          "title": "Disruption with actions hosted runners",
+          "started_at": "2026-07-22T20:43:43.797Z",
+          "duration": "1h 21m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "502f2b23ec1d5d40",
+          "title": "Incident with GitHub Actions",
+          "started_at": "2026-07-19T23:34:03.457Z",
+          "duration": "5h 9m",
+          "acknowledgement": "Critical / Resolved",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "8e3d6cbcb6fb5ae0",
+          "title": "Copilot Coding Agent Degraded Job Completion",
+          "started_at": "2026-07-16T22:51:41Z",
+          "duration": "1h 10m",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "83a4eb7d7b4eecbb",
+          "title": "Disruption with actions hosted runners",
+          "url": "https://www.githubstatus.com/#2026-07-22T20:46:35Z",
+          "published_at": "2026-07-22T20:46:35Z",
+          "source": "StatusGator",
+          "meta": "Yes"
+        },
+        {
+          "id": "d4944ee9285dbb7a",
+          "title": "Disruption with actions hosted runners",
+          "url": "https://www.githubstatus.com/incidents/20frdtvv3yg6",
+          "published_at": "2026-07-22T20:43:43.797Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Monitoring"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
