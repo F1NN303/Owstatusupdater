@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-22T15:59:37.827108Z",
+  "generated_at": "2026-07-22T17:35:15.627972Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "minor",
+    "severity_score": 3,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
@@ -17,7 +17,7 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 133,
+      "reports_24h": 135,
       "recent_incidents_6h": 2,
       "recent_incidents_24h": 6,
       "cross_source": {
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
+      "official_operational_cap_applied": true,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "minor",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: Partial System Degradation",
+    "summary": "OpenAI Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: Partial System Degradation",
+        "title": "OpenAI Statuspage API: All Systems Operational",
         "url": "https://status.openai.com/",
-        "published_at": "2026-07-22T15:59:37.291337Z",
+        "published_at": "2026-07-22T17:35:14.915796Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Elevated errors for Workspace Agent",
+        "url": "https://status.openai.com/incidents/01KY54SWGRK806N6TJ495MYPDD#01KY59DVVETNWZXHY2YGXDAH0V",
+        "published_at": "2026-07-22T16:09:35Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
       },
       {
         "title": "Elevated errors for Workspace Agent",
@@ -84,7 +92,7 @@
         "published_at": "2026-07-22T15:49:17Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Minor / Identified / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
+        "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
       },
       {
         "title": "Elevated errors for Workspace Agent",
@@ -92,7 +100,7 @@
         "published_at": "2026-07-22T14:48:46Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Identified / We are investigating the issue for the listed services."
+        "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
       },
       {
         "title": "Elevated Errors Affecting File Uploads and Image Generation",
@@ -141,37 +149,29 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Major / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Elevated errors for API image generation",
-        "url": "https://status.openai.com/incidents/01KY32PEQHPV5F2W4HCNFJ60RD#01KY3C6H1EH02ZP2DSVS7PF4VS",
-        "published_at": "2026-07-21T22:19:31Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / Image generation functionality has fully recovered, and error rates have returned to normal levels."
       }
     ],
-    "last_statement_at": "2026-07-22T15:59:37.291337Z"
+    "last_statement_at": "2026-07-22T17:35:14.915796Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports an active incident: Elevated errors for Workspace Agent.",
-    "current_status": "degraded",
-    "reports_24h": 133,
+    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
+    "current_status": "operational",
+    "reports_24h": 135,
     "incidents": [
       {
         "title": "Elevated errors for Workspace Agent",
         "started_at": "2026-07-22T14:52:04Z",
-        "duration": "1m",
+        "duration": "1h 20m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Elevated errors for Workspace Agent",
         "started_at": "2026-07-22T14:48:46Z",
-        "duration": "1h 10m ongoing",
-        "acknowledgement": "Minor / Identified",
+        "duration": "1h 20m",
+        "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KY54SWGRK806N6TJ495MYPDD"
       },
@@ -222,60 +222,13 @@
         "url": "https://status.openai.com/incidents/01KXYF4BTCV9DTZ5NDSFN716FH"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Agent",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-07-21T16:00:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-21T16:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-21T16:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-21T16:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-21T17:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-21T17:15:00Z",
-        "signal_value": 27.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-21T17:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-07-21T17:45:00Z",
         "signal_value": 2.0,
@@ -809,6 +762,48 @@
         "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-22T16:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-22T16:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-22T16:30:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-22T16:45:00Z",
+        "signal_value": 29.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-22T17:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-22T17:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-22T17:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -817,30 +812,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-07-22T15:45:00Z"
+      "last_sample_at": "2026-07-22T17:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "16:00",
-        "count": 0
-      },
-      {
-        "label": "16:20",
-        "count": 3
-      },
-      {
-        "label": "16:40",
-        "count": 0
-      },
-      {
-        "label": "17:00",
-        "count": 1
-      },
-      {
-        "label": "17:20",
-        "count": 3
-      },
       {
         "label": "17:40",
         "count": 2
@@ -1108,6 +1083,26 @@
       {
         "label": "15:40",
         "count": 0
+      },
+      {
+        "label": "16:00",
+        "count": 2
+      },
+      {
+        "label": "16:20",
+        "count": 3
+      },
+      {
+        "label": "16:40",
+        "count": 1
+      },
+      {
+        "label": "17:00",
+        "count": 2
+      },
+      {
+        "label": "17:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1116,14 +1111,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-22T11:59:36-04:00"
+      "last_reviewed_at": "2026-07-22T13:35:14-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 133,
-        "last_reviewed_at": "2026-07-22T11:59:36-04:00"
+        "reports_24h": 135,
+        "last_reviewed_at": "2026-07-22T13:35:14-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1306,8 +1301,8 @@
       },
       {
         "name": "Agent",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1387,19 +1382,19 @@
         "count": 2
       },
       {
+        "label": "Error message",
+        "count": 1
+      },
+      {
         "label": "Server not responding",
         "count": 1
       },
       {
-        "label": "Slow performance",
-        "count": 1
-      },
-      {
-        "label": "Error message",
+        "label": "Sign in problem",
         "count": 0
       },
       {
-        "label": "Sign in problem",
+        "label": "Slow performance",
         "count": 0
       }
     ]
@@ -1417,7 +1412,7 @@
       "url": "https://status.openai.com/incidents/01KY54SWGRK806N6TJ495MYPDD",
       "published_at": "2026-07-22T14:48:46Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Identified"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Elevated Errors Affecting File Uploads and Image Generation",
@@ -1468,45 +1463,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-07-22T15:59:37.827108Z"
+      "published_at": "2026-07-22T17:35:15.627972Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-22T15:59:37.827108Z"
+      "published_at": "2026-07-22T17:35:15.627972Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-22T15:59:37.827108Z"
+      "published_at": "2026-07-22T17:35:15.627972Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-07-22T15:59:37.827108Z"
+      "published_at": "2026-07-22T17:35:15.627972Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-22T15:59:37.827108Z"
+      "published_at": "2026-07-22T17:35:15.627972Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: Partial System Degradation",
+      "title": "OpenAI Statuspage API: All Systems Operational",
       "url": "https://status.openai.com/",
-      "published_at": "2026-07-22T15:59:37.291337Z",
+      "published_at": "2026-07-22T17:35:14.915796Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Elevated errors for Workspace Agent",
+      "url": "https://status.openai.com/incidents/01KY54SWGRK806N6TJ495MYPDD#01KY59DVVETNWZXHY2YGXDAH0V",
+      "published_at": "2026-07-22T16:09:35Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
     },
     {
       "title": "Elevated errors for Workspace Agent",
@@ -1514,7 +1517,7 @@
       "published_at": "2026-07-22T15:49:17Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Minor / Identified / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
+      "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
     },
     {
       "title": "Elevated errors for Workspace Agent",
@@ -1522,7 +1525,7 @@
       "published_at": "2026-07-22T14:48:46Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Identified / We are investigating the issue for the listed services."
+      "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
     },
     {
       "title": "Elevated Errors Affecting File Uploads and Image Generation",
@@ -1555,14 +1558,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
-    },
-    {
-      "title": "Elevated Errors Affecting File Uploads and Image Generation",
-      "url": "https://status.openai.com/incidents/01KY4BT971GFN59WBT0CKSGCPJ#01KY4BT9717BC05F7QVHJJHS41",
-      "published_at": "2026-07-22T07:32:04Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
     }
   ],
   "social": [],
@@ -1578,11 +1573,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-07-22T15:59:36.525091Z",
+      "last_item_at": "2026-07-22T17:35:13.808063Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 223,
-      "fetched_at": "2026-07-22T15:59:36.525108Z",
+      "duration_ms": 282,
+      "fetched_at": "2026-07-22T17:35:13.808084Z",
       "cache_hit": false
     },
     {
@@ -1596,11 +1591,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-22T11:59:36-04:00",
+      "last_item_at": "2026-07-22T13:35:14-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 765,
-      "fetched_at": "2026-07-22T15:59:37.290766Z",
+      "duration_ms": 1107,
+      "fetched_at": "2026-07-22T17:35:14.915222Z",
       "cache_hit": false
     },
     {
@@ -1614,17 +1609,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-22T15:59:37.291337Z",
+      "last_item_at": "2026-07-22T17:35:14.915796Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 533,
-      "fetched_at": "2026-07-22T15:59:37.825231Z",
+      "duration_ms": 710,
+      "fetched_at": "2026-07-22T17:35:15.626140Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-22T15:59:37.827108Z",
+    "generated_at": "2026-07-22T17:35:15.627972Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1646,7 +1641,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "minor",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1661,18 +1656,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 223,
+          "duration_ms": 282,
           "cache_hit": false,
-          "at": "2026-07-22T15:59:36Z"
+          "at": "2026-07-22T17:35:13Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 17,
+          "ok": 17,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 516.6
+          "avg_duration_ms": 521.4
         },
         "metrics_7d": {
           "runs": 120,
@@ -1681,10 +1676,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 585.4
+          "avg_duration_ms": 585.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-22T15:59:36Z",
+        "last_success_at": "2026-07-22T17:35:13Z",
         "last_failure_at": null
       },
       {
@@ -1698,18 +1693,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 765,
+          "duration_ms": 1107,
           "cache_hit": false,
-          "at": "2026-07-22T15:59:36Z"
+          "at": "2026-07-22T17:35:13Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 17,
+          "ok": 17,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 860.7
+          "avg_duration_ms": 868.8
         },
         "metrics_7d": {
           "runs": 120,
@@ -1718,10 +1713,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 892.5
+          "avg_duration_ms": 892.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-22T15:59:36Z",
+        "last_success_at": "2026-07-22T17:35:13Z",
         "last_failure_at": null
       },
       {
@@ -1735,18 +1730,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 533,
+          "duration_ms": 710,
           "cache_hit": false,
-          "at": "2026-07-22T15:59:36Z"
+          "at": "2026-07-22T17:35:13Z"
         },
         "metrics_24h": {
-          "runs": 18,
-          "ok": 18,
+          "runs": 17,
+          "ok": 17,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 762.2
+          "avg_duration_ms": 769.5
         },
         "metrics_7d": {
           "runs": 120,
@@ -1755,23 +1750,24 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 769.2
+          "avg_duration_ms": 768.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-22T15:59:36Z",
+        "last_success_at": "2026-07-22T17:35:13Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-22T15:59:37.827108Z",
+    "generated_at": "2026-07-22T17:35:15.627972Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "d4a648697f4c7e5d",
           "title": "Elevated errors for Workspace Agent",
           "started_at": "2026-07-22T14:52:04Z",
-          "duration": "1m",
+          "duration": "1h 20m",
           "acknowledgement": "warn icon Warn",
           "url": "https://status.openai.com/"
         },
@@ -1779,73 +1775,21 @@
           "id": "ecd013011deaea01",
           "title": "Elevated errors for Workspace Agent",
           "started_at": "2026-07-22T14:48:46Z",
-          "duration": "1h 10m ongoing",
-          "acknowledgement": "Minor / Identified",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "5558373c6ef479da",
-          "title": "Elevated Errors Affecting File Uploads and Image Generation",
-          "started_at": "2026-07-22T07:56:51Z",
-          "duration": "6h 45m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "7d21f18c5df0d47f",
-          "title": "Elevated Errors Affecting File Uploads and Image Generation",
-          "started_at": "2026-07-22T07:32:04Z",
-          "duration": "7h 7m",
+          "duration": "1h 20m",
           "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
       ],
-      "resolved": [
-        {
-          "id": "4b67a71924bfaa1a",
-          "title": "Elevated Errors Affecting File Uploads and Image Generation",
-          "started_at": "2026-07-22T07:36:52Z",
-          "duration": "20m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "3b44ca442b6e16f5",
-          "title": "Elevated errors affecting ChatGPT",
-          "started_at": "2026-07-19T14:49:42Z",
-          "duration": "2h 15m",
-          "acknowledgement": "Major / Resolved",
-          "url": "https://status.openai.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "fd1da9c827086ec9",
-          "title": "Elevated errors for Workspace Agent",
-          "url": "https://status.openai.com/#2026-07-22T14:52:04Z",
-          "published_at": "2026-07-22T14:52:04Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "83fb593d3ea7d650",
-          "title": "Elevated errors for Workspace Agent",
-          "url": "https://status.openai.com/incidents/01KY54SWGRK806N6TJ495MYPDD",
-          "published_at": "2026-07-22T14:48:46Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Identified"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 2,
+      "new_incidents": 0,
       "updated_incidents": 2,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
