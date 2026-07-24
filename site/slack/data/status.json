@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-24T09:04:31.958714Z",
+  "generated_at": "2026-07-24T11:17:10.135922Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "minor",
+    "severity_score": 3,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "slack-1.0",
@@ -17,7 +17,7 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 102,
+      "reports_24h": 108,
       "recent_incidents_6h": 2,
       "recent_incidents_24h": 4,
       "cross_source": {
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
+      "official_operational_cap_applied": true,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "minor",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,55 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Slack Status API: Issue sending messages to channels via certain Workflows",
+    "summary": "Slack Status API: Slack is up and running",
     "updates": [
       {
-        "title": "Slack Status API: Issue sending messages to channels via certain Workflows",
+        "title": "Slack Status API: Slack is up and running",
         "url": "https://slack-status.com/",
-        "published_at": "2026-07-24T09:04:31.450133Z",
+        "published_at": "2026-07-24T11:17:09.734621Z",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Indicator: active"
+        "meta": "Indicator: ok"
+      },
+      {
+        "title": "Issue sending messages to channels via certain Workflows",
+        "url": "https://slack-status.com/2026-07/e82ee127d8bed735#note-5",
+        "published_at": "2026-07-24T03:47:02-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Incident / Services: Workflows / We’ve completed the revert of the recent change and have validated that this has brought customers out of impact and can now successfully send a message to a channel using Workflows that include 'refer to a message link'. We apologize for h"
+      },
+      {
+        "title": "Issue sending messages to channels via certain Workflows",
+        "url": "https://slack-status.com/2026-07/e82ee127d8bed735#note-4",
+        "published_at": "2026-07-24T02:42:29-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Incident / Services: Workflows / We’ve performed a test of reverting a recent change and this appears to have resolved the issue. We are in the process of performing a production wide revert of this change. This is expected to take some time to complete and we will validat"
+      },
+      {
+        "title": "Issue sending messages to channels via certain Workflows",
+        "url": "https://slack-status.com/2026-07/e82ee127d8bed735#note-3",
+        "published_at": "2026-07-24T02:08:05-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Incident / Services: Workflows / The Workflow team is currently analyzing whether a recent change may have resulted in the conflict between variables that has been observed. It is expected to take some time to validate whether this is the case. We’ll provide an update in 6"
       },
       {
         "title": "Issue sending messages to channels via certain Workflows",
@@ -84,7 +108,7 @@
         "published_at": "2026-07-24T01:44:22-07:00",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Active / Incident / Services: Workflows / We've engaged our Worklow team to assist in the investigation. Initial analysis appears to show a conflict between specific variables. We’re continuing to work to understand whether this is the trigger of the issue. We’ll provide an update "
+        "meta": "Resolved / Incident / Services: Workflows / We've engaged our Worklow team to assist in the investigation. Initial analysis appears to show a conflict between specific variables. We’re continuing to work to understand whether this is the trigger of the issue. We’ll provide an update "
       },
       {
         "title": "Issue sending messages to channels via certain Workflows",
@@ -92,7 +116,7 @@
         "published_at": "2026-07-24T01:22:54-07:00",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Active / Incident / Services: Workflows / We’re aware of an issue affecting Workflows that include 'refer to a message link'. Users with these workflows are unable to send a message to a channel, and will receive an ‘Input Validation Error’ when trying to perform this step. We’re a"
+        "meta": "Resolved / Incident / Services: Workflows / We’re aware of an issue affecting Workflows that include 'refer to a message link'. Users with these workflows are unable to send a message to a channel, and will receive an ‘Input Validation Error’ when trying to perform this step. We’re a"
       },
       {
         "title": "Receiving reminders in Slack issue",
@@ -125,53 +149,29 @@
         "source": "Slack Status API",
         "channel": "official-status-page",
         "meta": "Resolved / Incident / We've resolved the issue and users can now use the Chat feature on the Slack Help Center. We performed a configuration change, which brought the feature back online and have validated that it's functioning as expected. We apologize for how "
-      },
-      {
-        "title": "Chat functionality unavailable on Slack Help page",
-        "url": "https://slack-status.com/2026-06/4e79ab0c89aa4be0#note-2",
-        "published_at": "2026-06-26T02:41:18-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / Additional Slack engineers have been engaged and are investigating this issue. As a workaround, if users require support, they can use the ‘Send us a Message’ functionality on the Slack Help Center page here: https://slack.com/intl/en-gb/he"
-      },
-      {
-        "title": "Chat functionality unavailable on Slack Help page",
-        "url": "https://slack-status.com/2026-06/4e79ab0c89aa4be0#note-1",
-        "published_at": "2026-06-26T02:12:20-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / We're aware of an issue affecting users ability to reach our Slack Support team via the Chat functionality on the Slack Help page. Users will be unable to click on the ‘Chat’ option and will see a ‘Chat is temporarily unavailable. Please se"
-      },
-      {
-        "title": "Trouble submitting workflow forms with file attachments on Android.",
-        "url": "https://slack-status.com/2026-06/83210c13677ffff1#note-6",
-        "published_at": "2026-06-22T13:39:26-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / Services: Workflows / This issue has been resolved. Android users who were experiencing issues submitting workflow forms containing a required file upload field can now do so successfully. A fix was delivered via a new update to the Slack Android app. Users who "
       }
     ],
-    "last_statement_at": "2026-07-24T09:04:31.450133Z"
+    "last_statement_at": "2026-07-24T11:17:09.734621Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://slack-status.com/",
-    "summary": "Slack Status reports an active incident: Issue sending messages to channels via certain Workflows.",
-    "current_status": "degraded",
-    "reports_24h": 102,
+    "summary": "Slack Status reports Slack is up and running. No active incidents are listed.",
+    "current_status": "operational",
+    "reports_24h": 108,
     "incidents": [
       {
         "title": "Issue sending messages to channels via certain workflows",
         "started_at": "2026-07-24T08:29:53Z",
-        "duration": "",
+        "duration": "2h 20m",
         "acknowledgement": "Yes"
       },
       {
         "title": "Issue sending messages to channels via certain Workflows",
         "started_at": "2026-07-24T01:22:54-07:00",
-        "duration": "41m ongoing",
-        "acknowledgement": "Incident / Active / Workflows",
+        "duration": "2h 24m",
+        "acknowledgement": "Incident / Resolved / Workflows",
         "source": "Slack Status API",
         "url": "https://slack-status.com/2026-07/e82ee127d8bed735"
       },
@@ -218,49 +218,16 @@
         "url": "https://slack-status.com/2026-06/66c001cc76d073f8"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Workflows",
-        "count": 1
-      },
-      {
-        "label": "Workflows",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "Slack Status API",
       "kind": "component-grid",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "09:20",
-        "count": 2
-      },
-      {
-        "label": "09:40",
-        "count": 0
-      },
-      {
-        "label": "10:00",
-        "count": 0
-      },
-      {
-        "label": "10:20",
-        "count": 2
-      },
-      {
-        "label": "10:40",
-        "count": 0
-      },
-      {
-        "label": "11:00",
-        "count": 1
-      },
       {
         "label": "11:20",
         "count": 3
@@ -524,6 +491,30 @@
       {
         "label": "09:00",
         "count": 1
+      },
+      {
+        "label": "09:20",
+        "count": 3
+      },
+      {
+        "label": "09:40",
+        "count": 1
+      },
+      {
+        "label": "10:00",
+        "count": 1
+      },
+      {
+        "label": "10:20",
+        "count": 3
+      },
+      {
+        "label": "10:40",
+        "count": 1
+      },
+      {
+        "label": "11:00",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -532,14 +523,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-24T05:04:30-04:00"
+      "last_reviewed_at": "2026-07-24T07:17:08-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 102,
-        "last_reviewed_at": "2026-07-24T05:04:30-04:00"
+        "reports_24h": 108,
+        "last_reviewed_at": "2026-07-24T07:17:08-04:00"
       }
     ],
     "current_status_origin": "Slack Status API",
@@ -549,77 +540,77 @@
         "name": "Login/SSO",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Connectivity",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Messaging",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Files",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Notifications",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Huddles",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Search",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Apps/Integrations/APIs",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workspace/Org Administration",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workflows",
-        "status": "something's not quite right. view details",
-        "health": "Something's not quite right. View details",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "status": "operational",
+        "health": "No issues",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Canvases",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-07-24T01:44:30-07:00",
+        "updated_at": "2026-07-24T03:47:02-07:00",
         "source": "Slack Status API"
       }
     ],
@@ -638,7 +629,7 @@
       "url": "https://slack-status.com/2026-07/e82ee127d8bed735",
       "published_at": "2026-07-24T01:22:54-07:00",
       "source": "Slack Status API",
-      "meta": "Incident / Active / Workflows"
+      "meta": "Incident / Resolved / Workflows"
     },
     {
       "title": "Receiving reminders in Slack issue",
@@ -689,52 +680,76 @@
       "url": "https://slack-status.com/",
       "source": "Official",
       "meta": "Dashboard",
-      "published_at": "2026-07-24T09:04:31.958714Z"
+      "published_at": "2026-07-24T11:17:10.135922Z"
     },
     {
       "title": "Slack Status API docs",
       "url": "https://slack-status.com/api",
       "source": "Official",
       "meta": "API docs",
-      "published_at": "2026-07-24T09:04:31.958714Z"
+      "published_at": "2026-07-24T11:17:10.135922Z"
     },
     {
       "title": "Slack Status current API",
       "url": "https://slack-status.com/api/v2.0.0/current",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-24T09:04:31.958714Z"
+      "published_at": "2026-07-24T11:17:10.135922Z"
     },
     {
       "title": "Slack Status history API",
       "url": "https://slack-status.com/api/v2.0.0/history",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-24T09:04:31.958714Z"
+      "published_at": "2026-07-24T11:17:10.135922Z"
     },
     {
       "title": "Slack Status history RSS",
       "url": "https://slack-status.com/feed/rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-24T09:04:31.958714Z"
+      "published_at": "2026-07-24T11:17:10.135922Z"
     },
     {
       "title": "Slack connection troubleshooting",
       "url": "https://slack.com/help/articles/205138367-Troubleshoot-connection-issues",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-24T09:04:31.958714Z"
+      "published_at": "2026-07-24T11:17:10.135922Z"
     }
   ],
   "news": [
     {
-      "title": "Slack Status API: Issue sending messages to channels via certain Workflows",
+      "title": "Slack Status API: Slack is up and running",
       "url": "https://slack-status.com/",
-      "published_at": "2026-07-24T09:04:31.450133Z",
+      "published_at": "2026-07-24T11:17:09.734621Z",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Indicator: active"
+      "meta": "Indicator: ok"
+    },
+    {
+      "title": "Issue sending messages to channels via certain Workflows",
+      "url": "https://slack-status.com/2026-07/e82ee127d8bed735#note-5",
+      "published_at": "2026-07-24T03:47:02-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Incident / Services: Workflows / We’ve completed the revert of the recent change and have validated that this has brought customers out of impact and can now successfully send a message to a channel using Workflows that include 'refer to a message link'. We apologize for h"
+    },
+    {
+      "title": "Issue sending messages to channels via certain Workflows",
+      "url": "https://slack-status.com/2026-07/e82ee127d8bed735#note-4",
+      "published_at": "2026-07-24T02:42:29-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Incident / Services: Workflows / We’ve performed a test of reverting a recent change and this appears to have resolved the issue. We are in the process of performing a production wide revert of this change. This is expected to take some time to complete and we will validat"
+    },
+    {
+      "title": "Issue sending messages to channels via certain Workflows",
+      "url": "https://slack-status.com/2026-07/e82ee127d8bed735#note-3",
+      "published_at": "2026-07-24T02:08:05-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Incident / Services: Workflows / The Workflow team is currently analyzing whether a recent change may have resulted in the conflict between variables that has been observed. It is expected to take some time to validate whether this is the case. We’ll provide an update in 6"
     },
     {
       "title": "Issue sending messages to channels via certain Workflows",
@@ -742,7 +757,7 @@
       "published_at": "2026-07-24T01:44:22-07:00",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Active / Incident / Services: Workflows / We've engaged our Worklow team to assist in the investigation. Initial analysis appears to show a conflict between specific variables. We’re continuing to work to understand whether this is the trigger of the issue. We’ll provide an update "
+      "meta": "Resolved / Incident / Services: Workflows / We've engaged our Worklow team to assist in the investigation. Initial analysis appears to show a conflict between specific variables. We’re continuing to work to understand whether this is the trigger of the issue. We’ll provide an update "
     },
     {
       "title": "Issue sending messages to channels via certain Workflows",
@@ -750,7 +765,7 @@
       "published_at": "2026-07-24T01:22:54-07:00",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Active / Incident / Services: Workflows / We’re aware of an issue affecting Workflows that include 'refer to a message link'. Users with these workflows are unable to send a message to a channel, and will receive an ‘Input Validation Error’ when trying to perform this step. We’re a"
+      "meta": "Resolved / Incident / Services: Workflows / We’re aware of an issue affecting Workflows that include 'refer to a message link'. Users with these workflows are unable to send a message to a channel, and will receive an ‘Input Validation Error’ when trying to perform this step. We’re a"
     },
     {
       "title": "Receiving reminders in Slack issue",
@@ -767,30 +782,6 @@
       "source": "Slack Status API",
       "channel": "official-status-page",
       "meta": "Resolved / Incident / Services: Notifications / We believe we’ve identified the cause of the issue impacting reminders in Slack. We’ve developed a potential fix for the issue and have deployed a change. We are actively monitoring to confirm that reminders are being delivered as expected."
-    },
-    {
-      "title": "Receiving reminders in Slack issue",
-      "url": "https://slack-status.com/2026-07/df254c60ace250d9#note-1",
-      "published_at": "2026-07-23T19:18:40-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Services: Notifications / Some users are reporting issues with receiving reminders in Slack. We're aware of the issue and are actively investigating. We'll provide an update as soon as more information becomes available. We apologize for any inconvenience this issue"
-    },
-    {
-      "title": "Chat functionality unavailable on Slack Help page",
-      "url": "https://slack-status.com/2026-06/4e79ab0c89aa4be0#note-3",
-      "published_at": "2026-06-26T03:09:39-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / We've resolved the issue and users can now use the Chat feature on the Slack Help Center. We performed a configuration change, which brought the feature back online and have validated that it's functioning as expected. We apologize for how "
-    },
-    {
-      "title": "Chat functionality unavailable on Slack Help page",
-      "url": "https://slack-status.com/2026-06/4e79ab0c89aa4be0#note-2",
-      "published_at": "2026-06-26T02:41:18-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Additional Slack engineers have been engaged and are investigating this issue. As a workaround, if users require support, they can use the ‘Send us a Message’ functionality on the Slack Help Center page here: https://slack.com/intl/en-gb/he"
     }
   ],
   "social": [],
@@ -806,11 +797,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-07-24T09:04:30.499914Z",
+      "last_item_at": "2026-07-24T11:17:08.475150Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 176,
-      "fetched_at": "2026-07-24T09:04:30.499938Z",
+      "duration_ms": 240,
+      "fetched_at": "2026-07-24T11:17:08.475174Z",
       "cache_hit": false
     },
     {
@@ -824,11 +815,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-24T05:04:30-04:00",
+      "last_item_at": "2026-07-24T07:17:08-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 949,
-      "fetched_at": "2026-07-24T09:04:31.449861Z",
+      "duration_ms": 1259,
+      "fetched_at": "2026-07-24T11:17:09.734375Z",
       "cache_hit": false
     },
     {
@@ -842,17 +833,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-24T09:04:31.450133Z",
+      "last_item_at": "2026-07-24T11:17:09.734621Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 507,
-      "fetched_at": "2026-07-24T09:04:31.957143Z",
+      "duration_ms": 399,
+      "fetched_at": "2026-07-24T11:17:10.134240Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-24T09:04:31.958714Z",
+    "generated_at": "2026-07-24T11:17:10.135922Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -874,7 +865,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "minor",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -889,30 +880,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 176,
+          "duration_ms": 240,
           "cache_hit": false,
-          "at": "2026-07-24T09:04:30Z"
+          "at": "2026-07-24T11:17:08Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 13,
+          "ok": 13,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 216.1
+          "avg_duration_ms": 222.2
         },
         "metrics_7d": {
-          "runs": 116,
-          "ok": 116,
+          "runs": 115,
+          "ok": 115,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 280.0
+          "avg_duration_ms": 271.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-24T09:04:30Z",
+        "last_success_at": "2026-07-24T11:17:08Z",
         "last_failure_at": null
       },
       {
@@ -926,30 +917,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 949,
+          "duration_ms": 1259,
           "cache_hit": false,
-          "at": "2026-07-24T09:04:30Z"
+          "at": "2026-07-24T11:17:08Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 13,
+          "ok": 13,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1012.2
+          "avg_duration_ms": 1048.0
         },
         "metrics_7d": {
-          "runs": 116,
-          "ok": 116,
+          "runs": 115,
+          "ok": 115,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1056.5
+          "avg_duration_ms": 1054.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-24T09:04:30Z",
+        "last_success_at": "2026-07-24T11:17:08Z",
         "last_failure_at": null
       },
       {
@@ -963,43 +954,44 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 507,
+          "duration_ms": 399,
           "cache_hit": false,
-          "at": "2026-07-24T09:04:30Z"
+          "at": "2026-07-24T11:17:08Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 13,
+          "ok": 13,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 505.9
+          "avg_duration_ms": 480.5
         },
         "metrics_7d": {
-          "runs": 116,
-          "ok": 115,
+          "runs": 115,
+          "ok": 114,
           "stale": 1,
           "success_rate": 99.1,
           "stale_rate": 0.9,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 469.3
+          "avg_duration_ms": 466.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-24T09:04:30Z",
+        "last_success_at": "2026-07-24T11:17:08Z",
         "last_failure_at": "2026-07-23T01:06:17Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-24T09:04:31.958714Z",
+    "generated_at": "2026-07-24T11:17:10.135922Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "31e3f9e6c949783a",
           "title": "Issue sending messages to channels via certain workflows",
           "started_at": "2026-07-24T08:29:53Z",
-          "duration": "",
+          "duration": "2h 20m",
           "acknowledgement": "Yes",
           "url": "https://slack-status.com/"
         },
@@ -1007,56 +999,21 @@
           "id": "940e2d1ec21df03f",
           "title": "Issue sending messages to channels via certain Workflows",
           "started_at": "2026-07-24T01:22:54-07:00",
-          "duration": "41m ongoing",
-          "acknowledgement": "Incident / Active / Workflows",
+          "duration": "2h 24m",
+          "acknowledgement": "Incident / Resolved / Workflows",
           "url": "https://slack-status.com/"
         }
       ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "5723d3f64af9b189",
-          "title": "Trouble performing some actions",
-          "started_at": "2026-06-16T17:38:42-07:00",
-          "duration": "28m",
-          "acknowledgement": "Incident / Resolved / Messaging",
-          "url": "https://slack-status.com/"
-        },
-        {
-          "id": "e5a0c39108525cbe",
-          "title": "Trouble submitting workflow forms with file attachments on Android.",
-          "started_at": "2026-06-16T15:54:52Z",
-          "duration": "5d 1h 40m",
-          "acknowledgement": "Yes",
-          "url": "https://slack-status.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "735bfa73e475b9ce",
-          "title": "Issue sending messages to channels via certain workflows",
-          "url": "https://slack-status.com/#2026-07-24T08:29:53Z",
-          "published_at": "2026-07-24T08:29:53Z",
-          "source": "StatusGator",
-          "meta": "Yes"
-        },
-        {
-          "id": "a3e9fb7dec5520fe",
-          "title": "Issue sending messages to channels via certain Workflows",
-          "url": "https://slack-status.com/2026-07/e82ee127d8bed735",
-          "published_at": "2026-07-24T01:22:54-07:00",
-          "source": "Slack Status API",
-          "meta": "Incident / Active / Workflows"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 2,
-      "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "new_incidents": 0,
+      "updated_incidents": 2,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
