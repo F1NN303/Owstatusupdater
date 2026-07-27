@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-27T08:01:47.219943Z",
+  "generated_at": "2026-07-27T11:51:57.312423Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 1,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.8,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 111,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 106,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,7 +31,7 @@
     "safeguards": {
       "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
@@ -40,30 +40,30 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "major",
+      "severity_score": 9,
       "report_weight": 1.0
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-07-27T08:01:46.702686Z",
+        "published_at": "2026-07-27T11:51:57.034933Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Issues with Snippets API",
+        "url": "https://www.cloudflarestatus.com/incidents/81xjzcngq3z4#mt5ggj80fdst",
+        "published_at": "2026-07-27T11:42:07.080Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are currently experiencing an issue with the Snippets API, which is returning errors for direct API calls. As a result, users are unable to create, modify, delete, or retrieve snippet code and rules. Existing snippets continue to be serv"
       },
       {
         "title": "CSP rules not visible in dashboard",
@@ -141,26 +149,32 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
-      },
-      {
-        "title": "Increase errors for R2 buckets hosted in APAC region",
-        "url": "https://www.cloudflarestatus.com/incidents/swffg8gtfbjl#3x9pyl5n1b5z",
-        "published_at": "2026-07-24T19:02:46.750Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Major / Resolved / The issue has been identified and a fix is being implemented."
       }
     ],
-    "last_statement_at": "2026-07-27T08:01:46.702686Z"
+    "last_statement_at": "2026-07-27T11:51:57.034933Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident was about 58h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: Issues with Snippets API.",
     "current_status": "degraded",
-    "reports_24h": 111,
+    "reports_24h": 106,
     "incidents": [
+      {
+        "title": "Issues with Snippets API",
+        "started_at": "2026-07-27T11:45:20Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Issues with Snippets API",
+        "started_at": "2026-07-27T11:42:06.951Z",
+        "duration": "9m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/81xjzcngq3z4"
+      },
       {
         "title": "CSP rules not visible in dashboard",
         "started_at": "2026-07-24T21:55:28Z",
@@ -195,28 +209,18 @@
       },
       {
         "title": "Increase errors for R2 buckets hosted in APAC region",
-        "started_at": "2026-07-24T19:05:23Z",
-        "duration": "5m",
-        "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "Increase errors for R2 buckets hosted in APAC region",
         "started_at": "2026-07-24T18:49:55.272Z",
         "duration": "29m",
         "acknowledgement": "Major / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/swffg8gtfbjl"
-      },
-      {
-        "title": "Email Delivery Delays",
-        "started_at": "2026-07-24T18:33:16.910Z",
-        "duration": "54m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/zjpyfpf388qt"
       }
     ],
     "top_reported_issues": [
+      {
+        "label": "Cloudflare Sites and Services",
+        "count": 1
+      },
       {
         "label": "Africa",
         "count": 1
@@ -244,114 +248,14 @@
       {
         "label": "Hagatna, Guam - (GUM)",
         "count": 1
-      },
-      {
-        "label": "Middle East",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-07-26T08:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T08:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T08:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T08:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T09:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T09:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T09:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T09:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T10:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T10:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T10:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T10:45:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T11:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T11:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T11:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-07-26T11:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-07-26T12:00:00Z",
         "signal_value": 1.0,
@@ -831,6 +735,102 @@
         "signal_value": 5.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T08:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T08:15:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T08:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T08:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T09:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T09:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T09:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T09:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T10:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T10:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T10:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T10:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T11:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T11:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T11:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-07-27T11:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,54 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-07-27T07:45:00Z"
+      "last_sample_at": "2026-07-27T11:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "08:20",
-        "count": 0
-      },
-      {
-        "label": "08:40",
-        "count": 2
-      },
-      {
-        "label": "09:00",
-        "count": 3
-      },
-      {
-        "label": "09:20",
-        "count": 1
-      },
-      {
-        "label": "09:40",
-        "count": 3
-      },
-      {
-        "label": "10:00",
-        "count": 3
-      },
-      {
-        "label": "10:20",
-        "count": 1
-      },
-      {
-        "label": "10:40",
-        "count": 3
-      },
-      {
-        "label": "11:00",
-        "count": 0
-      },
-      {
-        "label": "11:20",
-        "count": 2
-      },
-      {
-        "label": "11:40",
-        "count": 0
-      },
       {
         "label": "12:00",
         "count": 1
@@ -1130,6 +1086,50 @@
       {
         "label": "08:00",
         "count": 3
+      },
+      {
+        "label": "08:20",
+        "count": 1
+      },
+      {
+        "label": "08:40",
+        "count": 3
+      },
+      {
+        "label": "09:00",
+        "count": 0
+      },
+      {
+        "label": "09:20",
+        "count": 2
+      },
+      {
+        "label": "09:40",
+        "count": 0
+      },
+      {
+        "label": "10:00",
+        "count": 0
+      },
+      {
+        "label": "10:20",
+        "count": 2
+      },
+      {
+        "label": "10:40",
+        "count": 0
+      },
+      {
+        "label": "11:00",
+        "count": 1
+      },
+      {
+        "label": "11:20",
+        "count": 3
+      },
+      {
+        "label": "11:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-07-27T04:01:45-04:00"
+      "last_reviewed_at": "2026-07-27T07:51:56-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 111,
-        "last_reviewed_at": "2026-07-27T04:01:45-04:00"
+        "reports_24h": 106,
+        "last_reviewed_at": "2026-07-27T07:51:56-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,8 +1160,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2020-11-11T20:12:30.167Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -3792,9 +3792,9 @@
       },
       {
         "name": "Snippets",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-16T17:09:31.824Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-07-27T11:42:07.011Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4473,6 +4473,20 @@
   },
   "reports": [
     {
+      "title": "Issues with Snippets API",
+      "url": "https://www.cloudflarestatus.com/#2026-07-27T11:45:20Z",
+      "published_at": "2026-07-27T11:45:20Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Issues with Snippets API",
+      "url": "https://www.cloudflarestatus.com/incidents/81xjzcngq3z4",
+      "published_at": "2026-07-27T11:42:06.951Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "CSP rules not visible in dashboard",
       "url": "https://www.cloudflarestatus.com/#2026-07-24T21:55:28Z",
       "published_at": "2026-07-24T21:55:28Z",
@@ -4509,24 +4523,10 @@
     },
     {
       "title": "Increase errors for R2 buckets hosted in APAC region",
-      "url": "https://www.cloudflarestatus.com/#2026-07-24T19:05:23Z",
-      "published_at": "2026-07-24T19:05:23Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
-      "title": "Increase errors for R2 buckets hosted in APAC region",
       "url": "https://www.cloudflarestatus.com/incidents/swffg8gtfbjl",
       "published_at": "2026-07-24T18:49:55.272Z",
       "source": "Cloudflare Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Email Delivery Delays",
-      "url": "https://www.cloudflarestatus.com/incidents/zjpyfpf388qt",
-      "published_at": "2026-07-24T18:33:16.910Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -4535,52 +4535,60 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-07-27T08:01:47.219943Z"
+      "published_at": "2026-07-27T11:51:57.312423Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-07-27T08:01:47.219943Z"
+      "published_at": "2026-07-27T11:51:57.312423Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-07-27T08:01:47.219943Z"
+      "published_at": "2026-07-27T11:51:57.312423Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-07-27T08:01:47.219943Z"
+      "published_at": "2026-07-27T11:51:57.312423Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-07-27T08:01:47.219943Z"
+      "published_at": "2026-07-27T11:51:57.312423Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-07-27T08:01:47.219943Z"
+      "published_at": "2026-07-27T11:51:57.312423Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-07-27T08:01:46.702686Z",
+      "published_at": "2026-07-27T11:51:57.034933Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Issues with Snippets API",
+      "url": "https://www.cloudflarestatus.com/incidents/81xjzcngq3z4#mt5ggj80fdst",
+      "published_at": "2026-07-27T11:42:07.080Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are currently experiencing an issue with the Snippets API, which is returning errors for direct API calls. As a result, users are unable to create, modify, delete, or retrieve snippet code and rules. Existing snippets continue to be serv"
     },
     {
       "title": "CSP rules not visible in dashboard",
@@ -4629,14 +4637,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Increase errors for R2 buckets hosted in APAC region",
-      "url": "https://www.cloudflarestatus.com/incidents/swffg8gtfbjl#lpnxk6n5m336",
-      "published_at": "2026-07-24T19:19:08.965Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Major / Resolved / This incident has been resolved."
     }
   ],
   "social": [],
@@ -4652,11 +4652,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-07-27T08:01:45.435782Z",
+      "last_item_at": "2026-07-27T11:51:55.911626Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 294,
-      "fetched_at": "2026-07-27T08:01:45.435801Z",
+      "duration_ms": 247,
+      "fetched_at": "2026-07-27T11:51:55.911643Z",
       "cache_hit": false
     },
     {
@@ -4670,11 +4670,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-07-27T04:01:45-04:00",
+      "last_item_at": "2026-07-27T07:51:56-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1266,
-      "fetched_at": "2026-07-27T08:01:46.702139Z",
+      "duration_ms": 1122,
+      "fetched_at": "2026-07-27T11:51:57.034348Z",
       "cache_hit": false
     },
     {
@@ -4688,17 +4688,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-07-27T08:01:46.702686Z",
+      "last_item_at": "2026-07-27T11:51:57.034933Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 515,
-      "fetched_at": "2026-07-27T08:01:47.218421Z",
+      "duration_ms": 275,
+      "fetched_at": "2026-07-27T11:51:57.310916Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-07-27T08:01:47.219943Z",
+    "generated_at": "2026-07-27T11:51:57.312423Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4720,7 +4720,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4735,18 +4735,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 294,
+          "duration_ms": 247,
           "cache_hit": false,
-          "at": "2026-07-27T08:01:45Z"
+          "at": "2026-07-27T11:51:55Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 257.0
+          "avg_duration_ms": 269.2
         },
         "metrics_7d": {
           "runs": 112,
@@ -4755,10 +4755,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 372.0
+          "avg_duration_ms": 370.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-27T08:01:45Z",
+        "last_success_at": "2026-07-27T11:51:55Z",
         "last_failure_at": null
       },
       {
@@ -4772,18 +4772,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1266,
+          "duration_ms": 1122,
           "cache_hit": false,
-          "at": "2026-07-27T08:01:45Z"
+          "at": "2026-07-27T11:51:55Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1037.9
+          "avg_duration_ms": 1014.2
         },
         "metrics_7d": {
           "runs": 112,
@@ -4792,10 +4792,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1134.8
+          "avg_duration_ms": 1130.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-27T08:01:45Z",
+        "last_success_at": "2026-07-27T11:51:55Z",
         "last_failure_at": null
       },
       {
@@ -4809,18 +4809,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 515,
+          "duration_ms": 275,
           "cache_hit": false,
-          "at": "2026-07-27T08:01:45Z"
+          "at": "2026-07-27T11:51:55Z"
         },
         "metrics_24h": {
-          "runs": 14,
-          "ok": 14,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 390.9
+          "avg_duration_ms": 395.0
         },
         "metrics_7d": {
           "runs": 112,
@@ -4829,29 +4829,80 @@
           "success_rate": 99.1,
           "stale_rate": 0.9,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 381.7
+          "avg_duration_ms": 380.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-07-27T08:01:45Z",
+        "last_success_at": "2026-07-27T11:51:55Z",
         "last_failure_at": "2026-07-23T01:06:26Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-07-27T08:01:47.219943Z",
+    "generated_at": "2026-07-27T11:51:57.312423Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "74cb33b096959f52",
+          "title": "Issues with Snippets API",
+          "started_at": "2026-07-27T11:45:20Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "f48dbb95a0dcb108",
+          "title": "Issues with Snippets API",
+          "started_at": "2026-07-27T11:42:06.951Z",
+          "duration": "9m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "d2c1725e815264e2",
+          "title": "Increase errors for R2 buckets hosted in APAC region",
+          "started_at": "2026-07-24T19:05:23Z",
+          "duration": "5m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "935734fd5ca68417",
+          "title": "Email Delivery Delays",
+          "started_at": "2026-07-24T18:33:16.910Z",
+          "duration": "54m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "b7abd11a3790db4b",
+          "title": "Issues with Snippets API",
+          "url": "https://www.cloudflarestatus.com/#2026-07-27T11:45:20Z",
+          "published_at": "2026-07-27T11:45:20Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "18e6e4011b5bd72f",
+          "title": "Issues with Snippets API",
+          "url": "https://www.cloudflarestatus.com/incidents/81xjzcngq3z4",
+          "published_at": "2026-07-27T11:42:06.951Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
