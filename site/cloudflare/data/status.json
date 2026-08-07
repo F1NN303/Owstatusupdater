@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-08-07T13:07:46.337727Z",
+  "generated_at": "2026-08-07T14:32:01.141377Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 1,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.8,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
@@ -18,8 +18,8 @@
     },
     "signal_metrics": {
       "reports_24h": 106,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,7 +31,7 @@
     "safeguards": {
       "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
@@ -40,30 +40,30 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-08-07T13:07:45.957235Z",
+        "published_at": "2026-08-07T14:32:00.679429Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Network Performance Issues in Chicago (ORD)",
+        "url": "https://www.cloudflarestatus.com/incidents/x6fmvws5z368#3gl3pkqnm2v0",
+        "published_at": "2026-08-07T14:03:40.704Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+      },
+      {
+        "title": "Network Performance Issues in Chicago (ORD)",
+        "url": "https://www.cloudflarestatus.com/incidents/x6fmvws5z368#wpsl4w1wz6vb",
+        "published_at": "2026-08-07T13:13:06.843Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Resolved / Cloudflare is investigating issues with network performance in Chicago. We are working to analyse and mitigate this problem. More updates to follow shortly."
       },
       {
         "title": "Web Analytics Configuration issues",
@@ -133,34 +149,32 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Minor / Resolved / The issue has been identified and a fix is being implemented."
-      },
-      {
-        "title": "Cloudflare Gateway Email List policy issues",
-        "url": "https://www.cloudflarestatus.com/incidents/kf6qktrf2gc1#8vywgdhy09hj",
-        "published_at": "2026-08-05T14:28:14.933Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / Cloudflare is aware of and investigating an issue whereby customers using Gateway email lists in their DNS policies are not being enforced. No other impact is implied. More updates to follow shortly."
-      },
-      {
-        "title": "Cloudflare Workers and Pages Assets Uploads issues",
-        "url": "https://www.cloudflarestatus.com/incidents/3n74c5yh817r#myqns5vsycbh",
-        "published_at": "2026-08-05T08:42:17.010Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       }
     ],
-    "last_statement_at": "2026-08-07T13:07:45.957235Z"
+    "last_statement_at": "2026-08-07T14:32:00.679429Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident was about 46h ago.",
+    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 1h ago.",
     "current_status": "degraded",
     "reports_24h": 106,
     "incidents": [
+      {
+        "title": "Network Performance Issues in Chicago (ORD)",
+        "started_at": "2026-08-07T13:15:23Z",
+        "duration": "50m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Network Performance Issues in Chicago (ORD)",
+        "started_at": "2026-08-07T13:13:06.781Z",
+        "duration": "50m",
+        "acknowledgement": "Minor / Resolved",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/x6fmvws5z368"
+      },
       {
         "title": "Web Analytics Configuration issues",
         "started_at": "2026-08-05T16:25:18Z",
@@ -199,20 +213,6 @@
         "title": "Cloudflare Workers and Pages Assets Uploads issues",
         "started_at": "2026-08-05T08:05:16Z",
         "duration": "40m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Cloudflare Workers and Pages Assets Uploads issues",
-        "started_at": "2026-08-05T08:02:34.213Z",
-        "duration": "39m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/3n74c5yh817r"
-      },
-      {
-        "title": "Managed Challenge Issues in China",
-        "started_at": "2026-08-05T04:20:21Z",
-        "duration": "1h 50m",
         "acknowledgement": "warn icon Warn"
       }
     ],
@@ -256,36 +256,6 @@
       "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-08-06T13:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-06T13:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-06T13:45:00Z",
-        "signal_value": 37.0,
-        "status_code": 2,
-        "status_label": "likely outage"
-      },
-      {
-        "timestamp": "2026-08-06T14:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-06T14:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-08-06T14:30:00Z",
         "signal_value": 3.0,
@@ -828,9 +798,39 @@
       },
       {
         "timestamp": "2026-08-07T13:00:00Z",
-        "signal_value": 14.0,
-        "status_code": 1,
-        "status_label": "possible outage"
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-07T13:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-07T13:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-07T13:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-07T14:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-07T14:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,26 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-08-07T13:00:00Z"
+      "last_sample_at": "2026-08-07T14:15:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "13:20",
-        "count": 2
-      },
-      {
-        "label": "13:40",
-        "count": 0
-      },
-      {
-        "label": "14:00",
-        "count": 1
-      },
-      {
-        "label": "14:20",
-        "count": 3
-      },
       {
         "label": "14:40",
         "count": 1
@@ -1130,6 +1114,22 @@
       {
         "label": "13:00",
         "count": 1
+      },
+      {
+        "label": "13:20",
+        "count": 3
+      },
+      {
+        "label": "13:40",
+        "count": 1
+      },
+      {
+        "label": "14:00",
+        "count": 2
+      },
+      {
+        "label": "14:20",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-07T09:07:45-04:00"
+      "last_reviewed_at": "2026-08-07T14:32:00Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 106,
-        "last_reviewed_at": "2026-08-07T09:07:45-04:00"
+        "last_reviewed_at": "2026-08-07T14:32:00Z"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -4459,15 +4459,15 @@
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
-        "label": "Error message",
-        "count": 1
-      },
-      {
         "label": "Service down",
         "count": 1
       },
       {
         "label": "Connectivity issue",
+        "count": 0
+      },
+      {
+        "label": "Error message",
         "count": 0
       },
       {
@@ -4493,6 +4493,20 @@
     ]
   },
   "reports": [
+    {
+      "title": "Network Performance Issues in Chicago (ORD)",
+      "url": "https://www.cloudflarestatus.com/#2026-08-07T13:15:23Z",
+      "published_at": "2026-08-07T13:15:23Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Network Performance Issues in Chicago (ORD)",
+      "url": "https://www.cloudflarestatus.com/incidents/x6fmvws5z368",
+      "published_at": "2026-08-07T13:13:06.781Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Resolved"
+    },
     {
       "title": "Web Analytics Configuration issues",
       "url": "https://www.cloudflarestatus.com/#2026-08-05T16:25:18Z",
@@ -4534,20 +4548,6 @@
       "published_at": "2026-08-05T08:05:16Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
-    },
-    {
-      "title": "Cloudflare Workers and Pages Assets Uploads issues",
-      "url": "https://www.cloudflarestatus.com/incidents/3n74c5yh817r",
-      "published_at": "2026-08-05T08:02:34.213Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Managed Challenge Issues in China",
-      "url": "https://www.cloudflarestatus.com/#2026-08-05T04:20:21Z",
-      "published_at": "2026-08-05T04:20:21Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     }
   ],
   "known_resources": [
@@ -4556,52 +4556,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-07T13:07:46.337727Z"
+      "published_at": "2026-08-07T14:32:01.141377Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-07T13:07:46.337727Z"
+      "published_at": "2026-08-07T14:32:01.141377Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-07T13:07:46.337727Z"
+      "published_at": "2026-08-07T14:32:01.141377Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-08-07T13:07:46.337727Z"
+      "published_at": "2026-08-07T14:32:01.141377Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-07T13:07:46.337727Z"
+      "published_at": "2026-08-07T14:32:01.141377Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-07T13:07:46.337727Z"
+      "published_at": "2026-08-07T14:32:01.141377Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-08-07T13:07:45.957235Z",
+      "published_at": "2026-08-07T14:32:00.679429Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Network Performance Issues in Chicago (ORD)",
+      "url": "https://www.cloudflarestatus.com/incidents/x6fmvws5z368#3gl3pkqnm2v0",
+      "published_at": "2026-08-07T14:03:40.704Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+    },
+    {
+      "title": "Network Performance Issues in Chicago (ORD)",
+      "url": "https://www.cloudflarestatus.com/incidents/x6fmvws5z368#wpsl4w1wz6vb",
+      "published_at": "2026-08-07T13:13:06.843Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Resolved / Cloudflare is investigating issues with network performance in Chicago. We are working to analyse and mitigate this problem. More updates to follow shortly."
     },
     {
       "title": "Web Analytics Configuration issues",
@@ -4642,22 +4658,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are currently investigating this issue."
-    },
-    {
-      "title": "Web Analytics Configuration issues",
-      "url": "https://www.cloudflarestatus.com/incidents/3wbkwvf5ypbk#q889jc5jv88w",
-      "published_at": "2026-08-05T15:09:59.282Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with configuration changes for Cloudflare Web Analytics and rum beacon not taking effect or showing errors. We are working to understand the full impact and mitigate this problem. More updates to follow sh"
-    },
-    {
-      "title": "Cloudflare Gateway Email List policy issues",
-      "url": "https://www.cloudflarestatus.com/incidents/kf6qktrf2gc1#7vs6nm5lc672",
-      "published_at": "2026-08-05T14:28:31.063Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / The issue has been identified and a fix is being implemented."
     }
   ],
   "social": [],
@@ -4673,11 +4673,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-08-07T13:07:44.772055Z",
+      "last_item_at": "2026-08-07T14:31:59.860707Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 212,
-      "fetched_at": "2026-08-07T13:07:44.772073Z",
+      "duration_ms": 183,
+      "fetched_at": "2026-08-07T14:31:59.860725Z",
       "cache_hit": false
     },
     {
@@ -4691,11 +4691,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-07T09:07:45-04:00",
+      "last_item_at": "2026-08-07T14:32:00Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1184,
-      "fetched_at": "2026-08-07T13:07:45.956859Z",
+      "duration_ms": 818,
+      "fetched_at": "2026-08-07T14:32:00.678801Z",
       "cache_hit": false
     },
     {
@@ -4709,17 +4709,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-07T13:07:45.957235Z",
+      "last_item_at": "2026-08-07T14:32:00.679429Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 379,
-      "fetched_at": "2026-08-07T13:07:46.336545Z",
+      "duration_ms": 460,
+      "fetched_at": "2026-08-07T14:32:01.139753Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-07T13:07:46.337727Z",
+    "generated_at": "2026-08-07T14:32:01.141377Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4741,7 +4741,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4756,9 +4756,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 212,
+          "duration_ms": 183,
           "cache_hit": false,
-          "at": "2026-08-07T13:07:44Z"
+          "at": "2026-08-07T14:31:59Z"
         },
         "metrics_24h": {
           "runs": 12,
@@ -4767,7 +4767,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 275.2
+          "avg_duration_ms": 257.9
         },
         "metrics_7d": {
           "runs": 109,
@@ -4776,10 +4776,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 242.0
+          "avg_duration_ms": 241.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-07T13:07:44Z",
+        "last_success_at": "2026-08-07T14:31:59Z",
         "last_failure_at": null
       },
       {
@@ -4793,9 +4793,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1184,
+          "duration_ms": 818,
           "cache_hit": false,
-          "at": "2026-08-07T13:07:44Z"
+          "at": "2026-08-07T14:31:59Z"
         },
         "metrics_24h": {
           "runs": 12,
@@ -4804,7 +4804,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1317.7
+          "avg_duration_ms": 1314.2
         },
         "metrics_7d": {
           "runs": 109,
@@ -4813,10 +4813,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1180.0
+          "avg_duration_ms": 1177.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-07T13:07:44Z",
+        "last_success_at": "2026-08-07T14:31:59Z",
         "last_failure_at": null
       },
       {
@@ -4830,9 +4830,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 379,
+          "duration_ms": 460,
           "cache_hit": false,
-          "at": "2026-08-07T13:07:44Z"
+          "at": "2026-08-07T14:31:59Z"
         },
         "metrics_24h": {
           "runs": 12,
@@ -4841,7 +4841,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 392.6
+          "avg_duration_ms": 398.8
         },
         "metrics_7d": {
           "runs": 109,
@@ -4850,29 +4850,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 378.5
+          "avg_duration_ms": 379.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-07T13:07:44Z",
+        "last_success_at": "2026-08-07T14:31:59Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-07T13:07:46.337727Z",
+    "generated_at": "2026-08-07T14:32:01.141377Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "97a762ed5cfba9b6",
+          "title": "Network Performance Issues in Chicago (ORD)",
+          "started_at": "2026-08-07T13:15:23Z",
+          "duration": "50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "d74d1ee98af7f2fa",
+          "title": "Network Performance Issues in Chicago (ORD)",
+          "started_at": "2026-08-07T13:13:06.781Z",
+          "duration": "50m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "a552c92dc67a0a5a",
+          "title": "Cloudflare Workers and Pages Assets Uploads issues",
+          "started_at": "2026-08-05T08:02:34.213Z",
+          "duration": "39m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "91d155fde2aef94e",
+          "title": "Managed Challenge Issues in China",
+          "started_at": "2026-08-05T04:20:21Z",
+          "duration": "1h 50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "6fb025d5da270e32",
+          "title": "Network Performance Issues in Chicago (ORD)",
+          "url": "https://www.cloudflarestatus.com/#2026-08-07T13:15:23Z",
+          "published_at": "2026-08-07T13:15:23Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "2266d313fcae175c",
+          "title": "Network Performance Issues in Chicago (ORD)",
+          "url": "https://www.cloudflarestatus.com/incidents/x6fmvws5z368",
+          "published_at": "2026-08-07T13:13:06.781Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Resolved"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
