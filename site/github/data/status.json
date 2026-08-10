@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-10T19:31:23.123155Z",
+  "generated_at": "2026-08-10T20:43:50.601531Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 1,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
@@ -14,7 +14,7 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.76
     },
     "signal_metrics": {
       "reports_24h": 106,
@@ -35,36 +35,36 @@
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -74,10 +74,26 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-08-10T19:31:22.865244Z",
+        "published_at": "2026-08-10T20:43:50.243670Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Disruption with Copilot for access to some models",
+        "url": "https://www.githubstatus.com/incidents/1t7x65n7kvt1#vjz3pq22spx5",
+        "published_at": "2026-08-10T20:39:11.678Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We are currently investigating reports of some Copilot users experiencing issues accessing certain models. Affected users may see errors or degraded functionality when attempting to use specific models. We are actively working on a fix and "
+      },
+      {
+        "title": "Disruption with Copilot for access to some models",
+        "url": "https://www.githubstatus.com/incidents/1t7x65n7kvt1#z4rpjb2j6xlt",
+        "published_at": "2026-08-10T20:27:19.758Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We are investigating reports of impacted performance for some GitHub services."
       },
       {
         "title": "Disruption with creation of fine grained personal access tokens",
@@ -134,39 +150,25 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Critical / Resolved / During the incident, some Actions Runner Controller (ARC) runner pods became stuck in an idle state. Affected users can delete those pods using kubectl or redeploy their Actions Runner Controller application. ARC will automatically create r"
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#ckqdf8pm7gqw",
-        "published_at": "2026-08-07T00:59:01.958Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Critical / Resolved / We’re investigating reports that some Actions Runner Controller runners are taking longer than expected to recover. We’ll provide an update as our investigation progresses."
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#sk63vxykkbrj",
-        "published_at": "2026-08-07T00:06:24.906Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Critical / Resolved / The degradation has been mitigated. We are monitoring to ensure stability."
       }
     ],
-    "last_statement_at": "2026-08-10T19:31:22.865244Z"
+    "last_statement_at": "2026-08-10T20:43:50.243670Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "GitHub Statuspage reports an active incident: Disruption with Copilot for access to some models.",
     "current_status": "operational",
     "reports_24h": 106,
     "incidents": [
       {
-        "title": "Disruption with creation of fine grained personal access tokens",
-        "started_at": "2026-08-10T18:07:01Z",
-        "duration": "20m",
-        "acknowledgement": "Yes"
+        "title": "Disruption with Copilot for access to some models",
+        "started_at": "2026-08-10T20:27:19.712Z",
+        "duration": "16m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/1t7x65n7kvt1"
       },
       {
         "title": "Disruption with creation of fine grained personal access tokens",
@@ -186,23 +188,11 @@
       },
       {
         "title": "Incident with Pages - Deployment Lag",
-        "started_at": "2026-08-06T15:06:52Z",
-        "duration": "9h",
-        "acknowledgement": "Yes"
-      },
-      {
-        "title": "Incident with Pages - Deployment Lag",
         "started_at": "2026-08-06T15:03:55.182Z",
         "duration": "1h 19m",
         "acknowledgement": "Minor / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/1xqvzyv99skw"
-      },
-      {
-        "title": "Some Copilot Cloud Agent jobs not starting",
-        "started_at": "2026-08-05T11:41:36Z",
-        "duration": "20m",
-        "acknowledgement": "Yes"
       },
       {
         "title": "Some Copilot Cloud Agent jobs not starting",
@@ -214,9 +204,27 @@
       },
       {
         "title": "Incident with Copilot",
-        "started_at": "2026-08-03T09:56:40Z",
-        "duration": "1h 25m",
-        "acknowledgement": "Yes"
+        "started_at": "2026-08-03T09:53:27.172Z",
+        "duration": "1h 31m",
+        "acknowledgement": "Minor / Resolved",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/7s119p1yxttr"
+      },
+      {
+        "title": "Incident with Copilot AI Model Providers",
+        "started_at": "2026-08-01T18:03:05.539Z",
+        "duration": "41m",
+        "acknowledgement": "Minor / Resolved",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/sj1tzyrx599x"
+      },
+      {
+        "title": "Degraded availability GPT 5.6 Luna",
+        "started_at": "2026-08-01T11:16:25.356Z",
+        "duration": "1h 13m",
+        "acknowledgement": "Minor / Resolved",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/kk183dslzdzd"
       }
     ],
     "top_reported_issues": [],
@@ -227,24 +235,9 @@
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
+    "summary_origin": "GitHub Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "19:40",
-        "count": 1
-      },
-      {
-        "label": "20:00",
-        "count": 1
-      },
-      {
-        "label": "20:20",
-        "count": 3
-      },
-      {
-        "label": "20:40",
-        "count": 1
-      },
       {
         "label": "21:00",
         "count": 2
@@ -516,6 +509,22 @@
       {
         "label": "19:20",
         "count": 3
+      },
+      {
+        "label": "19:40",
+        "count": 1
+      },
+      {
+        "label": "20:00",
+        "count": 1
+      },
+      {
+        "label": "20:20",
+        "count": 3
+      },
+      {
+        "label": "20:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -524,18 +533,17 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-10T15:31:22-04:00"
+      "last_reviewed_at": "2026-08-10T16:43:49-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 106,
-        "last_reviewed_at": "2026-08-10T15:31:22-04:00"
+        "last_reviewed_at": "2026-08-10T16:43:49-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
-    "summary_origin": "GitHub Statuspage API",
     "components": [
       {
         "name": "Git Operations",
@@ -626,11 +634,11 @@
   },
   "reports": [
     {
-      "title": "Disruption with creation of fine grained personal access tokens",
-      "url": "https://www.githubstatus.com/#2026-08-10T18:07:01Z",
-      "published_at": "2026-08-10T18:07:01Z",
-      "source": "StatusGator",
-      "meta": "Yes"
+      "title": "Disruption with Copilot for access to some models",
+      "url": "https://www.githubstatus.com/incidents/1t7x65n7kvt1",
+      "published_at": "2026-08-10T20:27:19.712Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "Disruption with creation of fine grained personal access tokens",
@@ -648,24 +656,10 @@
     },
     {
       "title": "Incident with Pages - Deployment Lag",
-      "url": "https://www.githubstatus.com/#2026-08-06T15:06:52Z",
-      "published_at": "2026-08-06T15:06:52Z",
-      "source": "StatusGator",
-      "meta": "Yes"
-    },
-    {
-      "title": "Incident with Pages - Deployment Lag",
       "url": "https://www.githubstatus.com/incidents/1xqvzyv99skw",
       "published_at": "2026-08-06T15:03:55.182Z",
       "source": "GitHub Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Some Copilot Cloud Agent jobs not starting",
-      "url": "https://www.githubstatus.com/#2026-08-05T11:41:36Z",
-      "published_at": "2026-08-05T11:41:36Z",
-      "source": "StatusGator",
-      "meta": "Yes"
     },
     {
       "title": "Some Copilot Cloud Agent jobs not starting",
@@ -676,10 +670,24 @@
     },
     {
       "title": "Incident with Copilot",
-      "url": "https://www.githubstatus.com/#2026-08-03T09:56:40Z",
-      "published_at": "2026-08-03T09:56:40Z",
-      "source": "StatusGator",
-      "meta": "Yes"
+      "url": "https://www.githubstatus.com/incidents/7s119p1yxttr",
+      "published_at": "2026-08-03T09:53:27.172Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Resolved"
+    },
+    {
+      "title": "Incident with Copilot AI Model Providers",
+      "url": "https://www.githubstatus.com/incidents/sj1tzyrx599x",
+      "published_at": "2026-08-01T18:03:05.539Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Resolved"
+    },
+    {
+      "title": "Degraded availability GPT 5.6 Luna",
+      "url": "https://www.githubstatus.com/incidents/kk183dslzdzd",
+      "published_at": "2026-08-01T11:16:25.356Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -688,52 +696,68 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-10T19:31:23.123155Z"
+      "published_at": "2026-08-10T20:43:50.601531Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-10T19:31:23.123155Z"
+      "published_at": "2026-08-10T20:43:50.601531Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-10T19:31:23.123155Z"
+      "published_at": "2026-08-10T20:43:50.601531Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-08-10T19:31:23.123155Z"
+      "published_at": "2026-08-10T20:43:50.601531Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-10T19:31:23.123155Z"
+      "published_at": "2026-08-10T20:43:50.601531Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-10T19:31:23.123155Z"
+      "published_at": "2026-08-10T20:43:50.601531Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-08-10T19:31:22.865244Z",
+      "published_at": "2026-08-10T20:43:50.243670Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Disruption with Copilot for access to some models",
+      "url": "https://www.githubstatus.com/incidents/1t7x65n7kvt1#vjz3pq22spx5",
+      "published_at": "2026-08-10T20:39:11.678Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We are currently investigating reports of some Copilot users experiencing issues accessing certain models. Affected users may see errors or degraded functionality when attempting to use specific models. We are actively working on a fix and "
+    },
+    {
+      "title": "Disruption with Copilot for access to some models",
+      "url": "https://www.githubstatus.com/incidents/1t7x65n7kvt1#z4rpjb2j6xlt",
+      "published_at": "2026-08-10T20:27:19.758Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We are investigating reports of impacted performance for some GitHub services."
     },
     {
       "title": "Disruption with creation of fine grained personal access tokens",
@@ -774,22 +798,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are investigating reports of impacted performance for some GitHub services."
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#x3dy6fnmf98h",
-      "published_at": "2026-08-07T02:04:44.460Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Critical / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#qky4pzj2zplf",
-      "published_at": "2026-08-07T02:03:41.768Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Critical / Resolved / During the incident, some Actions Runner Controller (ARC) runner pods became stuck in an idle state. Affected users can delete those pods using kubectl or redeploy their Actions Runner Controller application. ARC will automatically create r"
     }
   ],
   "social": [],
@@ -804,12 +812,12 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 8,
-      "last_item_at": "2026-08-10T19:31:22.124158Z",
+      "item_count": 0,
+      "last_item_at": "2026-08-10T20:43:48.969357Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 178,
-      "fetched_at": "2026-08-10T19:31:22.124184Z",
+      "duration_ms": 231,
+      "fetched_at": "2026-08-10T20:43:48.969384Z",
       "cache_hit": false
     },
     {
@@ -823,11 +831,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-10T15:31:22-04:00",
+      "last_item_at": "2026-08-10T16:43:49-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 740,
-      "fetched_at": "2026-08-10T19:31:22.864983Z",
+      "duration_ms": 1274,
+      "fetched_at": "2026-08-10T20:43:50.243434Z",
       "cache_hit": false
     },
     {
@@ -841,17 +849,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-10T19:31:22.865244Z",
+      "last_item_at": "2026-08-10T20:43:50.243670Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 256,
-      "fetched_at": "2026-08-10T19:31:23.121695Z",
+      "duration_ms": 356,
+      "fetched_at": "2026-08-10T20:43:50.600085Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-10T19:31:23.123155Z",
+    "generated_at": "2026-08-10T20:43:50.601531Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -873,7 +881,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -888,13 +896,13 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 178,
+          "duration_ms": 231,
           "cache_hit": false,
-          "at": "2026-08-10T19:31:21Z"
+          "at": "2026-08-10T20:43:48Z"
         },
         "metrics_24h": {
-          "runs": 19,
-          "ok": 19,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
@@ -902,16 +910,16 @@
           "avg_duration_ms": 270.7
         },
         "metrics_7d": {
-          "runs": 125,
-          "ok": 125,
+          "runs": 124,
+          "ok": 124,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 258.0
+          "avg_duration_ms": 258.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-10T19:31:21Z",
+        "last_success_at": "2026-08-10T20:43:48Z",
         "last_failure_at": null
       },
       {
@@ -925,30 +933,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 740,
+          "duration_ms": 1274,
           "cache_hit": false,
-          "at": "2026-08-10T19:31:21Z"
+          "at": "2026-08-10T20:43:48Z"
         },
         "metrics_24h": {
-          "runs": 19,
-          "ok": 19,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1171.8
+          "avg_duration_ms": 1195.9
         },
         "metrics_7d": {
-          "runs": 125,
-          "ok": 125,
+          "runs": 124,
+          "ok": 124,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1150.6
+          "avg_duration_ms": 1153.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-10T19:31:21Z",
+        "last_success_at": "2026-08-10T20:43:48Z",
         "last_failure_at": null
       },
       {
@@ -962,39 +970,73 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 256,
+          "duration_ms": 356,
           "cache_hit": false,
-          "at": "2026-08-10T19:31:21Z"
+          "at": "2026-08-10T20:43:48Z"
         },
         "metrics_24h": {
-          "runs": 19,
-          "ok": 19,
+          "runs": 18,
+          "ok": 18,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 430.5
+          "avg_duration_ms": 437.3
         },
         "metrics_7d": {
-          "runs": 125,
-          "ok": 125,
+          "runs": 124,
+          "ok": 124,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 326.0
+          "avg_duration_ms": 327.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-10T19:31:21Z",
+        "last_success_at": "2026-08-10T20:43:48Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-10T19:31:23.123155Z",
+    "generated_at": "2026-08-10T20:43:50.601531Z",
     "incidents": {
-      "new": [],
-      "updated": [
+      "new": [
+        {
+          "id": "414f8f54154370d0",
+          "title": "Disruption with Copilot for access to some models",
+          "started_at": "2026-08-10T20:27:19.712Z",
+          "duration": "16m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "8f42d184402ca0ee",
+          "title": "Incident with Copilot",
+          "started_at": "2026-08-03T09:53:27.172Z",
+          "duration": "1h 31m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "9837276b79581d44",
+          "title": "Incident with Copilot AI Model Providers",
+          "started_at": "2026-08-01T18:03:05.539Z",
+          "duration": "41m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "95dd15308d1512bb",
+          "title": "Degraded availability GPT 5.6 Luna",
+          "started_at": "2026-08-01T11:16:25.356Z",
+          "duration": "1h 13m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
+      "updated": [],
+      "resolved": [
         {
           "id": "a3e4157894d5cd0e",
           "title": "Disruption with creation of fine grained personal access tokens",
@@ -1004,24 +1046,72 @@
           "url": "https://www.githubstatus.com/"
         },
         {
-          "id": "8649eaeaf9a90d26",
-          "title": "Disruption with creation of fine grained personal access tokens",
-          "started_at": "2026-08-10T18:02:04.368Z",
-          "duration": "44m",
-          "acknowledgement": "Minor / Resolved",
+          "id": "d3fd886e5850ad00",
+          "title": "Incident with Pages - Deployment Lag",
+          "started_at": "2026-08-06T15:06:52Z",
+          "duration": "9h",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "a0adbdbcd31bbaf5",
+          "title": "Some Copilot Cloud Agent jobs not starting",
+          "started_at": "2026-08-05T11:41:36Z",
+          "duration": "20m",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "efa0b78e2519e8c7",
+          "title": "Incident with Copilot",
+          "started_at": "2026-08-03T09:56:40Z",
+          "duration": "1h 25m",
+          "acknowledgement": "Yes",
           "url": "https://www.githubstatus.com/"
         }
-      ],
-      "resolved": []
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "077a64a715245bef",
+          "title": "Disruption with Copilot for access to some models",
+          "url": "https://www.githubstatus.com/incidents/1t7x65n7kvt1",
+          "published_at": "2026-08-10T20:27:19.712Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Monitoring"
+        },
+        {
+          "id": "d18f04b554a8a3b0",
+          "title": "Incident with Copilot",
+          "url": "https://www.githubstatus.com/incidents/7s119p1yxttr",
+          "published_at": "2026-08-03T09:53:27.172Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Resolved"
+        },
+        {
+          "id": "0103c913d3f94b74",
+          "title": "Incident with Copilot AI Model Providers",
+          "url": "https://www.githubstatus.com/incidents/sj1tzyrx599x",
+          "published_at": "2026-08-01T18:03:05.539Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Resolved"
+        },
+        {
+          "id": "2d3c4b3f81304cba",
+          "title": "Degraded availability GPT 5.6 Luna",
+          "url": "https://www.githubstatus.com/incidents/kk183dslzdzd",
+          "published_at": "2026-08-01T11:16:25.356Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Resolved"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 2,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 4,
+      "updated_incidents": 0,
+      "resolved_incidents": 4,
+      "new_reports": 4
     }
   }
 }
