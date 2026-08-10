@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-10T17:03:16.630126Z",
+  "generated_at": "2026-08-10T18:23:46.279861Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.89,
+      "incidents": 5.09,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.76
     },
     "signal_metrics": {
-      "reports_24h": 106,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 5,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,40 +31,40 @@
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -74,10 +74,42 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-08-10T17:03:16.266272Z",
+        "published_at": "2026-08-10T18:23:46.091125Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Disruption with creation of fine grained personal access tokens",
+        "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#pyc89qt8cx8f",
+        "published_at": "2026-08-10T18:22:18.446Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We identified the source of the issue affecting creation of fine-grained personal access tokens and have applied a mitigation. Users should now be able to create new fine-grained tokens successfully. We are continuing to monitor to confirm "
+      },
+      {
+        "title": "Disruption with creation of fine grained personal access tokens",
+        "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#68z3ynhs8wpv",
+        "published_at": "2026-08-10T18:21:41.742Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / The degradation has been mitigated. We are monitoring to ensure stability."
+      },
+      {
+        "title": "Disruption with creation of fine grained personal access tokens",
+        "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#5y1ykng7vdjs",
+        "published_at": "2026-08-10T18:09:36.323Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We are investigating reports of users being unable to create fine-grained Personal Access Tokens. Attempting to create a new token redirects the user back to the token overview page without an error message, but the token was not created."
+      },
+      {
+        "title": "Disruption with creation of fine grained personal access tokens",
+        "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#cb6q6t1pptg6",
+        "published_at": "2026-08-10T18:02:04.415Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We are investigating reports of impacted performance for some GitHub services."
       },
       {
         "title": "Incident with Actions",
@@ -118,50 +150,32 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Critical / Resolved / The degradation affecting Actions and Pages has been mitigated. We are monitoring to ensure stability."
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#bpgwsqb38dh9",
-        "published_at": "2026-08-07T00:01:26.921Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / System-wide queues have been drained, and new jobs are being processed as expected. The fix for self-hosted runners not picking up jobs has been fully rolled out.<br /><br />Webhook-triggered Actions workflows have been restored to full thr"
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#jjkymmsnczrg",
-        "published_at": "2026-08-07T00:01:15.259Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / <br />System-wide queues have been drained, and new jobs are being processed as expected. The fix for self-hosted runners not picking up jobs has been fully rolled out.<br /><br />Webhook-triggered Actions workflows have been restored to fu"
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#bc6nlz3ztfkz",
-        "published_at": "2026-08-06T23:13:30.825Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / We have deployed fixes that address runners being assigned invalid jobs and are taking additional steps to clear the backlog of affected jobs. Job completion rates for running workflows have improved significantly, with success rates now at"
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#dwhlj0kqvv5p",
-        "published_at": "2026-08-06T22:18:09.797Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / We continue to make progress on the issue affecting GitHub Actions. We have deployed a fix that addresses runners being assigned jobs that are no longer valid, and are seeing improvement in job completion rates. For workflow runs that are s"
       }
     ],
-    "last_statement_at": "2026-08-10T17:03:16.266272Z"
+    "last_statement_at": "2026-08-10T18:23:46.091125Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "GitHub Statuspage reports an active incident: Disruption with creation of fine grained personal access tokens.",
     "current_status": "operational",
-    "reports_24h": 106,
+    "reports_24h": 5,
     "incidents": [
+      {
+        "title": "Disruption with creation of fine grained personal access tokens",
+        "started_at": "2026-08-10T18:07:01Z",
+        "duration": "1m",
+        "acknowledgement": "Yes"
+      },
+      {
+        "title": "Disruption with creation of fine grained personal access tokens",
+        "started_at": "2026-08-10T18:02:04.368Z",
+        "duration": "21m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7"
+      },
       {
         "title": "Incident with Actions",
         "started_at": "2026-08-06T15:22:49.029Z",
@@ -203,20 +217,6 @@
         "started_at": "2026-08-03T09:56:40Z",
         "duration": "1h 25m",
         "acknowledgement": "Yes"
-      },
-      {
-        "title": "Incident with Copilot",
-        "started_at": "2026-08-03T09:53:27.172Z",
-        "duration": "1h 31m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/7s119p1yxttr"
-      },
-      {
-        "title": "Incident with Copilot AI Model Providers",
-        "started_at": "2026-08-01T18:11:45Z",
-        "duration": "10m",
-        "acknowledgement": "Yes"
       }
     ],
     "top_reported_issues": [],
@@ -227,24 +227,7 @@
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "17:20",
-        "count": 1
-      },
-      {
-        "label": "17:40",
-        "count": 3
-      },
-      {
-        "label": "18:00",
-        "count": 0
-      },
-      {
-        "label": "18:20",
-        "count": 2
-      },
       {
         "label": "18:40",
         "count": 0
@@ -516,6 +499,22 @@
       {
         "label": "17:00",
         "count": 3
+      },
+      {
+        "label": "17:20",
+        "count": 1
+      },
+      {
+        "label": "17:40",
+        "count": 3
+      },
+      {
+        "label": "18:00",
+        "count": 0
+      },
+      {
+        "label": "18:20",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -524,14 +523,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-10T10:03:15-07:00"
+      "last_reviewed_at": "2026-08-10T14:23:45-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 106,
-        "last_reviewed_at": "2026-08-10T10:03:15-07:00"
+        "last_reviewed_at": "2026-08-10T14:23:45-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -626,6 +625,20 @@
   },
   "reports": [
     {
+      "title": "Disruption with creation of fine grained personal access tokens",
+      "url": "https://www.githubstatus.com/#2026-08-10T18:07:01Z",
+      "published_at": "2026-08-10T18:07:01Z",
+      "source": "StatusGator",
+      "meta": "Yes"
+    },
+    {
+      "title": "Disruption with creation of fine grained personal access tokens",
+      "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7",
+      "published_at": "2026-08-10T18:02:04.368Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Monitoring"
+    },
+    {
       "title": "Incident with Actions",
       "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74",
       "published_at": "2026-08-06T15:22:49.029Z",
@@ -666,20 +679,6 @@
       "published_at": "2026-08-03T09:56:40Z",
       "source": "StatusGator",
       "meta": "Yes"
-    },
-    {
-      "title": "Incident with Copilot",
-      "url": "https://www.githubstatus.com/incidents/7s119p1yxttr",
-      "published_at": "2026-08-03T09:53:27.172Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Incident with Copilot AI Model Providers",
-      "url": "https://www.githubstatus.com/#2026-08-01T18:11:45Z",
-      "published_at": "2026-08-01T18:11:45Z",
-      "source": "StatusGator",
-      "meta": "Yes"
     }
   ],
   "known_resources": [
@@ -688,52 +687,84 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-10T17:03:16.630126Z"
+      "published_at": "2026-08-10T18:23:46.279861Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-10T17:03:16.630126Z"
+      "published_at": "2026-08-10T18:23:46.279861Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-10T17:03:16.630126Z"
+      "published_at": "2026-08-10T18:23:46.279861Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-08-10T17:03:16.630126Z"
+      "published_at": "2026-08-10T18:23:46.279861Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-10T17:03:16.630126Z"
+      "published_at": "2026-08-10T18:23:46.279861Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-10T17:03:16.630126Z"
+      "published_at": "2026-08-10T18:23:46.279861Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-08-10T17:03:16.266272Z",
+      "published_at": "2026-08-10T18:23:46.091125Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Disruption with creation of fine grained personal access tokens",
+      "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#pyc89qt8cx8f",
+      "published_at": "2026-08-10T18:22:18.446Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We identified the source of the issue affecting creation of fine-grained personal access tokens and have applied a mitigation. Users should now be able to create new fine-grained tokens successfully. We are continuing to monitor to confirm "
+    },
+    {
+      "title": "Disruption with creation of fine grained personal access tokens",
+      "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#68z3ynhs8wpv",
+      "published_at": "2026-08-10T18:21:41.742Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / The degradation has been mitigated. We are monitoring to ensure stability."
+    },
+    {
+      "title": "Disruption with creation of fine grained personal access tokens",
+      "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#5y1ykng7vdjs",
+      "published_at": "2026-08-10T18:09:36.323Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We are investigating reports of users being unable to create fine-grained Personal Access Tokens. Attempting to create a new token redirects the user back to the token overview page without an error message, but the token was not created."
+    },
+    {
+      "title": "Disruption with creation of fine grained personal access tokens",
+      "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#cb6q6t1pptg6",
+      "published_at": "2026-08-10T18:02:04.415Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We are investigating reports of impacted performance for some GitHub services."
     },
     {
       "title": "Incident with Actions",
@@ -758,38 +789,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Critical / Resolved / We’re investigating reports that some Actions Runner Controller runners are taking longer than expected to recover. We’ll provide an update as our investigation progresses."
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#sk63vxykkbrj",
-      "published_at": "2026-08-07T00:06:24.906Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Critical / Resolved / The degradation has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#rhg81c20vk06",
-      "published_at": "2026-08-07T00:05:05.379Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / The degradation affecting Actions and Pages has been mitigated. We are monitoring to ensure stability."
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#bpgwsqb38dh9",
-      "published_at": "2026-08-07T00:01:26.921Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / System-wide queues have been drained, and new jobs are being processed as expected. The fix for self-hosted runners not picking up jobs has been fully rolled out.<br /><br />Webhook-triggered Actions workflows have been restored to full thr"
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/qcvjkzcs7j74#jjkymmsnczrg",
-      "published_at": "2026-08-07T00:01:15.259Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / <br />System-wide queues have been drained, and new jobs are being processed as expected. The fix for self-hosted runners not picking up jobs has been fully rolled out.<br /><br />Webhook-triggered Actions workflows have been restored to fu"
     }
   ],
   "social": [],
@@ -805,11 +804,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-10T17:03:14.949775Z",
+      "last_item_at": "2026-08-10T18:23:44.825863Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 337,
-      "fetched_at": "2026-08-10T17:03:14.949796Z",
+      "duration_ms": 208,
+      "fetched_at": "2026-08-10T18:23:44.825892Z",
       "cache_hit": false
     },
     {
@@ -823,11 +822,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-10T10:03:15-07:00",
+      "last_item_at": "2026-08-10T14:23:45-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1316,
-      "fetched_at": "2026-08-10T17:03:16.266069Z",
+      "duration_ms": 1264,
+      "fetched_at": "2026-08-10T18:23:46.090924Z",
       "cache_hit": false
     },
     {
@@ -841,17 +840,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-10T17:03:16.266272Z",
+      "last_item_at": "2026-08-10T18:23:46.091125Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 362,
-      "fetched_at": "2026-08-10T17:03:16.629237Z",
+      "duration_ms": 187,
+      "fetched_at": "2026-08-10T18:23:46.278744Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-10T17:03:16.630126Z",
+    "generated_at": "2026-08-10T18:23:46.279861Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -873,7 +872,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -888,9 +887,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 337,
+          "duration_ms": 208,
           "cache_hit": false,
-          "at": "2026-08-10T17:03:14Z"
+          "at": "2026-08-10T18:23:44Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -899,7 +898,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 270.8
+          "avg_duration_ms": 273.7
         },
         "metrics_7d": {
           "runs": 124,
@@ -908,10 +907,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 261.0
+          "avg_duration_ms": 258.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-10T17:03:14Z",
+        "last_success_at": "2026-08-10T18:23:44Z",
         "last_failure_at": null
       },
       {
@@ -925,9 +924,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1316,
+          "duration_ms": 1264,
           "cache_hit": false,
-          "at": "2026-08-10T17:03:14Z"
+          "at": "2026-08-10T18:23:44Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -936,7 +935,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1188.2
+          "avg_duration_ms": 1218.0
         },
         "metrics_7d": {
           "runs": 124,
@@ -945,10 +944,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1155.8
+          "avg_duration_ms": 1153.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-10T17:03:14Z",
+        "last_success_at": "2026-08-10T18:23:44Z",
         "last_failure_at": null
       },
       {
@@ -962,9 +961,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 362,
+          "duration_ms": 187,
           "cache_hit": false,
-          "at": "2026-08-10T17:03:14Z"
+          "at": "2026-08-10T18:23:44Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -973,7 +972,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 438.8
+          "avg_duration_ms": 436.1
         },
         "metrics_7d": {
           "runs": 124,
@@ -982,29 +981,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 327.8
+          "avg_duration_ms": 326.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-10T17:03:14Z",
+        "last_success_at": "2026-08-10T18:23:44Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-10T17:03:16.630126Z",
+    "generated_at": "2026-08-10T18:23:46.279861Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "a3e4157894d5cd0e",
+          "title": "Disruption with creation of fine grained personal access tokens",
+          "started_at": "2026-08-10T18:07:01Z",
+          "duration": "1m",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "8649eaeaf9a90d26",
+          "title": "Disruption with creation of fine grained personal access tokens",
+          "started_at": "2026-08-10T18:02:04.368Z",
+          "duration": "21m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "8f42d184402ca0ee",
+          "title": "Incident with Copilot",
+          "started_at": "2026-08-03T09:53:27.172Z",
+          "duration": "1h 31m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "03493f9e874af5eb",
+          "title": "Incident with Copilot AI Model Providers",
+          "started_at": "2026-08-01T18:11:45Z",
+          "duration": "10m",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "1737c61884c576f5",
+          "title": "Disruption with creation of fine grained personal access tokens",
+          "url": "https://www.githubstatus.com/#2026-08-10T18:07:01Z",
+          "published_at": "2026-08-10T18:07:01Z",
+          "source": "StatusGator",
+          "meta": "Yes"
+        },
+        {
+          "id": "ed8bdcd506f681cd",
+          "title": "Disruption with creation of fine grained personal access tokens",
+          "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7",
+          "published_at": "2026-08-10T18:02:04.368Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Monitoring"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
