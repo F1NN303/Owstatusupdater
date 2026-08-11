@@ -1,41 +1,41 @@
 {
-  "generated_at": "2026-08-11T13:54:20.220551Z",
+  "generated_at": "2026-08-11T14:59:35.139379Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 1,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 4.49,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
+      "support_score": 0.18,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 104,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 4,
+      "reports_24h": 107,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 6,
       "cross_source": {
         "report_score": 0.0,
-        "news_score": 0.0,
+        "news_score": 0.18,
         "social_score": 0.0,
-        "combined_score": 0.0,
+        "combined_score": 0.18,
         "report_hits_24h": 0
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
@@ -44,8 +44,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -53,31 +53,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "GitHub Statuspage API: All Systems Operational",
+    "summary": "GitHub Statuspage API: Partially Degraded Service",
     "updates": [
       {
-        "title": "GitHub Statuspage API: All Systems Operational",
+        "title": "GitHub Statuspage API: Partially Degraded Service",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-08-11T13:54:19.965872Z",
+        "published_at": "2026-08-11T14:59:34.929470Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Incident with GraphQL API Requests",
+        "url": "https://www.githubstatus.com/incidents/vm1w8zq95wkt#d8czxf9vvzgy",
+        "published_at": "2026-08-11T14:50:40.309Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating reports of degraded performance for API Requests"
       },
       {
         "title": "Disruption with Copilot for access to some models",
@@ -142,26 +150,32 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / We identified the source of the issue affecting creation of fine-grained personal access tokens and have applied a mitigation. Users should now be able to create new fine-grained tokens successfully. We are continuing to monitor to confirm "
-      },
-      {
-        "title": "Disruption with creation of fine grained personal access tokens",
-        "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#68z3ynhs8wpv",
-        "published_at": "2026-08-10T18:21:41.742Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / The degradation has been mitigated. We are monitoring to ensure stability."
       }
     ],
-    "last_statement_at": "2026-08-11T13:54:19.965872Z"
+    "last_statement_at": "2026-08-11T14:59:34.929470Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 104,
+    "summary": "GitHub Statuspage reports an active incident: Incident with GraphQL API Requests.",
+    "current_status": "degraded",
+    "reports_24h": 107,
     "incidents": [
+      {
+        "title": "Incident with GraphQL API Requests",
+        "started_at": "2026-08-11T14:51:43Z",
+        "duration": "",
+        "acknowledgement": "Yes"
+      },
+      {
+        "title": "Incident with GraphQL API Requests",
+        "started_at": "2026-08-11T14:50:40.228Z",
+        "duration": "8m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/vm1w8zq95wkt"
+      },
       {
         "title": "Disruption with Copilot for access to some models",
         "started_at": "2026-08-10T20:31:36Z",
@@ -203,44 +217,23 @@
         "started_at": "2026-08-06T15:06:52Z",
         "duration": "9h",
         "acknowledgement": "Yes"
-      },
-      {
-        "title": "Incident with Pages - Deployment Lag",
-        "started_at": "2026-08-06T15:03:55.182Z",
-        "duration": "1h 19m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/1xqvzyv99skw"
-      },
-      {
-        "title": "Some Copilot Cloud Agent jobs not starting",
-        "started_at": "2026-08-05T11:41:36Z",
-        "duration": "20m",
-        "acknowledgement": "Yes"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "API Requests",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "GitHub Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "14:00",
-        "count": 0
-      },
-      {
-        "label": "14:20",
-        "count": 2
-      },
-      {
-        "label": "14:40",
-        "count": 0
-      },
       {
         "label": "15:00",
         "count": 1
@@ -516,6 +509,18 @@
       {
         "label": "13:40",
         "count": 0
+      },
+      {
+        "label": "14:00",
+        "count": 1
+      },
+      {
+        "label": "14:20",
+        "count": 3
+      },
+      {
+        "label": "14:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -524,14 +529,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-11T13:54:19Z"
+      "last_reviewed_at": "2026-08-11T10:59:34-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 104,
-        "last_reviewed_at": "2026-08-11T13:54:19Z"
+        "reports_24h": 107,
+        "last_reviewed_at": "2026-08-11T10:59:34-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -560,9 +565,9 @@
       },
       {
         "name": "API Requests",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-27T04:09:01.458Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-08-11T14:50:40.270Z",
         "source": "GitHub Statuspage API"
       },
       {
@@ -626,6 +631,20 @@
   },
   "reports": [
     {
+      "title": "Incident with GraphQL API Requests",
+      "url": "https://www.githubstatus.com/#2026-08-11T14:51:43Z",
+      "published_at": "2026-08-11T14:51:43Z",
+      "source": "StatusGator",
+      "meta": "Yes"
+    },
+    {
+      "title": "Incident with GraphQL API Requests",
+      "url": "https://www.githubstatus.com/incidents/vm1w8zq95wkt",
+      "published_at": "2026-08-11T14:50:40.228Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "Disruption with Copilot for access to some models",
       "url": "https://www.githubstatus.com/#2026-08-10T20:31:36Z",
       "published_at": "2026-08-10T20:31:36Z",
@@ -666,20 +685,6 @@
       "published_at": "2026-08-06T15:06:52Z",
       "source": "StatusGator",
       "meta": "Yes"
-    },
-    {
-      "title": "Incident with Pages - Deployment Lag",
-      "url": "https://www.githubstatus.com/incidents/1xqvzyv99skw",
-      "published_at": "2026-08-06T15:03:55.182Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Some Copilot Cloud Agent jobs not starting",
-      "url": "https://www.githubstatus.com/#2026-08-05T11:41:36Z",
-      "published_at": "2026-08-05T11:41:36Z",
-      "source": "StatusGator",
-      "meta": "Yes"
     }
   ],
   "known_resources": [
@@ -688,52 +693,60 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-11T13:54:20.220551Z"
+      "published_at": "2026-08-11T14:59:35.139379Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-11T13:54:20.220551Z"
+      "published_at": "2026-08-11T14:59:35.139379Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-11T13:54:20.220551Z"
+      "published_at": "2026-08-11T14:59:35.139379Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-08-11T13:54:20.220551Z"
+      "published_at": "2026-08-11T14:59:35.139379Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-11T13:54:20.220551Z"
+      "published_at": "2026-08-11T14:59:35.139379Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-11T13:54:20.220551Z"
+      "published_at": "2026-08-11T14:59:35.139379Z"
     }
   ],
   "news": [
     {
-      "title": "GitHub Statuspage API: All Systems Operational",
+      "title": "GitHub Statuspage API: Partially Degraded Service",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-08-11T13:54:19.965872Z",
+      "published_at": "2026-08-11T14:59:34.929470Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Incident with GraphQL API Requests",
+      "url": "https://www.githubstatus.com/incidents/vm1w8zq95wkt#d8czxf9vvzgy",
+      "published_at": "2026-08-11T14:50:40.309Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating reports of degraded performance for API Requests"
     },
     {
       "title": "Disruption with Copilot for access to some models",
@@ -782,14 +795,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are investigating reports of impacted performance for some GitHub services."
-    },
-    {
-      "title": "Disruption with creation of fine grained personal access tokens",
-      "url": "https://www.githubstatus.com/incidents/s19bth7wzkf7#6kwglltsc28q",
-      "published_at": "2026-08-10T18:46:22.280Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
     }
   ],
   "social": [],
@@ -805,11 +810,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-11T13:54:19.030573Z",
+      "last_item_at": "2026-08-11T14:59:33.617928Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 178,
-      "fetched_at": "2026-08-11T13:54:19.030597Z",
+      "duration_ms": 382,
+      "fetched_at": "2026-08-11T14:59:33.617951Z",
       "cache_hit": false
     },
     {
@@ -823,11 +828,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-11T13:54:19Z",
+      "last_item_at": "2026-08-11T10:59:34-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 934,
-      "fetched_at": "2026-08-11T13:54:19.965459Z",
+      "duration_ms": 1311,
+      "fetched_at": "2026-08-11T14:59:34.929215Z",
       "cache_hit": false
     },
     {
@@ -841,17 +846,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-11T13:54:19.965872Z",
+      "last_item_at": "2026-08-11T14:59:34.929470Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 253,
-      "fetched_at": "2026-08-11T13:54:20.218988Z",
+      "duration_ms": 208,
+      "fetched_at": "2026-08-11T14:59:35.137776Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-11T13:54:20.220551Z",
+    "generated_at": "2026-08-11T14:59:35.139379Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -873,7 +878,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -888,9 +893,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 178,
+          "duration_ms": 382,
           "cache_hit": false,
-          "at": "2026-08-11T13:54:18Z"
+          "at": "2026-08-11T14:59:33Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -899,19 +904,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 261.4
+          "avg_duration_ms": 264.8
         },
         "metrics_7d": {
-          "runs": 127,
-          "ok": 127,
+          "runs": 128,
+          "ok": 128,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 257.6
+          "avg_duration_ms": 258.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T13:54:18Z",
+        "last_success_at": "2026-08-11T14:59:33Z",
         "last_failure_at": null
       },
       {
@@ -925,9 +930,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 934,
+          "duration_ms": 1311,
           "cache_hit": false,
-          "at": "2026-08-11T13:54:18Z"
+          "at": "2026-08-11T14:59:33Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -936,19 +941,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1192.0
+          "avg_duration_ms": 1181.6
         },
         "metrics_7d": {
-          "runs": 127,
-          "ok": 127,
+          "runs": 128,
+          "ok": 128,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1166.9
+          "avg_duration_ms": 1168.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T13:54:18Z",
+        "last_success_at": "2026-08-11T14:59:33Z",
         "last_failure_at": null
       },
       {
@@ -962,9 +967,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 253,
+          "duration_ms": 208,
           "cache_hit": false,
-          "at": "2026-08-11T13:54:18Z"
+          "at": "2026-08-11T14:59:33Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -973,38 +978,89 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 347.9
+          "avg_duration_ms": 344.6
         },
         "metrics_7d": {
-          "runs": 127,
-          "ok": 127,
+          "runs": 128,
+          "ok": 128,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 329.1
+          "avg_duration_ms": 328.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T13:54:18Z",
+        "last_success_at": "2026-08-11T14:59:33Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-11T13:54:20.220551Z",
+    "generated_at": "2026-08-11T14:59:35.139379Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "c1f90855d2e492a3",
+          "title": "Incident with GraphQL API Requests",
+          "started_at": "2026-08-11T14:51:43Z",
+          "duration": "",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "4a070ebf57b3172a",
+          "title": "Incident with GraphQL API Requests",
+          "started_at": "2026-08-11T14:50:40.228Z",
+          "duration": "8m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "4dbe16001f398ced",
+          "title": "Incident with Pages - Deployment Lag",
+          "started_at": "2026-08-06T15:03:55.182Z",
+          "duration": "1h 19m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "a0adbdbcd31bbaf5",
+          "title": "Some Copilot Cloud Agent jobs not starting",
+          "started_at": "2026-08-05T11:41:36Z",
+          "duration": "20m",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "e6d1adf8391371b9",
+          "title": "Incident with GraphQL API Requests",
+          "url": "https://www.githubstatus.com/#2026-08-11T14:51:43Z",
+          "published_at": "2026-08-11T14:51:43Z",
+          "source": "StatusGator",
+          "meta": "Yes"
+        },
+        {
+          "id": "b97f8335ed41d50d",
+          "title": "Incident with GraphQL API Requests",
+          "url": "https://www.githubstatus.com/incidents/vm1w8zq95wkt",
+          "published_at": "2026-08-11T14:50:40.228Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
