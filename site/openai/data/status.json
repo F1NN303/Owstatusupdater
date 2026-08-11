@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-11T12:09:43.073278Z",
+  "generated_at": "2026-08-11T13:37:49.636845Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 1.95,
+      "incidents": 4.05,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 1.3
     },
     "signal_metrics": {
       "reports_24h": 114,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 1,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,22 +29,22 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,47 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-08-11T12:09:42.142278Z",
+        "published_at": "2026-08-11T13:37:48.788864Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Increased error rates",
+        "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8#01KZRFQCZA33VWQKQ0G36KWWR6",
+        "published_at": "2026-08-11T13:20:55Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating the issue for the listed services."
+      },
+      {
+        "title": "Increased error rates",
+        "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8#01KZRE6ZA1R0C8RDWX93T776P4",
+        "published_at": "2026-08-11T12:54:28Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Investigating / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
       },
       {
         "title": "Increased error rates",
@@ -133,34 +149,26 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Issues with Custom GPT actions",
-        "url": "https://status.openai.com/incidents/01KZ9DMQD2GJ8JJWDN7572RH78#01KZA1VHC56G76RF68EGDTQQW4",
-        "published_at": "2026-08-05T22:49:08Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Issues with Custom GPT actions",
-        "url": "https://status.openai.com/incidents/01KZ9DMQD2GJ8JJWDN7572RH78#01KZA1PDVKR8FHJWSRVXA68CGH",
-        "published_at": "2026-08-05T22:46:21Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
       }
     ],
-    "last_statement_at": "2026-08-11T12:09:42.142278Z"
+    "last_statement_at": "2026-08-11T13:37:48.788864Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
+    "summary": "OpenAI Statuspage reports an active incident: Increased error rates.",
+    "current_status": "degraded",
     "reports_24h": 114,
     "incidents": [
+      {
+        "title": "Increased error rates",
+        "started_at": "2026-08-11T12:54:28Z",
+        "duration": "43m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8"
+      },
       {
         "title": "Increased error rates",
         "started_at": "2026-08-10T14:04:37Z",
@@ -216,43 +224,28 @@
         "acknowledgement": "None / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KYVPNEY9736Z04D3X1NSFFF9"
-      },
-      {
-        "title": "Elevated errors affecting ChatGPT conversations",
-        "started_at": "2026-07-30T14:35:41Z",
-        "duration": "1h 25m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KYSQ7PC81PV3PZE3ZEVFK6K5"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Conversations",
+        "count": 1
+      },
+      {
+        "label": "ChatGPT Work",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "summary_origin": "OpenAI Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "12:20",
-        "count": 0
-      },
-      {
-        "label": "12:40",
-        "count": 2
-      },
-      {
-        "label": "13:00",
-        "count": 3
-      },
-      {
-        "label": "13:20",
-        "count": 1
-      },
       {
         "label": "13:40",
         "count": 3
@@ -524,6 +517,22 @@
       {
         "label": "12:00",
         "count": 3
+      },
+      {
+        "label": "12:20",
+        "count": 1
+      },
+      {
+        "label": "12:40",
+        "count": 3
+      },
+      {
+        "label": "13:00",
+        "count": 0
+      },
+      {
+        "label": "13:20",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -532,14 +541,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-11T08:09:41-04:00"
+      "last_reviewed_at": "2026-08-11T07:37:48-06:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 114,
-        "last_reviewed_at": "2026-08-11T08:09:41-04:00"
+        "last_reviewed_at": "2026-08-11T07:37:48-06:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -595,8 +604,8 @@
       },
       {
         "name": "Conversations",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -749,8 +758,8 @@
       },
       {
         "name": "ChatGPT Work",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -786,6 +795,13 @@
     "scheduled_maintenances": []
   },
   "reports": [
+    {
+      "title": "Increased error rates",
+      "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8",
+      "published_at": "2026-08-11T12:54:28Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
     {
       "title": "Increased error rates",
       "url": "https://status.openai.com/incidents/01KZNZTPWMV06Z6TQNMY1R1QDR",
@@ -834,13 +850,6 @@
       "published_at": "2026-07-31T09:04:13Z",
       "source": "OpenAI Statuspage API",
       "meta": "None / Resolved"
-    },
-    {
-      "title": "Elevated errors affecting ChatGPT conversations",
-      "url": "https://status.openai.com/incidents/01KYSQ7PC81PV3PZE3ZEVFK6K5",
-      "published_at": "2026-07-30T14:35:41Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -849,45 +858,61 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-11T12:09:43.073278Z"
+      "published_at": "2026-08-11T13:37:49.636845Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-11T12:09:43.073278Z"
+      "published_at": "2026-08-11T13:37:49.636845Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-11T12:09:43.073278Z"
+      "published_at": "2026-08-11T13:37:49.636845Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-11T12:09:43.073278Z"
+      "published_at": "2026-08-11T13:37:49.636845Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-11T12:09:43.073278Z"
+      "published_at": "2026-08-11T13:37:49.636845Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-08-11T12:09:42.142278Z",
+      "published_at": "2026-08-11T13:37:48.788864Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Increased error rates",
+      "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8#01KZRFQCZA33VWQKQ0G36KWWR6",
+      "published_at": "2026-08-11T13:20:55Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating the issue for the listed services."
+    },
+    {
+      "title": "Increased error rates",
+      "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8#01KZRE6ZA1R0C8RDWX93T776P4",
+      "published_at": "2026-08-11T12:54:28Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Investigating / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
     },
     {
       "title": "Increased error rates",
@@ -928,22 +953,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-    },
-    {
-      "title": "Increased errors for some ChatGPT users",
-      "url": "https://status.openai.com/incidents/01KZN8RYNZY8T4QQGB3JWMPYRW#01KZN8RYNZQM716YCTF2JHYSBX",
-      "published_at": "2026-08-10T07:21:42Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
-    },
-    {
-      "title": "Elevated errors with image generation",
-      "url": "https://status.openai.com/incidents/01KZ96S5HEWX0CX26W2WFYFKE6#01KZA3S2Z9YH6X717HHYRAF144",
-      "published_at": "2026-08-05T23:22:45Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
     }
   ],
   "social": [],
@@ -959,11 +968,11 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-08-11T12:09:41.095184Z",
+      "last_item_at": "2026-08-11T13:37:47.719545Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 371,
-      "fetched_at": "2026-08-11T12:09:41.095204Z",
+      "duration_ms": 185,
+      "fetched_at": "2026-08-11T13:37:47.719573Z",
       "cache_hit": false
     },
     {
@@ -977,11 +986,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-11T08:09:41-04:00",
+      "last_item_at": "2026-08-11T07:37:48-06:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1046,
-      "fetched_at": "2026-08-11T12:09:42.142062Z",
+      "duration_ms": 1069,
+      "fetched_at": "2026-08-11T13:37:48.788653Z",
       "cache_hit": false
     },
     {
@@ -995,17 +1004,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-11T12:09:42.142278Z",
+      "last_item_at": "2026-08-11T13:37:48.788864Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 929,
-      "fetched_at": "2026-08-11T12:09:43.071956Z",
+      "duration_ms": 846,
+      "fetched_at": "2026-08-11T13:37:49.635555Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-11T12:09:43.073278Z",
+    "generated_at": "2026-08-11T13:37:49.636845Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1027,7 +1036,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1042,9 +1051,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 371,
+          "duration_ms": 185,
           "cache_hit": false,
-          "at": "2026-08-11T12:09:40Z"
+          "at": "2026-08-11T13:37:47Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1053,7 +1062,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 277.1
+          "avg_duration_ms": 264.1
         },
         "metrics_7d": {
           "runs": 127,
@@ -1062,10 +1071,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 244.8
+          "avg_duration_ms": 243.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T12:09:40Z",
+        "last_success_at": "2026-08-11T13:37:47Z",
         "last_failure_at": null
       },
       {
@@ -1079,9 +1088,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1046,
+          "duration_ms": 1069,
           "cache_hit": false,
-          "at": "2026-08-11T12:09:40Z"
+          "at": "2026-08-11T13:37:47Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1090,7 +1099,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 971.8
+          "avg_duration_ms": 971.2
         },
         "metrics_7d": {
           "runs": 127,
@@ -1099,10 +1108,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 933.4
+          "avg_duration_ms": 934.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T12:09:40Z",
+        "last_success_at": "2026-08-11T13:37:47Z",
         "last_failure_at": null
       },
       {
@@ -1116,9 +1125,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 929,
+          "duration_ms": 846,
           "cache_hit": false,
-          "at": "2026-08-11T12:09:40Z"
+          "at": "2026-08-11T13:37:47Z"
         },
         "metrics_24h": {
           "runs": 19,
@@ -1127,7 +1136,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 871.7
+          "avg_duration_ms": 865.5
         },
         "metrics_7d": {
           "runs": 127,
@@ -1136,26 +1145,29 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 796.9
+          "avg_duration_ms": 797.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T12:09:40Z",
+        "last_success_at": "2026-08-11T13:37:47Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-11T12:09:43.073278Z",
+    "generated_at": "2026-08-11T13:37:49.636845Z",
     "incidents": {
       "new": [
         {
-          "id": "69e68caa37df01bd",
-          "title": "Enterprise & Education Chat Errors",
-          "started_at": "2026-07-31T09:04:13Z",
-          "duration": "24m",
-          "acknowledgement": "None / Resolved",
+          "id": "e6c6257197348f65",
+          "title": "Increased error rates",
+          "started_at": "2026-08-11T12:54:28Z",
+          "duration": "43m ongoing",
+          "acknowledgement": "Minor / Investigating",
           "url": "https://status.openai.com/"
-        },
+        }
+      ],
+      "updated": [],
+      "resolved": [
         {
           "id": "531374978a159534",
           "title": "Elevated errors affecting ChatGPT conversations",
@@ -1164,52 +1176,25 @@
           "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "aa746af7844f1bff",
-          "title": "Increased error rates",
-          "started_at": "2026-08-10T14:06:53Z",
-          "duration": "12h 45m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "591ea4b295de9a1c",
-          "title": "Increased errors for some ChatGPT users",
-          "started_at": "2026-08-10T07:21:57Z",
-          "duration": "50m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "247fd43fc5c0bf52",
-          "title": "Enterprise & Education Chat Errors",
-          "url": "https://status.openai.com/incidents/01KYVPNEY9736Z04D3X1NSFFF9",
-          "published_at": "2026-07-31T09:04:13Z",
+          "id": "b40d61cd4596a81f",
+          "title": "Increased error rates",
+          "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8",
+          "published_at": "2026-08-11T12:54:28Z",
           "source": "OpenAI Statuspage API",
-          "meta": "None / Resolved"
-        },
-        {
-          "id": "d0d6c6293ebc8f44",
-          "title": "Elevated errors affecting ChatGPT conversations",
-          "url": "https://status.openai.com/incidents/01KYSQ7PC81PV3PZE3ZEVFK6K5",
-          "published_at": "2026-07-30T14:35:41Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Resolved"
+          "meta": "Minor / Investigating"
         }
       ]
     },
     "summary": {
-      "new_incidents": 2,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
