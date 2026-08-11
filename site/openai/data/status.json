@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-11T16:06:45.881458Z",
+  "generated_at": "2026-08-11T17:27:59.809335Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 1,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 5.1,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 119,
-      "recent_incidents_6h": 2,
-      "recent_incidents_24h": 2,
+      "reports_24h": 120,
+      "recent_incidents_6h": 5,
+      "recent_incidents_24h": 5,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-08-11T16:06:45.066459Z",
+        "published_at": "2026-08-11T17:27:59.180506Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Users unable to login to ads manager",
+        "url": "https://status.openai.com/incidents/01KZRXPE0NGXA12FJNP8WZF8D7#01KZRXPE0N7VKQZ565Y2FNHPDZ",
+        "published_at": "2026-08-11T17:25:03Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / We have identified that users are are unable to login to ads manager. We are working on implementing a mitigation."
       },
       {
         "title": "Increased error rates",
@@ -141,26 +149,32 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Increased error rates",
-        "url": "https://status.openai.com/incidents/01KZNZTPWMV06Z6TQNMY1R1QDR#01KZP3EK1R6D4TWMFS0MEW3ECC",
-        "published_at": "2026-08-10T15:07:54Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
       }
     ],
-    "last_statement_at": "2026-08-11T16:06:45.066459Z"
+    "last_statement_at": "2026-08-11T17:27:59.180506Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 119,
+    "summary": "OpenAI Statuspage reports an active incident: Users unable to login to ads manager.",
+    "current_status": "degraded",
+    "reports_24h": 120,
     "incidents": [
+      {
+        "title": "Users unable to login to ads manager",
+        "started_at": "2026-08-11T17:26:51Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Users unable to login to ads manager",
+        "started_at": "2026-08-11T17:25:03Z",
+        "duration": "2m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01KZRXPE0NGXA12FJNP8WZF8D7"
+      },
       {
         "title": "Elevated errors affecting ChatGPT Go conversations",
         "started_at": "2026-08-11T14:10:18Z",
@@ -168,6 +182,12 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KZRJHTR75WDXCMC0ZERX6YJC"
+      },
+      {
+        "title": "Increased error rates",
+        "started_at": "2026-08-11T12:57:01Z",
+        "duration": "2h 5m",
+        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Increased error rates",
@@ -200,59 +220,607 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KZ9E7QD8WFJD5DMF73QGVYH8"
-      },
-      {
-        "title": "Issues with Custom GPT actions",
-        "started_at": "2026-08-05T16:55:54Z",
-        "duration": "5h 53m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KZ9DMQD2GJ8JJWDN7572RH78"
-      },
-      {
-        "title": "Elevated errors with image generation",
-        "started_at": "2026-08-05T14:55:59Z",
-        "duration": "8h 26m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KZ96S5HEWX0CX26W2WFYFKE6"
-      },
-      {
-        "title": "Elevated ChatGPT conversation errors affecting Plus, Pro, Business, and Edu users",
-        "started_at": "2026-08-04T12:43:44Z",
-        "duration": "2h 41m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KZ6CT9K9Q52S3707W75MNBGB"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Ads Manager",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
-    "service_health_24h": [],
-    "service_health_24h_meta": null,
-    "summary_origin": "OpenAI Statuspage API",
+    "service_health_24h": [
+      {
+        "timestamp": "2026-08-10T17:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T17:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T18:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T18:15:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T18:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T18:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T19:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T19:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T19:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T19:45:00Z",
+        "signal_value": 33.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-10T20:00:00Z",
+        "signal_value": 69.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-08-10T20:15:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T20:30:00Z",
+        "signal_value": 21.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T20:45:00Z",
+        "signal_value": 47.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-10T21:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T21:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T21:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T21:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T22:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T22:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T22:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T22:45:00Z",
+        "signal_value": 15.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T23:00:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T23:15:00Z",
+        "signal_value": 43.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-10T23:30:00Z",
+        "signal_value": 25.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-10T23:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T00:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T00:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T00:30:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T00:45:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T01:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T01:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T01:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T01:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T02:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T02:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T02:30:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T02:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T03:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T03:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T03:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T03:45:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T04:00:00Z",
+        "signal_value": 24.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T04:15:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T04:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T04:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T05:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T05:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T05:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T05:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T06:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T06:15:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T06:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T06:45:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T07:00:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T07:15:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T07:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T07:45:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T08:00:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T08:15:00Z",
+        "signal_value": 15.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T08:30:00Z",
+        "signal_value": 30.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T08:45:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T09:00:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T09:15:00Z",
+        "signal_value": 29.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T09:30:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T09:45:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T10:00:00Z",
+        "signal_value": 53.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-11T10:15:00Z",
+        "signal_value": 42.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-11T10:30:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T10:45:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T11:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T11:15:00Z",
+        "signal_value": 30.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T11:30:00Z",
+        "signal_value": 32.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T11:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T12:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T12:15:00Z",
+        "signal_value": 33.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T12:30:00Z",
+        "signal_value": 59.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-11T12:45:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T13:00:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T13:15:00Z",
+        "signal_value": 80.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-08-11T13:30:00Z",
+        "signal_value": 109.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-08-11T13:45:00Z",
+        "signal_value": 56.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-11T14:00:00Z",
+        "signal_value": 50.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-11T14:15:00Z",
+        "signal_value": 31.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T14:30:00Z",
+        "signal_value": 21.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T14:45:00Z",
+        "signal_value": 37.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T15:00:00Z",
+        "signal_value": 25.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T15:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T15:30:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T15:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T16:00:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T16:15:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T16:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T16:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T17:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-11T17:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      }
+    ],
+    "service_health_24h_meta": {
+      "source": "StatusGator",
+      "kind": "service-health-series",
+      "window_hours": 24,
+      "sample_count": 96,
+      "interval_minutes": 15,
+      "last_sample_at": "2026-08-11T17:15:00Z"
+    },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "16:20",
-        "count": 0
-      },
-      {
-        "label": "16:40",
-        "count": 2
-      },
-      {
-        "label": "17:00",
-        "count": 3
-      },
-      {
-        "label": "17:20",
-        "count": 1
-      },
       {
         "label": "17:40",
         "count": 3
@@ -524,6 +1092,22 @@
       {
         "label": "16:00",
         "count": 3
+      },
+      {
+        "label": "16:20",
+        "count": 1
+      },
+      {
+        "label": "16:40",
+        "count": 4
+      },
+      {
+        "label": "17:00",
+        "count": 0
+      },
+      {
+        "label": "17:20",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -532,17 +1116,18 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-11T12:06:44-04:00"
+      "last_reviewed_at": "2026-08-11T13:27:58-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 119,
-        "last_reviewed_at": "2026-08-11T12:06:44-04:00"
+        "reports_24h": 120,
+        "last_reviewed_at": "2026-08-11T13:27:58-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
+    "summary_origin": "OpenAI Statuspage API",
     "components": [
       {
         "name": "Images",
@@ -616,13 +1201,6 @@
       },
       {
         "name": "FedRAMP",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-09T19:25:56Z",
-        "source": "OpenAI Statuspage API"
-      },
-      {
-        "name": "Ads Manager",
         "status": "operational",
         "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
@@ -769,6 +1347,13 @@
         "source": "OpenAI Statuspage API"
       },
       {
+        "name": "Ads Manager",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-07-09T19:25:56Z",
+        "source": "OpenAI Statuspage API"
+      },
+      {
         "name": "CLI",
         "status": "operational",
         "health": "operational",
@@ -783,15 +1368,70 @@
         "source": "OpenAI Statuspage API"
       }
     ],
-    "scheduled_maintenances": []
+    "scheduled_maintenances": [],
+    "top_reported_issues_provider": [
+      {
+        "label": "Slow performance",
+        "count": 19
+      },
+      {
+        "label": "Service down",
+        "count": 13
+      },
+      {
+        "label": "Error message",
+        "count": 12
+      },
+      {
+        "label": "Connectivity issue",
+        "count": 3
+      },
+      {
+        "label": "Server not responding",
+        "count": 2
+      },
+      {
+        "label": "App not loading",
+        "count": 2
+      },
+      {
+        "label": "Other",
+        "count": 2
+      },
+      {
+        "label": "Sign in problem",
+        "count": 1
+      }
+    ]
   },
   "reports": [
+    {
+      "title": "Users unable to login to ads manager",
+      "url": "https://status.openai.com/#2026-08-11T17:26:51Z",
+      "published_at": "2026-08-11T17:26:51Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Users unable to login to ads manager",
+      "url": "https://status.openai.com/incidents/01KZRXPE0NGXA12FJNP8WZF8D7",
+      "published_at": "2026-08-11T17:25:03Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Identified"
+    },
     {
       "title": "Elevated errors affecting ChatGPT Go conversations",
       "url": "https://status.openai.com/incidents/01KZRJHTR75WDXCMC0ZERX6YJC",
       "published_at": "2026-08-11T14:10:18Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
+    },
+    {
+      "title": "Increased error rates",
+      "url": "https://status.openai.com/#2026-08-11T12:57:01Z",
+      "published_at": "2026-08-11T12:57:01Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
     },
     {
       "title": "Increased error rates",
@@ -820,27 +1460,6 @@
       "published_at": "2026-08-05T17:06:16Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Issues with Custom GPT actions",
-      "url": "https://status.openai.com/incidents/01KZ9DMQD2GJ8JJWDN7572RH78",
-      "published_at": "2026-08-05T16:55:54Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Elevated errors with image generation",
-      "url": "https://status.openai.com/incidents/01KZ96S5HEWX0CX26W2WFYFKE6",
-      "published_at": "2026-08-05T14:55:59Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Elevated ChatGPT conversation errors affecting Plus, Pro, Business, and Edu users",
-      "url": "https://status.openai.com/incidents/01KZ6CT9K9Q52S3707W75MNBGB",
-      "published_at": "2026-08-04T12:43:44Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -849,45 +1468,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-11T16:06:45.881458Z"
+      "published_at": "2026-08-11T17:27:59.809335Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-11T16:06:45.881458Z"
+      "published_at": "2026-08-11T17:27:59.809335Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-11T16:06:45.881458Z"
+      "published_at": "2026-08-11T17:27:59.809335Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-11T16:06:45.881458Z"
+      "published_at": "2026-08-11T17:27:59.809335Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-11T16:06:45.881458Z"
+      "published_at": "2026-08-11T17:27:59.809335Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-08-11T16:06:45.066459Z",
+      "published_at": "2026-08-11T17:27:59.180506Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Users unable to login to ads manager",
+      "url": "https://status.openai.com/incidents/01KZRXPE0NGXA12FJNP8WZF8D7#01KZRXPE0N7VKQZ565Y2FNHPDZ",
+      "published_at": "2026-08-11T17:25:03Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / We have identified that users are are unable to login to ads manager. We are working on implementing a mitigation."
     },
     {
       "title": "Increased error rates",
@@ -936,14 +1563,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
-    },
-    {
-      "title": "Increased error rates",
-      "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8#01KZRE6ZA1R0C8RDWX93T776P4",
-      "published_at": "2026-08-11T12:54:28Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
     }
   ],
   "social": [],
@@ -958,12 +1577,12 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 0,
-      "last_item_at": "2026-08-11T16:06:43.964745Z",
+      "item_count": 8,
+      "last_item_at": "2026-08-11T17:27:58.405159Z",
       "freshness": "fresh",
       "age_minutes": 0,
       "duration_ms": 190,
-      "fetched_at": "2026-08-11T16:06:43.964777Z",
+      "fetched_at": "2026-08-11T17:27:58.405178Z",
       "cache_hit": false
     },
     {
@@ -977,11 +1596,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-11T12:06:44-04:00",
+      "last_item_at": "2026-08-11T13:27:58-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1101,
-      "fetched_at": "2026-08-11T16:06:45.066252Z",
+      "duration_ms": 774,
+      "fetched_at": "2026-08-11T17:27:59.179963Z",
       "cache_hit": false
     },
     {
@@ -995,17 +1614,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-11T16:06:45.066459Z",
+      "last_item_at": "2026-08-11T17:27:59.180506Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 813,
-      "fetched_at": "2026-08-11T16:06:45.879982Z",
+      "duration_ms": 627,
+      "fetched_at": "2026-08-11T17:27:59.807787Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-11T16:06:45.881458Z",
+    "generated_at": "2026-08-11T17:27:59.809335Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1027,7 +1646,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1044,7 +1663,7 @@
           "freshness": "fresh",
           "duration_ms": 190,
           "cache_hit": false,
-          "at": "2026-08-11T16:06:43Z"
+          "at": "2026-08-11T17:27:58Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1053,7 +1672,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 250.9
+          "avg_duration_ms": 244.7
         },
         "metrics_7d": {
           "runs": 128,
@@ -1062,10 +1681,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 243.2
+          "avg_duration_ms": 242.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T16:06:43Z",
+        "last_success_at": "2026-08-11T17:27:58Z",
         "last_failure_at": null
       },
       {
@@ -1079,9 +1698,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1101,
+          "duration_ms": 774,
           "cache_hit": false,
-          "at": "2026-08-11T16:06:43Z"
+          "at": "2026-08-11T17:27:58Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1090,7 +1709,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 957.4
+          "avg_duration_ms": 943.3
         },
         "metrics_7d": {
           "runs": 128,
@@ -1099,10 +1718,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 933.0
+          "avg_duration_ms": 929.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T16:06:43Z",
+        "last_success_at": "2026-08-11T17:27:58Z",
         "last_failure_at": null
       },
       {
@@ -1116,9 +1735,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 813,
+          "duration_ms": 627,
           "cache_hit": false,
-          "at": "2026-08-11T16:06:43Z"
+          "at": "2026-08-11T17:27:58Z"
         },
         "metrics_24h": {
           "runs": 20,
@@ -1127,7 +1746,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 837.0
+          "avg_duration_ms": 811.7
         },
         "metrics_7d": {
           "runs": 128,
@@ -1136,18 +1755,53 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 796.2
+          "avg_duration_ms": 793.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-11T16:06:43Z",
+        "last_success_at": "2026-08-11T17:27:58Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-11T16:06:45.881458Z",
+    "generated_at": "2026-08-11T17:27:59.809335Z",
     "incidents": {
       "new": [
+        {
+          "id": "d79ff01920d4a1c1",
+          "title": "Users unable to login to ads manager",
+          "started_at": "2026-08-11T17:26:51Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "32180d90904d6a73",
+          "title": "Users unable to login to ads manager",
+          "started_at": "2026-08-11T17:25:03Z",
+          "duration": "2m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "5a226e3bdc7222d7",
+          "title": "Increased error rates",
+          "started_at": "2026-08-11T12:57:01Z",
+          "duration": "2h 5m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        }
+      ],
+      "updated": [],
+      "resolved": [
+        {
+          "id": "083df39f5145fc0c",
+          "title": "Issues with Custom GPT actions",
+          "started_at": "2026-08-05T16:55:54Z",
+          "duration": "5h 53m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        },
         {
           "id": "10a3e5793b4e0d7c",
           "title": "Elevated errors with image generation",
@@ -1164,61 +1818,41 @@
           "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
-      ],
-      "updated": [
-        {
-          "id": "e6c6257197348f65",
-          "title": "Increased error rates",
-          "started_at": "2026-08-11T12:54:28Z",
-          "duration": "2h 7m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "resolved": [
-        {
-          "id": "5a226e3bdc7222d7",
-          "title": "Increased error rates",
-          "started_at": "2026-08-11T12:57:01Z",
-          "duration": "1m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "aa746af7844f1bff",
-          "title": "Increased error rates",
-          "started_at": "2026-08-10T14:06:53Z",
-          "duration": "12h 45m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "c2f4889fce147532",
-          "title": "Elevated errors with image generation",
-          "url": "https://status.openai.com/incidents/01KZ96S5HEWX0CX26W2WFYFKE6",
-          "published_at": "2026-08-05T14:55:59Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Resolved"
+          "id": "0e7ce0c5a252f0eb",
+          "title": "Users unable to login to ads manager",
+          "url": "https://status.openai.com/#2026-08-11T17:26:51Z",
+          "published_at": "2026-08-11T17:26:51Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
         },
         {
-          "id": "7bb4bd45d7260c11",
-          "title": "Elevated ChatGPT conversation errors affecting Plus, Pro, Business, and Edu users",
-          "url": "https://status.openai.com/incidents/01KZ6CT9K9Q52S3707W75MNBGB",
-          "published_at": "2026-08-04T12:43:44Z",
+          "id": "965abc13d976e138",
+          "title": "Users unable to login to ads manager",
+          "url": "https://status.openai.com/incidents/01KZRXPE0NGXA12FJNP8WZF8D7",
+          "published_at": "2026-08-11T17:25:03Z",
           "source": "OpenAI Statuspage API",
-          "meta": "Minor / Resolved"
+          "meta": "Minor / Identified"
+        },
+        {
+          "id": "6361c010e7b39012",
+          "title": "Increased error rates",
+          "url": "https://status.openai.com/#2026-08-11T12:57:01Z",
+          "published_at": "2026-08-11T12:57:01Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
         }
       ]
     },
     "summary": {
-      "new_incidents": 2,
-      "updated_incidents": 1,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "new_incidents": 3,
+      "updated_incidents": 0,
+      "resolved_incidents": 3,
+      "new_reports": 3
     }
   }
 }
