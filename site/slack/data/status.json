@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-13T20:45:18.364354Z",
+  "generated_at": "2026-08-13T21:47:38.812686Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "slack-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.8,
+      "incidents": 5.0,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 0.35
     },
     "signal_metrics": {
-      "reports_24h": 106,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 109,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,22 +29,22 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Slack Status API: Slack is up and running",
+    "summary": "Slack Status API: Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
     "updates": [
       {
-        "title": "Slack Status API: Slack is up and running",
+        "title": "Slack Status API: Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
         "url": "https://slack-status.com/",
-        "published_at": "2026-08-13T20:45:17.826615Z",
+        "published_at": "2026-08-13T21:47:38.218152Z",
         "source": "Slack Status API",
         "channel": "official-status-page",
-        "meta": "Indicator: ok"
+        "meta": "Indicator: active"
+      },
+      {
+        "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+        "url": "https://slack-status.com/2026-08/e07b9271f0346c3b#note-1",
+        "published_at": "2026-08-13T14:21:41-07:00",
+        "source": "Slack Status API",
+        "channel": "official-status-page",
+        "meta": "Active / Incident / Services: Messaging, Workspace/Org Administration / Users with custom data retention policies enabled might be unable to see or load older messages. We apologize for the trouble and we'll share more news as it becomes available."
       },
       {
         "title": "Trouble Using Search Bar For Some Admins",
@@ -141,26 +149,32 @@
         "source": "Slack Status API",
         "channel": "official-status-page",
         "meta": "Resolved / Incident / Services: Workflows / We’ve performed a test of reverting a recent change and this appears to have resolved the issue. We are in the process of performing a production wide revert of this change. This is expected to take some time to complete and we will validat"
-      },
-      {
-        "title": "Issue sending messages to channels via certain Workflows",
-        "url": "https://slack-status.com/2026-07/e82ee127d8bed735#note-3",
-        "published_at": "2026-07-24T02:08:05-07:00",
-        "source": "Slack Status API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Incident / Services: Workflows / The Workflow team is currently analyzing whether a recent change may have resulted in the conflict between variables that has been observed. It is expected to take some time to validate whether this is the case. We’ll provide an update in 6"
       }
     ],
-    "last_statement_at": "2026-08-13T20:45:17.826615Z"
+    "last_statement_at": "2026-08-13T21:47:38.218152Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://slack-status.com/",
-    "summary": "Slack Status reports Slack is up and running. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 106,
+    "summary": "Slack Status reports an active incident: Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled.",
+    "current_status": "degraded",
+    "reports_24h": 109,
     "incidents": [
+      {
+        "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+        "started_at": "2026-08-13T21:29:57Z",
+        "duration": "",
+        "acknowledgement": "Yes"
+      },
+      {
+        "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+        "started_at": "2026-08-13T14:21:41-07:00",
+        "duration": "25m ongoing",
+        "acknowledgement": "Incident / Active / Messaging, Workspace/Org Administration",
+        "source": "Slack Status API",
+        "url": "https://slack-status.com/2026-08/e07b9271f0346c3b"
+      },
       {
         "title": "Trouble Using Search Bar For Some Admins",
         "started_at": "2026-08-06T22:24:59Z",
@@ -202,44 +216,35 @@
         "acknowledgement": "Incident / Resolved / Workflows",
         "source": "Slack Status API",
         "url": "https://slack-status.com/2026-07/e82ee127d8bed735"
-      },
-      {
-        "title": "Receiving reminders in Slack issue",
-        "started_at": "2026-07-24T02:19:59Z",
-        "duration": "1h 5m",
-        "acknowledgement": "Yes"
-      },
-      {
-        "title": "Receiving reminders in Slack issue",
-        "started_at": "2026-07-23T19:18:40-07:00",
-        "duration": "1h 1m",
-        "acknowledgement": "Incident / Resolved / Notifications",
-        "source": "Slack Status API",
-        "url": "https://slack-status.com/2026-07/df254c60ace250d9"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Messaging",
+        "count": 1
+      },
+      {
+        "label": "Workspace/Org Administration",
+        "count": 1
+      },
+      {
+        "label": "Messaging",
+        "count": 1
+      },
+      {
+        "label": "Workspace/Org Administration",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Slack Status API",
       "kind": "component-grid",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "21:00",
-        "count": 0
-      },
-      {
-        "label": "21:20",
-        "count": 2
-      },
-      {
-        "label": "21:40",
-        "count": 0
-      },
       {
         "label": "22:00",
         "count": 1
@@ -515,6 +520,18 @@
       {
         "label": "20:40",
         "count": 0
+      },
+      {
+        "label": "21:00",
+        "count": 1
+      },
+      {
+        "label": "21:20",
+        "count": 3
+      },
+      {
+        "label": "21:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -523,14 +540,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-13T20:45:17Z"
+      "last_reviewed_at": "2026-08-13T17:47:37-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 106,
-        "last_reviewed_at": "2026-08-13T20:45:17Z"
+        "reports_24h": 109,
+        "last_reviewed_at": "2026-08-13T17:47:37-04:00"
       }
     ],
     "current_status_origin": "Slack Status API",
@@ -540,83 +557,97 @@
         "name": "Login/SSO",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Connectivity",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Messaging",
-        "status": "operational",
-        "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "status": "something's not quite right. view details",
+        "health": "Something's not quite right. View details",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Files",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Notifications",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Huddles",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Search",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Apps/Integrations/APIs",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workspace/Org Administration",
-        "status": "operational",
-        "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "status": "something's not quite right. view details",
+        "health": "Something's not quite right. View details",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Workflows",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       },
       {
         "name": "Canvases",
         "status": "operational",
         "health": "No issues",
-        "updated_at": "2026-08-06T18:08:09-07:00",
+        "updated_at": "2026-08-13T14:21:41-07:00",
         "source": "Slack Status API"
       }
     ],
     "scheduled_maintenances": []
   },
   "reports": [
+    {
+      "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+      "url": "https://slack-status.com/#2026-08-13T21:29:57Z",
+      "published_at": "2026-08-13T21:29:57Z",
+      "source": "StatusGator",
+      "meta": "Yes"
+    },
+    {
+      "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+      "url": "https://slack-status.com/2026-08/e07b9271f0346c3b",
+      "published_at": "2026-08-13T14:21:41-07:00",
+      "source": "Slack Status API",
+      "meta": "Incident / Active / Messaging, Workspace/Org Administration"
+    },
     {
       "title": "Trouble Using Search Bar For Some Admins",
       "url": "https://slack-status.com/#2026-08-06T22:24:59Z",
@@ -658,20 +689,6 @@
       "published_at": "2026-07-24T01:22:54-07:00",
       "source": "Slack Status API",
       "meta": "Incident / Resolved / Workflows"
-    },
-    {
-      "title": "Receiving reminders in Slack issue",
-      "url": "https://slack-status.com/#2026-07-24T02:19:59Z",
-      "published_at": "2026-07-24T02:19:59Z",
-      "source": "StatusGator",
-      "meta": "Yes"
-    },
-    {
-      "title": "Receiving reminders in Slack issue",
-      "url": "https://slack-status.com/2026-07/df254c60ace250d9",
-      "published_at": "2026-07-23T19:18:40-07:00",
-      "source": "Slack Status API",
-      "meta": "Incident / Resolved / Notifications"
     }
   ],
   "known_resources": [
@@ -680,52 +697,60 @@
       "url": "https://slack-status.com/",
       "source": "Official",
       "meta": "Dashboard",
-      "published_at": "2026-08-13T20:45:18.364354Z"
+      "published_at": "2026-08-13T21:47:38.812686Z"
     },
     {
       "title": "Slack Status API docs",
       "url": "https://slack-status.com/api",
       "source": "Official",
       "meta": "API docs",
-      "published_at": "2026-08-13T20:45:18.364354Z"
+      "published_at": "2026-08-13T21:47:38.812686Z"
     },
     {
       "title": "Slack Status current API",
       "url": "https://slack-status.com/api/v2.0.0/current",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-13T20:45:18.364354Z"
+      "published_at": "2026-08-13T21:47:38.812686Z"
     },
     {
       "title": "Slack Status history API",
       "url": "https://slack-status.com/api/v2.0.0/history",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-13T20:45:18.364354Z"
+      "published_at": "2026-08-13T21:47:38.812686Z"
     },
     {
       "title": "Slack Status history RSS",
       "url": "https://slack-status.com/feed/rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-13T20:45:18.364354Z"
+      "published_at": "2026-08-13T21:47:38.812686Z"
     },
     {
       "title": "Slack connection troubleshooting",
       "url": "https://slack.com/help/articles/205138367-Troubleshoot-connection-issues",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-13T20:45:18.364354Z"
+      "published_at": "2026-08-13T21:47:38.812686Z"
     }
   ],
   "news": [
     {
-      "title": "Slack Status API: Slack is up and running",
+      "title": "Slack Status API: Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
       "url": "https://slack-status.com/",
-      "published_at": "2026-08-13T20:45:17.826615Z",
+      "published_at": "2026-08-13T21:47:38.218152Z",
       "source": "Slack Status API",
       "channel": "official-status-page",
-      "meta": "Indicator: ok"
+      "meta": "Indicator: active"
+    },
+    {
+      "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+      "url": "https://slack-status.com/2026-08/e07b9271f0346c3b#note-1",
+      "published_at": "2026-08-13T14:21:41-07:00",
+      "source": "Slack Status API",
+      "channel": "official-status-page",
+      "meta": "Active / Incident / Services: Messaging, Workspace/Org Administration / Users with custom data retention policies enabled might be unable to see or load older messages. We apologize for the trouble and we'll share more news as it becomes available."
     },
     {
       "title": "Trouble Using Search Bar For Some Admins",
@@ -774,14 +799,6 @@
       "source": "Slack Status API",
       "channel": "official-status-page",
       "meta": "Resolved / Incident / Services: Apps/Integrations/APIs / We're currently investigating an issue affecting users' ability to receive incoming emails into Slack, caused by some issues with our email ingestion pipeline. We're sorry for any inconvenience this is causing, our team is actively working "
-    },
-    {
-      "title": "Issue sending messages to channels via certain Workflows",
-      "url": "https://slack-status.com/2026-07/e82ee127d8bed735#note-5",
-      "published_at": "2026-07-24T03:47:02-07:00",
-      "source": "Slack Status API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Incident / Services: Workflows / We’ve completed the revert of the recent change and have validated that this has brought customers out of impact and can now successfully send a message to a channel using Workflows that include 'refer to a message link'. We apologize for h"
     }
   ],
   "social": [],
@@ -797,11 +814,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-13T20:45:16.892040Z",
+      "last_item_at": "2026-08-13T21:47:37.281448Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 251,
-      "fetched_at": "2026-08-13T20:45:16.892060Z",
+      "duration_ms": 176,
+      "fetched_at": "2026-08-13T21:47:37.281471Z",
       "cache_hit": false
     },
     {
@@ -815,11 +832,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-13T20:45:17Z",
+      "last_item_at": "2026-08-13T17:47:37-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 934,
-      "fetched_at": "2026-08-13T20:45:17.826363Z",
+      "duration_ms": 936,
+      "fetched_at": "2026-08-13T21:47:38.217947Z",
       "cache_hit": false
     },
     {
@@ -833,17 +850,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-13T20:45:17.826615Z",
+      "last_item_at": "2026-08-13T21:47:38.218152Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 536,
-      "fetched_at": "2026-08-13T20:45:18.363050Z",
+      "duration_ms": 593,
+      "fetched_at": "2026-08-13T21:47:38.811410Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-13T20:45:18.364354Z",
+    "generated_at": "2026-08-13T21:47:38.812686Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -865,7 +882,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -880,30 +897,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 251,
+          "duration_ms": 176,
           "cache_hit": false,
-          "at": "2026-08-13T20:45:16Z"
+          "at": "2026-08-13T21:47:37Z"
         },
         "metrics_24h": {
-          "runs": 21,
-          "ok": 21,
+          "runs": 20,
+          "ok": 20,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 220.0
+          "avg_duration_ms": 220.1
         },
         "metrics_7d": {
-          "runs": 139,
-          "ok": 139,
+          "runs": 140,
+          "ok": 140,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 256.0
+          "avg_duration_ms": 255.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-13T20:45:16Z",
+        "last_success_at": "2026-08-13T21:47:37Z",
         "last_failure_at": null
       },
       {
@@ -917,30 +934,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 934,
+          "duration_ms": 936,
           "cache_hit": false,
-          "at": "2026-08-13T20:45:16Z"
+          "at": "2026-08-13T21:47:37Z"
         },
         "metrics_24h": {
-          "runs": 21,
-          "ok": 21,
+          "runs": 20,
+          "ok": 20,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1059.9
+          "avg_duration_ms": 1068.2
         },
         "metrics_7d": {
-          "runs": 139,
-          "ok": 139,
+          "runs": 140,
+          "ok": 140,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1135.6
+          "avg_duration_ms": 1134.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-13T20:45:16Z",
+        "last_success_at": "2026-08-13T21:47:37Z",
         "last_failure_at": null
       },
       {
@@ -954,49 +971,100 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 536,
+          "duration_ms": 593,
           "cache_hit": false,
-          "at": "2026-08-13T20:45:16Z"
+          "at": "2026-08-13T21:47:37Z"
         },
         "metrics_24h": {
-          "runs": 21,
-          "ok": 21,
+          "runs": 20,
+          "ok": 20,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 480.3
+          "avg_duration_ms": 484.2
         },
         "metrics_7d": {
-          "runs": 139,
-          "ok": 139,
+          "runs": 140,
+          "ok": 140,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 468.4
+          "avg_duration_ms": 469.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-13T20:45:16Z",
+        "last_success_at": "2026-08-13T21:47:37Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-13T20:45:18.364354Z",
+    "generated_at": "2026-08-13T21:47:38.812686Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "8e39f1c9c6e515e2",
+          "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+          "started_at": "2026-08-13T21:29:57Z",
+          "duration": "",
+          "acknowledgement": "Yes",
+          "url": "https://slack-status.com/"
+        },
+        {
+          "id": "74e6c53290d0e640",
+          "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+          "started_at": "2026-08-13T14:21:41-07:00",
+          "duration": "25m ongoing",
+          "acknowledgement": "Incident / Active / Messaging, Workspace/Org Administration",
+          "url": "https://slack-status.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "12e41b7b89371785",
+          "title": "Receiving reminders in Slack issue",
+          "started_at": "2026-07-24T02:19:59Z",
+          "duration": "1h 5m",
+          "acknowledgement": "Yes",
+          "url": "https://slack-status.com/"
+        },
+        {
+          "id": "2c507af4bb7e5d61",
+          "title": "Receiving reminders in Slack issue",
+          "started_at": "2026-07-23T19:18:40-07:00",
+          "duration": "1h 1m",
+          "acknowledgement": "Incident / Resolved / Notifications",
+          "url": "https://slack-status.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "a9b0f7e9d95bd59e",
+          "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+          "url": "https://slack-status.com/#2026-08-13T21:29:57Z",
+          "published_at": "2026-08-13T21:29:57Z",
+          "source": "StatusGator",
+          "meta": "Yes"
+        },
+        {
+          "id": "120f801d78b9b384",
+          "title": "Trouble Accessing Historical Messages With Custom Data Retention Policies Enabled",
+          "url": "https://slack-status.com/2026-08/e07b9271f0346c3b",
+          "published_at": "2026-08-13T14:21:41-07:00",
+          "source": "Slack Status API",
+          "meta": "Incident / Active / Messaging, Workspace/Org Administration"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
