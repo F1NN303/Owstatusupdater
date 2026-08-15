@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-15T08:30:44.149849Z",
+  "generated_at": "2026-08-15T09:27:00.051521Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 0,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.2,
+      "incidents": 3.1,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 3.65
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 118,
+      "reports_24h": 116,
       "recent_incidents_6h": 0,
-      "recent_incidents_24h": 1,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,22 +29,22 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_operational_cap_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "degraded",
-      "derived_severity": "degraded",
+      "official_status": "operational",
+      "derived_severity": "stable",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,39 +52,31 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "stable",
+      "severity_score": 0,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: Partial System Degradation",
+    "summary": "OpenAI Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: Partial System Degradation",
+        "title": "OpenAI Statuspage API: All Systems Operational",
         "url": "https://status.openai.com/",
-        "published_at": "2026-08-15T08:30:43.279279Z",
+        "published_at": "2026-08-15T09:26:59.301839Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
-      },
-      {
-        "title": "Unexpected GPT-5.6 Terra responses",
-        "url": "https://status.openai.com/incidents/01M015X5NF9D6C4MYR6NGR8HAR#01M015X5NFHJVZBRQ3WJVGRXR2",
-        "published_at": "2026-08-14T22:22:28Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Identified / We are investigating an issue affecting some customers using GPT-5.6 Terra. Affected requests may intermittently return incomplete or malformed responses, or include unexpected content. We are working on implementing a mitigation."
+        "meta": "Indicator: none"
       },
       {
         "title": "Elevated errors in ChatGPT conversations for Free users",
@@ -149,25 +141,37 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / None / Resolved / We are still implementing the mitigation."
+      },
+      {
+        "title": "Elevated errors in ChatGPT conversations for Free users",
+        "url": "https://status.openai.com/incidents/01KZXVAJQ5XFH7PTM43XVPQWGJ#01KZXVAJQ5BB2WR6EFYQNCTHK8",
+        "published_at": "2026-08-13T15:19:50Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
       }
     ],
-    "last_statement_at": "2026-08-15T08:30:43.279279Z"
+    "last_statement_at": "2026-08-15T09:26:59.301839Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports an active incident: Unexpected GPT-5.6 Terra responses.",
-    "current_status": "degraded",
-    "reports_24h": 118,
+    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
+    "current_status": "operational",
+    "reports_24h": 116,
     "incidents": [
       {
         "title": "Unexpected GPT-5.6 Terra responses",
-        "started_at": "2026-08-14T22:22:28Z",
-        "duration": "10h 8m ongoing",
-        "acknowledgement": "Minor / Identified",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01M015X5NF9D6C4MYR6NGR8HAR"
+        "started_at": "2026-08-15T01:26:52Z",
+        "duration": "7h 25m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Unexpected GPT-5.6 Terra responses",
+        "started_at": "2026-08-14T22:26:52Z",
+        "duration": "3h",
+        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Elevated errors in ChatGPT conversations for Free users",
@@ -216,52 +220,602 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8"
-      },
-      {
-        "title": "Increased error rates",
-        "started_at": "2026-08-10T14:04:37Z",
-        "duration": "12h 43m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KZNZTPWMV06Z6TQNMY1R1QDR"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Responses",
-        "count": 1
-      },
-      {
-        "label": "Chat Completions",
-        "count": 1
-      },
-      {
-        "label": "Conversations",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
-    "service_health_24h": [],
-    "service_health_24h_meta": null,
-    "summary_origin": "OpenAI Statuspage API",
+    "service_health_24h": [
+      {
+        "timestamp": "2026-08-14T09:30:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T09:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T10:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T10:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T10:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T10:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T11:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T11:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T11:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T11:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T12:00:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T12:15:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T12:30:00Z",
+        "signal_value": 67.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-14T12:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T13:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T13:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T13:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T13:45:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T14:00:00Z",
+        "signal_value": 25.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T14:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T14:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T14:45:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T15:00:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T15:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T15:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T15:45:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T16:00:00Z",
+        "signal_value": 21.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T16:15:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T16:30:00Z",
+        "signal_value": 64.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-14T16:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T17:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T17:15:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T17:30:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T17:45:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T18:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T18:15:00Z",
+        "signal_value": 15.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T18:30:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T18:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T19:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T19:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T19:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T19:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T20:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T20:15:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T20:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T20:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T21:00:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T21:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T21:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T21:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T22:00:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T22:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T22:30:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T22:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T23:00:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T23:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T23:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-14T23:45:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T00:00:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T00:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T00:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T00:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T01:00:00Z",
+        "signal_value": 24.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T01:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T01:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T01:45:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T02:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T02:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T02:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T02:45:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T03:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T03:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T03:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T03:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T04:00:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T04:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T04:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T04:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T05:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T05:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T05:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T05:45:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T06:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T06:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T06:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T06:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T07:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T07:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T07:30:00Z",
+        "signal_value": 59.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-15T07:45:00Z",
+        "signal_value": 49.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T08:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T08:15:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T08:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T08:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T09:00:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-15T09:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      }
+    ],
+    "service_health_24h_meta": {
+      "source": "StatusGator",
+      "kind": "service-health-series",
+      "window_hours": 24,
+      "sample_count": 96,
+      "interval_minutes": 15,
+      "last_sample_at": "2026-08-15T09:15:00Z"
+    },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "08:40",
-        "count": 4
-      },
-      {
-        "label": "09:00",
-        "count": 0
-      },
-      {
-        "label": "09:20",
-        "count": 2
-      },
       {
         "label": "09:40",
         "count": 0
@@ -537,6 +1091,18 @@
       {
         "label": "08:20",
         "count": 2
+      },
+      {
+        "label": "08:40",
+        "count": 0
+      },
+      {
+        "label": "09:00",
+        "count": 1
+      },
+      {
+        "label": "09:20",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -545,22 +1111,23 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-15T08:30:42Z"
+      "last_reviewed_at": "2026-08-15T09:26:58Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 118,
-        "last_reviewed_at": "2026-08-15T08:30:42Z"
+        "reports_24h": 116,
+        "last_reviewed_at": "2026-08-15T09:26:58Z"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
+    "summary_origin": "OpenAI Statuspage API",
     "components": [
       {
         "name": "Responses",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -762,8 +1329,8 @@
       },
       {
         "name": "Chat Completions",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -783,8 +1350,8 @@
       },
       {
         "name": "Conversations",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -796,15 +1363,56 @@
         "source": "OpenAI Statuspage API"
       }
     ],
-    "scheduled_maintenances": []
+    "scheduled_maintenances": [],
+    "top_reported_issues_provider": [
+      {
+        "label": "Error message",
+        "count": 10
+      },
+      {
+        "label": "Slow performance",
+        "count": 5
+      },
+      {
+        "label": "App not loading",
+        "count": 3
+      },
+      {
+        "label": "Server not responding",
+        "count": 2
+      },
+      {
+        "label": "Sign in problem",
+        "count": 1
+      },
+      {
+        "label": "Service down",
+        "count": 1
+      },
+      {
+        "label": "Unable to download",
+        "count": 1
+      },
+      {
+        "label": "Other",
+        "count": 1
+      }
+    ]
   },
   "reports": [
     {
       "title": "Unexpected GPT-5.6 Terra responses",
-      "url": "https://status.openai.com/incidents/01M015X5NF9D6C4MYR6NGR8HAR",
-      "published_at": "2026-08-14T22:22:28Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Identified"
+      "url": "https://status.openai.com/#2026-08-15T01:26:52Z",
+      "published_at": "2026-08-15T01:26:52Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Unexpected GPT-5.6 Terra responses",
+      "url": "https://status.openai.com/#2026-08-14T22:26:52Z",
+      "published_at": "2026-08-14T22:26:52Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
     },
     {
       "title": "Elevated errors in ChatGPT conversations for Free users",
@@ -847,13 +1455,6 @@
       "published_at": "2026-08-11T12:54:28Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Increased error rates",
-      "url": "https://status.openai.com/incidents/01KZNZTPWMV06Z6TQNMY1R1QDR",
-      "published_at": "2026-08-10T14:04:37Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -862,53 +1463,45 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-15T08:30:44.149849Z"
+      "published_at": "2026-08-15T09:27:00.051521Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-15T08:30:44.149849Z"
+      "published_at": "2026-08-15T09:27:00.051521Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-15T08:30:44.149849Z"
+      "published_at": "2026-08-15T09:27:00.051521Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-15T08:30:44.149849Z"
+      "published_at": "2026-08-15T09:27:00.051521Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-15T08:30:44.149849Z"
+      "published_at": "2026-08-15T09:27:00.051521Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: Partial System Degradation",
+      "title": "OpenAI Statuspage API: All Systems Operational",
       "url": "https://status.openai.com/",
-      "published_at": "2026-08-15T08:30:43.279279Z",
+      "published_at": "2026-08-15T09:26:59.301839Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
-    },
-    {
-      "title": "Unexpected GPT-5.6 Terra responses",
-      "url": "https://status.openai.com/incidents/01M015X5NF9D6C4MYR6NGR8HAR#01M015X5NFHJVZBRQ3WJVGRXR2",
-      "published_at": "2026-08-14T22:22:28Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Identified / We are investigating an issue affecting some customers using GPT-5.6 Terra. Affected requests may intermittently return incomplete or malformed responses, or include unexpected content. We are working on implementing a mitigation."
+      "meta": "Indicator: none"
     },
     {
       "title": "Elevated errors in ChatGPT conversations for Free users",
@@ -957,6 +1550,14 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
+    },
+    {
+      "title": "Elevated errors in ChatGPT conversations for Free users",
+      "url": "https://status.openai.com/incidents/01KZXVAJQ5XFH7PTM43XVPQWGJ#01KZXWYSDEB9ZHCVM7GHTM5F8S",
+      "published_at": "2026-08-13T15:48:21Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Resolved / We are still implementing the mitigation."
     }
   ],
   "social": [],
@@ -971,12 +1572,12 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 0,
-      "last_item_at": "2026-08-15T08:30:42.563326Z",
+      "item_count": 8,
+      "last_item_at": "2026-08-15T09:26:58.656007Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 106,
-      "fetched_at": "2026-08-15T08:30:42.563348Z",
+      "duration_ms": 198,
+      "fetched_at": "2026-08-15T09:26:58.656031Z",
       "cache_hit": false
     },
     {
@@ -990,11 +1591,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-15T08:30:42Z",
+      "last_item_at": "2026-08-15T09:26:58Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 715,
-      "fetched_at": "2026-08-15T08:30:43.279055Z",
+      "duration_ms": 645,
+      "fetched_at": "2026-08-15T09:26:59.301292Z",
       "cache_hit": false
     },
     {
@@ -1008,17 +1609,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-15T08:30:43.279279Z",
+      "last_item_at": "2026-08-15T09:26:59.301839Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 869,
-      "fetched_at": "2026-08-15T08:30:44.148387Z",
+      "duration_ms": 748,
+      "fetched_at": "2026-08-15T09:27:00.049933Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-15T08:30:44.149849Z",
+    "generated_at": "2026-08-15T09:27:00.051521Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1040,7 +1641,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1055,9 +1656,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 106,
+          "duration_ms": 198,
           "cache_hit": false,
-          "at": "2026-08-15T08:30:42Z"
+          "at": "2026-08-15T09:26:58Z"
         },
         "metrics_24h": {
           "runs": 26,
@@ -1066,7 +1667,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 235.5
+          "avg_duration_ms": 235.4
         },
         "metrics_7d": {
           "runs": 147,
@@ -1075,10 +1676,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 242.1
+          "avg_duration_ms": 241.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-15T08:30:42Z",
+        "last_success_at": "2026-08-15T09:26:58Z",
         "last_failure_at": null
       },
       {
@@ -1092,9 +1693,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 715,
+          "duration_ms": 645,
           "cache_hit": false,
-          "at": "2026-08-15T08:30:42Z"
+          "at": "2026-08-15T09:26:58Z"
         },
         "metrics_24h": {
           "runs": 26,
@@ -1103,7 +1704,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 849.3
+          "avg_duration_ms": 833.2
         },
         "metrics_7d": {
           "runs": 147,
@@ -1112,10 +1713,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 890.5
+          "avg_duration_ms": 887.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-15T08:30:42Z",
+        "last_success_at": "2026-08-15T09:26:58Z",
         "last_failure_at": null
       },
       {
@@ -1129,9 +1730,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 869,
+          "duration_ms": 748,
           "cache_hit": false,
-          "at": "2026-08-15T08:30:42Z"
+          "at": "2026-08-15T09:26:58Z"
         },
         "metrics_24h": {
           "runs": 26,
@@ -1140,7 +1741,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 925.0
+          "avg_duration_ms": 925.5
         },
         "metrics_7d": {
           "runs": 147,
@@ -1149,51 +1750,23 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 835.0
+          "avg_duration_ms": 835.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-15T08:30:42Z",
+        "last_success_at": "2026-08-15T09:26:58Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-15T08:30:44.149849Z",
+    "generated_at": "2026-08-15T09:27:00.051521Z",
     "incidents": {
       "new": [
-        {
-          "id": "e6c6257197348f65",
-          "title": "Increased error rates",
-          "started_at": "2026-08-11T12:54:28Z",
-          "duration": "2h 7m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "8e8cafc778ada7a4",
-          "title": "Increased error rates",
-          "started_at": "2026-08-10T14:04:37Z",
-          "duration": "12h 43m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "0af4dd069e90b7af",
-          "title": "Unexpected GPT-5.6 Terra responses",
-          "started_at": "2026-08-14T22:22:28Z",
-          "duration": "10h 8m ongoing",
-          "acknowledgement": "Minor / Identified",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "resolved": [
         {
           "id": "6a28c27dd676f03d",
           "title": "Unexpected GPT-5.6 Terra responses",
           "started_at": "2026-08-15T01:26:52Z",
-          "duration": "1m",
+          "duration": "7h 25m",
           "acknowledgement": "warn icon Warn",
           "url": "https://status.openai.com/"
         },
@@ -1205,31 +1778,50 @@
           "acknowledgement": "warn icon Warn",
           "url": "https://status.openai.com/"
         }
+      ],
+      "updated": [],
+      "resolved": [
+        {
+          "id": "0af4dd069e90b7af",
+          "title": "Unexpected GPT-5.6 Terra responses",
+          "started_at": "2026-08-14T22:22:28Z",
+          "duration": "10h 8m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "8e8cafc778ada7a4",
+          "title": "Increased error rates",
+          "started_at": "2026-08-10T14:04:37Z",
+          "duration": "12h 43m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "b40d61cd4596a81f",
-          "title": "Increased error rates",
-          "url": "https://status.openai.com/incidents/01KZRE6ZA1RE1ZH4HQ111CX1S8",
-          "published_at": "2026-08-11T12:54:28Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Resolved"
+          "id": "02eaf7799db05517",
+          "title": "Unexpected GPT-5.6 Terra responses",
+          "url": "https://status.openai.com/#2026-08-15T01:26:52Z",
+          "published_at": "2026-08-15T01:26:52Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
         },
         {
-          "id": "96187f5fc95bf752",
-          "title": "Increased error rates",
-          "url": "https://status.openai.com/incidents/01KZNZTPWMV06Z6TQNMY1R1QDR",
-          "published_at": "2026-08-10T14:04:37Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Resolved"
+          "id": "aa4ee2691bb2d654",
+          "title": "Unexpected GPT-5.6 Terra responses",
+          "url": "https://status.openai.com/#2026-08-14T22:26:52Z",
+          "published_at": "2026-08-14T22:26:52Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
         }
       ]
     },
     "summary": {
       "new_incidents": 2,
-      "updated_incidents": 1,
+      "updated_incidents": 0,
       "resolved_incidents": 2,
       "new_reports": 2
     }
