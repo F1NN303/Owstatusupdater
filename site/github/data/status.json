@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-18T11:33:14.907896Z",
+  "generated_at": "2026-08-18T12:49:41.729526Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "minor",
+    "severity_score": 3,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
@@ -14,7 +14,7 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 2.15
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
       "reports_24h": 126,
@@ -35,36 +35,36 @@
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_operational_cap_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_operational_vs_aggregate_issue",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "operational",
-      "derived_severity": "degraded",
+      "derived_severity": "minor",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status is operational while aggregate signals indicate active issues."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.333
     }
   },
@@ -74,10 +74,18 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-08-18T11:33:14.718959Z",
+        "published_at": "2026-08-18T12:49:41.482993Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Intermittent failures in runner group and runner-related permissions pages",
+        "url": "https://www.githubstatus.com/incidents/bmpybhnrky3x#5qb9c4nx98sg",
+        "published_at": "2026-08-18T11:42:59.304Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
       },
       {
         "title": "Intermittent failures in runner group and runner-related permissions pages",
@@ -85,7 +93,7 @@
         "published_at": "2026-08-18T11:24:06.305Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / We have applied a mitigation and are seeing recovery signals. We will continue monitoring recovery and providing updates."
+        "meta": "Monitoring / Minor / Resolved / We have applied a mitigation and are seeing recovery signals. We will continue monitoring recovery and providing updates."
       },
       {
         "title": "Intermittent failures in runner group and runner-related permissions pages",
@@ -93,15 +101,15 @@
         "published_at": "2026-08-18T10:41:40.666Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / We have identified the source of a communication issue between Actions services and are working toward mitigation. Customers may experience failure to load runner groups and runner-related permissions issues when using Larger Runners."
+        "meta": "Monitoring / Minor / Resolved / We have identified the source of a communication issue between Actions services and are working toward mitigation. Customers may experience failure to load runner groups and runner-related permissions issues when using Larger Runners."
       },
       {
         "title": "Incident with Actions",
         "url": "https://www.githubstatus.com/incidents/gx7js8bd0jpz#gc3j6429pg28",
-        "published_at": "2026-08-18T10:23:23.437Z",
+        "published_at": "2026-08-18T10:23:23.000Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / This incident has been resolved."
+        "meta": "Resolved / Major / Resolved / This incident was posted in error. GitHub Actions workflows were not impacted, and we have confirmed that workflow runs continued to operate normally throughout this period."
       },
       {
         "title": "Incident with Actions",
@@ -117,7 +125,7 @@
         "published_at": "2026-08-18T07:40:42.206Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / We are investigating reports of failure to load runner groups and runner-related permissions for customers using larger runners."
+        "meta": "Monitoring / Minor / Resolved / We are investigating reports of failure to load runner groups and runner-related permissions for customers using larger runners."
       },
       {
         "title": "Intermittent failures in runner group and runner-related permissions pages",
@@ -125,7 +133,7 @@
         "published_at": "2026-08-18T07:40:35.712Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring / We are investigating reports of impacted performance for some GitHub services."
+        "meta": "Investigating / Minor / Resolved / We are investigating reports of impacted performance for some GitHub services."
       },
       {
         "title": "Incident with GitHub.com",
@@ -142,23 +150,15 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Critical / Resolved / We are continuing to apply mitigations to address sporadic Copilot authentication failures in some applications. We expect full recovery within the next 30 minutes. Copilot usage via the GitHub CLI and GitHub App are unaffected."
-      },
-      {
-        "title": "Incident with GitHub.com",
-        "url": "https://www.githubstatus.com/incidents/zkxwbgr0cnmx#d3yfh2k5t3b3",
-        "published_at": "2026-08-17T20:22:28.795Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / Issues is operating normally."
       }
     ],
-    "last_statement_at": "2026-08-18T11:33:14.718959Z"
+    "last_statement_at": "2026-08-18T12:49:41.482993Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports an active incident: Intermittent failures in runner group and runner-related permissions pages.",
+    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
     "current_status": "operational",
     "reports_24h": 126,
     "incidents": [
@@ -179,8 +179,8 @@
       {
         "title": "Intermittent failures in runner group and runner-related permissions pages",
         "started_at": "2026-08-18T07:40:35.676Z",
-        "duration": "3h 52m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "4h 2m",
+        "acknowledgement": "Minor / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/bmpybhnrky3x"
       },
@@ -229,22 +229,6 @@
     "service_health_24h_meta": null,
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "11:40",
-        "count": 0
-      },
-      {
-        "label": "12:00",
-        "count": 1
-      },
-      {
-        "label": "12:20",
-        "count": 3
-      },
-      {
-        "label": "12:40",
-        "count": 1
-      },
       {
         "label": "13:00",
         "count": 2
@@ -516,6 +500,22 @@
       {
         "label": "11:20",
         "count": 3
+      },
+      {
+        "label": "11:40",
+        "count": 1
+      },
+      {
+        "label": "12:00",
+        "count": 2
+      },
+      {
+        "label": "12:20",
+        "count": 0
+      },
+      {
+        "label": "12:40",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -524,14 +524,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-18T07:33:13-04:00"
+      "last_reviewed_at": "2026-08-18T08:49:40-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 126,
-        "last_reviewed_at": "2026-08-18T07:33:13-04:00"
+        "last_reviewed_at": "2026-08-18T08:49:40-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -644,7 +644,7 @@
       "url": "https://www.githubstatus.com/incidents/bmpybhnrky3x",
       "published_at": "2026-08-18T07:40:35.676Z",
       "source": "GitHub Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Incident with GitHub.com",
@@ -688,52 +688,60 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-18T11:33:14.907896Z"
+      "published_at": "2026-08-18T12:49:41.729526Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-18T11:33:14.907896Z"
+      "published_at": "2026-08-18T12:49:41.729526Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-18T11:33:14.907896Z"
+      "published_at": "2026-08-18T12:49:41.729526Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-08-18T11:33:14.907896Z"
+      "published_at": "2026-08-18T12:49:41.729526Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-18T11:33:14.907896Z"
+      "published_at": "2026-08-18T12:49:41.729526Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-18T11:33:14.907896Z"
+      "published_at": "2026-08-18T12:49:41.729526Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-08-18T11:33:14.718959Z",
+      "published_at": "2026-08-18T12:49:41.482993Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Intermittent failures in runner group and runner-related permissions pages",
+      "url": "https://www.githubstatus.com/incidents/bmpybhnrky3x#5qb9c4nx98sg",
+      "published_at": "2026-08-18T11:42:59.304Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
     },
     {
       "title": "Intermittent failures in runner group and runner-related permissions pages",
@@ -741,7 +749,7 @@
       "published_at": "2026-08-18T11:24:06.305Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / We have applied a mitigation and are seeing recovery signals. We will continue monitoring recovery and providing updates."
+      "meta": "Monitoring / Minor / Resolved / We have applied a mitigation and are seeing recovery signals. We will continue monitoring recovery and providing updates."
     },
     {
       "title": "Intermittent failures in runner group and runner-related permissions pages",
@@ -749,15 +757,15 @@
       "published_at": "2026-08-18T10:41:40.666Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / We have identified the source of a communication issue between Actions services and are working toward mitigation. Customers may experience failure to load runner groups and runner-related permissions issues when using Larger Runners."
+      "meta": "Monitoring / Minor / Resolved / We have identified the source of a communication issue between Actions services and are working toward mitigation. Customers may experience failure to load runner groups and runner-related permissions issues when using Larger Runners."
     },
     {
       "title": "Incident with Actions",
       "url": "https://www.githubstatus.com/incidents/gx7js8bd0jpz#gc3j6429pg28",
-      "published_at": "2026-08-18T10:23:23.437Z",
+      "published_at": "2026-08-18T10:23:23.000Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Resolved / Major / Resolved / This incident has been resolved."
+      "meta": "Resolved / Major / Resolved / This incident was posted in error. GitHub Actions workflows were not impacted, and we have confirmed that workflow runs continued to operate normally throughout this period."
     },
     {
       "title": "Incident with Actions",
@@ -773,7 +781,7 @@
       "published_at": "2026-08-18T07:40:42.206Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / We are investigating reports of failure to load runner groups and runner-related permissions for customers using larger runners."
+      "meta": "Monitoring / Minor / Resolved / We are investigating reports of failure to load runner groups and runner-related permissions for customers using larger runners."
     },
     {
       "title": "Intermittent failures in runner group and runner-related permissions pages",
@@ -781,15 +789,7 @@
       "published_at": "2026-08-18T07:40:35.712Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring / We are investigating reports of impacted performance for some GitHub services."
-    },
-    {
-      "title": "Incident with GitHub.com",
-      "url": "https://www.githubstatus.com/incidents/zkxwbgr0cnmx#h9l7z2sx48br",
-      "published_at": "2026-08-17T21:15:46.623Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Critical / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
+      "meta": "Investigating / Minor / Resolved / We are investigating reports of impacted performance for some GitHub services."
     }
   ],
   "social": [],
@@ -805,11 +805,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-18T11:33:13.420392Z",
+      "last_item_at": "2026-08-18T12:49:40.155022Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 264,
-      "fetched_at": "2026-08-18T11:33:13.420426Z",
+      "duration_ms": 200,
+      "fetched_at": "2026-08-18T12:49:40.155046Z",
       "cache_hit": false
     },
     {
@@ -823,11 +823,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-18T07:33:13-04:00",
+      "last_item_at": "2026-08-18T08:49:40-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1298,
-      "fetched_at": "2026-08-18T11:33:14.718712Z",
+      "duration_ms": 1327,
+      "fetched_at": "2026-08-18T12:49:41.482730Z",
       "cache_hit": false
     },
     {
@@ -841,17 +841,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-18T11:33:14.718959Z",
+      "last_item_at": "2026-08-18T12:49:41.482993Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 187,
-      "fetched_at": "2026-08-18T11:33:14.906318Z",
+      "duration_ms": 245,
+      "fetched_at": "2026-08-18T12:49:41.728013Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-18T11:33:14.907896Z",
+    "generated_at": "2026-08-18T12:49:41.729526Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -873,7 +873,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "minor",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -888,18 +888,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 264,
+          "duration_ms": 200,
           "cache_hit": false,
-          "at": "2026-08-18T11:33:13Z"
+          "at": "2026-08-18T12:49:39Z"
         },
         "metrics_24h": {
-          "runs": 34,
-          "ok": 34,
+          "runs": 33,
+          "ok": 33,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 293.2
+          "avg_duration_ms": 290.2
         },
         "metrics_7d": {
           "runs": 191,
@@ -908,10 +908,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 268.8
+          "avg_duration_ms": 267.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-18T11:33:13Z",
+        "last_success_at": "2026-08-18T12:49:39Z",
         "last_failure_at": null
       },
       {
@@ -925,18 +925,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1298,
+          "duration_ms": 1327,
           "cache_hit": false,
-          "at": "2026-08-18T11:33:13Z"
+          "at": "2026-08-18T12:49:39Z"
         },
         "metrics_24h": {
-          "runs": 34,
-          "ok": 34,
+          "runs": 33,
+          "ok": 33,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1086.5
+          "avg_duration_ms": 1081.1
         },
         "metrics_7d": {
           "runs": 191,
@@ -945,10 +945,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1083.1
+          "avg_duration_ms": 1082.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-18T11:33:13Z",
+        "last_success_at": "2026-08-18T12:49:39Z",
         "last_failure_at": null
       },
       {
@@ -962,18 +962,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 187,
+          "duration_ms": 245,
           "cache_hit": false,
-          "at": "2026-08-18T11:33:13Z"
+          "at": "2026-08-18T12:49:39Z"
         },
         "metrics_24h": {
-          "runs": 34,
-          "ok": 34,
+          "runs": 33,
+          "ok": 33,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 295.7
+          "avg_duration_ms": 290.0
         },
         "metrics_7d": {
           "runs": 191,
@@ -982,16 +982,16 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 302.1
+          "avg_duration_ms": 301.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-18T11:33:13Z",
+        "last_success_at": "2026-08-18T12:49:39Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-18T11:33:14.907896Z",
+    "generated_at": "2026-08-18T12:49:41.729526Z",
     "incidents": {
       "new": [],
       "updated": [
@@ -999,8 +999,8 @@
           "id": "e49cbf9e264529b5",
           "title": "Intermittent failures in runner group and runner-related permissions pages",
           "started_at": "2026-08-18T07:40:35.676Z",
-          "duration": "3h 52m ongoing",
-          "acknowledgement": "Minor / Monitoring",
+          "duration": "4h 2m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://www.githubstatus.com/"
         }
       ],
