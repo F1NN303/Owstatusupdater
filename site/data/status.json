@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-19T20:29:31.499848Z",
+  "generated_at": "2026-08-19T20:57:01.093524Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 5,
+    "severity_key": "stable",
+    "severity_score": 1,
     "source_ok_count": 6,
     "source_total_count": 6,
     "model_version": "2.4",
@@ -15,7 +15,7 @@
       "support_score": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 104,
+      "reports_24h": 105,
       "recent_incidents_6h": 1,
       "recent_incidents_24h": 2,
       "cross_source": {
@@ -27,7 +27,7 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
@@ -35,30 +35,30 @@
       "recency_decay": true
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
-      "official_status": "degraded",
-      "derived_severity": "minor",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
+      "official_status": "operational",
+      "derived_severity": "stable",
       "source_ok": 6,
       "source_total": 6,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.0
     },
     "na": {
-      "severity_key": "major",
-      "severity_score": 9,
+      "severity_key": "stable",
+      "severity_score": 2,
       "report_weight": 1.0
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "stable",
+      "severity_score": 1,
       "report_weight": 0.0
     }
   },
@@ -114,8 +114,8 @@
     "source_type": "Downdetector-like",
     "url": "https://statusgator.com/services/overwatch-2",
     "summary": "StatusGator incident table is available. Latest listed incident: Cannot connect to game server.",
-    "current_status": "degraded",
-    "reports_24h": 104,
+    "current_status": "operational",
+    "reports_24h": 105,
     "incidents": [
       {
         "title": "Cannot connect to game server",
@@ -169,35 +169,35 @@
     "top_reported_issues": [
       {
         "label": "Sign in problem",
-        "count": 108
+        "count": 114
       },
       {
         "label": "Connectivity issue",
-        "count": 55
+        "count": 59
       },
       {
         "label": "Server not responding",
-        "count": 21
+        "count": 26
       },
       {
         "label": "Other",
         "count": 20
       },
       {
+        "label": "Service down",
+        "count": 19
+      },
+      {
         "label": "Slow performance",
         "count": 15
       },
       {
-        "label": "Service down",
-        "count": 14
-      },
-      {
         "label": "App not loading",
-        "count": 12
+        "count": 13
       },
       {
         "label": "Error message",
-        "count": 5
+        "count": 6
       }
     ],
     "top_reported_issues_meta": {
@@ -205,18 +205,6 @@
       "kind": "community-labels"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-08-18T20:30:00Z",
-        "signal_value": 25.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-18T20:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-08-18T21:00:00Z",
         "signal_value": 4.0,
@@ -777,9 +765,21 @@
       },
       {
         "timestamp": "2026-08-19T20:15:00Z",
-        "signal_value": 653.0,
+        "signal_value": 670.0,
         "status_code": 1,
         "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-08-19T20:30:00Z",
+        "signal_value": 377.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-19T20:45:00Z",
+        "signal_value": 201.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -788,14 +788,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-08-19T20:15:00Z"
+      "last_sample_at": "2026-08-19T20:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "20:40",
-        "count": 1
-      },
       {
         "label": "21:00",
         "count": 2
@@ -1079,6 +1075,10 @@
       {
         "label": "20:20",
         "count": 0
+      },
+      {
+        "label": "20:40",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1087,14 +1087,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-19T16:29:31-04:00"
+      "last_reviewed_at": "2026-08-19T16:56:54-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 104,
-        "last_reviewed_at": "2026-08-19T16:29:31-04:00"
+        "reports_24h": 105,
+        "last_reviewed_at": "2026-08-19T16:56:54-04:00"
       }
     ],
     "services": [
@@ -1102,9 +1102,9 @@
         "service_id": "region-eu",
         "name": "Europe Region",
         "label": "Europe",
-        "status": "degraded",
-        "severity_key": "minor",
-        "score": 3,
+        "status": "online",
+        "severity_key": "stable",
+        "score": 1,
         "weight": 0.0,
         "source": "Derived regional blend"
       },
@@ -1112,9 +1112,9 @@
         "service_id": "region-na",
         "name": "North America Region",
         "label": "North America",
-        "status": "offline",
-        "severity_key": "major",
-        "score": 9,
+        "status": "online",
+        "severity_key": "stable",
+        "score": 2,
         "weight": 100.0,
         "source": "Derived regional blend"
       },
@@ -1122,9 +1122,9 @@
         "service_id": "region-apac",
         "name": "Asia Pacific Region",
         "label": "Asia Pacific",
-        "status": "degraded",
-        "severity_key": "minor",
-        "score": 3,
+        "status": "online",
+        "severity_key": "stable",
+        "score": 1,
         "weight": 0.0,
         "source": "Derived regional blend"
       }
@@ -1136,74 +1136,74 @@
   },
   "reports": [
     {
+      "title": "Spawnroom glitch on Oasis Control",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/spawnroom-glitch-on-oasis-control/903461",
+      "published_at": "2026-08-19T20:56:46.763Z",
+      "source": "Blizzard Forums - Bug Report",
+      "meta": "2 posts | 60 views"
+    },
+    {
+      "title": "Missing models for multiple projectile weapons and abilities",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-models-for-multiple-projectile-weapons-and-abilities/1033910",
+      "published_at": "2026-08-19T20:55:06.134Z",
+      "source": "Blizzard Forums - Bug Report",
+      "meta": "2 posts | 30 views"
+    },
+    {
+      "title": "Too much back to back expected losses",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/too-much-back-to-back-expected-losses/1034864",
+      "published_at": "2026-08-19T20:53:07.721Z",
+      "source": "Blizzard Forums - Bug Report",
+      "meta": "1 posts | 2 views"
+    },
+    {
+      "title": "Didn't receieve the coins from my Watchpoint pack purchase",
+      "url": "https://us.forums.blizzard.com/en/overwatch/t/didnt-receieve-the-coins-from-my-watchpoint-pack-purchase/1034861",
+      "published_at": "2026-08-19T20:43:31.592Z",
+      "source": "Blizzard Forums - Bug Report",
+      "meta": "1 posts | 6 views"
+    },
+    {
       "title": "Zenyatta: Cannot ping enemies behind walls with Discord Orb",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/zenyatta-cannot-ping-enemies-behind-walls-with-discord-orb/1034126",
       "published_at": "2026-08-19T20:26:05.012Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "6 posts | 29 views"
+      "meta": "6 posts | 33 views"
     },
     {
       "title": "Visual Bug: Juno Music Festival Skin Ultimate Screen",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/visual-bug-juno-music-festival-skin-ultimate-screen/1034859",
       "published_at": "2026-08-19T20:24:16.237Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 5 views"
+      "meta": "1 posts | 9 views"
     },
     {
       "title": "The character Sierra is very strong and shoots without reloa",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/the-character-sierra-is-very-strong-and-shoots-without-reloa/1034798",
       "published_at": "2026-08-19T20:22:19.738Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "2 posts | 22 views"
+      "meta": "2 posts | 30 views"
     },
     {
       "title": "NA west server routing issues",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/na-west-server-routing-issues/1034834",
       "published_at": "2026-08-19T20:01:45.537Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "2 posts | 176 views"
+      "meta": "2 posts | 196 views"
     },
     {
       "title": "Sombra Has Been Abandoned for Too Long — She Urgently Needs",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/sombra-has-been-abandoned-for-too-long-%E2%80%94-she-urgently-needs/1034813",
       "published_at": "2026-08-19T19:59:10.677Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "2 posts | 51 views"
+      "meta": "2 posts | 55 views"
     },
     {
       "title": "Your rendering device has been lost",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/your-rendering-device-has-been-lost/1034807",
       "published_at": "2026-08-19T19:58:52.231Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "2 posts | 30 views"
-    },
-    {
-      "title": "Australasian server routing problem?",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/australasian-server-routing-problem/1034649",
-      "published_at": "2026-08-19T19:58:03.008Z",
-      "source": "Blizzard Forums - Technical Support",
-      "meta": "6 posts | 71 views"
-    },
-    {
-      "title": "S4 only match xp is counting towards the battlepass",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/s4-only-match-xp-is-counting-towards-the-battlepass/1033336",
-      "published_at": "2026-08-19T19:31:41.940Z",
-      "source": "Blizzard Forums - Bug Report",
-      "meta": "17 posts | 462 views"
-    },
-    {
-      "title": "Backfilling causes bug where fps drops dramatically",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/backfilling-causes-bug-where-fps-drops-dramatically/976632",
-      "published_at": "2026-08-19T19:25:10.845Z",
-      "source": "Blizzard Forums - Bug Report",
-      "meta": "71 posts | 1816 views"
-    },
-    {
-      "title": "Juno Yoasobi skin still bugged",
-      "url": "https://us.forums.blizzard.com/en/overwatch/t/juno-yoasobi-skin-still-bugged/1034854",
-      "published_at": "2026-08-19T19:11:39.764Z",
-      "source": "Blizzard Forums - Bug Report",
-      "meta": "1 posts | 15 views"
+      "meta": "2 posts | 31 views"
     }
   ],
   "known_resources": [
@@ -1212,14 +1212,14 @@
       "url": "https://us.forums.blizzard.com/en/overwatch/t/overwatch-known-issues-aug-19-2026/942905",
       "published_at": "2025-04-23T21:47:27.953Z",
       "source": "Blizzard Forums - Bug Report",
-      "meta": "2 posts | 230979 views"
+      "meta": "2 posts | 230999 views"
     },
     {
       "title": "Known Technical Support Issues",
       "url": "https://us.forums.blizzard.com/en/overwatch/t/known-technical-support-issues/25",
       "published_at": "2024-06-14T15:44:35.443Z",
       "source": "Blizzard Forums - Technical Support",
-      "meta": "14 posts | 183294 views"
+      "meta": "14 posts | 183297 views"
     }
   ],
   "news": [
@@ -1265,11 +1265,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-19T20:29:30.851320Z",
+      "last_item_at": "2026-08-19T20:56:54.379711Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 265,
-      "fetched_at": "2026-08-19T20:29:30.851343Z",
+      "duration_ms": 439,
+      "fetched_at": "2026-08-19T20:56:54.379730Z",
       "cache_hit": false
     },
     {
@@ -1283,11 +1283,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-19T16:29:31-04:00",
+      "last_item_at": "2026-08-19T16:56:54-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 909,
-      "fetched_at": "2026-08-19T20:29:31.496429Z",
+      "duration_ms": 873,
+      "fetched_at": "2026-08-19T20:56:54.814657Z",
       "cache_hit": false
     },
     {
@@ -1303,9 +1303,9 @@
       "item_count": 8,
       "last_item_at": "2026-08-19T20:22:19.738Z",
       "freshness": "fresh",
-      "age_minutes": 7,
-      "duration_ms": 264,
-      "fetched_at": "2026-08-19T20:29:30.853285Z",
+      "age_minutes": 34,
+      "duration_ms": 435,
+      "fetched_at": "2026-08-19T20:56:54.376766Z",
       "cache_hit": false
     },
     {
@@ -1319,11 +1319,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-19T20:26:05.012Z",
+      "last_item_at": "2026-08-19T20:56:46.763Z",
       "freshness": "fresh",
-      "age_minutes": 3,
-      "duration_ms": 265,
-      "fetched_at": "2026-08-19T20:29:30.854889Z",
+      "age_minutes": 0,
+      "duration_ms": 438,
+      "fetched_at": "2026-08-19T20:56:54.381663Z",
       "cache_hit": false
     },
     {
@@ -1337,11 +1337,11 @@
       "ok": true,
       "error": null,
       "item_count": 4,
-      "last_item_at": "2026-08-19T20:29:31.241460Z",
+      "last_item_at": "2026-08-19T20:56:54.460083Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 651,
-      "fetched_at": "2026-08-19T20:29:31.241485Z",
+      "duration_ms": 516,
+      "fetched_at": "2026-08-19T20:56:54.460109Z",
       "cache_hit": false
     },
     {
@@ -1355,17 +1355,17 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-08-19T20:29:30.902267Z",
+      "last_item_at": "2026-08-19T20:57:01.090259Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 310,
-      "fetched_at": "2026-08-19T20:29:30.902282Z",
+      "duration_ms": 7145,
+      "fetched_at": "2026-08-19T20:57:01.090304Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-19T20:29:31.499848Z",
+    "generated_at": "2026-08-19T20:57:01.093524Z",
     "overview": {
       "confidence_score": 98.4,
       "confidence_tier": "high",
@@ -1387,7 +1387,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "stable",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1402,9 +1402,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 265,
+          "duration_ms": 439,
           "cache_hit": false,
-          "at": "2026-08-19T20:29:30Z"
+          "at": "2026-08-19T20:56:53Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -1413,7 +1413,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 353.2
+          "avg_duration_ms": 360.7
         },
         "metrics_7d": {
           "runs": 208,
@@ -1422,10 +1422,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 323.0
+          "avg_duration_ms": 323.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-19T20:29:30Z",
+        "last_success_at": "2026-08-19T20:56:53Z",
         "last_failure_at": null
       },
       {
@@ -1439,9 +1439,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 909,
+          "duration_ms": 873,
           "cache_hit": false,
-          "at": "2026-08-19T20:29:30Z"
+          "at": "2026-08-19T20:56:53Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -1450,7 +1450,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 907.6
+          "avg_duration_ms": 913.3
         },
         "metrics_7d": {
           "runs": 208,
@@ -1459,10 +1459,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 871.4
+          "avg_duration_ms": 872.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-19T20:29:30Z",
+        "last_success_at": "2026-08-19T20:56:53Z",
         "last_failure_at": null
       },
       {
@@ -1476,9 +1476,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 264,
+          "duration_ms": 435,
           "cache_hit": false,
-          "at": "2026-08-19T20:29:30Z"
+          "at": "2026-08-19T20:56:53Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -1487,7 +1487,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 383.7
+          "avg_duration_ms": 382.0
         },
         "metrics_7d": {
           "runs": 208,
@@ -1496,10 +1496,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 388.6
+          "avg_duration_ms": 389.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-19T20:29:30Z",
+        "last_success_at": "2026-08-19T20:56:53Z",
         "last_failure_at": null
       },
       {
@@ -1513,9 +1513,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 265,
+          "duration_ms": 438,
           "cache_hit": false,
-          "at": "2026-08-19T20:29:30Z"
+          "at": "2026-08-19T20:56:53Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -1524,7 +1524,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 384.2
+          "avg_duration_ms": 383.1
         },
         "metrics_7d": {
           "runs": 208,
@@ -1533,10 +1533,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 386.6
+          "avg_duration_ms": 387.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-19T20:29:30Z",
+        "last_success_at": "2026-08-19T20:56:53Z",
         "last_failure_at": null
       },
       {
@@ -1550,9 +1550,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 651,
+          "duration_ms": 516,
           "cache_hit": false,
-          "at": "2026-08-19T20:29:30Z"
+          "at": "2026-08-19T20:56:53Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -1561,7 +1561,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 627.1
+          "avg_duration_ms": 628.8
         },
         "metrics_7d": {
           "runs": 208,
@@ -1573,7 +1573,7 @@
           "avg_duration_ms": 577.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-19T20:29:30Z",
+        "last_success_at": "2026-08-19T20:56:53Z",
         "last_failure_at": null
       },
       {
@@ -1587,9 +1587,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 310,
+          "duration_ms": 7145,
           "cache_hit": false,
-          "at": "2026-08-19T20:29:30Z"
+          "at": "2026-08-19T20:56:53Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -1598,25 +1598,25 @@
           "success_rate": 53.1,
           "stale_rate": 46.9,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 2553.0
+          "avg_duration_ms": 2766.4
         },
         "metrics_7d": {
           "runs": 208,
-          "ok": 107,
-          "stale": 101,
-          "success_rate": 51.4,
-          "stale_rate": 48.6,
+          "ok": 108,
+          "stale": 100,
+          "success_rate": 51.9,
+          "stale_rate": 48.1,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 2606.0
+          "avg_duration_ms": 2639.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-19T20:29:30Z",
+        "last_success_at": "2026-08-19T20:56:53Z",
         "last_failure_at": "2026-08-19T17:52:13Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-19T20:29:31.499848Z",
+    "generated_at": "2026-08-19T20:57:01.093524Z",
     "incidents": {
       "new": [],
       "updated": [],
@@ -1625,44 +1625,36 @@
     "reports": {
       "new": [
         {
-          "id": "7284577582e57ad5",
-          "title": "Zenyatta: Cannot ping enemies behind walls with Discord Orb",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/zenyatta-cannot-ping-enemies-behind-walls-with-discord-orb/1034126",
-          "published_at": "2026-08-19T20:26:05.012Z",
+          "id": "602c8aed686043ec",
+          "title": "Spawnroom glitch on Oasis Control",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/spawnroom-glitch-on-oasis-control/903461",
+          "published_at": "2026-08-19T20:56:46.763Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "6 posts | 29 views"
+          "meta": "2 posts | 60 views"
         },
         {
-          "id": "4b6f52cd7e0c2efc",
-          "title": "Visual Bug: Juno Music Festival Skin Ultimate Screen",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/visual-bug-juno-music-festival-skin-ultimate-screen/1034859",
-          "published_at": "2026-08-19T20:24:16.237Z",
+          "id": "5b0ae7cf66acaea6",
+          "title": "Missing models for multiple projectile weapons and abilities",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/missing-models-for-multiple-projectile-weapons-and-abilities/1033910",
+          "published_at": "2026-08-19T20:55:06.134Z",
           "source": "Blizzard Forums - Bug Report",
-          "meta": "1 posts | 5 views"
-        },
-        {
-          "id": "b8544ade80541432",
-          "title": "The character Sierra is very strong and shoots without reloa",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/the-character-sierra-is-very-strong-and-shoots-without-reloa/1034798",
-          "published_at": "2026-08-19T20:22:19.738Z",
-          "source": "Blizzard Forums - Technical Support",
-          "meta": "2 posts | 22 views"
-        },
-        {
-          "id": "14ecf09548df6be6",
-          "title": "Your rendering device has been lost",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/your-rendering-device-has-been-lost/1034807",
-          "published_at": "2026-08-19T19:58:52.231Z",
-          "source": "Blizzard Forums - Technical Support",
           "meta": "2 posts | 30 views"
         },
         {
-          "id": "d38a77b685fd1fb4",
-          "title": "Australasian server routing problem?",
-          "url": "https://us.forums.blizzard.com/en/overwatch/t/australasian-server-routing-problem/1034649",
-          "published_at": "2026-08-19T19:58:03.008Z",
-          "source": "Blizzard Forums - Technical Support",
-          "meta": "6 posts | 71 views"
+          "id": "b1a01c20879e6501",
+          "title": "Too much back to back expected losses",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/too-much-back-to-back-expected-losses/1034864",
+          "published_at": "2026-08-19T20:53:07.721Z",
+          "source": "Blizzard Forums - Bug Report",
+          "meta": "1 posts | 2 views"
+        },
+        {
+          "id": "2abf50046cc8322e",
+          "title": "Didn't receieve the coins from my Watchpoint pack purchase",
+          "url": "https://us.forums.blizzard.com/en/overwatch/t/didnt-receieve-the-coins-from-my-watchpoint-pack-purchase/1034861",
+          "published_at": "2026-08-19T20:43:31.592Z",
+          "source": "Blizzard Forums - Bug Report",
+          "meta": "1 posts | 6 views"
         }
       ]
     },
@@ -1670,7 +1662,7 @@
       "new_incidents": 0,
       "updated_incidents": 0,
       "resolved_incidents": 0,
-      "new_reports": 5
+      "new_reports": 4
     }
   }
 }
