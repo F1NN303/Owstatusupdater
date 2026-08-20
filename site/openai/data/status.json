@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T16:36:27.413222Z",
+  "generated_at": "2026-08-20T17:30:10.337717Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -14,12 +14,12 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 2.15
     },
     "signal_metrics": {
       "reports_24h": 197,
-      "recent_incidents_6h": 3,
-      "recent_incidents_24h": 5,
+      "recent_incidents_6h": 4,
+      "recent_incidents_24h": 6,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,25 +29,25 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "degraded",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
+      "official_status": "operational",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
@@ -68,15 +68,39 @@
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: Partial System Degradation",
+    "summary": "OpenAI Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: Partial System Degradation",
+        "title": "OpenAI Statuspage API: All Systems Operational",
         "url": "https://status.openai.com/",
-        "published_at": "2026-08-20T16:36:26.790875Z",
+        "published_at": "2026-08-20T17:30:09.638242Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Elevated Codex API authentication errors",
+        "url": "https://status.openai.com/incidents/01M0G1RZER839AZXWMYKSZF3GR#01M0G2R20Y78TC1YCH8SZ1TC9G",
+        "published_at": "2026-08-20T17:15:51Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We have applied the mitigation and are monitoring the recovery."
+      },
+      {
+        "title": "Elevated Codex API authentication errors",
+        "url": "https://status.openai.com/incidents/01M0G1RZER839AZXWMYKSZF3GR#01M0G1RZERM19PBWFV956PENSZ",
+        "published_at": "2026-08-20T16:58:53Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Monitoring / Some users may encounter errors when using Codex with API authentication. We are working on implementing a mitigation."
+      },
+      {
+        "title": "Elevated Errors for Thinking mode in ChatGPT",
+        "url": "https://status.openai.com/incidents/01M0FQAR3NNH3ANVTQMBRD47DC#01M0G1C3YRF83WTBTMT27YB3V8",
+        "published_at": "2026-08-20T16:51:51Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
       },
       {
         "title": "Elevated Errors for Thinking mode in ChatGPT",
@@ -84,7 +108,7 @@
         "published_at": "2026-08-20T14:53:57Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / We have implemented a mitigation for the issue for elevated errors for Thinking Mode and Image Generation in ChatGPT/ChatGPT Work"
+        "meta": "Monitoring / Minor / Resolved / We have implemented a mitigation for the issue for elevated errors for Thinking Mode and Image Generation in ChatGPT/ChatGPT Work"
       },
       {
         "title": "Elevated Errors for Thinking mode in ChatGPT",
@@ -92,7 +116,7 @@
         "published_at": "2026-08-20T14:12:24Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring / We are investigating an issue causing some users to experience errors when using Thinking mode and Image Generation in ChatGPT."
+        "meta": "Investigating / Minor / Resolved / We are investigating an issue causing some users to experience errors when using Thinking mode and Image Generation in ChatGPT."
       },
       {
         "title": "Elevated Errors for Thinking mode in ChatGPT",
@@ -100,7 +124,7 @@
         "published_at": "2026-08-20T13:56:21Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring / We are investigating an issue causing some users to experience errors when using Thinking in ChatGPT."
+        "meta": "Investigating / Minor / Resolved / We are investigating an issue causing some users to experience errors when using Thinking in ChatGPT."
       },
       {
         "title": "Chatgpt.com is down - all signups and logins are down as of right now",
@@ -125,59 +149,43 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-      },
-      {
-        "title": "Chatgpt.com is down - all signups and logins are down as of right now",
-        "url": "https://status.openai.com/incidents/01M0E7K87VJNMGW0QTMHPEQQ39#01M0E7NNB766VV0DJBQ1DJH13R",
-        "published_at": "2026-08-20T00:03:27Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / We have identified that users are experiencing login issues for the impacted services. We are working on implementing a mitigation."
-      },
-      {
-        "title": "Chatgpt.com is down - all signups and logins are down as of right now",
-        "url": "https://status.openai.com/incidents/01M0E7K87VJNMGW0QTMHPEQQ39#01M0E7K87VCPG07GC72KGEMXBJ",
-        "published_at": "2026-08-20T00:02:08Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
-      },
-      {
-        "title": "Elevated errors deploying Sites",
-        "url": "https://status.openai.com/incidents/01M0B4WSV41BCFZ9VDWKSMQVSP#01M0B61SDT7EBXA8YYE2MPTK2K",
-        "published_at": "2026-08-18T19:37:24Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / The issue affecting site deployments has been resolved."
       }
     ],
-    "last_statement_at": "2026-08-20T16:36:26.790875Z"
+    "last_statement_at": "2026-08-20T17:30:09.638242Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports an active incident: Elevated Errors for Thinking mode in ChatGPT.",
-    "current_status": "degraded",
+    "summary": "OpenAI Statuspage reports an active incident: Elevated Codex API authentication errors.",
+    "current_status": "operational",
     "reports_24h": 197,
     "incidents": [
       {
-        "title": "Elevated Errors for Thinking mode in ChatGPT",
-        "started_at": "2026-08-20T14:11:49Z",
+        "title": "Elevated Codex API authentication errors",
+        "started_at": "2026-08-20T17:16:48Z",
         "duration": "1m",
         "acknowledgement": "warn icon Warn"
       },
       {
-        "title": "Elevated Errors for Thinking mode in ChatGPT",
-        "started_at": "2026-08-20T13:57:08Z",
+        "title": "Elevated Codex API authentication errors",
+        "started_at": "2026-08-20T17:01:53Z",
         "duration": "15m",
         "acknowledgement": "warn icon Warn"
       },
       {
+        "title": "Elevated Codex API authentication errors",
+        "started_at": "2026-08-20T16:58:53Z",
+        "duration": "31m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M0G1RZER839AZXWMYKSZF3GR"
+      },
+      {
         "title": "Elevated Errors for Thinking mode in ChatGPT",
         "started_at": "2026-08-20T13:56:21Z",
-        "duration": "2h 40m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "2h 55m",
+        "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M0FQAR3NNH3ANVTQMBRD47DC"
       },
@@ -210,54 +218,15 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01KZXVAJQ5XFH7PTM43XVPQWGJ"
-      },
-      {
-        "title": "Error while creating custom RBAC roles for Enterprise users",
-        "started_at": "2026-08-13T14:03:49Z",
-        "duration": "8h 23m",
-        "acknowledgement": "None / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01KZXPZD4KHMQQFF09PSNNEZT8"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Conversations",
-        "count": 1
-      },
-      {
-        "label": "Image Generation",
-        "count": 1
-      },
-      {
-        "label": "ChatGPT Work",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-08-19T16:45:00Z",
-        "signal_value": 27.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-19T17:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-19T17:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-08-19T17:30:00Z",
         "signal_value": 19.0,
@@ -812,7 +781,25 @@
       },
       {
         "timestamp": "2026-08-20T16:30:00Z",
-        "signal_value": 1.0,
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-20T16:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-20T17:00:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-20T17:15:00Z",
+        "signal_value": 18.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -823,22 +810,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-08-20T16:30:00Z"
+      "last_sample_at": "2026-08-20T17:15:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "16:40",
-        "count": 3
-      },
-      {
-        "label": "17:00",
-        "count": 1
-      },
-      {
-        "label": "17:20",
-        "count": 3
-      },
       {
         "label": "17:40",
         "count": 1
@@ -1114,6 +1089,18 @@
       {
         "label": "16:20",
         "count": 1
+      },
+      {
+        "label": "16:40",
+        "count": 3
+      },
+      {
+        "label": "17:00",
+        "count": 2
+      },
+      {
+        "label": "17:20",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1122,14 +1109,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-20T16:36:26Z"
+      "last_reviewed_at": "2026-08-20T13:30:09-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 197,
-        "last_reviewed_at": "2026-08-20T16:36:26Z"
+        "last_reviewed_at": "2026-08-20T13:30:09-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1347,8 +1334,8 @@
       },
       {
         "name": "Conversations",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1361,15 +1348,15 @@
       },
       {
         "name": "Image Generation",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "ChatGPT Work",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       }
@@ -1378,19 +1365,19 @@
     "top_reported_issues_provider": [
       {
         "label": "Error message",
-        "count": 18
+        "count": 17
       },
       {
         "label": "App not loading",
         "count": 16
       },
       {
-        "label": "Service down",
+        "label": "Sign in problem",
         "count": 8
       },
       {
-        "label": "Sign in problem",
-        "count": 7
+        "label": "Service down",
+        "count": 8
       },
       {
         "label": "Slow performance",
@@ -1412,25 +1399,32 @@
   },
   "reports": [
     {
-      "title": "Elevated Errors for Thinking mode in ChatGPT",
-      "url": "https://status.openai.com/#2026-08-20T14:11:49Z",
-      "published_at": "2026-08-20T14:11:49Z",
+      "title": "Elevated Codex API authentication errors",
+      "url": "https://status.openai.com/#2026-08-20T17:16:48Z",
+      "published_at": "2026-08-20T17:16:48Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
     {
-      "title": "Elevated Errors for Thinking mode in ChatGPT",
-      "url": "https://status.openai.com/#2026-08-20T13:57:08Z",
-      "published_at": "2026-08-20T13:57:08Z",
+      "title": "Elevated Codex API authentication errors",
+      "url": "https://status.openai.com/#2026-08-20T17:01:53Z",
+      "published_at": "2026-08-20T17:01:53Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
+    },
+    {
+      "title": "Elevated Codex API authentication errors",
+      "url": "https://status.openai.com/incidents/01M0G1RZER839AZXWMYKSZF3GR",
+      "published_at": "2026-08-20T16:58:53Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "Elevated Errors for Thinking mode in ChatGPT",
       "url": "https://status.openai.com/incidents/01M0FQAR3NNH3ANVTQMBRD47DC",
       "published_at": "2026-08-20T13:56:21Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "ChatGPT not loading or responding due to server error",
@@ -1459,13 +1453,6 @@
       "published_at": "2026-08-13T15:19:50Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Error while creating custom RBAC roles for Enterprise users",
-      "url": "https://status.openai.com/incidents/01KZXPZD4KHMQQFF09PSNNEZT8",
-      "published_at": "2026-08-13T14:03:49Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "None / Resolved"
     }
   ],
   "known_resources": [
@@ -1474,45 +1461,69 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-20T16:36:27.413222Z"
+      "published_at": "2026-08-20T17:30:10.337717Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-20T16:36:27.413222Z"
+      "published_at": "2026-08-20T17:30:10.337717Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-20T16:36:27.413222Z"
+      "published_at": "2026-08-20T17:30:10.337717Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-20T16:36:27.413222Z"
+      "published_at": "2026-08-20T17:30:10.337717Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-20T16:36:27.413222Z"
+      "published_at": "2026-08-20T17:30:10.337717Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: Partial System Degradation",
+      "title": "OpenAI Statuspage API: All Systems Operational",
       "url": "https://status.openai.com/",
-      "published_at": "2026-08-20T16:36:26.790875Z",
+      "published_at": "2026-08-20T17:30:09.638242Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Elevated Codex API authentication errors",
+      "url": "https://status.openai.com/incidents/01M0G1RZER839AZXWMYKSZF3GR#01M0G2R20Y78TC1YCH8SZ1TC9G",
+      "published_at": "2026-08-20T17:15:51Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We have applied the mitigation and are monitoring the recovery."
+    },
+    {
+      "title": "Elevated Codex API authentication errors",
+      "url": "https://status.openai.com/incidents/01M0G1RZER839AZXWMYKSZF3GR#01M0G1RZERM19PBWFV956PENSZ",
+      "published_at": "2026-08-20T16:58:53Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Monitoring / Some users may encounter errors when using Codex with API authentication. We are working on implementing a mitigation."
+    },
+    {
+      "title": "Elevated Errors for Thinking mode in ChatGPT",
+      "url": "https://status.openai.com/incidents/01M0FQAR3NNH3ANVTQMBRD47DC#01M0G1C3YRF83WTBTMT27YB3V8",
+      "published_at": "2026-08-20T16:51:51Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
     },
     {
       "title": "Elevated Errors for Thinking mode in ChatGPT",
@@ -1520,7 +1531,7 @@
       "published_at": "2026-08-20T14:53:57Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / We have implemented a mitigation for the issue for elevated errors for Thinking Mode and Image Generation in ChatGPT/ChatGPT Work"
+      "meta": "Monitoring / Minor / Resolved / We have implemented a mitigation for the issue for elevated errors for Thinking Mode and Image Generation in ChatGPT/ChatGPT Work"
     },
     {
       "title": "Elevated Errors for Thinking mode in ChatGPT",
@@ -1528,7 +1539,7 @@
       "published_at": "2026-08-20T14:12:24Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring / We are investigating an issue causing some users to experience errors when using Thinking mode and Image Generation in ChatGPT."
+      "meta": "Investigating / Minor / Resolved / We are investigating an issue causing some users to experience errors when using Thinking mode and Image Generation in ChatGPT."
     },
     {
       "title": "Elevated Errors for Thinking mode in ChatGPT",
@@ -1536,7 +1547,7 @@
       "published_at": "2026-08-20T13:56:21Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring / We are investigating an issue causing some users to experience errors when using Thinking in ChatGPT."
+      "meta": "Investigating / Minor / Resolved / We are investigating an issue causing some users to experience errors when using Thinking in ChatGPT."
     },
     {
       "title": "Chatgpt.com is down - all signups and logins are down as of right now",
@@ -1545,30 +1556,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-    },
-    {
-      "title": "Chatgpt.com is down - all signups and logins are down as of right now",
-      "url": "https://status.openai.com/incidents/01M0E7K87VJNMGW0QTMHPEQQ39#01M0E9FH4DMXCK0XMKNBNNT2MF",
-      "published_at": "2026-08-20T00:35:03Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-    },
-    {
-      "title": "Chatgpt.com is down - all signups and logins are down as of right now",
-      "url": "https://status.openai.com/incidents/01M0E7K87VJNMGW0QTMHPEQQ39#01M0E8YC1B920Q17W536FGXTKX",
-      "published_at": "2026-08-20T00:25:41Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-    },
-    {
-      "title": "Chatgpt.com is down - all signups and logins are down as of right now",
-      "url": "https://status.openai.com/incidents/01M0E7K87VJNMGW0QTMHPEQQ39#01M0E7NNB766VV0DJBQ1DJH13R",
-      "published_at": "2026-08-20T00:03:27Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / We have identified that users are experiencing login issues for the impacted services. We are working on implementing a mitigation."
     }
   ],
   "social": [],
@@ -1584,11 +1571,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-20T16:36:26.080385Z",
+      "last_item_at": "2026-08-20T17:30:08.832663Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 198,
-      "fetched_at": "2026-08-20T16:36:26.080399Z",
+      "duration_ms": 187,
+      "fetched_at": "2026-08-20T17:30:08.832679Z",
       "cache_hit": false
     },
     {
@@ -1602,11 +1589,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-20T16:36:26Z",
+      "last_item_at": "2026-08-20T13:30:09-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 709,
-      "fetched_at": "2026-08-20T16:36:26.790349Z",
+      "duration_ms": 804,
+      "fetched_at": "2026-08-20T17:30:09.637703Z",
       "cache_hit": false
     },
     {
@@ -1620,17 +1607,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-20T16:36:26.790875Z",
+      "last_item_at": "2026-08-20T17:30:09.638242Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 620,
-      "fetched_at": "2026-08-20T16:36:27.411485Z",
+      "duration_ms": 697,
+      "fetched_at": "2026-08-20T17:30:10.335955Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-20T16:36:27.413222Z",
+    "generated_at": "2026-08-20T17:30:10.337717Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1667,9 +1654,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 198,
+          "duration_ms": 187,
           "cache_hit": false,
-          "at": "2026-08-20T16:36:25Z"
+          "at": "2026-08-20T17:30:08Z"
         },
         "metrics_24h": {
           "runs": 29,
@@ -1678,7 +1665,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 228.2
+          "avg_duration_ms": 231.9
         },
         "metrics_7d": {
           "runs": 214,
@@ -1687,10 +1674,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 247.3
+          "avg_duration_ms": 246.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-20T16:36:25Z",
+        "last_success_at": "2026-08-20T17:30:08Z",
         "last_failure_at": null
       },
       {
@@ -1704,9 +1691,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 709,
+          "duration_ms": 804,
           "cache_hit": false,
-          "at": "2026-08-20T16:36:25Z"
+          "at": "2026-08-20T17:30:08Z"
         },
         "metrics_24h": {
           "runs": 29,
@@ -1715,7 +1702,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 872.3
+          "avg_duration_ms": 896.0
         },
         "metrics_7d": {
           "runs": 214,
@@ -1724,10 +1711,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 902.0
+          "avg_duration_ms": 900.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-20T16:36:25Z",
+        "last_success_at": "2026-08-20T17:30:08Z",
         "last_failure_at": null
       },
       {
@@ -1741,9 +1728,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 620,
+          "duration_ms": 697,
           "cache_hit": false,
-          "at": "2026-08-20T16:36:25Z"
+          "at": "2026-08-20T17:30:08Z"
         },
         "metrics_24h": {
           "runs": 29,
@@ -1752,7 +1739,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 914.3
+          "avg_duration_ms": 908.0
         },
         "metrics_7d": {
           "runs": 214,
@@ -1761,18 +1748,54 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 920.1
+          "avg_duration_ms": 918.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-20T16:36:25Z",
+        "last_success_at": "2026-08-20T17:30:08Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-20T16:36:27.413222Z",
+    "generated_at": "2026-08-20T17:30:10.337717Z",
     "incidents": {
       "new": [
+        {
+          "id": "d72b545a5ea76002",
+          "title": "Elevated Codex API authentication errors",
+          "started_at": "2026-08-20T17:16:48Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "c9fc466b17a48510",
+          "title": "Elevated Codex API authentication errors",
+          "started_at": "2026-08-20T17:01:53Z",
+          "duration": "15m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "ccd118cd2ed34da3",
+          "title": "Elevated Codex API authentication errors",
+          "started_at": "2026-08-20T16:58:53Z",
+          "duration": "31m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://status.openai.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "3c84d23f8f709008",
+          "title": "Elevated Errors for Thinking mode in ChatGPT",
+          "started_at": "2026-08-20T13:56:21Z",
+          "duration": "2h 55m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        }
+      ],
+      "resolved": [
         {
           "id": "bd436736e1929496",
           "title": "Elevated Errors for Thinking mode in ChatGPT",
@@ -1790,47 +1813,11 @@
           "url": "https://status.openai.com/"
         },
         {
-          "id": "7e0965a286d83810",
-          "title": "ChatGPT not loading or responding due to server error",
-          "started_at": "2026-08-20T00:57:00Z",
-          "duration": "1h 2m",
-          "acknowledgement": null,
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "3c84d23f8f709008",
-          "title": "Elevated Errors for Thinking mode in ChatGPT",
-          "started_at": "2026-08-20T13:56:21Z",
-          "duration": "2h 40m ongoing",
-          "acknowledgement": "Minor / Monitoring",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "resolved": [
-        {
-          "id": "2f471b1edb8ae179",
-          "title": "Increase in errors on API, Codex and Work Mode",
-          "started_at": "2026-08-11T21:35:23Z",
-          "duration": "1h 7m",
+          "id": "900eb5324db065f9",
+          "title": "Error while creating custom RBAC roles for Enterprise users",
+          "started_at": "2026-08-13T14:03:49Z",
+          "duration": "8h 23m",
           "acknowledgement": "None / Resolved",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "32180d90904d6a73",
-          "title": "Users unable to login to ads manager",
-          "started_at": "2026-08-11T17:25:03Z",
-          "duration": "3m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "b60c82fc113ee27b",
-          "title": "Elevated errors affecting ChatGPT Go conversations",
-          "started_at": "2026-08-11T14:10:18Z",
-          "duration": "10m",
-          "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
       ]
@@ -1838,28 +1825,28 @@
     "reports": {
       "new": [
         {
-          "id": "28d3a8c8505f9a78",
-          "title": "Elevated Errors for Thinking mode in ChatGPT",
-          "url": "https://status.openai.com/#2026-08-20T14:11:49Z",
-          "published_at": "2026-08-20T14:11:49Z",
+          "id": "07543456bea604a8",
+          "title": "Elevated Codex API authentication errors",
+          "url": "https://status.openai.com/#2026-08-20T17:16:48Z",
+          "published_at": "2026-08-20T17:16:48Z",
           "source": "StatusGator",
           "meta": "warn icon Warn"
         },
         {
-          "id": "68388ac53e9afbc9",
-          "title": "Elevated Errors for Thinking mode in ChatGPT",
-          "url": "https://status.openai.com/#2026-08-20T13:57:08Z",
-          "published_at": "2026-08-20T13:57:08Z",
+          "id": "67d848ce927ce19a",
+          "title": "Elevated Codex API authentication errors",
+          "url": "https://status.openai.com/#2026-08-20T17:01:53Z",
+          "published_at": "2026-08-20T17:01:53Z",
           "source": "StatusGator",
           "meta": "warn icon Warn"
         },
         {
-          "id": "66c3d5ccf747e877",
-          "title": "ChatGPT not loading or responding due to server error",
-          "url": "https://status.openai.com/#2026-08-20T00:57:00Z",
-          "published_at": "2026-08-20T00:57:00Z",
-          "source": "StatusGator",
-          "meta": "1h 2m"
+          "id": "a465f3b30b81296e",
+          "title": "Elevated Codex API authentication errors",
+          "url": "https://status.openai.com/incidents/01M0G1RZER839AZXWMYKSZF3GR",
+          "published_at": "2026-08-20T16:58:53Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Monitoring"
         }
       ]
     },
