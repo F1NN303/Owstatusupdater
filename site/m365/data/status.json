@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-08-21T03:51:13.156225Z",
-  "health": "ok",
+  "generated_at": "2026-08-21T04:39:52.468374Z",
+  "health": "degraded",
   "analytics": {
     "severity_key": "stable",
     "severity_score": 0,
-    "source_ok_count": 4,
+    "source_ok_count": 3,
     "source_total_count": 4,
     "model_version": "m365-1.1",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
       "incidents": 0.6,
-      "source_health": 0.0,
+      "source_health": 0.35,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 119,
+      "reports_24h": 121,
       "recent_incidents_6h": 0,
       "recent_incidents_24h": 0,
       "cross_source": {
@@ -29,7 +29,7 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": true,
       "major_cap_applied": false,
@@ -40,14 +40,14 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "high",
-      "reason": "official_major_vs_aggregate_lower",
-      "official_status": "major outage",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
+      "official_status": "operational",
       "derived_severity": "stable",
-      "source_ok": 4,
+      "source_ok": 3,
       "source_total": 4,
-      "summary": "Official status reports a major outage while aggregate severity is lower."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
@@ -73,26 +73,26 @@
       {
         "title": "Microsoft public status page is reachable. Detailed content appears to be JavaScript-rendered.",
         "url": "https://status.cloud.microsoft/",
-        "published_at": "2026-08-21T03:51:08.493768Z",
+        "published_at": "2026-08-21T04:39:52.262839Z",
         "source": "Microsoft Public Status",
         "channel": "official-status-page",
         "meta": "Microsoft service health status"
       }
     ],
-    "last_statement_at": "2026-08-21T03:51:08.493768Z"
+    "last_statement_at": "2026-08-21T04:39:52.262839Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://statusgator.com/services/microsoft-365-suite",
-    "summary": "StatusGator reports that Microsoft 365 suite is currently experiencing a partial outage. There have been 1 user-submitted report of outages in the past 24 hours.",
-    "current_status": "experiencing a partial outage",
-    "reports_24h": 119,
+    "summary": "StatusGator service-health trend indicates Microsoft 365 is currently operational. Latest listed incident was about 88h ago.",
+    "current_status": "operational",
+    "reports_24h": 121,
     "incidents": [
       {
         "title": "Some users may be unable to search for content in SharePoint Online, OneDrive, Outlook on the web, or Outlook desktop",
         "started_at": "2026-08-17T13:03:59Z",
-        "duration": "2d 5h 41m",
+        "duration": "3d 14h 50m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -165,24 +165,6 @@
       "kind": "community-labels"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-08-20T04:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-20T04:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-20T04:30:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-08-20T04:45:00Z",
         "signal_value": 20.0,
@@ -737,7 +719,25 @@
       },
       {
         "timestamp": "2026-08-21T03:45:00Z",
-        "signal_value": 7.0,
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-21T04:00:00Z",
+        "signal_value": 15.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-21T04:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-21T04:30:00Z",
+        "signal_value": 4.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -748,18 +748,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-08-21T03:45:00Z"
+      "last_sample_at": "2026-08-21T04:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "04:00",
-        "count": 0
-      },
-      {
-        "label": "04:20",
-        "count": 2
-      },
       {
         "label": "04:40",
         "count": 0
@@ -1039,6 +1031,14 @@
       {
         "label": "03:40",
         "count": 0
+      },
+      {
+        "label": "04:00",
+        "count": 1
+      },
+      {
+        "label": "04:20",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1047,14 +1047,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-20T23:51:07-04:00"
+      "last_reviewed_at": "2026-08-21T00:39:51-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 119,
-        "last_reviewed_at": "2026-08-20T23:51:07-04:00"
+        "reports_24h": 121,
+        "last_reviewed_at": "2026-08-21T00:39:51-04:00"
       }
     ]
   },
@@ -1108,28 +1108,28 @@
       "url": "https://status.cloud.microsoft/",
       "source": "Official",
       "meta": "Microsoft",
-      "published_at": "2026-08-21T03:51:13.156225Z"
+      "published_at": "2026-08-21T04:39:52.468374Z"
     },
     {
       "title": "Microsoft 365 service health (admin center guide)",
       "url": "https://learn.microsoft.com/en-us/microsoft-365/enterprise/view-service-health?view=o365-worldwide",
       "source": "Official",
       "meta": "Microsoft Learn",
-      "published_at": "2026-08-21T03:51:13.156225Z"
+      "published_at": "2026-08-21T04:39:52.468374Z"
     },
     {
       "title": "Microsoft Graph service communications overview",
       "url": "https://learn.microsoft.com/en-us/graph/service-communications-concept-overview",
       "source": "Official",
       "meta": "Microsoft Learn",
-      "published_at": "2026-08-21T03:51:13.156225Z"
+      "published_at": "2026-08-21T04:39:52.468374Z"
     }
   ],
   "news": [
     {
       "title": "Microsoft public status page is reachable. Detailed content appears to be JavaScript-rendered.",
       "url": "https://status.cloud.microsoft/",
-      "published_at": "2026-08-21T03:51:08.493768Z",
+      "published_at": "2026-08-21T04:39:52.262839Z",
       "source": "Microsoft Public Status",
       "meta": "Microsoft service health status"
     }
@@ -1147,11 +1147,11 @@
       "ok": true,
       "error": null,
       "item_count": 6,
-      "last_item_at": "2026-08-21T03:51:07.708748Z",
+      "last_item_at": "2026-08-21T04:39:50.179662Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 157,
-      "fetched_at": "2026-08-21T03:51:07.708773Z",
+      "duration_ms": 203,
+      "fetched_at": "2026-08-21T04:39:50.179684Z",
       "cache_hit": false
     },
     {
@@ -1165,11 +1165,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-20T23:51:07-04:00",
+      "last_item_at": "2026-08-21T00:39:51-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 724,
-      "fetched_at": "2026-08-21T03:51:08.433701Z",
+      "duration_ms": 1756,
+      "fetched_at": "2026-08-21T04:39:51.935951Z",
       "cache_hit": false
     },
     {
@@ -1183,11 +1183,11 @@
       "ok": true,
       "error": null,
       "item_count": 1,
-      "last_item_at": "2026-08-21T03:51:08.493768Z",
+      "last_item_at": "2026-08-21T04:39:52.262839Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 59,
-      "fetched_at": "2026-08-21T03:51:08.493844Z",
+      "duration_ms": 326,
+      "fetched_at": "2026-08-21T04:39:52.262919Z",
       "cache_hit": false
     },
     {
@@ -1198,43 +1198,45 @@
       "role": "social",
       "criticality": "optional",
       "used_for_scoring": true,
-      "ok": true,
-      "error": null,
+      "ok": false,
+      "error": "403 Client Error: Forbidden for url: https://r.jina.ai/http://x.com/MSFT365Status",
       "item_count": 0,
       "last_item_at": null,
       "freshness": "unknown",
       "age_minutes": null,
-      "duration_ms": 4661,
-      "fetched_at": "2026-08-21T03:51:13.155306Z",
+      "duration_ms": 203,
+      "fetched_at": "2026-08-21T04:39:52.466184Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-21T03:51:13.156225Z",
+    "generated_at": "2026-08-21T04:39:52.468374Z",
     "overview": {
-      "confidence_score": 93.4,
+      "confidence_score": 87.0,
       "confidence_tier": "high",
-      "source_ok": 4,
+      "source_ok": 3,
       "source_total": 4,
       "required_ok": 1,
       "required_total": 1,
       "required_met": true,
-      "scoring_ok": 4,
+      "scoring_ok": 3,
       "scoring_total": 4,
       "scoring_met": true,
-      "degraded_reasons": [],
+      "degraded_reasons": [
+        "partial_source_failure"
+      ],
       "ratios": {
         "required_ratio": 1.0,
-        "scoring_ratio": 1.0,
-        "recent_success_ratio": 0.795,
+        "scoring_ratio": 0.75,
+        "recent_success_ratio": 0.786,
         "freshness_ratio": 0.75
       }
     },
     "decision": {
-      "health": "ok",
+      "health": "degraded",
       "severity_key": "stable",
-      "explanation": "All configured sources are healthy and recently refreshed."
+      "explanation": "Reliability constraints detected: partial source failure."
     },
     "sources": [
       {
@@ -1248,9 +1250,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 157,
+          "duration_ms": 203,
           "cache_hit": false,
-          "at": "2026-08-21T03:51:07Z"
+          "at": "2026-08-21T04:39:49Z"
         },
         "metrics_24h": {
           "runs": 28,
@@ -1259,7 +1261,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 202.4
+          "avg_duration_ms": 204.2
         },
         "metrics_7d": {
           "runs": 220,
@@ -1268,10 +1270,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 225.7
+          "avg_duration_ms": 224.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-21T03:51:07Z",
+        "last_success_at": "2026-08-21T04:39:49Z",
         "last_failure_at": null
       },
       {
@@ -1285,9 +1287,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 724,
+          "duration_ms": 1756,
           "cache_hit": false,
-          "at": "2026-08-21T03:51:07Z"
+          "at": "2026-08-21T04:39:49Z"
         },
         "metrics_24h": {
           "runs": 28,
@@ -1296,7 +1298,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 923.6
+          "avg_duration_ms": 937.1
         },
         "metrics_7d": {
           "runs": 220,
@@ -1305,10 +1307,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1035.9
+          "avg_duration_ms": 1037.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-21T03:51:07Z",
+        "last_success_at": "2026-08-21T04:39:49Z",
         "last_failure_at": null
       },
       {
@@ -1322,9 +1324,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 59,
+          "duration_ms": 326,
           "cache_hit": false,
-          "at": "2026-08-21T03:51:07Z"
+          "at": "2026-08-21T04:39:49Z"
         },
         "metrics_24h": {
           "runs": 28,
@@ -1333,7 +1335,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 126.2
+          "avg_duration_ms": 131.6
         },
         "metrics_7d": {
           "runs": 220,
@@ -1342,10 +1344,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 136.4
+          "avg_duration_ms": 137.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-21T03:51:07Z",
+        "last_success_at": "2026-08-21T04:39:49Z",
         "last_failure_at": null
       },
       {
@@ -1357,20 +1359,20 @@
         "criticality": "optional",
         "used_for_scoring": true,
         "latest": {
-          "ok": true,
+          "ok": false,
           "freshness": "unknown",
-          "duration_ms": 4661,
+          "duration_ms": 203,
           "cache_hit": false,
-          "at": "2026-08-21T03:51:07Z"
+          "at": "2026-08-21T04:39:49Z"
         },
         "metrics_24h": {
           "runs": 28,
-          "ok": 5,
+          "ok": 4,
           "stale": 28,
-          "success_rate": 17.9,
+          "success_rate": 14.3,
           "stale_rate": 100.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 641.6
+          "avg_duration_ms": 638.4
         },
         "metrics_7d": {
           "runs": 220,
@@ -1379,19 +1381,28 @@
           "success_rate": 49.5,
           "stale_rate": 100.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1608.3
+          "avg_duration_ms": 1608.6
         },
-        "consecutive_failures": 0,
+        "consecutive_failures": 1,
         "last_success_at": "2026-08-21T03:51:07Z",
-        "last_failure_at": "2026-08-21T02:45:24Z"
+        "last_failure_at": "2026-08-21T04:39:49Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-21T03:51:13.156225Z",
+    "generated_at": "2026-08-21T04:39:52.468374Z",
     "incidents": {
       "new": [],
-      "updated": [],
+      "updated": [
+        {
+          "id": "596bd5b5a4d0d0ac",
+          "title": "Some users may be unable to search for content in SharePoint Online, OneDrive, Outlook on the web, or Outlook desktop",
+          "started_at": "2026-08-17T13:03:59Z",
+          "duration": "3d 14h 50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://statusgator.com/services/microsoft-365-suite"
+        }
+      ],
       "resolved": []
     },
     "reports": {
@@ -1399,7 +1410,7 @@
     },
     "summary": {
       "new_incidents": 0,
-      "updated_incidents": 0,
+      "updated_incidents": 1,
       "resolved_incidents": 0,
       "new_reports": 0
     }
