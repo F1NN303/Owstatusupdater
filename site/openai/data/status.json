@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T20:27:24.045245Z",
+  "generated_at": "2026-08-21T20:52:02.952159Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -14,10 +14,10 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 2.15
     },
     "signal_metrics": {
-      "reports_24h": 22,
+      "reports_24h": 23,
       "recent_incidents_6h": 3,
       "recent_incidents_24h": 3,
       "cross_source": {
@@ -29,25 +29,25 @@
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "degraded",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
+      "official_status": "operational",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
@@ -68,15 +68,23 @@
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: Partial System Degradation",
+    "summary": "OpenAI Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: Partial System Degradation",
+        "title": "OpenAI Statuspage API: All Systems Operational",
         "url": "https://status.openai.com/",
-        "published_at": "2026-08-21T20:27:23.010453Z",
+        "published_at": "2026-08-21T20:52:01.755783Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Unexpected logouts for some ChatGPT web users",
+        "url": "https://status.openai.com/incidents/01M0JXWD740S0Y50DWJZS7SH75#01M0K0M8P5GTEWA72BJRKC1XVX",
+        "published_at": "2026-08-21T20:36:33Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We have applied a mitigation and are seeing recovery from the issue causing some ChatGPT web users to be unexpectedly logged out when refreshing the page. We’ll continue monitoring closely to confirm the recovery is sustained."
       },
       {
         "title": "Unexpected logouts for some ChatGPT web users",
@@ -84,7 +92,7 @@
         "published_at": "2026-08-21T19:48:34Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / We’re investigating an issue causing some ChatGPT web users to be unexpectedly logged out when refreshing the page."
+        "meta": "Investigating / Minor / Monitoring / We’re investigating an issue causing some ChatGPT web users to be unexpectedly logged out when refreshing the page."
       },
       {
         "title": "Elevated Codex API authentication errors",
@@ -141,43 +149,35 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / We are investigating an issue causing some users to experience errors when using Thinking in ChatGPT."
-      },
-      {
-        "title": "Chatgpt.com is down - all signups and logins are down as of right now",
-        "url": "https://status.openai.com/incidents/01M0E7K87VJNMGW0QTMHPEQQ39#01M0EAJQMT8TZNPV9Y2F4YT41R",
-        "published_at": "2026-08-20T00:54:17Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
       }
     ],
-    "last_statement_at": "2026-08-21T20:27:23.010453Z"
+    "last_statement_at": "2026-08-21T20:52:01.755783Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
     "summary": "OpenAI Statuspage reports an active incident: Unexpected logouts for some ChatGPT web users.",
-    "current_status": "degraded",
-    "reports_24h": 22,
+    "current_status": "operational",
+    "reports_24h": 23,
     "incidents": [
       {
         "title": "Unexpected logouts for some ChatGPT web users",
-        "started_at": "2026-08-21T19:57:00Z",
+        "started_at": "2026-08-21T20:36:51Z",
         "duration": "1m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Unexpected logouts for some ChatGPT web users",
-        "started_at": "2026-08-21T19:51:50Z",
-        "duration": "5m",
+        "started_at": "2026-08-21T19:57:00Z",
+        "duration": "40m",
         "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Unexpected logouts for some ChatGPT web users",
         "started_at": "2026-08-21T19:48:34Z",
-        "duration": "38m ongoing",
-        "acknowledgement": "Minor / Investigating",
+        "duration": "1h 3m ongoing",
+        "acknowledgement": "Minor / Monitoring",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M0JXWD740S0Y50DWJZS7SH75"
       },
@@ -220,30 +220,13 @@
         "url": "https://status.openai.com/incidents/01M0B4WSV41BCFZ9VDWKSMQVSP"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Login",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-08-20T20:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-08-20T20:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-08-20T21:00:00Z",
         "signal_value": 3.0,
@@ -804,7 +787,19 @@
       },
       {
         "timestamp": "2026-08-21T20:15:00Z",
-        "signal_value": 21.0,
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-21T20:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-21T20:45:00Z",
+        "signal_value": 6.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -815,13 +810,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-08-21T20:15:00Z"
+      "last_sample_at": "2026-08-21T20:45:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "20:40",
-        "count": 2
-      },
       {
         "label": "21:00",
         "count": 3
@@ -1105,6 +1096,10 @@
       {
         "label": "20:20",
         "count": 1
+      },
+      {
+        "label": "20:40",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1113,14 +1108,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-21T22:27:22+02:00"
+      "last_reviewed_at": "2026-08-21T16:52:01-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 119,
-        "last_reviewed_at": "2026-08-21T22:27:22+02:00"
+        "reports_24h": 120,
+        "last_reviewed_at": "2026-08-21T16:52:01-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1317,8 +1312,8 @@
       },
       {
         "name": "Login",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1404,15 +1399,15 @@
   "reports": [
     {
       "title": "Unexpected logouts for some ChatGPT web users",
-      "url": "https://status.openai.com/#2026-08-21T19:57:00Z",
-      "published_at": "2026-08-21T19:57:00Z",
+      "url": "https://status.openai.com/#2026-08-21T20:36:51Z",
+      "published_at": "2026-08-21T20:36:51Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
     {
       "title": "Unexpected logouts for some ChatGPT web users",
-      "url": "https://status.openai.com/#2026-08-21T19:51:50Z",
-      "published_at": "2026-08-21T19:51:50Z",
+      "url": "https://status.openai.com/#2026-08-21T19:57:00Z",
+      "published_at": "2026-08-21T19:57:00Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
@@ -1421,7 +1416,7 @@
       "url": "https://status.openai.com/incidents/01M0JXWD740S0Y50DWJZS7SH75",
       "published_at": "2026-08-21T19:48:34Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Investigating"
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "Elevated Codex API authentication errors",
@@ -1465,45 +1460,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-21T20:27:24.045245Z"
+      "published_at": "2026-08-21T20:52:02.952159Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-21T20:27:24.045245Z"
+      "published_at": "2026-08-21T20:52:02.952159Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-21T20:27:24.045245Z"
+      "published_at": "2026-08-21T20:52:02.952159Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-21T20:27:24.045245Z"
+      "published_at": "2026-08-21T20:52:02.952159Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-21T20:27:24.045245Z"
+      "published_at": "2026-08-21T20:52:02.952159Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: Partial System Degradation",
+      "title": "OpenAI Statuspage API: All Systems Operational",
       "url": "https://status.openai.com/",
-      "published_at": "2026-08-21T20:27:23.010453Z",
+      "published_at": "2026-08-21T20:52:01.755783Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Unexpected logouts for some ChatGPT web users",
+      "url": "https://status.openai.com/incidents/01M0JXWD740S0Y50DWJZS7SH75#01M0K0M8P5GTEWA72BJRKC1XVX",
+      "published_at": "2026-08-21T20:36:33Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We have applied a mitigation and are seeing recovery from the issue causing some ChatGPT web users to be unexpectedly logged out when refreshing the page. We’ll continue monitoring closely to confirm the recovery is sustained."
     },
     {
       "title": "Unexpected logouts for some ChatGPT web users",
@@ -1511,7 +1514,7 @@
       "published_at": "2026-08-21T19:48:34Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / We’re investigating an issue causing some ChatGPT web users to be unexpectedly logged out when refreshing the page."
+      "meta": "Investigating / Minor / Monitoring / We’re investigating an issue causing some ChatGPT web users to be unexpectedly logged out when refreshing the page."
     },
     {
       "title": "Elevated Codex API authentication errors",
@@ -1552,14 +1555,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Minor / Resolved / We have implemented a mitigation for the issue for elevated errors for Thinking Mode and Image Generation in ChatGPT/ChatGPT Work"
-    },
-    {
-      "title": "Elevated Errors for Thinking mode in ChatGPT",
-      "url": "https://status.openai.com/incidents/01M0FQAR3NNH3ANVTQMBRD47DC#01M0FR84MEC6AHK3WAXWXX4VSJ",
-      "published_at": "2026-08-20T14:12:24Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are investigating an issue causing some users to experience errors when using Thinking mode and Image Generation in ChatGPT."
     }
   ],
   "social": [],
@@ -1575,11 +1570,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-21T20:27:22.079358Z",
+      "last_item_at": "2026-08-21T20:52:00.608240Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 414,
-      "fetched_at": "2026-08-21T20:27:22.079379Z",
+      "duration_ms": 379,
+      "fetched_at": "2026-08-21T20:52:00.608262Z",
       "cache_hit": false
     },
     {
@@ -1593,11 +1588,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-21T22:27:22+02:00",
+      "last_item_at": "2026-08-21T16:52:01-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 930,
-      "fetched_at": "2026-08-21T20:27:23.010076Z",
+      "duration_ms": 1147,
+      "fetched_at": "2026-08-21T20:52:01.755350Z",
       "cache_hit": false
     },
     {
@@ -1611,17 +1606,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-21T20:27:23.010453Z",
+      "last_item_at": "2026-08-21T20:52:01.755783Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1033,
-      "fetched_at": "2026-08-21T20:27:24.043909Z",
+      "duration_ms": 1194,
+      "fetched_at": "2026-08-21T20:52:02.950605Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-21T20:27:24.045245Z",
+    "generated_at": "2026-08-21T20:52:02.952159Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1658,9 +1653,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 414,
+          "duration_ms": 379,
           "cache_hit": false,
-          "at": "2026-08-21T20:27:21Z"
+          "at": "2026-08-21T20:52:00Z"
         },
         "metrics_24h": {
           "runs": 30,
@@ -1669,7 +1664,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 250.6
+          "avg_duration_ms": 257.6
         },
         "metrics_7d": {
           "runs": 226,
@@ -1681,7 +1676,7 @@
           "avg_duration_ms": 248.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-21T20:27:21Z",
+        "last_success_at": "2026-08-21T20:52:00Z",
         "last_failure_at": null
       },
       {
@@ -1695,9 +1690,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 930,
+          "duration_ms": 1147,
           "cache_hit": false,
-          "at": "2026-08-21T20:27:21Z"
+          "at": "2026-08-21T20:52:00Z"
         },
         "metrics_24h": {
           "runs": 30,
@@ -1706,7 +1701,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 919.4
+          "avg_duration_ms": 933.6
         },
         "metrics_7d": {
           "runs": 226,
@@ -1715,10 +1710,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 908.5
+          "avg_duration_ms": 910.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-21T20:27:21Z",
+        "last_success_at": "2026-08-21T20:52:00Z",
         "last_failure_at": null
       },
       {
@@ -1732,9 +1727,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1033,
+          "duration_ms": 1194,
           "cache_hit": false,
-          "at": "2026-08-21T20:27:21Z"
+          "at": "2026-08-21T20:52:00Z"
         },
         "metrics_24h": {
           "runs": 30,
@@ -1743,7 +1738,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 971.1
+          "avg_duration_ms": 989.7
         },
         "metrics_7d": {
           "runs": 226,
@@ -1752,26 +1747,46 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 931.3
+          "avg_duration_ms": 930.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-21T20:27:21Z",
+        "last_success_at": "2026-08-21T20:52:00Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-21T20:27:24.045245Z",
+    "generated_at": "2026-08-21T20:52:02.952159Z",
     "incidents": {
       "new": [
+        {
+          "id": "56efcd772de78101",
+          "title": "Unexpected logouts for some ChatGPT web users",
+          "started_at": "2026-08-21T20:36:51Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        }
+      ],
+      "updated": [
         {
           "id": "6fc1d1aeab0c6748",
           "title": "Unexpected logouts for some ChatGPT web users",
           "started_at": "2026-08-21T19:57:00Z",
-          "duration": "1m",
+          "duration": "40m",
           "acknowledgement": "warn icon Warn",
           "url": "https://status.openai.com/"
         },
+        {
+          "id": "d08797e20d14288e",
+          "title": "Unexpected logouts for some ChatGPT web users",
+          "started_at": "2026-08-21T19:48:34Z",
+          "duration": "1h 3m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://status.openai.com/"
+        }
+      ],
+      "resolved": [
         {
           "id": "83010c1af4e88d1c",
           "title": "Unexpected logouts for some ChatGPT web users",
@@ -1779,86 +1794,26 @@
           "duration": "5m",
           "acknowledgement": "warn icon Warn",
           "url": "https://status.openai.com/"
-        },
-        {
-          "id": "7e0965a286d83810",
-          "title": "ChatGPT not loading or responding due to server error",
-          "started_at": "2026-08-20T00:57:00Z",
-          "duration": "1h 2m",
-          "acknowledgement": null,
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "d08797e20d14288e",
-          "title": "Unexpected logouts for some ChatGPT web users",
-          "started_at": "2026-08-21T19:48:34Z",
-          "duration": "38m ongoing",
-          "acknowledgement": "Minor / Investigating",
-          "url": "https://status.openai.com/"
-        }
-      ],
-      "resolved": [
-        {
-          "id": "08159de983ddae57",
-          "title": "Elevated errors in ChatGPT conversations for Free users",
-          "started_at": "2026-08-13T15:19:50Z",
-          "duration": "8h 38m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "900eb5324db065f9",
-          "title": "Error while creating custom RBAC roles for Enterprise users",
-          "started_at": "2026-08-13T14:03:49Z",
-          "duration": "8h 23m",
-          "acknowledgement": "None / Resolved",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "2f471b1edb8ae179",
-          "title": "Increase in errors on API, Codex and Work Mode",
-          "started_at": "2026-08-11T21:35:23Z",
-          "duration": "1h 7m",
-          "acknowledgement": "None / Resolved",
-          "url": "https://status.openai.com/"
         }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "4aef4c74ce211a49",
+          "id": "53911409b67ef89a",
           "title": "Unexpected logouts for some ChatGPT web users",
-          "url": "https://status.openai.com/#2026-08-21T19:57:00Z",
-          "published_at": "2026-08-21T19:57:00Z",
+          "url": "https://status.openai.com/#2026-08-21T20:36:51Z",
+          "published_at": "2026-08-21T20:36:51Z",
           "source": "StatusGator",
           "meta": "warn icon Warn"
-        },
-        {
-          "id": "2859c8a513b61b9a",
-          "title": "Unexpected logouts for some ChatGPT web users",
-          "url": "https://status.openai.com/#2026-08-21T19:51:50Z",
-          "published_at": "2026-08-21T19:51:50Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "66c3d5ccf747e877",
-          "title": "ChatGPT not loading or responding due to server error",
-          "url": "https://status.openai.com/#2026-08-20T00:57:00Z",
-          "published_at": "2026-08-20T00:57:00Z",
-          "source": "StatusGator",
-          "meta": "1h 2m"
         }
       ]
     },
     "summary": {
-      "new_incidents": 3,
-      "updated_incidents": 1,
-      "resolved_incidents": 3,
-      "new_reports": 3
+      "new_incidents": 1,
+      "updated_incidents": 2,
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
