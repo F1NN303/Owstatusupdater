@@ -1,36 +1,36 @@
 {
-  "generated_at": "2026-08-24T12:53:22.162635Z",
+  "generated_at": "2026-08-24T13:52:59.250015Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "degraded",
+    "severity_score": 6,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 4.3,
+      "incidents": 5.5,
       "source_health": 0.0,
-      "corroboration_bonus": 0.0,
-      "support_score": 0.699,
+      "corroboration_bonus": 0.4,
+      "support_score": 1.251,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 109,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 2,
+      "reports_24h": 104,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 6,
       "cross_source": {
-        "report_score": 0.159,
+        "report_score": 0.711,
         "news_score": 0.54,
         "social_score": 0.0,
-        "combined_score": 0.699,
-        "report_hits_24h": 1
+        "combined_score": 1.251,
+        "report_hits_24h": 4
       }
     },
     "safeguards": {
       "operational_dampening": false,
-      "cross_source_guard": true,
+      "cross_source_guard": false,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
@@ -40,31 +40,31 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "medium",
-      "reason": "official_degraded_vs_aggregate_normal",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "degraded",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status indicates degradation while aggregate severity is low."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
       "severity_key": "minor",
-      "severity_score": 3,
+      "severity_score": 4,
       "report_weight": 0.0
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 4,
-      "report_weight": 0.25
-    },
-    "apac": {
       "severity_key": "degraded",
       "severity_score": 6,
-      "report_weight": 0.75
+      "report_weight": 0.333
+    },
+    "apac": {
+      "severity_key": "major",
+      "severity_score": 8,
+      "report_weight": 0.667
     }
   },
   "official": {
@@ -73,7 +73,7 @@
       {
         "title": "Cloudflare Statuspage API: Minor Service Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-08-24T12:53:21.972037Z",
+        "published_at": "2026-08-24T13:52:58.978280Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
@@ -151,16 +151,34 @@
         "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       }
     ],
-    "last_statement_at": "2026-08-24T12:53:21.972037Z"
+    "last_statement_at": "2026-08-24T13:52:58.978280Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 9h ago.",
+    "summary": "Cloudflare Statuspage reports Minor Service Outage. Latest listed incident started about 10h ago.",
     "current_status": "degraded",
-    "reports_24h": 109,
+    "reports_24h": 104,
     "incidents": [
+      {
+        "title": "Maintenance",
+        "started_at": "2026-08-24T12:05:22Z",
+        "duration": "1h",
+        "acknowledgement": "maintenance icon Maint"
+      },
+      {
+        "title": "DO and D1 are degraded in Hong Kong and Singapore",
+        "started_at": "2026-08-24T06:55:21Z",
+        "duration": "1h 35m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Increased HTTP 5xx Errors in Chicago",
+        "started_at": "2026-08-24T05:50:24Z",
+        "duration": "1h 5m",
+        "acknowledgement": "warn icon Warn"
+      },
       {
         "title": "Increased HTTP 5xx Errors in Chicago",
         "started_at": "2026-08-24T05:47:34.000Z",
@@ -168,6 +186,12 @@
         "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/9v68b4k90mry"
+      },
+      {
+        "title": "DO and D1 are degraded in Hong Kong and Singapore",
+        "started_at": "2026-08-24T03:55:19Z",
+        "duration": "1h 55m",
+        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "DO and D1 are degraded in Hong Kong and Singapore",
@@ -186,51 +210,13 @@
         "url": "https://www.cloudflarestatus.com/incidents/1wwc0f6m1c21"
       },
       {
-        "title": "Network connectivity issues in Dubai (DXB)",
-        "started_at": "2026-08-22T02:31:34.000Z",
-        "duration": "26m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/xdzz2t911t1w"
-      },
-      {
-        "title": "Zero Trust Client Posture Failures",
-        "started_at": "2026-08-21T20:43:30.000Z",
-        "duration": "50m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/mts6889b2wcx"
-      },
-      {
-        "title": "Network Performance Issues in Asia Pacific Region",
-        "started_at": "2026-08-21T17:39:20.000Z",
-        "duration": "2h",
-        "acknowledgement": "None / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/xl112dfsfz6q"
-      },
-      {
-        "title": "Increased Errors for Durable Objects in the Hong Kong region",
-        "started_at": "2026-08-21T14:59:50.000Z",
-        "duration": "20m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/14kntn62njng"
-      },
-      {
-        "title": "Network performance issue in Mumbai",
-        "started_at": "2026-08-21T07:31:30.000Z",
-        "duration": "14m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/fwvfd2zzbvg8"
+        "title": "Elevated R2 errors in Dubai (DXB)",
+        "started_at": "2026-08-22T02:35:21Z",
+        "duration": "25m",
+        "acknowledgement": "warn icon Warn"
       }
     ],
     "top_reported_issues": [
-      {
-        "label": "Cloudflare Sites and Services",
-        "count": 1
-      },
       {
         "label": "Africa",
         "count": 1
@@ -258,6 +244,10 @@
       {
         "label": "Baku, Azerbaijan - (GYD)",
         "count": 1
+      },
+      {
+        "label": "Bangalore, India - (BLR)",
+        "count": 1
       }
     ],
     "top_reported_issues_meta": {
@@ -265,23 +255,594 @@
       "kind": "degraded-components",
       "mode": "snapshot"
     },
-    "service_health_24h": [],
-    "service_health_24h_meta": null,
-    "summary_origin": "Cloudflare Statuspage API",
+    "service_health_24h": [
+      {
+        "timestamp": "2026-08-23T14:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T14:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T14:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T14:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T15:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T15:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T15:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T15:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T16:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T16:15:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T16:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T16:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T17:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T17:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T17:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T17:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T18:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T18:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T18:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T18:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T19:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T19:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T19:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T19:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T20:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T20:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T20:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T20:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T21:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T21:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T21:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T21:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T22:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T22:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T22:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T22:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T23:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T23:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T23:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-23T23:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T00:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T00:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T00:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T00:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T01:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T01:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T01:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T01:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T02:00:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T02:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T02:30:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T02:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T03:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T03:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T03:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T03:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T04:00:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T04:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T04:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T04:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T05:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T05:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T05:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T05:45:00Z",
+        "signal_value": 18.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T06:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T06:15:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T06:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T06:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T07:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T07:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T07:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T07:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T08:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T08:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T08:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T08:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T09:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T09:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T09:30:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T09:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T10:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T10:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T10:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T10:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T11:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T11:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T11:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T11:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T12:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T12:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T12:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T12:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T13:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T13:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T13:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-08-24T13:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      }
+    ],
+    "service_health_24h_meta": {
+      "source": "StatusGator",
+      "kind": "service-health-series",
+      "window_hours": 24,
+      "sample_count": 96,
+      "interval_minutes": 15,
+      "last_sample_at": "2026-08-24T13:45:00Z"
+    },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "13:00",
-        "count": 3
-      },
-      {
-        "label": "13:20",
-        "count": 1
-      },
-      {
-        "label": "13:40",
-        "count": 3
-      },
       {
         "label": "14:00",
         "count": 0
@@ -557,6 +1118,18 @@
       {
         "label": "12:40",
         "count": 3
+      },
+      {
+        "label": "13:00",
+        "count": 0
+      },
+      {
+        "label": "13:20",
+        "count": 2
+      },
+      {
+        "label": "13:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -565,17 +1138,18 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-24T08:53:19-04:00"
+      "last_reviewed_at": "2026-08-24T09:52:58-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 109,
-        "last_reviewed_at": "2026-08-24T08:53:19-04:00"
+        "reports_24h": 104,
+        "last_reviewed_at": "2026-08-24T09:52:58-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
+    "summary_origin": "Cloudflare Statuspage API",
     "components": [
       {
         "name": "Amsterdam, Netherlands - (AMS)",
@@ -586,8 +1160,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "degraded",
-        "health": "under_maintenance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2020-11-11T20:12:30.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -3428,9 +4002,9 @@
       },
       {
         "name": "SSL Certificate Provisioning",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-08-24T12:00:09.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-08-24T13:00:07.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3917,15 +4491,77 @@
         "source": "Cloudflare Statuspage API"
       }
     ],
-    "scheduled_maintenances": []
+    "scheduled_maintenances": [],
+    "top_reported_issues_provider": [
+      {
+        "label": "Connectivity issue",
+        "count": 0
+      },
+      {
+        "label": "Error message",
+        "count": 0
+      },
+      {
+        "label": "Server not responding",
+        "count": 0
+      },
+      {
+        "label": "Sign in problem",
+        "count": 0
+      },
+      {
+        "label": "Service down",
+        "count": 0
+      },
+      {
+        "label": "Slow performance",
+        "count": 0
+      },
+      {
+        "label": "Unable to download",
+        "count": 0
+      },
+      {
+        "label": "App not loading",
+        "count": 0
+      }
+    ]
   },
   "reports": [
+    {
+      "title": "Maintenance",
+      "url": "https://www.cloudflarestatus.com/#2026-08-24T12:05:22Z",
+      "published_at": "2026-08-24T12:05:22Z",
+      "source": "StatusGator",
+      "meta": "maintenance icon Maint"
+    },
+    {
+      "title": "DO and D1 are degraded in Hong Kong and Singapore",
+      "url": "https://www.cloudflarestatus.com/#2026-08-24T06:55:21Z",
+      "published_at": "2026-08-24T06:55:21Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Increased HTTP 5xx Errors in Chicago",
+      "url": "https://www.cloudflarestatus.com/#2026-08-24T05:50:24Z",
+      "published_at": "2026-08-24T05:50:24Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
     {
       "title": "Increased HTTP 5xx Errors in Chicago",
       "url": "https://www.cloudflarestatus.com/incidents/9v68b4k90mry",
       "published_at": "2026-08-24T05:47:34.000Z",
       "source": "Cloudflare Statuspage API",
       "meta": "Minor / Resolved"
+    },
+    {
+      "title": "DO and D1 are degraded in Hong Kong and Singapore",
+      "url": "https://www.cloudflarestatus.com/#2026-08-24T03:55:19Z",
+      "published_at": "2026-08-24T03:55:19Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
     },
     {
       "title": "DO and D1 are degraded in Hong Kong and Singapore",
@@ -3942,39 +4578,11 @@
       "meta": "None / Resolved"
     },
     {
-      "title": "Network connectivity issues in Dubai (DXB)",
-      "url": "https://www.cloudflarestatus.com/incidents/xdzz2t911t1w",
-      "published_at": "2026-08-22T02:31:34.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Zero Trust Client Posture Failures",
-      "url": "https://www.cloudflarestatus.com/incidents/mts6889b2wcx",
-      "published_at": "2026-08-21T20:43:30.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Network Performance Issues in Asia Pacific Region",
-      "url": "https://www.cloudflarestatus.com/incidents/xl112dfsfz6q",
-      "published_at": "2026-08-21T17:39:20.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "None / Resolved"
-    },
-    {
-      "title": "Increased Errors for Durable Objects in the Hong Kong region",
-      "url": "https://www.cloudflarestatus.com/incidents/14kntn62njng",
-      "published_at": "2026-08-21T14:59:50.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Network performance issue in Mumbai",
-      "url": "https://www.cloudflarestatus.com/incidents/fwvfd2zzbvg8",
-      "published_at": "2026-08-21T07:31:30.000Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
+      "title": "Elevated R2 errors in Dubai (DXB)",
+      "url": "https://www.cloudflarestatus.com/#2026-08-22T02:35:21Z",
+      "published_at": "2026-08-22T02:35:21Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
     }
   ],
   "known_resources": [
@@ -3983,49 +4591,49 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-24T12:53:22.162635Z"
+      "published_at": "2026-08-24T13:52:59.250015Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-24T12:53:22.162635Z"
+      "published_at": "2026-08-24T13:52:59.250015Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-24T12:53:22.162635Z"
+      "published_at": "2026-08-24T13:52:59.250015Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-08-24T12:53:22.162635Z"
+      "published_at": "2026-08-24T13:52:59.250015Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-24T12:53:22.162635Z"
+      "published_at": "2026-08-24T13:52:59.250015Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-24T12:53:22.162635Z"
+      "published_at": "2026-08-24T13:52:59.250015Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Minor Service Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-08-24T12:53:21.972037Z",
+      "published_at": "2026-08-24T13:52:58.978280Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
@@ -4099,12 +4707,12 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 0,
-      "last_item_at": "2026-08-24T12:53:19.651764Z",
+      "item_count": 7,
+      "last_item_at": "2026-08-24T13:52:58.155358Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 68,
-      "fetched_at": "2026-08-24T12:53:19.651795Z",
+      "duration_ms": 148,
+      "fetched_at": "2026-08-24T13:52:58.155377Z",
       "cache_hit": false
     },
     {
@@ -4118,11 +4726,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-24T08:53:19-04:00",
+      "last_item_at": "2026-08-24T09:52:58-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 2320,
-      "fetched_at": "2026-08-24T12:53:21.971853Z",
+      "duration_ms": 822,
+      "fetched_at": "2026-08-24T13:52:58.977713Z",
       "cache_hit": false
     },
     {
@@ -4136,17 +4744,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-24T12:53:21.972037Z",
+      "last_item_at": "2026-08-24T13:52:58.978280Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 189,
-      "fetched_at": "2026-08-24T12:53:22.161339Z",
+      "duration_ms": 269,
+      "fetched_at": "2026-08-24T13:52:59.248270Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-24T12:53:22.162635Z",
+    "generated_at": "2026-08-24T13:52:59.250015Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4168,7 +4776,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4183,9 +4791,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 68,
+          "duration_ms": 148,
           "cache_hit": false,
-          "at": "2026-08-24T12:53:19Z"
+          "at": "2026-08-24T13:52:58Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -4194,7 +4802,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 247.1
+          "avg_duration_ms": 244.6
         },
         "metrics_7d": {
           "runs": 224,
@@ -4203,10 +4811,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 250.0
+          "avg_duration_ms": 249.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-24T12:53:19Z",
+        "last_success_at": "2026-08-24T13:52:58Z",
         "last_failure_at": null
       },
       {
@@ -4220,9 +4828,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 2320,
+          "duration_ms": 822,
           "cache_hit": false,
-          "at": "2026-08-24T12:53:19Z"
+          "at": "2026-08-24T13:52:58Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -4231,7 +4839,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1195.9
+          "avg_duration_ms": 1180.7
         },
         "metrics_7d": {
           "runs": 224,
@@ -4240,10 +4848,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1179.6
+          "avg_duration_ms": 1177.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-24T12:53:19Z",
+        "last_success_at": "2026-08-24T13:52:58Z",
         "last_failure_at": null
       },
       {
@@ -4257,9 +4865,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 189,
+          "duration_ms": 269,
           "cache_hit": false,
-          "at": "2026-08-24T12:53:19Z"
+          "at": "2026-08-24T13:52:58Z"
         },
         "metrics_24h": {
           "runs": 32,
@@ -4268,7 +4876,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 482.2
+          "avg_duration_ms": 475.0
         },
         "metrics_7d": {
           "runs": 224,
@@ -4277,29 +4885,152 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 503.6
+          "avg_duration_ms": 502.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-24T12:53:19Z",
+        "last_success_at": "2026-08-24T13:52:58Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-24T12:53:22.162635Z",
+    "generated_at": "2026-08-24T13:52:59.250015Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "fcc709496cd641c8",
+          "title": "Maintenance",
+          "started_at": "2026-08-24T12:05:22Z",
+          "duration": "1h",
+          "acknowledgement": "maintenance icon Maint",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "37c9a5cdf76916a0",
+          "title": "DO and D1 are degraded in Hong Kong and Singapore",
+          "started_at": "2026-08-24T06:55:21Z",
+          "duration": "1h 35m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "28e930fd5b56d820",
+          "title": "Increased HTTP 5xx Errors in Chicago",
+          "started_at": "2026-08-24T05:50:24Z",
+          "duration": "1h 5m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "f658f2814ccebf5c",
+          "title": "DO and D1 are degraded in Hong Kong and Singapore",
+          "started_at": "2026-08-24T03:55:19Z",
+          "duration": "1h 55m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "6aec4b21f6d9f7fe",
+          "title": "Elevated R2 errors in Dubai (DXB)",
+          "started_at": "2026-08-22T02:35:21Z",
+          "duration": "25m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "6a8e8815ce8ed207",
+          "title": "Network connectivity issues in Dubai (DXB)",
+          "started_at": "2026-08-22T02:31:34.000Z",
+          "duration": "26m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "f0f0b0532d96bb33",
+          "title": "Zero Trust Client Posture Failures",
+          "started_at": "2026-08-21T20:43:30.000Z",
+          "duration": "50m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "6ee566e597dd736c",
+          "title": "Network Performance Issues in Asia Pacific Region",
+          "started_at": "2026-08-21T17:39:20.000Z",
+          "duration": "2h",
+          "acknowledgement": "None / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "71894880782019de",
+          "title": "Increased Errors for Durable Objects in the Hong Kong region",
+          "started_at": "2026-08-21T14:59:50.000Z",
+          "duration": "20m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "30eeef5fa71f2ca3",
+          "title": "Network performance issue in Mumbai",
+          "started_at": "2026-08-21T07:31:30.000Z",
+          "duration": "14m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "fd36fa8da7e618f9",
+          "title": "Maintenance",
+          "url": "https://www.cloudflarestatus.com/#2026-08-24T12:05:22Z",
+          "published_at": "2026-08-24T12:05:22Z",
+          "source": "StatusGator",
+          "meta": "maintenance icon Maint"
+        },
+        {
+          "id": "9252add5fc8c20b0",
+          "title": "DO and D1 are degraded in Hong Kong and Singapore",
+          "url": "https://www.cloudflarestatus.com/#2026-08-24T06:55:21Z",
+          "published_at": "2026-08-24T06:55:21Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "4aaf92139b031539",
+          "title": "Increased HTTP 5xx Errors in Chicago",
+          "url": "https://www.cloudflarestatus.com/#2026-08-24T05:50:24Z",
+          "published_at": "2026-08-24T05:50:24Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "5612802c9de56cfe",
+          "title": "DO and D1 are degraded in Hong Kong and Singapore",
+          "url": "https://www.cloudflarestatus.com/#2026-08-24T03:55:19Z",
+          "published_at": "2026-08-24T03:55:19Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "69e07f8fbbfe96ce",
+          "title": "Elevated R2 errors in Dubai (DXB)",
+          "url": "https://www.cloudflarestatus.com/#2026-08-22T02:35:21Z",
+          "published_at": "2026-08-22T02:35:21Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 5,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 5,
+      "new_reports": 5
     }
   }
 }
