@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-27T05:27:34.795361Z",
+  "generated_at": "2026-08-27T10:58:43.856531Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -14,12 +14,12 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 2.15
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 111,
+      "reports_24h": 103,
       "recent_incidents_6h": 1,
-      "recent_incidents_24h": 6,
+      "recent_incidents_24h": 7,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,26 +29,26 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false,
-      "official_partial_scope_cap_applied": false
+      "official_partial_scope_cap_applied": true
     },
     "source_conflict": {
       "has_conflict": true,
-      "level": "medium",
-      "reason": "official_operational_vs_aggregate_issue",
-      "official_status": "operational",
+      "level": "high",
+      "reason": "official_major_vs_aggregate_lower",
+      "official_status": "major outage",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status is operational while aggregate signals indicate active issues."
+      "summary": "Official status reports a major outage while aggregate severity is lower."
     }
   },
   "regions": {
@@ -69,15 +69,31 @@
     }
   },
   "official": {
-    "summary": "GitHub Statuspage API: All Systems Operational",
+    "summary": "GitHub Statuspage API: Partial System Outage",
     "updates": [
       {
-        "title": "GitHub Statuspage API: All Systems Operational",
+        "title": "GitHub Statuspage API: Partial System Outage",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-08-27T05:27:34.408785Z",
+        "published_at": "2026-08-27T10:58:43.654004Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: major"
+      },
+      {
+        "title": "Incident with Copilot AI Model Providers",
+        "url": "https://www.githubstatus.com/incidents/tx9qn4khd664#pps94dyf7p9y",
+        "published_at": "2026-08-27T10:43:00.946Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Investigating / We are experiencing degraded availability for the Kimi K3 model in Copilot products and IDE surfaces. This is due to an issue with an upstream model provider. While we work with them to resolve the issue, we recommend choosing another model"
+      },
+      {
+        "title": "Incident with Copilot AI Model Providers",
+        "url": "https://www.githubstatus.com/incidents/tx9qn4khd664#2fm99f66414t",
+        "published_at": "2026-08-27T10:04:52.621Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Investigating / We are investigating reports of degraded availability for Copilot AI Model Providers"
       },
       {
         "title": "Disruption with GitHub Billing",
@@ -134,38 +150,30 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Investigating / We are currently investigating increased errors with billing services. Customers may observe failed billing budget page loads, and users of the Copilot CLI may observe failures starting or continuing sessions."
-      },
-      {
-        "title": "Disruption with GitHub Billing",
-        "url": "https://www.githubstatus.com/incidents/5bn0vk444m1w#cs3vzm61hc8l",
-        "published_at": "2026-08-26T23:37:20.628Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / We are investigating reports of impacted performance for some GitHub services."
-      },
-      {
-        "title": "Incident with Actions and Pull Requests",
-        "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#pgbdmtyw5p3b",
-        "published_at": "2026-08-26T22:57:08.551Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are investigating elevated delays and timeouts affecting Actions workflow runs triggered by pull request events. 20% of actions runs have delayed starts of more than 5 minutes and up to 4% of runs failed to trigger. We are actively worki"
       }
     ],
-    "last_statement_at": "2026-08-27T05:27:34.408785Z"
+    "last_statement_at": "2026-08-27T10:58:43.654004Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports an active incident: Disruption with GitHub Billing.",
-    "current_status": "operational",
-    "reports_24h": 111,
+    "summary": "GitHub Statuspage reports 2 active incidents. Latest: Incident with Copilot AI Model Providers.",
+    "current_status": "major outage",
+    "reports_24h": 103,
     "incidents": [
+      {
+        "title": "Incident with Copilot AI Model Providers",
+        "started_at": "2026-08-27T10:04:52.529Z",
+        "duration": "53m ongoing",
+        "acknowledgement": "Critical / Investigating",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/tx9qn4khd664"
+      },
       {
         "title": "Disruption with GitHub Billing",
         "started_at": "2026-08-26T23:37:20.579Z",
-        "duration": "5h 50m ongoing",
+        "duration": "11h 21m ongoing",
         "acknowledgement": "Minor / Investigating",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/5bn0vk444m1w"
@@ -173,7 +181,7 @@
       {
         "title": "Incident with Actions and Pull Requests",
         "started_at": "2026-08-26T23:01:37Z",
-        "duration": "1h 26m",
+        "duration": "11h 5m",
         "acknowledgement": "Yes"
       },
       {
@@ -211,90 +219,23 @@
         "started_at": "2026-08-24T14:01:35Z",
         "duration": "25m",
         "acknowledgement": "Yes"
-      },
-      {
-        "title": "Actions delays in starting runs",
-        "started_at": "2026-08-24T13:56:54.972Z",
-        "duration": "37m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/lyppgxbq1nyk"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Copilot AI Model Providers",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "GitHub Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "05:40",
-        "count": 3
-      },
-      {
-        "label": "06:00",
-        "count": 0
-      },
-      {
-        "label": "06:20",
-        "count": 2
-      },
-      {
-        "label": "06:40",
-        "count": 0
-      },
-      {
-        "label": "07:00",
-        "count": 1
-      },
-      {
-        "label": "07:20",
-        "count": 3
-      },
-      {
-        "label": "07:40",
-        "count": 1
-      },
-      {
-        "label": "08:00",
-        "count": 2
-      },
-      {
-        "label": "08:20",
-        "count": 0
-      },
-      {
-        "label": "08:40",
-        "count": 2
-      },
-      {
-        "label": "09:00",
-        "count": 3
-      },
-      {
-        "label": "09:20",
-        "count": 1
-      },
-      {
-        "label": "09:40",
-        "count": 3
-      },
-      {
-        "label": "10:00",
-        "count": 3
-      },
-      {
-        "label": "10:20",
-        "count": 1
-      },
-      {
-        "label": "10:40",
-        "count": 3
-      },
       {
         "label": "11:00",
         "count": 0
@@ -518,6 +459,70 @@
       {
         "label": "05:20",
         "count": 2
+      },
+      {
+        "label": "05:40",
+        "count": 0
+      },
+      {
+        "label": "06:00",
+        "count": 1
+      },
+      {
+        "label": "06:20",
+        "count": 3
+      },
+      {
+        "label": "06:40",
+        "count": 1
+      },
+      {
+        "label": "07:00",
+        "count": 2
+      },
+      {
+        "label": "07:20",
+        "count": 0
+      },
+      {
+        "label": "07:40",
+        "count": 2
+      },
+      {
+        "label": "08:00",
+        "count": 3
+      },
+      {
+        "label": "08:20",
+        "count": 1
+      },
+      {
+        "label": "08:40",
+        "count": 3
+      },
+      {
+        "label": "09:00",
+        "count": 0
+      },
+      {
+        "label": "09:20",
+        "count": 2
+      },
+      {
+        "label": "09:40",
+        "count": 0
+      },
+      {
+        "label": "10:00",
+        "count": 0
+      },
+      {
+        "label": "10:20",
+        "count": 2
+      },
+      {
+        "label": "10:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -526,14 +531,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-27T01:27:33-04:00"
+      "last_reviewed_at": "2026-08-27T06:58:42-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 111,
-        "last_reviewed_at": "2026-08-27T01:27:33-04:00"
+        "reports_24h": 103,
+        "last_reviewed_at": "2026-08-27T06:58:42-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -618,15 +623,22 @@
       },
       {
         "name": "Copilot AI Model Providers",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-08-24T07:58:41.598Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-08-27T10:04:52.576Z",
         "source": "GitHub Statuspage API"
       }
     ],
     "scheduled_maintenances": []
   },
   "reports": [
+    {
+      "title": "Incident with Copilot AI Model Providers",
+      "url": "https://www.githubstatus.com/incidents/tx9qn4khd664",
+      "published_at": "2026-08-27T10:04:52.529Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Critical / Investigating"
+    },
     {
       "title": "Disruption with GitHub Billing",
       "url": "https://www.githubstatus.com/incidents/5bn0vk444m1w",
@@ -675,13 +687,6 @@
       "published_at": "2026-08-24T14:01:35Z",
       "source": "StatusGator",
       "meta": "Yes"
-    },
-    {
-      "title": "Actions delays in starting runs",
-      "url": "https://www.githubstatus.com/incidents/lyppgxbq1nyk",
-      "published_at": "2026-08-24T13:56:54.972Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -690,52 +695,68 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-27T05:27:34.795361Z"
+      "published_at": "2026-08-27T10:58:43.856531Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-27T05:27:34.795361Z"
+      "published_at": "2026-08-27T10:58:43.856531Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-27T05:27:34.795361Z"
+      "published_at": "2026-08-27T10:58:43.856531Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-08-27T05:27:34.795361Z"
+      "published_at": "2026-08-27T10:58:43.856531Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-27T05:27:34.795361Z"
+      "published_at": "2026-08-27T10:58:43.856531Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-27T05:27:34.795361Z"
+      "published_at": "2026-08-27T10:58:43.856531Z"
     }
   ],
   "news": [
     {
-      "title": "GitHub Statuspage API: All Systems Operational",
+      "title": "GitHub Statuspage API: Partial System Outage",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-08-27T05:27:34.408785Z",
+      "published_at": "2026-08-27T10:58:43.654004Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: major"
+    },
+    {
+      "title": "Incident with Copilot AI Model Providers",
+      "url": "https://www.githubstatus.com/incidents/tx9qn4khd664#pps94dyf7p9y",
+      "published_at": "2026-08-27T10:43:00.946Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Investigating / We are experiencing degraded availability for the Kimi K3 model in Copilot products and IDE surfaces. This is due to an issue with an upstream model provider. While we work with them to resolve the issue, we recommend choosing another model"
+    },
+    {
+      "title": "Incident with Copilot AI Model Providers",
+      "url": "https://www.githubstatus.com/incidents/tx9qn4khd664#2fm99f66414t",
+      "published_at": "2026-08-27T10:04:52.621Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Investigating / We are investigating reports of degraded availability for Copilot AI Model Providers"
     },
     {
       "title": "Disruption with GitHub Billing",
@@ -776,22 +797,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We confirmed full recovery beginning at 23:58 UTC. Actions workflow runs and pull request merges are operating normally. We will now resolve the incident while continuing to monitor service health."
-    },
-    {
-      "title": "Incident with Actions and Pull Requests",
-      "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#q6yt44w2f09n",
-      "published_at": "2026-08-27T00:01:05.905Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We've applied mitigations and are seeing recovery in Actions workflow runs and blocked pull request merges. We're continuing to monitor for sustained health of merge commit creates before resolving."
-    },
-    {
-      "title": "Disruption with GitHub Billing",
-      "url": "https://www.githubstatus.com/incidents/5bn0vk444m1w#4ll1wsmnq927",
-      "published_at": "2026-08-26T23:42:06.271Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / We are currently investigating increased errors with billing services. Customers may observe failed billing budget page loads, and users of the Copilot CLI may observe failures starting or continuing sessions."
     }
   ],
   "social": [],
@@ -807,11 +812,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-27T05:27:32.997049Z",
+      "last_item_at": "2026-08-27T10:58:42.013254Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 205,
-      "fetched_at": "2026-08-27T05:27:32.997075Z",
+      "duration_ms": 246,
+      "fetched_at": "2026-08-27T10:58:42.013274Z",
       "cache_hit": false
     },
     {
@@ -825,11 +830,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-27T01:27:33-04:00",
+      "last_item_at": "2026-08-27T06:58:42-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1411,
-      "fetched_at": "2026-08-27T05:27:34.408534Z",
+      "duration_ms": 1640,
+      "fetched_at": "2026-08-27T10:58:43.653723Z",
       "cache_hit": false
     },
     {
@@ -843,17 +848,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-27T05:27:34.408785Z",
+      "last_item_at": "2026-08-27T10:58:43.654004Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 385,
-      "fetched_at": "2026-08-27T05:27:34.793853Z",
+      "duration_ms": 200,
+      "fetched_at": "2026-08-27T10:58:43.854885Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-27T05:27:34.795361Z",
+    "generated_at": "2026-08-27T10:58:43.856531Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -890,30 +895,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 205,
+          "duration_ms": 246,
           "cache_hit": false,
-          "at": "2026-08-27T05:27:32Z"
+          "at": "2026-08-27T10:58:41Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 236.2
+          "avg_duration_ms": 229.1
         },
         "metrics_7d": {
-          "runs": 201,
-          "ok": 201,
+          "runs": 196,
+          "ok": 196,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 251.1
+          "avg_duration_ms": 250.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-27T05:27:32Z",
+        "last_success_at": "2026-08-27T10:58:41Z",
         "last_failure_at": null
       },
       {
@@ -927,30 +932,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1411,
+          "duration_ms": 1640,
           "cache_hit": false,
-          "at": "2026-08-27T05:27:32Z"
+          "at": "2026-08-27T10:58:41Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1094.5
+          "avg_duration_ms": 1127.6
         },
         "metrics_7d": {
-          "runs": 201,
-          "ok": 201,
+          "runs": 196,
+          "ok": 196,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1101.3
+          "avg_duration_ms": 1102.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-27T05:27:32Z",
+        "last_success_at": "2026-08-27T10:58:41Z",
         "last_failure_at": null
       },
       {
@@ -964,58 +969,93 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 385,
+          "duration_ms": 200,
           "cache_hit": false,
-          "at": "2026-08-27T05:27:32Z"
+          "at": "2026-08-27T10:58:41Z"
         },
         "metrics_24h": {
-          "runs": 17,
-          "ok": 17,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 296.3
+          "avg_duration_ms": 285.9
         },
         "metrics_7d": {
-          "runs": 201,
-          "ok": 201,
+          "runs": 196,
+          "ok": 196,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 310.6
+          "avg_duration_ms": 311.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-27T05:27:32Z",
+        "last_success_at": "2026-08-27T10:58:41Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-27T05:27:34.795361Z",
+    "generated_at": "2026-08-27T10:58:43.856531Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "a22d1eb282333ffe",
+          "title": "Incident with Copilot AI Model Providers",
+          "started_at": "2026-08-27T10:04:52.529Z",
+          "duration": "53m ongoing",
+          "acknowledgement": "Critical / Investigating",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [
         {
           "id": "bfbdd0c6633d7be5",
           "title": "Disruption with GitHub Billing",
           "started_at": "2026-08-26T23:37:20.579Z",
-          "duration": "5h 50m ongoing",
+          "duration": "11h 21m ongoing",
           "acknowledgement": "Minor / Investigating",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "61091d72f06098d1",
+          "title": "Incident with Actions and Pull Requests",
+          "started_at": "2026-08-26T23:01:37Z",
+          "duration": "11h 5m",
+          "acknowledgement": "Yes",
           "url": "https://www.githubstatus.com/"
         }
       ],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "a445ad83b344fe7f",
+          "title": "Actions delays in starting runs",
+          "started_at": "2026-08-24T13:56:54.972Z",
+          "duration": "37m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "62a884ae728c8aab",
+          "title": "Incident with Copilot AI Model Providers",
+          "url": "https://www.githubstatus.com/incidents/tx9qn4khd664",
+          "published_at": "2026-08-27T10:04:52.529Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Critical / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 1,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 1,
+      "updated_incidents": 2,
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
