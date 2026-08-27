@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-26T23:49:05.493179Z",
+  "generated_at": "2026-08-27T00:32:00.972861Z",
   "health": "ok",
   "analytics": {
     "severity_key": "degraded",
@@ -13,42 +13,42 @@
       "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.18,
-      "profile_adjustment": 0.0
+      "support_score": 0.0,
+      "profile_adjustment": 2.15
     },
     "signal_metrics": {
-      "reports_24h": 110,
+      "reports_24h": 112,
       "recent_incidents_6h": 3,
       "recent_incidents_24h": 6,
       "cross_source": {
         "report_score": 0.0,
-        "news_score": 0.18,
+        "news_score": 0.0,
         "social_score": 0.0,
-        "combined_score": 0.18,
+        "combined_score": 0.0,
         "report_hits_24h": 0
       }
     },
     "safeguards": {
-      "operational_dampening": false,
+      "operational_dampening": true,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "degraded",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
+      "official_status": "operational",
       "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
@@ -69,15 +69,55 @@
     }
   },
   "official": {
-    "summary": "GitHub Statuspage API: Partially Degraded Service",
+    "summary": "GitHub Statuspage API: All Systems Operational",
     "updates": [
       {
-        "title": "GitHub Statuspage API: Partially Degraded Service",
+        "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-08-26T23:49:05.103021Z",
+        "published_at": "2026-08-27T00:32:00.703738Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: minor"
+        "meta": "Indicator: none"
+      },
+      {
+        "title": "Disruption with GitHub Billing",
+        "url": "https://www.githubstatus.com/incidents/5bn0vk444m1w#qlzv4w3fqqpw",
+        "published_at": "2026-08-27T00:31:22.335Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We've applied a mitigation to unblock Copilot usage and have observed recovery for this particular impact. We're continuing to investigate and apply mitigations for the billing page disruption while monitoring to ensure Copilot remains reco"
+      },
+      {
+        "title": "Incident with Actions and Pull Requests",
+        "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#zc9xw0lnnrm1",
+        "published_at": "2026-08-27T00:26:44.772Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
+      },
+      {
+        "title": "Incident with Actions and Pull Requests",
+        "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#jtxtn3by7rdw",
+        "published_at": "2026-08-27T00:26:05.990Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Resolved / The degradation affecting Actions and Pull Requests has been mitigated. We are monitoring to ensure stability."
+      },
+      {
+        "title": "Incident with Actions and Pull Requests",
+        "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#lqxrjbkpnwb4",
+        "published_at": "2026-08-27T00:25:58.933Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Resolved / We confirmed full recovery beginning at 23:58 UTC. Actions workflow runs and pull request merges are operating normally. We will now resolve the incident while continuing to monitor service health."
+      },
+      {
+        "title": "Incident with Actions and Pull Requests",
+        "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#q6yt44w2f09n",
+        "published_at": "2026-08-27T00:01:05.905Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Resolved / We've applied mitigations and are seeing recovery in Actions workflow runs and blocked pull request merges. We're continuing to monitor for sustained health of merge commit creates before resolving."
       },
       {
         "title": "Disruption with GitHub Billing",
@@ -101,7 +141,7 @@
         "published_at": "2026-08-26T22:57:08.551Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / We are investigating elevated delays and timeouts affecting Actions workflow runs triggered by pull request events. 20% of actions runs have delayed starts of more than 5 minutes and up to 4% of runs failed to trigger. We are actively worki"
+        "meta": "Investigating / Minor / Resolved / We are investigating elevated delays and timeouts affecting Actions workflow runs triggered by pull request events. 20% of actions runs have delayed starts of more than 5 minutes and up to 4% of runs failed to trigger. We are actively worki"
       },
       {
         "title": "Incident with Actions and Pull Requests",
@@ -109,63 +149,23 @@
         "published_at": "2026-08-26T22:56:31.878Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / We are investigating reports of degraded performance for Actions and Pull Requests"
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/y1t7p9fzrlj2#8vbzryxg9736",
-        "published_at": "2026-08-26T18:01:30.665Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Critical / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/y1t7p9fzrlj2#q54dtb2mrrlj",
-        "published_at": "2026-08-26T18:00:48.674Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Critical / Resolved / All inbound queues have recovered and Actions is operating as expected. 3.7% of jobs assigned to larger runners during the early stage of this incident are stuck waiting for runner assignment. Those will be canceled within the hour. Other r"
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/y1t7p9fzrlj2#5pd1l68s4p5z",
-        "published_at": "2026-08-26T17:54:33.454Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Critical / Resolved / The degradation affecting Actions has been mitigated. We are monitoring to ensure stability."
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/y1t7p9fzrlj2#5707444t9736",
-        "published_at": "2026-08-26T17:32:22.120Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / We are continuing to observe recovery and expect actions inbound queues to be back to normal in <30min. Work will continue to flow through the system subject to per-customer concurrency limits."
-      },
-      {
-        "title": "Incident with Actions",
-        "url": "https://www.githubstatus.com/incidents/y1t7p9fzrlj2#ynrl28fq82hm",
-        "published_at": "2026-08-26T16:50:28.428Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / We are continuing to observe recovery and delayed queues are burning down. Some customers will continue to see increased delays until all throttled work has been completed - we expect this within the next hour."
+        "meta": "Investigating / Minor / Resolved / We are investigating reports of degraded performance for Actions and Pull Requests"
       }
     ],
-    "last_statement_at": "2026-08-26T23:49:05.103021Z"
+    "last_statement_at": "2026-08-27T00:32:00.703738Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports 2 active incidents. Latest: Disruption with GitHub Billing.",
-    "current_status": "degraded",
-    "reports_24h": 110,
+    "summary": "GitHub Statuspage reports an active incident: Disruption with GitHub Billing.",
+    "current_status": "operational",
+    "reports_24h": 112,
     "incidents": [
       {
         "title": "Disruption with GitHub Billing",
         "started_at": "2026-08-26T23:37:20.579Z",
-        "duration": "11m ongoing",
+        "duration": "54m ongoing",
         "acknowledgement": "Minor / Investigating",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/5bn0vk444m1w"
@@ -173,14 +173,14 @@
       {
         "title": "Incident with Actions and Pull Requests",
         "started_at": "2026-08-26T23:01:37Z",
-        "duration": "",
+        "duration": "1h 26m",
         "acknowledgement": "Yes"
       },
       {
         "title": "Incident with Actions and Pull Requests",
         "started_at": "2026-08-26T22:56:31.800Z",
-        "duration": "52m ongoing",
-        "acknowledgement": "Minor / Investigating",
+        "duration": "1h 30m",
+        "acknowledgement": "Minor / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0"
       },
@@ -221,33 +221,16 @@
         "url": "https://www.githubstatus.com/incidents/lyppgxbq1nyk"
       }
     ],
-    "top_reported_issues": [
-      {
-        "label": "Pull Requests",
-        "count": 1
-      },
-      {
-        "label": "Actions",
-        "count": 1
-      }
-    ],
+    "top_reported_issues": [],
     "top_reported_issues_meta": {
       "source": "GitHub Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "none"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "00:00",
-        "count": 2
-      },
-      {
-        "label": "00:20",
-        "count": 0
-      },
       {
         "label": "00:40",
         "count": 2
@@ -527,6 +510,14 @@
       {
         "label": "23:40",
         "count": 3
+      },
+      {
+        "label": "00:00",
+        "count": 3
+      },
+      {
+        "label": "00:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -535,14 +526,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-08-26T19:49:04-04:00"
+      "last_reviewed_at": "2026-08-26T20:31:59-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 110,
-        "last_reviewed_at": "2026-08-26T19:49:04-04:00"
+        "reports_24h": 112,
+        "last_reviewed_at": "2026-08-26T20:31:59-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -585,16 +576,16 @@
       },
       {
         "name": "Pull Requests",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-08-26T22:56:31.832Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-08-27T00:26:05.938Z",
         "source": "GitHub Statuspage API"
       },
       {
         "name": "Actions",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-08-26T22:56:31.846Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-08-27T00:26:05.957Z",
         "source": "GitHub Statuspage API"
       },
       {
@@ -655,7 +646,7 @@
       "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0",
       "published_at": "2026-08-26T22:56:31.800Z",
       "source": "GitHub Statuspage API",
-      "meta": "Minor / Investigating"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Incident with Actions",
@@ -699,52 +690,92 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-08-26T23:49:05.493179Z"
+      "published_at": "2026-08-27T00:32:00.972861Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-08-26T23:49:05.493179Z"
+      "published_at": "2026-08-27T00:32:00.972861Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-08-26T23:49:05.493179Z"
+      "published_at": "2026-08-27T00:32:00.972861Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-08-26T23:49:05.493179Z"
+      "published_at": "2026-08-27T00:32:00.972861Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-08-26T23:49:05.493179Z"
+      "published_at": "2026-08-27T00:32:00.972861Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-08-26T23:49:05.493179Z"
+      "published_at": "2026-08-27T00:32:00.972861Z"
     }
   ],
   "news": [
     {
-      "title": "GitHub Statuspage API: Partially Degraded Service",
+      "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-08-26T23:49:05.103021Z",
+      "published_at": "2026-08-27T00:32:00.703738Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: minor"
+      "meta": "Indicator: none"
+    },
+    {
+      "title": "Disruption with GitHub Billing",
+      "url": "https://www.githubstatus.com/incidents/5bn0vk444m1w#qlzv4w3fqqpw",
+      "published_at": "2026-08-27T00:31:22.335Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We've applied a mitigation to unblock Copilot usage and have observed recovery for this particular impact. We're continuing to investigate and apply mitigations for the billing page disruption while monitoring to ensure Copilot remains reco"
+    },
+    {
+      "title": "Incident with Actions and Pull Requests",
+      "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#zc9xw0lnnrm1",
+      "published_at": "2026-08-27T00:26:44.772Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
+    },
+    {
+      "title": "Incident with Actions and Pull Requests",
+      "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#jtxtn3by7rdw",
+      "published_at": "2026-08-27T00:26:05.990Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Resolved / The degradation affecting Actions and Pull Requests has been mitigated. We are monitoring to ensure stability."
+    },
+    {
+      "title": "Incident with Actions and Pull Requests",
+      "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#lqxrjbkpnwb4",
+      "published_at": "2026-08-27T00:25:58.933Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Resolved / We confirmed full recovery beginning at 23:58 UTC. Actions workflow runs and pull request merges are operating normally. We will now resolve the incident while continuing to monitor service health."
+    },
+    {
+      "title": "Incident with Actions and Pull Requests",
+      "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#q6yt44w2f09n",
+      "published_at": "2026-08-27T00:01:05.905Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Resolved / We've applied mitigations and are seeing recovery in Actions workflow runs and blocked pull request merges. We're continuing to monitor for sustained health of merge commit creates before resolving."
     },
     {
       "title": "Disruption with GitHub Billing",
@@ -761,46 +792,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Investigating / We are investigating reports of impacted performance for some GitHub services."
-    },
-    {
-      "title": "Incident with Actions and Pull Requests",
-      "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#pgbdmtyw5p3b",
-      "published_at": "2026-08-26T22:57:08.551Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / We are investigating elevated delays and timeouts affecting Actions workflow runs triggered by pull request events. 20% of actions runs have delayed starts of more than 5 minutes and up to 4% of runs failed to trigger. We are actively worki"
-    },
-    {
-      "title": "Incident with Actions and Pull Requests",
-      "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0#hb14drnlgj26",
-      "published_at": "2026-08-26T22:56:31.878Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / We are investigating reports of degraded performance for Actions and Pull Requests"
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/y1t7p9fzrlj2#8vbzryxg9736",
-      "published_at": "2026-08-26T18:01:30.665Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Critical / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/y1t7p9fzrlj2#q54dtb2mrrlj",
-      "published_at": "2026-08-26T18:00:48.674Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Critical / Resolved / All inbound queues have recovered and Actions is operating as expected. 3.7% of jobs assigned to larger runners during the early stage of this incident are stuck waiting for runner assignment. Those will be canceled within the hour. Other r"
-    },
-    {
-      "title": "Incident with Actions",
-      "url": "https://www.githubstatus.com/incidents/y1t7p9fzrlj2#5pd1l68s4p5z",
-      "published_at": "2026-08-26T17:54:33.454Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Critical / Resolved / The degradation affecting Actions has been mitigated. We are monitoring to ensure stability."
     }
   ],
   "social": [],
@@ -816,11 +807,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-08-26T23:49:04.472330Z",
+      "last_item_at": "2026-08-27T00:31:59.346878Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 230,
-      "fetched_at": "2026-08-26T23:49:04.472354Z",
+      "duration_ms": 295,
+      "fetched_at": "2026-08-27T00:31:59.346899Z",
       "cache_hit": false
     },
     {
@@ -834,11 +825,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-08-26T19:49:04-04:00",
+      "last_item_at": "2026-08-26T20:31:59-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 630,
-      "fetched_at": "2026-08-26T23:49:05.102800Z",
+      "duration_ms": 1356,
+      "fetched_at": "2026-08-27T00:32:00.703475Z",
       "cache_hit": false
     },
     {
@@ -852,17 +843,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-08-26T23:49:05.103021Z",
+      "last_item_at": "2026-08-27T00:32:00.703738Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 388,
-      "fetched_at": "2026-08-26T23:49:05.491857Z",
+      "duration_ms": 267,
+      "fetched_at": "2026-08-27T00:32:00.971279Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-08-26T23:49:05.493179Z",
+    "generated_at": "2026-08-27T00:32:00.972861Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -899,30 +890,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 230,
+          "duration_ms": 295,
           "cache_hit": false,
-          "at": "2026-08-26T23:49:04Z"
+          "at": "2026-08-27T00:31:59Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 21,
+          "ok": 21,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 243.5
+          "avg_duration_ms": 246.0
         },
         "metrics_7d": {
-          "runs": 203,
-          "ok": 203,
+          "runs": 204,
+          "ok": 204,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 250.3
+          "avg_duration_ms": 250.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-26T23:49:04Z",
+        "last_success_at": "2026-08-27T00:31:59Z",
         "last_failure_at": null
       },
       {
@@ -936,30 +927,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 630,
+          "duration_ms": 1356,
           "cache_hit": false,
-          "at": "2026-08-26T23:49:04Z"
+          "at": "2026-08-27T00:31:59Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 21,
+          "ok": 21,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1120.6
+          "avg_duration_ms": 1131.8
         },
         "metrics_7d": {
-          "runs": 203,
-          "ok": 203,
+          "runs": 204,
+          "ok": 204,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1102.8
+          "avg_duration_ms": 1104.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-26T23:49:04Z",
+        "last_success_at": "2026-08-27T00:31:59Z",
         "last_failure_at": null
       },
       {
@@ -973,43 +964,44 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 388,
+          "duration_ms": 267,
           "cache_hit": false,
-          "at": "2026-08-26T23:49:04Z"
+          "at": "2026-08-27T00:31:59Z"
         },
         "metrics_24h": {
-          "runs": 20,
-          "ok": 20,
+          "runs": 21,
+          "ok": 21,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 281.6
+          "avg_duration_ms": 280.9
         },
         "metrics_7d": {
-          "runs": 203,
-          "ok": 203,
+          "runs": 204,
+          "ok": 204,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 309.2
+          "avg_duration_ms": 309.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-08-26T23:49:04Z",
+        "last_success_at": "2026-08-27T00:31:59Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-08-26T23:49:05.493179Z",
+    "generated_at": "2026-08-27T00:32:00.972861Z",
     "incidents": {
-      "new": [
+      "new": [],
+      "updated": [
         {
           "id": "bfbdd0c6633d7be5",
           "title": "Disruption with GitHub Billing",
           "started_at": "2026-08-26T23:37:20.579Z",
-          "duration": "11m ongoing",
+          "duration": "54m ongoing",
           "acknowledgement": "Minor / Investigating",
           "url": "https://www.githubstatus.com/"
         },
@@ -1017,7 +1009,7 @@
           "id": "61091d72f06098d1",
           "title": "Incident with Actions and Pull Requests",
           "started_at": "2026-08-26T23:01:37Z",
-          "duration": "",
+          "duration": "1h 26m",
           "acknowledgement": "Yes",
           "url": "https://www.githubstatus.com/"
         },
@@ -1025,72 +1017,21 @@
           "id": "42e1e5ea8e5d7b50",
           "title": "Incident with Actions and Pull Requests",
           "started_at": "2026-08-26T22:56:31.800Z",
-          "duration": "52m ongoing",
-          "acknowledgement": "Minor / Investigating",
+          "duration": "1h 30m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://www.githubstatus.com/"
         }
       ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "31f2eafc41199dcf",
-          "title": "Elevated errors on Fable 5 due to upstream provider",
-          "started_at": "2026-08-24T07:16:33Z",
-          "duration": "45m",
-          "acknowledgement": "Yes",
-          "url": "https://www.githubstatus.com/"
-        },
-        {
-          "id": "8f3b8f98a24f6aa5",
-          "title": "Elevated errors on Fable 5 due to upstream provider",
-          "started_at": "2026-08-24T07:12:05.373Z",
-          "duration": "46m",
-          "acknowledgement": "Major / Resolved",
-          "url": "https://www.githubstatus.com/"
-        },
-        {
-          "id": "f027c8e48a9fca5d",
-          "title": "Degraded Git Operations over SSH",
-          "started_at": "2026-08-21T14:00:00.000Z",
-          "duration": "0m",
-          "acknowledgement": "None / Resolved",
-          "url": "https://www.githubstatus.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "1ae71916409ace92",
-          "title": "Disruption with GitHub Billing",
-          "url": "https://www.githubstatus.com/incidents/5bn0vk444m1w",
-          "published_at": "2026-08-26T23:37:20.579Z",
-          "source": "GitHub Statuspage API",
-          "meta": "Minor / Investigating"
-        },
-        {
-          "id": "21033644e3e2c6e2",
-          "title": "Incident with Actions and Pull Requests",
-          "url": "https://www.githubstatus.com/#2026-08-26T23:01:37Z",
-          "published_at": "2026-08-26T23:01:37Z",
-          "source": "StatusGator",
-          "meta": "Yes"
-        },
-        {
-          "id": "3e42f9ceb656c9c2",
-          "title": "Incident with Actions and Pull Requests",
-          "url": "https://www.githubstatus.com/incidents/kfspvrz14xr0",
-          "published_at": "2026-08-26T22:56:31.800Z",
-          "source": "GitHub Statuspage API",
-          "meta": "Minor / Investigating"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 3,
-      "updated_incidents": 0,
-      "resolved_incidents": 3,
-      "new_reports": 3
+      "new_incidents": 0,
+      "updated_incidents": 3,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
