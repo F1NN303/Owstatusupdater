@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-09-01T21:56:52.212358Z",
+  "generated_at": "2026-09-01T23:50:52.116157Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "degraded",
+    "severity_score": 6,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
@@ -13,29 +13,29 @@
       "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.4,
-      "support_score": 1.68,
+      "support_score": 1.629,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 108,
-      "recent_incidents_6h": 2,
-      "recent_incidents_24h": 2,
+      "reports_24h": 106,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 3,
       "cross_source": {
-        "report_score": 0.618,
-        "news_score": 1.062,
+        "report_score": 0.468,
+        "news_score": 1.161,
         "social_score": 0.0,
-        "combined_score": 1.68,
+        "combined_score": 1.629,
         "report_hits_24h": 2
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": false,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "minor",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 4,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: All Systems Operational",
+    "summary": "Claude Statuspage API: Partially Degraded Service",
     "updates": [
       {
-        "title": "Claude Statuspage API: All Systems Operational",
+        "title": "Claude Statuspage API: Partially Degraded Service",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-09-01T21:56:51.728837Z",
+        "published_at": "2026-09-01T23:50:51.507738Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Delays in credit purchases",
+        "url": "https://status.anthropic.com/incidents/620swtqyn24k#rrq7fll085b2",
+        "published_at": "2026-09-01T23:26:49.062Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We have identified and resolved an issue where users who reached a balance of zero usage credits saw delays in the availability of newly purchased credits, resulting in some requests to the Claude API receiving 'credit balance is too low' e"
       },
       {
         "title": "Degraded performance on platform.claude.com and Claude for Microsoft Office 365",
@@ -141,26 +149,26 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / This issue has been resolved."
-      },
-      {
-        "title": "Degraded performance on claude.ai",
-        "url": "https://status.anthropic.com/incidents/9jrp5rtyzrf6#ybqyn9xy5rws",
-        "published_at": "2026-08-31T17:32:58.901Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We have seen success rates return to normal for requests on Claude.ai and are monitoring closely."
       }
     ],
-    "last_statement_at": "2026-09-01T21:56:51.728837Z"
+    "last_statement_at": "2026-09-01T23:50:51.507738Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 108,
+    "summary": "Claude Statuspage reports an active incident: Delays in credit purchases.",
+    "current_status": "degraded",
+    "reports_24h": 106,
     "incidents": [
+      {
+        "title": "Delays in credit purchases",
+        "started_at": "2026-09-01T23:26:48.992Z",
+        "duration": "24m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "Claude Statuspage API",
+        "url": "https://status.anthropic.com/incidents/620swtqyn24k"
+      },
       {
         "title": "Degraded performance on platform.claude.com and Claude for Microsoft Office 365",
         "started_at": "2026-09-01T17:05:11.462Z",
@@ -216,51 +224,24 @@
         "acknowledgement": "Minor / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/w43j3xmngxgj"
-      },
-      {
-        "title": "Elevated errors for multiple models",
-        "started_at": "2026-08-24T05:06:39.493Z",
-        "duration": "3h 24m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/vgz5psbjmt1h"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Claude Console (platform.claude.com)",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "summary_origin": "Claude Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "22:00",
-        "count": 2
-      },
-      {
-        "label": "22:20",
-        "count": 0
-      },
-      {
-        "label": "22:40",
-        "count": 2
-      },
-      {
-        "label": "23:00",
-        "count": 3
-      },
-      {
-        "label": "23:20",
-        "count": 1
-      },
-      {
-        "label": "23:40",
-        "count": 3
-      },
       {
         "label": "00:00",
         "count": 3
@@ -524,6 +505,30 @@
       {
         "label": "21:40",
         "count": 2
+      },
+      {
+        "label": "22:00",
+        "count": 3
+      },
+      {
+        "label": "22:20",
+        "count": 1
+      },
+      {
+        "label": "22:40",
+        "count": 3
+      },
+      {
+        "label": "23:00",
+        "count": 0
+      },
+      {
+        "label": "23:20",
+        "count": 2
+      },
+      {
+        "label": "23:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -532,14 +537,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-01T17:56:50-04:00"
+      "last_reviewed_at": "2026-09-01T23:50:50Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 108,
-        "last_reviewed_at": "2026-09-01T17:56:50-04:00"
+        "reports_24h": 106,
+        "last_reviewed_at": "2026-09-01T23:50:50Z"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -553,9 +558,9 @@
       },
       {
         "name": "Claude Console (platform.claude.com)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-09-01T18:07:03.341Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-09-01T23:26:49.023Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -590,6 +595,13 @@
     "scheduled_maintenances": []
   },
   "reports": [
+    {
+      "title": "Delays in credit purchases",
+      "url": "https://status.anthropic.com/incidents/620swtqyn24k",
+      "published_at": "2026-09-01T23:26:48.992Z",
+      "source": "Claude Statuspage API",
+      "meta": "Minor / Monitoring"
+    },
     {
       "title": "Degraded performance on platform.claude.com and Claude for Microsoft Office 365",
       "url": "https://status.anthropic.com/incidents/3g3d55q6vk3h",
@@ -638,13 +650,6 @@
       "published_at": "2026-08-24T17:12:42.200Z",
       "source": "Claude Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Elevated errors for multiple models",
-      "url": "https://status.anthropic.com/incidents/vgz5psbjmt1h",
-      "published_at": "2026-08-24T05:06:39.493Z",
-      "source": "Claude Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -653,45 +658,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-01T21:56:52.212358Z"
+      "published_at": "2026-09-01T23:50:52.116157Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-01T21:56:52.212358Z"
+      "published_at": "2026-09-01T23:50:52.116157Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-01T21:56:52.212358Z"
+      "published_at": "2026-09-01T23:50:52.116157Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-01T21:56:52.212358Z"
+      "published_at": "2026-09-01T23:50:52.116157Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-01T21:56:52.212358Z"
+      "published_at": "2026-09-01T23:50:52.116157Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: All Systems Operational",
+      "title": "Claude Statuspage API: Partially Degraded Service",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-09-01T21:56:51.728837Z",
+      "published_at": "2026-09-01T23:50:51.507738Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Delays in credit purchases",
+      "url": "https://status.anthropic.com/incidents/620swtqyn24k#rrq7fll085b2",
+      "published_at": "2026-09-01T23:26:49.062Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We have identified and resolved an issue where users who reached a balance of zero usage credits saw delays in the availability of newly purchased credits, resulting in some requests to the Claude API receiving 'credit balance is too low' e"
     },
     {
       "title": "Degraded performance on platform.claude.com and Claude for Microsoft Office 365",
@@ -740,14 +753,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / The issue affecting Claude Code has been resolved. Impact occurred from 16∶55 to 19∶16 UTC."
-    },
-    {
-      "title": "Degraded performance on claude.ai and Claude Code",
-      "url": "https://status.anthropic.com/incidents/r82kdk0m7vqh#vmz33zbbtqn8",
-      "published_at": "2026-08-31T19:21:32.227Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are investigating reports of degraded performance affecting Claude in Slack, Claude Code on the web, and Code Review. We will provide an update as soon as possible."
     }
   ],
   "social": [],
@@ -763,11 +768,11 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-09-01T21:56:50.478305Z",
+      "last_item_at": "2026-09-01T23:50:50.649509Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 391,
-      "fetched_at": "2026-09-01T21:56:50.478332Z",
+      "duration_ms": 121,
+      "fetched_at": "2026-09-01T23:50:50.649538Z",
       "cache_hit": false
     },
     {
@@ -781,11 +786,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-01T17:56:50-04:00",
+      "last_item_at": "2026-09-01T23:50:50Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1250,
-      "fetched_at": "2026-09-01T21:56:51.728703Z",
+      "duration_ms": 857,
+      "fetched_at": "2026-09-01T23:50:51.507502Z",
       "cache_hit": false
     },
     {
@@ -799,17 +804,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-01T21:56:51.728837Z",
+      "last_item_at": "2026-09-01T23:50:51.507738Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 482,
-      "fetched_at": "2026-09-01T21:56:52.211460Z",
+      "duration_ms": 606,
+      "fetched_at": "2026-09-01T23:50:52.114503Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-01T21:56:52.212358Z",
+    "generated_at": "2026-09-01T23:50:52.116157Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -831,7 +836,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -846,9 +851,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 391,
+          "duration_ms": 121,
           "cache_hit": false,
-          "at": "2026-09-01T21:56:50Z"
+          "at": "2026-09-01T23:50:50Z"
         },
         "metrics_24h": {
           "runs": 7,
@@ -857,19 +862,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 221.6
+          "avg_duration_ms": 211.4
         },
         "metrics_7d": {
-          "runs": 68,
-          "ok": 68,
+          "runs": 66,
+          "ok": 66,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 247.3
+          "avg_duration_ms": 245.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-01T21:56:50Z",
+        "last_success_at": "2026-09-01T23:50:50Z",
         "last_failure_at": null
       },
       {
@@ -883,9 +888,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1250,
+          "duration_ms": 857,
           "cache_hit": false,
-          "at": "2026-09-01T21:56:50Z"
+          "at": "2026-09-01T23:50:50Z"
         },
         "metrics_24h": {
           "runs": 7,
@@ -894,19 +899,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1038.9
+          "avg_duration_ms": 1053.6
         },
         "metrics_7d": {
-          "runs": 68,
-          "ok": 68,
+          "runs": 66,
+          "ok": 66,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1069.2
+          "avg_duration_ms": 1060.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-01T21:56:50Z",
+        "last_success_at": "2026-09-01T23:50:50Z",
         "last_failure_at": null
       },
       {
@@ -920,9 +925,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 482,
+          "duration_ms": 606,
           "cache_hit": false,
-          "at": "2026-09-01T21:56:50Z"
+          "at": "2026-09-01T23:50:50Z"
         },
         "metrics_24h": {
           "runs": 7,
@@ -931,35 +936,38 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 423.0
+          "avg_duration_ms": 450.1
         },
         "metrics_7d": {
-          "runs": 68,
-          "ok": 67,
+          "runs": 66,
+          "ok": 65,
           "stale": 1,
           "success_rate": 98.5,
           "stale_rate": 1.5,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 451.6
+          "avg_duration_ms": 457.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-01T21:56:50Z",
+        "last_success_at": "2026-09-01T23:50:50Z",
         "last_failure_at": "2026-08-27T20:58:20Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-01T21:56:52.212358Z",
+    "generated_at": "2026-09-01T23:50:52.116157Z",
     "incidents": {
       "new": [
         {
-          "id": "69122a70054ce9a7",
-          "title": "Errors logging into Claude.ai",
-          "started_at": "2026-08-24T17:12:42.200Z",
-          "duration": "3m",
-          "acknowledgement": "Minor / Resolved",
+          "id": "b94ebb6bcbd0035f",
+          "title": "Delays in credit purchases",
+          "started_at": "2026-09-01T23:26:48.992Z",
+          "duration": "24m ongoing",
+          "acknowledgement": "Minor / Monitoring",
           "url": "https://status.anthropic.com/"
-        },
+        }
+      ],
+      "updated": [],
+      "resolved": [
         {
           "id": "0c6f8dd80999c034",
           "title": "Elevated errors for multiple models",
@@ -968,52 +976,25 @@
           "acknowledgement": "Major / Resolved",
           "url": "https://status.anthropic.com/"
         }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "b22db6f192ae9e65",
-          "title": "Degraded performance on platform.claude.com and Claude for Microsoft Office 365",
-          "started_at": "2026-09-01T17:08:15Z",
-          "duration": "1h",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.anthropic.com/"
-        },
-        {
-          "id": "0cd109a44580b2e9",
-          "title": "Degraded performance on claude.ai",
-          "started_at": "2026-09-01T16:03:11Z",
-          "duration": "20m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.anthropic.com/"
-        }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "7f125ef7681d3af7",
-          "title": "Errors logging into Claude.ai",
-          "url": "https://status.anthropic.com/incidents/w43j3xmngxgj",
-          "published_at": "2026-08-24T17:12:42.200Z",
+          "id": "37e4f8ee0a87cdde",
+          "title": "Delays in credit purchases",
+          "url": "https://status.anthropic.com/incidents/620swtqyn24k",
+          "published_at": "2026-09-01T23:26:48.992Z",
           "source": "Claude Statuspage API",
-          "meta": "Minor / Resolved"
-        },
-        {
-          "id": "d57703473bb5a9ef",
-          "title": "Elevated errors for multiple models",
-          "url": "https://status.anthropic.com/incidents/vgz5psbjmt1h",
-          "published_at": "2026-08-24T05:06:39.493Z",
-          "source": "Claude Statuspage API",
-          "meta": "Major / Resolved"
+          "meta": "Minor / Monitoring"
         }
       ]
     },
     "summary": {
-      "new_incidents": 2,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
