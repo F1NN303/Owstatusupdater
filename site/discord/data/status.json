@@ -1,69 +1,69 @@
 {
-  "generated_at": "2026-09-03T14:35:26.027696Z",
+  "generated_at": "2026-09-03T14:54:29.650548Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "discord-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.85,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "support_score": 1.058,
+      "profile_adjustment": 1.65
     },
     "signal_metrics": {
-      "reports_24h": 149,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 2,
+      "reports_24h": 150,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 3,
       "cross_source": {
-        "report_score": 0.0,
-        "news_score": 0.0,
+        "report_score": 0.598,
+        "news_score": 0.46,
         "social_score": 0.0,
-        "combined_score": 0.0,
-        "report_hits_24h": 0
+        "combined_score": 1.058,
+        "report_hits_24h": 1
       }
     },
     "safeguards": {
       "operational_dampening": true,
-      "cross_source_guard": true,
+      "cross_source_guard": false,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Discord Statuspage API: All Systems Operational",
         "url": "https://discordstatus.com/",
-        "published_at": "2026-09-03T14:35:25.386696Z",
+        "published_at": "2026-09-03T14:54:28.967981Z",
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Some servers unavailable",
+        "url": "https://discordstatus.com/incidents/lf84xp6q5qjc#pqt58bwj0lrd",
+        "published_at": "2026-09-03T07:35:27.315-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / Some servers may appear unavailable in the client. We are investigating"
       },
       {
         "title": "Voice endpoint selection issues",
@@ -141,26 +149,26 @@
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Major / Resolved / We're investigating an issue where some servers are offline."
-      },
-      {
-        "title": "Some servers and other services (voice calls, activities) not available for some users",
-        "url": "https://discordstatus.com/incidents/xpz8zbrdkgs2#4wzqq88121lk",
-        "published_at": "2026-08-31T17:49:17.176-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / This incident has been resolved."
       }
     ],
-    "last_statement_at": "2026-09-03T14:35:25.386696Z"
+    "last_statement_at": "2026-09-03T14:54:28.967981Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://discordstatus.com/",
-    "summary": "Discord Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "Discord Statuspage reports an active incident: Some servers unavailable.",
     "current_status": "operational",
-    "reports_24h": 149,
+    "reports_24h": 150,
     "incidents": [
+      {
+        "title": "Some servers unavailable",
+        "started_at": "2026-09-03T07:35:27.281-07:00",
+        "duration": "19m ongoing",
+        "acknowledgement": "Major / Investigating",
+        "source": "Discord Statuspage API",
+        "url": "https://discordstatus.com/incidents/lf84xp6q5qjc"
+      },
       {
         "title": "Voice endpoint selection issues",
         "started_at": "2026-09-02T16:26:42.223-07:00",
@@ -216,14 +224,6 @@
         "acknowledgement": "Major / Resolved",
         "source": "Discord Statuspage API",
         "url": "https://discordstatus.com/incidents/0gz6pdq1c141"
-      },
-      {
-        "title": "unable to establish voice connection",
-        "started_at": "2026-07-22T16:32:44.340-07:00",
-        "duration": "25m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Discord Statuspage API",
-        "url": "https://discordstatus.com/incidents/g196lnx3h2cz"
       }
     ],
     "top_reported_issues": [],
@@ -237,10 +237,6 @@
     "summary_origin": "Discord Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "14:40",
-        "count": 1
-      },
       {
         "label": "15:00",
         "count": 2
@@ -524,6 +520,10 @@
       {
         "label": "14:20",
         "count": 0
+      },
+      {
+        "label": "14:40",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -532,14 +532,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-03T09:35:24-05:00"
+      "last_reviewed_at": "2026-09-03T14:54:28Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 149,
-        "last_reviewed_at": "2026-09-03T09:35:24-05:00"
+        "reports_24h": 150,
+        "last_reviewed_at": "2026-09-03T14:54:28Z"
       }
     ],
     "current_status_origin": "Discord Statuspage API",
@@ -780,6 +780,13 @@
   },
   "reports": [
     {
+      "title": "Some servers unavailable",
+      "url": "https://discordstatus.com/incidents/lf84xp6q5qjc",
+      "published_at": "2026-09-03T07:35:27.281-07:00",
+      "source": "Discord Statuspage API",
+      "meta": "Major / Investigating"
+    },
+    {
       "title": "Voice endpoint selection issues",
       "url": "https://discordstatus.com/incidents/h3xfmqrqhqw3",
       "published_at": "2026-09-02T16:26:42.223-07:00",
@@ -827,13 +834,6 @@
       "published_at": "2026-07-27T10:48:46.407-07:00",
       "source": "Discord Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "unable to establish voice connection",
-      "url": "https://discordstatus.com/incidents/g196lnx3h2cz",
-      "published_at": "2026-07-22T16:32:44.340-07:00",
-      "source": "Discord Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -842,45 +842,53 @@
       "url": "https://discordstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-03T14:35:26.027696Z"
+      "published_at": "2026-09-03T14:54:29.650548Z"
     },
     {
       "title": "Discord Status API (Statuspage v2)",
       "url": "https://discordstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-03T14:35:26.027696Z"
+      "published_at": "2026-09-03T14:54:29.650548Z"
     },
     {
       "title": "Discord Status history RSS",
       "url": "https://discordstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-03T14:35:26.027696Z"
+      "published_at": "2026-09-03T14:54:29.650548Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-03T14:35:26.027696Z"
+      "published_at": "2026-09-03T14:54:29.650548Z"
     },
     {
       "title": "Discord Help Center",
       "url": "https://support.discord.com/hc/en-us",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-03T14:35:26.027696Z"
+      "published_at": "2026-09-03T14:54:29.650548Z"
     }
   ],
   "news": [
     {
       "title": "Discord Statuspage API: All Systems Operational",
       "url": "https://discordstatus.com/",
-      "published_at": "2026-09-03T14:35:25.386696Z",
+      "published_at": "2026-09-03T14:54:28.967981Z",
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Some servers unavailable",
+      "url": "https://discordstatus.com/incidents/lf84xp6q5qjc#pqt58bwj0lrd",
+      "published_at": "2026-09-03T07:35:27.315-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / Some servers may appear unavailable in the client. We are investigating"
     },
     {
       "title": "Voice endpoint selection issues",
@@ -929,14 +937,6 @@
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Major / Resolved / We are still investigating the issue, some servers are continuing to have a degraded experience"
-    },
-    {
-      "title": "Server Unavailability",
-      "url": "https://discordstatus.com/incidents/ty5bs3l7xgcf#453gldd9k5jg",
-      "published_at": "2026-09-02T10:04:15.624-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are continuing to investigate this issue"
     }
   ],
   "social": [],
@@ -952,11 +952,11 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-09-03T14:35:24.288438Z",
+      "last_item_at": "2026-09-03T14:54:27.847623Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 188,
-      "fetched_at": "2026-09-03T14:35:24.288466Z",
+      "duration_ms": 358,
+      "fetched_at": "2026-09-03T14:54:27.847654Z",
       "cache_hit": false
     },
     {
@@ -970,11 +970,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-03T09:35:24-05:00",
+      "last_item_at": "2026-09-03T14:54:28Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1097,
-      "fetched_at": "2026-09-03T14:35:25.386459Z",
+      "duration_ms": 1120,
+      "fetched_at": "2026-09-03T14:54:28.967767Z",
       "cache_hit": false
     },
     {
@@ -988,17 +988,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-03T14:35:25.386696Z",
+      "last_item_at": "2026-09-03T14:54:28.967981Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 639,
-      "fetched_at": "2026-09-03T14:35:26.026350Z",
+      "duration_ms": 681,
+      "fetched_at": "2026-09-03T14:54:29.649288Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-03T14:35:26.027696Z",
+    "generated_at": "2026-09-03T14:54:29.650548Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1020,7 +1020,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1035,30 +1035,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 188,
+          "duration_ms": 358,
           "cache_hit": false,
-          "at": "2026-09-03T14:35:24Z"
+          "at": "2026-09-03T14:54:27Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 249.2
+          "avg_duration_ms": 258.2
         },
         "metrics_7d": {
-          "runs": 61,
-          "ok": 61,
+          "runs": 62,
+          "ok": 62,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 259.7
+          "avg_duration_ms": 261.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-03T14:35:24Z",
+        "last_success_at": "2026-09-03T14:54:27Z",
         "last_failure_at": null
       },
       {
@@ -1072,30 +1072,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1097,
+          "duration_ms": 1120,
           "cache_hit": false,
-          "at": "2026-09-03T14:35:24Z"
+          "at": "2026-09-03T14:54:27Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 902.9
+          "avg_duration_ms": 921.0
         },
         "metrics_7d": {
-          "runs": 61,
-          "ok": 61,
+          "runs": 62,
+          "ok": 62,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 875.2
+          "avg_duration_ms": 879.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-03T14:35:24Z",
+        "last_success_at": "2026-09-03T14:54:27Z",
         "last_failure_at": null
       },
       {
@@ -1109,49 +1109,76 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 639,
+          "duration_ms": 681,
           "cache_hit": false,
-          "at": "2026-09-03T14:35:24Z"
+          "at": "2026-09-03T14:54:27Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 435.1
+          "avg_duration_ms": 455.6
         },
         "metrics_7d": {
-          "runs": 61,
-          "ok": 59,
+          "runs": 62,
+          "ok": 60,
           "stale": 2,
-          "success_rate": 96.7,
-          "stale_rate": 3.3,
+          "success_rate": 96.8,
+          "stale_rate": 3.2,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 438.1
+          "avg_duration_ms": 442.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-03T14:35:24Z",
+        "last_success_at": "2026-09-03T14:54:27Z",
         "last_failure_at": "2026-08-31T21:23:37Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-03T14:35:26.027696Z",
+    "generated_at": "2026-09-03T14:54:29.650548Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "f2c2b9d89c39c038",
+          "title": "Some servers unavailable",
+          "started_at": "2026-09-03T07:35:27.281-07:00",
+          "duration": "19m ongoing",
+          "acknowledgement": "Major / Investigating",
+          "url": "https://discordstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "40e58a449b486d57",
+          "title": "unable to establish voice connection",
+          "started_at": "2026-07-22T16:32:44.340-07:00",
+          "duration": "25m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://discordstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "507e6474441ee52a",
+          "title": "Some servers unavailable",
+          "url": "https://discordstatus.com/incidents/lf84xp6q5qjc",
+          "published_at": "2026-09-03T07:35:27.281-07:00",
+          "source": "Discord Statuspage API",
+          "meta": "Major / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
