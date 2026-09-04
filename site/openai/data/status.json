@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-09-04T06:20:49.048726Z",
+  "generated_at": "2026-09-04T09:34:44.064135Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 2,
+    "severity_key": "degraded",
+    "severity_score": 8,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 2.0,
-      "incidents": 4.295,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": -1.645
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 1650,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 3,
+      "reports_24h": 1662,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 5,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
-      "cross_source_guard": true,
+      "operational_dampening": false,
+      "cross_source_guard": false,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 2,
-      "report_weight": 0.333
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.0
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 2,
-      "report_weight": 0.333
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.0
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 2,
-      "report_weight": 0.333
+      "severity_key": "major",
+      "severity_score": 12,
+      "report_weight": 1.0
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-09-04T06:20:48.497183Z",
+        "published_at": "2026-09-04T09:34:43.449126Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, file upload, Voice, and Codex Cloud",
+        "url": "https://status.openai.com/incidents/01M1NKFZH5EEYEREC54HNAHY35#01M1NKFZH5D8T35CRX9763AS6A",
+        "published_at": "2026-09-04T07:00:26Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating the issue for the listed services."
       },
       {
         "title": "Elevated errors across ChatGPT and Codex",
@@ -141,26 +149,32 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / None / Resolved / We are investigating an issue preventing some users from creating new accounts. We will share updates as we learn more."
-      },
-      {
-        "title": "Elevated latency in the Responses API",
-        "url": "https://status.openai.com/incidents/01M1CYZDD84XD0H56XNEV2PT98#01M1F5SY2WCSGWYHYAHAZGVCV2",
-        "published_at": "2026-09-01T19:05:46Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
       }
     ],
-    "last_statement_at": "2026-09-04T06:20:48.497183Z"
+    "last_statement_at": "2026-09-04T09:34:43.449126Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 1650,
+    "summary": "OpenAI Statuspage reports an active incident: Users in APAC region may face increased error in ChatGPT, Work, image generation, file upload, Voice, and Codex Cloud.",
+    "current_status": "degraded",
+    "reports_24h": 1662,
     "incidents": [
+      {
+        "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, File upload, Voic, and Codex Cloud.",
+        "started_at": "2026-09-04T07:01:53Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, file upload, Voice, and Codex Cloud",
+        "started_at": "2026-09-04T07:00:26Z",
+        "duration": "2h 34m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M1NKFZH5EEYEREC54HNAHY35"
+      },
       {
         "title": "Elevated errors across ChatGPT and Codex",
         "started_at": "2026-09-03T14:59:00Z",
@@ -180,12 +194,6 @@
         "started_at": "2026-09-03T14:47:00Z",
         "duration": "2h 6m",
         "acknowledgement": "12m later"
-      },
-      {
-        "title": "ChatGPT Work Mode High Error Rates",
-        "started_at": "2026-09-03T00:06:59Z",
-        "duration": "5m",
-        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "ChatGPT Work Mode High Error Rates",
@@ -210,101 +218,36 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M1D6E14BQSYQA3R5CNQBB7EB"
-      },
-      {
-        "title": "Elevated latency in the Responses API",
-        "started_at": "2026-08-31T22:27:56Z",
-        "duration": "20h 37m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01M1CYZDD84XD0H56XNEV2PT98"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Codex Web",
+        "count": 1
+      },
+      {
+        "label": "File uploads",
+        "count": 1
+      },
+      {
+        "label": "Voice mode",
+        "count": 1
+      },
+      {
+        "label": "Conversations",
+        "count": 1
+      },
+      {
+        "label": "Image Generation",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-09-03T06:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T06:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T07:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T07:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T07:30:00Z",
-        "signal_value": 23.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T07:45:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T08:00:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T08:15:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T08:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T08:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T09:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T09:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-03T09:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-09-03T09:45:00Z",
         "signal_value": 22.0,
@@ -799,7 +742,85 @@
       },
       {
         "timestamp": "2026-09-04T06:15:00Z",
-        "signal_value": 3.0,
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T06:30:00Z",
+        "signal_value": 15.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T06:45:00Z",
+        "signal_value": 72.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T07:00:00Z",
+        "signal_value": 272.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T07:15:00Z",
+        "signal_value": 139.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T07:30:00Z",
+        "signal_value": 117.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T07:45:00Z",
+        "signal_value": 40.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T08:00:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T08:15:00Z",
+        "signal_value": 41.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T08:30:00Z",
+        "signal_value": 35.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T08:45:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T09:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T09:15:00Z",
+        "signal_value": 35.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-04T09:30:00Z",
+        "signal_value": 2.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -810,46 +831,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-09-04T06:15:00Z"
+      "last_sample_at": "2026-09-04T09:30:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "06:40",
-        "count": 3
-      },
-      {
-        "label": "07:00",
-        "count": 0
-      },
-      {
-        "label": "07:20",
-        "count": 2
-      },
-      {
-        "label": "07:40",
-        "count": 0
-      },
-      {
-        "label": "08:00",
-        "count": 1
-      },
-      {
-        "label": "08:20",
-        "count": 3
-      },
-      {
-        "label": "08:40",
-        "count": 1
-      },
-      {
-        "label": "09:00",
-        "count": 2
-      },
-      {
-        "label": "09:20",
-        "count": 0
-      },
       {
         "label": "09:40",
         "count": 2
@@ -1100,7 +1085,43 @@
       },
       {
         "label": "06:20",
-        "count": 2
+        "count": 3
+      },
+      {
+        "label": "06:40",
+        "count": 4
+      },
+      {
+        "label": "07:00",
+        "count": 3
+      },
+      {
+        "label": "07:20",
+        "count": 3
+      },
+      {
+        "label": "07:40",
+        "count": 1
+      },
+      {
+        "label": "08:00",
+        "count": 5
+      },
+      {
+        "label": "08:20",
+        "count": 0
+      },
+      {
+        "label": "08:40",
+        "count": 3
+      },
+      {
+        "label": "09:00",
+        "count": 3
+      },
+      {
+        "label": "09:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1109,14 +1130,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-04T01:20:47-05:00"
+      "last_reviewed_at": "2026-09-04T05:34:40-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 1650,
-        "last_reviewed_at": "2026-09-04T01:20:47-05:00"
+        "reports_24h": 1662,
+        "last_reviewed_at": "2026-09-04T05:34:40-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1222,8 +1243,8 @@
       },
       {
         "name": "Codex Web",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1292,15 +1313,15 @@
       },
       {
         "name": "File uploads",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Voice mode",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1334,8 +1355,8 @@
       },
       {
         "name": "Conversations",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1348,8 +1369,8 @@
       },
       {
         "name": "Image Generation",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1365,19 +1386,19 @@
     "top_reported_issues_provider": [
       {
         "label": "Error message",
-        "count": 865
+        "count": 871
       },
       {
         "label": "Service down",
-        "count": 424
+        "count": 425
       },
       {
         "label": "App not loading",
-        "count": 129
+        "count": 134
       },
       {
         "label": "Sign in problem",
-        "count": 84
+        "count": 87
       },
       {
         "label": "Connectivity issue",
@@ -1385,19 +1406,33 @@
       },
       {
         "label": "Other",
-        "count": 67
+        "count": 68
       },
       {
         "label": "Server not responding",
-        "count": 42
+        "count": 46
       },
       {
         "label": "Slow performance",
-        "count": 7
+        "count": 10
       }
     ]
   },
   "reports": [
+    {
+      "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, File upload, Voic, and Codex Cloud.",
+      "url": "https://status.openai.com/#2026-09-04T07:01:53Z",
+      "published_at": "2026-09-04T07:01:53Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, file upload, Voice, and Codex Cloud",
+      "url": "https://status.openai.com/incidents/01M1NKFZH5EEYEREC54HNAHY35",
+      "published_at": "2026-09-04T07:00:26Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
     {
       "title": "Elevated errors across ChatGPT and Codex",
       "url": "https://status.openai.com/#2026-09-03T14:59:00Z",
@@ -1421,13 +1456,6 @@
     },
     {
       "title": "ChatGPT Work Mode High Error Rates",
-      "url": "https://status.openai.com/#2026-09-03T00:06:59Z",
-      "published_at": "2026-09-03T00:06:59Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "ChatGPT Work Mode High Error Rates",
       "url": "https://status.openai.com/incidents/01M1J99EDCYED5GP2W8GZ3N2NA",
       "published_at": "2026-09-03T00:04:23Z",
       "source": "OpenAI Statuspage API",
@@ -1446,13 +1474,6 @@
       "published_at": "2026-09-01T00:38:15Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Elevated latency in the Responses API",
-      "url": "https://status.openai.com/incidents/01M1CYZDD84XD0H56XNEV2PT98",
-      "published_at": "2026-08-31T22:27:56Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1461,45 +1482,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-04T06:20:49.048726Z"
+      "published_at": "2026-09-04T09:34:44.064135Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-04T06:20:49.048726Z"
+      "published_at": "2026-09-04T09:34:44.064135Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-04T06:20:49.048726Z"
+      "published_at": "2026-09-04T09:34:44.064135Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-04T06:20:49.048726Z"
+      "published_at": "2026-09-04T09:34:44.064135Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-04T06:20:49.048726Z"
+      "published_at": "2026-09-04T09:34:44.064135Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-09-04T06:20:48.497183Z",
+      "published_at": "2026-09-04T09:34:43.449126Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, file upload, Voice, and Codex Cloud",
+      "url": "https://status.openai.com/incidents/01M1NKFZH5EEYEREC54HNAHY35#01M1NKFZH5D8T35CRX9763AS6A",
+      "published_at": "2026-09-04T07:00:26Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating the issue for the listed services."
     },
     {
       "title": "Elevated errors across ChatGPT and Codex",
@@ -1548,14 +1577,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / None / Resolved / The issue affecting new account creation has been resolved."
-    },
-    {
-      "title": "Elevated errors creating new accounts",
-      "url": "https://status.openai.com/incidents/01M1HN7GRR6FJNWFVX2F8QMA3R#01M1HPPHET2H05BK2M6BPRKE4A",
-      "published_at": "2026-09-02T18:39:29Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / None / Resolved / We have applied the mitigation and are monitoring recovery."
     }
   ],
   "social": [],
@@ -1571,11 +1592,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-09-04T06:20:47.604070Z",
+      "last_item_at": "2026-09-04T09:34:43.330598Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 198,
-      "fetched_at": "2026-09-04T06:20:47.604087Z",
+      "duration_ms": 216,
+      "fetched_at": "2026-09-04T09:34:43.330616Z",
       "cache_hit": false
     },
     {
@@ -1589,11 +1610,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-04T01:20:47-05:00",
+      "last_item_at": "2026-09-04T05:34:40-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 892,
-      "fetched_at": "2026-09-04T06:20:48.496640Z",
+      "duration_ms": 117,
+      "fetched_at": "2026-09-04T09:34:43.448576Z",
       "cache_hit": false
     },
     {
@@ -1607,17 +1628,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-04T06:20:48.497183Z",
+      "last_item_at": "2026-09-04T09:34:43.449126Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 549,
-      "fetched_at": "2026-09-04T06:20:49.047067Z",
+      "duration_ms": 613,
+      "fetched_at": "2026-09-04T09:34:44.062267Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-04T06:20:49.048726Z",
+    "generated_at": "2026-09-04T09:34:44.064135Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1639,7 +1660,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1654,30 +1675,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 198,
+          "duration_ms": 216,
           "cache_hit": false,
-          "at": "2026-09-04T06:20:47Z"
+          "at": "2026-09-04T09:34:43Z"
         },
         "metrics_24h": {
-          "runs": 13,
-          "ok": 13,
+          "runs": 14,
+          "ok": 14,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 219.8
+          "avg_duration_ms": 219.5
         },
         "metrics_7d": {
-          "runs": 67,
-          "ok": 67,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 284.9
+          "avg_duration_ms": 283.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-04T06:20:47Z",
+        "last_success_at": "2026-09-04T09:34:43Z",
         "last_failure_at": null
       },
       {
@@ -1691,30 +1712,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 892,
+          "duration_ms": 117,
           "cache_hit": false,
-          "at": "2026-09-04T06:20:47Z"
+          "at": "2026-09-04T09:34:43Z"
         },
         "metrics_24h": {
-          "runs": 13,
-          "ok": 13,
+          "runs": 14,
+          "ok": 14,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 978.7
+          "avg_duration_ms": 917.1
         },
         "metrics_7d": {
-          "runs": 67,
-          "ok": 67,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 949.0
+          "avg_duration_ms": 936.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-04T06:20:47Z",
+        "last_success_at": "2026-09-04T09:34:43Z",
         "last_failure_at": null
       },
       {
@@ -1728,49 +1749,100 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 549,
+          "duration_ms": 613,
           "cache_hit": false,
-          "at": "2026-09-04T06:20:47Z"
+          "at": "2026-09-04T09:34:43Z"
         },
         "metrics_24h": {
-          "runs": 13,
-          "ok": 13,
+          "runs": 14,
+          "ok": 14,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 796.5
+          "avg_duration_ms": 783.4
         },
         "metrics_7d": {
-          "runs": 67,
-          "ok": 67,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 777.5
+          "avg_duration_ms": 775.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-04T06:20:47Z",
+        "last_success_at": "2026-09-04T09:34:43Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-04T06:20:49.048726Z",
+    "generated_at": "2026-09-04T09:34:44.064135Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "e8a79155d76ab9cc",
+          "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, File upload, Voic, and Codex Cloud.",
+          "started_at": "2026-09-04T07:01:53Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "7fd79566f3e048c2",
+          "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, file upload, Voice, and Codex Cloud",
+          "started_at": "2026-09-04T07:00:26Z",
+          "duration": "2h 34m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "185576de19d08de4",
+          "title": "ChatGPT Work Mode High Error Rates",
+          "started_at": "2026-09-03T00:06:59Z",
+          "duration": "5m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "2f567e7a8d5f0717",
+          "title": "Elevated latency in the Responses API",
+          "started_at": "2026-08-31T22:27:56Z",
+          "duration": "20h 37m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "7e46b036952173e7",
+          "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, File upload, Voic, and Codex Cloud.",
+          "url": "https://status.openai.com/#2026-09-04T07:01:53Z",
+          "published_at": "2026-09-04T07:01:53Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "38f4cd85aadfaf23",
+          "title": "Users in APAC region may face increased error in ChatGPT, Work, image generation, file upload, Voice, and Codex Cloud",
+          "url": "https://status.openai.com/incidents/01M1NKFZH5EEYEREC54HNAHY35",
+          "published_at": "2026-09-04T07:00:26Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
