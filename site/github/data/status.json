@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-09-13T06:37:08.928713Z",
+  "generated_at": "2026-09-13T10:13:19.682159Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "major",
+    "severity_score": 8,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.8,
+      "incidents": 5.0,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.55
     },
     "signal_metrics": {
-      "reports_24h": 110,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 18,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,14 +29,14 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
@@ -44,8 +44,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "major outage",
+      "derived_severity": "major",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -53,31 +53,55 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "GitHub Statuspage API: All Systems Operational",
+    "summary": "GitHub Statuspage API: Partial System Outage",
     "updates": [
       {
-        "title": "GitHub Statuspage API: All Systems Operational",
+        "title": "GitHub Statuspage API: Partial System Outage",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-09-13T06:37:08.509391Z",
+        "published_at": "2026-09-13T10:13:19.437722Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: major"
+      },
+      {
+        "title": "Incident with several GitHub Services",
+        "url": "https://www.githubstatus.com/incidents/0rn90wk115q9#3srrykjpqb9x",
+        "published_at": "2026-09-13T09:36:23.221Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Investigating / We're seeing increased database replication delays on collab which is causing increased error rates in authorization endpoints and follow-on increased error rates across the system - we are investigating"
+      },
+      {
+        "title": "Incident with several GitHub Services",
+        "url": "https://www.githubstatus.com/incidents/0rn90wk115q9#pt3dvpmcwq0j",
+        "published_at": "2026-09-13T09:25:56.000Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Investigating / Actions is experiencing degraded performance. We are continuing to investigate."
+      },
+      {
+        "title": "Incident with several GitHub Services",
+        "url": "https://www.githubstatus.com/incidents/0rn90wk115q9#cl2v0bsf1s9g",
+        "published_at": "2026-09-13T09:16:11.624Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Critical / Investigating / We are investigating reports of degraded availability for API Requests, Issues, Pages and Pull Requests"
       },
       {
         "title": "Disruption with Copilot Code Review",
@@ -126,42 +150,32 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Major / Resolved / Some users may be experiencing failures when using Copilot code review. We have identified the root cause and are working on a mitigation."
-      },
-      {
-        "title": "Disruption with Copilot Code Review",
-        "url": "https://www.githubstatus.com/incidents/zw1hbx2yyhvr#wc2fp681ypfd",
-        "published_at": "2026-09-04T20:39:03.249Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / We are investigating reports of impacted performance for some GitHub services."
-      },
-      {
-        "title": "Incident with Grok Copilot AI Model Provider",
-        "url": "https://www.githubstatus.com/incidents/ktdr5t0xwnhp#s3yq1d9xcdn4",
-        "published_at": "2026-09-03T17:11:47.860Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / Between 13:22 and 17:11 UTC on September 03, 2026, GitHub Copilot experienced degradation affecting several Grok models, including Grok 4.5 and Grok 4.6. Users encountered elevated error rates, but other models were not affected. The degrad"
-      },
-      {
-        "title": "Incident with Grok Copilot AI Model Provider",
-        "url": "https://www.githubstatus.com/incidents/ktdr5t0xwnhp#9gzmjbr9vkyl",
-        "published_at": "2026-09-03T17:11:39.081Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / The issues with our upstream model provider have been resolved, and Grok models are once again available in Copilot products and IDE surfaces.<br />We will continue monitoring to ensure stability, but mitigation is complete."
       }
     ],
-    "last_statement_at": "2026-09-13T06:37:08.509391Z"
+    "last_statement_at": "2026-09-13T10:13:19.437722Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 110,
+    "summary": "GitHub Statuspage reports an active incident: Incident with several GitHub Services.",
+    "current_status": "major outage",
+    "reports_24h": 18,
     "incidents": [
+      {
+        "title": "Incident with several GitHub Services",
+        "started_at": "2026-09-13T09:16:47Z",
+        "duration": "10m",
+        "acknowledgement": "Yes"
+      },
+      {
+        "title": "Incident with several GitHub Services",
+        "started_at": "2026-09-13T09:16:11.480Z",
+        "duration": "57m ongoing",
+        "acknowledgement": "Critical / Investigating",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/0rn90wk115q9"
+      },
       {
         "title": "Degradation in repos contents API",
         "started_at": "2026-09-04T22:02:15.790Z",
@@ -203,76 +217,38 @@
         "acknowledgement": "Minor / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/ktdr5t0xwnhp"
-      },
-      {
-        "title": "Delays in commit processing",
-        "started_at": "2026-09-01T15:01:39Z",
-        "duration": "1h 5m",
-        "acknowledgement": "Yes"
-      },
-      {
-        "title": "Delays in commit processing",
-        "started_at": "2026-09-01T15:00:22.104Z",
-        "duration": "1h",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/jk2dy5h9yp3m"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "API Requests",
+        "count": 1
+      },
+      {
+        "label": "Issues",
+        "count": 1
+      },
+      {
+        "label": "Pull Requests",
+        "count": 1
+      },
+      {
+        "label": "Actions",
+        "count": 1
+      },
+      {
+        "label": "Pages",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "GitHub Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "06:40",
-        "count": 3
-      },
-      {
-        "label": "07:00",
-        "count": 0
-      },
-      {
-        "label": "07:20",
-        "count": 2
-      },
-      {
-        "label": "07:40",
-        "count": 0
-      },
-      {
-        "label": "08:00",
-        "count": 1
-      },
-      {
-        "label": "08:20",
-        "count": 3
-      },
-      {
-        "label": "08:40",
-        "count": 1
-      },
-      {
-        "label": "09:00",
-        "count": 2
-      },
-      {
-        "label": "09:20",
-        "count": 0
-      },
-      {
-        "label": "09:40",
-        "count": 2
-      },
-      {
-        "label": "10:00",
-        "count": 2
-      },
       {
         "label": "10:20",
         "count": 0
@@ -516,6 +492,50 @@
       {
         "label": "06:20",
         "count": 2
+      },
+      {
+        "label": "06:40",
+        "count": 0
+      },
+      {
+        "label": "07:00",
+        "count": 1
+      },
+      {
+        "label": "07:20",
+        "count": 3
+      },
+      {
+        "label": "07:40",
+        "count": 1
+      },
+      {
+        "label": "08:00",
+        "count": 2
+      },
+      {
+        "label": "08:20",
+        "count": 0
+      },
+      {
+        "label": "08:40",
+        "count": 3
+      },
+      {
+        "label": "09:00",
+        "count": 4
+      },
+      {
+        "label": "09:20",
+        "count": 2
+      },
+      {
+        "label": "09:40",
+        "count": 3
+      },
+      {
+        "label": "10:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -524,14 +544,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-13T02:37:07-04:00"
+      "last_reviewed_at": "2026-09-13T10:13:18Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 110,
-        "last_reviewed_at": "2026-09-13T02:37:07-04:00"
+        "reports_24h": 116,
+        "last_reviewed_at": "2026-09-13T10:13:18Z"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -560,30 +580,30 @@
       },
       {
         "name": "API Requests",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-08-17T19:01:45.543Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-09-13T09:16:11.527Z",
         "source": "GitHub Statuspage API"
       },
       {
         "name": "Issues",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-08-17T20:22:28.767Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-09-13T09:16:11.549Z",
         "source": "GitHub Statuspage API"
       },
       {
         "name": "Pull Requests",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-09-01T16:01:21.340Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-09-13T09:16:11.567Z",
         "source": "GitHub Statuspage API"
       },
       {
         "name": "Actions",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-08-27T00:26:05.957Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-09-13T09:25:55.969Z",
         "source": "GitHub Statuspage API"
       },
       {
@@ -595,9 +615,9 @@
       },
       {
         "name": "Pages",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-08-26T16:49:07.311Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-09-13T09:16:11.585Z",
         "source": "GitHub Statuspage API"
       },
       {
@@ -625,6 +645,20 @@
     "scheduled_maintenances": []
   },
   "reports": [
+    {
+      "title": "Incident with several GitHub Services",
+      "url": "https://www.githubstatus.com/#2026-09-13T09:16:47Z",
+      "published_at": "2026-09-13T09:16:47Z",
+      "source": "StatusGator",
+      "meta": "Yes"
+    },
+    {
+      "title": "Incident with several GitHub Services",
+      "url": "https://www.githubstatus.com/incidents/0rn90wk115q9",
+      "published_at": "2026-09-13T09:16:11.480Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Critical / Investigating"
+    },
     {
       "title": "Degradation in repos contents API",
       "url": "https://www.githubstatus.com/incidents/r05vk75c594j",
@@ -666,20 +700,6 @@
       "published_at": "2026-09-03T14:17:27.485Z",
       "source": "GitHub Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Delays in commit processing",
-      "url": "https://www.githubstatus.com/#2026-09-01T15:01:39Z",
-      "published_at": "2026-09-01T15:01:39Z",
-      "source": "StatusGator",
-      "meta": "Yes"
-    },
-    {
-      "title": "Delays in commit processing",
-      "url": "https://www.githubstatus.com/incidents/jk2dy5h9yp3m",
-      "published_at": "2026-09-01T15:00:22.104Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -688,52 +708,76 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-13T06:37:08.928713Z"
+      "published_at": "2026-09-13T10:13:19.682159Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-13T06:37:08.928713Z"
+      "published_at": "2026-09-13T10:13:19.682159Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-13T06:37:08.928713Z"
+      "published_at": "2026-09-13T10:13:19.682159Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-09-13T06:37:08.928713Z"
+      "published_at": "2026-09-13T10:13:19.682159Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-13T06:37:08.928713Z"
+      "published_at": "2026-09-13T10:13:19.682159Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-13T06:37:08.928713Z"
+      "published_at": "2026-09-13T10:13:19.682159Z"
     }
   ],
   "news": [
     {
-      "title": "GitHub Statuspage API: All Systems Operational",
+      "title": "GitHub Statuspage API: Partial System Outage",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-09-13T06:37:08.509391Z",
+      "published_at": "2026-09-13T10:13:19.437722Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: major"
+    },
+    {
+      "title": "Incident with several GitHub Services",
+      "url": "https://www.githubstatus.com/incidents/0rn90wk115q9#3srrykjpqb9x",
+      "published_at": "2026-09-13T09:36:23.221Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Investigating / We're seeing increased database replication delays on collab which is causing increased error rates in authorization endpoints and follow-on increased error rates across the system - we are investigating"
+    },
+    {
+      "title": "Incident with several GitHub Services",
+      "url": "https://www.githubstatus.com/incidents/0rn90wk115q9#pt3dvpmcwq0j",
+      "published_at": "2026-09-13T09:25:56.000Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Investigating / Actions is experiencing degraded performance. We are continuing to investigate."
+    },
+    {
+      "title": "Incident with several GitHub Services",
+      "url": "https://www.githubstatus.com/incidents/0rn90wk115q9#cl2v0bsf1s9g",
+      "published_at": "2026-09-13T09:16:11.624Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Critical / Investigating / We are investigating reports of degraded availability for API Requests, Issues, Pages and Pull Requests"
     },
     {
       "title": "Disruption with Copilot Code Review",
@@ -766,30 +810,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / We are investigating reports of impacted performance for some GitHub services."
-    },
-    {
-      "title": "Disruption with Copilot Code Review",
-      "url": "https://www.githubstatus.com/incidents/zw1hbx2yyhvr#fjym0dpyfr4d",
-      "published_at": "2026-09-04T21:54:22.688Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are applying the mitigation and expect recovery within approximately 30 minutes."
-    },
-    {
-      "title": "Disruption with Copilot Code Review",
-      "url": "https://www.githubstatus.com/incidents/zw1hbx2yyhvr#cmdvnzg8svl2",
-      "published_at": "2026-09-04T20:57:53.116Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / Some users may be experiencing failures when using Copilot code review. We have identified the root cause and are working on a mitigation."
-    },
-    {
-      "title": "Disruption with Copilot Code Review",
-      "url": "https://www.githubstatus.com/incidents/zw1hbx2yyhvr#wc2fp681ypfd",
-      "published_at": "2026-09-04T20:39:03.249Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are investigating reports of impacted performance for some GitHub services."
     }
   ],
   "social": [],
@@ -805,11 +825,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-09-13T06:37:07.525214Z",
+      "last_item_at": "2026-09-13T10:13:18.657476Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 258,
-      "fetched_at": "2026-09-13T06:37:07.525229Z",
+      "duration_ms": 225,
+      "fetched_at": "2026-09-13T10:13:18.657510Z",
       "cache_hit": false
     },
     {
@@ -823,11 +843,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-13T02:37:07-04:00",
+      "last_item_at": "2026-09-13T10:13:18Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 983,
-      "fetched_at": "2026-09-13T06:37:08.509217Z",
+      "duration_ms": 779,
+      "fetched_at": "2026-09-13T10:13:19.437446Z",
       "cache_hit": false
     },
     {
@@ -841,17 +861,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-13T06:37:08.509391Z",
+      "last_item_at": "2026-09-13T10:13:19.437722Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 418,
-      "fetched_at": "2026-09-13T06:37:08.927915Z",
+      "duration_ms": 243,
+      "fetched_at": "2026-09-13T10:13:19.680922Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-13T06:37:08.928713Z",
+    "generated_at": "2026-09-13T10:13:19.682159Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -873,7 +893,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "major",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -888,9 +908,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 258,
+          "duration_ms": 225,
           "cache_hit": false,
-          "at": "2026-09-13T06:37:07Z"
+          "at": "2026-09-13T10:13:18Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -899,19 +919,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 257.4
+          "avg_duration_ms": 260.8
         },
         "metrics_7d": {
-          "runs": 79,
-          "ok": 79,
+          "runs": 80,
+          "ok": 80,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 263.4
+          "avg_duration_ms": 262.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-13T06:37:07Z",
+        "last_success_at": "2026-09-13T10:13:18Z",
         "last_failure_at": null
       },
       {
@@ -925,9 +945,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 983,
+          "duration_ms": 779,
           "cache_hit": false,
-          "at": "2026-09-13T06:37:07Z"
+          "at": "2026-09-13T10:13:18Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -936,19 +956,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1016.7
+          "avg_duration_ms": 1013.0
         },
         "metrics_7d": {
-          "runs": 79,
-          "ok": 79,
+          "runs": 80,
+          "ok": 80,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1015.8
+          "avg_duration_ms": 1012.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-13T06:37:07Z",
+        "last_success_at": "2026-09-13T10:13:18Z",
         "last_failure_at": null
       },
       {
@@ -962,9 +982,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 418,
+          "duration_ms": 243,
           "cache_hit": false,
-          "at": "2026-09-13T06:37:07Z"
+          "at": "2026-09-13T10:13:18Z"
         },
         "metrics_24h": {
           "runs": 13,
@@ -973,38 +993,89 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 308.2
+          "avg_duration_ms": 294.1
         },
         "metrics_7d": {
-          "runs": 79,
-          "ok": 79,
+          "runs": 80,
+          "ok": 80,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 278.0
+          "avg_duration_ms": 277.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-13T06:37:07Z",
+        "last_success_at": "2026-09-13T10:13:18Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-13T06:37:08.928713Z",
+    "generated_at": "2026-09-13T10:13:19.682159Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "916dba8a50cfd7fe",
+          "title": "Incident with several GitHub Services",
+          "started_at": "2026-09-13T09:16:47Z",
+          "duration": "10m",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "23c882fb6f5a6998",
+          "title": "Incident with several GitHub Services",
+          "started_at": "2026-09-13T09:16:11.480Z",
+          "duration": "57m ongoing",
+          "acknowledgement": "Critical / Investigating",
+          "url": "https://www.githubstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "e2f288b224af2063",
+          "title": "Delays in commit processing",
+          "started_at": "2026-09-01T15:01:39Z",
+          "duration": "1h 5m",
+          "acknowledgement": "Yes",
+          "url": "https://www.githubstatus.com/"
+        },
+        {
+          "id": "c55e29e2117b9303",
+          "title": "Delays in commit processing",
+          "started_at": "2026-09-01T15:00:22.104Z",
+          "duration": "1h",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.githubstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "007d1a011392ea31",
+          "title": "Incident with several GitHub Services",
+          "url": "https://www.githubstatus.com/#2026-09-13T09:16:47Z",
+          "published_at": "2026-09-13T09:16:47Z",
+          "source": "StatusGator",
+          "meta": "Yes"
+        },
+        {
+          "id": "ea1efca8d4ffd9c3",
+          "title": "Incident with several GitHub Services",
+          "url": "https://www.githubstatus.com/incidents/0rn90wk115q9",
+          "published_at": "2026-09-13T09:16:11.480Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Critical / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
