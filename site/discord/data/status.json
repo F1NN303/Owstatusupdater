@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-09-16T21:00:12.618277Z",
+  "generated_at": "2026-09-16T22:27:09.212831Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 3,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "discord-1.0",
@@ -14,12 +14,12 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 2.15
     },
     "signal_metrics": {
-      "reports_24h": 130,
-      "recent_incidents_6h": 4,
-      "recent_incidents_24h": 4,
+      "reports_24h": 146,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -35,35 +35,35 @@
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "minor",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,34 @@
       {
         "title": "Discord Statuspage API: All Systems Operational",
         "url": "https://discordstatus.com/",
-        "published_at": "2026-09-16T21:00:12.086201Z",
+        "published_at": "2026-09-16T22:27:08.709448Z",
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Issue establishing voice call",
+        "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl#bxfbydft8n5g",
+        "published_at": "2026-09-16T15:15:36.109-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Major / Monitoring / A fix has been implemented and we are monitoring the results."
+      },
+      {
+        "title": "Issue establishing voice call",
+        "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl#tbjfrf39qp9b",
+        "published_at": "2026-09-16T14:45:27.587-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Major / Monitoring / The issue has been identified and a fix is being implemented."
+      },
+      {
+        "title": "Issue establishing voice call",
+        "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl#ks5pgqpqz4qm",
+        "published_at": "2026-09-16T14:32:50.511-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Monitoring / We are currently investigating this issue."
       },
       {
         "title": "API Errors",
@@ -125,47 +149,25 @@
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / None / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Session Unavailability",
-        "url": "https://discordstatus.com/incidents/btdsd2y407t5#739tmlkddk4c",
-        "published_at": "2026-09-15T07:58:33.043-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / None / Resolved / A fix has been implemented and we are currently monitoring recovery of services."
-      },
-      {
-        "title": "Session Unavailability",
-        "url": "https://discordstatus.com/incidents/btdsd2y407t5#3m2lbl9pbjzc",
-        "published_at": "2026-09-15T07:42:45.606-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / None / Resolved / The issue has been identified and we are working to restore service."
-      },
-      {
-        "title": "Session Unavailability",
-        "url": "https://discordstatus.com/incidents/btdsd2y407t5#y6syznl42ntq",
-        "published_at": "2026-09-15T07:26:02.255-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / None / Resolved / We are currently investigating this issue."
       }
     ],
-    "last_statement_at": "2026-09-16T21:00:12.086201Z"
+    "last_statement_at": "2026-09-16T22:27:08.709448Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://discordstatus.com/",
-    "summary": "Discord Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "Discord Statuspage reports an active incident: Issue establishing voice call.",
     "current_status": "operational",
-    "reports_24h": 130,
+    "reports_24h": 146,
     "incidents": [
       {
-        "title": "API Errors",
-        "started_at": "2026-09-16T19:07:25Z",
-        "duration": "15m",
-        "acknowledgement": "warn icon Warn"
+        "title": "Issue establishing voice call",
+        "started_at": "2026-09-16T14:32:50.472-07:00",
+        "duration": "54m ongoing",
+        "acknowledgement": "Major / Monitoring",
+        "source": "Discord Statuspage API",
+        "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl"
       },
       {
         "title": "API Errors",
@@ -174,12 +176,6 @@
         "acknowledgement": "None / Resolved",
         "source": "Discord Statuspage API",
         "url": "https://discordstatus.com/incidents/chpjjdyk63yt"
-      },
-      {
-        "title": "Google Pay Outage",
-        "started_at": "2026-09-16T16:17:36Z",
-        "duration": "30m",
-        "acknowledgement": "down icon Down"
       },
       {
         "title": "Google Pay Outage",
@@ -198,24 +194,36 @@
         "url": "https://discordstatus.com/incidents/btdsd2y407t5"
       },
       {
-        "title": "App not loading or stuck on loading screen",
-        "started_at": "2026-09-15T14:18:47Z",
-        "duration": "2h 14m",
-        "acknowledgement": "9m later"
-      },
-      {
-        "title": "Discord desktop app and web not loading",
-        "started_at": "2026-09-15T00:52:00Z",
-        "duration": "3h 27m",
-        "acknowledgement": "Never acknowledged"
-      },
-      {
         "title": "Media Proxy Latency High",
         "started_at": "2026-09-11T09:24:46.890-07:00",
         "duration": "1h 21m",
         "acknowledgement": "Minor / Resolved",
         "source": "Discord Statuspage API",
         "url": "https://discordstatus.com/incidents/5sp34swnxkh0"
+      },
+      {
+        "title": "Issue with establishing voice calls",
+        "started_at": "2026-09-10T21:21:35.751-07:00",
+        "duration": "2h 20m",
+        "acknowledgement": "Major / Resolved",
+        "source": "Discord Statuspage API",
+        "url": "https://discordstatus.com/incidents/d82z44sn4fpx"
+      },
+      {
+        "title": "Some Servers Unavailable",
+        "started_at": "2026-09-03T14:31:27.760-07:00",
+        "duration": "56m",
+        "acknowledgement": "None / Resolved",
+        "source": "Discord Statuspage API",
+        "url": "https://discordstatus.com/incidents/nt3d1xvkb9q8"
+      },
+      {
+        "title": "Some servers unavailable",
+        "started_at": "2026-09-03T07:35:27.281-07:00",
+        "duration": "1h 2m",
+        "acknowledgement": "Major / Resolved",
+        "source": "Discord Statuspage API",
+        "url": "https://discordstatus.com/incidents/lf84xp6q5qjc"
       }
     ],
     "top_reported_issues": [],
@@ -224,610 +232,11 @@
       "kind": "degraded-components",
       "mode": "none"
     },
-    "service_health_24h": [
-      {
-        "timestamp": "2026-09-15T21:00:00Z",
-        "signal_value": 34.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T21:15:00Z",
-        "signal_value": 33.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T21:30:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T21:45:00Z",
-        "signal_value": 30.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T22:00:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T22:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T22:30:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T22:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T23:00:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T23:15:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T23:30:00Z",
-        "signal_value": 27.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-15T23:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T00:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T00:15:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T00:30:00Z",
-        "signal_value": 45.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T00:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T01:00:00Z",
-        "signal_value": 25.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T01:15:00Z",
-        "signal_value": 28.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T01:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T01:45:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T02:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T02:15:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T02:30:00Z",
-        "signal_value": 23.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T02:45:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T03:00:00Z",
-        "signal_value": 31.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T03:15:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T03:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T03:45:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T04:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T04:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T04:30:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T04:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T05:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T05:15:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T05:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T05:45:00Z",
-        "signal_value": 19.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T06:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T06:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T06:30:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T06:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T07:00:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T07:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T07:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T07:45:00Z",
-        "signal_value": 23.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T08:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T08:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T08:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T08:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T09:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T09:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T09:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T09:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T10:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T10:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T10:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T10:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T11:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T11:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T11:30:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T11:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T12:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T12:15:00Z",
-        "signal_value": 31.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T12:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T12:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T13:00:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T13:15:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T13:30:00Z",
-        "signal_value": 30.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T13:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T14:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T14:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T14:30:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T14:45:00Z",
-        "signal_value": 26.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T15:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T15:15:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T15:30:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T15:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T16:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T16:15:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T16:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T16:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T17:00:00Z",
-        "signal_value": 24.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T17:15:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T17:30:00Z",
-        "signal_value": 24.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T17:45:00Z",
-        "signal_value": 22.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T18:00:00Z",
-        "signal_value": 24.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T18:15:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T18:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T18:45:00Z",
-        "signal_value": 144.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T19:00:00Z",
-        "signal_value": 97.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T19:15:00Z",
-        "signal_value": 27.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T19:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T19:45:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T20:00:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T20:15:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T20:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-09-16T20:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      }
-    ],
-    "service_health_24h_meta": {
-      "source": "StatusGator",
-      "kind": "service-health-series",
-      "window_hours": 24,
-      "sample_count": 96,
-      "interval_minutes": 15,
-      "last_sample_at": "2026-09-16T20:45:00Z"
-    },
+    "service_health_24h": [],
+    "service_health_24h_meta": null,
+    "summary_origin": "Discord Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "21:20",
-        "count": 1
-      },
-      {
-        "label": "21:40",
-        "count": 3
-      },
-      {
-        "label": "22:00",
-        "count": 0
-      },
-      {
-        "label": "22:20",
-        "count": 2
-      },
       {
         "label": "22:40",
         "count": 1
@@ -1099,6 +508,22 @@
       {
         "label": "21:00",
         "count": 0
+      },
+      {
+        "label": "21:20",
+        "count": 17
+      },
+      {
+        "label": "21:40",
+        "count": 1
+      },
+      {
+        "label": "22:00",
+        "count": 1
+      },
+      {
+        "label": "22:20",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1107,18 +532,17 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-16T17:00:11-04:00"
+      "last_reviewed_at": "2026-09-17T00:27:08+02:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 130,
-        "last_reviewed_at": "2026-09-16T17:00:11-04:00"
+        "reports_24h": 146,
+        "last_reviewed_at": "2026-09-17T00:27:08+02:00"
       }
     ],
     "current_status_origin": "Discord Statuspage API",
-    "summary_origin": "Discord Statuspage API",
     "components": [
       {
         "name": "API",
@@ -1352,49 +776,15 @@
         "source": "Discord Statuspage API"
       }
     ],
-    "scheduled_maintenances": [],
-    "top_reported_issues_provider": [
-      {
-        "label": "App not loading",
-        "count": 10
-      },
-      {
-        "label": "Connectivity issue",
-        "count": 6
-      },
-      {
-        "label": "Error message",
-        "count": 5
-      },
-      {
-        "label": "Other",
-        "count": 4
-      },
-      {
-        "label": "Server not responding",
-        "count": 2
-      },
-      {
-        "label": "Sign in problem",
-        "count": 2
-      },
-      {
-        "label": "Service down",
-        "count": 1
-      },
-      {
-        "label": "Unable to download",
-        "count": 1
-      }
-    ]
+    "scheduled_maintenances": []
   },
   "reports": [
     {
-      "title": "API Errors",
-      "url": "https://discordstatus.com/#2026-09-16T19:07:25Z",
-      "published_at": "2026-09-16T19:07:25Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
+      "title": "Issue establishing voice call",
+      "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl",
+      "published_at": "2026-09-16T14:32:50.472-07:00",
+      "source": "Discord Statuspage API",
+      "meta": "Major / Monitoring"
     },
     {
       "title": "API Errors",
@@ -1402,13 +792,6 @@
       "published_at": "2026-09-16T12:03:28.046-07:00",
       "source": "Discord Statuspage API",
       "meta": "None / Resolved"
-    },
-    {
-      "title": "Google Pay Outage",
-      "url": "https://discordstatus.com/#2026-09-16T16:17:36Z",
-      "published_at": "2026-09-16T16:17:36Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
     },
     {
       "title": "Google Pay Outage",
@@ -1425,25 +808,32 @@
       "meta": "None / Resolved"
     },
     {
-      "title": "App not loading or stuck on loading screen",
-      "url": "https://discordstatus.com/#2026-09-15T14:18:47Z",
-      "published_at": "2026-09-15T14:18:47Z",
-      "source": "StatusGator",
-      "meta": "9m later"
-    },
-    {
-      "title": "Discord desktop app and web not loading",
-      "url": "https://discordstatus.com/#2026-09-15T00:52:00Z",
-      "published_at": "2026-09-15T00:52:00Z",
-      "source": "StatusGator",
-      "meta": "Never acknowledged"
-    },
-    {
       "title": "Media Proxy Latency High",
       "url": "https://discordstatus.com/incidents/5sp34swnxkh0",
       "published_at": "2026-09-11T09:24:46.890-07:00",
       "source": "Discord Statuspage API",
       "meta": "Minor / Resolved"
+    },
+    {
+      "title": "Issue with establishing voice calls",
+      "url": "https://discordstatus.com/incidents/d82z44sn4fpx",
+      "published_at": "2026-09-10T21:21:35.751-07:00",
+      "source": "Discord Statuspage API",
+      "meta": "Major / Resolved"
+    },
+    {
+      "title": "Some Servers Unavailable",
+      "url": "https://discordstatus.com/incidents/nt3d1xvkb9q8",
+      "published_at": "2026-09-03T14:31:27.760-07:00",
+      "source": "Discord Statuspage API",
+      "meta": "None / Resolved"
+    },
+    {
+      "title": "Some servers unavailable",
+      "url": "https://discordstatus.com/incidents/lf84xp6q5qjc",
+      "published_at": "2026-09-03T07:35:27.281-07:00",
+      "source": "Discord Statuspage API",
+      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -1452,45 +842,69 @@
       "url": "https://discordstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-16T21:00:12.618277Z"
+      "published_at": "2026-09-16T22:27:09.212831Z"
     },
     {
       "title": "Discord Status API (Statuspage v2)",
       "url": "https://discordstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-16T21:00:12.618277Z"
+      "published_at": "2026-09-16T22:27:09.212831Z"
     },
     {
       "title": "Discord Status history RSS",
       "url": "https://discordstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-16T21:00:12.618277Z"
+      "published_at": "2026-09-16T22:27:09.212831Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-16T21:00:12.618277Z"
+      "published_at": "2026-09-16T22:27:09.212831Z"
     },
     {
       "title": "Discord Help Center",
       "url": "https://support.discord.com/hc/en-us",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-16T21:00:12.618277Z"
+      "published_at": "2026-09-16T22:27:09.212831Z"
     }
   ],
   "news": [
     {
       "title": "Discord Statuspage API: All Systems Operational",
       "url": "https://discordstatus.com/",
-      "published_at": "2026-09-16T21:00:12.086201Z",
+      "published_at": "2026-09-16T22:27:08.709448Z",
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Issue establishing voice call",
+      "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl#bxfbydft8n5g",
+      "published_at": "2026-09-16T15:15:36.109-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Major / Monitoring / A fix has been implemented and we are monitoring the results."
+    },
+    {
+      "title": "Issue establishing voice call",
+      "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl#tbjfrf39qp9b",
+      "published_at": "2026-09-16T14:45:27.587-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Major / Monitoring / The issue has been identified and a fix is being implemented."
+    },
+    {
+      "title": "Issue establishing voice call",
+      "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl#ks5pgqpqz4qm",
+      "published_at": "2026-09-16T14:32:50.511-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Monitoring / We are currently investigating this issue."
     },
     {
       "title": "API Errors",
@@ -1523,30 +937,6 @@
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Major / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Google Pay Outage",
-      "url": "https://discordstatus.com/incidents/1z5kbv8r5pkv#xgwwg79cgmzt",
-      "published_at": "2026-09-16T09:15:33.222-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Major / Resolved / We're currently experiencing an issue that prevents users from completing purchases (including Nitro subscriptions and Shop items) through the Android app. This is caused by an ongoing outage with Google Play. Purchases on other platforms ("
-    },
-    {
-      "title": "Session Unavailability",
-      "url": "https://discordstatus.com/incidents/btdsd2y407t5#jpm8q9b21035",
-      "published_at": "2026-09-15T08:16:18.172-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / None / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Session Unavailability",
-      "url": "https://discordstatus.com/incidents/btdsd2y407t5#739tmlkddk4c",
-      "published_at": "2026-09-15T07:58:33.043-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / None / Resolved / A fix has been implemented and we are currently monitoring recovery of services."
     }
   ],
   "social": [],
@@ -1561,12 +951,12 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 8,
-      "last_item_at": "2026-09-16T21:00:10.803366Z",
+      "item_count": 0,
+      "last_item_at": "2026-09-16T22:27:07.617236Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 331,
-      "fetched_at": "2026-09-16T21:00:10.803386Z",
+      "duration_ms": 279,
+      "fetched_at": "2026-09-16T22:27:07.617264Z",
       "cache_hit": false
     },
     {
@@ -1580,11 +970,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-16T17:00:11-04:00",
+      "last_item_at": "2026-09-17T00:27:08+02:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1282,
-      "fetched_at": "2026-09-16T21:00:12.085739Z",
+      "duration_ms": 1091,
+      "fetched_at": "2026-09-16T22:27:08.709273Z",
       "cache_hit": false
     },
     {
@@ -1598,17 +988,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-16T21:00:12.086201Z",
+      "last_item_at": "2026-09-16T22:27:08.709448Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 530,
-      "fetched_at": "2026-09-16T21:00:12.616963Z",
+      "duration_ms": 502,
+      "fetched_at": "2026-09-16T22:27:09.211883Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-16T21:00:12.618277Z",
+    "generated_at": "2026-09-16T22:27:09.212831Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1630,7 +1020,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1645,18 +1035,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 331,
+          "duration_ms": 279,
           "cache_hit": false,
-          "at": "2026-09-16T21:00:10Z"
+          "at": "2026-09-16T22:27:07Z"
         },
         "metrics_24h": {
-          "runs": 10,
-          "ok": 10,
+          "runs": 11,
+          "ok": 11,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 233.6
+          "avg_duration_ms": 237.7
         },
         "metrics_7d": {
           "runs": 75,
@@ -1665,10 +1055,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 252.9
+          "avg_duration_ms": 253.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-16T21:00:10Z",
+        "last_success_at": "2026-09-16T22:27:07Z",
         "last_failure_at": null
       },
       {
@@ -1682,18 +1072,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1282,
+          "duration_ms": 1091,
           "cache_hit": false,
-          "at": "2026-09-16T21:00:10Z"
+          "at": "2026-09-16T22:27:07Z"
         },
         "metrics_24h": {
-          "runs": 10,
-          "ok": 10,
+          "runs": 11,
+          "ok": 11,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 930.6
+          "avg_duration_ms": 945.2
         },
         "metrics_7d": {
           "runs": 75,
@@ -1702,10 +1092,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 955.5
+          "avg_duration_ms": 957.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-16T21:00:10Z",
+        "last_success_at": "2026-09-16T22:27:07Z",
         "last_failure_at": null
       },
       {
@@ -1719,18 +1109,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 530,
+          "duration_ms": 502,
           "cache_hit": false,
-          "at": "2026-09-16T21:00:10Z"
+          "at": "2026-09-16T22:27:07Z"
         },
         "metrics_24h": {
-          "runs": 10,
-          "ok": 10,
+          "runs": 11,
+          "ok": 11,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 423.9
+          "avg_duration_ms": 431.0
         },
         "metrics_7d": {
           "runs": 75,
@@ -1739,29 +1129,128 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 430.2
+          "avg_duration_ms": 432.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-16T21:00:10Z",
+        "last_success_at": "2026-09-16T22:27:07Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-16T21:00:12.618277Z",
+    "generated_at": "2026-09-16T22:27:09.212831Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "7866cbb5f9b7c6a0",
+          "title": "Issue establishing voice call",
+          "started_at": "2026-09-16T14:32:50.472-07:00",
+          "duration": "54m ongoing",
+          "acknowledgement": "Major / Monitoring",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "92c70da3ad68861c",
+          "title": "Issue with establishing voice calls",
+          "started_at": "2026-09-10T21:21:35.751-07:00",
+          "duration": "2h 20m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "b4d8ef4e3c8f9ef7",
+          "title": "Some Servers Unavailable",
+          "started_at": "2026-09-03T14:31:27.760-07:00",
+          "duration": "56m",
+          "acknowledgement": "None / Resolved",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "f2c2b9d89c39c038",
+          "title": "Some servers unavailable",
+          "started_at": "2026-09-03T07:35:27.281-07:00",
+          "duration": "1h 2m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://discordstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "13e5115f4cd17fc0",
+          "title": "API Errors",
+          "started_at": "2026-09-16T19:07:25Z",
+          "duration": "15m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "53b6f255e7f0751a",
+          "title": "Google Pay Outage",
+          "started_at": "2026-09-16T16:17:36Z",
+          "duration": "30m",
+          "acknowledgement": "down icon Down",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "b40e87bc7095ea5b",
+          "title": "App not loading or stuck on loading screen",
+          "started_at": "2026-09-15T14:18:47Z",
+          "duration": "2h 14m",
+          "acknowledgement": "9m later",
+          "url": "https://discordstatus.com/"
+        },
+        {
+          "id": "a6c2b5680c4c6500",
+          "title": "Discord desktop app and web not loading",
+          "started_at": "2026-09-15T00:52:00Z",
+          "duration": "3h 27m",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://discordstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "bd87216e5004a38b",
+          "title": "Issue establishing voice call",
+          "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl",
+          "published_at": "2026-09-16T14:32:50.472-07:00",
+          "source": "Discord Statuspage API",
+          "meta": "Major / Monitoring"
+        },
+        {
+          "id": "c81fe8f02ddabbe7",
+          "title": "Issue with establishing voice calls",
+          "url": "https://discordstatus.com/incidents/d82z44sn4fpx",
+          "published_at": "2026-09-10T21:21:35.751-07:00",
+          "source": "Discord Statuspage API",
+          "meta": "Major / Resolved"
+        },
+        {
+          "id": "66e9964fae3fc893",
+          "title": "Some Servers Unavailable",
+          "url": "https://discordstatus.com/incidents/nt3d1xvkb9q8",
+          "published_at": "2026-09-03T14:31:27.760-07:00",
+          "source": "Discord Statuspage API",
+          "meta": "None / Resolved"
+        },
+        {
+          "id": "507e6474441ee52a",
+          "title": "Some servers unavailable",
+          "url": "https://discordstatus.com/incidents/lf84xp6q5qjc",
+          "published_at": "2026-09-03T07:35:27.281-07:00",
+          "source": "Discord Statuspage API",
+          "meta": "Major / Resolved"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 4,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 4,
+      "new_reports": 4
     }
   }
 }
