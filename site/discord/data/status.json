@@ -1,24 +1,24 @@
 {
-  "generated_at": "2026-09-17T14:24:05.995553Z",
+  "generated_at": "2026-09-17T18:26:58.260971Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 1,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "discord-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 4.015,
+      "incidents": 5.355,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 2.295
     },
     "signal_metrics": {
-      "reports_24h": 147,
-      "recent_incidents_6h": 0,
+      "reports_24h": 180,
+      "recent_incidents_6h": 1,
       "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.0,
@@ -35,35 +35,35 @@
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 1,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Discord Statuspage API: All Systems Operational",
         "url": "https://discordstatus.com/",
-        "published_at": "2026-09-17T14:24:05.497938Z",
+        "published_at": "2026-09-17T18:26:57.653226Z",
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Issue / Delay in establishing call connection",
+        "url": "https://discordstatus.com/incidents/610vfhw9wjcj#g6yypw86rwjq",
+        "published_at": "2026-09-17T11:18:09.349-07:00",
+        "source": "Discord Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We are currently investigating this issue."
       },
       {
         "title": "Issue establishing voice call",
@@ -141,26 +149,26 @@
         "source": "Discord Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Major / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Google Pay Outage",
-        "url": "https://discordstatus.com/incidents/1z5kbv8r5pkv#xgwwg79cgmzt",
-        "published_at": "2026-09-16T09:15:33.222-07:00",
-        "source": "Discord Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Major / Resolved / We're currently experiencing an issue that prevents users from completing purchases (including Nitro subscriptions and Shop items) through the Android app. This is caused by an ongoing outage with Google Play. Purchases on other platforms ("
       }
     ],
-    "last_statement_at": "2026-09-17T14:24:05.497938Z"
+    "last_statement_at": "2026-09-17T18:26:57.653226Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://discordstatus.com/",
-    "summary": "Discord Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "Discord Statuspage reports an active incident: Issue / Delay in establishing call connection.",
     "current_status": "operational",
-    "reports_24h": 147,
+    "reports_24h": 180,
     "incidents": [
+      {
+        "title": "Issue / Delay in establishing call connection",
+        "started_at": "2026-09-17T11:18:09.303-07:00",
+        "duration": "8m ongoing",
+        "acknowledgement": "Major / Investigating",
+        "source": "Discord Statuspage API",
+        "url": "https://discordstatus.com/incidents/610vfhw9wjcj"
+      },
       {
         "title": "Issue establishing voice call",
         "started_at": "2026-09-16T14:32:50.472-07:00",
@@ -216,14 +224,6 @@
         "acknowledgement": "None / Resolved",
         "source": "Discord Statuspage API",
         "url": "https://discordstatus.com/incidents/nt3d1xvkb9q8"
-      },
-      {
-        "title": "Some servers unavailable",
-        "started_at": "2026-09-03T07:35:27.281-07:00",
-        "duration": "1h 2m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Discord Statuspage API",
-        "url": "https://discordstatus.com/incidents/lf84xp6q5qjc"
       }
     ],
     "top_reported_issues": [],
@@ -237,54 +237,6 @@
     "summary_origin": "Discord Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "14:40",
-        "count": 2
-      },
-      {
-        "label": "15:00",
-        "count": 3
-      },
-      {
-        "label": "15:20",
-        "count": 1
-      },
-      {
-        "label": "15:40",
-        "count": 3
-      },
-      {
-        "label": "16:00",
-        "count": 0
-      },
-      {
-        "label": "16:20",
-        "count": 2
-      },
-      {
-        "label": "16:40",
-        "count": 0
-      },
-      {
-        "label": "17:00",
-        "count": 1
-      },
-      {
-        "label": "17:20",
-        "count": 3
-      },
-      {
-        "label": "17:40",
-        "count": 1
-      },
-      {
-        "label": "18:00",
-        "count": 4
-      },
-      {
-        "label": "18:20",
-        "count": 0
-      },
       {
         "label": "18:40",
         "count": 8
@@ -524,6 +476,54 @@
       {
         "label": "14:20",
         "count": 1
+      },
+      {
+        "label": "14:40",
+        "count": 3
+      },
+      {
+        "label": "15:00",
+        "count": 0
+      },
+      {
+        "label": "15:20",
+        "count": 2
+      },
+      {
+        "label": "15:40",
+        "count": 1
+      },
+      {
+        "label": "16:00",
+        "count": 1
+      },
+      {
+        "label": "16:20",
+        "count": 3
+      },
+      {
+        "label": "16:40",
+        "count": 1
+      },
+      {
+        "label": "17:00",
+        "count": 2
+      },
+      {
+        "label": "17:20",
+        "count": 0
+      },
+      {
+        "label": "17:40",
+        "count": 2
+      },
+      {
+        "label": "18:00",
+        "count": 26
+      },
+      {
+        "label": "18:20",
+        "count": 12
       }
     ],
     "user_reports_24h_meta": {
@@ -532,14 +532,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-17T10:24:05-04:00"
+      "last_reviewed_at": "2026-09-17T14:26:56-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 147,
-        "last_reviewed_at": "2026-09-17T10:24:05-04:00"
+        "reports_24h": 180,
+        "last_reviewed_at": "2026-09-17T14:26:56-04:00"
       }
     ],
     "current_status_origin": "Discord Statuspage API",
@@ -780,6 +780,13 @@
   },
   "reports": [
     {
+      "title": "Issue / Delay in establishing call connection",
+      "url": "https://discordstatus.com/incidents/610vfhw9wjcj",
+      "published_at": "2026-09-17T11:18:09.303-07:00",
+      "source": "Discord Statuspage API",
+      "meta": "Major / Investigating"
+    },
+    {
       "title": "Issue establishing voice call",
       "url": "https://discordstatus.com/incidents/c9vn3xqlhzyl",
       "published_at": "2026-09-16T14:32:50.472-07:00",
@@ -827,13 +834,6 @@
       "published_at": "2026-09-03T14:31:27.760-07:00",
       "source": "Discord Statuspage API",
       "meta": "None / Resolved"
-    },
-    {
-      "title": "Some servers unavailable",
-      "url": "https://discordstatus.com/incidents/lf84xp6q5qjc",
-      "published_at": "2026-09-03T07:35:27.281-07:00",
-      "source": "Discord Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -842,45 +842,53 @@
       "url": "https://discordstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-17T14:24:05.995553Z"
+      "published_at": "2026-09-17T18:26:58.260971Z"
     },
     {
       "title": "Discord Status API (Statuspage v2)",
       "url": "https://discordstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-17T14:24:05.995553Z"
+      "published_at": "2026-09-17T18:26:58.260971Z"
     },
     {
       "title": "Discord Status history RSS",
       "url": "https://discordstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-17T14:24:05.995553Z"
+      "published_at": "2026-09-17T18:26:58.260971Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-17T14:24:05.995553Z"
+      "published_at": "2026-09-17T18:26:58.260971Z"
     },
     {
       "title": "Discord Help Center",
       "url": "https://support.discord.com/hc/en-us",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-17T14:24:05.995553Z"
+      "published_at": "2026-09-17T18:26:58.260971Z"
     }
   ],
   "news": [
     {
       "title": "Discord Statuspage API: All Systems Operational",
       "url": "https://discordstatus.com/",
-      "published_at": "2026-09-17T14:24:05.497938Z",
+      "published_at": "2026-09-17T18:26:57.653226Z",
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Issue / Delay in establishing call connection",
+      "url": "https://discordstatus.com/incidents/610vfhw9wjcj#g6yypw86rwjq",
+      "published_at": "2026-09-17T11:18:09.349-07:00",
+      "source": "Discord Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We are currently investigating this issue."
     },
     {
       "title": "Issue establishing voice call",
@@ -929,14 +937,6 @@
       "source": "Discord Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / None / Resolved / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "API Errors",
-      "url": "https://discordstatus.com/incidents/chpjjdyk63yt#gxpc7m00hkbk",
-      "published_at": "2026-09-16T12:03:28.101-07:00",
-      "source": "Discord Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / None / Resolved / We are currently investigating this issue."
     }
   ],
   "social": [],
@@ -952,11 +952,11 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-09-17T14:24:04.708175Z",
+      "last_item_at": "2026-09-17T18:26:56.454530Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 197,
-      "fetched_at": "2026-09-17T14:24:04.708207Z",
+      "duration_ms": 343,
+      "fetched_at": "2026-09-17T18:26:56.454565Z",
       "cache_hit": false
     },
     {
@@ -970,11 +970,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-17T10:24:05-04:00",
+      "last_item_at": "2026-09-17T14:26:56-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 789,
-      "fetched_at": "2026-09-17T14:24:05.497765Z",
+      "duration_ms": 1198,
+      "fetched_at": "2026-09-17T18:26:57.653029Z",
       "cache_hit": false
     },
     {
@@ -988,17 +988,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-17T14:24:05.497938Z",
+      "last_item_at": "2026-09-17T18:26:57.653226Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 496,
-      "fetched_at": "2026-09-17T14:24:05.994534Z",
+      "duration_ms": 606,
+      "fetched_at": "2026-09-17T18:26:58.259724Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-17T14:24:05.995553Z",
+    "generated_at": "2026-09-17T18:26:58.260971Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1020,7 +1020,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1035,18 +1035,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 197,
+          "duration_ms": 343,
           "cache_hit": false,
-          "at": "2026-09-17T14:24:04Z"
+          "at": "2026-09-17T18:26:56Z"
         },
         "metrics_24h": {
-          "runs": 10,
-          "ok": 10,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 233.2
+          "avg_duration_ms": 273.4
         },
         "metrics_7d": {
           "runs": 73,
@@ -1055,10 +1055,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 256.3
+          "avg_duration_ms": 258.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-17T14:24:04Z",
+        "last_success_at": "2026-09-17T18:26:56Z",
         "last_failure_at": null
       },
       {
@@ -1072,18 +1072,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 789,
+          "duration_ms": 1198,
           "cache_hit": false,
-          "at": "2026-09-17T14:24:04Z"
+          "at": "2026-09-17T18:26:56Z"
         },
         "metrics_24h": {
-          "runs": 10,
-          "ok": 10,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 927.8
+          "avg_duration_ms": 997.7
         },
         "metrics_7d": {
           "runs": 73,
@@ -1092,10 +1092,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 961.9
+          "avg_duration_ms": 962.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-17T14:24:04Z",
+        "last_success_at": "2026-09-17T18:26:56Z",
         "last_failure_at": null
       },
       {
@@ -1109,18 +1109,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 496,
+          "duration_ms": 606,
           "cache_hit": false,
-          "at": "2026-09-17T14:24:04Z"
+          "at": "2026-09-17T18:26:56Z"
         },
         "metrics_24h": {
-          "runs": 10,
-          "ok": 10,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 428.4
+          "avg_duration_ms": 471.3
         },
         "metrics_7d": {
           "runs": 73,
@@ -1129,29 +1129,56 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 433.0
+          "avg_duration_ms": 434.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-17T14:24:04Z",
+        "last_success_at": "2026-09-17T18:26:56Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-17T14:24:05.995553Z",
+    "generated_at": "2026-09-17T18:26:58.260971Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "38151ce627e64422",
+          "title": "Issue / Delay in establishing call connection",
+          "started_at": "2026-09-17T11:18:09.303-07:00",
+          "duration": "8m ongoing",
+          "acknowledgement": "Major / Investigating",
+          "url": "https://discordstatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "f2c2b9d89c39c038",
+          "title": "Some servers unavailable",
+          "started_at": "2026-09-03T07:35:27.281-07:00",
+          "duration": "1h 2m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://discordstatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "d69f7db3efd4e5b1",
+          "title": "Issue / Delay in establishing call connection",
+          "url": "https://discordstatus.com/incidents/610vfhw9wjcj",
+          "published_at": "2026-09-17T11:18:09.303-07:00",
+          "source": "Discord Statuspage API",
+          "meta": "Major / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
