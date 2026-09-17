@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-09-17T18:27:09.035628Z",
+  "generated_at": "2026-09-17T21:38:39.620370Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "github-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.8,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.35
     },
     "signal_metrics": {
-      "reports_24h": 115,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 16,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -31,40 +31,40 @@
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false,
       "official_partial_scope_cap_applied": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -74,10 +74,18 @@
       {
         "title": "GitHub Statuspage API: All Systems Operational",
         "url": "https://www.githubstatus.com/",
-        "published_at": "2026-09-17T18:27:08.720340Z",
+        "published_at": "2026-09-17T21:38:39.251396Z",
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+        "url": "https://www.githubstatus.com/incidents/nvy2q96mcmyg#2v42scphlz53",
+        "published_at": "2026-09-17T20:59:02.127Z",
+        "source": "GitHub Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating reports of degraded performance for Copilot AI Model Providers"
       },
       {
         "title": "Degradation with Gemini 3.8 Flash",
@@ -142,26 +150,32 @@
         "source": "GitHub Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / We are investigating reports of impacted performance for some GitHub services."
-      },
-      {
-        "title": "Disruption with some GitHub services",
-        "url": "https://www.githubstatus.com/incidents/qwdwmtqghpk5#wm1f9wzx17x7",
-        "published_at": "2026-09-15T11:17:22.038Z",
-        "source": "GitHub Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
       }
     ],
-    "last_statement_at": "2026-09-17T18:27:08.720340Z"
+    "last_statement_at": "2026-09-17T21:38:39.251396Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.githubstatus.com/",
-    "summary": "GitHub Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "GitHub Statuspage reports an active incident: Elevated rate of errors for OpenAI models provided by Copilot.",
     "current_status": "operational",
-    "reports_24h": 115,
+    "reports_24h": 16,
     "incidents": [
+      {
+        "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+        "started_at": "2026-09-17T21:01:52Z",
+        "duration": "",
+        "acknowledgement": "Yes"
+      },
+      {
+        "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+        "started_at": "2026-09-17T20:59:02.074Z",
+        "duration": "39m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "GitHub Statuspage API",
+        "url": "https://www.githubstatus.com/incidents/nvy2q96mcmyg"
+      },
       {
         "title": "Degradation with Gemini 3.8 Flash",
         "started_at": "2026-09-16T07:21:47Z",
@@ -203,20 +217,6 @@
         "acknowledgement": "Minor / Resolved",
         "source": "GitHub Statuspage API",
         "url": "https://www.githubstatus.com/incidents/qwdwmtqghpk5"
-      },
-      {
-        "title": "Actions Larger Runner Jobs for some customers may be slow to start",
-        "started_at": "2026-09-14T18:41:36Z",
-        "duration": "26m",
-        "acknowledgement": "Yes"
-      },
-      {
-        "title": "Actions Larger Runner Jobs for some customers may be slow to start",
-        "started_at": "2026-09-14T18:40:25.082Z",
-        "duration": "55m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "GitHub Statuspage API",
-        "url": "https://www.githubstatus.com/incidents/kzh5j0mt7qwc"
       }
     ],
     "top_reported_issues": [],
@@ -227,44 +227,7 @@
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "18:40",
-        "count": 2
-      },
-      {
-        "label": "19:00",
-        "count": 3
-      },
-      {
-        "label": "19:20",
-        "count": 1
-      },
-      {
-        "label": "19:40",
-        "count": 3
-      },
-      {
-        "label": "20:00",
-        "count": 3
-      },
-      {
-        "label": "20:20",
-        "count": 1
-      },
-      {
-        "label": "20:40",
-        "count": 3
-      },
-      {
-        "label": "21:00",
-        "count": 0
-      },
-      {
-        "label": "21:20",
-        "count": 2
-      },
       {
         "label": "21:40",
         "count": 0
@@ -516,6 +479,42 @@
       {
         "label": "18:20",
         "count": 1
+      },
+      {
+        "label": "18:40",
+        "count": 3
+      },
+      {
+        "label": "19:00",
+        "count": 0
+      },
+      {
+        "label": "19:20",
+        "count": 2
+      },
+      {
+        "label": "19:40",
+        "count": 0
+      },
+      {
+        "label": "20:00",
+        "count": 0
+      },
+      {
+        "label": "20:20",
+        "count": 2
+      },
+      {
+        "label": "20:40",
+        "count": 0
+      },
+      {
+        "label": "21:00",
+        "count": 1
+      },
+      {
+        "label": "21:20",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -524,14 +523,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-17T14:27:07-04:00"
+      "last_reviewed_at": "2026-09-17T17:38:38-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 115,
-        "last_reviewed_at": "2026-09-17T14:27:07-04:00"
+        "reports_24h": 108,
+        "last_reviewed_at": "2026-09-17T17:38:38-04:00"
       }
     ],
     "current_status_origin": "GitHub Statuspage API",
@@ -626,6 +625,20 @@
   },
   "reports": [
     {
+      "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+      "url": "https://www.githubstatus.com/#2026-09-17T21:01:52Z",
+      "published_at": "2026-09-17T21:01:52Z",
+      "source": "StatusGator",
+      "meta": "Yes"
+    },
+    {
+      "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+      "url": "https://www.githubstatus.com/incidents/nvy2q96mcmyg",
+      "published_at": "2026-09-17T20:59:02.074Z",
+      "source": "GitHub Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "Degradation with Gemini 3.8 Flash",
       "url": "https://www.githubstatus.com/#2026-09-16T07:21:47Z",
       "published_at": "2026-09-16T07:21:47Z",
@@ -666,20 +679,6 @@
       "published_at": "2026-09-15T09:47:15.093Z",
       "source": "GitHub Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Actions Larger Runner Jobs for some customers may be slow to start",
-      "url": "https://www.githubstatus.com/#2026-09-14T18:41:36Z",
-      "published_at": "2026-09-14T18:41:36Z",
-      "source": "StatusGator",
-      "meta": "Yes"
-    },
-    {
-      "title": "Actions Larger Runner Jobs for some customers may be slow to start",
-      "url": "https://www.githubstatus.com/incidents/kzh5j0mt7qwc",
-      "published_at": "2026-09-14T18:40:25.082Z",
-      "source": "GitHub Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -688,52 +687,60 @@
       "url": "https://www.githubstatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-17T18:27:09.035628Z"
+      "published_at": "2026-09-17T21:38:39.620370Z"
     },
     {
       "title": "GitHub Status API (Statuspage v2)",
       "url": "https://www.githubstatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-17T18:27:09.035628Z"
+      "published_at": "2026-09-17T21:38:39.620370Z"
     },
     {
       "title": "GitHub Status history RSS",
       "url": "https://www.githubstatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-17T18:27:09.035628Z"
+      "published_at": "2026-09-17T21:38:39.620370Z"
     },
     {
       "title": "GitHub Status API docs",
       "url": "https://www.githubstatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-09-17T18:27:09.035628Z"
+      "published_at": "2026-09-17T21:38:39.620370Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-17T18:27:09.035628Z"
+      "published_at": "2026-09-17T21:38:39.620370Z"
     },
     {
       "title": "GitHub Support",
       "url": "https://support.github.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-17T18:27:09.035628Z"
+      "published_at": "2026-09-17T21:38:39.620370Z"
     }
   ],
   "news": [
     {
       "title": "GitHub Statuspage API: All Systems Operational",
       "url": "https://www.githubstatus.com/",
-      "published_at": "2026-09-17T18:27:08.720340Z",
+      "published_at": "2026-09-17T21:38:39.251396Z",
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+      "url": "https://www.githubstatus.com/incidents/nvy2q96mcmyg#2v42scphlz53",
+      "published_at": "2026-09-17T20:59:02.127Z",
+      "source": "GitHub Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating reports of degraded performance for Copilot AI Model Providers"
     },
     {
       "title": "Degradation with Gemini 3.8 Flash",
@@ -782,14 +789,6 @@
       "source": "GitHub Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
-    },
-    {
-      "title": "Disruption with some GitHub services",
-      "url": "https://www.githubstatus.com/incidents/bk7zgdcq7s9t#y03f7t24mwq4",
-      "published_at": "2026-09-15T19:48:02.813Z",
-      "source": "GitHub Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / The degradation has been mitigated. We are monitoring to ensure stability."
     }
   ],
   "social": [],
@@ -805,11 +804,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-09-17T18:27:07.331659Z",
+      "last_item_at": "2026-09-17T21:38:38.460606Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 465,
-      "fetched_at": "2026-09-17T18:27:07.331685Z",
+      "duration_ms": 207,
+      "fetched_at": "2026-09-17T21:38:38.460634Z",
       "cache_hit": false
     },
     {
@@ -823,11 +822,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-17T14:27:07-04:00",
+      "last_item_at": "2026-09-17T17:38:38-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1388,
-      "fetched_at": "2026-09-17T18:27:08.720102Z",
+      "duration_ms": 790,
+      "fetched_at": "2026-09-17T21:38:39.251142Z",
       "cache_hit": false
     },
     {
@@ -841,17 +840,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-17T18:27:08.720340Z",
+      "last_item_at": "2026-09-17T21:38:39.251396Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 313,
-      "fetched_at": "2026-09-17T18:27:09.034025Z",
+      "duration_ms": 367,
+      "fetched_at": "2026-09-17T21:38:39.618660Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-17T18:27:09.035628Z",
+    "generated_at": "2026-09-17T21:38:39.620370Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -873,7 +872,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -888,18 +887,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 465,
+          "duration_ms": 207,
           "cache_hit": false,
-          "at": "2026-09-17T18:27:06Z"
+          "at": "2026-09-17T21:38:38Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 278.3
+          "avg_duration_ms": 274.5
         },
         "metrics_7d": {
           "runs": 73,
@@ -908,10 +907,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 262.0
+          "avg_duration_ms": 261.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-17T18:27:06Z",
+        "last_success_at": "2026-09-17T21:38:38Z",
         "last_failure_at": null
       },
       {
@@ -925,18 +924,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1388,
+          "duration_ms": 790,
           "cache_hit": false,
-          "at": "2026-09-17T18:27:06Z"
+          "at": "2026-09-17T21:38:38Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1188.4
+          "avg_duration_ms": 1140.9
         },
         "metrics_7d": {
           "runs": 73,
@@ -945,10 +944,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1095.9
+          "avg_duration_ms": 1086.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-17T18:27:06Z",
+        "last_success_at": "2026-09-17T21:38:38Z",
         "last_failure_at": null
       },
       {
@@ -962,18 +961,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 313,
+          "duration_ms": 367,
           "cache_hit": false,
-          "at": "2026-09-17T18:27:06Z"
+          "at": "2026-09-17T21:38:38Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 277.0
+          "avg_duration_ms": 312.2
         },
         "metrics_7d": {
           "runs": 73,
@@ -982,42 +981,37 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 276.5
+          "avg_duration_ms": 277.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-17T18:27:06Z",
+        "last_success_at": "2026-09-17T21:38:38Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-17T18:27:09.035628Z",
+    "generated_at": "2026-09-17T21:38:39.620370Z",
     "incidents": {
       "new": [
         {
-          "id": "67f499c4b390faa6",
-          "title": "Degradation with Gemini 3.8 Flash",
-          "started_at": "2026-09-16T07:21:47Z",
-          "duration": "4h 25m",
+          "id": "e88b2b592e485d2a",
+          "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+          "started_at": "2026-09-17T21:01:52Z",
+          "duration": "",
           "acknowledgement": "Yes",
           "url": "https://www.githubstatus.com/"
         },
         {
-          "id": "f3db3ca134510d62",
-          "title": "Disruption with some GitHub services",
-          "started_at": "2026-09-15T19:16:34Z",
-          "duration": "40m",
-          "acknowledgement": "Yes",
+          "id": "b68d0b602d4d515a",
+          "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+          "started_at": "2026-09-17T20:59:02.074Z",
+          "duration": "39m ongoing",
+          "acknowledgement": "Minor / Investigating",
           "url": "https://www.githubstatus.com/"
-        },
-        {
-          "id": "e3e8022dd1043ffd",
-          "title": "Disruption with some GitHub services",
-          "started_at": "2026-09-15T10:21:33Z",
-          "duration": "1h 1m",
-          "acknowledgement": "Yes",
-          "url": "https://www.githubstatus.com/"
-        },
+        }
+      ],
+      "updated": [],
+      "resolved": [
         {
           "id": "4fb1f386ece49e48",
           "title": "Actions Larger Runner Jobs for some customers may be slow to start",
@@ -1025,39 +1019,12 @@
           "duration": "26m",
           "acknowledgement": "Yes",
           "url": "https://www.githubstatus.com/"
-        }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "23c882fb6f5a6998",
-          "title": "Incident with several GitHub Services",
-          "started_at": "2026-09-13T09:16:11.480Z",
-          "duration": "1h 28m",
-          "acknowledgement": "Critical / Resolved",
-          "url": "https://www.githubstatus.com/"
         },
         {
-          "id": "d33663a2800399cf",
-          "title": "Degradation in repos contents API",
-          "started_at": "2026-09-04T22:02:15.790Z",
-          "duration": "21m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.githubstatus.com/"
-        },
-        {
-          "id": "38472032ecc7b488",
-          "title": "Disruption with Copilot Code Review",
-          "started_at": "2026-09-04T20:39:03.203Z",
-          "duration": "1h 47m",
-          "acknowledgement": "Major / Resolved",
-          "url": "https://www.githubstatus.com/"
-        },
-        {
-          "id": "025f35e589d8f2ce",
-          "title": "Incident with Grok Copilot AI Model Provider",
-          "started_at": "2026-09-03T14:17:27.485Z",
-          "duration": "2h 54m",
+          "id": "e8371b13ca926dc5",
+          "title": "Actions Larger Runner Jobs for some customers may be slow to start",
+          "started_at": "2026-09-14T18:40:25.082Z",
+          "duration": "55m",
           "acknowledgement": "Minor / Resolved",
           "url": "https://www.githubstatus.com/"
         }
@@ -1066,44 +1033,28 @@
     "reports": {
       "new": [
         {
-          "id": "ca1fe00519362162",
-          "title": "Degradation with Gemini 3.8 Flash",
-          "url": "https://www.githubstatus.com/#2026-09-16T07:21:47Z",
-          "published_at": "2026-09-16T07:21:47Z",
+          "id": "f5cacacd3da68ced",
+          "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+          "url": "https://www.githubstatus.com/#2026-09-17T21:01:52Z",
+          "published_at": "2026-09-17T21:01:52Z",
           "source": "StatusGator",
           "meta": "Yes"
         },
         {
-          "id": "10fc7523a3b01f19",
-          "title": "Disruption with some GitHub services",
-          "url": "https://www.githubstatus.com/#2026-09-15T19:16:34Z",
-          "published_at": "2026-09-15T19:16:34Z",
-          "source": "StatusGator",
-          "meta": "Yes"
-        },
-        {
-          "id": "c4742901e46533a2",
-          "title": "Disruption with some GitHub services",
-          "url": "https://www.githubstatus.com/#2026-09-15T10:21:33Z",
-          "published_at": "2026-09-15T10:21:33Z",
-          "source": "StatusGator",
-          "meta": "Yes"
-        },
-        {
-          "id": "b17ebaf77dd15e9d",
-          "title": "Actions Larger Runner Jobs for some customers may be slow to start",
-          "url": "https://www.githubstatus.com/#2026-09-14T18:41:36Z",
-          "published_at": "2026-09-14T18:41:36Z",
-          "source": "StatusGator",
-          "meta": "Yes"
+          "id": "6d0cf76dbf95bd96",
+          "title": "Elevated rate of errors for OpenAI models provided by Copilot",
+          "url": "https://www.githubstatus.com/incidents/nvy2q96mcmyg",
+          "published_at": "2026-09-17T20:59:02.074Z",
+          "source": "GitHub Statuspage API",
+          "meta": "Minor / Investigating"
         }
       ]
     },
     "summary": {
-      "new_incidents": 4,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 4,
-      "new_reports": 4
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
