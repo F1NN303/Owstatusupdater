@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-09-22T06:37:36.786236Z",
+  "generated_at": "2026-09-22T10:18:27.424114Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.8,
+      "incidents": 2.9,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 2.45
     },
     "signal_metrics": {
-      "reports_24h": 150,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 152,
+      "recent_incidents_6h": 1,
+      "recent_incidents_24h": 1,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,22 +29,22 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-09-22T06:37:35.943227Z",
+        "published_at": "2026-09-22T10:18:26.738666Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Increased error rate for Plus and Pro users.",
+        "url": "https://status.openai.com/incidents/01M348TX2DX7KPM9X857N4APNV#01M348TX2DY83QVDFHJ1767PGE",
+        "published_at": "2026-09-22T09:58:28Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
       },
       {
         "title": "Overbilling for OpenAI-hosted containers in the Agent API",
@@ -141,26 +149,26 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / None / Resolved / Some users are unable to sign in with single sign-on (SSO). User and group provisioning through SCIM is also affected. We are working on implementing a mitigation."
-      },
-      {
-        "title": "Overbilling for OpenAI-hosted containers in the Agent API",
-        "url": "https://status.openai.com/incidents/01M2VA7X37P1ASADSNZ1CG4N4D#01M2VA7X37ZJNGMP4MB8PJA913",
-        "published_at": "2026-09-18T22:29:53Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / None / Resolved / We’re investigating an issue causing higher-than-expected charges for OpenAI-hosted containers in the Agent API. We’re working on a fix and preparing refunds for affected customers. We’ll share further updates as we make progress."
       }
     ],
-    "last_statement_at": "2026-09-22T06:37:35.943227Z"
+    "last_statement_at": "2026-09-22T10:18:26.738666Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 150,
+    "summary": "OpenAI Statuspage reports an active incident: Increased error rate for Plus and Pro users..",
+    "current_status": "degraded",
+    "reports_24h": 152,
     "incidents": [
+      {
+        "title": "Increased error rate for Plus and Pro users.",
+        "started_at": "2026-09-22T09:58:28Z",
+        "duration": "19m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M348TX2DX7KPM9X857N4APNV"
+      },
       {
         "title": "SSO sign-in and SCIM provisioning issues",
         "started_at": "2026-09-18T23:00:09Z",
@@ -216,71 +224,24 @@
         "acknowledgement": "Major / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M2KQNE5C42NEZPX6V01NHH5W"
-      },
-      {
-        "title": "Ads Manager login issues",
-        "started_at": "2026-09-15T16:52:36Z",
-        "duration": "1m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01M2JZR57HRQTKQGTCWG31M3AS"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Conversations",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "summary_origin": "OpenAI Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "06:40",
-        "count": 4
-      },
-      {
-        "label": "07:00",
-        "count": 3
-      },
-      {
-        "label": "07:20",
-        "count": 3
-      },
-      {
-        "label": "07:40",
-        "count": 2
-      },
-      {
-        "label": "08:00",
-        "count": 2
-      },
-      {
-        "label": "08:20",
-        "count": 3
-      },
-      {
-        "label": "08:40",
-        "count": 2
-      },
-      {
-        "label": "09:00",
-        "count": 2
-      },
-      {
-        "label": "09:20",
-        "count": 0
-      },
-      {
-        "label": "09:40",
-        "count": 3
-      },
-      {
-        "label": "10:00",
-        "count": 2
-      },
       {
         "label": "10:20",
         "count": 0
@@ -524,6 +485,50 @@
       {
         "label": "06:20",
         "count": 2
+      },
+      {
+        "label": "06:40",
+        "count": 1
+      },
+      {
+        "label": "07:00",
+        "count": 2
+      },
+      {
+        "label": "07:20",
+        "count": 3
+      },
+      {
+        "label": "07:40",
+        "count": 1
+      },
+      {
+        "label": "08:00",
+        "count": 2
+      },
+      {
+        "label": "08:20",
+        "count": 0
+      },
+      {
+        "label": "08:40",
+        "count": 3
+      },
+      {
+        "label": "09:00",
+        "count": 7
+      },
+      {
+        "label": "09:20",
+        "count": 1
+      },
+      {
+        "label": "09:40",
+        "count": 4
+      },
+      {
+        "label": "10:00",
+        "count": 4
       }
     ],
     "user_reports_24h_meta": {
@@ -532,14 +537,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-22T02:37:35-04:00"
+      "last_reviewed_at": "2026-09-22T12:18:26+02:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 150,
-        "last_reviewed_at": "2026-09-22T02:37:35-04:00"
+        "reports_24h": 152,
+        "last_reviewed_at": "2026-09-22T12:18:26+02:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -721,8 +726,8 @@
       },
       {
         "name": "Conversations",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-07-09T19:25:56Z",
         "source": "OpenAI Statuspage API"
       },
@@ -787,6 +792,13 @@
   },
   "reports": [
     {
+      "title": "Increased error rate for Plus and Pro users.",
+      "url": "https://status.openai.com/incidents/01M348TX2DX7KPM9X857N4APNV",
+      "published_at": "2026-09-22T09:58:28Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "SSO sign-in and SCIM provisioning issues",
       "url": "https://status.openai.com/incidents/01M2VBZB1RYSMXHZNRA25ZJ36X",
       "published_at": "2026-09-18T23:00:09Z",
@@ -834,13 +846,6 @@
       "published_at": "2026-09-15T23:50:32Z",
       "source": "OpenAI Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Ads Manager login issues",
-      "url": "https://status.openai.com/incidents/01M2JZR57HRQTKQGTCWG31M3AS",
-      "published_at": "2026-09-15T16:52:36Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -849,45 +854,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-22T06:37:36.786236Z"
+      "published_at": "2026-09-22T10:18:27.424114Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-22T06:37:36.786236Z"
+      "published_at": "2026-09-22T10:18:27.424114Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-22T06:37:36.786236Z"
+      "published_at": "2026-09-22T10:18:27.424114Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-22T06:37:36.786236Z"
+      "published_at": "2026-09-22T10:18:27.424114Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-22T06:37:36.786236Z"
+      "published_at": "2026-09-22T10:18:27.424114Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-09-22T06:37:35.943227Z",
+      "published_at": "2026-09-22T10:18:26.738666Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Increased error rate for Plus and Pro users.",
+      "url": "https://status.openai.com/incidents/01M348TX2DX7KPM9X857N4APNV#01M348TX2DY83QVDFHJ1767PGE",
+      "published_at": "2026-09-22T09:58:28Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
     },
     {
       "title": "Overbilling for OpenAI-hosted containers in the Agent API",
@@ -936,14 +949,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / None / Resolved / All impacted services have now fully recovered."
-    },
-    {
-      "title": "SSO sign-in and SCIM provisioning issues",
-      "url": "https://status.openai.com/incidents/01M2VBZB1RYSMXHZNRA25ZJ36X#01M2VCJFZ77A47FT9B69NG6HJA",
-      "published_at": "2026-09-18T23:06:00Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / None / Resolved / We have applied the mitigation and are monitoring the recovery."
     }
   ],
   "social": [],
@@ -959,11 +964,11 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-09-22T06:37:34.910771Z",
+      "last_item_at": "2026-09-22T10:18:25.967384Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 201,
-      "fetched_at": "2026-09-22T06:37:34.910797Z",
+      "duration_ms": 688,
+      "fetched_at": "2026-09-22T10:18:25.967412Z",
       "cache_hit": false
     },
     {
@@ -977,11 +982,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-22T02:37:35-04:00",
+      "last_item_at": "2026-09-22T12:18:26+02:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1032,
-      "fetched_at": "2026-09-22T06:37:35.942992Z",
+      "duration_ms": 771,
+      "fetched_at": "2026-09-22T10:18:26.738444Z",
       "cache_hit": false
     },
     {
@@ -995,17 +1000,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-22T06:37:35.943227Z",
+      "last_item_at": "2026-09-22T10:18:26.738666Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 841,
-      "fetched_at": "2026-09-22T06:37:36.784810Z",
+      "duration_ms": 683,
+      "fetched_at": "2026-09-22T10:18:27.422648Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-22T06:37:36.786236Z",
+    "generated_at": "2026-09-22T10:18:27.424114Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1027,7 +1032,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1042,30 +1047,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 201,
+          "duration_ms": 688,
           "cache_hit": false,
-          "at": "2026-09-22T06:37:34Z"
+          "at": "2026-09-22T10:18:25Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 209.8
+          "avg_duration_ms": 262.9
         },
         "metrics_7d": {
-          "runs": 71,
-          "ok": 71,
+          "runs": 70,
+          "ok": 70,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 239.0
+          "avg_duration_ms": 244.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T06:37:34Z",
+        "last_success_at": "2026-09-22T10:18:25Z",
         "last_failure_at": null
       },
       {
@@ -1079,30 +1084,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1032,
+          "duration_ms": 771,
           "cache_hit": false,
-          "at": "2026-09-22T06:37:34Z"
+          "at": "2026-09-22T10:18:25Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 953.8
+          "avg_duration_ms": 933.4
         },
         "metrics_7d": {
-          "runs": 71,
-          "ok": 71,
+          "runs": 70,
+          "ok": 70,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 901.1
+          "avg_duration_ms": 895.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T06:37:34Z",
+        "last_success_at": "2026-09-22T10:18:25Z",
         "last_failure_at": null
       },
       {
@@ -1116,46 +1121,49 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 841,
+          "duration_ms": 683,
           "cache_hit": false,
-          "at": "2026-09-22T06:37:34Z"
+          "at": "2026-09-22T10:18:25Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 9,
+          "ok": 9,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 661.0
+          "avg_duration_ms": 663.4
         },
         "metrics_7d": {
-          "runs": 71,
-          "ok": 71,
+          "runs": 70,
+          "ok": 70,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 714.9
+          "avg_duration_ms": 713.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T06:37:34Z",
+        "last_success_at": "2026-09-22T10:18:25Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-22T06:37:36.786236Z",
+    "generated_at": "2026-09-22T10:18:27.424114Z",
     "incidents": {
       "new": [
         {
-          "id": "b7a425f5411d0fa0",
-          "title": "Elevated errors with gpt-image-2.5-flare",
-          "started_at": "2026-09-15T23:50:32Z",
-          "duration": "40m",
-          "acknowledgement": "Major / Resolved",
+          "id": "a91a823b542f85d4",
+          "title": "Increased error rate for Plus and Pro users.",
+          "started_at": "2026-09-22T09:58:28Z",
+          "duration": "19m ongoing",
+          "acknowledgement": "Minor / Investigating",
           "url": "https://status.openai.com/"
-        },
+        }
+      ],
+      "updated": [],
+      "resolved": [
         {
           "id": "f3ecbfa54ac33e3b",
           "title": "Ads Manager login issues",
@@ -1164,52 +1172,25 @@
           "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "4dd60f0f94a48fce",
-          "title": "Delayed support responses",
-          "started_at": "2026-09-18T21:36:51Z",
-          "duration": "10h 20m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "fcb9844f3a4d04ab",
-          "title": "We are seeing elevated error rates across API models",
-          "started_at": "2026-09-17T21:37:13Z",
-          "duration": "15m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "869c8afddf103350",
-          "title": "Elevated errors with gpt-image-2.5-flare",
-          "url": "https://status.openai.com/incidents/01M2KQNE5C42NEZPX6V01NHH5W",
-          "published_at": "2026-09-15T23:50:32Z",
+          "id": "5d26038dafe6baf0",
+          "title": "Increased error rate for Plus and Pro users.",
+          "url": "https://status.openai.com/incidents/01M348TX2DX7KPM9X857N4APNV",
+          "published_at": "2026-09-22T09:58:28Z",
           "source": "OpenAI Statuspage API",
-          "meta": "Major / Resolved"
-        },
-        {
-          "id": "f6a3ab0b81dc75f7",
-          "title": "Ads Manager login issues",
-          "url": "https://status.openai.com/incidents/01M2JZR57HRQTKQGTCWG31M3AS",
-          "published_at": "2026-09-15T16:52:36Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Resolved"
+          "meta": "Minor / Investigating"
         }
       ]
     },
     "summary": {
-      "new_incidents": 2,
+      "new_incidents": 1,
       "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
