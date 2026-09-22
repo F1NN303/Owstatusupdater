@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T05:33:20.073899Z",
+  "generated_at": "2026-09-22T06:37:57.115665Z",
   "health": "ok",
   "analytics": {
     "severity_key": "stable",
@@ -13,41 +13,41 @@
       "incidents": 0.8,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
+      "support_score": 0.18,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 112,
+      "reports_24h": 111,
       "recent_incidents_6h": 0,
       "recent_incidents_24h": 0,
       "cross_source": {
         "report_score": 0.0,
-        "news_score": 0.0,
+        "news_score": 0.18,
         "social_score": 0.0,
-        "combined_score": 0.0,
+        "combined_score": 0.18,
         "report_hits_24h": 0
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": true,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "operational",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_degraded_vs_aggregate_normal",
+      "official_status": "degraded",
       "derived_severity": "stable",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status indicates degradation while aggregate severity is low."
     }
   },
   "regions": {
@@ -68,15 +68,15 @@
     }
   },
   "official": {
-    "summary": "Epic Games Statuspage API: All Systems Operational",
+    "summary": "Epic Games Statuspage API: Service Under Maintenance",
     "updates": [
       {
-        "title": "Epic Games Statuspage API: All Systems Operational",
+        "title": "Epic Games Statuspage API: Service Under Maintenance",
         "url": "https://status.epicgames.com/",
-        "published_at": "2026-09-22T05:33:19.571445Z",
+        "published_at": "2026-09-22T06:37:56.594410Z",
         "source": "Epic Games Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: maintenance"
       },
       {
         "title": "Trader Verification outage",
@@ -151,15 +151,15 @@
         "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       }
     ],
-    "last_statement_at": "2026-09-22T05:33:19.571445Z"
+    "last_statement_at": "2026-09-22T06:37:56.594410Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.epicgames.com/",
-    "summary": "Epic Games Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 112,
+    "summary": "Epic Games Statuspage reports Service Under Maintenance. Latest listed incident was about 129h ago.",
+    "current_status": "degraded",
+    "reports_24h": 111,
     "incidents": [
       {
         "title": "Matchmaking issues in Fortnite",
@@ -226,29 +226,30 @@
         "url": "https://status.epicgames.com/incidents/5khxdqmxls0t"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Epic Online Services",
+        "count": 1
+      },
+      {
+        "label": "Lobbies",
+        "count": 1
+      },
+      {
+        "label": "Sessions",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Epic Games Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "snapshot"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "summary_origin": "Epic Games Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "05:40",
-        "count": 2
-      },
-      {
-        "label": "06:00",
-        "count": 3
-      },
-      {
-        "label": "06:20",
-        "count": 1
-      },
       {
         "label": "06:40",
         "count": 3
@@ -524,6 +525,18 @@
       {
         "label": "05:20",
         "count": 1
+      },
+      {
+        "label": "05:40",
+        "count": 3
+      },
+      {
+        "label": "06:00",
+        "count": 0
+      },
+      {
+        "label": "06:20",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -532,14 +545,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-22T01:33:18-04:00"
+      "last_reviewed_at": "2026-09-22T02:37:55-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 112,
-        "last_reviewed_at": "2026-09-22T01:33:18-04:00"
+        "reports_24h": 111,
+        "last_reviewed_at": "2026-09-22T02:37:55-04:00"
       }
     ],
     "current_status_origin": "Epic Games Statuspage API",
@@ -1029,8 +1042,8 @@
       },
       {
         "name": "Epic Online Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "under_maintenance",
         "updated_at": "2024-02-16T19:44:37.619Z",
         "source": "Epic Games Statuspage API"
       },
@@ -1043,9 +1056,9 @@
       },
       {
         "name": "Lobbies",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-21T07:00:07.406Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-09-22T06:00:07.261Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1064,9 +1077,9 @@
       },
       {
         "name": "Sessions",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-07-21T07:00:07.540Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-09-22T06:00:07.323Z",
         "source": "Epic Games Statuspage API"
       },
       {
@@ -1262,52 +1275,52 @@
       "url": "https://status.epicgames.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-22T05:33:20.073899Z"
+      "published_at": "2026-09-22T06:37:57.115665Z"
     },
     {
       "title": "Epic Games Status API (Statuspage v2)",
       "url": "https://status.epicgames.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-22T05:33:20.073899Z"
+      "published_at": "2026-09-22T06:37:57.115665Z"
     },
     {
       "title": "Epic Games Status history RSS",
       "url": "https://status.epicgames.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-22T05:33:20.073899Z"
+      "published_at": "2026-09-22T06:37:57.115665Z"
     },
     {
       "title": "Epic Games Status API docs",
       "url": "https://status.epicgames.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-09-22T05:33:20.073899Z"
+      "published_at": "2026-09-22T06:37:57.115665Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-22T05:33:20.073899Z"
+      "published_at": "2026-09-22T06:37:57.115665Z"
     },
     {
       "title": "Epic Games Player Support",
       "url": "https://www.epicgames.com/help/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-22T05:33:20.073899Z"
+      "published_at": "2026-09-22T06:37:57.115665Z"
     }
   ],
   "news": [
     {
-      "title": "Epic Games Statuspage API: All Systems Operational",
+      "title": "Epic Games Statuspage API: Service Under Maintenance",
       "url": "https://status.epicgames.com/",
-      "published_at": "2026-09-22T05:33:19.571445Z",
+      "published_at": "2026-09-22T06:37:56.594410Z",
       "source": "Epic Games Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: maintenance"
     },
     {
       "title": "Trader Verification outage",
@@ -1379,11 +1392,11 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-09-22T05:33:18.095270Z",
+      "last_item_at": "2026-09-22T06:37:55.355259Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 341,
-      "fetched_at": "2026-09-22T05:33:18.095304Z",
+      "duration_ms": 198,
+      "fetched_at": "2026-09-22T06:37:55.355284Z",
       "cache_hit": false
     },
     {
@@ -1397,11 +1410,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-22T01:33:18-04:00",
+      "last_item_at": "2026-09-22T02:37:55-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1475,
-      "fetched_at": "2026-09-22T05:33:19.571309Z",
+      "duration_ms": 1238,
+      "fetched_at": "2026-09-22T06:37:56.594191Z",
       "cache_hit": false
     },
     {
@@ -1415,17 +1428,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-22T05:33:19.571445Z",
+      "last_item_at": "2026-09-22T06:37:56.594410Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 501,
-      "fetched_at": "2026-09-22T05:33:20.073207Z",
+      "duration_ms": 520,
+      "fetched_at": "2026-09-22T06:37:57.114472Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-22T05:33:20.073899Z",
+    "generated_at": "2026-09-22T06:37:57.115665Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1462,9 +1475,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 341,
+          "duration_ms": 198,
           "cache_hit": false,
-          "at": "2026-09-22T05:33:17Z"
+          "at": "2026-09-22T06:37:55Z"
         },
         "metrics_24h": {
           "runs": 8,
@@ -1473,19 +1486,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 256.5
+          "avg_duration_ms": 256.9
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 71,
+          "ok": 71,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 249.3
+          "avg_duration_ms": 248.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T05:33:17Z",
+        "last_success_at": "2026-09-22T06:37:55Z",
         "last_failure_at": null
       },
       {
@@ -1499,9 +1512,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1475,
+          "duration_ms": 1238,
           "cache_hit": false,
-          "at": "2026-09-22T05:33:17Z"
+          "at": "2026-09-22T06:37:55Z"
         },
         "metrics_24h": {
           "runs": 8,
@@ -1510,19 +1523,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 995.0
+          "avg_duration_ms": 1000.5
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 71,
+          "ok": 71,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 973.9
+          "avg_duration_ms": 977.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T05:33:17Z",
+        "last_success_at": "2026-09-22T06:37:55Z",
         "last_failure_at": null
       },
       {
@@ -1536,9 +1549,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 501,
+          "duration_ms": 520,
           "cache_hit": false,
-          "at": "2026-09-22T05:33:17Z"
+          "at": "2026-09-22T06:37:55Z"
         },
         "metrics_24h": {
           "runs": 8,
@@ -1547,25 +1560,25 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 470.0
+          "avg_duration_ms": 470.4
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 71,
+          "ok": 71,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 498.1
+          "avg_duration_ms": 498.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T05:33:17Z",
+        "last_success_at": "2026-09-22T06:37:55Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-22T05:33:20.073899Z",
+    "generated_at": "2026-09-22T06:37:57.115665Z",
     "incidents": {
       "new": [],
       "updated": [],
