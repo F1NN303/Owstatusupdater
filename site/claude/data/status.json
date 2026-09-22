@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-09-22T00:48:31.605473Z",
+  "generated_at": "2026-09-22T01:04:55.870798Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.89,
+      "incidents": 5.09,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 0.26
     },
     "signal_metrics": {
-      "reports_24h": 109,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 111,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -29,22 +29,22 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: All Systems Operational",
+    "summary": "Claude Statuspage API: Minor Service Outage",
     "updates": [
       {
-        "title": "Claude Statuspage API: All Systems Operational",
+        "title": "Claude Statuspage API: Minor Service Outage",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-09-22T00:48:31.337952Z",
+        "published_at": "2026-09-22T01:04:55.502706Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Elevated errors for multiple models",
+        "url": "https://status.anthropic.com/incidents/7g1qpkyz5gxh#wc6fvw33hdr3",
+        "published_at": "2026-09-22T00:57:26.256Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Investigating / We are investigating elevated errors on requests to Claude Mythos 5.1, Claude Fable 5.1, and Claude Opus 5. We will provide an update as soon as possible."
       },
       {
         "title": "Issues with Google Play subscriptions",
@@ -141,26 +149,32 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Major / Resolved / The issue affecting Claude services has been resolved. Impact occurred from 13:57 to 14:20 UTC"
-      },
-      {
-        "title": "Elevated errors for Claude Mythos 5.1 and Claude Fable 5.1",
-        "url": "https://status.anthropic.com/incidents/t33dncr5ydvl#j7gh1zyn0zvn",
-        "published_at": "2026-09-11T14:28:27.330Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Major / Resolved / A fix has been deployed for the issue affecting Claude services and we are monitoring for recovery."
       }
     ],
-    "last_statement_at": "2026-09-22T00:48:31.337952Z"
+    "last_statement_at": "2026-09-22T01:04:55.502706Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 109,
+    "summary": "Claude Statuspage reports an active incident: Elevated errors for multiple models.",
+    "current_status": "degraded",
+    "reports_24h": 111,
     "incidents": [
+      {
+        "title": "Elevated errors for multiple models",
+        "started_at": "2026-09-22T00:59:48Z",
+        "duration": "1m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Elevated errors for multiple models",
+        "started_at": "2026-09-22T00:57:26.126Z",
+        "duration": "7m ongoing",
+        "acknowledgement": "Major / Investigating",
+        "source": "Claude Statuspage API",
+        "url": "https://status.anthropic.com/incidents/7g1qpkyz5gxh"
+      },
       {
         "title": "Issues with Google Play subscriptions",
         "started_at": "2026-09-16T16:18:30Z",
@@ -174,12 +188,6 @@
         "acknowledgement": "None / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/t8fpw9vcshl9"
-      },
-      {
-        "title": "Intermittent error spikes for Claude Mythos 5.1 and Claude Fable 5.1",
-        "started_at": "2026-09-15T09:53:14Z",
-        "duration": "1h 25m",
-        "acknowledgement": "down icon Down"
       },
       {
         "title": "Intermittent error spikes for Claude Mythos 5.1 and Claude Fable 5.1",
@@ -212,21 +220,30 @@
         "acknowledgement": "Major / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/r1pqn1kb4hvk"
-      },
-      {
-        "title": "Elevated errors for multiple models",
-        "started_at": "2026-09-03T13:26:04.201Z",
-        "duration": "2h 57m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/461yvfrzpwtt"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "claude.ai",
+        "count": 1
+      },
+      {
+        "label": "Claude API (api.anthropic.com)",
+        "count": 1
+      },
+      {
+        "label": "Claude Code",
+        "count": 1
+      },
+      {
+        "label": "Claude Cowork",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
       {
@@ -801,7 +818,7 @@
       },
       {
         "timestamp": "2026-09-22T00:45:00Z",
-        "signal_value": 1.0,
+        "signal_value": 19.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -816,10 +833,6 @@
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "01:00",
-        "count": 2
-      },
       {
         "label": "01:20",
         "count": 0
@@ -1102,7 +1115,11 @@
       },
       {
         "label": "00:40",
-        "count": 2
+        "count": 3
+      },
+      {
+        "label": "01:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1111,14 +1128,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-09-21T20:48:30-04:00"
+      "last_reviewed_at": "2026-09-21T21:04:55-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 109,
-        "last_reviewed_at": "2026-09-21T20:48:30-04:00"
+        "reports_24h": 111,
+        "last_reviewed_at": "2026-09-21T21:04:55-04:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -1126,9 +1143,9 @@
     "components": [
       {
         "name": "claude.ai",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-09-15T11:14:44.298Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-09-22T00:57:26.167Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1140,23 +1157,23 @@
       },
       {
         "name": "Claude API (api.anthropic.com)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-09-15T11:14:44.316Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-09-22T00:57:26.184Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Code",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-09-15T11:14:44.332Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-09-22T00:57:26.200Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Cowork",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-09-15T11:14:44.350Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-09-22T00:57:26.216Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1205,6 +1222,20 @@
   },
   "reports": [
     {
+      "title": "Elevated errors for multiple models",
+      "url": "https://status.anthropic.com/#2026-09-22T00:59:48Z",
+      "published_at": "2026-09-22T00:59:48Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Elevated errors for multiple models",
+      "url": "https://status.anthropic.com/incidents/7g1qpkyz5gxh",
+      "published_at": "2026-09-22T00:57:26.126Z",
+      "source": "Claude Statuspage API",
+      "meta": "Major / Investigating"
+    },
+    {
       "title": "Issues with Google Play subscriptions",
       "url": "https://status.anthropic.com/#2026-09-16T16:18:30Z",
       "published_at": "2026-09-16T16:18:30Z",
@@ -1217,13 +1248,6 @@
       "published_at": "2026-09-16T16:18:10.735Z",
       "source": "Claude Statuspage API",
       "meta": "None / Resolved"
-    },
-    {
-      "title": "Intermittent error spikes for Claude Mythos 5.1 and Claude Fable 5.1",
-      "url": "https://status.anthropic.com/#2026-09-15T09:53:14Z",
-      "published_at": "2026-09-15T09:53:14Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
     },
     {
       "title": "Intermittent error spikes for Claude Mythos 5.1 and Claude Fable 5.1",
@@ -1252,13 +1276,6 @@
       "published_at": "2026-09-10T15:54:10.000Z",
       "source": "Claude Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Elevated errors for multiple models",
-      "url": "https://status.anthropic.com/incidents/461yvfrzpwtt",
-      "published_at": "2026-09-03T13:26:04.201Z",
-      "source": "Claude Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -1267,45 +1284,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-09-22T00:48:31.605473Z"
+      "published_at": "2026-09-22T01:04:55.870798Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-09-22T00:48:31.605473Z"
+      "published_at": "2026-09-22T01:04:55.870798Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-09-22T00:48:31.605473Z"
+      "published_at": "2026-09-22T01:04:55.870798Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-09-22T00:48:31.605473Z"
+      "published_at": "2026-09-22T01:04:55.870798Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-09-22T00:48:31.605473Z"
+      "published_at": "2026-09-22T01:04:55.870798Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: All Systems Operational",
+      "title": "Claude Statuspage API: Minor Service Outage",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-09-22T00:48:31.337952Z",
+      "published_at": "2026-09-22T01:04:55.502706Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Elevated errors for multiple models",
+      "url": "https://status.anthropic.com/incidents/7g1qpkyz5gxh#wc6fvw33hdr3",
+      "published_at": "2026-09-22T00:57:26.256Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Investigating / We are investigating elevated errors on requests to Claude Mythos 5.1, Claude Fable 5.1, and Claude Opus 5. We will provide an update as soon as possible."
     },
     {
       "title": "Issues with Google Play subscriptions",
@@ -1354,14 +1379,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Major / Resolved / We are investigating elevated errors on requests to Claude Mythos 5.1 and Claude Fable 5.1. We will provide an update as soon as possible."
-    },
-    {
-      "title": "Degraded functionality for Claude Cowork on Windows",
-      "url": "https://status.anthropic.com/incidents/r1pqn1kb4hvk#gp7sj5712f5c",
-      "published_at": "2026-09-14T19:14:45.969Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Major / Resolved / This issue has been resolved. Microsoft has released a September 14 Windows update that fixes it: https://support.microsoft.com/en-us/servicing/os/windows-11/2026/09/kb5129195-windows-11-24h2-25h2-security-update"
     }
   ],
   "social": [],
@@ -1377,11 +1394,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-09-22T00:48:29.975530Z",
+      "last_item_at": "2026-09-22T01:04:54.797972Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 247,
-      "fetched_at": "2026-09-22T00:48:29.975550Z",
+      "duration_ms": 128,
+      "fetched_at": "2026-09-22T01:04:54.797987Z",
       "cache_hit": false
     },
     {
@@ -1395,11 +1412,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-09-21T20:48:30-04:00",
+      "last_item_at": "2026-09-21T21:04:55-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1361,
-      "fetched_at": "2026-09-22T00:48:31.337400Z",
+      "duration_ms": 704,
+      "fetched_at": "2026-09-22T01:04:55.502264Z",
       "cache_hit": false
     },
     {
@@ -1413,17 +1430,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-09-22T00:48:31.337952Z",
+      "last_item_at": "2026-09-22T01:04:55.502706Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 266,
-      "fetched_at": "2026-09-22T00:48:31.604038Z",
+      "duration_ms": 366,
+      "fetched_at": "2026-09-22T01:04:55.869608Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-09-22T00:48:31.605473Z",
+    "generated_at": "2026-09-22T01:04:55.870798Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1445,7 +1462,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1460,9 +1477,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 247,
+          "duration_ms": 128,
           "cache_hit": false,
-          "at": "2026-09-22T00:48:29Z"
+          "at": "2026-09-22T01:04:54Z"
         },
         "metrics_24h": {
           "runs": 7,
@@ -1471,19 +1488,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 200.1
+          "avg_duration_ms": 185.1
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 71,
+          "ok": 71,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 231.7
+          "avg_duration_ms": 230.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T00:48:29Z",
+        "last_success_at": "2026-09-22T01:04:54Z",
         "last_failure_at": null
       },
       {
@@ -1497,9 +1514,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1361,
+          "duration_ms": 704,
           "cache_hit": false,
-          "at": "2026-09-22T00:48:29Z"
+          "at": "2026-09-22T01:04:54Z"
         },
         "metrics_24h": {
           "runs": 7,
@@ -1508,19 +1525,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1217.6
+          "avg_duration_ms": 1111.4
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 71,
+          "ok": 71,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1146.0
+          "avg_duration_ms": 1139.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T00:48:29Z",
+        "last_success_at": "2026-09-22T01:04:54Z",
         "last_failure_at": null
       },
       {
@@ -1534,9 +1551,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 266,
+          "duration_ms": 366,
           "cache_hit": false,
-          "at": "2026-09-22T00:48:29Z"
+          "at": "2026-09-22T01:04:54Z"
         },
         "metrics_24h": {
           "runs": 7,
@@ -1545,35 +1562,46 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 361.1
+          "avg_duration_ms": 324.3
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 71,
+          "ok": 71,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 443.2
+          "avg_duration_ms": 442.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-09-22T00:48:29Z",
+        "last_success_at": "2026-09-22T01:04:54Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-09-22T00:48:31.605473Z",
+    "generated_at": "2026-09-22T01:04:55.870798Z",
     "incidents": {
       "new": [
         {
-          "id": "0e55f8e01c553993",
-          "title": "Issues with Google Play subscriptions",
-          "started_at": "2026-09-16T16:18:30Z",
-          "duration": "35m",
-          "acknowledgement": "warn icon Warn",
+          "id": "932ce92bd462fbf6",
+          "title": "Elevated errors for multiple models",
+          "started_at": "2026-09-22T00:59:48Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
           "url": "https://status.anthropic.com/"
         },
+        {
+          "id": "f27de164ba116e09",
+          "title": "Elevated errors for multiple models",
+          "started_at": "2026-09-22T00:57:26.126Z",
+          "duration": "7m ongoing",
+          "acknowledgement": "Major / Investigating",
+          "url": "https://status.anthropic.com/"
+        }
+      ],
+      "updated": [],
+      "resolved": [
         {
           "id": "33b9220a52fea436",
           "title": "Intermittent error spikes for Claude Mythos 5.1 and Claude Fable 5.1",
@@ -1581,23 +1609,12 @@
           "duration": "1h 25m",
           "acknowledgement": "down icon Down",
           "url": "https://status.anthropic.com/"
-        }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "c42551757c65bac5",
-          "title": "Elevated errors for Claude Sonnet 5",
-          "started_at": "2026-09-03T12:37:31.766Z",
-          "duration": "18m",
-          "acknowledgement": "Major / Resolved",
-          "url": "https://status.anthropic.com/"
         },
         {
-          "id": "da289e53117e179b",
-          "title": "Elevated errors for Claude Sonnet 5",
-          "started_at": "2026-09-02T21:17:58.704Z",
-          "duration": "26m",
+          "id": "a71905fbcd857d92",
+          "title": "Elevated errors for multiple models",
+          "started_at": "2026-09-03T13:26:04.201Z",
+          "duration": "2h 57m",
           "acknowledgement": "Major / Resolved",
           "url": "https://status.anthropic.com/"
         }
@@ -1606,20 +1623,20 @@
     "reports": {
       "new": [
         {
-          "id": "3f1cfd07ba798153",
-          "title": "Issues with Google Play subscriptions",
-          "url": "https://status.anthropic.com/#2026-09-16T16:18:30Z",
-          "published_at": "2026-09-16T16:18:30Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "563f900292d42fba",
-          "title": "Intermittent error spikes for Claude Mythos 5.1 and Claude Fable 5.1",
-          "url": "https://status.anthropic.com/#2026-09-15T09:53:14Z",
-          "published_at": "2026-09-15T09:53:14Z",
+          "id": "20ccb73061f38cd9",
+          "title": "Elevated errors for multiple models",
+          "url": "https://status.anthropic.com/#2026-09-22T00:59:48Z",
+          "published_at": "2026-09-22T00:59:48Z",
           "source": "StatusGator",
           "meta": "down icon Down"
+        },
+        {
+          "id": "74e146cbb24d8f26",
+          "title": "Elevated errors for multiple models",
+          "url": "https://status.anthropic.com/incidents/7g1qpkyz5gxh",
+          "published_at": "2026-09-22T00:57:26.126Z",
+          "source": "Claude Statuspage API",
+          "meta": "Major / Investigating"
         }
       ]
     },
