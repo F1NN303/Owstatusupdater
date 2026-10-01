@@ -1,69 +1,69 @@
 {
-  "generated_at": "2026-10-01T15:52:26.354027Z",
+  "generated_at": "2026-10-01T19:43:12.054890Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 1.14,
+      "incidents": 5.4,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "support_score": 0.234,
+      "profile_adjustment": 3.45
     },
     "signal_metrics": {
       "reports_24h": 107,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 2,
       "cross_source": {
-        "report_score": 0.0,
+        "report_score": 0.234,
         "news_score": 0.0,
         "social_score": 0.0,
-        "combined_score": 0.0,
-        "report_hits_24h": 0
+        "combined_score": 0.234,
+        "report_hits_24h": 1
       }
     },
     "safeguards": {
       "operational_dampening": true,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Claude Statuspage API: All Systems Operational",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-10-01T15:52:25.814186Z",
+        "published_at": "2026-10-01T19:43:11.545424Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Delayed credits on the Claude Platform",
+        "url": "https://status.anthropic.com/incidents/k0h22tsvnydg#svgmzqzwyzxk",
+        "published_at": "2026-10-01T18:23:02.729Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We have resolved the issue causing delays in credits being applied after purchase. We are monitoring closely to ensure no further issues."
+      },
+      {
+        "title": "Delayed credits on the Claude Platform",
+        "url": "https://status.anthropic.com/incidents/k0h22tsvnydg#bp7mz04t4xb8",
+        "published_at": "2026-10-01T16:20:40.928Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We are investigating delays in credit purchases being reflected in account balances, resulting in some requests failing for insufficient credit balance. We will provide an additional update as soon as possible."
       },
       {
         "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
@@ -133,34 +149,38 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Major / Resolved / We are investigating elevated error rates affecting Claude.ai (including the desktop and mobile apps), Claude Code and Claude Cowork. Some requests to the Claude API are also returning errors. We will provide an update as soon as possible."
-      },
-      {
-        "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
-        "url": "https://status.anthropic.com/incidents/4xvtc2gnq73l#wckqxnjv9vzs",
-        "published_at": "2026-09-29T14:21:37.364Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Major / Resolved / We are investigating elevated error rates affecting Claude.ai (including the desktop and mobile apps), Claude Code and Claude Cowork. Users may see failed requests, errors loading or sending conversations, or be asked to sign in again; retr"
-      },
-      {
-        "title": "Elevated errors for multiple models",
-        "url": "https://status.anthropic.com/incidents/7g1qpkyz5gxh#whljgbdjlf6d",
-        "published_at": "2026-09-22T02:35:23.836Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / This issue has been resolved. Impact occurred from 5:50pm PT / 00:50 UTC to 7:10pm PT / 02:10 UTC."
       }
     ],
-    "last_statement_at": "2026-10-01T15:52:25.814186Z"
+    "last_statement_at": "2026-10-01T19:43:11.545424Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "Claude Statuspage reports an active incident: Delayed credits on the Claude Platform.",
     "current_status": "operational",
     "reports_24h": 107,
     "incidents": [
+      {
+        "title": "Degraded performance on the Claude API and platform.claude.com",
+        "started_at": "2026-10-01T16:24:24Z",
+        "duration": "2h 4m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Delayed credits on the Claude Platform",
+        "started_at": "2026-10-01T16:20:40.775Z",
+        "duration": "3h 22m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "Claude Statuspage API",
+        "url": "https://status.anthropic.com/incidents/k0h22tsvnydg"
+      },
+      {
+        "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
+        "started_at": "2026-09-29T15:33:09Z",
+        "duration": "55m",
+        "acknowledgement": "down icon Down"
+      },
       {
         "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
         "started_at": "2026-09-29T14:21:37.188Z",
@@ -168,6 +188,12 @@
         "acknowledgement": "Major / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/4xvtc2gnq73l"
+      },
+      {
+        "title": "Task creation and authentication not working",
+        "started_at": "2026-09-29T14:18:20Z",
+        "duration": "49m",
+        "acknowledgement": "5m later"
       },
       {
         "title": "Elevated errors for multiple models",
@@ -192,38 +218,6 @@
         "acknowledgement": "Major / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/6304r9jjhj34"
-      },
-      {
-        "title": "Elevated errors for Claude Mythos 5.1 and Claude Fable 5.1",
-        "started_at": "2026-09-11T14:19:51.478Z",
-        "duration": "17m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/t33dncr5ydvl"
-      },
-      {
-        "title": "Elevated latency on the Claude API for some users",
-        "started_at": "2026-09-10T21:43:40.215Z",
-        "duration": "1h 40m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/2pt83vlkk7x7"
-      },
-      {
-        "title": "Degraded functionality for Claude Cowork on Windows",
-        "started_at": "2026-09-10T15:54:10.000Z",
-        "duration": "4d 3h 20m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/r1pqn1kb4hvk"
-      },
-      {
-        "title": "Elevated errors for multiple models",
-        "started_at": "2026-09-03T13:26:04.201Z",
-        "duration": "2h 57m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/461yvfrzpwtt"
       }
     ],
     "top_reported_issues": [],
@@ -232,59 +226,594 @@
       "kind": "degraded-components",
       "mode": "none"
     },
-    "service_health_24h": [],
-    "service_health_24h_meta": null,
-    "summary_origin": "Claude Statuspage API",
+    "service_health_24h": [
+      {
+        "timestamp": "2026-09-30T19:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T20:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T20:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T20:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T20:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T21:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T21:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T21:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T21:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T22:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T22:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T22:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T22:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T23:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T23:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T23:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-09-30T23:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T00:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T00:15:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T00:30:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T00:45:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T01:00:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T01:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T01:30:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T01:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T02:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T02:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T02:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T02:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T03:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T03:15:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T03:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T03:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T04:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T04:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T04:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T04:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T05:00:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T05:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T05:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T05:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T06:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T06:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T06:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T06:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T07:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T07:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T07:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T07:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T08:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T08:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T08:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T08:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T09:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T09:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T09:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T09:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T10:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T10:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T10:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T10:45:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T11:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T11:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T11:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T11:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T12:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T12:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T12:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T12:45:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T13:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T13:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T13:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T13:45:00Z",
+        "signal_value": 17.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T14:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T14:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T14:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T14:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T15:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T15:15:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T15:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T15:45:00Z",
+        "signal_value": 18.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T16:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T16:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T16:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T16:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T17:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T17:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T17:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T17:45:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T18:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T18:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T18:30:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T18:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T19:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T19:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-01T19:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      }
+    ],
+    "service_health_24h_meta": {
+      "source": "StatusGator",
+      "kind": "service-health-series",
+      "window_hours": 24,
+      "sample_count": 96,
+      "interval_minutes": 15,
+      "last_sample_at": "2026-10-01T19:30:00Z"
+    },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "16:00",
-        "count": 0
-      },
-      {
-        "label": "16:20",
-        "count": 2
-      },
-      {
-        "label": "16:40",
-        "count": 0
-      },
-      {
-        "label": "17:00",
-        "count": 1
-      },
-      {
-        "label": "17:20",
-        "count": 3
-      },
-      {
-        "label": "17:40",
-        "count": 1
-      },
-      {
-        "label": "18:00",
-        "count": 2
-      },
-      {
-        "label": "18:20",
-        "count": 0
-      },
-      {
-        "label": "18:40",
-        "count": 2
-      },
-      {
-        "label": "19:00",
-        "count": 3
-      },
-      {
-        "label": "19:20",
-        "count": 1
-      },
-      {
-        "label": "19:40",
-        "count": 3
-      },
       {
         "label": "20:00",
         "count": 3
@@ -524,6 +1053,54 @@
       {
         "label": "15:40",
         "count": 1
+      },
+      {
+        "label": "16:00",
+        "count": 2
+      },
+      {
+        "label": "16:20",
+        "count": 0
+      },
+      {
+        "label": "16:40",
+        "count": 2
+      },
+      {
+        "label": "17:00",
+        "count": 3
+      },
+      {
+        "label": "17:20",
+        "count": 1
+      },
+      {
+        "label": "17:40",
+        "count": 3
+      },
+      {
+        "label": "18:00",
+        "count": 0
+      },
+      {
+        "label": "18:20",
+        "count": 2
+      },
+      {
+        "label": "18:40",
+        "count": 0
+      },
+      {
+        "label": "19:00",
+        "count": 1
+      },
+      {
+        "label": "19:20",
+        "count": 3
+      },
+      {
+        "label": "19:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -532,17 +1109,18 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-01T11:52:24-04:00"
+      "last_reviewed_at": "2026-10-01T15:43:11-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 107,
-        "last_reviewed_at": "2026-10-01T11:52:24-04:00"
+        "last_reviewed_at": "2026-10-01T15:43:11-04:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
+    "summary_origin": "Claude Statuspage API",
     "components": [
       {
         "name": "claude.ai",
@@ -555,14 +1133,14 @@
         "name": "Claude Console (platform.claude.com)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-09-29T15:30:44.450Z",
+        "updated_at": "2026-10-01T18:23:02.671Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude API (api.anthropic.com)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-09-29T16:27:21.330Z",
+        "updated_at": "2026-10-01T18:23:02.697Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -587,15 +1165,77 @@
         "source": "Claude Statuspage API"
       }
     ],
-    "scheduled_maintenances": []
+    "scheduled_maintenances": [],
+    "top_reported_issues_provider": [
+      {
+        "label": "Connectivity issue",
+        "count": 0
+      },
+      {
+        "label": "Error message",
+        "count": 0
+      },
+      {
+        "label": "Server not responding",
+        "count": 0
+      },
+      {
+        "label": "Sign in problem",
+        "count": 0
+      },
+      {
+        "label": "Service down",
+        "count": 0
+      },
+      {
+        "label": "Slow performance",
+        "count": 0
+      },
+      {
+        "label": "Unable to download",
+        "count": 0
+      },
+      {
+        "label": "App not loading",
+        "count": 0
+      }
+    ]
   },
   "reports": [
+    {
+      "title": "Degraded performance on the Claude API and platform.claude.com",
+      "url": "https://status.anthropic.com/#2026-10-01T16:24:24Z",
+      "published_at": "2026-10-01T16:24:24Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Delayed credits on the Claude Platform",
+      "url": "https://status.anthropic.com/incidents/k0h22tsvnydg",
+      "published_at": "2026-10-01T16:20:40.775Z",
+      "source": "Claude Statuspage API",
+      "meta": "Minor / Monitoring"
+    },
+    {
+      "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
+      "url": "https://status.anthropic.com/#2026-09-29T15:33:09Z",
+      "published_at": "2026-09-29T15:33:09Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
     {
       "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
       "url": "https://status.anthropic.com/incidents/4xvtc2gnq73l",
       "published_at": "2026-09-29T14:21:37.188Z",
       "source": "Claude Statuspage API",
       "meta": "Major / Resolved"
+    },
+    {
+      "title": "Task creation and authentication not working",
+      "url": "https://status.anthropic.com/#2026-09-29T14:18:20Z",
+      "published_at": "2026-09-29T14:18:20Z",
+      "source": "StatusGator",
+      "meta": "5m later"
     },
     {
       "title": "Elevated errors for multiple models",
@@ -617,34 +1257,6 @@
       "published_at": "2026-09-15T09:48:23.076Z",
       "source": "Claude Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Elevated errors for Claude Mythos 5.1 and Claude Fable 5.1",
-      "url": "https://status.anthropic.com/incidents/t33dncr5ydvl",
-      "published_at": "2026-09-11T14:19:51.478Z",
-      "source": "Claude Statuspage API",
-      "meta": "Major / Resolved"
-    },
-    {
-      "title": "Elevated latency on the Claude API for some users",
-      "url": "https://status.anthropic.com/incidents/2pt83vlkk7x7",
-      "published_at": "2026-09-10T21:43:40.215Z",
-      "source": "Claude Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Degraded functionality for Claude Cowork on Windows",
-      "url": "https://status.anthropic.com/incidents/r1pqn1kb4hvk",
-      "published_at": "2026-09-10T15:54:10.000Z",
-      "source": "Claude Statuspage API",
-      "meta": "Major / Resolved"
-    },
-    {
-      "title": "Elevated errors for multiple models",
-      "url": "https://status.anthropic.com/incidents/461yvfrzpwtt",
-      "published_at": "2026-09-03T13:26:04.201Z",
-      "source": "Claude Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -653,45 +1265,61 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-01T15:52:26.354027Z"
+      "published_at": "2026-10-01T19:43:12.054890Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-01T15:52:26.354027Z"
+      "published_at": "2026-10-01T19:43:12.054890Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-01T15:52:26.354027Z"
+      "published_at": "2026-10-01T19:43:12.054890Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-01T15:52:26.354027Z"
+      "published_at": "2026-10-01T19:43:12.054890Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-01T15:52:26.354027Z"
+      "published_at": "2026-10-01T19:43:12.054890Z"
     }
   ],
   "news": [
     {
       "title": "Claude Statuspage API: All Systems Operational",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-10-01T15:52:25.814186Z",
+      "published_at": "2026-10-01T19:43:11.545424Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Delayed credits on the Claude Platform",
+      "url": "https://status.anthropic.com/incidents/k0h22tsvnydg#svgmzqzwyzxk",
+      "published_at": "2026-10-01T18:23:02.729Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We have resolved the issue causing delays in credits being applied after purchase. We are monitoring closely to ensure no further issues."
+    },
+    {
+      "title": "Delayed credits on the Claude Platform",
+      "url": "https://status.anthropic.com/incidents/k0h22tsvnydg#bp7mz04t4xb8",
+      "published_at": "2026-10-01T16:20:40.928Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We are investigating delays in credit purchases being reflected in account balances, resulting in some requests failing for insufficient credit balance. We will provide an additional update as soon as possible."
     },
     {
       "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
@@ -732,22 +1360,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Major / Resolved / We have applied a mitigation and error rates have dropped substantially. Some sign-in attempts, account actions and Claude Code and Cowork sessions are still failing. We are continuing to work on a full fix."
-    },
-    {
-      "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
-      "url": "https://status.anthropic.com/incidents/4xvtc2gnq73l#brb6lq479fzn",
-      "published_at": "2026-09-29T14:30:19.579Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are investigating reports of degraded performance affecting claude.ai, platform.claude.com, the Claude API, Claude Code, and Claude Cowork. We will provide an update as soon as possible."
-    },
-    {
-      "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
-      "url": "https://status.anthropic.com/incidents/4xvtc2gnq73l#7l2fk92vn46n",
-      "published_at": "2026-09-29T14:28:49.253Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Resolved / We are investigating elevated error rates affecting Claude.ai (including the desktop and mobile apps), Claude Code and Claude Cowork. Some requests to the Claude API are also returning errors. We will provide an update as soon as possible."
     }
   ],
   "social": [],
@@ -762,12 +1374,12 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 0,
-      "last_item_at": "2026-10-01T15:52:24.381920Z",
+      "item_count": 8,
+      "last_item_at": "2026-10-01T19:43:10.791938Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 467,
-      "fetched_at": "2026-10-01T15:52:24.381950Z",
+      "duration_ms": 482,
+      "fetched_at": "2026-10-01T19:43:10.791955Z",
       "cache_hit": false
     },
     {
@@ -781,11 +1393,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-01T11:52:24-04:00",
+      "last_item_at": "2026-10-01T15:43:11-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1431,
-      "fetched_at": "2026-10-01T15:52:25.813973Z",
+      "duration_ms": 752,
+      "fetched_at": "2026-10-01T19:43:11.544844Z",
       "cache_hit": false
     },
     {
@@ -799,17 +1411,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-01T15:52:25.814186Z",
+      "last_item_at": "2026-10-01T19:43:11.545424Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 538,
-      "fetched_at": "2026-10-01T15:52:26.352552Z",
+      "duration_ms": 507,
+      "fetched_at": "2026-10-01T19:43:12.053122Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-01T15:52:26.354027Z",
+    "generated_at": "2026-10-01T19:43:12.054890Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -831,7 +1443,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -846,9 +1458,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 467,
+          "duration_ms": 482,
           "cache_hit": false,
-          "at": "2026-10-01T15:52:23Z"
+          "at": "2026-10-01T19:43:10Z"
         },
         "metrics_24h": {
           "runs": 10,
@@ -857,19 +1469,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 285.1
+          "avg_duration_ms": 321.6
         },
         "metrics_7d": {
-          "runs": 66,
-          "ok": 66,
+          "runs": 65,
+          "ok": 65,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 282.7
+          "avg_duration_ms": 288.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-01T15:52:23Z",
+        "last_success_at": "2026-10-01T19:43:10Z",
         "last_failure_at": null
       },
       {
@@ -883,9 +1495,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1431,
+          "duration_ms": 752,
           "cache_hit": false,
-          "at": "2026-10-01T15:52:23Z"
+          "at": "2026-10-01T19:43:10Z"
         },
         "metrics_24h": {
           "runs": 10,
@@ -894,19 +1506,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1396.6
+          "avg_duration_ms": 1375.6
         },
         "metrics_7d": {
-          "runs": 66,
-          "ok": 66,
+          "runs": 65,
+          "ok": 65,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1134.8
+          "avg_duration_ms": 1131.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-01T15:52:23Z",
+        "last_success_at": "2026-10-01T19:43:10Z",
         "last_failure_at": null
       },
       {
@@ -920,9 +1532,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 538,
+          "duration_ms": 507,
           "cache_hit": false,
-          "at": "2026-10-01T15:52:23Z"
+          "at": "2026-10-01T19:43:10Z"
         },
         "metrics_24h": {
           "runs": 10,
@@ -931,38 +1543,137 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 432.7
+          "avg_duration_ms": 445.4
         },
         "metrics_7d": {
-          "runs": 66,
-          "ok": 66,
+          "runs": 65,
+          "ok": 65,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 458.0
+          "avg_duration_ms": 457.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-01T15:52:23Z",
+        "last_success_at": "2026-10-01T19:43:10Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-01T15:52:26.354027Z",
+    "generated_at": "2026-10-01T19:43:12.054890Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "d6ae29002244a468",
+          "title": "Degraded performance on the Claude API and platform.claude.com",
+          "started_at": "2026-10-01T16:24:24Z",
+          "duration": "2h 4m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "65082b4923cf84ba",
+          "title": "Delayed credits on the Claude Platform",
+          "started_at": "2026-10-01T16:20:40.775Z",
+          "duration": "3h 22m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "643362bfcf1242a1",
+          "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
+          "started_at": "2026-09-29T15:33:09Z",
+          "duration": "55m",
+          "acknowledgement": "down icon Down",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "77883be56990b95f",
+          "title": "Task creation and authentication not working",
+          "started_at": "2026-09-29T14:18:20Z",
+          "duration": "49m",
+          "acknowledgement": "5m later",
+          "url": "https://status.anthropic.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "c232a1e3a131c017",
+          "title": "Elevated errors for Claude Mythos 5.1 and Claude Fable 5.1",
+          "started_at": "2026-09-11T14:19:51.478Z",
+          "duration": "17m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "5417c80637e70238",
+          "title": "Elevated latency on the Claude API for some users",
+          "started_at": "2026-09-10T21:43:40.215Z",
+          "duration": "1h 40m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "ceec4e2d865c08a9",
+          "title": "Degraded functionality for Claude Cowork on Windows",
+          "started_at": "2026-09-10T15:54:10.000Z",
+          "duration": "4d 3h 20m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "a71905fbcd857d92",
+          "title": "Elevated errors for multiple models",
+          "started_at": "2026-09-03T13:26:04.201Z",
+          "duration": "2h 57m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://status.anthropic.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "c40c9e373a3d539c",
+          "title": "Degraded performance on the Claude API and platform.claude.com",
+          "url": "https://status.anthropic.com/#2026-10-01T16:24:24Z",
+          "published_at": "2026-10-01T16:24:24Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "9ec94b935ce0cec1",
+          "title": "Delayed credits on the Claude Platform",
+          "url": "https://status.anthropic.com/incidents/k0h22tsvnydg",
+          "published_at": "2026-10-01T16:20:40.775Z",
+          "source": "Claude Statuspage API",
+          "meta": "Minor / Monitoring"
+        },
+        {
+          "id": "426191c040503881",
+          "title": "Elevated errors on claude.ai, Claude Code, Claude Cowork and the Claude API",
+          "url": "https://status.anthropic.com/#2026-09-29T15:33:09Z",
+          "published_at": "2026-09-29T15:33:09Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "17710f048371d478",
+          "title": "Task creation and authentication not working",
+          "url": "https://status.anthropic.com/#2026-09-29T14:18:20Z",
+          "published_at": "2026-09-29T14:18:20Z",
+          "source": "StatusGator",
+          "meta": "5m later"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 4,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 4,
+      "new_reports": 4
     }
   }
 }
