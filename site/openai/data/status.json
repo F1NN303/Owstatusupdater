@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-06T15:31:52.945126Z",
+  "generated_at": "2026-10-06T16:08:56.126248Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 3,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
@@ -17,8 +17,8 @@
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 115,
-      "recent_incidents_6h": 1,
+      "reports_24h": 119,
+      "recent_incidents_6h": 2,
       "recent_incidents_24h": 6,
       "cross_source": {
         "report_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "minor",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-10-06T15:31:52.422228Z",
+        "published_at": "2026-10-06T16:08:55.282322Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Errors processing large PDFs in the Responses API",
+        "url": "https://status.openai.com/incidents/01M48Y8E81QAFF9XKVGE118E6X#01M48Y8E81221MZHVP61EKQ8B4",
+        "published_at": "2026-10-06T15:45:31Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating the issue for the listed services."
       },
       {
         "title": "Elevated error rates in ChatGPT Go conversations",
@@ -141,26 +149,26 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Elevated errors in API Platform login and administration APIs.",
-        "url": "https://status.openai.com/incidents/01M47AFBNRNXKJWN549T3PMYV8#01M47DMPM079WXTW21XC90W6ND",
-        "published_at": "2026-10-06T01:35:53Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
       }
     ],
-    "last_statement_at": "2026-10-06T15:31:52.422228Z"
+    "last_statement_at": "2026-10-06T16:08:55.282322Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 115,
+    "summary": "OpenAI Statuspage reports an active incident: Errors processing large PDFs in the Responses API.",
+    "current_status": "degraded",
+    "reports_24h": 119,
     "incidents": [
+      {
+        "title": "Errors processing large PDFs in the Responses API",
+        "started_at": "2026-10-06T15:45:31Z",
+        "duration": "23m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M48Y8E81QAFF9XKVGE118E6X"
+      },
       {
         "title": "Elevated error rates in ChatGPT Go conversations",
         "started_at": "2026-10-06T13:35:25Z",
@@ -216,35 +224,24 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M461GYDMCVJJK8330PVCH42C"
-      },
-      {
-        "title": "Elevated Work Mode errors",
-        "started_at": "2026-10-05T07:03:53Z",
-        "duration": "19h 6m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01M45E0JFFJZ6EQ3BWYPW74R2Z"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Responses",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "summary_origin": "OpenAI Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "15:40",
-        "count": 1
-      },
-      {
-        "label": "16:00",
-        "count": 2
-      },
       {
         "label": "16:20",
         "count": 0
@@ -524,6 +521,14 @@
       {
         "label": "15:20",
         "count": 0
+      },
+      {
+        "label": "15:40",
+        "count": 3
+      },
+      {
+        "label": "16:00",
+        "count": 4
       }
     ],
     "user_reports_24h_meta": {
@@ -532,14 +537,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-06T11:31:51-04:00"
+      "last_reviewed_at": "2026-10-06T12:08:54-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 115,
-        "last_reviewed_at": "2026-10-06T11:31:51-04:00"
+        "reports_24h": 119,
+        "last_reviewed_at": "2026-10-06T12:08:54-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -553,8 +558,8 @@
       },
       {
         "name": "Responses",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-09-29T18:29:41Z",
         "source": "OpenAI Statuspage API"
       },
@@ -801,6 +806,13 @@
   },
   "reports": [
     {
+      "title": "Errors processing large PDFs in the Responses API",
+      "url": "https://status.openai.com/incidents/01M48Y8E81QAFF9XKVGE118E6X",
+      "published_at": "2026-10-06T15:45:31Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "Elevated error rates in ChatGPT Go conversations",
       "url": "https://status.openai.com/incidents/01M48PT6B8SDTW023NC9XZTBC0",
       "published_at": "2026-10-06T13:35:25Z",
@@ -848,13 +860,6 @@
       "published_at": "2026-10-05T12:44:53Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Elevated Work Mode errors",
-      "url": "https://status.openai.com/incidents/01M45E0JFFJZ6EQ3BWYPW74R2Z",
-      "published_at": "2026-10-05T07:03:53Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -863,45 +868,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-06T15:31:52.945126Z"
+      "published_at": "2026-10-06T16:08:56.126248Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-06T15:31:52.945126Z"
+      "published_at": "2026-10-06T16:08:56.126248Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-06T15:31:52.945126Z"
+      "published_at": "2026-10-06T16:08:56.126248Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-06T15:31:52.945126Z"
+      "published_at": "2026-10-06T16:08:56.126248Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-06T15:31:52.945126Z"
+      "published_at": "2026-10-06T16:08:56.126248Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-10-06T15:31:52.422228Z",
+      "published_at": "2026-10-06T16:08:55.282322Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Errors processing large PDFs in the Responses API",
+      "url": "https://status.openai.com/incidents/01M48Y8E81QAFF9XKVGE118E6X#01M48Y8E81221MZHVP61EKQ8B4",
+      "published_at": "2026-10-06T15:45:31Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating the issue for the listed services."
     },
     {
       "title": "Elevated error rates in ChatGPT Go conversations",
@@ -950,14 +963,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-    },
-    {
-      "title": "Elevated errors affecting multiple products including ChatGPT (conversations), Image generations, Spaces and Pages, API rehydration, and Dots.",
-      "url": "https://status.openai.com/incidents/01M47HC9SGHGFPBN44KGC6SKAQ#01M47HC9SG86AAPHQRXXQFH0T5",
-      "published_at": "2026-10-06T02:41:12Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
     }
   ],
   "social": [],
@@ -973,11 +978,11 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-10-06T15:31:51.637613Z",
+      "last_item_at": "2026-10-06T16:08:54.305315Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 150,
-      "fetched_at": "2026-10-06T15:31:51.637633Z",
+      "duration_ms": 248,
+      "fetched_at": "2026-10-06T16:08:54.305352Z",
       "cache_hit": false
     },
     {
@@ -991,11 +996,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-06T11:31:51-04:00",
+      "last_item_at": "2026-10-06T12:08:54-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 784,
-      "fetched_at": "2026-10-06T15:31:52.422006Z",
+      "duration_ms": 976,
+      "fetched_at": "2026-10-06T16:08:55.282152Z",
       "cache_hit": false
     },
     {
@@ -1009,17 +1014,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-06T15:31:52.422228Z",
+      "last_item_at": "2026-10-06T16:08:55.282322Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 520,
-      "fetched_at": "2026-10-06T15:31:52.943131Z",
+      "duration_ms": 842,
+      "fetched_at": "2026-10-06T16:08:56.124714Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-06T15:31:52.945126Z",
+    "generated_at": "2026-10-06T16:08:56.126248Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1041,7 +1046,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1056,9 +1061,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 150,
+          "duration_ms": 248,
           "cache_hit": false,
-          "at": "2026-10-06T15:31:51Z"
+          "at": "2026-10-06T16:08:54Z"
         },
         "metrics_24h": {
           "runs": 8,
@@ -1067,11 +1072,11 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 211.0
+          "avg_duration_ms": 212.4
         },
         "metrics_7d": {
-          "runs": 59,
-          "ok": 59,
+          "runs": 60,
+          "ok": 60,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
@@ -1079,7 +1084,7 @@
           "avg_duration_ms": 245.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-06T15:31:51Z",
+        "last_success_at": "2026-10-06T16:08:54Z",
         "last_failure_at": null
       },
       {
@@ -1093,9 +1098,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 784,
+          "duration_ms": 976,
           "cache_hit": false,
-          "at": "2026-10-06T15:31:51Z"
+          "at": "2026-10-06T16:08:54Z"
         },
         "metrics_24h": {
           "runs": 8,
@@ -1104,19 +1109,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1074.9
+          "avg_duration_ms": 1045.5
         },
         "metrics_7d": {
-          "runs": 59,
-          "ok": 59,
+          "runs": 60,
+          "ok": 60,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 983.0
+          "avg_duration_ms": 982.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-06T15:31:51Z",
+        "last_success_at": "2026-10-06T16:08:54Z",
         "last_failure_at": null
       },
       {
@@ -1130,9 +1135,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 520,
+          "duration_ms": 842,
           "cache_hit": false,
-          "at": "2026-10-06T15:31:51Z"
+          "at": "2026-10-06T16:08:54Z"
         },
         "metrics_24h": {
           "runs": 8,
@@ -1141,43 +1146,43 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 670.2
+          "avg_duration_ms": 674.8
         },
         "metrics_7d": {
-          "runs": 59,
-          "ok": 59,
+          "runs": 60,
+          "ok": 60,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 687.2
+          "avg_duration_ms": 689.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-06T15:31:51Z",
+        "last_success_at": "2026-10-06T16:08:54Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-06T15:31:52.945126Z",
+    "generated_at": "2026-10-06T16:08:56.126248Z",
     "incidents": {
       "new": [
         {
-          "id": "06fd2d88de8153d0",
-          "title": "Elevated error rates in ChatGPT Go conversations",
-          "started_at": "2026-10-06T13:35:25Z",
-          "duration": "1h 5m",
-          "acknowledgement": "Minor / Resolved",
+          "id": "e18ba071d420738f",
+          "title": "Errors processing large PDFs in the Responses API",
+          "started_at": "2026-10-06T15:45:31Z",
+          "duration": "23m ongoing",
+          "acknowledgement": "Minor / Investigating",
           "url": "https://status.openai.com/"
         }
       ],
       "updated": [],
       "resolved": [
         {
-          "id": "c0c68aea3eebf330",
-          "title": "Issues with data analysis and file creation in ChatGPT",
-          "started_at": "2026-10-02T16:03:10Z",
-          "duration": "48m",
+          "id": "04128fb1f71291ee",
+          "title": "Elevated Work Mode errors",
+          "started_at": "2026-10-05T07:03:53Z",
+          "duration": "19h 6m",
           "acknowledgement": "Minor / Resolved",
           "url": "https://status.openai.com/"
         }
@@ -1186,12 +1191,12 @@
     "reports": {
       "new": [
         {
-          "id": "2828f20f60f2de66",
-          "title": "Elevated error rates in ChatGPT Go conversations",
-          "url": "https://status.openai.com/incidents/01M48PT6B8SDTW023NC9XZTBC0",
-          "published_at": "2026-10-06T13:35:25Z",
+          "id": "455ee0afcac20826",
+          "title": "Errors processing large PDFs in the Responses API",
+          "url": "https://status.openai.com/incidents/01M48Y8E81QAFF9XKVGE118E6X",
+          "published_at": "2026-10-06T15:45:31Z",
           "source": "OpenAI Statuspage API",
-          "meta": "Minor / Resolved"
+          "meta": "Minor / Investigating"
         }
       ]
     },
