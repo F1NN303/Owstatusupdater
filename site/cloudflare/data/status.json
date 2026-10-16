@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-16T10:39:50.745371Z",
+  "generated_at": "2026-10-16T11:46:58.307687Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "major",
-    "severity_score": 8,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,10 +14,10 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 3.05
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 7,
+      "reports_24h": 5,
       "recent_incidents_6h": 8,
       "recent_incidents_24h": 8,
       "cross_source": {
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "high",
+      "reason": "official_major_vs_aggregate_lower",
       "official_status": "major outage",
-      "derived_severity": "major",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status reports a major outage while aggregate severity is lower."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,34 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-10-16T10:39:50.195341Z",
+        "published_at": "2026-10-16T11:46:57.774098Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
+      },
+      {
+        "title": "Cloudflare Dashboard sign up issues",
+        "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#dj4u3lm9gunm",
+        "published_at": "2026-10-16T11:24:33.059Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+      },
+      {
+        "title": "Cloudflare Dashboard sign up issues",
+        "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#jv9klvegoqjj",
+        "published_at": "2026-10-16T11:12:06.791Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
+      },
+      {
+        "title": "Cloudflare Dashboard sign up issues",
+        "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#sz2rlfeknb92",
+        "published_at": "2026-10-16T10:46:30.496Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Resolved / We are continuing to work on a fix for the issue."
       },
       {
         "title": "Cloudflare Dashboard sign up issues",
@@ -84,7 +108,7 @@
         "published_at": "2026-10-16T10:15:11.943Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / Cloudflare is aware of and investigating an issue where some users are unable to sign up to the Cloudflare Dashboard. We are working to mitigate the problem and will update shortly."
+        "meta": "Investigating / Minor / Resolved / Cloudflare is aware of and investigating an issue where some users are unable to sign up to the Cloudflare Dashboard. We are working to mitigate the problem and will update shortly."
       },
       {
         "title": "Cloudflare Access Availability Issues",
@@ -125,79 +149,55 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / Cloudflare investigated and resolved issues with network performance in Bangkok, Thailand. There may have been elevated response times and an increase in 5xx errors between 06:48 and 07:30 UTC. This has been resolved and normal operations h"
-      },
-      {
-        "title": "Network issues in Incheon (ICN)",
-        "url": "https://www.cloudflarestatus.com/incidents/w43n5lblyvu8#eweltrqsll55",
-        "published_at": "2026-10-16T02:11:00.000Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / None / Resolved / Between 01:13 AM and 02:11 AM UTC, network performance at our ICN-A colo in Seoul was impacted. Users downstream of KINX may have experienced increased latency (TTFB) and elevated Network Error Logging (NEL) metrics due to network path cong"
-      },
-      {
-        "title": "Workers Cron Triggers issues",
-        "url": "https://www.cloudflarestatus.com/incidents/51udczr46uj2#8sratfipfola",
-        "published_at": "2026-10-16T01:06:26.662Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / Workers Cron Triggers have stabilized"
-      },
-      {
-        "title": "Workers Cron Triggers issues",
-        "url": "https://www.cloudflarestatus.com/incidents/51udczr46uj2#tutzob6635wf",
-        "published_at": "2026-10-16T00:54:53.831Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
       }
     ],
-    "last_statement_at": "2026-10-16T10:39:50.195341Z"
+    "last_statement_at": "2026-10-16T11:46:57.774098Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports an active incident: Cloudflare Dashboard sign up issues.",
+    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident started about 2h ago.",
     "current_status": "major outage",
-    "reports_24h": 7,
+    "reports_24h": 5,
     "incidents": [
       {
-        "title": "Cloudflare Dashboard sign up issues",
-        "started_at": "2026-10-16T10:35:16Z",
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-16T11:35:19Z",
         "duration": "1m",
         "acknowledgement": "down icon Down"
       },
       {
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-16T11:25:32Z",
+        "duration": "10m",
+        "acknowledgement": "down icon Down"
+      },
+      {
         "title": "Cloudflare Dashboard sign up issues",
-        "started_at": "2026-10-16T10:15:33Z",
-        "duration": "20m",
+        "started_at": "2026-10-16T11:00:17Z",
+        "duration": "25m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Cloudflare Dashboard sign up issues",
+        "started_at": "2026-10-16T10:55:20Z",
+        "duration": "5m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Cloudflare Dashboard sign up issues",
+        "started_at": "2026-10-16T10:40:43Z",
+        "duration": "15m",
         "acknowledgement": "down icon Down"
       },
       {
         "title": "Cloudflare Dashboard sign up issues",
         "started_at": "2026-10-16T10:15:11.943Z",
-        "duration": "24m ongoing",
-        "acknowledgement": "Minor / Investigating",
+        "duration": "1h 9m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh"
-      },
-      {
-        "title": "Incorrect geo location for some Cloudflare WARP users",
-        "started_at": "2026-10-16T10:10:20Z",
-        "duration": "5m",
-        "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "Incorrect geo location for some Cloudflare WARP users",
-        "started_at": "2026-10-16T10:00:27Z",
-        "duration": "10m",
-        "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "Cloudflare Access Availability Issues",
-        "started_at": "2026-10-16T09:25:26Z",
-        "duration": "35m",
-        "acknowledgement": "down icon Down"
       },
       {
         "title": "Cloudflare Access Availability Issues",
@@ -253,33 +253,9 @@
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-15T10:45:00Z",
-        "signal_value": 29.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-10-15T11:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-15T11:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-15T11:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-10-15T11:45:00Z",
         "signal_value": 57.0,
@@ -831,6 +807,30 @@
         "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-16T10:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-16T11:00:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-16T11:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-16T11:30:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,25 +839,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-16T10:30:00Z"
+      "last_sample_at": "2026-10-16T11:30:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "10:40",
-        "count": 1
-      },
-      {
-        "label": "11:00",
-        "count": 2
-      },
-      {
-        "label": "11:20",
-        "count": 0
-      },
-      {
-        "label": "11:40",
-        "count": 2
-      },
       {
         "label": "12:00",
         "count": 3
@@ -1129,6 +1113,22 @@
       {
         "label": "10:20",
         "count": 0
+      },
+      {
+        "label": "10:40",
+        "count": 2
+      },
+      {
+        "label": "11:00",
+        "count": 3
+      },
+      {
+        "label": "11:20",
+        "count": 1
+      },
+      {
+        "label": "11:40",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1137,14 +1137,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-16T06:39:49-04:00"
+      "last_reviewed_at": "2026-10-16T07:46:56-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 106,
-        "last_reviewed_at": "2026-10-16T06:39:49-04:00"
+        "reports_24h": 110,
+        "last_reviewed_at": "2026-10-16T07:46:56-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1404,9 +1404,9 @@
       },
       {
         "name": "Bangkok, Thailand - (BKK)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-16T07:30:14.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-16T11:38:28.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1588,7 +1588,7 @@
         "name": "Dar Es Salaam, Tanzania - (DAR)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-16T09:50:32.000Z",
+        "updated_at": "2026-10-16T11:33:07.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1700,7 +1700,7 @@
         "name": "Caçador, Brazil - (CFC)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-16T09:12:45.000Z",
+        "updated_at": "2026-10-16T11:38:29.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2916,8 +2916,8 @@
       },
       {
         "name": "Dashboard",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-09-22T19:26:57.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -3112,9 +3112,9 @@
       },
       {
         "name": "Sacramento, CA, United States - (SMF)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-10-16T10:34:21.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-16T11:00:40.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3562,7 +3562,7 @@
         "name": "Winnipeg, MB, Canada - (YWG)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-16T09:28:56.000Z",
+        "updated_at": "2026-10-16T10:44:29.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4522,11 +4522,7 @@
     "top_reported_issues_provider": [
       {
         "label": "Connectivity issue",
-        "count": 3
-      },
-      {
-        "label": "Server not responding",
-        "count": 1
+        "count": 2
       },
       {
         "label": "Service down",
@@ -4538,6 +4534,10 @@
       },
       {
         "label": "Error message",
+        "count": 0
+      },
+      {
+        "label": "Server not responding",
         "count": 0
       },
       {
@@ -4556,16 +4556,37 @@
   },
   "reports": [
     {
-      "title": "Cloudflare Dashboard sign up issues",
-      "url": "https://www.cloudflarestatus.com/#2026-10-16T10:35:16Z",
-      "published_at": "2026-10-16T10:35:16Z",
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-16T11:35:19Z",
+      "published_at": "2026-10-16T11:35:19Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-16T11:25:32Z",
+      "published_at": "2026-10-16T11:25:32Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
       "title": "Cloudflare Dashboard sign up issues",
-      "url": "https://www.cloudflarestatus.com/#2026-10-16T10:15:33Z",
-      "published_at": "2026-10-16T10:15:33Z",
+      "url": "https://www.cloudflarestatus.com/#2026-10-16T11:00:17Z",
+      "published_at": "2026-10-16T11:00:17Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Cloudflare Dashboard sign up issues",
+      "url": "https://www.cloudflarestatus.com/#2026-10-16T10:55:20Z",
+      "published_at": "2026-10-16T10:55:20Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Cloudflare Dashboard sign up issues",
+      "url": "https://www.cloudflarestatus.com/#2026-10-16T10:40:43Z",
+      "published_at": "2026-10-16T10:40:43Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
@@ -4574,28 +4595,7 @@
       "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh",
       "published_at": "2026-10-16T10:15:11.943Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Investigating"
-    },
-    {
-      "title": "Incorrect geo location for some Cloudflare WARP users",
-      "url": "https://www.cloudflarestatus.com/#2026-10-16T10:10:20Z",
-      "published_at": "2026-10-16T10:10:20Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
-      "title": "Incorrect geo location for some Cloudflare WARP users",
-      "url": "https://www.cloudflarestatus.com/#2026-10-16T10:00:27Z",
-      "published_at": "2026-10-16T10:00:27Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
-      "title": "Cloudflare Access Availability Issues",
-      "url": "https://www.cloudflarestatus.com/#2026-10-16T09:25:26Z",
-      "published_at": "2026-10-16T09:25:26Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Cloudflare Access Availability Issues",
@@ -4618,52 +4618,76 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-16T10:39:50.745371Z"
+      "published_at": "2026-10-16T11:46:58.307687Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-16T10:39:50.745371Z"
+      "published_at": "2026-10-16T11:46:58.307687Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-16T10:39:50.745371Z"
+      "published_at": "2026-10-16T11:46:58.307687Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-10-16T10:39:50.745371Z"
+      "published_at": "2026-10-16T11:46:58.307687Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-16T10:39:50.745371Z"
+      "published_at": "2026-10-16T11:46:58.307687Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-16T10:39:50.745371Z"
+      "published_at": "2026-10-16T11:46:58.307687Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-10-16T10:39:50.195341Z",
+      "published_at": "2026-10-16T11:46:57.774098Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
+    },
+    {
+      "title": "Cloudflare Dashboard sign up issues",
+      "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#dj4u3lm9gunm",
+      "published_at": "2026-10-16T11:24:33.059Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+    },
+    {
+      "title": "Cloudflare Dashboard sign up issues",
+      "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#jv9klvegoqjj",
+      "published_at": "2026-10-16T11:12:06.791Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
+    },
+    {
+      "title": "Cloudflare Dashboard sign up issues",
+      "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#sz2rlfeknb92",
+      "published_at": "2026-10-16T10:46:30.496Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Resolved / We are continuing to work on a fix for the issue."
     },
     {
       "title": "Cloudflare Dashboard sign up issues",
@@ -4671,7 +4695,7 @@
       "published_at": "2026-10-16T10:15:11.943Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / Cloudflare is aware of and investigating an issue where some users are unable to sign up to the Cloudflare Dashboard. We are working to mitigate the problem and will update shortly."
+      "meta": "Investigating / Minor / Resolved / Cloudflare is aware of and investigating an issue where some users are unable to sign up to the Cloudflare Dashboard. We are working to mitigate the problem and will update shortly."
     },
     {
       "title": "Cloudflare Access Availability Issues",
@@ -4696,30 +4720,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Identified / Minor / Resolved / The issue has been identified and a fix is being implemented."
-    },
-    {
-      "title": "Cloudflare Access Availability Issues",
-      "url": "https://www.cloudflarestatus.com/incidents/xh6wdjrte1ez#ir2qtj6rs5mh",
-      "published_at": "2026-10-16T09:20:43.089Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Cloudflare Access after login. We are working to understand the full impact and mitigate this problem. More updates to follow shortly."
-    },
-    {
-      "title": "Network Performance Issues in Thailand",
-      "url": "https://www.cloudflarestatus.com/incidents/vt8q2vjyx9vd#pon0zhvmd2an",
-      "published_at": "2026-10-16T07:30:00.000Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / Cloudflare investigated and resolved issues with network performance in Bangkok, Thailand. There may have been elevated response times and an increase in 5xx errors between 06:48 and 07:30 UTC. This has been resolved and normal operations h"
-    },
-    {
-      "title": "Network issues in Incheon (ICN)",
-      "url": "https://www.cloudflarestatus.com/incidents/w43n5lblyvu8#eweltrqsll55",
-      "published_at": "2026-10-16T02:11:00.000Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / None / Resolved / Between 01:13 AM and 02:11 AM UTC, network performance at our ICN-A colo in Seoul was impacted. Users downstream of KINX may have experienced increased latency (TTFB) and elevated Network Error Logging (NEL) metrics due to network path cong"
     }
   ],
   "social": [],
@@ -4735,11 +4735,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-10-16T10:39:48.515007Z",
+      "last_item_at": "2026-10-16T11:46:56.416158Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 226,
-      "fetched_at": "2026-10-16T10:39:48.515027Z",
+      "duration_ms": 206,
+      "fetched_at": "2026-10-16T11:46:56.416189Z",
       "cache_hit": false
     },
     {
@@ -4753,11 +4753,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-16T06:39:49-04:00",
+      "last_item_at": "2026-10-16T07:46:56-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1679,
-      "fetched_at": "2026-10-16T10:39:50.194798Z",
+      "duration_ms": 1357,
+      "fetched_at": "2026-10-16T11:46:57.773585Z",
       "cache_hit": false
     },
     {
@@ -4771,17 +4771,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-16T10:39:50.195341Z",
+      "last_item_at": "2026-10-16T11:46:57.774098Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 548,
-      "fetched_at": "2026-10-16T10:39:50.743860Z",
+      "duration_ms": 532,
+      "fetched_at": "2026-10-16T11:46:58.306090Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-16T10:39:50.745371Z",
+    "generated_at": "2026-10-16T11:46:58.307687Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4803,7 +4803,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "major",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4818,30 +4818,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 226,
+          "duration_ms": 206,
           "cache_hit": false,
-          "at": "2026-10-16T10:39:48Z"
+          "at": "2026-10-16T11:46:56Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 236.3
+          "avg_duration_ms": 233.3
         },
         "metrics_7d": {
-          "runs": 58,
-          "ok": 58,
+          "runs": 59,
+          "ok": 59,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 245.2
+          "avg_duration_ms": 244.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-16T10:39:48Z",
+        "last_success_at": "2026-10-16T11:46:56Z",
         "last_failure_at": null
       },
       {
@@ -4855,30 +4855,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1679,
+          "duration_ms": 1357,
           "cache_hit": false,
-          "at": "2026-10-16T10:39:48Z"
+          "at": "2026-10-16T11:46:56Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1650.0
+          "avg_duration_ms": 1620.7
         },
         "metrics_7d": {
-          "runs": 58,
-          "ok": 58,
+          "runs": 59,
+          "ok": 59,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1408.1
+          "avg_duration_ms": 1407.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-16T10:39:48Z",
+        "last_success_at": "2026-10-16T11:46:56Z",
         "last_failure_at": null
       },
       {
@@ -4892,38 +4892,90 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 548,
+          "duration_ms": 532,
           "cache_hit": false,
-          "at": "2026-10-16T10:39:48Z"
+          "at": "2026-10-16T11:46:56Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 552.2
+          "avg_duration_ms": 550.2
         },
         "metrics_7d": {
-          "runs": 58,
-          "ok": 58,
+          "runs": 59,
+          "ok": 59,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 540.7
+          "avg_duration_ms": 540.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-16T10:39:48Z",
+        "last_success_at": "2026-10-16T11:46:56Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-16T10:39:50.745371Z",
+    "generated_at": "2026-10-16T11:46:58.307687Z",
     "incidents": {
       "new": [
+        {
+          "id": "d5753e0852bc20d9",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-16T11:35:19Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "aa8056ed453b03c2",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-16T11:25:32Z",
+          "duration": "10m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "33fb6770028af5f0",
+          "title": "Cloudflare Dashboard sign up issues",
+          "started_at": "2026-10-16T11:00:17Z",
+          "duration": "25m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "48ebc9d1c17817f5",
+          "title": "Cloudflare Dashboard sign up issues",
+          "started_at": "2026-10-16T10:55:20Z",
+          "duration": "5m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "2484dfe37bd625d1",
+          "title": "Cloudflare Dashboard sign up issues",
+          "started_at": "2026-10-16T10:40:43Z",
+          "duration": "15m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "3aef48b63b544459",
+          "title": "Cloudflare Dashboard sign up issues",
+          "started_at": "2026-10-16T10:15:11.943Z",
+          "duration": "1h 9m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "resolved": [
         {
           "id": "8df20eb8d6278eb8",
           "title": "Cloudflare Dashboard sign up issues",
@@ -4938,14 +4990,6 @@
           "started_at": "2026-10-16T10:15:33Z",
           "duration": "20m",
           "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "3aef48b63b544459",
-          "title": "Cloudflare Dashboard sign up issues",
-          "started_at": "2026-10-16T10:15:11.943Z",
-          "duration": "24m ongoing",
-          "acknowledgement": "Minor / Investigating",
           "url": "https://www.cloudflarestatus.com/"
         },
         {
@@ -4971,165 +5015,58 @@
           "duration": "35m",
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "2b1a1e8fe3e85fd0",
-          "title": "Cloudflare Access Availability Issues",
-          "started_at": "2026-10-16T09:20:43.089Z",
-          "duration": "38m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "ecb72310a4140f92",
-          "title": "Network Performance Issues in Thailand",
-          "started_at": "2026-10-16T08:27:39.731Z",
-          "duration": "0m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "9acf25522094219b",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T05:45:21Z",
-          "duration": "1m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "9c55e447cb5a9b58",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T05:25:21Z",
-          "duration": "20m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "f90bfe56d4f347a7",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T05:20:29Z",
-          "duration": "5m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "a5db5acb9af9d728",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T05:10:17Z",
-          "duration": "10m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "916eb177f04671b4",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T04:55:39Z",
-          "duration": "15m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "c4a60597d11bb66a",
-          "title": "Network issues in Incheon (ICN)",
-          "started_at": "2026-10-16T02:28:46.992Z",
-          "duration": "0m",
-          "acknowledgement": "None / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "cb50498fecb4b053",
-          "title": "Workers Cron Triggers issues",
-          "started_at": "2026-10-16T00:01:49.616Z",
-          "duration": "1h 4m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "1b685f22f562591f",
-          "title": "Network Performance Issues in Eastern North America",
-          "started_at": "2026-10-15T20:48:17.704Z",
-          "duration": "49m",
-          "acknowledgement": "Major / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
         }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "7366a4e50b97c8b9",
-          "title": "Cloudflare Dashboard sign up issues",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T10:35:16Z",
-          "published_at": "2026-10-16T10:35:16Z",
-          "source": "StatusGator",
-          "meta": "down icon Down"
-        },
-        {
-          "id": "beae5aae5c924cef",
-          "title": "Cloudflare Dashboard sign up issues",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T10:15:33Z",
-          "published_at": "2026-10-16T10:15:33Z",
-          "source": "StatusGator",
-          "meta": "down icon Down"
-        },
-        {
-          "id": "b93359630763c095",
-          "title": "Cloudflare Dashboard sign up issues",
-          "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh",
-          "published_at": "2026-10-16T10:15:11.943Z",
-          "source": "Cloudflare Statuspage API",
-          "meta": "Minor / Investigating"
-        },
-        {
-          "id": "79847dfa616d1be9",
+          "id": "9849afe77914c033",
           "title": "Incorrect geo location for some Cloudflare WARP users",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T10:10:20Z",
-          "published_at": "2026-10-16T10:10:20Z",
+          "url": "https://www.cloudflarestatus.com/#2026-10-16T11:35:19Z",
+          "published_at": "2026-10-16T11:35:19Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "37add38c114b8e0a",
+          "id": "c709b0121305af11",
           "title": "Incorrect geo location for some Cloudflare WARP users",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T10:00:27Z",
-          "published_at": "2026-10-16T10:00:27Z",
+          "url": "https://www.cloudflarestatus.com/#2026-10-16T11:25:32Z",
+          "published_at": "2026-10-16T11:25:32Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "497455866da899a6",
-          "title": "Cloudflare Access Availability Issues",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T09:25:26Z",
-          "published_at": "2026-10-16T09:25:26Z",
+          "id": "39df81cefdd43e87",
+          "title": "Cloudflare Dashboard sign up issues",
+          "url": "https://www.cloudflarestatus.com/#2026-10-16T11:00:17Z",
+          "published_at": "2026-10-16T11:00:17Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "330359b5c1abe018",
-          "title": "Cloudflare Access Availability Issues",
-          "url": "https://www.cloudflarestatus.com/incidents/xh6wdjrte1ez",
-          "published_at": "2026-10-16T09:20:43.089Z",
-          "source": "Cloudflare Statuspage API",
-          "meta": "Minor / Resolved"
+          "id": "d2d23c6a4d840de4",
+          "title": "Cloudflare Dashboard sign up issues",
+          "url": "https://www.cloudflarestatus.com/#2026-10-16T10:55:20Z",
+          "published_at": "2026-10-16T10:55:20Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
         },
         {
-          "id": "d9fd39e38c45f29e",
-          "title": "Network Performance Issues in Thailand",
-          "url": "https://www.cloudflarestatus.com/incidents/vt8q2vjyx9vd",
-          "published_at": "2026-10-16T08:27:39.731Z",
-          "source": "Cloudflare Statuspage API",
-          "meta": "Minor / Resolved"
+          "id": "fc49f48d79443d23",
+          "title": "Cloudflare Dashboard sign up issues",
+          "url": "https://www.cloudflarestatus.com/#2026-10-16T10:40:43Z",
+          "published_at": "2026-10-16T10:40:43Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
         }
       ]
     },
     "summary": {
-      "new_incidents": 8,
-      "updated_incidents": 0,
-      "resolved_incidents": 8,
-      "new_reports": 8
+      "new_incidents": 5,
+      "updated_incidents": 1,
+      "resolved_incidents": 5,
+      "new_reports": 5
     }
   }
 }
