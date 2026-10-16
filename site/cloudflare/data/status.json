@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-16T18:38:42.605842Z",
+  "generated_at": "2026-10-16T19:39:08.968196Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "major",
-    "severity_score": 8,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,7 +14,7 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 3.05
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
       "reports_24h": 3,
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "high",
+      "reason": "official_major_vs_aggregate_lower",
       "official_status": "major outage",
-      "derived_severity": "major",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status reports a major outage while aggregate severity is lower."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,34 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-10-16T18:38:41.825521Z",
+        "published_at": "2026-10-16T19:39:08.106436Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
+      },
+      {
+        "title": "Cloudflare Fedramp Dashboard and Access",
+        "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d#3v3s87vqj533",
+        "published_at": "2026-10-16T19:09:00.475Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Major / Resolved / This incident has been resolved."
+      },
+      {
+        "title": "Cloudflare Fedramp Dashboard and Access",
+        "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d#8zg8s6xbtwx7",
+        "published_at": "2026-10-16T19:02:00.967Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
+      },
+      {
+        "title": "Cloudflare Fedramp Dashboard and Access",
+        "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d#j39sb414pxq3",
+        "published_at": "2026-10-16T18:47:08.958Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Major / Resolved / The issue has been identified and a fix is being implemented."
       },
       {
         "title": "Cloudflare Fedramp Dashboard and Access",
@@ -84,7 +108,7 @@
         "published_at": "2026-10-16T18:15:23.745Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Major / Investigating / Cloudflare is investigating issues with accessing the Cloudflare Fedramp Dashboard and related Cloudflare Access services. Logging into dashboards and applications protected by Fedramp Access is impacted. These issues do not affect the serv"
+        "meta": "Investigating / Major / Resolved / Cloudflare is investigating issues with accessing the Cloudflare Fedramp Dashboard and related Cloudflare Access services. Logging into dashboards and applications protected by Fedramp Access is impacted. These issues do not affect the serv"
       },
       {
         "title": "Cloudflare Fedramp Dashboard and Access",
@@ -92,7 +116,7 @@
         "published_at": "2026-10-16T17:56:24.000Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Major / Investigating / Cloudflare is investigating issues with accessing the Cloudflare Fedramp Dashboard and related Cloudflare Access services. Logging into dashboards and applications protected by Fedramp Access is impacted. These issues do not affect the serv"
+        "meta": "Investigating / Major / Resolved / Cloudflare is investigating issues with accessing the Cloudflare Fedramp Dashboard and related Cloudflare Access services. Logging into dashboards and applications protected by Fedramp Access is impacted. These issues do not affect the serv"
       },
       {
         "title": "Increased HTTP 5xx Errors Ashburn",
@@ -125,46 +149,40 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Identified / Minor / Resolved / We are continuing to work on a fix for the issue."
-      },
-      {
-        "title": "Cloudflare Dashboard sign up issues",
-        "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#l3n2loyp3oqa",
-        "published_at": "2026-10-16T10:15:11.943Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / Cloudflare is aware of and investigating an issue where some users are unable to sign up to the Cloudflare Dashboard. We are working to mitigate the problem and will update shortly."
-      },
-      {
-        "title": "Cloudflare Access Availability Issues",
-        "url": "https://www.cloudflarestatus.com/incidents/xh6wdjrte1ez#0t1u90xoqz8l",
-        "published_at": "2026-10-16T09:59:03.270Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Cloudflare Access Availability Issues",
-        "url": "https://www.cloudflarestatus.com/incidents/xh6wdjrte1ez#3ss0olahgr16",
-        "published_at": "2026-10-16T09:41:19.289Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
       }
     ],
-    "last_statement_at": "2026-10-16T18:38:41.825521Z"
+    "last_statement_at": "2026-10-16T19:39:08.106436Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports an active incident: Cloudflare Fedramp Dashboard and Access.",
+    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident started about 2h ago.",
     "current_status": "major outage",
     "reports_24h": 3,
     "incidents": [
       {
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-16T19:30:23Z",
+        "duration": "1m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-16T19:10:26Z",
+        "duration": "20m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Cloudflare Fedramp Dashboard and Access",
+        "started_at": "2026-10-16T18:45:33Z",
+        "duration": "25m",
+        "acknowledgement": "down icon Down"
+      },
+      {
         "title": "Cloudflare Fedramp Dashboard and Access",
         "started_at": "2026-10-16T18:20:48Z",
-        "duration": "1m",
+        "duration": "25m",
         "acknowledgement": "down icon Down"
       },
       {
@@ -174,30 +192,12 @@
         "acknowledgement": "down icon Down"
       },
       {
-        "title": "Cloudflare Fed Dashboard",
-        "started_at": "2026-10-16T18:00:35Z",
-        "duration": "5m",
-        "acknowledgement": "down icon Down"
-      },
-      {
         "title": "Cloudflare Fedramp Dashboard and Access",
         "started_at": "2026-10-16T17:56:24.000Z",
-        "duration": "42m ongoing",
-        "acknowledgement": "Major / Investigating",
+        "duration": "1h 12m",
+        "acknowledgement": "Major / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d"
-      },
-      {
-        "title": "Incorrect geo location for some Cloudflare WARP users",
-        "started_at": "2026-10-16T17:45:29Z",
-        "duration": "15m",
-        "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "Incorrect geo location for some Cloudflare WARP users",
-        "started_at": "2026-10-16T16:40:21Z",
-        "duration": "1h 5m",
-        "acknowledgement": "down icon Down"
       },
       {
         "title": "Increased HTTP 5xx Errors Ashburn",
@@ -226,10 +226,6 @@
         "count": 1
       },
       {
-        "label": "Access",
-        "count": 1
-      },
-      {
         "label": "Arica, Chile - (ARI)",
         "count": 1
       },
@@ -248,38 +244,18 @@
       {
         "label": "Bangalore, India - (BLR)",
         "count": 1
+      },
+      {
+        "label": "Canberra, ACT, Australia - (CBR)",
+        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-15T18:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-15T19:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-15T19:15:00Z",
-        "signal_value": 20.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-15T19:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-10-15T19:45:00Z",
         "signal_value": 1.0,
@@ -828,7 +804,31 @@
       },
       {
         "timestamp": "2026-10-16T18:30:00Z",
-        "signal_value": 7.0,
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-16T18:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-16T19:00:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-16T19:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-16T19:30:00Z",
+        "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -839,21 +839,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-16T18:30:00Z"
+      "last_sample_at": "2026-10-16T19:30:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "18:40",
-        "count": 1
-      },
-      {
-        "label": "19:00",
-        "count": 2
-      },
-      {
-        "label": "19:20",
-        "count": 0
-      },
       {
         "label": "19:40",
         "count": 2
@@ -1129,6 +1117,18 @@
       {
         "label": "18:20",
         "count": 0
+      },
+      {
+        "label": "18:40",
+        "count": 2
+      },
+      {
+        "label": "19:00",
+        "count": 3
+      },
+      {
+        "label": "19:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1137,14 +1137,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-16T13:38:41-05:00"
+      "last_reviewed_at": "2026-10-16T15:39:07-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 106,
-        "last_reviewed_at": "2026-10-16T13:38:41-05:00"
+        "reports_24h": 109,
+        "last_reviewed_at": "2026-10-16T15:39:07-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1236,9 +1236,9 @@
       },
       {
         "name": "Access",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-16T18:15:23.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-16T19:09:00.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2293,9 +2293,9 @@
       },
       {
         "name": "Hanoi, Vietnam - (HAN)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-16T18:09:29.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-16T19:25:36.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2384,9 +2384,9 @@
       },
       {
         "name": "Hong Kong - (HKG)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-16T17:53:10.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-16T19:31:05.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2636,9 +2636,9 @@
       },
       {
         "name": "Porto Alegre, Brazil - (POA)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-16T18:25:48.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-16T18:52:59.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3357,8 +3357,8 @@
       },
       {
         "name": "Osaka, Japan - (KIX)",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2025-11-25T05:11:27.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -3385,9 +3385,9 @@
       },
       {
         "name": "FedRamp Dashboard",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-16T18:05:00.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-16T19:09:00.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3756,9 +3756,9 @@
       },
       {
         "name": "Yogyakarta, Indonesia - (JOG)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-10-16T18:01:32.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-16T19:36:27.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4288,8 +4288,8 @@
       },
       {
         "name": "Zhengzhou, China - (CGO)",
-        "status": "major outage",
-        "health": "major_outage",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2025-02-11T18:43:31.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -4563,6 +4563,27 @@
   },
   "reports": [
     {
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-16T19:30:23Z",
+      "published_at": "2026-10-16T19:30:23Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-16T19:10:26Z",
+      "published_at": "2026-10-16T19:10:26Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Cloudflare Fedramp Dashboard and Access",
+      "url": "https://www.cloudflarestatus.com/#2026-10-16T18:45:33Z",
+      "published_at": "2026-10-16T18:45:33Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
       "title": "Cloudflare Fedramp Dashboard and Access",
       "url": "https://www.cloudflarestatus.com/#2026-10-16T18:20:48Z",
       "published_at": "2026-10-16T18:20:48Z",
@@ -4577,32 +4598,11 @@
       "meta": "down icon Down"
     },
     {
-      "title": "Cloudflare Fed Dashboard",
-      "url": "https://www.cloudflarestatus.com/#2026-10-16T18:00:35Z",
-      "published_at": "2026-10-16T18:00:35Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
       "title": "Cloudflare Fedramp Dashboard and Access",
       "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d",
       "published_at": "2026-10-16T17:56:24.000Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Major / Investigating"
-    },
-    {
-      "title": "Incorrect geo location for some Cloudflare WARP users",
-      "url": "https://www.cloudflarestatus.com/#2026-10-16T17:45:29Z",
-      "published_at": "2026-10-16T17:45:29Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
-      "title": "Incorrect geo location for some Cloudflare WARP users",
-      "url": "https://www.cloudflarestatus.com/#2026-10-16T16:40:21Z",
-      "published_at": "2026-10-16T16:40:21Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
+      "meta": "Major / Resolved"
     },
     {
       "title": "Increased HTTP 5xx Errors Ashburn",
@@ -4625,52 +4625,76 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-16T18:38:42.605842Z"
+      "published_at": "2026-10-16T19:39:08.968196Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-16T18:38:42.605842Z"
+      "published_at": "2026-10-16T19:39:08.968196Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-16T18:38:42.605842Z"
+      "published_at": "2026-10-16T19:39:08.968196Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-10-16T18:38:42.605842Z"
+      "published_at": "2026-10-16T19:39:08.968196Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-16T18:38:42.605842Z"
+      "published_at": "2026-10-16T19:39:08.968196Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-16T18:38:42.605842Z"
+      "published_at": "2026-10-16T19:39:08.968196Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-10-16T18:38:41.825521Z",
+      "published_at": "2026-10-16T19:39:08.106436Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
+    },
+    {
+      "title": "Cloudflare Fedramp Dashboard and Access",
+      "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d#3v3s87vqj533",
+      "published_at": "2026-10-16T19:09:00.475Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Major / Resolved / This incident has been resolved."
+    },
+    {
+      "title": "Cloudflare Fedramp Dashboard and Access",
+      "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d#8zg8s6xbtwx7",
+      "published_at": "2026-10-16T19:02:00.967Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
+    },
+    {
+      "title": "Cloudflare Fedramp Dashboard and Access",
+      "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d#j39sb414pxq3",
+      "published_at": "2026-10-16T18:47:08.958Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Major / Resolved / The issue has been identified and a fix is being implemented."
     },
     {
       "title": "Cloudflare Fedramp Dashboard and Access",
@@ -4678,7 +4702,7 @@
       "published_at": "2026-10-16T18:15:23.745Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Major / Investigating / Cloudflare is investigating issues with accessing the Cloudflare Fedramp Dashboard and related Cloudflare Access services. Logging into dashboards and applications protected by Fedramp Access is impacted. These issues do not affect the serv"
+      "meta": "Investigating / Major / Resolved / Cloudflare is investigating issues with accessing the Cloudflare Fedramp Dashboard and related Cloudflare Access services. Logging into dashboards and applications protected by Fedramp Access is impacted. These issues do not affect the serv"
     },
     {
       "title": "Cloudflare Fedramp Dashboard and Access",
@@ -4686,7 +4710,7 @@
       "published_at": "2026-10-16T17:56:24.000Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Major / Investigating / Cloudflare is investigating issues with accessing the Cloudflare Fedramp Dashboard and related Cloudflare Access services. Logging into dashboards and applications protected by Fedramp Access is impacted. These issues do not affect the serv"
+      "meta": "Investigating / Major / Resolved / Cloudflare is investigating issues with accessing the Cloudflare Fedramp Dashboard and related Cloudflare Access services. Logging into dashboards and applications protected by Fedramp Access is impacted. These issues do not affect the serv"
     },
     {
       "title": "Increased HTTP 5xx Errors Ashburn",
@@ -4703,30 +4727,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Cloudflare Dashboard sign up issues",
-      "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#jv9klvegoqjj",
-      "published_at": "2026-10-16T11:12:06.791Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
-    },
-    {
-      "title": "Cloudflare Dashboard sign up issues",
-      "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#sz2rlfeknb92",
-      "published_at": "2026-10-16T10:46:30.496Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / We are continuing to work on a fix for the issue."
-    },
-    {
-      "title": "Cloudflare Dashboard sign up issues",
-      "url": "https://www.cloudflarestatus.com/incidents/mwmwvd4x60mh#l3n2loyp3oqa",
-      "published_at": "2026-10-16T10:15:11.943Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / Cloudflare is aware of and investigating an issue where some users are unable to sign up to the Cloudflare Dashboard. We are working to mitigate the problem and will update shortly."
     }
   ],
   "social": [],
@@ -4742,11 +4742,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-10-16T18:38:40.542936Z",
+      "last_item_at": "2026-10-16T19:39:06.629313Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 206,
-      "fetched_at": "2026-10-16T18:38:40.542964Z",
+      "duration_ms": 248,
+      "fetched_at": "2026-10-16T19:39:06.629337Z",
       "cache_hit": false
     },
     {
@@ -4760,11 +4760,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-16T13:38:41-05:00",
+      "last_item_at": "2026-10-16T15:39:07-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1282,
-      "fetched_at": "2026-10-16T18:38:41.825011Z",
+      "duration_ms": 1476,
+      "fetched_at": "2026-10-16T19:39:08.105822Z",
       "cache_hit": false
     },
     {
@@ -4778,17 +4778,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-16T18:38:41.825521Z",
+      "last_item_at": "2026-10-16T19:39:08.106436Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 778,
-      "fetched_at": "2026-10-16T18:38:42.604371Z",
+      "duration_ms": 860,
+      "fetched_at": "2026-10-16T19:39:08.966656Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-16T18:38:42.605842Z",
+    "generated_at": "2026-10-16T19:39:08.968196Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4810,7 +4810,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "major",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4825,9 +4825,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 206,
+          "duration_ms": 248,
           "cache_hit": false,
-          "at": "2026-10-16T18:38:40Z"
+          "at": "2026-10-16T19:39:06Z"
         },
         "metrics_24h": {
           "runs": 10,
@@ -4836,7 +4836,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 230.1
+          "avg_duration_ms": 235.6
         },
         "metrics_7d": {
           "runs": 61,
@@ -4845,10 +4845,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 244.2
+          "avg_duration_ms": 241.5
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-16T18:38:40Z",
+        "last_success_at": "2026-10-16T19:39:06Z",
         "last_failure_at": null
       },
       {
@@ -4862,9 +4862,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1282,
+          "duration_ms": 1476,
           "cache_hit": false,
-          "at": "2026-10-16T18:38:40Z"
+          "at": "2026-10-16T19:39:06Z"
         },
         "metrics_24h": {
           "runs": 10,
@@ -4873,7 +4873,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1463.0
+          "avg_duration_ms": 1484.2
         },
         "metrics_7d": {
           "runs": 61,
@@ -4882,10 +4882,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1408.6
+          "avg_duration_ms": 1417.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-16T18:38:40Z",
+        "last_success_at": "2026-10-16T19:39:06Z",
         "last_failure_at": null
       },
       {
@@ -4899,9 +4899,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 778,
+          "duration_ms": 860,
           "cache_hit": false,
-          "at": "2026-10-16T18:38:40Z"
+          "at": "2026-10-16T19:39:06Z"
         },
         "metrics_24h": {
           "runs": 10,
@@ -4910,7 +4910,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 517.3
+          "avg_duration_ms": 560.8
         },
         "metrics_7d": {
           "runs": 61,
@@ -4919,39 +4919,49 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 544.0
+          "avg_duration_ms": 550.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-16T18:38:40Z",
+        "last_success_at": "2026-10-16T19:39:06Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-16T18:38:42.605842Z",
+    "generated_at": "2026-10-16T19:39:08.968196Z",
     "incidents": {
       "new": [
         {
-          "id": "1a5bc6d9a5b076a5",
-          "title": "Cloudflare Fedramp Dashboard and Access",
-          "started_at": "2026-10-16T18:20:48Z",
+          "id": "8eb135844a463488",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-16T19:30:23Z",
           "duration": "1m",
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
         },
         {
-          "id": "fc2047b70d42420b",
-          "title": "Cloudflare Fed Dashboard",
-          "started_at": "2026-10-16T18:05:18Z",
-          "duration": "16m",
+          "id": "93fd9a67c3f2a77e",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-16T19:10:26Z",
+          "duration": "20m",
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
         },
         {
-          "id": "23e0df0f83a23f03",
-          "title": "Cloudflare Fed Dashboard",
-          "started_at": "2026-10-16T18:00:35Z",
-          "duration": "5m",
+          "id": "55b9aa8724807cad",
+          "title": "Cloudflare Fedramp Dashboard and Access",
+          "started_at": "2026-10-16T18:45:33Z",
+          "duration": "25m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "1a5bc6d9a5b076a5",
+          "title": "Cloudflare Fedramp Dashboard and Access",
+          "started_at": "2026-10-16T18:20:48Z",
+          "duration": "25m",
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
         },
@@ -4959,8 +4969,18 @@
           "id": "ccea0544cfbc25b0",
           "title": "Cloudflare Fedramp Dashboard and Access",
           "started_at": "2026-10-16T17:56:24.000Z",
-          "duration": "42m ongoing",
-          "acknowledgement": "Major / Investigating",
+          "duration": "1h 12m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "resolved": [
+        {
+          "id": "23e0df0f83a23f03",
+          "title": "Cloudflare Fed Dashboard",
+          "started_at": "2026-10-16T18:00:35Z",
+          "duration": "5m",
+          "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
         },
         {
@@ -4979,116 +4999,41 @@
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
         }
-      ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "f852ddefc09bdc26",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T16:10:37Z",
-          "duration": "1m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "1a3824b736b40560",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T15:10:27Z",
-          "duration": "1h",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "fd6fcdcc3ede9ca8",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T14:05:27Z",
-          "duration": "1h 5m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "04ba79a841fe318a",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T13:45:29Z",
-          "duration": "20m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "d5753e0852bc20d9",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-16T11:35:19Z",
-          "duration": "2h 10m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "2b1a1e8fe3e85fd0",
-          "title": "Cloudflare Access Availability Issues",
-          "started_at": "2026-10-16T09:20:43.089Z",
-          "duration": "38m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "fe4f2a139a7bfc41",
-          "title": "Cloudflare Fedramp Dashboard and Access",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T18:20:48Z",
-          "published_at": "2026-10-16T18:20:48Z",
-          "source": "StatusGator",
-          "meta": "down icon Down"
-        },
-        {
-          "id": "22c424f2022fd0ce",
-          "title": "Cloudflare Fed Dashboard",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T18:05:18Z",
-          "published_at": "2026-10-16T18:05:18Z",
-          "source": "StatusGator",
-          "meta": "down icon Down"
-        },
-        {
-          "id": "3fe4761d1fbcf66a",
-          "title": "Cloudflare Fed Dashboard",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T18:00:35Z",
-          "published_at": "2026-10-16T18:00:35Z",
-          "source": "StatusGator",
-          "meta": "down icon Down"
-        },
-        {
-          "id": "cd3a58b4e6e02305",
-          "title": "Cloudflare Fedramp Dashboard and Access",
-          "url": "https://www.cloudflarestatus.com/incidents/qwx5xtl8mv7d",
-          "published_at": "2026-10-16T17:56:24.000Z",
-          "source": "Cloudflare Statuspage API",
-          "meta": "Major / Investigating"
-        },
-        {
-          "id": "9d22ec30d64d888f",
+          "id": "1d9223c61435d103",
           "title": "Incorrect geo location for some Cloudflare WARP users",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T17:45:29Z",
-          "published_at": "2026-10-16T17:45:29Z",
+          "url": "https://www.cloudflarestatus.com/#2026-10-16T19:30:23Z",
+          "published_at": "2026-10-16T19:30:23Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "84c10aa19e5dcc01",
+          "id": "d079fa20e6e9aae3",
           "title": "Incorrect geo location for some Cloudflare WARP users",
-          "url": "https://www.cloudflarestatus.com/#2026-10-16T16:40:21Z",
-          "published_at": "2026-10-16T16:40:21Z",
+          "url": "https://www.cloudflarestatus.com/#2026-10-16T19:10:26Z",
+          "published_at": "2026-10-16T19:10:26Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "fccfbb164696ce9a",
+          "title": "Cloudflare Fedramp Dashboard and Access",
+          "url": "https://www.cloudflarestatus.com/#2026-10-16T18:45:33Z",
+          "published_at": "2026-10-16T18:45:33Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         }
       ]
     },
     "summary": {
-      "new_incidents": 6,
-      "updated_incidents": 0,
-      "resolved_incidents": 6,
-      "new_reports": 6
+      "new_incidents": 3,
+      "updated_incidents": 2,
+      "resolved_incidents": 3,
+      "new_reports": 3
     }
   }
 }
