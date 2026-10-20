@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-20T19:53:07.734417Z",
+  "generated_at": "2026-10-20T22:58:56.361872Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "major",
-    "severity_score": 8,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,12 +14,12 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 3.05
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
       "reports_24h": 3,
       "recent_incidents_6h": 6,
-      "recent_incidents_24h": 8,
+      "recent_incidents_24h": 7,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "high",
+      "reason": "official_major_vs_aggregate_lower",
       "official_status": "major outage",
-      "derived_severity": "major",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status reports a major outage while aggregate severity is lower."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "major",
-      "severity_score": 8,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-10-20T19:53:06.673197Z",
+        "published_at": "2026-10-20T22:58:55.801743Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
+      },
+      {
+        "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+        "url": "https://www.cloudflarestatus.com/incidents/3z8y23zn7tr2#roggj3worlu0",
+        "published_at": "2026-10-20T22:46:39.852Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+      },
+      {
+        "title": "Issue with Bot management traffic categorization for verified bots",
+        "url": "https://www.cloudflarestatus.com/incidents/qlgdup1n0ge7#r4r13exwc69r",
+        "published_at": "2026-10-20T20:16:54.090Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       },
       {
         "title": "Issue with Bot management traffic categorization for verified bots",
@@ -84,7 +100,7 @@
         "published_at": "2026-10-20T19:35:33.833Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / Cloudflare is investigating issues with our Bot Management feature. Customers may observe a limited number of verified bots incorrectly identified as automated traffic"
+        "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with our Bot Management feature. Customers may observe a limited number of verified bots incorrectly identified as automated traffic"
       },
       {
         "title": "Cloudflare Zero Trust connectivity",
@@ -133,71 +149,55 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Critical / Resolved / We are continuing to investigate the issue."
-      },
-      {
-        "title": "Cloudflare Zero Trust connectivity",
-        "url": "https://www.cloudflarestatus.com/incidents/0eqtn0khkz87#qhwslhw3wghd",
-        "published_at": "2026-10-20T04:09:34.506Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / We are continuing to investigate the issue."
-      },
-      {
-        "title": "Cloudflare Zero Trust connectivity",
-        "url": "https://www.cloudflarestatus.com/incidents/0eqtn0khkz87#ld61hbga5pol",
-        "published_at": "2026-10-20T03:47:31.135Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Critical / Resolved / We are continuing to investigate the issue."
       }
     ],
-    "last_statement_at": "2026-10-20T19:53:06.673197Z"
+    "last_statement_at": "2026-10-20T22:58:55.801743Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports 2 active incidents. Latest: Issue with Bot management traffic categorization for verified bots.",
+    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident was about 26h ago.",
     "current_status": "major outage",
     "reports_24h": 3,
     "incidents": [
       {
-        "title": "Issue with Bot management traffic categorization for verified bots",
-        "started_at": "2026-10-20T19:40:22Z",
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-20T22:50:24Z",
         "duration": "1m",
         "acknowledgement": "down icon Down"
       },
       {
-        "title": "Issue with Bot management traffic categorization for verified bots",
-        "started_at": "2026-10-20T19:35:33.833Z",
-        "duration": "17m ongoing",
-        "acknowledgement": "Minor / Investigating",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/qlgdup1n0ge7"
-      },
-      {
         "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-        "started_at": "2026-10-20T19:25:33Z",
+        "started_at": "2026-10-20T22:35:28Z",
         "duration": "15m",
         "acknowledgement": "down icon Down"
       },
       {
         "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-        "started_at": "2026-10-20T19:15:26Z",
-        "duration": "10m",
-        "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-        "started_at": "2026-10-20T18:55:16Z",
+        "started_at": "2026-10-20T22:15:19Z",
         "duration": "20m",
         "acknowledgement": "down icon Down"
       },
       {
         "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-        "started_at": "2026-10-20T18:45:27Z",
+        "started_at": "2026-10-20T21:25:31Z",
+        "duration": "50m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+        "started_at": "2026-10-20T21:15:24Z",
         "duration": "10m",
         "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Issue with Bot management traffic categorization for verified bots",
+        "started_at": "2026-10-20T19:35:33.833Z",
+        "duration": "41m",
+        "acknowledgement": "Minor / Resolved",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/qlgdup1n0ge7"
       },
       {
         "title": "Cloudflare Zero Trust connectivity",
@@ -210,8 +210,8 @@
       {
         "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
         "started_at": "2026-10-19T20:30:00.915Z",
-        "duration": "23h 23m ongoing",
-        "acknowledgement": "Minor / Identified",
+        "duration": "1d 2h 16m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/3z8y23zn7tr2"
       }
@@ -219,6 +219,14 @@
     "top_reported_issues": [
       {
         "label": "Cloudflare Sites and Services",
+        "count": 1
+      },
+      {
+        "label": "Amman, Jordan - (AMM)",
+        "count": 1
+      },
+      {
+        "label": "Accra, Ghana - (ACC)",
         "count": 1
       },
       {
@@ -230,104 +238,24 @@
         "count": 1
       },
       {
+        "label": "Baghdad, Iraq - (BGW)",
+        "count": 1
+      },
+      {
         "label": "Annaba, Algeria - (AAE)",
         "count": 1
       },
       {
         "label": "Asia",
         "count": 1
-      },
-      {
-        "label": "Baku, Azerbaijan - (GYD)",
-        "count": 1
-      },
-      {
-        "label": "Bangalore, India - (BLR)",
-        "count": 1
-      },
-      {
-        "label": "Canberra, ACT, Australia - (CBR)",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-19T20:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T20:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T20:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T20:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T21:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T21:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T21:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T21:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T22:00:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T22:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T22:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-19T22:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-10-19T23:00:00Z",
         "signal_value": 1.0,
@@ -831,6 +759,78 @@
         "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T20:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T20:15:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T20:30:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T20:45:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T21:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T21:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T21:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T21:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T22:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T22:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T22:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-20T22:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,45 +839,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-20T19:45:00Z"
+      "last_sample_at": "2026-10-20T22:45:00Z"
     },
     "user_reports_24h": [
-      {
-        "label": "20:00",
-        "count": 2
-      },
-      {
-        "label": "20:20",
-        "count": 0
-      },
-      {
-        "label": "20:40",
-        "count": 2
-      },
-      {
-        "label": "21:00",
-        "count": 3
-      },
-      {
-        "label": "21:20",
-        "count": 1
-      },
-      {
-        "label": "21:40",
-        "count": 3
-      },
-      {
-        "label": "22:00",
-        "count": 0
-      },
-      {
-        "label": "22:20",
-        "count": 2
-      },
-      {
-        "label": "22:40",
-        "count": 0
-      },
       {
         "label": "23:00",
         "count": 1
@@ -1129,6 +1093,42 @@
       {
         "label": "19:40",
         "count": 2
+      },
+      {
+        "label": "20:00",
+        "count": 2
+      },
+      {
+        "label": "20:20",
+        "count": 0
+      },
+      {
+        "label": "20:40",
+        "count": 2
+      },
+      {
+        "label": "21:00",
+        "count": 3
+      },
+      {
+        "label": "21:20",
+        "count": 1
+      },
+      {
+        "label": "21:40",
+        "count": 3
+      },
+      {
+        "label": "22:00",
+        "count": 0
+      },
+      {
+        "label": "22:20",
+        "count": 2
+      },
+      {
+        "label": "22:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1137,14 +1137,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-20T15:53:05-04:00"
+      "last_reviewed_at": "2026-10-20T18:58:54-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 106,
-        "last_reviewed_at": "2026-10-20T15:53:05-04:00"
+        "last_reviewed_at": "2026-10-20T18:58:54-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1166,9 +1166,9 @@
       },
       {
         "name": "Amman, Jordan - (AMM)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-20T03:10:39.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T21:51:58.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1187,9 +1187,9 @@
       },
       {
         "name": "Accra, Ghana - (ACC)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-15T16:53:37.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T22:13:42.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1252,7 +1252,7 @@
         "name": "Algiers, Algeria - (ALG)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-15T04:31:46.000Z",
+        "updated_at": "2026-10-20T22:08:16.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1299,9 +1299,9 @@
       },
       {
         "name": "Baghdad, Iraq - (BGW)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-20T04:53:16.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T20:24:40.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1427,7 +1427,7 @@
         "name": "Basra, Iraq - (BSR)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-16T01:23:18.000Z",
+        "updated_at": "2026-10-20T22:19:09.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1782,9 +1782,9 @@
       },
       {
         "name": "Chennai, India - (MAA)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-20T19:19:25.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-20T21:02:50.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1796,9 +1796,9 @@
       },
       {
         "name": "Jeddah, Saudi Arabia - (JED)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-20T14:14:55.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-20T22:51:51.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1831,9 +1831,9 @@
       },
       {
         "name": "Kuwait City, Kuwait - (KWI)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-20T19:24:54.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-20T21:46:31.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1945,7 +1945,7 @@
         "name": "Colombo, Sri Lanka - (CMB)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-04T02:20:09.000Z",
+        "updated_at": "2026-10-20T21:51:57.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2006,9 +2006,9 @@
       },
       {
         "name": "Dhaka, Bangladesh - (DAC)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-20T18:41:19.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-20T22:19:10.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2034,9 +2034,9 @@
       },
       {
         "name": "Fortaleza, Brazil - (FOR)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-20T17:52:19.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T21:13:39.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2064,7 +2064,7 @@
         "name": "Nasiriyah, Iraq - (XNH)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-14T03:58:11.000Z",
+        "updated_at": "2026-10-20T22:19:08.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2132,9 +2132,9 @@
       },
       {
         "name": "Riyadh, Saudi Arabia - (RUH)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-20T15:03:43.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T22:19:11.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2148,7 +2148,7 @@
         "name": "Nairobi, Kenya - (NBO)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-20T10:38:48.000Z",
+        "updated_at": "2026-10-20T21:35:31.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2216,9 +2216,9 @@
       },
       {
         "name": "Oran, Algeria - (ORN)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-16T04:05:18.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T20:40:59.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2279,9 +2279,9 @@
       },
       {
         "name": "Port Louis, Mauritius - (MRU)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-06T20:23:01.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T22:08:17.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2300,8 +2300,8 @@
       },
       {
         "name": "Bot Management",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-09-22T16:35:19.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -2435,7 +2435,7 @@
         "name": "Hyderabad, India - (HYD)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-19T22:17:28.000Z",
+        "updated_at": "2026-10-20T21:35:29.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2734,9 +2734,9 @@
       },
       {
         "name": "Nicosia, Cyprus - (LCA)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-20T00:11:39.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T22:13:46.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2778,7 +2778,7 @@
         "name": "Karachi, Pakistan - (KHI)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-15T22:46:09.000Z",
+        "updated_at": "2026-10-20T22:35:33.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2804,9 +2804,9 @@
       },
       {
         "name": "Kathmandu, Nepal - (KTM)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-20T18:57:39.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-20T22:13:42.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2902,8 +2902,8 @@
       },
       {
         "name": "Data Loss Prevention (DLP)",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-09-22T19:26:56.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -3021,9 +3021,9 @@
       },
       {
         "name": "Constantine, Algeria - (CZL)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-10-20T19:24:51.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-20T22:35:32.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3070,9 +3070,9 @@
       },
       {
         "name": "Sorocaba, Brazil - (SOD)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-20T07:35:18.000Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-20T21:09:55.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3231,9 +3231,9 @@
       },
       {
         "name": "Tbilisi, Georgia - (TBS)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-16T01:44:58.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-20T22:35:33.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3441,8 +3441,8 @@
       },
       {
         "name": "Gateway",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-10-16T18:05:00.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -3917,9 +3917,9 @@
       },
       {
         "name": "Kannur, India - (CNN)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-10-20T19:24:51.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-20T20:51:52.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4409,7 +4409,7 @@
         "name": "Lahore, Pakistan - (LHE)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-19T17:29:20.000Z",
+        "updated_at": "2026-10-20T22:19:09.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4514,7 +4514,7 @@
         "name": "Dushanbe, Tajikistan - (DYU)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-19T05:39:54.000Z",
+        "updated_at": "2026-10-20T22:51:52.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4563,9 +4563,37 @@
   },
   "reports": [
     {
-      "title": "Issue with Bot management traffic categorization for verified bots",
-      "url": "https://www.cloudflarestatus.com/#2026-10-20T19:40:22Z",
-      "published_at": "2026-10-20T19:40:22Z",
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-20T22:50:24Z",
+      "published_at": "2026-10-20T22:50:24Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+      "url": "https://www.cloudflarestatus.com/#2026-10-20T22:35:28Z",
+      "published_at": "2026-10-20T22:35:28Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+      "url": "https://www.cloudflarestatus.com/#2026-10-20T22:15:19Z",
+      "published_at": "2026-10-20T22:15:19Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+      "url": "https://www.cloudflarestatus.com/#2026-10-20T21:25:31Z",
+      "published_at": "2026-10-20T21:25:31Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+      "url": "https://www.cloudflarestatus.com/#2026-10-20T21:15:24Z",
+      "published_at": "2026-10-20T21:15:24Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
@@ -4574,35 +4602,7 @@
       "url": "https://www.cloudflarestatus.com/incidents/qlgdup1n0ge7",
       "published_at": "2026-10-20T19:35:33.833Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Investigating"
-    },
-    {
-      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-      "url": "https://www.cloudflarestatus.com/#2026-10-20T19:25:33Z",
-      "published_at": "2026-10-20T19:25:33Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
-      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-      "url": "https://www.cloudflarestatus.com/#2026-10-20T19:15:26Z",
-      "published_at": "2026-10-20T19:15:26Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
-      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-      "url": "https://www.cloudflarestatus.com/#2026-10-20T18:55:16Z",
-      "published_at": "2026-10-20T18:55:16Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
-    },
-    {
-      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-      "url": "https://www.cloudflarestatus.com/#2026-10-20T18:45:27Z",
-      "published_at": "2026-10-20T18:45:27Z",
-      "source": "StatusGator",
-      "meta": "down icon Down"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Cloudflare Zero Trust connectivity",
@@ -4616,7 +4616,7 @@
       "url": "https://www.cloudflarestatus.com/incidents/3z8y23zn7tr2",
       "published_at": "2026-10-19T20:30:00.915Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Identified"
+      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -4625,52 +4625,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-20T19:53:07.734417Z"
+      "published_at": "2026-10-20T22:58:56.361872Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-20T19:53:07.734417Z"
+      "published_at": "2026-10-20T22:58:56.361872Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-20T19:53:07.734417Z"
+      "published_at": "2026-10-20T22:58:56.361872Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-10-20T19:53:07.734417Z"
+      "published_at": "2026-10-20T22:58:56.361872Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-20T19:53:07.734417Z"
+      "published_at": "2026-10-20T22:58:56.361872Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-20T19:53:07.734417Z"
+      "published_at": "2026-10-20T22:58:56.361872Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-10-20T19:53:06.673197Z",
+      "published_at": "2026-10-20T22:58:55.801743Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
+    },
+    {
+      "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+      "url": "https://www.cloudflarestatus.com/incidents/3z8y23zn7tr2#roggj3worlu0",
+      "published_at": "2026-10-20T22:46:39.852Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+    },
+    {
+      "title": "Issue with Bot management traffic categorization for verified bots",
+      "url": "https://www.cloudflarestatus.com/incidents/qlgdup1n0ge7#r4r13exwc69r",
+      "published_at": "2026-10-20T20:16:54.090Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     },
     {
       "title": "Issue with Bot management traffic categorization for verified bots",
@@ -4678,7 +4694,7 @@
       "published_at": "2026-10-20T19:35:33.833Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / Cloudflare is investigating issues with our Bot Management feature. Customers may observe a limited number of verified bots incorrectly identified as automated traffic"
+      "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with our Bot Management feature. Customers may observe a limited number of verified bots incorrectly identified as automated traffic"
     },
     {
       "title": "Cloudflare Zero Trust connectivity",
@@ -4711,22 +4727,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Critical / Resolved / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "Cloudflare Zero Trust connectivity",
-      "url": "https://www.cloudflarestatus.com/incidents/0eqtn0khkz87#ex0pf2mz2phd",
-      "published_at": "2026-10-20T04:40:15.488Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Critical / Resolved / The issue has been identified and a fix is being implemented."
-    },
-    {
-      "title": "Cloudflare Zero Trust connectivity",
-      "url": "https://www.cloudflarestatus.com/incidents/0eqtn0khkz87#phmplzn1txcc",
-      "published_at": "2026-10-20T04:22:27.922Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Critical / Resolved / We are continuing to investigate the issue."
     }
   ],
   "social": [],
@@ -4742,11 +4742,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-10-20T19:53:05.149058Z",
+      "last_item_at": "2026-10-20T22:58:54.498867Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 186,
-      "fetched_at": "2026-10-20T19:53:05.149076Z",
+      "duration_ms": 248,
+      "fetched_at": "2026-10-20T22:58:54.498889Z",
       "cache_hit": false
     },
     {
@@ -4760,11 +4760,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-20T15:53:05-04:00",
+      "last_item_at": "2026-10-20T18:58:54-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1523,
-      "fetched_at": "2026-10-20T19:53:06.672752Z",
+      "duration_ms": 1302,
+      "fetched_at": "2026-10-20T22:58:55.801203Z",
       "cache_hit": false
     },
     {
@@ -4778,17 +4778,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-20T19:53:06.673197Z",
+      "last_item_at": "2026-10-20T22:58:55.801743Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1059,
-      "fetched_at": "2026-10-20T19:53:07.733011Z",
+      "duration_ms": 558,
+      "fetched_at": "2026-10-20T22:58:56.360102Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-20T19:53:07.734417Z",
+    "generated_at": "2026-10-20T22:58:56.361872Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4810,7 +4810,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "major",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4825,9 +4825,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 186,
+          "duration_ms": 248,
           "cache_hit": false,
-          "at": "2026-10-20T19:53:04Z"
+          "at": "2026-10-20T22:58:54Z"
         },
         "metrics_24h": {
           "runs": 9,
@@ -4836,7 +4836,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 305.9
+          "avg_duration_ms": 287.7
         },
         "metrics_7d": {
           "runs": 72,
@@ -4845,10 +4845,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 247.6
+          "avg_duration_ms": 246.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-20T19:53:04Z",
+        "last_success_at": "2026-10-20T22:58:54Z",
         "last_failure_at": null
       },
       {
@@ -4862,9 +4862,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1523,
+          "duration_ms": 1302,
           "cache_hit": false,
-          "at": "2026-10-20T19:53:04Z"
+          "at": "2026-10-20T22:58:54Z"
         },
         "metrics_24h": {
           "runs": 9,
@@ -4873,7 +4873,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1886.1
+          "avg_duration_ms": 1834.1
         },
         "metrics_7d": {
           "runs": 72,
@@ -4882,10 +4882,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1433.2
+          "avg_duration_ms": 1434.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-20T19:53:04Z",
+        "last_success_at": "2026-10-20T22:58:54Z",
         "last_failure_at": null
       },
       {
@@ -4899,9 +4899,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1059,
+          "duration_ms": 558,
           "cache_hit": false,
-          "at": "2026-10-20T19:53:04Z"
+          "at": "2026-10-20T22:58:54Z"
         },
         "metrics_24h": {
           "runs": 9,
@@ -4910,7 +4910,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 664.7
+          "avg_duration_ms": 671.4
         },
         "metrics_7d": {
           "runs": 72,
@@ -4919,32 +4919,84 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 527.7
+          "avg_duration_ms": 528.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-20T19:53:04Z",
+        "last_success_at": "2026-10-20T22:58:54Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-20T19:53:07.734417Z",
+    "generated_at": "2026-10-20T22:58:56.361872Z",
     "incidents": {
       "new": [
+        {
+          "id": "62839ef380e61b6e",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-20T22:50:24Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "1489cd8114c76613",
+          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+          "started_at": "2026-10-20T22:35:28Z",
+          "duration": "15m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "3c5b65fe6b9f1113",
+          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+          "started_at": "2026-10-20T22:15:19Z",
+          "duration": "20m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "ac403dab34aa07aa",
+          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+          "started_at": "2026-10-20T21:25:31Z",
+          "duration": "50m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "0f0e73b1131ab4ce",
+          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+          "started_at": "2026-10-20T21:15:24Z",
+          "duration": "10m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "8fc560359efa1cd6",
+          "title": "Issue with Bot management traffic categorization for verified bots",
+          "started_at": "2026-10-20T19:35:33.833Z",
+          "duration": "41m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "0e388747bdf96d0c",
+          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
+          "started_at": "2026-10-19T20:30:00.915Z",
+          "duration": "1d 2h 16m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "resolved": [
         {
           "id": "2ef512b67633fd19",
           "title": "Issue with Bot management traffic categorization for verified bots",
           "started_at": "2026-10-20T19:40:22Z",
           "duration": "1m",
           "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "8fc560359efa1cd6",
-          "title": "Issue with Bot management traffic categorization for verified bots",
-          "started_at": "2026-10-20T19:35:33.833Z",
-          "duration": "17m ongoing",
-          "acknowledgement": "Minor / Investigating",
           "url": "https://www.cloudflarestatus.com/"
         },
         {
@@ -4979,125 +5031,57 @@
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
         }
-      ],
-      "updated": [
-        {
-          "id": "0e388747bdf96d0c",
-          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "started_at": "2026-10-19T20:30:00.915Z",
-          "duration": "23h 23m ongoing",
-          "acknowledgement": "Minor / Identified",
-          "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "resolved": [
-        {
-          "id": "98b6e151fd1da74d",
-          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "started_at": "2026-10-20T17:20:18Z",
-          "duration": "2m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "21099c49df6780cd",
-          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "started_at": "2026-10-20T16:50:31Z",
-          "duration": "30m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "959b74c7fb781021",
-          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "started_at": "2026-10-20T16:45:22Z",
-          "duration": "5m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "075e374179207254",
-          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "started_at": "2026-10-20T16:25:31Z",
-          "duration": "20m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "d1a7b6512c231ab6",
-          "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "started_at": "2026-10-20T16:10:18Z",
-          "duration": "15m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "3721efa766b15de3",
-          "title": "DNS Update Delays",
-          "started_at": "2026-10-19T11:28:15.910Z",
-          "duration": "22m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "8ff61beb7f196a07",
-          "title": "Issue with Bot management traffic categorization for verified bots",
-          "url": "https://www.cloudflarestatus.com/#2026-10-20T19:40:22Z",
-          "published_at": "2026-10-20T19:40:22Z",
+          "id": "dd321b0d8592d2de",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "url": "https://www.cloudflarestatus.com/#2026-10-20T22:50:24Z",
+          "published_at": "2026-10-20T22:50:24Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "175d6bf600285e11",
-          "title": "Issue with Bot management traffic categorization for verified bots",
-          "url": "https://www.cloudflarestatus.com/incidents/qlgdup1n0ge7",
-          "published_at": "2026-10-20T19:35:33.833Z",
-          "source": "Cloudflare Statuspage API",
-          "meta": "Minor / Investigating"
-        },
-        {
-          "id": "874f88ad5b674f88",
+          "id": "46626db659aec7b1",
           "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "url": "https://www.cloudflarestatus.com/#2026-10-20T19:25:33Z",
-          "published_at": "2026-10-20T19:25:33Z",
+          "url": "https://www.cloudflarestatus.com/#2026-10-20T22:35:28Z",
+          "published_at": "2026-10-20T22:35:28Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "2ea3c9ded4025d03",
+          "id": "206c5df6f905312c",
           "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "url": "https://www.cloudflarestatus.com/#2026-10-20T19:15:26Z",
-          "published_at": "2026-10-20T19:15:26Z",
+          "url": "https://www.cloudflarestatus.com/#2026-10-20T22:15:19Z",
+          "published_at": "2026-10-20T22:15:19Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "4ee2e7a645ded81c",
+          "id": "c1dabd515335c4e1",
           "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "url": "https://www.cloudflarestatus.com/#2026-10-20T18:55:16Z",
-          "published_at": "2026-10-20T18:55:16Z",
+          "url": "https://www.cloudflarestatus.com/#2026-10-20T21:25:31Z",
+          "published_at": "2026-10-20T21:25:31Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "ec1cc826ca634f51",
+          "id": "f5e9b1845f1cf0a3",
           "title": "Cloudflare Secure Web Gateway and DLP enforcement issues for Google Gemini",
-          "url": "https://www.cloudflarestatus.com/#2026-10-20T18:45:27Z",
-          "published_at": "2026-10-20T18:45:27Z",
+          "url": "https://www.cloudflarestatus.com/#2026-10-20T21:15:24Z",
+          "published_at": "2026-10-20T21:15:24Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         }
       ]
     },
     "summary": {
-      "new_incidents": 6,
-      "updated_incidents": 1,
-      "resolved_incidents": 6,
-      "new_reports": 6
+      "new_incidents": 5,
+      "updated_incidents": 2,
+      "resolved_incidents": 5,
+      "new_reports": 5
     }
   }
 }
