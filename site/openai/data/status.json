@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-21T12:13:47.555612Z",
+  "generated_at": "2026-10-21T17:25:43.118864Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 2,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
@@ -12,58 +12,58 @@
       "reports": 0.0,
       "incidents": 5.5,
       "source_health": 0.0,
-      "corroboration_bonus": 0.4,
-      "support_score": 1.265,
-      "profile_adjustment": -1.25
+      "corroboration_bonus": 0.0,
+      "support_score": 0.53,
+      "profile_adjustment": 2.15
     },
     "signal_metrics": {
-      "reports_24h": 147,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 3,
+      "reports_24h": 132,
+      "recent_incidents_6h": 4,
+      "recent_incidents_24h": 5,
       "cross_source": {
-        "report_score": 0.725,
-        "news_score": 0.54,
+        "report_score": 0.35,
+        "news_score": 0.18,
         "social_score": 0.0,
-        "combined_score": 1.265,
-        "report_hits_24h": 3
+        "combined_score": 0.53,
+        "report_hits_24h": 1
       }
     },
     "safeguards": {
       "operational_dampening": true,
-      "cross_source_guard": false,
+      "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "medium",
+      "reason": "official_operational_vs_aggregate_issue",
       "official_status": "operational",
-      "derived_severity": "stable",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status is operational while aggregate signals indicate active issues."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 2,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
@@ -73,10 +73,58 @@
       {
         "title": "OpenAI Statuspage API: All Systems Operational",
         "url": "https://status.openai.com/",
-        "published_at": "2026-10-21T12:13:46.872781Z",
+        "published_at": "2026-10-21T17:25:42.227580Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: none"
+      },
+      {
+        "title": "Elevated FedRAMP API error rates for Astra and Sol",
+        "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN#01M5FPQ4NNKZ089G26ZPETC7FH",
+        "published_at": "2026-10-21T16:46:00Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We have applied the mitigation and are monitoring the recovery."
+      },
+      {
+        "title": "Elevated error rates for gpt-5.6-luna API requests",
+        "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FNJJMH4CZPW51MV191CSSY",
+        "published_at": "2026-10-21T16:44:09Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
+      },
+      {
+        "title": "Elevated error rates for gpt-5.6-luna API requests",
+        "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FJAQ1426MZE68T7W4BGC0Y",
+        "published_at": "2026-10-21T15:47:26Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
+      },
+      {
+        "title": "Elevated error rates for gpt-5.6-luna API requests",
+        "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FHKHPQ1TVB6P0MQDR1PDHN",
+        "published_at": "2026-10-21T15:34:47Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
+      },
+      {
+        "title": "Elevated FedRAMP API error rates for Astra and Sol",
+        "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN#01M5FPPG9SHW918YFH3ND5QH0Q",
+        "published_at": "2026-10-21T13:51:00Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Monitoring / We are investigating the issue for the listed services."
+      },
+      {
+        "title": "Elevated FedRAMP API error rates for Astra and Sol",
+        "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN#01M5FD63HHTHXBTYEAJGRGJZQE",
+        "published_at": "2026-10-21T13:42:00Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Monitoring / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
       },
       {
         "title": "Degraded performance in ChatGPT, Codex, and APIs",
@@ -101,71 +149,45 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
-      },
-      {
-        "title": "File Download errors",
-        "url": "https://status.openai.com/incidents/01M5A5S1ATN3QB2WCHQ3VDZC81#01M5A869EG4XVHASK4A6HVSXPV",
-        "published_at": "2026-10-19T14:14:03Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "File Download errors",
-        "url": "https://status.openai.com/incidents/01M5A5S1ATN3QB2WCHQ3VDZC81#01M5A5S1ATHAENR6PKGCEWPFCF",
-        "published_at": "2026-10-19T13:31:52Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
-      },
-      {
-        "title": "Delayed Costs data in the Compliance API",
-        "url": "https://status.openai.com/incidents/01M4XNQX7C6RCBNGX9H711WFSG#01M52519QFQRNR6XNDV9Y0YCG5",
-        "published_at": "2026-10-16T10:44:58Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Delayed Costs data in the Compliance API",
-        "url": "https://status.openai.com/incidents/01M4XNQX7C6RCBNGX9H711WFSG#01M50VBSWV00EENK3SBP8BXB6Z",
-        "published_at": "2026-10-15T22:36:42Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We have deployed a fix and are monitoring recovery. Costs data in the Compliance API remains delayed while we process the backlog. We will provide further updates as processing catches up."
-      },
-      {
-        "title": "Widespread feature degradation",
-        "url": "https://status.openai.com/incidents/01M506BA4XRSWH7THR53HQGN3Z#01M50EQNQ4SFQC241NZF3K2R8C",
-        "published_at": "2026-10-15T18:56:00Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Widespread feature degradation",
-        "url": "https://status.openai.com/incidents/01M506BA4XRSWH7THR53HQGN3Z#01M508V82M8RQF073RHFDRDQN9",
-        "published_at": "2026-10-15T17:13:05Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Major / Resolved / We have applied the mitigation and are monitoring the recovery."
       }
     ],
-    "last_statement_at": "2026-10-21T12:13:46.872781Z"
+    "last_statement_at": "2026-10-21T17:25:42.227580Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
+    "summary": "OpenAI Statuspage reports an active incident: Elevated FedRAMP API error rates for Astra and Sol.",
     "current_status": "operational",
-    "reports_24h": 147,
+    "reports_24h": 132,
     "incidents": [
       {
-        "title": "Degraded performance in ChatGPT, Codex, and APIs",
-        "started_at": "2026-10-21T02:26:57Z",
-        "duration": "25m",
+        "title": "Elevated FedRAMP API error rates for Astra and Sol",
+        "started_at": "2026-10-21T17:06:52Z",
+        "duration": "2m",
         "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Elevated FedRAMP API error rates for Astra and Sol",
+        "started_at": "2026-10-21T16:47:13Z",
+        "duration": "20m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Elevated error rates for gpt-5.6-luna API requests",
+        "started_at": "2026-10-21T15:34:47Z",
+        "duration": "1h 9m",
+        "acknowledgement": "Minor / Resolved",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N"
+      },
+      {
+        "title": "Elevated FedRAMP API error rates for Astra and Sol",
+        "started_at": "2026-10-21T14:17:32Z",
+        "duration": "3h 8m ongoing",
+        "acknowledgement": "Minor / Monitoring",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN"
       },
       {
         "title": "Degraded performance in ChatGPT, Codex, and APIs",
@@ -183,12 +205,6 @@
       },
       {
         "title": "File Download errors",
-        "started_at": "2026-10-19T13:32:04Z",
-        "duration": "45m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "File Download errors",
         "started_at": "2026-10-19T13:31:52Z",
         "duration": "42m",
         "acknowledgement": "Minor / Resolved",
@@ -202,22 +218,6 @@
         "acknowledgement": "Major / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M506BA4XRSWH7THR53HQGN3Z"
-      },
-      {
-        "title": "Delayed Costs data in the Compliance API",
-        "started_at": "2026-10-14T17:00:44Z",
-        "duration": "1d 17h 44m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01M4XNQX7C6RCBNGX9H711WFSG"
-      },
-      {
-        "title": "Limited availability on gpt-image-2.5-flare and gpt-image-2.5-sunburst",
-        "started_at": "2026-10-14T10:18:07Z",
-        "duration": "40m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01M4WYPP5QA0CJ3JV76KH285K8"
       }
     ],
     "top_reported_issues": [],
@@ -227,132 +227,6 @@
       "mode": "none"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-20T12:15:00Z",
-        "signal_value": 17.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T12:30:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T12:45:00Z",
-        "signal_value": 54.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T13:00:00Z",
-        "signal_value": 30.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T13:15:00Z",
-        "signal_value": 72.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T13:30:00Z",
-        "signal_value": 51.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T13:45:00Z",
-        "signal_value": 77.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T14:00:00Z",
-        "signal_value": 35.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T14:15:00Z",
-        "signal_value": 42.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T14:30:00Z",
-        "signal_value": 66.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T14:45:00Z",
-        "signal_value": 49.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T15:00:00Z",
-        "signal_value": 59.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T15:15:00Z",
-        "signal_value": 121.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T15:30:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T15:45:00Z",
-        "signal_value": 18.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T16:00:00Z",
-        "signal_value": 127.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T16:15:00Z",
-        "signal_value": 65.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T16:30:00Z",
-        "signal_value": 85.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T16:45:00Z",
-        "signal_value": 134.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-20T17:00:00Z",
-        "signal_value": 229.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-10-20T17:15:00Z",
-        "signal_value": 500.0,
-        "status_code": 2,
-        "status_label": "likely outage"
-      },
       {
         "timestamp": "2026-10-20T17:30:00Z",
         "signal_value": 199.0,
@@ -799,7 +673,133 @@
       },
       {
         "timestamp": "2026-10-21T12:00:00Z",
-        "signal_value": 12.0,
+        "signal_value": 21.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T12:15:00Z",
+        "signal_value": 33.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T12:30:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T12:45:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T13:00:00Z",
+        "signal_value": 21.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T13:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T13:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T13:45:00Z",
+        "signal_value": 92.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T14:00:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T14:15:00Z",
+        "signal_value": 31.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T14:30:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T14:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T15:00:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T15:15:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T15:30:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T15:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T16:00:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T16:15:00Z",
+        "signal_value": 54.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T16:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T16:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T17:00:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-21T17:15:00Z",
+        "signal_value": 7.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -810,74 +810,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-21T12:00:00Z"
+      "last_sample_at": "2026-10-21T17:15:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "12:20",
-        "count": 1
-      },
-      {
-        "label": "12:40",
-        "count": 3
-      },
-      {
-        "label": "13:00",
-        "count": 0
-      },
-      {
-        "label": "13:20",
-        "count": 2
-      },
-      {
-        "label": "13:40",
-        "count": 1
-      },
-      {
-        "label": "14:00",
-        "count": 1
-      },
-      {
-        "label": "14:20",
-        "count": 5
-      },
-      {
-        "label": "14:40",
-        "count": 1
-      },
-      {
-        "label": "15:00",
-        "count": 6
-      },
-      {
-        "label": "15:20",
-        "count": 1
-      },
-      {
-        "label": "15:40",
-        "count": 4
-      },
-      {
-        "label": "16:00",
-        "count": 4
-      },
-      {
-        "label": "16:20",
-        "count": 1
-      },
-      {
-        "label": "16:40",
-        "count": 3
-      },
-      {
-        "label": "17:00",
-        "count": 1
-      },
-      {
-        "label": "17:20",
-        "count": 5
-      },
       {
         "label": "17:40",
         "count": 0
@@ -1101,6 +1037,70 @@
       {
         "label": "12:00",
         "count": 0
+      },
+      {
+        "label": "12:20",
+        "count": 2
+      },
+      {
+        "label": "12:40",
+        "count": 0
+      },
+      {
+        "label": "13:00",
+        "count": 1
+      },
+      {
+        "label": "13:20",
+        "count": 3
+      },
+      {
+        "label": "13:40",
+        "count": 1
+      },
+      {
+        "label": "14:00",
+        "count": 2
+      },
+      {
+        "label": "14:20",
+        "count": 0
+      },
+      {
+        "label": "14:40",
+        "count": 2
+      },
+      {
+        "label": "15:00",
+        "count": 3
+      },
+      {
+        "label": "15:20",
+        "count": 1
+      },
+      {
+        "label": "15:40",
+        "count": 3
+      },
+      {
+        "label": "16:00",
+        "count": 0
+      },
+      {
+        "label": "16:20",
+        "count": 2
+      },
+      {
+        "label": "16:40",
+        "count": 0
+      },
+      {
+        "label": "17:00",
+        "count": 1
+      },
+      {
+        "label": "17:20",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1109,14 +1109,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-21T08:13:46-04:00"
+      "last_reviewed_at": "2026-10-21T18:25:41+01:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 147,
-        "last_reviewed_at": "2026-10-21T08:13:46-04:00"
+        "reports_24h": 132,
+        "last_reviewed_at": "2026-10-21T18:25:41+01:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1386,45 +1386,66 @@
     "top_reported_issues_provider": [
       {
         "label": "Error message",
-        "count": 128
+        "count": 104
       },
       {
         "label": "Service down",
-        "count": 53
-      },
-      {
-        "label": "Slow performance",
-        "count": 20
-      },
-      {
-        "label": "Server not responding",
-        "count": 12
+        "count": 45
       },
       {
         "label": "App not loading",
-        "count": 12
+        "count": 11
       },
       {
-        "label": "Connectivity issue",
+        "label": "Slow performance",
         "count": 9
       },
       {
-        "label": "Other",
+        "label": "Connectivity issue",
         "count": 7
       },
       {
+        "label": "Server not responding",
+        "count": 7
+      },
+      {
+        "label": "Other",
+        "count": 5
+      },
+      {
         "label": "Sign in problem",
-        "count": 3
+        "count": 2
       }
     ]
   },
   "reports": [
     {
-      "title": "Degraded performance in ChatGPT, Codex, and APIs",
-      "url": "https://status.openai.com/#2026-10-21T02:26:57Z",
-      "published_at": "2026-10-21T02:26:57Z",
+      "title": "Elevated FedRAMP API error rates for Astra and Sol",
+      "url": "https://status.openai.com/#2026-10-21T17:06:52Z",
+      "published_at": "2026-10-21T17:06:52Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
+    },
+    {
+      "title": "Elevated FedRAMP API error rates for Astra and Sol",
+      "url": "https://status.openai.com/#2026-10-21T16:47:13Z",
+      "published_at": "2026-10-21T16:47:13Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Elevated error rates for gpt-5.6-luna API requests",
+      "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N",
+      "published_at": "2026-10-21T15:34:47Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Resolved"
+    },
+    {
+      "title": "Elevated FedRAMP API error rates for Astra and Sol",
+      "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN",
+      "published_at": "2026-10-21T14:17:32Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "Degraded performance in ChatGPT, Codex, and APIs",
@@ -1442,13 +1463,6 @@
     },
     {
       "title": "File Download errors",
-      "url": "https://status.openai.com/#2026-10-19T13:32:04Z",
-      "published_at": "2026-10-19T13:32:04Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "File Download errors",
       "url": "https://status.openai.com/incidents/01M5A5S1ATN3QB2WCHQ3VDZC81",
       "published_at": "2026-10-19T13:31:52Z",
       "source": "OpenAI Statuspage API",
@@ -1460,20 +1474,6 @@
       "published_at": "2026-10-15T16:29:26Z",
       "source": "OpenAI Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Delayed Costs data in the Compliance API",
-      "url": "https://status.openai.com/incidents/01M4XNQX7C6RCBNGX9H711WFSG",
-      "published_at": "2026-10-14T17:00:44Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Limited availability on gpt-image-2.5-flare and gpt-image-2.5-sunburst",
-      "url": "https://status.openai.com/incidents/01M4WYPP5QA0CJ3JV76KH285K8",
-      "published_at": "2026-10-14T10:18:07Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1482,45 +1482,93 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-21T12:13:47.555612Z"
+      "published_at": "2026-10-21T17:25:43.118864Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-21T12:13:47.555612Z"
+      "published_at": "2026-10-21T17:25:43.118864Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-21T12:13:47.555612Z"
+      "published_at": "2026-10-21T17:25:43.118864Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-21T12:13:47.555612Z"
+      "published_at": "2026-10-21T17:25:43.118864Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-21T12:13:47.555612Z"
+      "published_at": "2026-10-21T17:25:43.118864Z"
     }
   ],
   "news": [
     {
       "title": "OpenAI Statuspage API: All Systems Operational",
       "url": "https://status.openai.com/",
-      "published_at": "2026-10-21T12:13:46.872781Z",
+      "published_at": "2026-10-21T17:25:42.227580Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: none"
+    },
+    {
+      "title": "Elevated FedRAMP API error rates for Astra and Sol",
+      "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN#01M5FPQ4NNKZ089G26ZPETC7FH",
+      "published_at": "2026-10-21T16:46:00Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We have applied the mitigation and are monitoring the recovery."
+    },
+    {
+      "title": "Elevated error rates for gpt-5.6-luna API requests",
+      "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FNJJMH4CZPW51MV191CSSY",
+      "published_at": "2026-10-21T16:44:09Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
+    },
+    {
+      "title": "Elevated error rates for gpt-5.6-luna API requests",
+      "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FJAQ1426MZE68T7W4BGC0Y",
+      "published_at": "2026-10-21T15:47:26Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
+    },
+    {
+      "title": "Elevated error rates for gpt-5.6-luna API requests",
+      "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FHKHPQ1TVB6P0MQDR1PDHN",
+      "published_at": "2026-10-21T15:34:47Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
+    },
+    {
+      "title": "Elevated FedRAMP API error rates for Astra and Sol",
+      "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN#01M5FPPG9SHW918YFH3ND5QH0Q",
+      "published_at": "2026-10-21T13:51:00Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Monitoring / We are investigating the issue for the listed services."
+    },
+    {
+      "title": "Elevated FedRAMP API error rates for Astra and Sol",
+      "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN#01M5FD63HHTHXBTYEAJGRGJZQE",
+      "published_at": "2026-10-21T13:42:00Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Monitoring / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
     },
     {
       "title": "Degraded performance in ChatGPT, Codex, and APIs",
@@ -1529,54 +1577,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-    },
-    {
-      "title": "Degraded performance in ChatGPT, Codex, and APIs",
-      "url": "https://status.openai.com/incidents/01M5E4G39TD1BW1QWHZG6RFA5H#01M5E4JBWEJ5GPBEZ69C1WJ6DQ",
-      "published_at": "2026-10-21T02:48:00Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-    },
-    {
-      "title": "Degraded performance in ChatGPT, Codex, and APIs",
-      "url": "https://status.openai.com/incidents/01M5E4G39TD1BW1QWHZG6RFA5H#01M5E4G39T0R9H8KX98E4YVJX5",
-      "published_at": "2026-10-21T02:26:28Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
-    },
-    {
-      "title": "File Download errors",
-      "url": "https://status.openai.com/incidents/01M5A5S1ATN3QB2WCHQ3VDZC81#01M5A869EG4XVHASK4A6HVSXPV",
-      "published_at": "2026-10-19T14:14:03Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-    },
-    {
-      "title": "File Download errors",
-      "url": "https://status.openai.com/incidents/01M5A5S1ATN3QB2WCHQ3VDZC81#01M5A5S1ATHAENR6PKGCEWPFCF",
-      "published_at": "2026-10-19T13:31:52Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
-    },
-    {
-      "title": "Delayed Costs data in the Compliance API",
-      "url": "https://status.openai.com/incidents/01M4XNQX7C6RCBNGX9H711WFSG#01M52519QFQRNR6XNDV9Y0YCG5",
-      "published_at": "2026-10-16T10:44:58Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-    },
-    {
-      "title": "Delayed Costs data in the Compliance API",
-      "url": "https://status.openai.com/incidents/01M4XNQX7C6RCBNGX9H711WFSG#01M50VBSWV00EENK3SBP8BXB6Z",
-      "published_at": "2026-10-15T22:36:42Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We have deployed a fix and are monitoring recovery. Costs data in the Compliance API remains delayed while we process the backlog. We will provide further updates as processing catches up."
     }
   ],
   "social": [],
@@ -1592,11 +1592,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-10-21T12:13:45.977052Z",
+      "last_item_at": "2026-10-21T17:25:40.968175Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 361,
-      "fetched_at": "2026-10-21T12:13:45.977066Z",
+      "duration_ms": 319,
+      "fetched_at": "2026-10-21T17:25:40.968196Z",
       "cache_hit": false
     },
     {
@@ -1610,11 +1610,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-21T08:13:46-04:00",
+      "last_item_at": "2026-10-21T18:25:41+01:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 895,
-      "fetched_at": "2026-10-21T12:13:46.872443Z",
+      "duration_ms": 1258,
+      "fetched_at": "2026-10-21T17:25:42.227106Z",
       "cache_hit": false
     },
     {
@@ -1628,17 +1628,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-21T12:13:46.872781Z",
+      "last_item_at": "2026-10-21T17:25:42.227580Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 681,
-      "fetched_at": "2026-10-21T12:13:47.554576Z",
+      "duration_ms": 889,
+      "fetched_at": "2026-10-21T17:25:43.117100Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-21T12:13:47.555612Z",
+    "generated_at": "2026-10-21T17:25:43.118864Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1660,7 +1660,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1675,30 +1675,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 361,
+          "duration_ms": 319,
           "cache_hit": false,
-          "at": "2026-10-21T12:13:45Z"
+          "at": "2026-10-21T17:25:40Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 6,
+          "ok": 6,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 264.6
+          "avg_duration_ms": 280.8
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 247.1
+          "avg_duration_ms": 254.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-21T12:13:45Z",
+        "last_success_at": "2026-10-21T17:25:40Z",
         "last_failure_at": null
       },
       {
@@ -1712,30 +1712,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 895,
+          "duration_ms": 1258,
           "cache_hit": false,
-          "at": "2026-10-21T12:13:45Z"
+          "at": "2026-10-21T17:25:40Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 6,
+          "ok": 6,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1062.9
+          "avg_duration_ms": 1161.0
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1067.4
+          "avg_duration_ms": 1082.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-21T12:13:45Z",
+        "last_success_at": "2026-10-21T17:25:40Z",
         "last_failure_at": null
       },
       {
@@ -1749,49 +1749,148 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 681,
+          "duration_ms": 889,
           "cache_hit": false,
-          "at": "2026-10-21T12:13:45Z"
+          "at": "2026-10-21T17:25:40Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 6,
+          "ok": 6,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 726.0
+          "avg_duration_ms": 791.3
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 732.1
+          "avg_duration_ms": 736.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-21T12:13:45Z",
+        "last_success_at": "2026-10-21T17:25:40Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-21T12:13:47.555612Z",
+    "generated_at": "2026-10-21T17:25:43.118864Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "855bcca99996b7d7",
+          "title": "Elevated FedRAMP API error rates for Astra and Sol",
+          "started_at": "2026-10-21T17:06:52Z",
+          "duration": "2m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "a64d019a5f2a0c1f",
+          "title": "Elevated FedRAMP API error rates for Astra and Sol",
+          "started_at": "2026-10-21T16:47:13Z",
+          "duration": "20m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "dcb533b86e47c067",
+          "title": "Elevated error rates for gpt-5.6-luna API requests",
+          "started_at": "2026-10-21T15:34:47Z",
+          "duration": "1h 9m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "e62ccaefbdc3ea3d",
+          "title": "Elevated FedRAMP API error rates for Astra and Sol",
+          "started_at": "2026-10-21T14:17:32Z",
+          "duration": "3h 8m ongoing",
+          "acknowledgement": "Minor / Monitoring",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "c7177fed36fbda42",
+          "title": "Degraded performance in ChatGPT, Codex, and APIs",
+          "started_at": "2026-10-21T02:26:57Z",
+          "duration": "25m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "542dfeecbf3e0803",
+          "title": "File Download errors",
+          "started_at": "2026-10-19T13:32:04Z",
+          "duration": "45m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "702def6817066c15",
+          "title": "Delayed Costs data in the Compliance API",
+          "started_at": "2026-10-14T17:00:44Z",
+          "duration": "1d 17h 44m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "3dcc2ab1f26a9c35",
+          "title": "Limited availability on gpt-image-2.5-flare and gpt-image-2.5-sunburst",
+          "started_at": "2026-10-14T10:18:07Z",
+          "duration": "40m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "e7a8ed7c75a1026a",
+          "title": "Elevated FedRAMP API error rates for Astra and Sol",
+          "url": "https://status.openai.com/#2026-10-21T17:06:52Z",
+          "published_at": "2026-10-21T17:06:52Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "d3fe200c4022ae69",
+          "title": "Elevated FedRAMP API error rates for Astra and Sol",
+          "url": "https://status.openai.com/#2026-10-21T16:47:13Z",
+          "published_at": "2026-10-21T16:47:13Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "8a6ad9b456968ae3",
+          "title": "Elevated error rates for gpt-5.6-luna API requests",
+          "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N",
+          "published_at": "2026-10-21T15:34:47Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Resolved"
+        },
+        {
+          "id": "fc8a5a4aed65fec7",
+          "title": "Elevated FedRAMP API error rates for Astra and Sol",
+          "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN",
+          "published_at": "2026-10-21T14:17:32Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Monitoring"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 4,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 4,
+      "new_reports": 4
     }
   }
 }
