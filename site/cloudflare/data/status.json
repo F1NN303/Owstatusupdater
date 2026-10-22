@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-22T01:50:40.016876Z",
+  "generated_at": "2026-10-22T05:13:29.512594Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "major",
-    "severity_score": 8,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,11 +14,11 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.18,
-      "profile_adjustment": 3.05
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 112,
-      "recent_incidents_6h": 8,
+      "reports_24h": 110,
+      "recent_incidents_6h": 7,
       "recent_incidents_24h": 8,
       "cross_source": {
         "report_score": 0.0,
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "high",
+      "reason": "official_major_vs_aggregate_lower",
       "official_status": "major outage",
-      "derived_severity": "major",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status reports a major outage while aggregate severity is lower."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "na": {
       "severity_key": "major",
-      "severity_score": 12,
+      "severity_score": 9,
       "report_weight": 1.0
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-10-22T01:50:39.523275Z",
+        "published_at": "2026-10-22T05:13:28.635867Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
+      },
+      {
+        "title": "Network congestion in Portland and Seattle, US",
+        "url": "https://www.cloudflarestatus.com/incidents/nwgwgbrn9a71#jcmfmwn4nw63",
+        "published_at": "2026-10-22T02:09:33.617Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       },
       {
         "title": "Network congestion in Portland and Seattle, US",
@@ -84,7 +92,7 @@
         "published_at": "2026-10-22T01:08:55.962Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+        "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
       },
       {
         "title": "Elevated Error Rate for Durable Objects in Lisbon",
@@ -100,7 +108,7 @@
         "published_at": "2026-10-22T00:23:17.052Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring / Cloudflare is experiencing network congestion in Portland and Seattle, US. We are working to mitigate impact to Internet users in this region."
+        "meta": "Investigating / Minor / Resolved / Cloudflare is experiencing network congestion in Portland and Seattle, US. We are working to mitigate impact to Internet users in this region."
       },
       {
         "title": "Elevated Error Rate for Durable Objects in Lisbon",
@@ -141,61 +149,53 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / We have identified and implemented a fix for this issue and are currently monitoring the results."
-      },
-      {
-        "title": "Increased Latency in India",
-        "url": "https://www.cloudflarestatus.com/incidents/t77gwnpr6oe5#30m2wvdb71r8",
-        "published_at": "2026-10-21T16:42:14.640Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are investigating reports of increased latency affecting some traffic in India. Affected users may experience slower loading times. Our engineering teams are investigating, and we will provide an update as more information becomes availa"
       }
     ],
-    "last_statement_at": "2026-10-22T01:50:39.523275Z"
+    "last_statement_at": "2026-10-22T05:13:28.635867Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports an active incident: Network congestion in Portland and Seattle, US.",
+    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident started about 5h ago.",
     "current_status": "major outage",
-    "reports_24h": 112,
+    "reports_24h": 110,
     "incidents": [
       {
-        "title": "Network congestion in Portland and Seattle, US",
-        "started_at": "2026-10-22T01:35:28Z",
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-22T05:05:18Z",
         "duration": "1m",
         "acknowledgement": "down icon Down"
       },
       {
-        "title": "Network congestion in Portland and Seattle, US",
-        "started_at": "2026-10-22T01:30:16Z",
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-22T04:55:21Z",
+        "duration": "10m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-22T04:50:44Z",
         "duration": "5m",
         "acknowledgement": "down icon Down"
       },
       {
-        "title": "Network congestion in Portland and Seattle, US",
-        "started_at": "2026-10-22T01:05:20Z",
-        "duration": "25m",
-        "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "Network congestion in Portland and Seattle, US",
-        "started_at": "2026-10-22T01:00:28Z",
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-22T04:45:39Z",
         "duration": "5m",
         "acknowledgement": "down icon Down"
       },
       {
-        "title": "Network congestion in Portland and Seattle, US",
-        "started_at": "2026-10-22T00:35:39Z",
+        "title": "Incorrect geo location for some Cloudflare WARP users",
+        "started_at": "2026-10-22T04:20:19Z",
         "duration": "25m",
         "acknowledgement": "down icon Down"
       },
       {
         "title": "Network congestion in Portland and Seattle, US",
         "started_at": "2026-10-22T00:23:17.052Z",
-        "duration": "1h 27m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "1h 46m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/nwgwgbrn9a71"
       },
@@ -253,87 +253,9 @@
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-21T02:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T02:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T02:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T02:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T03:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T03:15:00Z",
-        "signal_value": 16.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T03:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T03:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T04:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T04:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T04:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T04:45:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T05:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-10-21T05:15:00Z",
         "signal_value": 1.0,
@@ -828,7 +750,85 @@
       },
       {
         "timestamp": "2026-10-22T01:45:00Z",
-        "signal_value": 15.0,
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T02:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T02:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T02:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T02:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T03:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T03:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T03:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T03:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T04:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T04:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T04:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T04:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T05:00:00Z",
+        "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -839,50 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-22T01:45:00Z"
+      "last_sample_at": "2026-10-22T05:00:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "02:00",
-        "count": 3
-      },
-      {
-        "label": "02:20",
-        "count": 1
-      },
-      {
-        "label": "02:40",
-        "count": 3
-      },
-      {
-        "label": "03:00",
-        "count": 0
-      },
-      {
-        "label": "03:20",
-        "count": 2
-      },
-      {
-        "label": "03:40",
-        "count": 0
-      },
-      {
-        "label": "04:00",
-        "count": 1
-      },
-      {
-        "label": "04:20",
-        "count": 3
-      },
-      {
-        "label": "04:40",
-        "count": 1
-      },
-      {
-        "label": "05:00",
-        "count": 2
-      },
       {
         "label": "05:20",
         "count": 0
@@ -1130,6 +1090,46 @@
       {
         "label": "01:40",
         "count": 3
+      },
+      {
+        "label": "02:00",
+        "count": 0
+      },
+      {
+        "label": "02:20",
+        "count": 2
+      },
+      {
+        "label": "02:40",
+        "count": 0
+      },
+      {
+        "label": "03:00",
+        "count": 1
+      },
+      {
+        "label": "03:20",
+        "count": 3
+      },
+      {
+        "label": "03:40",
+        "count": 1
+      },
+      {
+        "label": "04:00",
+        "count": 2
+      },
+      {
+        "label": "04:20",
+        "count": 0
+      },
+      {
+        "label": "04:40",
+        "count": 2
+      },
+      {
+        "label": "05:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-21T21:50:38-04:00"
+      "last_reviewed_at": "2026-10-22T01:13:27-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 112,
-        "last_reviewed_at": "2026-10-21T21:50:38-04:00"
+        "reports_24h": 110,
+        "last_reviewed_at": "2026-10-22T01:13:27-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1190,7 +1190,7 @@
         "name": "Accra, Ghana - (ACC)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-22T01:16:51.000Z",
+        "updated_at": "2026-10-22T04:49:25.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1363,9 +1363,9 @@
       },
       {
         "name": "Antananarivo, Madagascar - (TNR)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-10-22T01:22:15.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T03:11:17.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1421,7 +1421,7 @@
         "name": "Belo Horizonte, Brazil - (CNF)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-21T04:45:34.000Z",
+        "updated_at": "2026-10-22T03:43:59.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1538,9 +1538,9 @@
       },
       {
         "name": "Dammam, Saudi Arabia - (DMM)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T00:16:50.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T02:33:07.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1594,9 +1594,9 @@
       },
       {
         "name": "Brasilia, Brazil - (BSB)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-20T11:27:25.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-22T04:54:50.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1608,9 +1608,9 @@
       },
       {
         "name": "Buenos Aires, Argentina - (EZE)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-21T06:28:28.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-22T05:11:11.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1953,14 +1953,14 @@
         "name": "Lagos, Nigeria - (LOS)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-21T04:02:13.000Z",
+        "updated_at": "2026-10-22T03:49:24.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Curitiba, Brazil - (CWB)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-21T06:28:29.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-22T05:05:44.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2009,7 +2009,7 @@
         "name": "Dhaka, Bangladesh - (DAC)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-21T20:11:18.000Z",
+        "updated_at": "2026-10-22T03:38:28.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2035,16 +2035,16 @@
       },
       {
         "name": "Fortaleza, Brazil - (FOR)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-20T23:13:45.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-22T04:49:24.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Gothenburg, Sweden - (GOT)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-15T01:49:46.000Z",
+        "updated_at": "2026-10-22T03:16:42.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2219,7 +2219,7 @@
         "name": "Oran, Algeria - (ORN)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-22T00:55:01.000Z",
+        "updated_at": "2026-10-22T04:00:23.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2308,9 +2308,9 @@
       },
       {
         "name": "Lisbon, Portugal - (LIS)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T01:44:06.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T04:11:15.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2366,7 +2366,7 @@
         "name": "Tunis, Tunisia - (TUN)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-15T01:49:47.000Z",
+        "updated_at": "2026-10-22T03:00:19.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2462,9 +2462,9 @@
       },
       {
         "name": "Cairo, Egypt - (CAI)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-10-21T23:55:14.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T02:05:54.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2576,7 +2576,7 @@
         "name": "Abidjan, Ivory Coast - (ABJ)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-19T05:23:42.000Z",
+        "updated_at": "2026-10-22T04:05:48.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2630,8 +2630,8 @@
       },
       {
         "name": "Minneapolis, MN, United States - (MSP)",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-06-26T08:38:03.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -2758,7 +2758,7 @@
         "name": "Recife, Brazil - (REC)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-20T14:04:05.000Z",
+        "updated_at": "2026-10-22T04:54:50.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2800,14 +2800,14 @@
         "name": "Rio de Janeiro, Brazil - (GIG)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-21T15:54:26.000Z",
+        "updated_at": "2026-10-22T05:11:10.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Kathmandu, Nepal - (KTM)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-21T21:05:45.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T02:05:54.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2987,8 +2987,8 @@
       },
       {
         "name": "Portland, OR, United States - (PDX)",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-09-15T13:10:54.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -3010,7 +3010,7 @@
         "name": "São José dos Campos, Brazil - (SJK)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-16T04:53:48.000Z",
+        "updated_at": "2026-10-22T05:05:42.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3218,9 +3218,9 @@
       },
       {
         "name": "Uberlândia, Brazil - (UDI)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-16T05:15:23.000Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-22T04:40:42.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3323,8 +3323,8 @@
       },
       {
         "name": "Seattle, WA, United States - (SEA)",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2026-09-07T07:35:46.000Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -3484,9 +3484,9 @@
       },
       {
         "name": "Tampa, FL, United States - (TPA)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-22T00:00:27.000Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-22T04:00:24.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3759,7 +3759,7 @@
         "name": "Yogyakarta, Indonesia - (JOG)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-22T01:46:09.000Z",
+        "updated_at": "2026-10-22T05:05:43.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4571,37 +4571,37 @@
   },
   "reports": [
     {
-      "title": "Network congestion in Portland and Seattle, US",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T01:35:28Z",
-      "published_at": "2026-10-22T01:35:28Z",
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-22T05:05:18Z",
+      "published_at": "2026-10-22T05:05:18Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
-      "title": "Network congestion in Portland and Seattle, US",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T01:30:16Z",
-      "published_at": "2026-10-22T01:30:16Z",
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-22T04:55:21Z",
+      "published_at": "2026-10-22T04:55:21Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
-      "title": "Network congestion in Portland and Seattle, US",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T01:05:20Z",
-      "published_at": "2026-10-22T01:05:20Z",
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-22T04:50:44Z",
+      "published_at": "2026-10-22T04:50:44Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
-      "title": "Network congestion in Portland and Seattle, US",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T01:00:28Z",
-      "published_at": "2026-10-22T01:00:28Z",
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-22T04:45:39Z",
+      "published_at": "2026-10-22T04:45:39Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
-      "title": "Network congestion in Portland and Seattle, US",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T00:35:39Z",
-      "published_at": "2026-10-22T00:35:39Z",
+      "title": "Incorrect geo location for some Cloudflare WARP users",
+      "url": "https://www.cloudflarestatus.com/#2026-10-22T04:20:19Z",
+      "published_at": "2026-10-22T04:20:19Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
@@ -4610,7 +4610,7 @@
       "url": "https://www.cloudflarestatus.com/incidents/nwgwgbrn9a71",
       "published_at": "2026-10-22T00:23:17.052Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Elevated Error Rate for Durable Objects in Lisbon",
@@ -4633,52 +4633,60 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-22T01:50:40.016876Z"
+      "published_at": "2026-10-22T05:13:29.512594Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-22T01:50:40.016876Z"
+      "published_at": "2026-10-22T05:13:29.512594Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-22T01:50:40.016876Z"
+      "published_at": "2026-10-22T05:13:29.512594Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-10-22T01:50:40.016876Z"
+      "published_at": "2026-10-22T05:13:29.512594Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-22T01:50:40.016876Z"
+      "published_at": "2026-10-22T05:13:29.512594Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-22T01:50:40.016876Z"
+      "published_at": "2026-10-22T05:13:29.512594Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-10-22T01:50:39.523275Z",
+      "published_at": "2026-10-22T05:13:28.635867Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
+    },
+    {
+      "title": "Network congestion in Portland and Seattle, US",
+      "url": "https://www.cloudflarestatus.com/incidents/nwgwgbrn9a71#jcmfmwn4nw63",
+      "published_at": "2026-10-22T02:09:33.617Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     },
     {
       "title": "Network congestion in Portland and Seattle, US",
@@ -4686,7 +4694,7 @@
       "published_at": "2026-10-22T01:08:55.962Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+      "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
     },
     {
       "title": "Elevated Error Rate for Durable Objects in Lisbon",
@@ -4702,7 +4710,7 @@
       "published_at": "2026-10-22T00:23:17.052Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring / Cloudflare is experiencing network congestion in Portland and Seattle, US. We are working to mitigate impact to Internet users in this region."
+      "meta": "Investigating / Minor / Resolved / Cloudflare is experiencing network congestion in Portland and Seattle, US. We are working to mitigate impact to Internet users in this region."
     },
     {
       "title": "Elevated Error Rate for Durable Objects in Lisbon",
@@ -4727,14 +4735,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Elevated Errors for R2 and Durable Objects in ENAM",
-      "url": "https://www.cloudflarestatus.com/incidents/p1vurmibvmag#qhluh2wotdz4",
-      "published_at": "2026-10-21T19:05:00.000Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Major / Resolved / Cloudflare has resolved an issue affecting R2 and Durable Objects in the Eastern North America region. Some customers may have seen elevated errors between approximately 19:02 and 19:05 UTC on October 21, 2026."
     }
   ],
   "social": [],
@@ -4750,11 +4750,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-10-22T01:50:38.218608Z",
+      "last_item_at": "2026-10-22T05:13:26.655997Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 380,
-      "fetched_at": "2026-10-22T01:50:38.218628Z",
+      "duration_ms": 311,
+      "fetched_at": "2026-10-22T05:13:26.656017Z",
       "cache_hit": false
     },
     {
@@ -4768,11 +4768,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-21T21:50:38-04:00",
+      "last_item_at": "2026-10-22T01:13:27-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1304,
-      "fetched_at": "2026-10-22T01:50:39.522932Z",
+      "duration_ms": 1979,
+      "fetched_at": "2026-10-22T05:13:28.635280Z",
       "cache_hit": false
     },
     {
@@ -4786,17 +4786,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-22T01:50:39.523275Z",
+      "last_item_at": "2026-10-22T05:13:28.635867Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 492,
-      "fetched_at": "2026-10-22T01:50:40.015787Z",
+      "duration_ms": 875,
+      "fetched_at": "2026-10-22T05:13:29.510914Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-22T01:50:40.016876Z",
+    "generated_at": "2026-10-22T05:13:29.512594Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4818,7 +4818,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "major",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4833,18 +4833,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 380,
+          "duration_ms": 311,
           "cache_hit": false,
-          "at": "2026-10-22T01:50:37Z"
+          "at": "2026-10-22T05:13:26Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 316.0
+          "avg_duration_ms": 315.5
         },
         "metrics_7d": {
           "runs": 68,
@@ -4853,10 +4853,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 257.2
+          "avg_duration_ms": 258.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T01:50:37Z",
+        "last_success_at": "2026-10-22T05:13:26Z",
         "last_failure_at": null
       },
       {
@@ -4870,18 +4870,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1304,
+          "duration_ms": 1979,
           "cache_hit": false,
-          "at": "2026-10-22T01:50:37Z"
+          "at": "2026-10-22T05:13:26Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1474.1
+          "avg_duration_ms": 1524.6
         },
         "metrics_7d": {
           "runs": 68,
@@ -4890,10 +4890,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1511.3
+          "avg_duration_ms": 1520.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T01:50:37Z",
+        "last_success_at": "2026-10-22T05:13:26Z",
         "last_failure_at": null
       },
       {
@@ -4907,18 +4907,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 492,
+          "duration_ms": 875,
           "cache_hit": false,
-          "at": "2026-10-22T01:50:37Z"
+          "at": "2026-10-22T05:13:26Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 577.0
+          "avg_duration_ms": 606.8
         },
         "metrics_7d": {
           "runs": 68,
@@ -4927,18 +4927,70 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 523.3
+          "avg_duration_ms": 531.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T01:50:37Z",
+        "last_success_at": "2026-10-22T05:13:26Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-22T01:50:40.016876Z",
+    "generated_at": "2026-10-22T05:13:29.512594Z",
     "incidents": {
       "new": [
+        {
+          "id": "565a0c891da8766c",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-22T05:05:18Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "1bcd19f5ca5ee8a0",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-22T04:55:21Z",
+          "duration": "10m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "7addcae150f941db",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-22T04:50:44Z",
+          "duration": "5m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "34bf07854e0d8634",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-22T04:45:39Z",
+          "duration": "5m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "31278e5c159f2e9b",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "started_at": "2026-10-22T04:20:19Z",
+          "duration": "25m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "fe4b2b1f265b5382",
+          "title": "Network congestion in Portland and Seattle, US",
+          "started_at": "2026-10-22T00:23:17.052Z",
+          "duration": "1h 46m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "resolved": [
         {
           "id": "1686140fbc2cf9be",
           "title": "Network congestion in Portland and Seattle, US",
@@ -4978,134 +5030,58 @@
           "duration": "25m",
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "fe4b2b1f265b5382",
-          "title": "Network congestion in Portland and Seattle, US",
-          "started_at": "2026-10-22T00:23:17.052Z",
-          "duration": "1h 27m ongoing",
-          "acknowledgement": "Minor / Monitoring",
-          "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "0f526915f9f18ee3",
-          "title": "Elevated Error Rate for Durable Objects in Lisbon",
-          "started_at": "2026-10-21T23:50:36.035Z",
-          "duration": "44m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "resolved": [
-        {
-          "id": "b45a2e4da732f456",
-          "title": "Elevated Error Rate for Durable Objects in Lisbon",
-          "started_at": "2026-10-22T00:05:30Z",
-          "duration": "1m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "58a6cfaab6c40c25",
-          "title": "Elevated Error Rate for Durable Objects in Lisbon",
-          "started_at": "2026-10-21T23:55:27Z",
-          "duration": "10m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "e228c8c205e2c919",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-21T23:50:18Z",
-          "duration": "5m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "744296c1323792a8",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-21T23:35:19Z",
-          "duration": "15m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "55b48dedde2b850e",
-          "title": "Incorrect geo location for some Cloudflare WARP users",
-          "started_at": "2026-10-21T23:10:25Z",
-          "duration": "25m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "6da0b2b2260fafa0",
-          "title": "Increased Latency in India",
-          "started_at": "2026-10-21T16:42:14.640Z",
-          "duration": "3h 14m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
         }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "e17b7fe5bdfe2bd2",
-          "title": "Network congestion in Portland and Seattle, US",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T01:35:28Z",
-          "published_at": "2026-10-22T01:35:28Z",
+          "id": "96e739fddf96f98f",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "url": "https://www.cloudflarestatus.com/#2026-10-22T05:05:18Z",
+          "published_at": "2026-10-22T05:05:18Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "8e122fe5b97f9bcb",
-          "title": "Network congestion in Portland and Seattle, US",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T01:30:16Z",
-          "published_at": "2026-10-22T01:30:16Z",
+          "id": "52fd3521fc554a79",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "url": "https://www.cloudflarestatus.com/#2026-10-22T04:55:21Z",
+          "published_at": "2026-10-22T04:55:21Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "c2abb4561658faed",
-          "title": "Network congestion in Portland and Seattle, US",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T01:05:20Z",
-          "published_at": "2026-10-22T01:05:20Z",
+          "id": "d65eba538cb7606a",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "url": "https://www.cloudflarestatus.com/#2026-10-22T04:50:44Z",
+          "published_at": "2026-10-22T04:50:44Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "3d8198f6d12376ab",
-          "title": "Network congestion in Portland and Seattle, US",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T01:00:28Z",
-          "published_at": "2026-10-22T01:00:28Z",
+          "id": "4d83af95ef50dad7",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "url": "https://www.cloudflarestatus.com/#2026-10-22T04:45:39Z",
+          "published_at": "2026-10-22T04:45:39Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "13ab763508b3eebd",
-          "title": "Network congestion in Portland and Seattle, US",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T00:35:39Z",
-          "published_at": "2026-10-22T00:35:39Z",
+          "id": "55de85df172a8057",
+          "title": "Incorrect geo location for some Cloudflare WARP users",
+          "url": "https://www.cloudflarestatus.com/#2026-10-22T04:20:19Z",
+          "published_at": "2026-10-22T04:20:19Z",
           "source": "StatusGator",
           "meta": "down icon Down"
-        },
-        {
-          "id": "de1d227452e9b281",
-          "title": "Network congestion in Portland and Seattle, US",
-          "url": "https://www.cloudflarestatus.com/incidents/nwgwgbrn9a71",
-          "published_at": "2026-10-22T00:23:17.052Z",
-          "source": "Cloudflare Statuspage API",
-          "meta": "Minor / Monitoring"
         }
       ]
     },
     "summary": {
-      "new_incidents": 6,
+      "new_incidents": 5,
       "updated_incidents": 1,
-      "resolved_incidents": 6,
-      "new_reports": 6
+      "resolved_incidents": 5,
+      "new_reports": 5
     }
   }
 }
