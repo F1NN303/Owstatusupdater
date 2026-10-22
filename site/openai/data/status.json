@@ -1,41 +1,41 @@
 {
-  "generated_at": "2026-10-22T17:37:18.530375Z",
+  "generated_at": "2026-10-22T19:48:30.208329Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 2,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 5.215,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.266,
+      "support_score": 0.594,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 119,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 3,
+      "reports_24h": 118,
+      "recent_incidents_6h": 4,
+      "recent_incidents_24h": 6,
       "cross_source": {
-        "report_score": 0.266,
-        "news_score": 0.0,
+        "report_score": 0.234,
+        "news_score": 0.36,
         "social_score": 0.0,
-        "combined_score": 0.266,
-        "report_hits_24h": 0
+        "combined_score": 0.594,
+        "report_hits_24h": 1
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,55 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 1,
-      "report_weight": 0.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 1,
-      "report_weight": 0.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 4,
-      "report_weight": 1.0
+      "severity_key": "degraded",
+      "severity_score": 5,
+      "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-10-22T17:37:17.536884Z",
+        "published_at": "2026-10-22T19:48:29.527931Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "New Ad Accounts failing to provision admins",
+        "url": "https://status.openai.com/incidents/01M5JHVJVC8WAXB4WRYFMKG6HP#01M5JHVJVC0JQ64EBBNK74VJM3",
+        "published_at": "2026-10-22T19:36:53Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / We have identified that new ad accounts are failing to assign their creator admin. We are investigating the issue."
+      },
+      {
+        "title": "Degraded Performance of Dots on Enterprise",
+        "url": "https://status.openai.com/incidents/01M5JF8DR3EGQJNTXPZ24AKX2G#01M5JFPR66Q0E0HW6M4YHEKY6B",
+        "published_at": "2026-10-22T18:59:18Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / Our teams have identified the issue and are actively implementing a mitigation. At this time the majority of impact is affecting enterprise customers."
+      },
+      {
+        "title": "Degraded Performance of Dots on Enterprise",
+        "url": "https://status.openai.com/incidents/01M5JF8DR3EGQJNTXPZ24AKX2G#01M5JF8DR3403QWDQW9YYFJDWX",
+        "published_at": "2026-10-22T18:51:28Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Identified / Users are experiencing failures sending messages to dots."
       },
       {
         "title": "Elevated ChatGPT conversation and Responses API errors",
@@ -125,47 +149,45 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-      },
-      {
-        "title": "Elevated error rates for gpt-5.6-luna API requests",
-        "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FJAQ1426MZE68T7W4BGC0Y",
-        "published_at": "2026-10-21T15:47:26Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-      },
-      {
-        "title": "Elevated error rates for gpt-5.6-luna API requests",
-        "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FHKHPQ1TVB6P0MQDR1PDHN",
-        "published_at": "2026-10-21T15:34:47Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / We have identified that users are experiencing elevated errors for the impacted services. We are working on implementing a mitigation."
-      },
-      {
-        "title": "Elevated FedRAMP API error rates for Astra and Sol",
-        "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN#01M5FPPG9SHW918YFH3ND5QH0Q",
-        "published_at": "2026-10-21T13:51:00Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are investigating the issue for the listed services."
       }
     ],
-    "last_statement_at": "2026-10-22T17:37:17.536884Z"
+    "last_statement_at": "2026-10-22T19:48:29.527931Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 119,
+    "summary": "OpenAI Statuspage reports 2 active incidents. Latest: New Ad Accounts failing to provision admins.",
+    "current_status": "degraded",
+    "reports_24h": 118,
     "incidents": [
       {
-        "title": "ChatGPT conversion failures in India, Japan and Korea. And Response API errors",
-        "started_at": "2026-10-22T02:22:00Z",
-        "duration": "6h 30m",
+        "title": "New Ad Accounts failing to provision admins",
+        "started_at": "2026-10-22T19:41:48Z",
+        "duration": "1m",
         "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "New Ad Accounts failing to provision admins",
+        "started_at": "2026-10-22T19:36:53Z",
+        "duration": "11m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M5JHVJVC8WAXB4WRYFMKG6HP"
+      },
+      {
+        "title": "Dot Message Failures",
+        "started_at": "2026-10-22T18:51:56Z",
+        "duration": "50m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Degraded Performance of Dots on Enterprise",
+        "started_at": "2026-10-22T18:51:28Z",
+        "duration": "57m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M5JF8DR3EGQJNTXPZ24AKX2G"
       },
       {
         "title": "Elevated ChatGPT conversation and Responses API errors",
@@ -184,12 +206,6 @@
         "url": "https://status.openai.com/incidents/01M5G9QQ9V4CYDWFRYF9BWZ5GG"
       },
       {
-        "title": "Elevated FedRAMP API error rates for Astra and Sol",
-        "started_at": "2026-10-21T17:06:52Z",
-        "duration": "2h 31m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
         "title": "Elevated error rates for gpt-5.6-luna API requests",
         "started_at": "2026-10-21T15:34:47Z",
         "duration": "1h 9m",
@@ -204,83 +220,28 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN"
-      },
-      {
-        "title": "Degraded performance in ChatGPT, Codex, and APIs",
-        "started_at": "2026-10-21T02:26:28Z",
-        "duration": "1h 1m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01M5E4G39TD1BW1QWHZG6RFA5H"
-      },
-      {
-        "title": "Some tools temporarily unavailable",
-        "started_at": "2026-10-20T17:14:00Z",
-        "duration": "5h 40m",
-        "acknowledgement": "Never acknowledged"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "dots",
+        "count": 1
+      },
+      {
+        "label": "Ads Manager",
+        "count": 1
+      },
+      {
+        "label": "Ads API",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-21T17:45:00Z",
-        "signal_value": 25.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T18:00:00Z",
-        "signal_value": 28.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T18:15:00Z",
-        "signal_value": 26.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T18:30:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T18:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T19:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T19:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T19:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T19:45:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-10-21T20:00:00Z",
         "signal_value": 7.0,
@@ -802,6 +763,60 @@
         "signal_value": 7.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T17:45:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T18:00:00Z",
+        "signal_value": 37.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T18:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T18:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T18:45:00Z",
+        "signal_value": 25.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T19:00:00Z",
+        "signal_value": 24.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T19:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T19:30:00Z",
+        "signal_value": 29.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T19:45:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -810,38 +825,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-22T17:30:00Z"
+      "last_sample_at": "2026-10-22T19:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "17:40",
-        "count": 1
-      },
-      {
-        "label": "18:00",
-        "count": 2
-      },
-      {
-        "label": "18:20",
-        "count": 1
-      },
-      {
-        "label": "18:40",
-        "count": 2
-      },
-      {
-        "label": "19:00",
-        "count": 3
-      },
-      {
-        "label": "19:20",
-        "count": 1
-      },
-      {
-        "label": "19:40",
-        "count": 3
-      },
       {
         "label": "20:00",
         "count": 3
@@ -1101,6 +1088,34 @@
       {
         "label": "17:20",
         "count": 1
+      },
+      {
+        "label": "17:40",
+        "count": 2
+      },
+      {
+        "label": "18:00",
+        "count": 3
+      },
+      {
+        "label": "18:20",
+        "count": 1
+      },
+      {
+        "label": "18:40",
+        "count": 4
+      },
+      {
+        "label": "19:00",
+        "count": 0
+      },
+      {
+        "label": "19:20",
+        "count": 2
+      },
+      {
+        "label": "19:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1109,14 +1124,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-22T13:37:17-04:00"
+      "last_reviewed_at": "2026-10-22T15:48:28-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 119,
-        "last_reviewed_at": "2026-10-22T13:37:17-04:00"
+        "reports_24h": 118,
+        "last_reviewed_at": "2026-10-22T15:48:28-04:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1306,8 +1321,8 @@
       },
       {
         "name": "dots",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-10-16T20:01:40Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1369,15 +1384,15 @@
       },
       {
         "name": "Ads Manager",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-10-16T20:01:40Z",
         "source": "OpenAI Statuspage API"
       },
       {
         "name": "Ads API",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-10-16T20:01:40Z",
         "source": "OpenAI Statuspage API"
       }
@@ -1386,15 +1401,15 @@
     "top_reported_issues_provider": [
       {
         "label": "Server not responding",
-        "count": 18
+        "count": 19
       },
       {
         "label": "Error message",
-        "count": 16
+        "count": 17
       },
       {
         "label": "Connectivity issue",
-        "count": 8
+        "count": 7
       },
       {
         "label": "Service down",
@@ -1406,11 +1421,11 @@
       },
       {
         "label": "Slow performance",
-        "count": 5
+        "count": 4
       },
       {
         "label": "Sign in problem",
-        "count": 1
+        "count": 2
       },
       {
         "label": "Unable to download",
@@ -1420,11 +1435,32 @@
   },
   "reports": [
     {
-      "title": "ChatGPT conversion failures in India, Japan and Korea. And Response API errors",
-      "url": "https://status.openai.com/#2026-10-22T02:22:00Z",
-      "published_at": "2026-10-22T02:22:00Z",
+      "title": "New Ad Accounts failing to provision admins",
+      "url": "https://status.openai.com/#2026-10-22T19:41:48Z",
+      "published_at": "2026-10-22T19:41:48Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
+    },
+    {
+      "title": "New Ad Accounts failing to provision admins",
+      "url": "https://status.openai.com/incidents/01M5JHVJVC8WAXB4WRYFMKG6HP",
+      "published_at": "2026-10-22T19:36:53Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Identified"
+    },
+    {
+      "title": "Dot Message Failures",
+      "url": "https://status.openai.com/#2026-10-22T18:51:56Z",
+      "published_at": "2026-10-22T18:51:56Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Degraded Performance of Dots on Enterprise",
+      "url": "https://status.openai.com/incidents/01M5JF8DR3EGQJNTXPZ24AKX2G",
+      "published_at": "2026-10-22T18:51:28Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Identified"
     },
     {
       "title": "Elevated ChatGPT conversation and Responses API errors",
@@ -1441,13 +1477,6 @@
       "meta": "Major / Resolved"
     },
     {
-      "title": "Elevated FedRAMP API error rates for Astra and Sol",
-      "url": "https://status.openai.com/#2026-10-21T17:06:52Z",
-      "published_at": "2026-10-21T17:06:52Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
       "title": "Elevated error rates for gpt-5.6-luna API requests",
       "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N",
       "published_at": "2026-10-21T15:34:47Z",
@@ -1460,20 +1489,6 @@
       "published_at": "2026-10-21T14:17:32Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Degraded performance in ChatGPT, Codex, and APIs",
-      "url": "https://status.openai.com/incidents/01M5E4G39TD1BW1QWHZG6RFA5H",
-      "published_at": "2026-10-21T02:26:28Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Some tools temporarily unavailable",
-      "url": "https://status.openai.com/#2026-10-20T17:14:00Z",
-      "published_at": "2026-10-20T17:14:00Z",
-      "source": "StatusGator",
-      "meta": "Never acknowledged"
     }
   ],
   "known_resources": [
@@ -1482,45 +1497,69 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-22T17:37:18.530375Z"
+      "published_at": "2026-10-22T19:48:30.208329Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-22T17:37:18.530375Z"
+      "published_at": "2026-10-22T19:48:30.208329Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-22T17:37:18.530375Z"
+      "published_at": "2026-10-22T19:48:30.208329Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-22T17:37:18.530375Z"
+      "published_at": "2026-10-22T19:48:30.208329Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-22T17:37:18.530375Z"
+      "published_at": "2026-10-22T19:48:30.208329Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-10-22T17:37:17.536884Z",
+      "published_at": "2026-10-22T19:48:29.527931Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "New Ad Accounts failing to provision admins",
+      "url": "https://status.openai.com/incidents/01M5JHVJVC8WAXB4WRYFMKG6HP#01M5JHVJVC0JQ64EBBNK74VJM3",
+      "published_at": "2026-10-22T19:36:53Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / We have identified that new ad accounts are failing to assign their creator admin. We are investigating the issue."
+    },
+    {
+      "title": "Degraded Performance of Dots on Enterprise",
+      "url": "https://status.openai.com/incidents/01M5JF8DR3EGQJNTXPZ24AKX2G#01M5JFPR66Q0E0HW6M4YHEKY6B",
+      "published_at": "2026-10-22T18:59:18Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / Our teams have identified the issue and are actively implementing a mitigation. At this time the majority of impact is affecting enterprise customers."
+    },
+    {
+      "title": "Degraded Performance of Dots on Enterprise",
+      "url": "https://status.openai.com/incidents/01M5JF8DR3EGQJNTXPZ24AKX2G#01M5JF8DR3403QWDQW9YYFJDWX",
+      "published_at": "2026-10-22T18:51:28Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Identified / Users are experiencing failures sending messages to dots."
     },
     {
       "title": "Elevated ChatGPT conversation and Responses API errors",
@@ -1553,30 +1592,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-    },
-    {
-      "title": "Elevated FedRAMP API error rates for Astra and Sol",
-      "url": "https://status.openai.com/incidents/01M5FD63HHDRPQPM5YMQWJ5HTN#01M5FPQ4NNKZ089G26ZPETC7FH",
-      "published_at": "2026-10-21T16:46:00Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
-    },
-    {
-      "title": "Elevated error rates for gpt-5.6-luna API requests",
-      "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FNJJMH4CZPW51MV191CSSY",
-      "published_at": "2026-10-21T16:44:09Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / All impacted services have now fully recovered."
-    },
-    {
-      "title": "Elevated error rates for gpt-5.6-luna API requests",
-      "url": "https://status.openai.com/incidents/01M5FHKHPQJMSHCE2B2WDPZW2N#01M5FJAQ1426MZE68T7W4BGC0Y",
-      "published_at": "2026-10-21T15:47:26Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We have applied the mitigation and are monitoring the recovery."
     }
   ],
   "social": [],
@@ -1592,11 +1607,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-10-22T17:37:16.706771Z",
+      "last_item_at": "2026-10-22T19:48:28.177810Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 198,
-      "fetched_at": "2026-10-22T17:37:16.706789Z",
+      "duration_ms": 246,
+      "fetched_at": "2026-10-22T19:48:28.177826Z",
       "cache_hit": false
     },
     {
@@ -1610,11 +1625,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-22T13:37:17-04:00",
+      "last_item_at": "2026-10-22T15:48:28-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 829,
-      "fetched_at": "2026-10-22T17:37:17.536352Z",
+      "duration_ms": 1349,
+      "fetched_at": "2026-10-22T19:48:29.527429Z",
       "cache_hit": false
     },
     {
@@ -1628,17 +1643,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-22T17:37:17.536884Z",
+      "last_item_at": "2026-10-22T19:48:29.527931Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 991,
-      "fetched_at": "2026-10-22T17:37:18.528427Z",
+      "duration_ms": 678,
+      "fetched_at": "2026-10-22T19:48:30.206460Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-22T17:37:18.530375Z",
+    "generated_at": "2026-10-22T19:48:30.208329Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1660,7 +1675,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1675,18 +1690,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 198,
+          "duration_ms": 246,
           "cache_hit": false,
-          "at": "2026-10-22T17:37:16Z"
+          "at": "2026-10-22T19:48:27Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 272.8
+          "avg_duration_ms": 270.6
         },
         "metrics_7d": {
           "runs": 68,
@@ -1695,10 +1710,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 260.9
+          "avg_duration_ms": 262.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T17:37:16Z",
+        "last_success_at": "2026-10-22T19:48:27Z",
         "last_failure_at": null
       },
       {
@@ -1712,18 +1727,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 829,
+          "duration_ms": 1349,
           "cache_hit": false,
-          "at": "2026-10-22T17:37:16Z"
+          "at": "2026-10-22T19:48:27Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1206.5
+          "avg_duration_ms": 1218.3
         },
         "metrics_7d": {
           "runs": 68,
@@ -1732,10 +1747,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1104.8
+          "avg_duration_ms": 1109.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T17:37:16Z",
+        "last_success_at": "2026-10-22T19:48:27Z",
         "last_failure_at": null
       },
       {
@@ -1749,18 +1764,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 991,
+          "duration_ms": 678,
           "cache_hit": false,
-          "at": "2026-10-22T17:37:16Z"
+          "at": "2026-10-22T19:48:27Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 12,
+          "ok": 12,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 788.5
+          "avg_duration_ms": 779.3
         },
         "metrics_7d": {
           "runs": 68,
@@ -1769,29 +1784,128 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 729.0
+          "avg_duration_ms": 729.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T17:37:16Z",
+        "last_success_at": "2026-10-22T19:48:27Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-22T17:37:18.530375Z",
+    "generated_at": "2026-10-22T19:48:30.208329Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "e6dc9fed95a3c85a",
+          "title": "New Ad Accounts failing to provision admins",
+          "started_at": "2026-10-22T19:41:48Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "78dbde5e895bb64a",
+          "title": "New Ad Accounts failing to provision admins",
+          "started_at": "2026-10-22T19:36:53Z",
+          "duration": "11m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "d8667482172a2aa5",
+          "title": "Dot Message Failures",
+          "started_at": "2026-10-22T18:51:56Z",
+          "duration": "50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "29c1da3d6ed2b7ec",
+          "title": "Degraded Performance of Dots on Enterprise",
+          "started_at": "2026-10-22T18:51:28Z",
+          "duration": "57m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "f4fba0d3037d74a3",
+          "title": "ChatGPT conversion failures in India, Japan and Korea. And Response API errors",
+          "started_at": "2026-10-22T02:22:00Z",
+          "duration": "6h 30m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "855bcca99996b7d7",
+          "title": "Elevated FedRAMP API error rates for Astra and Sol",
+          "started_at": "2026-10-21T17:06:52Z",
+          "duration": "2h 31m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "046978f70d249225",
+          "title": "Degraded performance in ChatGPT, Codex, and APIs",
+          "started_at": "2026-10-21T02:26:28Z",
+          "duration": "1h 1m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "2200d868f2f23168",
+          "title": "Some tools temporarily unavailable",
+          "started_at": "2026-10-20T17:14:00Z",
+          "duration": "5h 40m",
+          "acknowledgement": "Never acknowledged",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "d26f6cd14dbe4926",
+          "title": "New Ad Accounts failing to provision admins",
+          "url": "https://status.openai.com/#2026-10-22T19:41:48Z",
+          "published_at": "2026-10-22T19:41:48Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "20dd8139882a6bc5",
+          "title": "New Ad Accounts failing to provision admins",
+          "url": "https://status.openai.com/incidents/01M5JHVJVC8WAXB4WRYFMKG6HP",
+          "published_at": "2026-10-22T19:36:53Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Identified"
+        },
+        {
+          "id": "6bf467f372839858",
+          "title": "Dot Message Failures",
+          "url": "https://status.openai.com/#2026-10-22T18:51:56Z",
+          "published_at": "2026-10-22T18:51:56Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "c12641d48958db82",
+          "title": "Degraded Performance of Dots on Enterprise",
+          "url": "https://status.openai.com/incidents/01M5JF8DR3EGQJNTXPZ24AKX2G",
+          "published_at": "2026-10-22T18:51:28Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 4,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 4,
+      "new_reports": 4
     }
   }
 }
