@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-22T23:01:24.179828Z",
+  "generated_at": "2026-10-23T01:45:50.048209Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "major",
-    "severity_score": 8,
+    "severity_key": "degraded",
+    "severity_score": 6,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,11 +14,11 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.4,
       "support_score": 1.38,
-      "profile_adjustment": 2.15
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 108,
-      "recent_incidents_6h": 8,
+      "reports_24h": 2,
+      "recent_incidents_6h": 5,
       "recent_incidents_24h": 8,
       "cross_source": {
         "report_score": 0.0,
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "high",
+      "reason": "official_major_vs_aggregate_lower",
       "official_status": "major outage",
-      "derived_severity": "major",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status reports a major outage while aggregate severity is lower."
     }
   },
   "regions": {
     "eu": {
       "severity_key": "major",
-      "severity_score": 12,
+      "severity_score": 11,
       "report_weight": 1.0
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 4,
       "report_weight": 0.0
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 4,
       "report_weight": 0.0
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-10-22T23:01:23.931651Z",
+        "published_at": "2026-10-23T01:45:49.875728Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
+      },
+      {
+        "title": "Delayed audit log delivery for WARP and Zero Trust services",
+        "url": "https://www.cloudflarestatus.com/incidents/qwrtvb4jfvk7#r06vff147vk5",
+        "published_at": "2026-10-23T00:10:52.675Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Major / Resolved / This incident has been resolved."
+      },
+      {
+        "title": "Elevated error rates for Durable Objects in Western Europe",
+        "url": "https://www.cloudflarestatus.com/incidents/v967mz6rrcxw#5yzm8n02g2sc",
+        "published_at": "2026-10-23T00:09:09.707Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       },
       {
         "title": "Network Error Log Processing Unavailable",
@@ -108,7 +124,7 @@
         "published_at": "2026-10-22T18:19:52.207Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+        "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
       },
       {
         "title": "Elevated error rates for Durable Objects in Western Europe",
@@ -116,7 +132,7 @@
         "published_at": "2026-10-22T17:51:10.039Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring / We are investigating elevated error rates affecting Durable Objects in Western Europe. Customers may see errors when using Durable Objects and related services. We will post updates as we learn more."
+        "meta": "Investigating / Minor / Resolved / We are investigating elevated error rates affecting Durable Objects in Western Europe. Customers may see errors when using Durable Objects and related services. We will post updates as we learn more."
       },
       {
         "title": "Delayed audit log delivery for WARP and Zero Trust services",
@@ -124,7 +140,7 @@
         "published_at": "2026-10-22T17:50:19.008Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Major / Monitoring / A fix has been implemented and we are monitoring the results."
+        "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
       },
       {
         "title": "Delayed audit log delivery for WARP and Zero Trust services",
@@ -132,78 +148,62 @@
         "published_at": "2026-10-22T17:32:32.382Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Major / Monitoring / We are investigating an issue affecting audit log delivery for WARP API. Audit logs for some customers may be delayed or not delivered, and some dependent services may also be affected. We have identified the cause as a capacity problem in "
-      },
-      {
-        "title": "Elevated errors for some requests in Ashburn, Virginia",
-        "url": "https://www.cloudflarestatus.com/incidents/l0gsc0sccx2v#n0ng90dfzlvw",
-        "published_at": "2026-10-22T17:31:27.138Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Elevated errors for some requests in Ashburn, Virginia",
-        "url": "https://www.cloudflarestatus.com/incidents/l0gsc0sccx2v#pp6xbp9mrrkk",
-        "published_at": "2026-10-22T17:01:31.510Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are investigating elevated error rates (HTTP 502) for some requests handled by our Ashburn, Virginia data center. Some customers may see failed or intermittent responses for websites and applications, including Workers, served through th"
+        "meta": "Investigating / Major / Resolved / We are investigating an issue affecting audit log delivery for WARP API. Audit logs for some customers may be delayed or not delivered, and some dependent services may also be affected. We have identified the cause as a capacity problem in "
       }
     ],
-    "last_statement_at": "2026-10-22T23:01:23.931651Z"
+    "last_statement_at": "2026-10-23T01:45:49.875728Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports 2 active incidents. Latest: Elevated error rates for Durable Objects in Western Europe.",
+    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident started about 8h ago.",
     "current_status": "major outage",
-    "reports_24h": 108,
+    "reports_24h": 2,
     "incidents": [
       {
-        "title": "Elevated error rates for Durable Objects in Western Europe",
-        "started_at": "2026-10-22T22:05:22Z",
+        "title": "Major incident",
+        "started_at": "2026-10-23T01:40:22Z",
         "duration": "1m",
         "acknowledgement": "down icon Down"
       },
       {
-        "title": "Elevated error rates for Durable Objects in Western Europe",
-        "started_at": "2026-10-22T22:00:19Z",
+        "title": "Major incident",
+        "started_at": "2026-10-23T01:20:18Z",
+        "duration": "20m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Major incident",
+        "started_at": "2026-10-23T01:15:20Z",
         "duration": "5m",
         "acknowledgement": "down icon Down"
       },
       {
-        "title": "Elevated error rates for Durable Objects in Western Europe",
-        "started_at": "2026-10-22T21:45:21Z",
+        "title": "Major incident",
+        "started_at": "2026-10-23T01:00:23Z",
         "duration": "15m",
         "acknowledgement": "down icon Down"
       },
       {
-        "title": "Elevated error rates for Durable Objects in Western Europe",
-        "started_at": "2026-10-22T21:05:44Z",
-        "duration": "40m",
-        "acknowledgement": "down icon Down"
-      },
-      {
-        "title": "Elevated error rates for Durable Objects in Western Europe",
-        "started_at": "2026-10-22T21:00:38Z",
-        "duration": "5m",
+        "title": "Major incident",
+        "started_at": "2026-10-23T00:50:25Z",
+        "duration": "10m",
         "acknowledgement": "down icon Down"
       },
       {
         "title": "Elevated error rates for Durable Objects in Western Europe",
         "started_at": "2026-10-22T17:51:09.000Z",
-        "duration": "5h 10m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "6h 18m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/v967mz6rrcxw"
       },
       {
         "title": "Delayed audit log delivery for WARP and Zero Trust services",
         "started_at": "2026-10-22T17:32:32.000Z",
-        "duration": "5h 28m ongoing",
-        "acknowledgement": "Major / Monitoring",
+        "duration": "6h 38m",
+        "acknowledgement": "Major / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/qwrtvb4jfvk7"
       },
@@ -217,14 +217,6 @@
       }
     ],
     "top_reported_issues": [
-      {
-        "label": "Cloudflare Sites and Services",
-        "count": 1
-      },
-      {
-        "label": "Amman, Jordan - (AMM)",
-        "count": 1
-      },
       {
         "label": "Accra, Ghana - (ACC)",
         "count": 1
@@ -248,86 +240,22 @@
       {
         "label": "Asia",
         "count": 1
+      },
+      {
+        "label": "Baku, Azerbaijan - (GYD)",
+        "count": 1
+      },
+      {
+        "label": "Bangalore, India - (BLR)",
+        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-21T23:00:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T23:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T23:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-21T23:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-22T00:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-22T00:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-22T00:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-22T00:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-22T01:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-22T01:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-22T01:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-22T01:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-10-22T02:00:00Z",
         "signal_value": 1.0,
@@ -831,6 +759,78 @@
         "signal_value": 5.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T23:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T23:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T23:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-22T23:45:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-23T00:00:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-23T00:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-23T00:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-23T00:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-23T01:00:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-23T01:15:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-23T01:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-23T01:45:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,42 +839,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-22T22:45:00Z"
+      "last_sample_at": "2026-10-23T01:45:00Z"
     },
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "23:20",
-        "count": 0
-      },
-      {
-        "label": "23:40",
-        "count": 2
-      },
-      {
-        "label": "00:00",
-        "count": 2
-      },
-      {
-        "label": "00:20",
-        "count": 0
-      },
-      {
-        "label": "00:40",
-        "count": 2
-      },
-      {
-        "label": "01:00",
-        "count": 3
-      },
-      {
-        "label": "01:20",
-        "count": 1
-      },
-      {
-        "label": "01:40",
-        "count": 3
-      },
       {
         "label": "02:00",
         "count": 0
@@ -1130,6 +1097,38 @@
       {
         "label": "23:00",
         "count": 3
+      },
+      {
+        "label": "23:20",
+        "count": 1
+      },
+      {
+        "label": "23:40",
+        "count": 3
+      },
+      {
+        "label": "00:00",
+        "count": 3
+      },
+      {
+        "label": "00:20",
+        "count": 1
+      },
+      {
+        "label": "00:40",
+        "count": 3
+      },
+      {
+        "label": "01:00",
+        "count": 0
+      },
+      {
+        "label": "01:20",
+        "count": 2
+      },
+      {
+        "label": "01:40",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1137,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-22T19:01:22-04:00"
+      "last_reviewed_at": "2026-10-22T21:45:48-04:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 108,
-        "last_reviewed_at": "2026-10-22T19:01:22-04:00"
+        "last_reviewed_at": "2026-10-22T21:45:48-04:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,16 +1159,16 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "degraded",
-        "health": "degraded_performance",
+        "status": "operational",
+        "health": "operational",
         "updated_at": "2020-11-11T20:12:30.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Amman, Jordan - (AMM)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T22:13:59.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T23:30:18.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1302,7 +1301,7 @@
         "name": "Baghdad, Iraq - (BGW)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-22T21:46:44.000Z",
+        "updated_at": "2026-10-22T23:46:42.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1587,9 +1586,9 @@
       },
       {
         "name": "Dar Es Salaam, Tanzania - (DAR)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T22:03:04.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-23T01:41:08.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1706,9 +1705,9 @@
       },
       {
         "name": "Erbil, Iraq - (EBL)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-14T23:50:24.000Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-22T23:48:44.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1734,9 +1733,9 @@
       },
       {
         "name": "Chișinău, Moldova - (KIV)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-19T23:06:22.000Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-22T23:46:41.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1764,7 +1763,7 @@
         "name": "Gaborone, Botswana - (GBE)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-15T02:16:49.000Z",
+        "updated_at": "2026-10-23T00:52:06.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1965,9 +1964,9 @@
       },
       {
         "name": "Audit Logs",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T17:32:32.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-23T00:10:52.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2063,9 +2062,9 @@
       },
       {
         "name": "Nasiriyah, Iraq - (XNH)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-10-22T21:43:19.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T23:19:19.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2135,7 +2134,7 @@
         "name": "Riyadh, Saudi Arabia - (RUH)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-22T22:19:23.000Z",
+        "updated_at": "2026-10-23T00:52:06.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2226,7 +2225,7 @@
         "name": "Tel Aviv, Israel - (TLV)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-20T02:43:38.000Z",
+        "updated_at": "2026-10-23T01:19:19.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2238,9 +2237,9 @@
       },
       {
         "name": "Guayaquil, Ecuador - (GYE)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T22:41:11.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T23:08:24.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2576,7 +2575,7 @@
         "name": "Abidjan, Ivory Coast - (ABJ)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-22T04:05:48.000Z",
+        "updated_at": "2026-10-23T01:42:26.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2667,7 +2666,7 @@
         "name": "Moscow, Russia - (DME)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-14T23:12:22.000Z",
+        "updated_at": "2026-10-22T23:30:19.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2777,9 +2776,9 @@
       },
       {
         "name": "Karachi, Pakistan - (KHI)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T21:08:31.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-22T23:13:55.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2889,9 +2888,9 @@
       },
       {
         "name": "Reykjavík, Iceland - (KEF)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-15T03:26:57.000Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-23T01:35:43.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3057,9 +3056,9 @@
       },
       {
         "name": "Douala, Cameroon - (DLA)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-15T04:31:46.000Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-23T01:19:20.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3176,9 +3175,9 @@
       },
       {
         "name": "Durable Objects",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T17:51:09.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-23T00:09:09.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3225,9 +3224,9 @@
       },
       {
         "name": "Mumbai, India - (BOM)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T21:08:30.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-23T01:08:25.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3486,7 +3485,7 @@
         "name": "Tampa, FL, United States - (TPA)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-22T06:48:55.000Z",
+        "updated_at": "2026-10-23T01:24:46.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4205,9 +4204,9 @@
       },
       {
         "name": "Zero Trust",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-22T17:32:32.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-23T00:10:52.000Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4571,37 +4570,37 @@
   },
   "reports": [
     {
-      "title": "Elevated error rates for Durable Objects in Western Europe",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T22:05:22Z",
-      "published_at": "2026-10-22T22:05:22Z",
+      "title": "Major incident",
+      "url": "https://www.cloudflarestatus.com/#2026-10-23T01:40:22Z",
+      "published_at": "2026-10-23T01:40:22Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
-      "title": "Elevated error rates for Durable Objects in Western Europe",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T22:00:19Z",
-      "published_at": "2026-10-22T22:00:19Z",
+      "title": "Major incident",
+      "url": "https://www.cloudflarestatus.com/#2026-10-23T01:20:18Z",
+      "published_at": "2026-10-23T01:20:18Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
-      "title": "Elevated error rates for Durable Objects in Western Europe",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T21:45:21Z",
-      "published_at": "2026-10-22T21:45:21Z",
+      "title": "Major incident",
+      "url": "https://www.cloudflarestatus.com/#2026-10-23T01:15:20Z",
+      "published_at": "2026-10-23T01:15:20Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
-      "title": "Elevated error rates for Durable Objects in Western Europe",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T21:05:44Z",
-      "published_at": "2026-10-22T21:05:44Z",
+      "title": "Major incident",
+      "url": "https://www.cloudflarestatus.com/#2026-10-23T01:00:23Z",
+      "published_at": "2026-10-23T01:00:23Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
     {
-      "title": "Elevated error rates for Durable Objects in Western Europe",
-      "url": "https://www.cloudflarestatus.com/#2026-10-22T21:00:38Z",
-      "published_at": "2026-10-22T21:00:38Z",
+      "title": "Major incident",
+      "url": "https://www.cloudflarestatus.com/#2026-10-23T00:50:25Z",
+      "published_at": "2026-10-23T00:50:25Z",
       "source": "StatusGator",
       "meta": "down icon Down"
     },
@@ -4610,14 +4609,14 @@
       "url": "https://www.cloudflarestatus.com/incidents/v967mz6rrcxw",
       "published_at": "2026-10-22T17:51:09.000Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Delayed audit log delivery for WARP and Zero Trust services",
       "url": "https://www.cloudflarestatus.com/incidents/qwrtvb4jfvk7",
       "published_at": "2026-10-22T17:32:32.000Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Major / Monitoring"
+      "meta": "Major / Resolved"
     },
     {
       "title": "Elevated errors for some requests in Ashburn, Virginia",
@@ -4633,52 +4632,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-22T23:01:24.179828Z"
+      "published_at": "2026-10-23T01:45:50.048209Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-22T23:01:24.179828Z"
+      "published_at": "2026-10-23T01:45:50.048209Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-22T23:01:24.179828Z"
+      "published_at": "2026-10-23T01:45:50.048209Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-10-22T23:01:24.179828Z"
+      "published_at": "2026-10-23T01:45:50.048209Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-22T23:01:24.179828Z"
+      "published_at": "2026-10-23T01:45:50.048209Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-22T23:01:24.179828Z"
+      "published_at": "2026-10-23T01:45:50.048209Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-10-22T23:01:23.931651Z",
+      "published_at": "2026-10-23T01:45:49.875728Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
+    },
+    {
+      "title": "Delayed audit log delivery for WARP and Zero Trust services",
+      "url": "https://www.cloudflarestatus.com/incidents/qwrtvb4jfvk7#r06vff147vk5",
+      "published_at": "2026-10-23T00:10:52.675Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Major / Resolved / This incident has been resolved."
+    },
+    {
+      "title": "Elevated error rates for Durable Objects in Western Europe",
+      "url": "https://www.cloudflarestatus.com/incidents/v967mz6rrcxw#5yzm8n02g2sc",
+      "published_at": "2026-10-23T00:09:09.707Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     },
     {
       "title": "Network Error Log Processing Unavailable",
@@ -4710,7 +4725,7 @@
       "published_at": "2026-10-22T18:19:52.207Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+      "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
     },
     {
       "title": "Elevated error rates for Durable Objects in Western Europe",
@@ -4718,23 +4733,7 @@
       "published_at": "2026-10-22T17:51:10.039Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring / We are investigating elevated error rates affecting Durable Objects in Western Europe. Customers may see errors when using Durable Objects and related services. We will post updates as we learn more."
-    },
-    {
-      "title": "Delayed audit log delivery for WARP and Zero Trust services",
-      "url": "https://www.cloudflarestatus.com/incidents/qwrtvb4jfvk7#kk28t07smdlz",
-      "published_at": "2026-10-22T17:50:19.008Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Major / Monitoring / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "Delayed audit log delivery for WARP and Zero Trust services",
-      "url": "https://www.cloudflarestatus.com/incidents/qwrtvb4jfvk7#9xgb018fnpl2",
-      "published_at": "2026-10-22T17:32:32.382Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Major / Monitoring / We are investigating an issue affecting audit log delivery for WARP API. Audit logs for some customers may be delayed or not delivered, and some dependent services may also be affected. We have identified the cause as a capacity problem in "
+      "meta": "Investigating / Minor / Resolved / We are investigating elevated error rates affecting Durable Objects in Western Europe. Customers may see errors when using Durable Objects and related services. We will post updates as we learn more."
     }
   ],
   "social": [],
@@ -4750,11 +4749,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-10-22T23:01:22.600978Z",
+      "last_item_at": "2026-10-23T01:45:48.458104Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 311,
-      "fetched_at": "2026-10-22T23:01:22.600995Z",
+      "duration_ms": 181,
+      "fetched_at": "2026-10-23T01:45:48.458126Z",
       "cache_hit": false
     },
     {
@@ -4768,11 +4767,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-22T19:01:22-04:00",
+      "last_item_at": "2026-10-22T21:45:48-04:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1330,
-      "fetched_at": "2026-10-22T23:01:23.931112Z",
+      "duration_ms": 1417,
+      "fetched_at": "2026-10-23T01:45:49.875168Z",
       "cache_hit": false
     },
     {
@@ -4786,17 +4785,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-22T23:01:23.931651Z",
+      "last_item_at": "2026-10-23T01:45:49.875728Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 246,
-      "fetched_at": "2026-10-22T23:01:24.178037Z",
+      "duration_ms": 170,
+      "fetched_at": "2026-10-23T01:45:50.046560Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-22T23:01:24.179828Z",
+    "generated_at": "2026-10-23T01:45:50.048209Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4818,7 +4817,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "major",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4833,18 +4832,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 311,
+          "duration_ms": 181,
           "cache_hit": false,
-          "at": "2026-10-22T23:01:22Z"
+          "at": "2026-10-23T01:45:48Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 274.5
+          "avg_duration_ms": 278.7
         },
         "metrics_7d": {
           "runs": 68,
@@ -4853,10 +4852,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 265.9
+          "avg_duration_ms": 265.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T23:01:22Z",
+        "last_success_at": "2026-10-23T01:45:48Z",
         "last_failure_at": null
       },
       {
@@ -4870,18 +4869,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1330,
+          "duration_ms": 1417,
           "cache_hit": false,
-          "at": "2026-10-22T23:01:22Z"
+          "at": "2026-10-23T01:45:48Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1197.5
+          "avg_duration_ms": 1251.0
         },
         "metrics_7d": {
           "runs": 68,
@@ -4890,10 +4889,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1481.3
+          "avg_duration_ms": 1455.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T23:01:22Z",
+        "last_success_at": "2026-10-23T01:45:48Z",
         "last_failure_at": null
       },
       {
@@ -4907,18 +4906,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 246,
+          "duration_ms": 170,
           "cache_hit": false,
-          "at": "2026-10-22T23:01:22Z"
+          "at": "2026-10-23T01:45:48Z"
         },
         "metrics_24h": {
-          "runs": 11,
-          "ok": 11,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 543.5
+          "avg_duration_ms": 537.9
         },
         "metrics_7d": {
           "runs": 68,
@@ -4927,18 +4926,78 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 536.0
+          "avg_duration_ms": 531.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-22T23:01:22Z",
+        "last_success_at": "2026-10-23T01:45:48Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-22T23:01:24.179828Z",
+    "generated_at": "2026-10-23T01:45:50.048209Z",
     "incidents": {
       "new": [
+        {
+          "id": "e0d101793da58b5b",
+          "title": "Major incident",
+          "started_at": "2026-10-23T01:40:22Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "83578cb8db741858",
+          "title": "Major incident",
+          "started_at": "2026-10-23T01:20:18Z",
+          "duration": "20m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "3b4a9979159b6a2a",
+          "title": "Major incident",
+          "started_at": "2026-10-23T01:15:20Z",
+          "duration": "5m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "a5efba87fb696e0a",
+          "title": "Major incident",
+          "started_at": "2026-10-23T01:00:23Z",
+          "duration": "15m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "31253111b3e307ef",
+          "title": "Major incident",
+          "started_at": "2026-10-23T00:50:25Z",
+          "duration": "10m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
+        {
+          "id": "788f6ebf5aae61a9",
+          "title": "Elevated error rates for Durable Objects in Western Europe",
+          "started_at": "2026-10-22T17:51:09.000Z",
+          "duration": "6h 18m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "bb8d341b90ec2024",
+          "title": "Delayed audit log delivery for WARP and Zero Trust services",
+          "started_at": "2026-10-22T17:32:32.000Z",
+          "duration": "6h 38m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "resolved": [
         {
           "id": "f5a7be79443b12a6",
           "title": "Elevated error rates for Durable Objects in Western Europe",
@@ -4979,107 +5038,47 @@
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
         }
-      ],
-      "updated": [
-        {
-          "id": "788f6ebf5aae61a9",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "started_at": "2026-10-22T17:51:09.000Z",
-          "duration": "5h 10m ongoing",
-          "acknowledgement": "Minor / Monitoring",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "bb8d341b90ec2024",
-          "title": "Delayed audit log delivery for WARP and Zero Trust services",
-          "started_at": "2026-10-22T17:32:32.000Z",
-          "duration": "5h 28m ongoing",
-          "acknowledgement": "Major / Monitoring",
-          "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "resolved": [
-        {
-          "id": "cb9a834eb18f24f1",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "started_at": "2026-10-22T19:35:22Z",
-          "duration": "1m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "338f7f17b7845287",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "started_at": "2026-10-22T19:30:23Z",
-          "duration": "5m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "c41d41f9250ca591",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "started_at": "2026-10-22T19:15:30Z",
-          "duration": "15m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "aa67d6c997808e03",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "started_at": "2026-10-22T19:00:34Z",
-          "duration": "15m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "1fa322bcd5b7597e",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "started_at": "2026-10-22T18:40:28Z",
-          "duration": "20m",
-          "acknowledgement": "down icon Down",
-          "url": "https://www.cloudflarestatus.com/"
-        }
       ]
     },
     "reports": {
       "new": [
         {
-          "id": "e413d76c276001da",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T22:05:22Z",
-          "published_at": "2026-10-22T22:05:22Z",
+          "id": "e22d0b17e4341f44",
+          "title": "Major incident",
+          "url": "https://www.cloudflarestatus.com/#2026-10-23T01:40:22Z",
+          "published_at": "2026-10-23T01:40:22Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "a1753456eeeb681a",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T22:00:19Z",
-          "published_at": "2026-10-22T22:00:19Z",
+          "id": "29ff8375e78f26c4",
+          "title": "Major incident",
+          "url": "https://www.cloudflarestatus.com/#2026-10-23T01:20:18Z",
+          "published_at": "2026-10-23T01:20:18Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "d11f45ffdf1020f9",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T21:45:21Z",
-          "published_at": "2026-10-22T21:45:21Z",
+          "id": "32ba44475b8ffa4f",
+          "title": "Major incident",
+          "url": "https://www.cloudflarestatus.com/#2026-10-23T01:15:20Z",
+          "published_at": "2026-10-23T01:15:20Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "e0866bbe20c61c2b",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T21:05:44Z",
-          "published_at": "2026-10-22T21:05:44Z",
+          "id": "f69b29a485d99cad",
+          "title": "Major incident",
+          "url": "https://www.cloudflarestatus.com/#2026-10-23T01:00:23Z",
+          "published_at": "2026-10-23T01:00:23Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         },
         {
-          "id": "ccdc19712415a9c9",
-          "title": "Elevated error rates for Durable Objects in Western Europe",
-          "url": "https://www.cloudflarestatus.com/#2026-10-22T21:00:38Z",
-          "published_at": "2026-10-22T21:00:38Z",
+          "id": "59cdae48c0521e52",
+          "title": "Major incident",
+          "url": "https://www.cloudflarestatus.com/#2026-10-23T00:50:25Z",
+          "published_at": "2026-10-23T00:50:25Z",
           "source": "StatusGator",
           "meta": "down icon Down"
         }
