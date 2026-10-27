@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-27T09:58:40.610785Z",
+  "generated_at": "2026-10-27T15:49:48.774838Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "major",
+    "severity_score": 8,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,12 +14,12 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.05
     },
     "signal_metrics": {
-      "reports_24h": 109,
-      "recent_incidents_6h": 2,
-      "recent_incidents_24h": 6,
+      "reports_24h": 107,
+      "recent_incidents_6h": 8,
+      "recent_incidents_24h": 8,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.0,
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "high",
-      "reason": "official_major_vs_aggregate_lower",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "major outage",
-      "derived_severity": "degraded",
+      "derived_severity": "major",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status reports a major outage while aggregate severity is lower."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "major",
+      "severity_score": 8,
       "report_weight": 0.333
     }
   },
@@ -73,152 +73,158 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-10-27T09:58:39.049359Z",
+        "published_at": "2026-10-27T15:49:48.566324Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
       },
       {
-        "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-        "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a#jahy2324alvy",
-        "published_at": "2026-10-27T08:17:26.151Z",
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#mousm75cq6lu",
+        "published_at": "2026-10-27T15:12:03.752Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Major / Resolved / This incident has been resolved."
+      },
+      {
+        "title": "Cache Purging Delays Affecting Requests Routed Through EEUR",
+        "url": "https://www.cloudflarestatus.com/incidents/8s6pn9rvof3l#lx362ocn3zcr",
+        "published_at": "2026-10-27T15:10:35.555Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / Some single-file cache purge requests (purge by URL) submitted through the Dashboard or API and routed through our EEUR purge queues are experiencing delays of up to 30 minutes. Cache invalidation for these requests may be delayed across ou"
+      },
+      {
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#01niiayrc2pw",
+        "published_at": "2026-10-27T14:52:00.098Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
+      },
+      {
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#lu3ht0uu9d0e",
+        "published_at": "2026-10-27T14:38:20.137Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Major / Resolved / Cloudflare has identified an issue affecting customers whose traffic passes through an external vendor firewall. Customers may observe: ERR_TIMED_OUT on standard HTTPS websites ERR_EMPTY_RESPONSE on non-standard HTTPS ports (e.g., 8443) We'"
+      },
+      {
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#q55nd225c0u8",
+        "published_at": "2026-10-27T13:20:33.671Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Major / Resolved / Cloudflare has identified an issue affecting customers whose traffic passes through an external vendor firewall. Customers may observe: ERR_TIMED_OUT on standard HTTPS websites ERR_EMPTY_RESPONSE on non-standard HTTPS ports (e.g., 8443) We'"
+      },
+      {
+        "title": "We are seeing some customers having issues with Workers Builds",
+        "url": "https://www.cloudflarestatus.com/incidents/2eno8w1fk27j#o3piqfzkaqr2",
+        "published_at": "2026-10-27T12:55:24.566Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       },
       {
-        "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-        "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a#199ykcgvpsr8",
-        "published_at": "2026-10-27T08:10:57.458Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
-      },
-      {
-        "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-        "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a#va89c07atbg4",
-        "published_at": "2026-10-27T08:07:33.314Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / Some customers may observe that cloning Github repositories are failing"
-      },
-      {
-        "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-        "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a#ukcvb4hphd07",
-        "published_at": "2026-10-27T08:04:03.697Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are currently investigating an issue where some customers may notice their Pages and/or workers builds are intermittently failing."
-      },
-      {
-        "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-        "url": "https://www.cloudflarestatus.com/incidents/97y1vy5nsjrn#p24y46kwqrhx",
-        "published_at": "2026-10-27T01:15:15.525Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-      },
-      {
-        "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-        "url": "https://www.cloudflarestatus.com/incidents/97y1vy5nsjrn#g8ri41od0tva",
-        "published_at": "2026-10-27T00:55:17.911Z",
+        "title": "We are seeing some customers having issues with Workers Builds",
+        "url": "https://www.cloudflarestatus.com/incidents/2eno8w1fk27j#mmhbewzblwb0",
+        "published_at": "2026-10-27T12:50:00.344Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
       },
       {
-        "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-        "url": "https://www.cloudflarestatus.com/incidents/97y1vy5nsjrn#3kjac530d62c",
-        "published_at": "2026-10-26T21:48:46.945Z",
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#7y8pqx5bbr3m",
+        "published_at": "2026-10-27T12:28:07.676Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are investigating reports that some Workers Cron Triggers are running late, being skipped, or running more than once. Affected customers may see scheduled Workers invocations that do not run on time or run more than once. We will post an"
+        "meta": "Identified / Major / Resolved / Cloudflare has identified an issue affecting customers whose traffic passes through an external vendor firewall. Customers may observe: ERR_TIMED_OUT on standard HTTPS websites ERR_EMPTY_RESPONSE on non-standard HTTPS ports (e.g., 8443) We'"
       },
       {
-        "title": "Cloudflare Workers build delays",
-        "url": "https://www.cloudflarestatus.com/incidents/dv2vbq9kbgxn#haouqk65tpwk",
-        "published_at": "2026-10-26T16:03:32.129Z",
+        "title": "We are seeing some customers having issues with Workers Builds",
+        "url": "https://www.cloudflarestatus.com/incidents/2eno8w1fk27j#bh2ocksp0ezz",
+        "published_at": "2026-10-27T11:38:53.650Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / Queue times have returned to normal"
-      },
-      {
-        "title": "Cloudflare Workers build delays",
-        "url": "https://www.cloudflarestatus.com/incidents/dv2vbq9kbgxn#rvwuock8ntzo",
-        "published_at": "2026-10-26T15:38:12.668Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / Fix has been deployed. Monitoring as queue times return to normal."
+        "meta": "Identified / Minor / Resolved / Cloudflare has identified an issue impacting some Workers Builds customers where we would fail to deploy Workers with Containers. We are working to mitigate the problem. More updates to follow shortly."
       }
     ],
-    "last_statement_at": "2026-10-27T09:58:39.049359Z"
+    "last_statement_at": "2026-10-27T15:49:48.566324Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident started about 2h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: Cache Purging Delays Affecting Requests Routed Through EEUR.",
     "current_status": "major outage",
-    "reports_24h": 109,
+    "reports_24h": 107,
     "incidents": [
       {
-        "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-        "started_at": "2026-10-27T08:05:29Z",
-        "duration": "15m",
+        "title": "Cache Purging Delays in EEUR mainly ARN",
+        "started_at": "2026-10-27T15:15:36Z",
+        "duration": "1m",
         "acknowledgement": "warn icon Warn"
       },
       {
-        "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-        "started_at": "2026-10-27T08:04:03.697Z",
-        "duration": "13m",
-        "acknowledgement": "Minor / Resolved",
+        "title": "Cache Purging Delays Affecting Requests Routed Through EEUR",
+        "started_at": "2026-10-27T15:10:35.555Z",
+        "duration": "39m ongoing",
+        "acknowledgement": "Minor / Investigating",
         "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a"
+        "url": "https://www.cloudflarestatus.com/incidents/8s6pn9rvof3l"
       },
       {
-        "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-        "started_at": "2026-10-26T21:50:23Z",
-        "duration": "3h 25m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-        "started_at": "2026-10-26T21:48:46.945Z",
-        "duration": "3h 26m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/97y1vy5nsjrn"
-      },
-      {
-        "title": "Cloudflare Workers build delays",
-        "started_at": "2026-10-26T15:15:26Z",
-        "duration": "50m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Cloudflare Workers build delays",
-        "started_at": "2026-10-26T15:12:34.756Z",
-        "duration": "50m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/dv2vbq9kbgxn"
-      },
-      {
-        "title": "Network Performance Issues in Chicago (ORD)",
-        "started_at": "2026-10-26T09:21:56.911Z",
-        "duration": "0m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/s5io0kegzlsz"
-      },
-      {
-        "title": "Major incident",
-        "started_at": "2026-10-25T13:00:23Z",
-        "duration": "55m",
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "started_at": "2026-10-27T14:40:30Z",
+        "duration": "35m",
         "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "started_at": "2026-10-27T13:05:19Z",
+        "duration": "1h 35m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "started_at": "2026-10-27T12:55:26Z",
+        "duration": "10m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+        "started_at": "2026-10-27T12:28:07.676Z",
+        "duration": "2h 43m",
+        "acknowledgement": "Major / Resolved",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew"
+      },
+      {
+        "title": "We are seeing some customers having issues with Workers Builds",
+        "started_at": "2026-10-27T12:05:27Z",
+        "duration": "50m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "We are seeing some customers having issues with Workers Builds",
+        "started_at": "2026-10-27T11:38:53.650Z",
+        "duration": "1h 16m",
+        "acknowledgement": "Minor / Resolved",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/2eno8w1fk27j"
       }
     ],
     "top_reported_issues": [
+      {
+        "label": "Cloudflare Sites and Services",
+        "count": 1
+      },
+      {
+        "label": "Adelaide, Australia - (ADL)",
+        "count": 1
+      },
       {
         "label": "Africa",
         "count": 1
@@ -242,166 +248,14 @@
       {
         "label": "Asia",
         "count": 1
-      },
-      {
-        "label": "Baku, Azerbaijan - (GYD)",
-        "count": 1
-      },
-      {
-        "label": "Bangalore, India - (BLR)",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-26T10:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T10:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T10:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T10:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T11:00:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T11:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T11:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T11:45:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T12:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T12:15:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T12:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T12:45:00Z",
-        "signal_value": 14.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T13:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T13:15:00Z",
-        "signal_value": 13.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T13:30:00Z",
-        "signal_value": 24.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-10-26T13:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T14:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T14:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T14:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T14:45:00Z",
-        "signal_value": 24.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-10-26T15:00:00Z",
-        "signal_value": 16.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T15:15:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T15:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-26T15:45:00Z",
-        "signal_value": 16.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-10-26T16:00:00Z",
         "signal_value": 2.0,
@@ -833,6 +687,150 @@
         "signal_value": 17.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T10:00:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T10:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T10:30:00Z",
+        "signal_value": 32.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-10-27T10:45:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T11:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T11:15:00Z",
+        "signal_value": 15.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T11:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T11:45:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T12:00:00Z",
+        "signal_value": 21.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T12:15:00Z",
+        "signal_value": 15.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T12:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T12:45:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T13:00:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T13:15:00Z",
+        "signal_value": 30.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-10-27T13:30:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T13:45:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T14:00:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T14:15:00Z",
+        "signal_value": 39.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-10-27T14:30:00Z",
+        "signal_value": 35.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-10-27T14:45:00Z",
+        "signal_value": 16.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T15:00:00Z",
+        "signal_value": 26.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-10-27T15:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T15:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-27T15:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -841,82 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-27T09:45:00Z"
+      "last_sample_at": "2026-10-27T15:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "10:00",
-        "count": 3
-      },
-      {
-        "label": "10:20",
-        "count": 1
-      },
-      {
-        "label": "10:40",
-        "count": 3
-      },
-      {
-        "label": "11:00",
-        "count": 0
-      },
-      {
-        "label": "11:20",
-        "count": 2
-      },
-      {
-        "label": "11:40",
-        "count": 0
-      },
-      {
-        "label": "12:00",
-        "count": 1
-      },
-      {
-        "label": "12:20",
-        "count": 3
-      },
-      {
-        "label": "12:40",
-        "count": 1
-      },
-      {
-        "label": "13:00",
-        "count": 2
-      },
-      {
-        "label": "13:20",
-        "count": 0
-      },
-      {
-        "label": "13:40",
-        "count": 2
-      },
-      {
-        "label": "14:00",
-        "count": 3
-      },
-      {
-        "label": "14:20",
-        "count": 1
-      },
-      {
-        "label": "14:40",
-        "count": 3
-      },
-      {
-        "label": "15:00",
-        "count": 0
-      },
-      {
-        "label": "15:20",
-        "count": 2
-      },
-      {
-        "label": "15:40",
-        "count": 1
-      },
       {
         "label": "16:00",
         "count": 1
@@ -1132,6 +1058,78 @@
       {
         "label": "09:40",
         "count": 0
+      },
+      {
+        "label": "10:00",
+        "count": 0
+      },
+      {
+        "label": "10:20",
+        "count": 2
+      },
+      {
+        "label": "10:40",
+        "count": 0
+      },
+      {
+        "label": "11:00",
+        "count": 1
+      },
+      {
+        "label": "11:20",
+        "count": 3
+      },
+      {
+        "label": "11:40",
+        "count": 1
+      },
+      {
+        "label": "12:00",
+        "count": 2
+      },
+      {
+        "label": "12:20",
+        "count": 0
+      },
+      {
+        "label": "12:40",
+        "count": 3
+      },
+      {
+        "label": "13:00",
+        "count": 3
+      },
+      {
+        "label": "13:20",
+        "count": 1
+      },
+      {
+        "label": "13:40",
+        "count": 3
+      },
+      {
+        "label": "14:00",
+        "count": 0
+      },
+      {
+        "label": "14:20",
+        "count": 2
+      },
+      {
+        "label": "14:40",
+        "count": 0
+      },
+      {
+        "label": "15:00",
+        "count": 1
+      },
+      {
+        "label": "15:20",
+        "count": 3
+      },
+      {
+        "label": "15:40",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1140,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-27T05:58:23-04:00"
+      "last_reviewed_at": "2026-10-27T15:49:47Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 109,
-        "last_reviewed_at": "2026-10-27T05:58:23-04:00"
+        "reports_24h": 107,
+        "last_reviewed_at": "2026-10-27T15:49:47Z"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1162,8 +1160,8 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-10-26T21:01:21.203Z",
         "source": "Cloudflare Statuspage API"
       },
@@ -1176,9 +1174,9 @@
       },
       {
         "name": "Adelaide, Australia - (ADL)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-26T14:12:06.514Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-27T15:24:15.259Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1283,7 +1281,7 @@
         "name": "Ashburn, United States - (IAD)",
         "status": "degraded",
         "health": "under_maintenance",
-        "updated_at": "2026-10-27T09:13:36.038Z",
+        "updated_at": "2026-10-27T10:00:26.988Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1318,7 +1316,7 @@
         "name": "Annaba, Algeria - (AAE)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T14:12:06.470Z",
+        "updated_at": "2026-10-27T12:35:14.549Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1416,7 +1414,7 @@
         "name": "Cape Town, South Africa - (CPT)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T22:11:36.050Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1486,7 +1484,7 @@
         "name": "Hagatna, Guam - (GUM)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T15:15:06.167Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1528,7 +1526,7 @@
         "name": "Bogotá, Colombia - (BOG)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T14:33:06.129Z",
+        "updated_at": "2026-10-27T12:37:44.378Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1542,7 +1540,7 @@
         "name": "Dammam, Saudi Arabia - (DMM)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-27T08:02:14.380Z",
+        "updated_at": "2026-10-27T12:12:06.061Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1626,14 +1624,14 @@
         "name": "Dubai, United Arab Emirates - (DXB)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T15:04:36.162Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Djibouti, Djibouti - (JIB)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-26T15:30:48.506Z",
+        "updated_at": "2026-10-27T15:46:44.518Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1710,7 +1708,7 @@
         "name": "Erbil, Iraq - (EBL)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T15:04:36.177Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1766,7 +1764,7 @@
         "name": "Gaborone, Botswana - (GBE)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T15:15:06.127Z",
+        "updated_at": "2026-10-27T12:32:44.574Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1939,9 +1937,9 @@
       },
       {
         "name": "Denver, United States - (DEN)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-10-27T08:00:46.241Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-27T13:00:26.824Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1962,7 +1960,7 @@
         "name": "Curitiba, Brazil - (CWB)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T14:54:06.099Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1983,7 +1981,7 @@
         "name": "Luanda, Angola - (LAD)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T15:46:36.075Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2277,7 +2275,7 @@
         "name": "Kyiv, Ukraine - (KBP)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T15:36:06.563Z",
+        "updated_at": "2026-10-27T12:37:44.378Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2436,9 +2434,9 @@
       },
       {
         "name": "CDN Cache Purge",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-26T21:01:21.203Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-27T15:10:35.555Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2522,7 +2520,7 @@
         "name": "Jakarta, Indonesia - (CGK)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T14:43:36.102Z",
+        "updated_at": "2026-10-27T12:35:14.549Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2564,7 +2562,7 @@
         "name": "Mexico City, Mexico - (MEX)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T16:02:14.664Z",
+        "updated_at": "2026-10-27T12:33:14.459Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2709,9 +2707,9 @@
       },
       {
         "name": "Nashville, United States - (BNA)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-10-27T06:00:26.157Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-27T12:00:26.610Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2723,9 +2721,9 @@
       },
       {
         "name": "Newark, United States - (EWR)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-10-27T06:00:26.243Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-27T14:00:26.476Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2767,7 +2765,7 @@
         "name": "Norfolk, United States - (ORF)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T16:12:47.640Z",
+        "updated_at": "2026-10-27T12:36:14.434Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2793,16 +2791,16 @@
       },
       {
         "name": "Rio de Janeiro, Brazil - (GIG)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-27T08:53:36.030Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-27T10:47:44.472Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Kathmandu, Nepal - (KTM)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-27T09:12:14.603Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-27T11:28:06.300Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2823,7 +2821,7 @@
         "name": "Custom Pages",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-26T21:01:21.203Z",
+        "updated_at": "2026-10-27T13:00:26.988Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2837,7 +2835,7 @@
         "name": "Omaha, United States - (OMA)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T16:12:46.765Z",
+        "updated_at": "2026-10-27T12:33:14.459Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2858,7 +2856,7 @@
         "name": "Kolkata, India - (CCU)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T14:38:17.455Z",
+        "updated_at": "2026-10-27T12:34:14.448Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2879,7 +2877,7 @@
         "name": "Santiago, Chile - (SCL)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T16:33:45.849Z",
+        "updated_at": "2026-10-27T12:33:14.459Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2900,7 +2898,7 @@
         "name": "Data Loss Prevention (DLP)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-26T21:01:21.203Z",
+        "updated_at": "2026-10-27T13:00:26.988Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2991,7 +2989,7 @@
         "name": "Saint Petersburg, Russia - (LED)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T15:46:36.099Z",
+        "updated_at": "2026-10-27T12:33:14.459Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3122,9 +3120,9 @@
       },
       {
         "name": "Stockholm, Sweden - (ARN)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-26T14:17:18.961Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-27T15:10:35.555Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3180,7 +3178,7 @@
         "name": "San Antonio, United States - (SAT)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T16:33:45.411Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3278,7 +3276,7 @@
         "name": "Email Security (Zero Trust)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-26T21:01:21.203Z",
+        "updated_at": "2026-10-27T13:00:26.988Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3318,9 +3316,9 @@
       },
       {
         "name": "Seattle, United States - (SEA)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-27T08:32:44.628Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-27T13:40:36.023Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3332,9 +3330,9 @@
       },
       {
         "name": "New Delhi, India - (DEL)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-27T09:13:36.038Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-27T11:28:06.300Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3362,7 +3360,7 @@
         "name": "Vilnius, Lithuania - (VNO)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-10-26T17:00:06.173Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3446,7 +3444,7 @@
         "name": "Santiago de los Caballeros, Dominican Republic - (STI)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T16:44:16.233Z",
+        "updated_at": "2026-10-27T12:33:44.436Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3481,7 +3479,7 @@
         "name": "Tampa, United States - (TPA)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-27T05:02:35.990Z",
+        "updated_at": "2026-10-27T10:42:14.497Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3549,9 +3547,9 @@
       },
       {
         "name": "Singapore, Singapore - (SIN)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-26T19:15:36.000Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-27T10:44:44.831Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3593,7 +3591,7 @@
         "name": "Palmas, Brazil - (PMW)",
         "status": "major outage",
         "health": "major_outage",
-        "updated_at": "2026-10-26T16:23:15.406Z",
+        "updated_at": "2026-10-27T12:33:14.459Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3619,9 +3617,9 @@
       },
       {
         "name": "Aracatuba, Brazil - (ARU)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-26T14:22:36.107Z",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-27T15:41:44.580Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3670,7 +3668,7 @@
         "name": "Log Explorer",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-26T21:01:21.203Z",
+        "updated_at": "2026-10-27T13:00:26.988Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4153,7 +4151,7 @@
         "name": "Workers Builds",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-27T08:17:26.151Z",
+        "updated_at": "2026-10-27T13:00:26.988Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4412,7 +4410,7 @@
         "name": "Lahore, Pakistan - (LHE)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-26T20:38:44.445Z",
+        "updated_at": "2026-10-27T15:18:44.527Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4526,13 +4524,20 @@
         "health": "operational",
         "updated_at": "2026-10-26T15:51:47.587Z",
         "source": "Cloudflare Statuspage API"
+      },
+      {
+        "name": "“Jaipur”, India - (JAI)",
+        "status": "major outage",
+        "health": "major_outage",
+        "updated_at": "2026-10-27T12:34:14.448Z",
+        "source": "Cloudflare Statuspage API"
       }
     ],
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
         "label": "Connectivity issue",
-        "count": 2
+        "count": 5
       },
       {
         "label": "Error message",
@@ -4566,60 +4571,60 @@
   },
   "reports": [
     {
-      "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-      "url": "https://www.cloudflarestatus.com/#2026-10-27T08:05:29Z",
-      "published_at": "2026-10-27T08:05:29Z",
+      "title": "Cache Purging Delays in EEUR mainly ARN",
+      "url": "https://www.cloudflarestatus.com/#2026-10-27T15:15:36Z",
+      "published_at": "2026-10-27T15:15:36Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
     {
-      "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-      "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a",
-      "published_at": "2026-10-27T08:04:03.697Z",
+      "title": "Cache Purging Delays Affecting Requests Routed Through EEUR",
+      "url": "https://www.cloudflarestatus.com/incidents/8s6pn9rvof3l",
+      "published_at": "2026-10-27T15:10:35.555Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
+      "meta": "Minor / Investigating"
     },
     {
-      "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-      "url": "https://www.cloudflarestatus.com/#2026-10-26T21:50:23Z",
-      "published_at": "2026-10-26T21:50:23Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-      "url": "https://www.cloudflarestatus.com/incidents/97y1vy5nsjrn",
-      "published_at": "2026-10-26T21:48:46.945Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Cloudflare Workers build delays",
-      "url": "https://www.cloudflarestatus.com/#2026-10-26T15:15:26Z",
-      "published_at": "2026-10-26T15:15:26Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Cloudflare Workers build delays",
-      "url": "https://www.cloudflarestatus.com/incidents/dv2vbq9kbgxn",
-      "published_at": "2026-10-26T15:12:34.756Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Network Performance Issues in Chicago (ORD)",
-      "url": "https://www.cloudflarestatus.com/incidents/s5io0kegzlsz",
-      "published_at": "2026-10-26T09:21:56.911Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Major incident",
-      "url": "https://www.cloudflarestatus.com/#2026-10-25T13:00:23Z",
-      "published_at": "2026-10-25T13:00:23Z",
+      "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+      "url": "https://www.cloudflarestatus.com/#2026-10-27T14:40:30Z",
+      "published_at": "2026-10-27T14:40:30Z",
       "source": "StatusGator",
       "meta": "down icon Down"
+    },
+    {
+      "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+      "url": "https://www.cloudflarestatus.com/#2026-10-27T13:05:19Z",
+      "published_at": "2026-10-27T13:05:19Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+      "url": "https://www.cloudflarestatus.com/#2026-10-27T12:55:26Z",
+      "published_at": "2026-10-27T12:55:26Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+      "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew",
+      "published_at": "2026-10-27T12:28:07.676Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Major / Resolved"
+    },
+    {
+      "title": "We are seeing some customers having issues with Workers Builds",
+      "url": "https://www.cloudflarestatus.com/#2026-10-27T12:05:27Z",
+      "published_at": "2026-10-27T12:05:27Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "We are seeing some customers having issues with Workers Builds",
+      "url": "https://www.cloudflarestatus.com/incidents/2eno8w1fk27j",
+      "published_at": "2026-10-27T11:38:53.650Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -4628,108 +4633,108 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-27T09:58:40.610785Z"
+      "published_at": "2026-10-27T15:49:48.774838Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-27T09:58:40.610785Z"
+      "published_at": "2026-10-27T15:49:48.774838Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-27T09:58:40.610785Z"
+      "published_at": "2026-10-27T15:49:48.774838Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-10-27T09:58:40.610785Z"
+      "published_at": "2026-10-27T15:49:48.774838Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-27T09:58:40.610785Z"
+      "published_at": "2026-10-27T15:49:48.774838Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-27T09:58:40.610785Z"
+      "published_at": "2026-10-27T15:49:48.774838Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-10-27T09:58:39.049359Z",
+      "published_at": "2026-10-27T15:49:48.566324Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
     },
     {
-      "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-      "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a#jahy2324alvy",
-      "published_at": "2026-10-27T08:17:26.151Z",
+      "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+      "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#mousm75cq6lu",
+      "published_at": "2026-10-27T15:12:03.752Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Major / Resolved / This incident has been resolved."
+    },
+    {
+      "title": "Cache Purging Delays Affecting Requests Routed Through EEUR",
+      "url": "https://www.cloudflarestatus.com/incidents/8s6pn9rvof3l#lx362ocn3zcr",
+      "published_at": "2026-10-27T15:10:35.555Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / Some single-file cache purge requests (purge by URL) submitted through the Dashboard or API and routed through our EEUR purge queues are experiencing delays of up to 30 minutes. Cache invalidation for these requests may be delayed across ou"
+    },
+    {
+      "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+      "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#01niiayrc2pw",
+      "published_at": "2026-10-27T14:52:00.098Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Major / Resolved / A fix has been implemented and we are monitoring the results."
+    },
+    {
+      "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+      "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#lu3ht0uu9d0e",
+      "published_at": "2026-10-27T14:38:20.137Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Major / Resolved / Cloudflare has identified an issue affecting customers whose traffic passes through an external vendor firewall. Customers may observe: ERR_TIMED_OUT on standard HTTPS websites ERR_EMPTY_RESPONSE on non-standard HTTPS ports (e.g., 8443) We'"
+    },
+    {
+      "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+      "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew#q55nd225c0u8",
+      "published_at": "2026-10-27T13:20:33.671Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Major / Resolved / Cloudflare has identified an issue affecting customers whose traffic passes through an external vendor firewall. Customers may observe: ERR_TIMED_OUT on standard HTTPS websites ERR_EMPTY_RESPONSE on non-standard HTTPS ports (e.g., 8443) We'"
+    },
+    {
+      "title": "We are seeing some customers having issues with Workers Builds",
+      "url": "https://www.cloudflarestatus.com/incidents/2eno8w1fk27j#o3piqfzkaqr2",
+      "published_at": "2026-10-27T12:55:24.566Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     },
     {
-      "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-      "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a#199ykcgvpsr8",
-      "published_at": "2026-10-27T08:10:57.458Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
-    },
-    {
-      "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-      "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a#va89c07atbg4",
-      "published_at": "2026-10-27T08:07:33.314Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Identified / Minor / Resolved / Some customers may observe that cloning Github repositories are failing"
-    },
-    {
-      "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-      "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a#ukcvb4hphd07",
-      "published_at": "2026-10-27T08:04:03.697Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are currently investigating an issue where some customers may notice their Pages and/or workers builds are intermittently failing."
-    },
-    {
-      "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-      "url": "https://www.cloudflarestatus.com/incidents/97y1vy5nsjrn#p24y46kwqrhx",
-      "published_at": "2026-10-27T01:15:15.525Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-      "url": "https://www.cloudflarestatus.com/incidents/97y1vy5nsjrn#g8ri41od0tva",
-      "published_at": "2026-10-27T00:55:17.911Z",
+      "title": "We are seeing some customers having issues with Workers Builds",
+      "url": "https://www.cloudflarestatus.com/incidents/2eno8w1fk27j#mmhbewzblwb0",
+      "published_at": "2026-10-27T12:50:00.344Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
-    },
-    {
-      "title": "Delayed, missed, and duplicated Workers Cron Triggers",
-      "url": "https://www.cloudflarestatus.com/incidents/97y1vy5nsjrn#3kjac530d62c",
-      "published_at": "2026-10-26T21:48:46.945Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are investigating reports that some Workers Cron Triggers are running late, being skipped, or running more than once. Affected customers may see scheduled Workers invocations that do not run on time or run more than once. We will post an"
     }
   ],
   "social": [],
@@ -4745,11 +4750,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-10-27T09:58:38.881946Z",
+      "last_item_at": "2026-10-27T15:49:47.470354Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 415,
-      "fetched_at": "2026-10-27T09:58:38.881965Z",
+      "duration_ms": 159,
+      "fetched_at": "2026-10-27T15:49:47.470369Z",
       "cache_hit": false
     },
     {
@@ -4763,11 +4768,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-27T05:58:23-04:00",
+      "last_item_at": "2026-10-27T15:49:47Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 166,
-      "fetched_at": "2026-10-27T09:58:39.048941Z",
+      "duration_ms": 1095,
+      "fetched_at": "2026-10-27T15:49:48.565795Z",
       "cache_hit": false
     },
     {
@@ -4781,17 +4786,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-27T09:58:39.049359Z",
+      "last_item_at": "2026-10-27T15:49:48.566324Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1559,
-      "fetched_at": "2026-10-27T09:58:40.609272Z",
+      "duration_ms": 206,
+      "fetched_at": "2026-10-27T15:49:48.772972Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-27T09:58:40.610785Z",
+    "generated_at": "2026-10-27T15:49:48.774838Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4813,7 +4818,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "major",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4828,30 +4833,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 415,
+          "duration_ms": 159,
           "cache_hit": false,
-          "at": "2026-10-27T09:58:38Z"
+          "at": "2026-10-27T15:49:47Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 254.0
+          "avg_duration_ms": 252.5
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 278.5
+          "avg_duration_ms": 273.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-27T09:58:38Z",
+        "last_success_at": "2026-10-27T15:49:47Z",
         "last_failure_at": null
       },
       {
@@ -4865,30 +4870,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 166,
+          "duration_ms": 1095,
           "cache_hit": false,
-          "at": "2026-10-27T09:58:38Z"
+          "at": "2026-10-27T15:49:47Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1505.3
+          "avg_duration_ms": 1224.0
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1367.9
+          "avg_duration_ms": 1332.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-27T09:58:38Z",
+        "last_success_at": "2026-10-27T15:49:47Z",
         "last_failure_at": null
       },
       {
@@ -4902,38 +4907,105 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1559,
+          "duration_ms": 206,
           "cache_hit": false,
-          "at": "2026-10-27T09:58:38Z"
+          "at": "2026-10-27T15:49:47Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 765.6
+          "avg_duration_ms": 768.6
         },
         "metrics_7d": {
-          "runs": 70,
-          "ok": 70,
+          "runs": 68,
+          "ok": 68,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 574.0
+          "avg_duration_ms": 561.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-27T09:58:38Z",
+        "last_success_at": "2026-10-27T15:49:47Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-27T09:58:40.610785Z",
+    "generated_at": "2026-10-27T15:49:48.774838Z",
     "incidents": {
       "new": [
+        {
+          "id": "363986758a24542c",
+          "title": "Cache Purging Delays in EEUR mainly ARN",
+          "started_at": "2026-10-27T15:15:36Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "55466f5796ca1c68",
+          "title": "Cache Purging Delays Affecting Requests Routed Through EEUR",
+          "started_at": "2026-10-27T15:10:35.555Z",
+          "duration": "39m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "5061ec9f51c641ad",
+          "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+          "started_at": "2026-10-27T14:40:30Z",
+          "duration": "35m",
+          "acknowledgement": "down icon Down",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "cdab73b74e69c506",
+          "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+          "started_at": "2026-10-27T13:05:19Z",
+          "duration": "1h 35m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "4b634b888d8f32d1",
+          "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+          "started_at": "2026-10-27T12:55:26Z",
+          "duration": "10m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "76cac0f112359ab6",
+          "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+          "started_at": "2026-10-27T12:28:07.676Z",
+          "duration": "2h 43m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "ebf1ca0002e5d972",
+          "title": "We are seeing some customers having issues with Workers Builds",
+          "started_at": "2026-10-27T12:05:27Z",
+          "duration": "50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "da70ca4f21676ed8",
+          "title": "We are seeing some customers having issues with Workers Builds",
+          "started_at": "2026-10-27T11:38:53.650Z",
+          "duration": "1h 16m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [],
+      "resolved": [
         {
           "id": "ae84fee60721fa19",
           "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
@@ -4949,23 +5021,52 @@
           "duration": "13m",
           "acknowledgement": "Minor / Resolved",
           "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "updated": [],
-      "resolved": [
+        },
         {
-          "id": "4e5d598dd200760d",
-          "title": "Major incident",
-          "started_at": "2026-10-25T12:10:40Z",
-          "duration": "50m",
-          "acknowledgement": "down icon Down",
+          "id": "1eef0b1de55a7af5",
+          "title": "Delayed, missed, and duplicated Workers Cron Triggers",
+          "started_at": "2026-10-26T21:50:23Z",
+          "duration": "3h 25m",
+          "acknowledgement": "warn icon Warn",
           "url": "https://www.cloudflarestatus.com/"
         },
         {
-          "id": "af3b9ebfbc21db8d",
+          "id": "970260d182e3aee0",
+          "title": "Delayed, missed, and duplicated Workers Cron Triggers",
+          "started_at": "2026-10-26T21:48:46.945Z",
+          "duration": "3h 26m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "26256660fc57fe9e",
+          "title": "Cloudflare Workers build delays",
+          "started_at": "2026-10-26T15:15:26Z",
+          "duration": "50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "35ec51206a1e7fad",
+          "title": "Cloudflare Workers build delays",
+          "started_at": "2026-10-26T15:12:34.756Z",
+          "duration": "50m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "efcf72d746e56bf6",
+          "title": "Network Performance Issues in Chicago (ORD)",
+          "started_at": "2026-10-26T09:21:56.911Z",
+          "duration": "0m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "f2d320d7d2938e01",
           "title": "Major incident",
-          "started_at": "2026-10-25T11:50:38Z",
-          "duration": "20m",
+          "started_at": "2026-10-25T13:00:23Z",
+          "duration": "55m",
           "acknowledgement": "down icon Down",
           "url": "https://www.cloudflarestatus.com/"
         }
@@ -4974,28 +5075,76 @@
     "reports": {
       "new": [
         {
-          "id": "ca9a850fa39f9715",
-          "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-          "url": "https://www.cloudflarestatus.com/#2026-10-27T08:05:29Z",
-          "published_at": "2026-10-27T08:05:29Z",
+          "id": "aeb5c7fac485a6a2",
+          "title": "Cache Purging Delays in EEUR mainly ARN",
+          "url": "https://www.cloudflarestatus.com/#2026-10-27T15:15:36Z",
+          "published_at": "2026-10-27T15:15:36Z",
           "source": "StatusGator",
           "meta": "warn icon Warn"
         },
         {
-          "id": "e7ae4e8033754f32",
-          "title": "Some customers may notice their Pages and/or workers builds are intermittently failing.",
-          "url": "https://www.cloudflarestatus.com/incidents/j3llzsq3m17a",
-          "published_at": "2026-10-27T08:04:03.697Z",
+          "id": "3e05252a9cbc1ccf",
+          "title": "Cache Purging Delays Affecting Requests Routed Through EEUR",
+          "url": "https://www.cloudflarestatus.com/incidents/8s6pn9rvof3l",
+          "published_at": "2026-10-27T15:10:35.555Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Investigating"
+        },
+        {
+          "id": "b12ec868fc8a5ded",
+          "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+          "url": "https://www.cloudflarestatus.com/#2026-10-27T14:40:30Z",
+          "published_at": "2026-10-27T14:40:30Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "b84d3b8cafe3df36",
+          "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+          "url": "https://www.cloudflarestatus.com/#2026-10-27T13:05:19Z",
+          "published_at": "2026-10-27T13:05:19Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "24380ab7c4825973",
+          "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+          "url": "https://www.cloudflarestatus.com/#2026-10-27T12:55:26Z",
+          "published_at": "2026-10-27T12:55:26Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "5872415e5ca4d08c",
+          "title": "ERR_TIMED_OUT and ERR_EMPTY_RESPONSE being observed by Cloudflare Customers",
+          "url": "https://www.cloudflarestatus.com/incidents/dk2obcyw2aew",
+          "published_at": "2026-10-27T12:28:07.676Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Major / Resolved"
+        },
+        {
+          "id": "d46437c0aedafb51",
+          "title": "We are seeing some customers having issues with Workers Builds",
+          "url": "https://www.cloudflarestatus.com/#2026-10-27T12:05:27Z",
+          "published_at": "2026-10-27T12:05:27Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "33ff502735ebeebc",
+          "title": "We are seeing some customers having issues with Workers Builds",
+          "url": "https://www.cloudflarestatus.com/incidents/2eno8w1fk27j",
+          "published_at": "2026-10-27T11:38:53.650Z",
           "source": "Cloudflare Statuspage API",
           "meta": "Minor / Resolved"
         }
       ]
     },
     "summary": {
-      "new_incidents": 2,
+      "new_incidents": 8,
       "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "resolved_incidents": 8,
+      "new_reports": 8
     }
   }
 }
