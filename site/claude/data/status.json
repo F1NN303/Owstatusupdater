@@ -1,50 +1,50 @@
 {
-  "generated_at": "2026-10-28T11:30:34.392297Z",
+  "generated_at": "2026-10-28T17:18:48.130737Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.85,
+      "incidents": 4.3,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "support_score": 0.18,
+      "profile_adjustment": 1.05
     },
     "signal_metrics": {
-      "reports_24h": 105,
-      "recent_incidents_6h": 0,
+      "reports_24h": 106,
+      "recent_incidents_6h": 1,
       "recent_incidents_24h": 2,
       "cross_source": {
         "report_score": 0.0,
-        "news_score": 0.0,
+        "news_score": 0.18,
         "social_score": 0.0,
-        "combined_score": 0.0,
+        "combined_score": 0.18,
         "report_hits_24h": 0
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
-      "official_active_incident_floor_applied": false,
+      "official_operational_cap_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,39 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: All Systems Operational",
+    "summary": "Claude Statuspage API: Partially Degraded Service",
     "updates": [
       {
-        "title": "Claude Statuspage API: All Systems Operational",
+        "title": "Claude Statuspage API: Partially Degraded Service",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-10-28T11:30:33.830841Z",
+        "published_at": "2026-10-28T17:18:47.744644Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Elevated errors affecting the Google Calendar connector",
+        "url": "https://status.anthropic.com/incidents/phg1y2yh07n2#gxyb09f375d4",
+        "published_at": "2026-10-28T16:19:10.239Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We are investigating elevated errors affecting the Google Calendar connector. Some requests to list or search calendar events have been failing since October 26. We will provide an update as soon as possible."
       },
       {
         "title": "Elevated errors affecting the Gmail connector",
@@ -141,26 +149,26 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Major / Resolved / We are investigating elevated errors on requests to Claude Sonnet 5.5. We will provide an update as soon as possible."
-      },
-      {
-        "title": "Elevated errors for Claude Fable 5.1",
-        "url": "https://status.anthropic.com/incidents/vx06kp8wfpq2#qj1nmz7mxksm",
-        "published_at": "2026-10-25T08:49:29.501Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Major / Resolved / The issue affecting Claude services has been resolved. Impact occurred from 01:08 PT / 08:08 UTC to 01:29 PT / 08:29 UTC."
       }
     ],
-    "last_statement_at": "2026-10-28T11:30:33.830841Z"
+    "last_statement_at": "2026-10-28T17:18:47.744644Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 105,
+    "summary": "Claude Statuspage reports an active incident: Elevated errors affecting the Google Calendar connector.",
+    "current_status": "degraded",
+    "reports_24h": 106,
     "incidents": [
+      {
+        "title": "Elevated errors affecting the Google Calendar connector",
+        "started_at": "2026-10-28T16:19:09.946Z",
+        "duration": "59m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "Claude Statuspage API",
+        "url": "https://status.anthropic.com/incidents/phg1y2yh07n2"
+      },
       {
         "title": "Elevated errors affecting the Gmail connector",
         "started_at": "2026-10-28T03:59:32.234Z",
@@ -216,95 +224,32 @@
         "acknowledgement": "Major / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/3cqf3pmlnr96"
-      },
-      {
-        "title": "Elevated errors for Claude Fable 5.1, Sonnet 5.5, and Haiku 5.5",
-        "started_at": "2026-10-23T23:37:42.667Z",
-        "duration": "33m",
-        "acknowledgement": "Critical / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/h101vcmhnfky"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "claude.ai",
+        "count": 1
+      },
+      {
+        "label": "Claude Code",
+        "count": 1
+      },
+      {
+        "label": "Claude Cowork",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [],
     "service_health_24h_meta": null,
     "summary_origin": "Claude Statuspage API",
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "11:40",
-        "count": 1
-      },
-      {
-        "label": "12:00",
-        "count": 2
-      },
-      {
-        "label": "12:20",
-        "count": 0
-      },
-      {
-        "label": "12:40",
-        "count": 2
-      },
-      {
-        "label": "13:00",
-        "count": 3
-      },
-      {
-        "label": "13:20",
-        "count": 1
-      },
-      {
-        "label": "13:40",
-        "count": 3
-      },
-      {
-        "label": "14:00",
-        "count": 0
-      },
-      {
-        "label": "14:20",
-        "count": 2
-      },
-      {
-        "label": "14:40",
-        "count": 0
-      },
-      {
-        "label": "15:00",
-        "count": 1
-      },
-      {
-        "label": "15:20",
-        "count": 3
-      },
-      {
-        "label": "15:40",
-        "count": 1
-      },
-      {
-        "label": "16:00",
-        "count": 2
-      },
-      {
-        "label": "16:20",
-        "count": 0
-      },
-      {
-        "label": "16:40",
-        "count": 2
-      },
-      {
-        "label": "17:00",
-        "count": 3
-      },
       {
         "label": "17:20",
         "count": 1
@@ -524,6 +469,74 @@
       {
         "label": "11:20",
         "count": 0
+      },
+      {
+        "label": "11:40",
+        "count": 2
+      },
+      {
+        "label": "12:00",
+        "count": 3
+      },
+      {
+        "label": "12:20",
+        "count": 1
+      },
+      {
+        "label": "12:40",
+        "count": 3
+      },
+      {
+        "label": "13:00",
+        "count": 0
+      },
+      {
+        "label": "13:20",
+        "count": 2
+      },
+      {
+        "label": "13:40",
+        "count": 0
+      },
+      {
+        "label": "14:00",
+        "count": 1
+      },
+      {
+        "label": "14:20",
+        "count": 3
+      },
+      {
+        "label": "14:40",
+        "count": 1
+      },
+      {
+        "label": "15:00",
+        "count": 2
+      },
+      {
+        "label": "15:20",
+        "count": 0
+      },
+      {
+        "label": "15:40",
+        "count": 2
+      },
+      {
+        "label": "16:00",
+        "count": 3
+      },
+      {
+        "label": "16:20",
+        "count": 1
+      },
+      {
+        "label": "16:40",
+        "count": 3
+      },
+      {
+        "label": "17:00",
+        "count": 0
       }
     ],
     "user_reports_24h_meta": {
@@ -532,23 +545,23 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-28T11:30:32Z"
+      "last_reviewed_at": "2026-10-28T18:18:46+01:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 105,
-        "last_reviewed_at": "2026-10-28T11:30:32Z"
+        "reports_24h": 106,
+        "last_reviewed_at": "2026-10-28T18:18:46+01:00"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
     "components": [
       {
         "name": "claude.ai",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-28T05:48:13.017Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-28T16:19:10.020Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -567,16 +580,16 @@
       },
       {
         "name": "Claude Code",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-28T05:48:13.047Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-28T16:19:10.055Z",
         "source": "Claude Statuspage API"
       },
       {
         "name": "Claude Cowork",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-28T05:48:13.075Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-28T16:19:10.086Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -590,6 +603,13 @@
     "scheduled_maintenances": []
   },
   "reports": [
+    {
+      "title": "Elevated errors affecting the Google Calendar connector",
+      "url": "https://status.anthropic.com/incidents/phg1y2yh07n2",
+      "published_at": "2026-10-28T16:19:09.946Z",
+      "source": "Claude Statuspage API",
+      "meta": "Minor / Investigating"
+    },
     {
       "title": "Elevated errors affecting the Gmail connector",
       "url": "https://status.anthropic.com/incidents/9ftx658xtd5z",
@@ -638,13 +658,6 @@
       "published_at": "2026-10-24T00:31:37.604Z",
       "source": "Claude Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Elevated errors for Claude Fable 5.1, Sonnet 5.5, and Haiku 5.5",
-      "url": "https://status.anthropic.com/incidents/h101vcmhnfky",
-      "published_at": "2026-10-23T23:37:42.667Z",
-      "source": "Claude Statuspage API",
-      "meta": "Critical / Resolved"
     }
   ],
   "known_resources": [
@@ -653,45 +666,53 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-28T11:30:34.392297Z"
+      "published_at": "2026-10-28T17:18:48.130737Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-28T11:30:34.392297Z"
+      "published_at": "2026-10-28T17:18:48.130737Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-28T11:30:34.392297Z"
+      "published_at": "2026-10-28T17:18:48.130737Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-28T11:30:34.392297Z"
+      "published_at": "2026-10-28T17:18:48.130737Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-28T11:30:34.392297Z"
+      "published_at": "2026-10-28T17:18:48.130737Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: All Systems Operational",
+      "title": "Claude Statuspage API: Partially Degraded Service",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-10-28T11:30:33.830841Z",
+      "published_at": "2026-10-28T17:18:47.744644Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Elevated errors affecting the Google Calendar connector",
+      "url": "https://status.anthropic.com/incidents/phg1y2yh07n2#gxyb09f375d4",
+      "published_at": "2026-10-28T16:19:10.239Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We are investigating elevated errors affecting the Google Calendar connector. Some requests to list or search calendar events have been failing since October 26. We will provide an update as soon as possible."
     },
     {
       "title": "Elevated errors affecting the Gmail connector",
@@ -740,14 +761,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Major / Resolved / The issue affecting Claude services has been resolved."
-    },
-    {
-      "title": "Elevated errors for Claude Sonnet 5.5",
-      "url": "https://status.anthropic.com/incidents/0q89dylg9vjk#3jvd1g26wklf",
-      "published_at": "2026-10-27T09:38:11.433Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Major / Resolved / A fix has been deployed for the issue affecting Claude services and we are monitoring for recovery."
     }
   ],
   "social": [],
@@ -763,11 +776,11 @@
       "ok": true,
       "error": null,
       "item_count": 0,
-      "last_item_at": "2026-10-28T11:30:32.174908Z",
+      "last_item_at": "2026-10-28T17:18:46.292591Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 207,
-      "fetched_at": "2026-10-28T11:30:32.174939Z",
+      "duration_ms": 161,
+      "fetched_at": "2026-10-28T17:18:46.292618Z",
       "cache_hit": false
     },
     {
@@ -781,11 +794,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-28T11:30:32Z",
+      "last_item_at": "2026-10-28T18:18:46+01:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1655,
-      "fetched_at": "2026-10-28T11:30:33.830652Z",
+      "duration_ms": 1451,
+      "fetched_at": "2026-10-28T17:18:47.744425Z",
       "cache_hit": false
     },
     {
@@ -799,17 +812,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-28T11:30:33.830841Z",
+      "last_item_at": "2026-10-28T17:18:47.744644Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 560,
-      "fetched_at": "2026-10-28T11:30:34.391208Z",
+      "duration_ms": 384,
+      "fetched_at": "2026-10-28T17:18:48.129246Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-28T11:30:34.392297Z",
+    "generated_at": "2026-10-28T17:18:48.130737Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -831,7 +844,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -846,9 +859,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 207,
+          "duration_ms": 161,
           "cache_hit": false,
-          "at": "2026-10-28T11:30:31Z"
+          "at": "2026-10-28T17:18:46Z"
         },
         "metrics_24h": {
           "runs": 5,
@@ -857,7 +870,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 264.2
+          "avg_duration_ms": 272.2
         },
         "metrics_7d": {
           "runs": 67,
@@ -866,10 +879,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 260.3
+          "avg_duration_ms": 257.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-28T11:30:31Z",
+        "last_success_at": "2026-10-28T17:18:46Z",
         "last_failure_at": null
       },
       {
@@ -883,9 +896,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1655,
+          "duration_ms": 1451,
           "cache_hit": false,
-          "at": "2026-10-28T11:30:31Z"
+          "at": "2026-10-28T17:18:46Z"
         },
         "metrics_24h": {
           "runs": 5,
@@ -894,7 +907,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1232.8
+          "avg_duration_ms": 1344.6
         },
         "metrics_7d": {
           "runs": 67,
@@ -903,10 +916,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1274.1
+          "avg_duration_ms": 1282.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-28T11:30:31Z",
+        "last_success_at": "2026-10-28T17:18:46Z",
         "last_failure_at": null
       },
       {
@@ -920,9 +933,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 560,
+          "duration_ms": 384,
           "cache_hit": false,
-          "at": "2026-10-28T11:30:31Z"
+          "at": "2026-10-28T17:18:46Z"
         },
         "metrics_24h": {
           "runs": 5,
@@ -931,7 +944,7 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 462.8
+          "avg_duration_ms": 480.0
         },
         "metrics_7d": {
           "runs": 67,
@@ -940,38 +953,56 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 455.1
+          "avg_duration_ms": 453.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-28T11:30:31Z",
+        "last_success_at": "2026-10-28T17:18:46Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-28T11:30:34.392297Z",
+    "generated_at": "2026-10-28T17:18:48.130737Z",
     "incidents": {
-      "new": [],
-      "updated": [
+      "new": [
         {
-          "id": "660caeae4cb7fb2e",
-          "title": "Elevated errors affecting the Gmail connector",
-          "started_at": "2026-10-28T03:59:32.234Z",
-          "duration": "1h 48m",
-          "acknowledgement": "Minor / Resolved",
+          "id": "219a23b91b235e7e",
+          "title": "Elevated errors affecting the Google Calendar connector",
+          "started_at": "2026-10-28T16:19:09.946Z",
+          "duration": "59m ongoing",
+          "acknowledgement": "Minor / Investigating",
           "url": "https://status.anthropic.com/"
         }
       ],
-      "resolved": []
+      "updated": [],
+      "resolved": [
+        {
+          "id": "68dc0f9400b25049",
+          "title": "Elevated errors for Claude Fable 5.1, Sonnet 5.5, and Haiku 5.5",
+          "started_at": "2026-10-23T23:37:42.667Z",
+          "duration": "33m",
+          "acknowledgement": "Critical / Resolved",
+          "url": "https://status.anthropic.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "400849eb63c7fab6",
+          "title": "Elevated errors affecting the Google Calendar connector",
+          "url": "https://status.anthropic.com/incidents/phg1y2yh07n2",
+          "published_at": "2026-10-28T16:19:09.946Z",
+          "source": "Claude Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
-      "updated_incidents": 1,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "new_incidents": 1,
+      "updated_incidents": 0,
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
