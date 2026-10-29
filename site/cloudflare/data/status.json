@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-29T19:50:54.366164Z",
+  "generated_at": "2026-10-29T20:28:50.979956Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "degraded",
-    "severity_score": 5,
+    "severity_key": "major",
+    "severity_score": 8,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -13,19 +13,19 @@
       "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
-      "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "support_score": 0.648,
+      "profile_adjustment": 3.05
     },
     "signal_metrics": {
-      "reports_24h": 110,
+      "reports_24h": 112,
       "recent_incidents_6h": 7,
       "recent_incidents_24h": 8,
       "cross_source": {
-        "report_score": 0.0,
-        "news_score": 0.0,
+        "report_score": 0.468,
+        "news_score": 0.18,
         "social_score": 0.0,
-        "combined_score": 0.0,
-        "report_hits_24h": 0
+        "combined_score": 0.648,
+        "report_hits_24h": 2
       }
     },
     "safeguards": {
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "high",
-      "reason": "official_major_vs_aggregate_lower",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "major outage",
-      "derived_severity": "degraded",
+      "derived_severity": "major",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status reports a major outage while aggregate severity is lower."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "minor",
-      "severity_score": 3,
-      "report_weight": 0.0
+      "severity_key": "major",
+      "severity_score": 10,
+      "report_weight": 0.5
     },
     "na": {
       "severity_key": "major",
-      "severity_score": 9,
-      "report_weight": 1.0
+      "severity_score": 10,
+      "report_weight": 0.5
     },
     "apac": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.0
     }
   },
@@ -73,10 +73,18 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-10-29T19:50:53.857836Z",
+        "published_at": "2026-10-29T20:28:50.206640Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
+      },
+      {
+        "title": "R2 Elevated Latency in Eastern Europe",
+        "url": "https://www.cloudflarestatus.com/incidents/kp28d3kzgft1#q3zh9u5k887d",
+        "published_at": "2026-10-29T19:57:28.577Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / Cloudflare is investigating elevated latency affecting R2 requests in Eastern Europe. We are actively investigating and will provide further updates as soon as more information becomes available."
       },
       {
         "title": "Increased Errors for Durable Objects and Downstream Services in Eastern North America (ENAM)",
@@ -141,26 +149,32 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
-      },
-      {
-        "title": "Increased Worker services errors",
-        "url": "https://www.cloudflarestatus.com/incidents/6yfpsos7ksp3#1e43o4uo2hct",
-        "published_at": "2026-10-29T11:49:16.376Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       }
     ],
-    "last_statement_at": "2026-10-29T19:50:53.857836Z"
+    "last_statement_at": "2026-10-29T20:28:50.206640Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident started about 3h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: R2 Elevated Latency in Eastern Europe.",
     "current_status": "major outage",
-    "reports_24h": 110,
+    "reports_24h": 112,
     "incidents": [
+      {
+        "title": "R2 Elevated Latency in Eastern Europe",
+        "started_at": "2026-10-29T20:00:26Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "R2 Elevated Latency in Eastern Europe",
+        "started_at": "2026-10-29T19:57:28.577Z",
+        "duration": "31m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/kp28d3kzgft1"
+      },
       {
         "title": "Increased Errors for Durable Objects and Downstream Services in Eastern North America (ENAM)",
         "started_at": "2026-10-29T16:40:31Z",
@@ -194,29 +208,23 @@
         "acknowledgement": "warn icon Warn"
       },
       {
-        "title": "Increased D1 Error Rates",
-        "started_at": "2026-10-29T14:20:27Z",
-        "duration": "20m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
         "title": "Increased Durable Objects, D1 and Workflows Error Rates",
         "started_at": "2026-10-29T14:16:46.205Z",
         "duration": "2h 16m",
         "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/r4mz367vddi7"
-      },
-      {
-        "title": "Increased HTTP 429 Rate Limit Errors on Cloudflare Dashboard",
-        "started_at": "2026-10-29T10:31:52.864Z",
-        "duration": "1h 39m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/k2cd9e1fyskp"
       }
     ],
     "top_reported_issues": [
+      {
+        "label": "Cloudflare Sites and Services",
+        "count": 1
+      },
+      {
+        "label": "Amman, Jordan - (AMM)",
+        "count": 1
+      },
       {
         "label": "Arica, Chile - (ARI)",
         "count": 1
@@ -240,34 +248,14 @@
       {
         "label": "Canberra, Australia - (CBR)",
         "count": 1
-      },
-      {
-        "label": "Cape Town, South Africa - (CPT)",
-        "count": 1
-      },
-      {
-        "label": "Beirut, Lebanon - (BEY)",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-10-28T20:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-10-28T20:15:00Z",
-        "signal_value": 16.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-10-28T20:30:00Z",
         "signal_value": 3.0,
@@ -828,6 +816,18 @@
       },
       {
         "timestamp": "2026-10-29T19:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-29T20:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-10-29T20:15:00Z",
         "signal_value": 10.0,
         "status_code": 0,
         "status_label": "service up"
@@ -839,18 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-10-29T19:45:00Z"
+      "last_sample_at": "2026-10-29T20:15:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "20:00",
-        "count": 2
-      },
-      {
-        "label": "20:20",
-        "count": 0
-      },
       {
         "label": "20:40",
         "count": 2
@@ -1130,6 +1122,14 @@
       {
         "label": "19:40",
         "count": 3
+      },
+      {
+        "label": "20:00",
+        "count": 3
+      },
+      {
+        "label": "20:20",
+        "count": 1
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-10-29T19:50:53Z"
+      "last_reviewed_at": "2026-10-29T17:28:49-03:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 110,
-        "last_reviewed_at": "2026-10-29T19:50:53Z"
+        "reports_24h": 112,
+        "last_reviewed_at": "2026-10-29T17:28:49-03:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,16 +1160,16 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-29T16:50:03.928Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-29T19:57:28.577Z",
         "source": "Cloudflare Statuspage API"
       },
       {
         "name": "Amman, Jordan - (AMM)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-29T18:39:02.009Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-29T20:28:18.268Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1951,9 +1951,9 @@
       },
       {
         "name": "Dhaka, Bangladesh - (DAC)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-29T00:00:23.919Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-29T20:06:18.431Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2770,9 +2770,9 @@
       },
       {
         "name": "Karachi, Pakistan - (KHI)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-29T19:35:18.395Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-29T19:54:32.027Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3472,7 +3472,7 @@
         "name": "Tampa, United States - (TPA)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-10-29T19:08:48.659Z",
+        "updated_at": "2026-10-29T20:17:48.619Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3841,9 +3841,9 @@
       },
       {
         "name": "R2",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-29T16:50:03.928Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-10-29T19:57:28.577Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4394,9 +4394,9 @@
       },
       {
         "name": "Lahore, Pakistan - (LHE)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-10-29T19:35:18.395Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-10-29T19:55:18.472Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4557,6 +4557,20 @@
   },
   "reports": [
     {
+      "title": "R2 Elevated Latency in Eastern Europe",
+      "url": "https://www.cloudflarestatus.com/#2026-10-29T20:00:26Z",
+      "published_at": "2026-10-29T20:00:26Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "R2 Elevated Latency in Eastern Europe",
+      "url": "https://www.cloudflarestatus.com/incidents/kp28d3kzgft1",
+      "published_at": "2026-10-29T19:57:28.577Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Investigating"
+    },
+    {
       "title": "Increased Errors for Durable Objects and Downstream Services in Eastern North America (ENAM)",
       "url": "https://www.cloudflarestatus.com/#2026-10-29T16:40:31Z",
       "published_at": "2026-10-29T16:40:31Z",
@@ -4592,23 +4606,9 @@
       "meta": "warn icon Warn"
     },
     {
-      "title": "Increased D1 Error Rates",
-      "url": "https://www.cloudflarestatus.com/#2026-10-29T14:20:27Z",
-      "published_at": "2026-10-29T14:20:27Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
       "title": "Increased Durable Objects, D1 and Workflows Error Rates",
       "url": "https://www.cloudflarestatus.com/incidents/r4mz367vddi7",
       "published_at": "2026-10-29T14:16:46.205Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Increased HTTP 429 Rate Limit Errors on Cloudflare Dashboard",
-      "url": "https://www.cloudflarestatus.com/incidents/k2cd9e1fyskp",
-      "published_at": "2026-10-29T10:31:52.864Z",
       "source": "Cloudflare Statuspage API",
       "meta": "Minor / Resolved"
     }
@@ -4619,52 +4619,60 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-10-29T19:50:54.366164Z"
+      "published_at": "2026-10-29T20:28:50.979956Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-10-29T19:50:54.366164Z"
+      "published_at": "2026-10-29T20:28:50.979956Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-10-29T19:50:54.366164Z"
+      "published_at": "2026-10-29T20:28:50.979956Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-10-29T19:50:54.366164Z"
+      "published_at": "2026-10-29T20:28:50.979956Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-10-29T19:50:54.366164Z"
+      "published_at": "2026-10-29T20:28:50.979956Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-10-29T19:50:54.366164Z"
+      "published_at": "2026-10-29T20:28:50.979956Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-10-29T19:50:53.857836Z",
+      "published_at": "2026-10-29T20:28:50.206640Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
+    },
+    {
+      "title": "R2 Elevated Latency in Eastern Europe",
+      "url": "https://www.cloudflarestatus.com/incidents/kp28d3kzgft1#q3zh9u5k887d",
+      "published_at": "2026-10-29T19:57:28.577Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / Cloudflare is investigating elevated latency affecting R2 requests in Eastern Europe. We are actively investigating and will provide further updates as soon as more information becomes available."
     },
     {
       "title": "Increased Errors for Durable Objects and Downstream Services in Eastern North America (ENAM)",
@@ -4713,14 +4721,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Investigating / Minor / Resolved / Cloudflare is investigating an issue where customers are experiencing elevated errors for operations on Increased Durable Objects, D1 and Workflows."
-    },
-    {
-      "title": "Increased HTTP 429 Rate Limit Errors on Cloudflare Dashboard",
-      "url": "https://www.cloudflarestatus.com/incidents/k2cd9e1fyskp#rqpdn6ry8r6l",
-      "published_at": "2026-10-29T12:10:59.965Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     }
   ],
   "social": [],
@@ -4736,11 +4736,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-10-29T19:50:52.943776Z",
+      "last_item_at": "2026-10-29T20:28:48.511774Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 227,
-      "fetched_at": "2026-10-29T19:50:52.943793Z",
+      "duration_ms": 211,
+      "fetched_at": "2026-10-29T20:28:48.511791Z",
       "cache_hit": false
     },
     {
@@ -4754,11 +4754,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-10-29T19:50:53Z",
+      "last_item_at": "2026-10-29T17:28:49-03:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 913,
-      "fetched_at": "2026-10-29T19:50:53.857244Z",
+      "duration_ms": 1694,
+      "fetched_at": "2026-10-29T20:28:50.206118Z",
       "cache_hit": false
     },
     {
@@ -4772,17 +4772,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-10-29T19:50:53.857836Z",
+      "last_item_at": "2026-10-29T20:28:50.206640Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 506,
-      "fetched_at": "2026-10-29T19:50:54.364288Z",
+      "duration_ms": 771,
+      "fetched_at": "2026-10-29T20:28:50.978126Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-10-29T19:50:54.366164Z",
+    "generated_at": "2026-10-29T20:28:50.979956Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4804,7 +4804,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "degraded",
+      "severity_key": "major",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4819,30 +4819,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 227,
+          "duration_ms": 211,
           "cache_hit": false,
-          "at": "2026-10-29T19:50:52Z"
+          "at": "2026-10-29T20:28:48Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 245.9
+          "avg_duration_ms": 242.4
         },
         "metrics_7d": {
-          "runs": 62,
-          "ok": 62,
+          "runs": 63,
+          "ok": 63,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 263.0
+          "avg_duration_ms": 262.2
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-29T19:50:52Z",
+        "last_success_at": "2026-10-29T20:28:48Z",
         "last_failure_at": null
       },
       {
@@ -4856,30 +4856,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 913,
+          "duration_ms": 1694,
           "cache_hit": false,
-          "at": "2026-10-29T19:50:52Z"
+          "at": "2026-10-29T20:28:48Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1322.7
+          "avg_duration_ms": 1359.8
         },
         "metrics_7d": {
-          "runs": 62,
-          "ok": 62,
+          "runs": 63,
+          "ok": 63,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1271.3
+          "avg_duration_ms": 1278.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-29T19:50:52Z",
+        "last_success_at": "2026-10-29T20:28:48Z",
         "last_failure_at": null
       },
       {
@@ -4893,119 +4893,70 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 506,
+          "duration_ms": 771,
           "cache_hit": false,
-          "at": "2026-10-29T19:50:52Z"
+          "at": "2026-10-29T20:28:48Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 10,
+          "ok": 10,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 462.9
+          "avg_duration_ms": 493.7
         },
         "metrics_7d": {
-          "runs": 62,
-          "ok": 62,
+          "runs": 63,
+          "ok": 63,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 521.6
+          "avg_duration_ms": 525.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-10-29T19:50:52Z",
+        "last_success_at": "2026-10-29T20:28:48Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-10-29T19:50:54.366164Z",
+    "generated_at": "2026-10-29T20:28:50.979956Z",
     "incidents": {
       "new": [
         {
-          "id": "9fe83fe7fde1e258",
-          "title": "Increased Errors for Durable Objects and Downstream Services in Eastern North America (ENAM)",
-          "started_at": "2026-10-29T16:40:31Z",
-          "duration": "15m",
+          "id": "c95d8088ac24f0b9",
+          "title": "R2 Elevated Latency in Eastern Europe",
+          "started_at": "2026-10-29T20:00:26Z",
+          "duration": "1m",
           "acknowledgement": "warn icon Warn",
           "url": "https://www.cloudflarestatus.com/"
         },
         {
-          "id": "a88e33096d28d9be",
-          "title": "Increased Errors for Durable Objects and Downstream Services in Eastern North America (ENAM)",
-          "started_at": "2026-10-29T16:36:48.045Z",
-          "duration": "13m",
-          "acknowledgement": "Minor / Resolved",
+          "id": "04b169dbcd589d01",
+          "title": "R2 Elevated Latency in Eastern Europe",
+          "started_at": "2026-10-29T19:57:28.577Z",
+          "duration": "31m ongoing",
+          "acknowledgement": "Minor / Investigating",
           "url": "https://www.cloudflarestatus.com/"
-        },
+        }
+      ],
+      "updated": [],
+      "resolved": [
         {
-          "id": "efef19a69c9930d3",
-          "title": "Increased Durable Objects, D1 and Workflows Error Rates",
-          "started_at": "2026-10-29T16:10:22Z",
-          "duration": "25m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "9ebcc122540be0f8",
-          "title": "Increased Durable Objects, D1 and Workflows Error Rates",
-          "started_at": "2026-10-29T15:50:22Z",
+          "id": "3533c5001264a667",
+          "title": "Increased D1 Error Rates",
+          "started_at": "2026-10-29T14:20:27Z",
           "duration": "20m",
           "acknowledgement": "warn icon Warn",
           "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "2f11f07744fda7ea",
-          "title": "Increased Durable Objects, D1 and Workflows Error Rates",
-          "started_at": "2026-10-29T14:40:26Z",
-          "duration": "1h 10m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
         },
         {
-          "id": "fc5521078dfefdb6",
-          "title": "Increased Durable Objects, D1 and Workflows Error Rates",
-          "started_at": "2026-10-29T14:16:46.205Z",
-          "duration": "2h 16m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "resolved": [
-        {
-          "id": "f9242cc759e11412",
+          "id": "b570aa059704e6a2",
           "title": "Increased HTTP 429 Rate Limit Errors on Cloudflare Dashboard",
-          "started_at": "2026-10-29T11:50:20Z",
-          "duration": "25m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "36e88a77783fe123",
-          "title": "Increased HTTP 429 Rate Limit Errors on Cloudflare Dashboard",
-          "started_at": "2026-10-29T11:40:20Z",
-          "duration": "10m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "16d7878f0824bfcc",
-          "title": "Increased HTTP 429 Rate Limit Errors on Cloudflare Dashboard",
-          "started_at": "2026-10-29T11:15:27Z",
-          "duration": "25m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "4b8526a0771f47f3",
-          "title": "Issues with Durable Objects availability in Eastern Europe",
-          "started_at": "2026-10-29T10:06:17.344Z",
-          "duration": "1h 41m",
+          "started_at": "2026-10-29T10:31:52.864Z",
+          "duration": "1h 39m",
           "acknowledgement": "Minor / Resolved",
           "url": "https://www.cloudflarestatus.com/"
         }
@@ -5014,44 +4965,28 @@
     "reports": {
       "new": [
         {
-          "id": "42548f22f56c3af8",
-          "title": "Increased Errors for Durable Objects and Downstream Services in Eastern North America (ENAM)",
-          "url": "https://www.cloudflarestatus.com/#2026-10-29T16:40:31Z",
-          "published_at": "2026-10-29T16:40:31Z",
+          "id": "1b2da16cc68fdff8",
+          "title": "R2 Elevated Latency in Eastern Europe",
+          "url": "https://www.cloudflarestatus.com/#2026-10-29T20:00:26Z",
+          "published_at": "2026-10-29T20:00:26Z",
           "source": "StatusGator",
           "meta": "warn icon Warn"
         },
         {
-          "id": "749bb2113dc4f20a",
-          "title": "Increased Errors for Durable Objects and Downstream Services in Eastern North America (ENAM)",
-          "url": "https://www.cloudflarestatus.com/incidents/10m2bxjztzwh",
-          "published_at": "2026-10-29T16:36:48.045Z",
+          "id": "9a2ddcdc89a5cc9c",
+          "title": "R2 Elevated Latency in Eastern Europe",
+          "url": "https://www.cloudflarestatus.com/incidents/kp28d3kzgft1",
+          "published_at": "2026-10-29T19:57:28.577Z",
           "source": "Cloudflare Statuspage API",
-          "meta": "Minor / Resolved"
-        },
-        {
-          "id": "22e6b37b9fa64de7",
-          "title": "Increased Durable Objects, D1 and Workflows Error Rates",
-          "url": "https://www.cloudflarestatus.com/#2026-10-29T16:10:22Z",
-          "published_at": "2026-10-29T16:10:22Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "7581eaffa09b3824",
-          "title": "Increased Durable Objects, D1 and Workflows Error Rates",
-          "url": "https://www.cloudflarestatus.com/#2026-10-29T15:50:22Z",
-          "published_at": "2026-10-29T15:50:22Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
+          "meta": "Minor / Investigating"
         }
       ]
     },
     "summary": {
-      "new_incidents": 4,
-      "updated_incidents": 2,
-      "resolved_incidents": 4,
-      "new_reports": 4
+      "new_incidents": 2,
+      "updated_incidents": 0,
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
