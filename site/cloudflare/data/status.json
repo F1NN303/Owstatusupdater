@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-06T10:08:16.295008Z",
+  "generated_at": "2026-11-06T11:54:01.760266Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "major",
-    "severity_score": 8,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,11 +14,11 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 3.05
+      "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 106,
-      "recent_incidents_6h": 5,
+      "reports_24h": 107,
+      "recent_incidents_6h": 6,
       "recent_incidents_24h": 8,
       "cross_source": {
         "report_score": 0.0,
@@ -36,34 +36,34 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": true,
+      "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
+      "has_conflict": true,
+      "level": "high",
+      "reason": "official_major_vs_aggregate_lower",
       "official_status": "major outage",
-      "derived_severity": "major",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status reports a major outage while aggregate severity is lower."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "major",
-      "severity_score": 10,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.5
     },
     "na": {
-      "severity_key": "degraded",
-      "severity_score": 5,
+      "severity_key": "minor",
+      "severity_score": 3,
       "report_weight": 0.0
     },
     "apac": {
-      "severity_key": "major",
-      "severity_score": 10,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.5
     }
   },
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-11-06T10:08:15.950770Z",
+        "published_at": "2026-11-06T11:54:01.210072Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
+      },
+      {
+        "title": "Network Performance Issues in Singapore",
+        "url": "https://www.cloudflarestatus.com/incidents/3ehw20ozwlkr#kmwmu6luggg3",
+        "published_at": "2026-11-06T10:43:38.174Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+      },
+      {
+        "title": "Wrangler Deployments, Pages, and Workers Builds failures",
+        "url": "https://www.cloudflarestatus.com/incidents/wtsd415cavkc#d7qyze5z7eal",
+        "published_at": "2026-11-06T10:08:30.899Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       },
       {
         "title": "Wrangler Deployments, Pages, and Workers Builds failures",
@@ -84,7 +100,7 @@
         "published_at": "2026-11-06T09:53:44.095Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+        "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
       },
       {
         "title": "Wrangler Deployments, Pages, and Workers Builds failures",
@@ -92,7 +108,7 @@
         "published_at": "2026-11-06T09:47:17.426Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Identified / Minor / Monitoring / Cloudflare is investigating an issue with Wrangler deployments, Pages, and Workers Builds. Users may observe from failed uploads. We are working to analyse and mitigate this problem. More updates to follow shortly."
+        "meta": "Identified / Minor / Resolved / Cloudflare is investigating an issue with Wrangler deployments, Pages, and Workers Builds. Users may observe from failed uploads. We are working to analyse and mitigate this problem. More updates to follow shortly."
       },
       {
         "title": "Network Performance Issues in Singapore",
@@ -100,7 +116,7 @@
         "published_at": "2026-11-06T09:32:12.190Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Monitoring / We are continuing to monitor for any further issues."
+        "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
       },
       {
         "title": "Increased Errors for Durable Objects in Western Europe",
@@ -116,7 +132,7 @@
         "published_at": "2026-11-06T08:54:00.339Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Monitoring / Cloudflare is investigating issues with Network Performance in the Singapore region. We are working to analyse and mitigate this problem. More updates to follow shortly."
+        "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Network Performance in the Singapore region. We are working to analyse and mitigate this problem. More updates to follow shortly."
       },
       {
         "title": "Workers Builds Issues",
@@ -133,38 +149,28 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / Builds are being processed and we're working through backlog"
-      },
-      {
-        "title": "Workers Builds Issues",
-        "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me#atxn0g9jkfbq",
-        "published_at": "2026-11-05T19:51:39.176Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / Cloudflare is aware of and investigating an issue with Cloudflare Workers Builds which potentially impacts multiple customers. Further detail will be provided as more information becomes available."
-      },
-      {
-        "title": "Network disruption across multiple colocations in India",
-        "url": "https://www.cloudflarestatus.com/incidents/1i6fnludjh1m#a0z63wml0rz6",
-        "published_at": "2026-11-05T16:16:48.247Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / This incident has been resolved."
       }
     ],
-    "last_statement_at": "2026-11-06T10:08:15.950770Z"
+    "last_statement_at": "2026-11-06T11:54:01.210072Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports 2 active incidents. Latest: Wrangler Deployments, Pages, and Workers Builds failures.",
+    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident started about 3h ago.",
     "current_status": "major outage",
-    "reports_24h": 106,
+    "reports_24h": 107,
     "incidents": [
+      {
+        "title": "Network Performance Issues in Singapore",
+        "started_at": "2026-11-06T10:10:19Z",
+        "duration": "35m",
+        "acknowledgement": "warn icon Warn"
+      },
       {
         "title": "Wrangler Deployments, Pages, and Workers Builds failures",
         "started_at": "2026-11-06T10:00:20Z",
-        "duration": "1m",
+        "duration": "10m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -176,8 +182,8 @@
       {
         "title": "Wrangler Deployments, Pages, and Workers Builds failures",
         "started_at": "2026-11-06T09:47:17.426Z",
-        "duration": "20m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "21m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/wtsd415cavkc"
       },
@@ -190,8 +196,8 @@
       {
         "title": "Network Performance Issues in Singapore",
         "started_at": "2026-11-06T08:54:00.339Z",
-        "duration": "1h 14m ongoing",
-        "acknowledgement": "Minor / Monitoring",
+        "duration": "1h 49m",
+        "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/3ehw20ozwlkr"
       },
@@ -199,12 +205,6 @@
         "title": "Increased Errors for Durable Objects in Western Europe",
         "started_at": "2026-11-05T20:20:19Z",
         "duration": "12h 45m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Workers Builds Issues",
-        "started_at": "2026-11-05T19:55:22Z",
-        "duration": "25m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -218,19 +218,11 @@
     ],
     "top_reported_issues": [
       {
-        "label": "Cloudflare Sites and Services",
-        "count": 1
-      },
-      {
         "label": "Albuquerque, United States - (ABQ)",
         "count": 1
       },
       {
         "label": "Arica, Chile - (ARI)",
-        "count": 1
-      },
-      {
-        "label": "Almaty, Kazakhstan - (ALA)",
         "count": 1
       },
       {
@@ -248,56 +240,22 @@
       {
         "label": "Canberra, Australia - (CBR)",
         "count": 1
+      },
+      {
+        "label": "Hagatna, Guam - (GUM)",
+        "count": 1
+      },
+      {
+        "label": "Bogotá, Colombia - (BOG)",
+        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "active"
+      "mode": "snapshot"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-11-05T10:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T10:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T10:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T11:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T11:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T11:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T11:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-11-05T12:00:00Z",
         "signal_value": 1.0,
@@ -831,6 +789,48 @@
         "signal_value": 20.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T10:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T10:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T10:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T11:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T11:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T11:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T11:45:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,30 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-11-06T10:00:00Z"
+      "last_sample_at": "2026-11-06T11:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "10:20",
-        "count": 2
-      },
-      {
-        "label": "10:40",
-        "count": 0
-      },
-      {
-        "label": "11:00",
-        "count": 1
-      },
-      {
-        "label": "11:20",
-        "count": 3
-      },
-      {
-        "label": "11:40",
-        "count": 1
-      },
       {
         "label": "12:00",
         "count": 2
@@ -1130,6 +1110,26 @@
       {
         "label": "10:00",
         "count": 1
+      },
+      {
+        "label": "10:20",
+        "count": 3
+      },
+      {
+        "label": "10:40",
+        "count": 1
+      },
+      {
+        "label": "11:00",
+        "count": 2
+      },
+      {
+        "label": "11:20",
+        "count": 0
+      },
+      {
+        "label": "11:40",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-11-06T11:08:15+01:00"
+      "last_reviewed_at": "2026-11-06T06:53:59-05:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 106,
-        "last_reviewed_at": "2026-11-06T11:08:15+01:00"
+        "reports_24h": 107,
+        "last_reviewed_at": "2026-11-06T06:53:59-05:00"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,9 +1160,9 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-11-06T09:56:12.380Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T10:08:30.899Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1251,9 +1251,9 @@
       },
       {
         "name": "Almaty, Kazakhstan - (ALA)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-11-06T08:18:30.683Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T10:26:00.613Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2098,9 +2098,9 @@
       },
       {
         "name": "Riyadh, Saudi Arabia - (RUH)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-11-05T01:17:57.323Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-11-06T11:41:31.175Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2651,9 +2651,9 @@
       },
       {
         "name": "Montréal, Canada - (YUL)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-11-06T07:30:10.714Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-11-06T11:19:30.989Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2721,9 +2721,9 @@
       },
       {
         "name": "Newark, United States - (EWR)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-11-05T15:33:27.275Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T10:23:30.691Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2779,7 +2779,7 @@
         "name": "Ribeirao Preto, Brazil - (RAO)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-11-05T12:20:59.636Z",
+        "updated_at": "2026-11-06T11:21:10.299Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2791,9 +2791,9 @@
       },
       {
         "name": "Rio de Janeiro, Brazil - (GIG)",
-        "status": "degraded",
-        "health": "under_maintenance",
-        "updated_at": "2026-11-06T05:30:20.281Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T11:30:30.392Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3393,9 +3393,9 @@
       },
       {
         "name": "St. Louis, United States - (STL)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-11-06T08:50:39.890Z",
+        "status": "degraded",
+        "health": "under_maintenance",
+        "updated_at": "2026-11-06T11:19:30.989Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3547,9 +3547,9 @@
       },
       {
         "name": "Singapore, Singapore - (SIN)",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-11-06T08:54:00.339Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T11:22:40.141Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3799,9 +3799,9 @@
       },
       {
         "name": "Pages",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-11-06T09:56:12.380Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T10:08:30.899Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3890,9 +3890,9 @@
       },
       {
         "name": "Workers Builds",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-11-06T09:56:12.380Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T10:08:30.899Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3932,9 +3932,9 @@
       },
       {
         "name": "Wrangler",
-        "status": "degraded",
-        "health": "degraded_performance",
-        "updated_at": "2026-11-06T09:47:17.426Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T10:08:30.899Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4422,9 +4422,9 @@
       },
       {
         "name": "Xingyi, China - (ACX)",
-        "status": "major outage",
-        "health": "major_outage",
-        "updated_at": "2026-11-06T09:11:30.538Z",
+        "status": "operational",
+        "health": "operational",
+        "updated_at": "2026-11-06T10:21:00.674Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4557,6 +4557,13 @@
   },
   "reports": [
     {
+      "title": "Network Performance Issues in Singapore",
+      "url": "https://www.cloudflarestatus.com/#2026-11-06T10:10:19Z",
+      "published_at": "2026-11-06T10:10:19Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
       "title": "Wrangler Deployments, Pages, and Workers Builds failures",
       "url": "https://www.cloudflarestatus.com/#2026-11-06T10:00:20Z",
       "published_at": "2026-11-06T10:00:20Z",
@@ -4575,7 +4582,7 @@
       "url": "https://www.cloudflarestatus.com/incidents/wtsd415cavkc",
       "published_at": "2026-11-06T09:47:17.426Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Network Performance Issues in Singapore",
@@ -4589,19 +4596,12 @@
       "url": "https://www.cloudflarestatus.com/incidents/3ehw20ozwlkr",
       "published_at": "2026-11-06T08:54:00.339Z",
       "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Monitoring"
+      "meta": "Minor / Resolved"
     },
     {
       "title": "Increased Errors for Durable Objects in Western Europe",
       "url": "https://www.cloudflarestatus.com/#2026-11-05T20:20:19Z",
       "published_at": "2026-11-05T20:20:19Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Workers Builds Issues",
-      "url": "https://www.cloudflarestatus.com/#2026-11-05T19:55:22Z",
-      "published_at": "2026-11-05T19:55:22Z",
       "source": "StatusGator",
       "meta": "warn icon Warn"
     },
@@ -4619,52 +4619,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-11-06T10:08:16.295008Z"
+      "published_at": "2026-11-06T11:54:01.760266Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-11-06T10:08:16.295008Z"
+      "published_at": "2026-11-06T11:54:01.760266Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-11-06T10:08:16.295008Z"
+      "published_at": "2026-11-06T11:54:01.760266Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-11-06T10:08:16.295008Z"
+      "published_at": "2026-11-06T11:54:01.760266Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-11-06T10:08:16.295008Z"
+      "published_at": "2026-11-06T11:54:01.760266Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-11-06T10:08:16.295008Z"
+      "published_at": "2026-11-06T11:54:01.760266Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-11-06T10:08:15.950770Z",
+      "published_at": "2026-11-06T11:54:01.210072Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
+    },
+    {
+      "title": "Network Performance Issues in Singapore",
+      "url": "https://www.cloudflarestatus.com/incidents/3ehw20ozwlkr#kmwmu6luggg3",
+      "published_at": "2026-11-06T10:43:38.174Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
+    },
+    {
+      "title": "Wrangler Deployments, Pages, and Workers Builds failures",
+      "url": "https://www.cloudflarestatus.com/incidents/wtsd415cavkc#d7qyze5z7eal",
+      "published_at": "2026-11-06T10:08:30.899Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
     },
     {
       "title": "Wrangler Deployments, Pages, and Workers Builds failures",
@@ -4672,7 +4688,7 @@
       "published_at": "2026-11-06T09:53:44.095Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / A fix has been implemented and we are monitoring the results."
+      "meta": "Monitoring / Minor / Resolved / A fix has been implemented and we are monitoring the results."
     },
     {
       "title": "Wrangler Deployments, Pages, and Workers Builds failures",
@@ -4680,7 +4696,7 @@
       "published_at": "2026-11-06T09:47:17.426Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Identified / Minor / Monitoring / Cloudflare is investigating an issue with Wrangler deployments, Pages, and Workers Builds. Users may observe from failed uploads. We are working to analyse and mitigate this problem. More updates to follow shortly."
+      "meta": "Identified / Minor / Resolved / Cloudflare is investigating an issue with Wrangler deployments, Pages, and Workers Builds. Users may observe from failed uploads. We are working to analyse and mitigate this problem. More updates to follow shortly."
     },
     {
       "title": "Network Performance Issues in Singapore",
@@ -4688,7 +4704,7 @@
       "published_at": "2026-11-06T09:32:12.190Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Monitoring / We are continuing to monitor for any further issues."
+      "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
     },
     {
       "title": "Increased Errors for Durable Objects in Western Europe",
@@ -4704,23 +4720,7 @@
       "published_at": "2026-11-06T08:54:00.339Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Monitoring / Cloudflare is investigating issues with Network Performance in the Singapore region. We are working to analyse and mitigate this problem. More updates to follow shortly."
-    },
-    {
-      "title": "Workers Builds Issues",
-      "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me#mpe6y1oi2vn4",
-      "published_at": "2026-11-05T20:20:10.166Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / Queue times have returned to normal."
-    },
-    {
-      "title": "Workers Builds Issues",
-      "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me#91hut7i8nsgf",
-      "published_at": "2026-11-05T19:55:51.237Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / Builds are being processed and we're working through backlog"
+      "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Network Performance in the Singapore region. We are working to analyse and mitigate this problem. More updates to follow shortly."
     }
   ],
   "social": [],
@@ -4736,11 +4736,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-11-06T10:08:15.049543Z",
+      "last_item_at": "2026-11-06T11:53:59.145110Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 214,
-      "fetched_at": "2026-11-06T10:08:15.049577Z",
+      "duration_ms": 149,
+      "fetched_at": "2026-11-06T11:53:59.145126Z",
       "cache_hit": false
     },
     {
@@ -4754,11 +4754,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-11-06T11:08:15+01:00",
+      "last_item_at": "2026-11-06T06:53:59-05:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 900,
-      "fetched_at": "2026-11-06T10:08:15.950271Z",
+      "duration_ms": 2064,
+      "fetched_at": "2026-11-06T11:54:01.209621Z",
       "cache_hit": false
     },
     {
@@ -4772,17 +4772,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-11-06T10:08:15.950770Z",
+      "last_item_at": "2026-11-06T11:54:01.210072Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 342,
-      "fetched_at": "2026-11-06T10:08:16.293491Z",
+      "duration_ms": 548,
+      "fetched_at": "2026-11-06T11:54:01.758976Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-11-06T10:08:16.295008Z",
+    "generated_at": "2026-11-06T11:54:01.760266Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4804,7 +4804,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "major",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4819,30 +4819,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 214,
+          "duration_ms": 149,
           "cache_hit": false,
-          "at": "2026-11-06T10:08:14Z"
+          "at": "2026-11-06T11:53:58Z"
         },
         "metrics_24h": {
-          "runs": 7,
-          "ok": 7,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 191.1
+          "avg_duration_ms": 185.9
         },
         "metrics_7d": {
-          "runs": 54,
-          "ok": 54,
+          "runs": 55,
+          "ok": 55,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 261.0
+          "avg_duration_ms": 259.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-06T10:08:14Z",
+        "last_success_at": "2026-11-06T11:53:58Z",
         "last_failure_at": null
       },
       {
@@ -4856,30 +4856,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 900,
+          "duration_ms": 2064,
           "cache_hit": false,
-          "at": "2026-11-06T10:08:14Z"
+          "at": "2026-11-06T11:53:58Z"
         },
         "metrics_24h": {
-          "runs": 7,
-          "ok": 7,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1443.3
+          "avg_duration_ms": 1520.9
         },
         "metrics_7d": {
-          "runs": 54,
-          "ok": 53,
+          "runs": 55,
+          "ok": 54,
           "stale": 1,
-          "success_rate": 98.1,
-          "stale_rate": 1.9,
+          "success_rate": 98.2,
+          "stale_rate": 1.8,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1418.7
+          "avg_duration_ms": 1430.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-06T10:08:14Z",
+        "last_success_at": "2026-11-06T11:53:58Z",
         "last_failure_at": "2026-11-01T08:07:44Z"
       },
       {
@@ -4893,51 +4893,53 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 342,
+          "duration_ms": 548,
           "cache_hit": false,
-          "at": "2026-11-06T10:08:14Z"
+          "at": "2026-11-06T11:53:58Z"
         },
         "metrics_24h": {
-          "runs": 7,
-          "ok": 7,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 507.1
+          "avg_duration_ms": 512.2
         },
         "metrics_7d": {
-          "runs": 54,
-          "ok": 54,
+          "runs": 55,
+          "ok": 55,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 471.2
+          "avg_duration_ms": 472.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-06T10:08:14Z",
+        "last_success_at": "2026-11-06T11:53:58Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-11-06T10:08:16.295008Z",
+    "generated_at": "2026-11-06T11:54:01.760266Z",
     "incidents": {
       "new": [
+        {
+          "id": "3f56edf9fb4eac5b",
+          "title": "Network Performance Issues in Singapore",
+          "started_at": "2026-11-06T10:10:19Z",
+          "duration": "35m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
+      "updated": [
         {
           "id": "21217b36a62b9b2f",
           "title": "Wrangler Deployments, Pages, and Workers Builds failures",
           "started_at": "2026-11-06T10:00:20Z",
-          "duration": "1m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "5cd935870b0f1d4b",
-          "title": "Wrangler Deployments, Pages, and Workers Builds failures",
-          "started_at": "2026-11-06T09:55:25Z",
-          "duration": "5m",
+          "duration": "10m",
           "acknowledgement": "warn icon Warn",
           "url": "https://www.cloudflarestatus.com/"
         },
@@ -4945,76 +4947,26 @@
           "id": "b2aa0a9335af042c",
           "title": "Wrangler Deployments, Pages, and Workers Builds failures",
           "started_at": "2026-11-06T09:47:17.426Z",
-          "duration": "20m ongoing",
-          "acknowledgement": "Minor / Monitoring",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "6d585fce617ca569",
-          "title": "Network Performance Issues in Singapore",
-          "started_at": "2026-11-06T09:05:36Z",
-          "duration": "50m",
-          "acknowledgement": "warn icon Warn",
+          "duration": "21m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://www.cloudflarestatus.com/"
         },
         {
           "id": "0513392b1ccc8ab0",
           "title": "Network Performance Issues in Singapore",
           "started_at": "2026-11-06T08:54:00.339Z",
-          "duration": "1h 14m ongoing",
-          "acknowledgement": "Minor / Monitoring",
-          "url": "https://www.cloudflarestatus.com/"
-        }
-      ],
-      "updated": [
-        {
-          "id": "8cadf2d29caeecd7",
-          "title": "Increased Errors for Durable Objects in Western Europe",
-          "started_at": "2026-11-05T20:20:19Z",
-          "duration": "12h 45m",
-          "acknowledgement": "warn icon Warn",
+          "duration": "1h 49m",
+          "acknowledgement": "Minor / Resolved",
           "url": "https://www.cloudflarestatus.com/"
         }
       ],
       "resolved": [
         {
-          "id": "8a7a0ecd5e60d03a",
-          "title": "Network disruption across multiple colocations in India",
-          "started_at": "2026-11-05T15:30:17Z",
-          "duration": "4h 25m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "529607f7ea2bd8ae",
-          "title": "Elevated errors for R2 in Asia Pacific",
-          "started_at": "2026-11-05T15:05:45Z",
+          "id": "8852583a0628eb64",
+          "title": "Workers Builds Issues",
+          "started_at": "2026-11-05T19:55:22Z",
           "duration": "25m",
           "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "e9a5d26721284660",
-          "title": "Network disruption across multiple colocations in India",
-          "started_at": "2026-11-05T15:05:13.791Z",
-          "duration": "1h 11m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "9758bfad8e32b261",
-          "title": "Increased Errors for Durable Objects in Western Europe",
-          "started_at": "2026-11-05T13:25:26Z",
-          "duration": "1h 40m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://www.cloudflarestatus.com/"
-        },
-        {
-          "id": "fd229f82a860f811",
-          "title": "Increased Errors for Durable Objects in Western Europe",
-          "started_at": "2026-11-05T13:23:55.346Z",
-          "duration": "14h 10m ongoing",
-          "acknowledgement": "Minor / Monitoring",
           "url": "https://www.cloudflarestatus.com/"
         }
       ]
@@ -5022,52 +4974,20 @@
     "reports": {
       "new": [
         {
-          "id": "a2f32f129753a83d",
-          "title": "Wrangler Deployments, Pages, and Workers Builds failures",
-          "url": "https://www.cloudflarestatus.com/#2026-11-06T10:00:20Z",
-          "published_at": "2026-11-06T10:00:20Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "88a3a201f0be7308",
-          "title": "Wrangler Deployments, Pages, and Workers Builds failures",
-          "url": "https://www.cloudflarestatus.com/#2026-11-06T09:55:25Z",
-          "published_at": "2026-11-06T09:55:25Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "5649f23db0ded7e4",
-          "title": "Wrangler Deployments, Pages, and Workers Builds failures",
-          "url": "https://www.cloudflarestatus.com/incidents/wtsd415cavkc",
-          "published_at": "2026-11-06T09:47:17.426Z",
-          "source": "Cloudflare Statuspage API",
-          "meta": "Minor / Monitoring"
-        },
-        {
-          "id": "7c7324ed302b3023",
+          "id": "e2e674333ed54b75",
           "title": "Network Performance Issues in Singapore",
-          "url": "https://www.cloudflarestatus.com/#2026-11-06T09:05:36Z",
-          "published_at": "2026-11-06T09:05:36Z",
+          "url": "https://www.cloudflarestatus.com/#2026-11-06T10:10:19Z",
+          "published_at": "2026-11-06T10:10:19Z",
           "source": "StatusGator",
           "meta": "warn icon Warn"
-        },
-        {
-          "id": "c2c58300bdd2077d",
-          "title": "Network Performance Issues in Singapore",
-          "url": "https://www.cloudflarestatus.com/incidents/3ehw20ozwlkr",
-          "published_at": "2026-11-06T08:54:00.339Z",
-          "source": "Cloudflare Statuspage API",
-          "meta": "Minor / Monitoring"
         }
       ]
     },
     "summary": {
-      "new_incidents": 5,
-      "updated_incidents": 1,
-      "resolved_incidents": 5,
-      "new_reports": 5
+      "new_incidents": 1,
+      "updated_incidents": 3,
+      "resolved_incidents": 1,
+      "new_reports": 1
     }
   }
 }
