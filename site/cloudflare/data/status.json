@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-06T17:27:45.671470Z",
+  "generated_at": "2026-11-06T19:01:00.998287Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "minor",
-    "severity_score": 4,
+    "severity_key": "major",
+    "severity_score": 8,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "cloudflare-1.0",
@@ -14,11 +14,11 @@
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.0,
-      "profile_adjustment": 0.0
+      "profile_adjustment": 3.05
     },
     "signal_metrics": {
       "reports_24h": 108,
-      "recent_incidents_6h": 0,
+      "recent_incidents_6h": 2,
       "recent_incidents_24h": 8,
       "cross_source": {
         "report_score": 0.0,
@@ -36,35 +36,35 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": true,
-      "level": "high",
-      "reason": "official_major_vs_aggregate_lower",
+      "has_conflict": false,
+      "level": "none",
+      "reason": "aligned",
       "official_status": "major outage",
-      "derived_severity": "minor",
+      "derived_severity": "major",
       "source_ok": 3,
       "source_total": 3,
-      "summary": "Official status reports a major outage while aggregate severity is lower."
+      "summary": "Official and aggregate status signals are aligned."
     }
   },
   "regions": {
     "eu": {
       "severity_key": "degraded",
       "severity_score": 5,
-      "report_weight": 0.5
+      "report_weight": 0.0
     },
     "na": {
-      "severity_key": "minor",
-      "severity_score": 3,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.0
     },
     "apac": {
-      "severity_key": "degraded",
-      "severity_score": 5,
-      "report_weight": 0.5
+      "severity_key": "major",
+      "severity_score": 12,
+      "report_weight": 1.0
     }
   },
   "official": {
@@ -73,10 +73,26 @@
       {
         "title": "Cloudflare Statuspage API: Partial System Outage",
         "url": "https://www.cloudflarestatus.com/",
-        "published_at": "2026-11-06T17:27:45.052429Z",
+        "published_at": "2026-11-06T19:01:00.528753Z",
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: major"
+      },
+      {
+        "title": "Fedramp Customers have Delayed Purges",
+        "url": "https://www.cloudflarestatus.com/incidents/wp49bp8bqo6c#0az66kvrg6zr",
+        "published_at": "2026-11-06T17:59:13.680Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Minor / Identified / We are continuing to work on a fix for the issue."
+      },
+      {
+        "title": "Fedramp Customers have Delayed Purges",
+        "url": "https://www.cloudflarestatus.com/incidents/wp49bp8bqo6c#qf805x9pw5g8",
+        "published_at": "2026-11-06T17:47:15.545Z",
+        "source": "Cloudflare Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Identified / Cloudflare has identified a bug with our purge pipeline impacting fedramp customers. Stale content may be served until expired. Non-fedramp customers are not impacted."
       },
       {
         "title": "Network Performance Issues in Singapore",
@@ -133,34 +149,32 @@
         "source": "Cloudflare Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Network Performance in the Singapore region. We are working to analyse and mitigate this problem. More updates to follow shortly."
-      },
-      {
-        "title": "Workers Builds Issues",
-        "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me#mpe6y1oi2vn4",
-        "published_at": "2026-11-05T20:20:10.166Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / Queue times have returned to normal."
-      },
-      {
-        "title": "Workers Builds Issues",
-        "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me#91hut7i8nsgf",
-        "published_at": "2026-11-05T19:55:51.237Z",
-        "source": "Cloudflare Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / Builds are being processed and we're working through backlog"
       }
     ],
-    "last_statement_at": "2026-11-06T17:27:45.052429Z"
+    "last_statement_at": "2026-11-06T19:01:00.528753Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://www.cloudflarestatus.com/",
-    "summary": "Cloudflare Statuspage reports Partial System Outage. Latest listed incident started about 9h ago.",
+    "summary": "Cloudflare Statuspage reports an active incident: Fedramp Customers have Delayed Purges.",
     "current_status": "major outage",
     "reports_24h": 108,
     "incidents": [
+      {
+        "title": "Fedramp Customers have Delayed Purges",
+        "started_at": "2026-11-06T17:50:28Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Fedramp Customers have Delayed Purges",
+        "started_at": "2026-11-06T17:47:15.545Z",
+        "duration": "1h 13m ongoing",
+        "acknowledgement": "Minor / Identified",
+        "source": "Cloudflare Statuspage API",
+        "url": "https://www.cloudflarestatus.com/incidents/wp49bp8bqo6c"
+      },
       {
         "title": "Network Performance Issues in Singapore",
         "started_at": "2026-11-06T10:10:19Z",
@@ -200,23 +214,13 @@
         "acknowledgement": "Minor / Resolved",
         "source": "Cloudflare Statuspage API",
         "url": "https://www.cloudflarestatus.com/incidents/3ehw20ozwlkr"
-      },
-      {
-        "title": "Increased Errors for Durable Objects in Western Europe",
-        "started_at": "2026-11-05T20:20:19Z",
-        "duration": "12h 45m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Workers Builds Issues",
-        "started_at": "2026-11-05T19:51:39.176Z",
-        "duration": "28m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "Cloudflare Statuspage API",
-        "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me"
       }
     ],
     "top_reported_issues": [
+      {
+        "label": "Cloudflare Sites and Services",
+        "count": 1
+      },
       {
         "label": "Albuquerque, United States - (ABQ)",
         "count": 1
@@ -230,6 +234,10 @@
         "count": 1
       },
       {
+        "label": "CDN Cache Purge",
+        "count": 1
+      },
+      {
         "label": "Baku, Azerbaijan - (GYD)",
         "count": 1
       },
@@ -240,58 +248,14 @@
       {
         "label": "Canberra, Australia - (CBR)",
         "count": 1
-      },
-      {
-        "label": "Belo Horizonte, Brazil - (CNF)",
-        "count": 1
-      },
-      {
-        "label": "Hagatna, Guam - (GUM)",
-        "count": 1
       }
     ],
     "top_reported_issues_meta": {
       "source": "Cloudflare Statuspage API",
       "kind": "degraded-components",
-      "mode": "snapshot"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-11-05T17:30:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T17:45:00Z",
-        "signal_value": 16.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T18:00:00Z",
-        "signal_value": 13.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T18:15:00Z",
-        "signal_value": 15.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T18:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-05T18:45:00Z",
-        "signal_value": 42.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
       {
         "timestamp": "2026-11-05T19:00:00Z",
         "signal_value": 1.0,
@@ -831,6 +795,42 @@
         "signal_value": 9.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T17:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T17:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T18:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T18:15:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T18:30:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-06T18:45:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -839,30 +839,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-11-06T17:15:00Z"
+      "last_sample_at": "2026-11-06T18:45:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "17:40",
-        "count": 4
-      },
-      {
-        "label": "18:00",
-        "count": 0
-      },
-      {
-        "label": "18:20",
-        "count": 2
-      },
-      {
-        "label": "18:40",
-        "count": 0
-      },
-      {
-        "label": "19:00",
-        "count": 1
-      },
       {
         "label": "19:20",
         "count": 3
@@ -1130,6 +1110,26 @@
       {
         "label": "17:20",
         "count": 2
+      },
+      {
+        "label": "17:40",
+        "count": 0
+      },
+      {
+        "label": "18:00",
+        "count": 1
+      },
+      {
+        "label": "18:20",
+        "count": 3
+      },
+      {
+        "label": "18:40",
+        "count": 1
+      },
+      {
+        "label": "19:00",
+        "count": 2
       }
     ],
     "user_reports_24h_meta": {
@@ -1138,14 +1138,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-11-06T12:27:43-05:00"
+      "last_reviewed_at": "2026-11-06T19:00:59Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
         "reports_24h": 108,
-        "last_reviewed_at": "2026-11-06T12:27:43-05:00"
+        "last_reviewed_at": "2026-11-06T19:00:59Z"
       }
     ],
     "current_status_origin": "Cloudflare Statuspage API",
@@ -1160,9 +1160,9 @@
       },
       {
         "name": "Cloudflare Sites and Services",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-11-06T10:08:30.899Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-11-06T17:47:15.545Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1197,7 +1197,7 @@
         "name": "Accra, Ghana - (ACC)",
         "status": "operational",
         "health": "operational",
-        "updated_at": "2026-11-03T20:25:35.148Z",
+        "updated_at": "2026-11-06T19:00:32.879Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1335,9 +1335,9 @@
       },
       {
         "name": "CDN Cache Purge",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-10-31T06:57:35.247Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-11-06T17:47:15.545Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -1400,7 +1400,7 @@
         "name": "Belo Horizonte, Brazil - (CNF)",
         "status": "degraded",
         "health": "degraded_performance",
-        "updated_at": "2026-11-06T16:56:39.881Z",
+        "updated_at": "2026-11-06T18:08:10.195Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -2686,9 +2686,9 @@
       },
       {
         "name": "Quito, Ecuador - (UIO)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-11-06T16:41:10.152Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-11-06T18:19:40.125Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3022,9 +3022,9 @@
       },
       {
         "name": "São Paulo, Brazil - (GRU)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-11-04T22:00:34.100Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-11-06T18:14:30.813Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -3547,9 +3547,9 @@
       },
       {
         "name": "Singapore, Singapore - (SIN)",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-11-06T11:22:40.141Z",
+        "status": "degraded",
+        "health": "degraded_performance",
+        "updated_at": "2026-11-06T18:16:40.135Z",
         "source": "Cloudflare Statuspage API"
       },
       {
@@ -4557,6 +4557,20 @@
   },
   "reports": [
     {
+      "title": "Fedramp Customers have Delayed Purges",
+      "url": "https://www.cloudflarestatus.com/#2026-11-06T17:50:28Z",
+      "published_at": "2026-11-06T17:50:28Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Fedramp Customers have Delayed Purges",
+      "url": "https://www.cloudflarestatus.com/incidents/wp49bp8bqo6c",
+      "published_at": "2026-11-06T17:47:15.545Z",
+      "source": "Cloudflare Statuspage API",
+      "meta": "Minor / Identified"
+    },
+    {
       "title": "Network Performance Issues in Singapore",
       "url": "https://www.cloudflarestatus.com/#2026-11-06T10:10:19Z",
       "published_at": "2026-11-06T10:10:19Z",
@@ -4597,20 +4611,6 @@
       "published_at": "2026-11-06T08:54:00.339Z",
       "source": "Cloudflare Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Increased Errors for Durable Objects in Western Europe",
-      "url": "https://www.cloudflarestatus.com/#2026-11-05T20:20:19Z",
-      "published_at": "2026-11-05T20:20:19Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Workers Builds Issues",
-      "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me",
-      "published_at": "2026-11-05T19:51:39.176Z",
-      "source": "Cloudflare Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -4619,52 +4619,68 @@
       "url": "https://www.cloudflarestatus.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-11-06T17:27:45.671470Z"
+      "published_at": "2026-11-06T19:01:00.998287Z"
     },
     {
       "title": "Cloudflare Status API (Statuspage v2)",
       "url": "https://www.cloudflarestatus.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-11-06T17:27:45.671470Z"
+      "published_at": "2026-11-06T19:01:00.998287Z"
     },
     {
       "title": "Cloudflare Status history RSS",
       "url": "https://www.cloudflarestatus.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-11-06T17:27:45.671470Z"
+      "published_at": "2026-11-06T19:01:00.998287Z"
     },
     {
       "title": "Cloudflare Status API docs",
       "url": "https://www.cloudflarestatus.com/api",
       "source": "Official",
       "meta": "Status API docs",
-      "published_at": "2026-11-06T17:27:45.671470Z"
+      "published_at": "2026-11-06T19:01:00.998287Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-11-06T17:27:45.671470Z"
+      "published_at": "2026-11-06T19:01:00.998287Z"
     },
     {
       "title": "Cloudflare Support",
       "url": "https://developers.cloudflare.com/support/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-11-06T17:27:45.671470Z"
+      "published_at": "2026-11-06T19:01:00.998287Z"
     }
   ],
   "news": [
     {
       "title": "Cloudflare Statuspage API: Partial System Outage",
       "url": "https://www.cloudflarestatus.com/",
-      "published_at": "2026-11-06T17:27:45.052429Z",
+      "published_at": "2026-11-06T19:01:00.528753Z",
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: major"
+    },
+    {
+      "title": "Fedramp Customers have Delayed Purges",
+      "url": "https://www.cloudflarestatus.com/incidents/wp49bp8bqo6c#0az66kvrg6zr",
+      "published_at": "2026-11-06T17:59:13.680Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Minor / Identified / We are continuing to work on a fix for the issue."
+    },
+    {
+      "title": "Fedramp Customers have Delayed Purges",
+      "url": "https://www.cloudflarestatus.com/incidents/wp49bp8bqo6c#qf805x9pw5g8",
+      "published_at": "2026-11-06T17:47:15.545Z",
+      "source": "Cloudflare Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Identified / Cloudflare has identified a bug with our purge pipeline impacting fedramp customers. Stale content may be served until expired. Non-fedramp customers are not impacted."
     },
     {
       "title": "Network Performance Issues in Singapore",
@@ -4705,22 +4721,6 @@
       "source": "Cloudflare Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / Minor / Resolved / We are continuing to monitor for any further issues."
-    },
-    {
-      "title": "Increased Errors for Durable Objects in Western Europe",
-      "url": "https://www.cloudflarestatus.com/incidents/oy8gxjb38yse#uy9cut4u16ko",
-      "published_at": "2026-11-06T09:05:19.945Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / This incident has been resolved."
-    },
-    {
-      "title": "Network Performance Issues in Singapore",
-      "url": "https://www.cloudflarestatus.com/incidents/3ehw20ozwlkr#xpmsen8kgfwj",
-      "published_at": "2026-11-06T08:54:00.339Z",
-      "source": "Cloudflare Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / Cloudflare is investigating issues with Network Performance in the Singapore region. We are working to analyse and mitigate this problem. More updates to follow shortly."
     }
   ],
   "social": [],
@@ -4736,11 +4736,11 @@
       "ok": true,
       "error": null,
       "item_count": 7,
-      "last_item_at": "2026-11-06T17:27:43.244289Z",
+      "last_item_at": "2026-11-06T19:00:59.416600Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 366,
-      "fetched_at": "2026-11-06T17:27:43.244305Z",
+      "duration_ms": 171,
+      "fetched_at": "2026-11-06T19:00:59.416613Z",
       "cache_hit": false
     },
     {
@@ -4754,11 +4754,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-11-06T12:27:43-05:00",
+      "last_item_at": "2026-11-06T19:00:59Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1807,
-      "fetched_at": "2026-11-06T17:27:45.051980Z",
+      "duration_ms": 1111,
+      "fetched_at": "2026-11-06T19:01:00.528422Z",
       "cache_hit": false
     },
     {
@@ -4772,17 +4772,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-11-06T17:27:45.052429Z",
+      "last_item_at": "2026-11-06T19:01:00.528753Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 617,
-      "fetched_at": "2026-11-06T17:27:45.670218Z",
+      "duration_ms": 468,
+      "fetched_at": "2026-11-06T19:01:00.997340Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-11-06T17:27:45.671470Z",
+    "generated_at": "2026-11-06T19:01:00.998287Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -4804,7 +4804,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "minor",
+      "severity_key": "major",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -4819,18 +4819,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 366,
+          "duration_ms": 171,
           "cache_hit": false,
-          "at": "2026-11-06T17:27:42Z"
+          "at": "2026-11-06T19:00:59Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 205.9
+          "avg_duration_ms": 208.0
         },
         "metrics_7d": {
           "runs": 54,
@@ -4839,10 +4839,10 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 262.9
+          "avg_duration_ms": 263.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-06T17:27:42Z",
+        "last_success_at": "2026-11-06T19:00:59Z",
         "last_failure_at": null
       },
       {
@@ -4856,18 +4856,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1807,
+          "duration_ms": 1111,
           "cache_hit": false,
-          "at": "2026-11-06T17:27:42Z"
+          "at": "2026-11-06T19:00:59Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1552.7
+          "avg_duration_ms": 1566.5
         },
         "metrics_7d": {
           "runs": 54,
@@ -4876,10 +4876,10 @@
           "success_rate": 98.1,
           "stale_rate": 1.9,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1428.6
+          "avg_duration_ms": 1418.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-06T17:27:42Z",
+        "last_success_at": "2026-11-06T19:00:59Z",
         "last_failure_at": "2026-11-01T08:07:44Z"
       },
       {
@@ -4893,18 +4893,18 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 617,
+          "duration_ms": 468,
           "cache_hit": false,
-          "at": "2026-11-06T17:27:42Z"
+          "at": "2026-11-06T19:00:59Z"
         },
         "metrics_24h": {
-          "runs": 9,
-          "ok": 9,
+          "runs": 8,
+          "ok": 8,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 523.9
+          "avg_duration_ms": 521.5
         },
         "metrics_7d": {
           "runs": 54,
@@ -4913,29 +4913,80 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 472.3
+          "avg_duration_ms": 475.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-06T17:27:42Z",
+        "last_success_at": "2026-11-06T19:00:59Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-11-06T17:27:45.671470Z",
+    "generated_at": "2026-11-06T19:01:00.998287Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "491b4260284d5915",
+          "title": "Fedramp Customers have Delayed Purges",
+          "started_at": "2026-11-06T17:50:28Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "88717853f461b160",
+          "title": "Fedramp Customers have Delayed Purges",
+          "started_at": "2026-11-06T17:47:15.545Z",
+          "duration": "1h 13m ongoing",
+          "acknowledgement": "Minor / Identified",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "8cadf2d29caeecd7",
+          "title": "Increased Errors for Durable Objects in Western Europe",
+          "started_at": "2026-11-05T20:20:19Z",
+          "duration": "12h 45m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://www.cloudflarestatus.com/"
+        },
+        {
+          "id": "9724628638a6fc3f",
+          "title": "Workers Builds Issues",
+          "started_at": "2026-11-05T19:51:39.176Z",
+          "duration": "28m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://www.cloudflarestatus.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "e6942401996bdd10",
+          "title": "Fedramp Customers have Delayed Purges",
+          "url": "https://www.cloudflarestatus.com/#2026-11-06T17:50:28Z",
+          "published_at": "2026-11-06T17:50:28Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "fef387e90cccd1be",
+          "title": "Fedramp Customers have Delayed Purges",
+          "url": "https://www.cloudflarestatus.com/incidents/wp49bp8bqo6c",
+          "published_at": "2026-11-06T17:47:15.545Z",
+          "source": "Cloudflare Statuspage API",
+          "meta": "Minor / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
