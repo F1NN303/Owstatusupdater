@@ -1,37 +1,37 @@
 {
-  "generated_at": "2026-11-12T12:38:46.490859Z",
+  "generated_at": "2026-11-12T20:16:41.370604Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 6,
     "source_ok_count": 4,
     "source_total_count": 4,
     "model_version": "m365-1.1",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 0.6,
+      "incidents": 5.5,
       "source_health": 0.0,
-      "corroboration_bonus": 0.0,
-      "support_score": 0.0,
+      "corroboration_bonus": 0.4,
+      "support_score": 1.196,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 111,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 178,
+      "recent_incidents_6h": 3,
+      "recent_incidents_24h": 3,
       "cross_source": {
-        "report_score": 0.0,
+        "report_score": 1.196,
         "news_score": 0.0,
         "social_score": 0.0,
-        "combined_score": 0.0,
-        "report_hits_24h": 0
+        "combined_score": 1.196,
+        "report_hits_24h": 2
       }
     },
     "safeguards": {
-      "operational_dampening": true,
-      "cross_source_guard": true,
-      "low_volume_guard": true,
+      "operational_dampening": false,
+      "cross_source_guard": false,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
@@ -40,30 +40,30 @@
       "profile_unrecognized": false
     },
     "source_conflict": {
-      "has_conflict": false,
-      "level": "none",
-      "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "has_conflict": true,
+      "level": "high",
+      "reason": "official_major_vs_aggregate_lower",
+      "official_status": "major outage",
+      "derived_severity": "degraded",
       "source_ok": 4,
       "source_total": 4,
-      "summary": "Official and aggregate status signals are aligned."
+      "summary": "Official status reports a major outage while aggregate severity is lower."
     }
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 6,
       "report_weight": 0.333
     }
   },
@@ -73,22 +73,40 @@
       {
         "title": "Microsoft public status page is reachable. Detailed content appears to be JavaScript-rendered.",
         "url": "https://status.cloud.microsoft/",
-        "published_at": "2026-11-12T12:38:46.215872Z",
+        "published_at": "2026-11-12T20:16:37.793587Z",
         "source": "Microsoft Public Status",
         "channel": "official-status-page",
         "meta": "Microsoft service health status"
       }
     ],
-    "last_statement_at": "2026-11-12T12:38:46.215872Z"
+    "last_statement_at": "2026-11-12T20:16:37.793587Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://statusgator.com/services/microsoft-365-suite",
-    "summary": "StatusGator service-health trend indicates Microsoft 365 is currently operational. Latest listed incident was about 718h ago.",
-    "current_status": "operational",
-    "reports_24h": 111,
+    "summary": "StatusGator reports that Microsoft 365 suite is currently experiencing a partial outage. There have been 178 user-submitted reports of outages in the past 24 hours.",
+    "current_status": "experiencing a partial outage",
+    "reports_24h": 178,
     "incidents": [
+      {
+        "title": "Users may be unable to connect to multiple Microsoft 365 services",
+        "started_at": "2026-11-12T18:48:00Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Users may be unable to connect to multiple Microsoft 365 services",
+        "started_at": "2026-11-12T18:27:35Z",
+        "duration": "20m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Microsoft Cloud products not loading.",
+        "started_at": "2026-11-12T18:07:00Z",
+        "duration": "",
+        "acknowledgement": "21m later"
+      },
       {
         "title": "Users may be unable to access multiple Microsoft 365 services using Global Secure Access (GSA)",
         "started_at": "2026-10-13T14:43:54Z",
@@ -108,18 +126,6 @@
         "acknowledgement": "warn icon Warn"
       },
       {
-        "title": "Users may experience issues when utilizing multiple Microsoft 365 services",
-        "started_at": "2026-08-31T18:39:08Z",
-        "duration": "3d 1h 30m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Some users may be unable to search for content in SharePoint Online, OneDrive, Outlook on the web, or Outlook desktop",
-        "started_at": "2026-08-17T13:03:59Z",
-        "duration": "3d 14h 50m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
         "title": "Co-pilot 365 not loading due to server error",
         "started_at": "2026-06-11T21:09:00Z",
         "duration": "1h 1m",
@@ -128,36 +134,36 @@
     ],
     "top_reported_issues": [
       {
-        "label": "Connectivity issue",
-        "count": 0
-      },
-      {
-        "label": "Error message",
-        "count": 0
-      },
-      {
-        "label": "Server not responding",
-        "count": 0
-      },
-      {
-        "label": "Sign in problem",
-        "count": 0
-      },
-      {
         "label": "Service down",
-        "count": 0
-      },
-      {
-        "label": "Slow performance",
-        "count": 0
-      },
-      {
-        "label": "Unable to download",
-        "count": 0
+        "count": 54
       },
       {
         "label": "App not loading",
-        "count": 0
+        "count": 24
+      },
+      {
+        "label": "Connectivity issue",
+        "count": 23
+      },
+      {
+        "label": "Server not responding",
+        "count": 13
+      },
+      {
+        "label": "Sign in problem",
+        "count": 5
+      },
+      {
+        "label": "Slow performance",
+        "count": 4
+      },
+      {
+        "label": "Error message",
+        "count": 2
+      },
+      {
+        "label": "Other",
+        "count": 2
       }
     ],
     "top_reported_issues_meta": {
@@ -165,192 +171,6 @@
       "kind": "community-labels"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-11-11T12:45:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T13:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T13:15:00Z",
-        "signal_value": 19.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T13:30:00Z",
-        "signal_value": 19.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T13:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T14:00:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T14:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T14:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T14:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T15:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T15:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T15:30:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T15:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T16:00:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T16:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T16:30:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T16:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T17:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T17:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T17:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T17:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T18:00:00Z",
-        "signal_value": 13.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T18:15:00Z",
-        "signal_value": 13.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T18:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T18:45:00Z",
-        "signal_value": 13.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T19:00:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T19:15:00Z",
-        "signal_value": 11.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T19:30:00Z",
-        "signal_value": 18.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T19:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T20:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T20:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-11-11T20:30:00Z",
         "signal_value": 4.0,
@@ -740,6 +560,192 @@
         "signal_value": 1.0,
         "status_code": 0,
         "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T12:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T13:00:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T13:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T13:30:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T13:45:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T14:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T14:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T14:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T14:45:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T15:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T15:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T15:30:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T15:45:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T16:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T16:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T16:30:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T16:45:00Z",
+        "signal_value": 14.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T17:00:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T17:15:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T17:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T17:45:00Z",
+        "signal_value": 43.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-11-12T18:00:00Z",
+        "signal_value": 423.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-11-12T18:15:00Z",
+        "signal_value": 1320.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-11-12T18:30:00Z",
+        "signal_value": 1007.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-11-12T18:45:00Z",
+        "signal_value": 779.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-11-12T19:00:00Z",
+        "signal_value": 656.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-11-12T19:15:00Z",
+        "signal_value": 473.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-11-12T19:30:00Z",
+        "signal_value": 327.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-11-12T19:45:00Z",
+        "signal_value": 302.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-11-12T20:00:00Z",
+        "signal_value": 294.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-11-12T20:15:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
       }
     ],
     "service_health_24h_meta": {
@@ -748,102 +754,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-11-12T12:30:00Z"
+      "last_sample_at": "2026-11-12T20:15:00Z"
     },
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "12:40",
-        "count": 3
-      },
-      {
-        "label": "13:00",
-        "count": 0
-      },
-      {
-        "label": "13:20",
-        "count": 2
-      },
-      {
-        "label": "13:40",
-        "count": 0
-      },
-      {
-        "label": "14:00",
-        "count": 1
-      },
-      {
-        "label": "14:20",
-        "count": 3
-      },
-      {
-        "label": "14:40",
-        "count": 1
-      },
-      {
-        "label": "15:00",
-        "count": 2
-      },
-      {
-        "label": "15:20",
-        "count": 0
-      },
-      {
-        "label": "15:40",
-        "count": 2
-      },
-      {
-        "label": "16:00",
-        "count": 3
-      },
-      {
-        "label": "16:20",
-        "count": 1
-      },
-      {
-        "label": "16:40",
-        "count": 3
-      },
-      {
-        "label": "17:00",
-        "count": 0
-      },
-      {
-        "label": "17:20",
-        "count": 2
-      },
-      {
-        "label": "17:40",
-        "count": 0
-      },
-      {
-        "label": "18:00",
-        "count": 1
-      },
-      {
-        "label": "18:20",
-        "count": 3
-      },
-      {
-        "label": "18:40",
-        "count": 1
-      },
-      {
-        "label": "19:00",
-        "count": 2
-      },
-      {
-        "label": "19:20",
-        "count": 0
-      },
-      {
-        "label": "19:40",
-        "count": 2
-      },
-      {
-        "label": "20:00",
-        "count": 2
-      },
       {
         "label": "20:20",
         "count": 0
@@ -1039,6 +952,98 @@
       {
         "label": "12:20",
         "count": 2
+      },
+      {
+        "label": "12:40",
+        "count": 0
+      },
+      {
+        "label": "13:00",
+        "count": 1
+      },
+      {
+        "label": "13:20",
+        "count": 3
+      },
+      {
+        "label": "13:40",
+        "count": 1
+      },
+      {
+        "label": "14:00",
+        "count": 2
+      },
+      {
+        "label": "14:20",
+        "count": 0
+      },
+      {
+        "label": "14:40",
+        "count": 2
+      },
+      {
+        "label": "15:00",
+        "count": 3
+      },
+      {
+        "label": "15:20",
+        "count": 1
+      },
+      {
+        "label": "15:40",
+        "count": 3
+      },
+      {
+        "label": "16:00",
+        "count": 0
+      },
+      {
+        "label": "16:20",
+        "count": 2
+      },
+      {
+        "label": "16:40",
+        "count": 0
+      },
+      {
+        "label": "17:00",
+        "count": 1
+      },
+      {
+        "label": "17:20",
+        "count": 3
+      },
+      {
+        "label": "17:40",
+        "count": 8
+      },
+      {
+        "label": "18:00",
+        "count": 42
+      },
+      {
+        "label": "18:20",
+        "count": 55
+      },
+      {
+        "label": "18:40",
+        "count": 35
+      },
+      {
+        "label": "19:00",
+        "count": 23
+      },
+      {
+        "label": "19:20",
+        "count": 19
+      },
+      {
+        "label": "19:40",
+        "count": 19
+      },
+      {
+        "label": "20:00",
+        "count": 15
       }
     ],
     "user_reports_24h_meta": {
@@ -1047,18 +1052,39 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-11-12T12:38:45Z"
+      "last_reviewed_at": "2026-11-12T20:16:27Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 111,
-        "last_reviewed_at": "2026-11-12T12:38:45Z"
+        "reports_24h": 315,
+        "last_reviewed_at": "2026-11-12T20:16:27Z"
       }
     ]
   },
   "reports": [
+    {
+      "title": "Users may be unable to connect to multiple Microsoft 365 services",
+      "url": "https://statusgator.com/services/microsoft-365-suite#2026-11-12T18:48:00Z",
+      "published_at": "2026-11-12T18:48:00Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Users may be unable to connect to multiple Microsoft 365 services",
+      "url": "https://statusgator.com/services/microsoft-365-suite#2026-11-12T18:27:35Z",
+      "published_at": "2026-11-12T18:27:35Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Microsoft Cloud products not loading.",
+      "url": "https://statusgator.com/services/microsoft-365-suite#2026-11-12T18:07:00Z",
+      "published_at": "2026-11-12T18:07:00Z",
+      "source": "StatusGator",
+      "meta": "21m later"
+    },
     {
       "title": "Users may be unable to access multiple Microsoft 365 services using Global Secure Access (GSA)",
       "url": "https://statusgator.com/services/microsoft-365-suite#2026-10-13T14:43:54Z",
@@ -1081,20 +1107,6 @@
       "meta": "warn icon Warn"
     },
     {
-      "title": "Users may experience issues when utilizing multiple Microsoft 365 services",
-      "url": "https://statusgator.com/services/microsoft-365-suite#2026-08-31T18:39:08Z",
-      "published_at": "2026-08-31T18:39:08Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Some users may be unable to search for content in SharePoint Online, OneDrive, Outlook on the web, or Outlook desktop",
-      "url": "https://statusgator.com/services/microsoft-365-suite#2026-08-17T13:03:59Z",
-      "published_at": "2026-08-17T13:03:59Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
       "title": "Co-pilot 365 not loading due to server error",
       "url": "https://statusgator.com/services/microsoft-365-suite#2026-06-11T21:09:00Z",
       "published_at": "2026-06-11T21:09:00Z",
@@ -1108,28 +1120,28 @@
       "url": "https://status.cloud.microsoft/",
       "source": "Official",
       "meta": "Microsoft",
-      "published_at": "2026-11-12T12:38:46.490859Z"
+      "published_at": "2026-11-12T20:16:41.370604Z"
     },
     {
       "title": "Microsoft 365 service health (admin center guide)",
       "url": "https://learn.microsoft.com/en-us/microsoft-365/enterprise/view-service-health?view=o365-worldwide",
       "source": "Official",
       "meta": "Microsoft Learn",
-      "published_at": "2026-11-12T12:38:46.490859Z"
+      "published_at": "2026-11-12T20:16:41.370604Z"
     },
     {
       "title": "Microsoft Graph service communications overview",
       "url": "https://learn.microsoft.com/en-us/graph/service-communications-concept-overview",
       "source": "Official",
       "meta": "Microsoft Learn",
-      "published_at": "2026-11-12T12:38:46.490859Z"
+      "published_at": "2026-11-12T20:16:41.370604Z"
     }
   ],
   "news": [
     {
       "title": "Microsoft public status page is reachable. Detailed content appears to be JavaScript-rendered.",
       "url": "https://status.cloud.microsoft/",
-      "published_at": "2026-11-12T12:38:46.215872Z",
+      "published_at": "2026-11-12T20:16:37.793587Z",
       "source": "Microsoft Public Status",
       "meta": "Microsoft service health status"
     }
@@ -1146,12 +1158,12 @@
       "used_for_scoring": true,
       "ok": true,
       "error": null,
-      "item_count": 6,
-      "last_item_at": "2026-11-12T12:38:45.176831Z",
+      "item_count": 7,
+      "last_item_at": "2026-11-12T20:16:37.522832Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 287,
-      "fetched_at": "2026-11-12T12:38:45.176845Z",
+      "duration_ms": 164,
+      "fetched_at": "2026-11-12T20:16:37.522852Z",
       "cache_hit": false
     },
     {
@@ -1165,11 +1177,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-11-12T12:38:45Z",
+      "last_item_at": "2026-11-12T20:16:27Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 835,
-      "fetched_at": "2026-11-12T12:38:46.012601Z",
+      "duration_ms": 124,
+      "fetched_at": "2026-11-12T20:16:37.647382Z",
       "cache_hit": false
     },
     {
@@ -1183,11 +1195,11 @@
       "ok": true,
       "error": null,
       "item_count": 1,
-      "last_item_at": "2026-11-12T12:38:46.215872Z",
+      "last_item_at": "2026-11-12T20:16:37.793587Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 202,
-      "fetched_at": "2026-11-12T12:38:46.215971Z",
+      "duration_ms": 145,
+      "fetched_at": "2026-11-12T20:16:37.793673Z",
       "cache_hit": false
     },
     {
@@ -1204,14 +1216,14 @@
       "last_item_at": null,
       "freshness": "unknown",
       "age_minutes": null,
-      "duration_ms": 274,
-      "fetched_at": "2026-11-12T12:38:46.490287Z",
+      "duration_ms": 3575,
+      "fetched_at": "2026-11-12T20:16:41.369710Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-11-12T12:38:46.490859Z",
+    "generated_at": "2026-11-12T20:16:41.370604Z",
     "overview": {
       "confidence_score": 97.5,
       "confidence_tier": "high",
@@ -1233,7 +1245,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1248,30 +1260,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 287,
+          "duration_ms": 164,
           "cache_hit": false,
-          "at": "2026-11-12T12:38:44Z"
+          "at": "2026-11-12T20:16:37Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 7,
+          "ok": 7,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 262.1
+          "avg_duration_ms": 244.6
         },
         "metrics_7d": {
-          "runs": 55,
-          "ok": 55,
+          "runs": 54,
+          "ok": 54,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 233.5
+          "avg_duration_ms": 235.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-12T12:38:44Z",
+        "last_success_at": "2026-11-12T20:16:37Z",
         "last_failure_at": null
       },
       {
@@ -1285,30 +1297,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 835,
+          "duration_ms": 124,
           "cache_hit": false,
-          "at": "2026-11-12T12:38:44Z"
+          "at": "2026-11-12T20:16:37Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 7,
+          "ok": 7,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1294.5
+          "avg_duration_ms": 1058.1
         },
         "metrics_7d": {
-          "runs": 55,
-          "ok": 55,
+          "runs": 54,
+          "ok": 54,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1448.9
+          "avg_duration_ms": 1426.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-12T12:38:44Z",
+        "last_success_at": "2026-11-12T20:16:37Z",
         "last_failure_at": null
       },
       {
@@ -1322,30 +1334,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 202,
+          "duration_ms": 145,
           "cache_hit": false,
-          "at": "2026-11-12T12:38:44Z"
+          "at": "2026-11-12T20:16:37Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 7,
+          "ok": 7,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 125.1
+          "avg_duration_ms": 125.6
         },
         "metrics_7d": {
-          "runs": 55,
-          "ok": 55,
+          "runs": 54,
+          "ok": 54,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 130.5
+          "avg_duration_ms": 130.7
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-12T12:38:44Z",
+        "last_success_at": "2026-11-12T20:16:37Z",
         "last_failure_at": null
       },
       {
@@ -1359,49 +1371,116 @@
         "latest": {
           "ok": true,
           "freshness": "unknown",
-          "duration_ms": 274,
+          "duration_ms": 3575,
           "cache_hit": false,
-          "at": "2026-11-12T12:38:44Z"
+          "at": "2026-11-12T20:16:37Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
-          "stale": 8,
+          "runs": 7,
+          "ok": 7,
+          "stale": 7,
           "success_rate": 100.0,
           "stale_rate": 100.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 2800.6
+          "avg_duration_ms": 2783.6
         },
         "metrics_7d": {
-          "runs": 55,
-          "ok": 52,
-          "stale": 55,
-          "success_rate": 94.5,
+          "runs": 54,
+          "ok": 51,
+          "stale": 54,
+          "success_rate": 94.4,
           "stale_rate": 100.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 2929.3
+          "avg_duration_ms": 2978.6
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-12T12:38:44Z",
+        "last_success_at": "2026-11-12T20:16:37Z",
         "last_failure_at": "2026-11-10T18:00:14Z"
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-11-12T12:38:46.490859Z",
+    "generated_at": "2026-11-12T20:16:41.370604Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "e6572769f4379f15",
+          "title": "Users may be unable to connect to multiple Microsoft 365 services",
+          "started_at": "2026-11-12T18:48:00Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://statusgator.com/services/microsoft-365-suite"
+        },
+        {
+          "id": "a60e1459356914c6",
+          "title": "Users may be unable to connect to multiple Microsoft 365 services",
+          "started_at": "2026-11-12T18:27:35Z",
+          "duration": "20m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://statusgator.com/services/microsoft-365-suite"
+        },
+        {
+          "id": "6cf5ef47eee9bbb0",
+          "title": "Microsoft Cloud products not loading.",
+          "started_at": "2026-11-12T18:07:00Z",
+          "duration": "",
+          "acknowledgement": "21m later",
+          "url": "https://statusgator.com/services/microsoft-365-suite"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "071758494c743811",
+          "title": "Users may experience issues when utilizing multiple Microsoft 365 services",
+          "started_at": "2026-08-31T18:39:08Z",
+          "duration": "3d 1h 30m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://statusgator.com/services/microsoft-365-suite"
+        },
+        {
+          "id": "596bd5b5a4d0d0ac",
+          "title": "Some users may be unable to search for content in SharePoint Online, OneDrive, Outlook on the web, or Outlook desktop",
+          "started_at": "2026-08-17T13:03:59Z",
+          "duration": "3d 14h 50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://statusgator.com/services/microsoft-365-suite"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "5a8ac555d957e7a3",
+          "title": "Users may be unable to connect to multiple Microsoft 365 services",
+          "url": "https://statusgator.com/services/microsoft-365-suite#2026-11-12T18:48:00Z",
+          "published_at": "2026-11-12T18:48:00Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "644ac82b6bd4543c",
+          "title": "Users may be unable to connect to multiple Microsoft 365 services",
+          "url": "https://statusgator.com/services/microsoft-365-suite#2026-11-12T18:27:35Z",
+          "published_at": "2026-11-12T18:27:35Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "770524403a5ff3ba",
+          "title": "Microsoft Cloud products not loading.",
+          "url": "https://statusgator.com/services/microsoft-365-suite#2026-11-12T18:07:00Z",
+          "published_at": "2026-11-12T18:07:00Z",
+          "source": "StatusGator",
+          "meta": "21m later"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 3,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 3
     }
   }
 }

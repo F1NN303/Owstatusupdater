@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-11-12T12:38:51.114501Z",
+  "generated_at": "2026-11-12T20:16:45.736596Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "claude-1.0",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 1.14,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.243,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 108,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 0,
+      "reports_24h": 111,
+      "recent_incidents_6h": 3,
+      "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.0,
         "news_score": 0.243,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
-      "low_volume_guard": true,
+      "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,47 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "Claude Statuspage API: All Systems Operational",
+    "summary": "Claude Statuspage API: Minor Service Outage",
     "updates": [
       {
-        "title": "Claude Statuspage API: All Systems Operational",
+        "title": "Claude Statuspage API: Minor Service Outage",
         "url": "https://status.anthropic.com/",
-        "published_at": "2026-11-12T12:38:50.593196Z",
+        "published_at": "2026-11-12T20:16:45.388525Z",
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Elevated errors affecting the Microsoft 365 connector",
+        "url": "https://status.anthropic.com/incidents/sqn3fg1l96dl#3175zg4x0lch",
+        "published_at": "2026-11-12T18:34:20.058Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Identified / Major / Identified / We have identified an issue with an upstream provider affecting the Microsoft 365 connector. Mail, calendar and search tools are failing for most requests, and new connections to the connector may not complete. We are in contact with them a"
+      },
+      {
+        "title": "Elevated errors affecting the Microsoft 365 connector",
+        "url": "https://status.anthropic.com/incidents/sqn3fg1l96dl#y9jr557n4093",
+        "published_at": "2026-11-12T17:52:45.043Z",
+        "source": "Claude Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Major / Identified / We are investigating elevated errors and slow responses affecting the Microsoft 365 connector. Requests to mail, SharePoint, Teams chat and calendar through the connector may fail, and new connections to the connector may not complete. We w"
       },
       {
         "title": "Elevated errors on Fable 52 and Mythos 52",
@@ -133,34 +149,38 @@
         "source": "Claude Statuspage API",
         "channel": "official-status-page",
         "meta": "Investigating / Minor / Resolved / We are continuing to investigate elevated errors affecting the Google Calendar connector, and are working with our upstream provider. We will provide another update as soon as we have more information."
-      },
-      {
-        "title": "Elevated errors affecting the Google Calendar connector",
-        "url": "https://status.anthropic.com/incidents/phg1y2yh07n2#gxyb09f375d4",
-        "published_at": "2026-10-28T16:19:10.239Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Investigating / Minor / Resolved / We are investigating elevated errors affecting the Google Calendar connector. Some requests to list or search calendar events have been failing since October 26. We will provide an update as soon as possible."
-      },
-      {
-        "title": "Elevated errors affecting the Gmail connector",
-        "url": "https://status.anthropic.com/incidents/9ftx658xtd5z#b5ys1k288vb9",
-        "published_at": "2026-10-28T05:48:13.126Z",
-        "source": "Claude Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / The issue affecting the Gmail connector on claude.ai, Claude Code, and Claude Cowork has been resolved. Impact occurred from 16:00 PT / 23:00 UTC on October 27 to 22:29 PT on October 27 / 05:29 UTC on October 28."
       }
     ],
-    "last_statement_at": "2026-11-12T12:38:50.593196Z"
+    "last_statement_at": "2026-11-12T20:16:45.388525Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.anthropic.com/",
-    "summary": "Claude Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 108,
+    "summary": "Claude Statuspage reports an active incident: Elevated errors affecting the Microsoft 365 connector.",
+    "current_status": "degraded",
+    "reports_24h": 111,
     "incidents": [
+      {
+        "title": "Elevated errors affecting the Microsoft 365 connector",
+        "started_at": "2026-11-12T18:38:29Z",
+        "duration": "1m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Elevated errors affecting the Microsoft 365 connector",
+        "started_at": "2026-11-12T17:53:11Z",
+        "duration": "45m",
+        "acknowledgement": "down icon Down"
+      },
+      {
+        "title": "Elevated errors affecting the Microsoft 365 connector",
+        "started_at": "2026-11-12T17:52:44.934Z",
+        "duration": "2h 24m ongoing",
+        "acknowledgement": "Major / Identified",
+        "source": "Claude Statuspage API",
+        "url": "https://status.anthropic.com/incidents/sqn3fg1l96dl"
+      },
       {
         "title": "Elevated errors on Fable 52 and Mythos 52",
         "started_at": "2026-11-10T21:47:48.748Z",
@@ -171,23 +191,11 @@
       },
       {
         "title": "Degraded performance for Claude Fable 5.1",
-        "started_at": "2026-11-08T08:33:11Z",
-        "duration": "25m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Degraded performance for Claude Fable 5.1",
         "started_at": "2026-11-08T08:28:32.818Z",
         "duration": "26m",
         "acknowledgement": "Minor / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/kw2lxj1th04c"
-      },
-      {
-        "title": "Elevated errors affecting the Google Calendar connector",
-        "started_at": "2026-10-28T16:23:09Z",
-        "duration": "3h 50m",
-        "acknowledgement": "warn icon Warn"
       },
       {
         "title": "Elevated errors affecting the Google Calendar connector",
@@ -212,209 +220,24 @@
         "acknowledgement": "Major / Resolved",
         "source": "Claude Statuspage API",
         "url": "https://status.anthropic.com/incidents/lqhknfdjrcst"
-      },
-      {
-        "title": "Elevated errors for Claude Sonnet 5.5",
-        "started_at": "2026-10-27T09:14:35.052Z",
-        "duration": "42m",
-        "acknowledgement": "Major / Resolved",
-        "source": "Claude Statuspage API",
-        "url": "https://status.anthropic.com/incidents/0q89dylg9vjk"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "claude.ai",
+        "count": 1
+      },
+      {
+        "label": "Claude Cowork",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "Claude Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-11-11T12:45:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T13:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T13:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T13:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T13:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T14:00:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T14:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T14:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T14:45:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T15:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T15:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T15:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T15:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T16:00:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T16:15:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T16:30:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T16:45:00Z",
-        "signal_value": 27.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-11T17:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T17:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T17:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T17:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T18:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T18:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T18:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T18:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T19:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T19:15:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T19:30:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T19:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T20:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-11T20:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-11-11T20:30:00Z",
         "signal_value": 4.0,
@@ -801,7 +624,193 @@
       },
       {
         "timestamp": "2026-11-12T12:30:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T12:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T13:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T13:15:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T13:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T13:45:00Z",
         "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T14:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T14:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T14:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T14:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T15:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T15:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T15:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T15:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T16:00:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T16:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T16:30:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T16:45:00Z",
+        "signal_value": 1.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T17:00:00Z",
+        "signal_value": 103.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-11-12T17:15:00Z",
+        "signal_value": 86.0,
+        "status_code": 2,
+        "status_label": "likely outage"
+      },
+      {
+        "timestamp": "2026-11-12T17:30:00Z",
+        "signal_value": 40.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-11-12T17:45:00Z",
+        "signal_value": 20.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T18:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T18:15:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T18:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T18:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T19:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T19:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T19:30:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T19:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-12T20:00:00Z",
+        "signal_value": 31.0,
+        "status_code": 1,
+        "status_label": "possible outage"
+      },
+      {
+        "timestamp": "2026-11-12T20:15:00Z",
+        "signal_value": 20.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -812,102 +821,10 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-11-12T12:30:00Z"
+      "last_sample_at": "2026-11-12T20:15:00Z"
     },
     "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "12:40",
-        "count": 3
-      },
-      {
-        "label": "13:00",
-        "count": 0
-      },
-      {
-        "label": "13:20",
-        "count": 2
-      },
-      {
-        "label": "13:40",
-        "count": 0
-      },
-      {
-        "label": "14:00",
-        "count": 1
-      },
-      {
-        "label": "14:20",
-        "count": 3
-      },
-      {
-        "label": "14:40",
-        "count": 1
-      },
-      {
-        "label": "15:00",
-        "count": 2
-      },
-      {
-        "label": "15:20",
-        "count": 0
-      },
-      {
-        "label": "15:40",
-        "count": 2
-      },
-      {
-        "label": "16:00",
-        "count": 3
-      },
-      {
-        "label": "16:20",
-        "count": 1
-      },
-      {
-        "label": "16:40",
-        "count": 3
-      },
-      {
-        "label": "17:00",
-        "count": 0
-      },
-      {
-        "label": "17:20",
-        "count": 2
-      },
-      {
-        "label": "17:40",
-        "count": 0
-      },
-      {
-        "label": "18:00",
-        "count": 1
-      },
-      {
-        "label": "18:20",
-        "count": 3
-      },
-      {
-        "label": "18:40",
-        "count": 1
-      },
-      {
-        "label": "19:00",
-        "count": 2
-      },
-      {
-        "label": "19:20",
-        "count": 0
-      },
-      {
-        "label": "19:40",
-        "count": 2
-      },
-      {
-        "label": "20:00",
-        "count": 2
-      },
       {
         "label": "20:20",
         "count": 0
@@ -1103,6 +1020,98 @@
       {
         "label": "12:20",
         "count": 2
+      },
+      {
+        "label": "12:40",
+        "count": 0
+      },
+      {
+        "label": "13:00",
+        "count": 1
+      },
+      {
+        "label": "13:20",
+        "count": 3
+      },
+      {
+        "label": "13:40",
+        "count": 1
+      },
+      {
+        "label": "14:00",
+        "count": 2
+      },
+      {
+        "label": "14:20",
+        "count": 0
+      },
+      {
+        "label": "14:40",
+        "count": 2
+      },
+      {
+        "label": "15:00",
+        "count": 3
+      },
+      {
+        "label": "15:20",
+        "count": 1
+      },
+      {
+        "label": "15:40",
+        "count": 3
+      },
+      {
+        "label": "16:00",
+        "count": 0
+      },
+      {
+        "label": "16:20",
+        "count": 2
+      },
+      {
+        "label": "16:40",
+        "count": 0
+      },
+      {
+        "label": "17:00",
+        "count": 1
+      },
+      {
+        "label": "17:20",
+        "count": 3
+      },
+      {
+        "label": "17:40",
+        "count": 1
+      },
+      {
+        "label": "18:00",
+        "count": 2
+      },
+      {
+        "label": "18:20",
+        "count": 0
+      },
+      {
+        "label": "18:40",
+        "count": 2
+      },
+      {
+        "label": "19:00",
+        "count": 3
+      },
+      {
+        "label": "19:20",
+        "count": 1
+      },
+      {
+        "label": "19:40",
+        "count": 3
+      },
+      {
+        "label": "20:00",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1111,14 +1120,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-11-12T12:38:50Z"
+      "last_reviewed_at": "2026-11-12T20:16:44Z"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 108,
-        "last_reviewed_at": "2026-11-12T12:38:50Z"
+        "reports_24h": 111,
+        "last_reviewed_at": "2026-11-12T20:16:44Z"
       }
     ],
     "current_status_origin": "Claude Statuspage API",
@@ -1126,9 +1135,9 @@
     "components": [
       {
         "name": "claude.ai",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-11-08T08:54:43.557Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-11-12T17:52:44.988Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1175,9 +1184,9 @@
       },
       {
         "name": "Claude Cowork",
-        "status": "operational",
-        "health": "operational",
-        "updated_at": "2026-11-08T08:54:43.631Z",
+        "status": "degraded",
+        "health": "partial_outage",
+        "updated_at": "2026-11-12T18:34:20.015Z",
         "source": "Claude Statuspage API"
       },
       {
@@ -1198,7 +1207,7 @@
     "scheduled_maintenances": [],
     "top_reported_issues_provider": [
       {
-        "label": "Server not responding",
+        "label": "Slow performance",
         "count": 1
       },
       {
@@ -1210,15 +1219,15 @@
         "count": 0
       },
       {
+        "label": "Server not responding",
+        "count": 0
+      },
+      {
         "label": "Sign in problem",
         "count": 0
       },
       {
         "label": "Service down",
-        "count": 0
-      },
-      {
-        "label": "Slow performance",
         "count": 0
       },
       {
@@ -1233,6 +1242,27 @@
   },
   "reports": [
     {
+      "title": "Elevated errors affecting the Microsoft 365 connector",
+      "url": "https://status.anthropic.com/#2026-11-12T18:38:29Z",
+      "published_at": "2026-11-12T18:38:29Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Elevated errors affecting the Microsoft 365 connector",
+      "url": "https://status.anthropic.com/#2026-11-12T17:53:11Z",
+      "published_at": "2026-11-12T17:53:11Z",
+      "source": "StatusGator",
+      "meta": "down icon Down"
+    },
+    {
+      "title": "Elevated errors affecting the Microsoft 365 connector",
+      "url": "https://status.anthropic.com/incidents/sqn3fg1l96dl",
+      "published_at": "2026-11-12T17:52:44.934Z",
+      "source": "Claude Statuspage API",
+      "meta": "Major / Identified"
+    },
+    {
       "title": "Elevated errors on Fable 52 and Mythos 52",
       "url": "https://status.anthropic.com/incidents/pgz8r13pk4sm",
       "published_at": "2026-11-10T21:47:48.748Z",
@@ -1241,24 +1271,10 @@
     },
     {
       "title": "Degraded performance for Claude Fable 5.1",
-      "url": "https://status.anthropic.com/#2026-11-08T08:33:11Z",
-      "published_at": "2026-11-08T08:33:11Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Degraded performance for Claude Fable 5.1",
       "url": "https://status.anthropic.com/incidents/kw2lxj1th04c",
       "published_at": "2026-11-08T08:28:32.818Z",
       "source": "Claude Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "Elevated errors affecting the Google Calendar connector",
-      "url": "https://status.anthropic.com/#2026-10-28T16:23:09Z",
-      "published_at": "2026-10-28T16:23:09Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
     },
     {
       "title": "Elevated errors affecting the Google Calendar connector",
@@ -1280,13 +1296,6 @@
       "published_at": "2026-10-27T15:09:08.936Z",
       "source": "Claude Statuspage API",
       "meta": "Major / Resolved"
-    },
-    {
-      "title": "Elevated errors for Claude Sonnet 5.5",
-      "url": "https://status.anthropic.com/incidents/0q89dylg9vjk",
-      "published_at": "2026-10-27T09:14:35.052Z",
-      "source": "Claude Statuspage API",
-      "meta": "Major / Resolved"
     }
   ],
   "known_resources": [
@@ -1295,45 +1304,61 @@
       "url": "https://status.anthropic.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-11-12T12:38:51.114501Z"
+      "published_at": "2026-11-12T20:16:45.736596Z"
     },
     {
       "title": "Claude Status API (Statuspage v2)",
       "url": "https://status.anthropic.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-11-12T12:38:51.114501Z"
+      "published_at": "2026-11-12T20:16:45.736596Z"
     },
     {
       "title": "Claude Status history RSS",
       "url": "https://status.anthropic.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-11-12T12:38:51.114501Z"
+      "published_at": "2026-11-12T20:16:45.736596Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-11-12T12:38:51.114501Z"
+      "published_at": "2026-11-12T20:16:45.736596Z"
     },
     {
       "title": "Claude Help Center",
       "url": "https://docs.anthropic.com/",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-11-12T12:38:51.114501Z"
+      "published_at": "2026-11-12T20:16:45.736596Z"
     }
   ],
   "news": [
     {
-      "title": "Claude Statuspage API: All Systems Operational",
+      "title": "Claude Statuspage API: Minor Service Outage",
       "url": "https://status.anthropic.com/",
-      "published_at": "2026-11-12T12:38:50.593196Z",
+      "published_at": "2026-11-12T20:16:45.388525Z",
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Elevated errors affecting the Microsoft 365 connector",
+      "url": "https://status.anthropic.com/incidents/sqn3fg1l96dl#3175zg4x0lch",
+      "published_at": "2026-11-12T18:34:20.058Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Identified / Major / Identified / We have identified an issue with an upstream provider affecting the Microsoft 365 connector. Mail, calendar and search tools are failing for most requests, and new connections to the connector may not complete. We are in contact with them a"
+    },
+    {
+      "title": "Elevated errors affecting the Microsoft 365 connector",
+      "url": "https://status.anthropic.com/incidents/sqn3fg1l96dl#y9jr557n4093",
+      "published_at": "2026-11-12T17:52:45.043Z",
+      "source": "Claude Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Major / Identified / We are investigating elevated errors and slow responses affecting the Microsoft 365 connector. Requests to mail, SharePoint, Teams chat and calendar through the connector may fail, and new connections to the connector may not complete. We w"
     },
     {
       "title": "Elevated errors on Fable 52 and Mythos 52",
@@ -1374,22 +1399,6 @@
       "source": "Claude Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / The issue affecting the Google Calendar connector on claude.ai, Claude Code, and Claude Cowork has been resolved. Impact occurred from 04:07 PT / 11:07 UTC on October 26 to 11:52 PT / 18:52 UTC on October 28."
-    },
-    {
-      "title": "Elevated errors affecting the Google Calendar connector",
-      "url": "https://status.anthropic.com/incidents/phg1y2yh07n2#r1klwys81rm2",
-      "published_at": "2026-10-28T19:47:31.715Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We are seeing recovery for errors affecting the Google Calendar connector, and error rates have returned to normal levels. We are continuing to monitor with our upstream provider."
-    },
-    {
-      "title": "Elevated errors affecting the Google Calendar connector",
-      "url": "https://status.anthropic.com/incidents/phg1y2yh07n2#cpvjb6396q8w",
-      "published_at": "2026-10-28T17:59:30.063Z",
-      "source": "Claude Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Investigating / Minor / Resolved / We are continuing to investigate elevated errors affecting the Google Calendar connector, and are working with our upstream provider. We will provide another update as soon as we have more information."
     }
   ],
   "social": [],
@@ -1405,11 +1414,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-11-12T12:38:49.687875Z",
+      "last_item_at": "2026-11-12T20:16:44.092301Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 455,
-      "fetched_at": "2026-11-12T12:38:49.687890Z",
+      "duration_ms": 539,
+      "fetched_at": "2026-11-12T20:16:44.092320Z",
       "cache_hit": false
     },
     {
@@ -1423,11 +1432,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-11-12T12:38:50Z",
+      "last_item_at": "2026-11-12T20:16:44Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 904,
-      "fetched_at": "2026-11-12T12:38:50.592839Z",
+      "duration_ms": 1295,
+      "fetched_at": "2026-11-12T20:16:45.388083Z",
       "cache_hit": false
     },
     {
@@ -1441,17 +1450,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-11-12T12:38:50.593196Z",
+      "last_item_at": "2026-11-12T20:16:45.388525Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 520,
-      "fetched_at": "2026-11-12T12:38:51.113666Z",
+      "duration_ms": 346,
+      "fetched_at": "2026-11-12T20:16:45.735441Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-11-12T12:38:51.114501Z",
+    "generated_at": "2026-11-12T20:16:45.736596Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1473,7 +1482,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1488,30 +1497,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 455,
+          "duration_ms": 539,
           "cache_hit": false,
-          "at": "2026-11-12T12:38:49Z"
+          "at": "2026-11-12T20:16:43Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 7,
+          "ok": 7,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 382.0
+          "avg_duration_ms": 372.7
         },
         "metrics_7d": {
-          "runs": 55,
-          "ok": 55,
+          "runs": 54,
+          "ok": 54,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 370.0
+          "avg_duration_ms": 371.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-12T12:38:49Z",
+        "last_success_at": "2026-11-12T20:16:43Z",
         "last_failure_at": null
       },
       {
@@ -1525,30 +1534,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 904,
+          "duration_ms": 1295,
           "cache_hit": false,
-          "at": "2026-11-12T12:38:49Z"
+          "at": "2026-11-12T20:16:43Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 7,
+          "ok": 7,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1355.0
+          "avg_duration_ms": 1307.0
         },
         "metrics_7d": {
-          "runs": 55,
-          "ok": 55,
+          "runs": 54,
+          "ok": 54,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1287.7
+          "avg_duration_ms": 1297.9
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-12T12:38:49Z",
+        "last_success_at": "2026-11-12T20:16:43Z",
         "last_failure_at": null
       },
       {
@@ -1562,49 +1571,124 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 520,
+          "duration_ms": 346,
           "cache_hit": false,
-          "at": "2026-11-12T12:38:49Z"
+          "at": "2026-11-12T20:16:43Z"
         },
         "metrics_24h": {
-          "runs": 8,
-          "ok": 8,
+          "runs": 7,
+          "ok": 7,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 375.4
+          "avg_duration_ms": 368.9
         },
         "metrics_7d": {
-          "runs": 55,
-          "ok": 55,
+          "runs": 54,
+          "ok": 54,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 395.5
+          "avg_duration_ms": 395.4
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-12T12:38:49Z",
+        "last_success_at": "2026-11-12T20:16:43Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-11-12T12:38:51.114501Z",
+    "generated_at": "2026-11-12T20:16:45.736596Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "5fb7f36e6011bcb9",
+          "title": "Elevated errors affecting the Microsoft 365 connector",
+          "started_at": "2026-11-12T18:38:29Z",
+          "duration": "1m",
+          "acknowledgement": "down icon Down",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "228a02d72a42717a",
+          "title": "Elevated errors affecting the Microsoft 365 connector",
+          "started_at": "2026-11-12T17:53:11Z",
+          "duration": "45m",
+          "acknowledgement": "down icon Down",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "c53dc3c397c9b668",
+          "title": "Elevated errors affecting the Microsoft 365 connector",
+          "started_at": "2026-11-12T17:52:44.934Z",
+          "duration": "2h 24m ongoing",
+          "acknowledgement": "Major / Identified",
+          "url": "https://status.anthropic.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "16306003749dfec9",
+          "title": "Degraded performance for Claude Fable 5.1",
+          "started_at": "2026-11-08T08:33:11Z",
+          "duration": "25m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "885b824a3d2f6837",
+          "title": "Elevated errors affecting the Google Calendar connector",
+          "started_at": "2026-10-28T16:23:09Z",
+          "duration": "3h 50m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.anthropic.com/"
+        },
+        {
+          "id": "7dd8c761932bd10b",
+          "title": "Elevated errors for Claude Sonnet 5.5",
+          "started_at": "2026-10-27T09:14:35.052Z",
+          "duration": "42m",
+          "acknowledgement": "Major / Resolved",
+          "url": "https://status.anthropic.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "f8cf7cf30b82fd93",
+          "title": "Elevated errors affecting the Microsoft 365 connector",
+          "url": "https://status.anthropic.com/#2026-11-12T18:38:29Z",
+          "published_at": "2026-11-12T18:38:29Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "ae5e5f4ae7975a17",
+          "title": "Elevated errors affecting the Microsoft 365 connector",
+          "url": "https://status.anthropic.com/#2026-11-12T17:53:11Z",
+          "published_at": "2026-11-12T17:53:11Z",
+          "source": "StatusGator",
+          "meta": "down icon Down"
+        },
+        {
+          "id": "c87adfdc284f64ab",
+          "title": "Elevated errors affecting the Microsoft 365 connector",
+          "url": "https://status.anthropic.com/incidents/sqn3fg1l96dl",
+          "published_at": "2026-11-12T17:52:44.934Z",
+          "source": "Claude Statuspage API",
+          "meta": "Major / Identified"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 3,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 3,
+      "new_reports": 3
     }
   }
 }
