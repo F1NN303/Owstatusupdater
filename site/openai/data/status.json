@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-11-17T09:51:03.103594Z",
+  "generated_at": "2026-11-17T18:42:53.604215Z",
   "health": "ok",
   "analytics": {
-    "severity_key": "stable",
-    "severity_score": 0,
+    "severity_key": "degraded",
+    "severity_score": 5,
     "source_ok_count": 3,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 2.8,
+      "incidents": 5.5,
       "source_health": 0.0,
       "corroboration_bonus": 0.0,
       "support_score": 0.407,
       "profile_adjustment": 0.0
     },
     "signal_metrics": {
-      "reports_24h": 127,
-      "recent_incidents_6h": 0,
-      "recent_incidents_24h": 1,
+      "reports_24h": 271,
+      "recent_incidents_6h": 2,
+      "recent_incidents_24h": 3,
       "cross_source": {
         "report_score": 0.407,
         "news_score": 0.0,
@@ -29,13 +29,13 @@
       }
     },
     "safeguards": {
-      "operational_dampening": true,
+      "operational_dampening": false,
       "cross_source_guard": true,
       "low_volume_guard": false,
       "major_cap_applied": false,
       "false_positive_cap_applied": false,
       "recency_decay": true,
-      "official_operational_cap_applied": true,
+      "official_operational_cap_applied": false,
       "official_active_incident_floor_applied": false,
       "profile_unrecognized": false
     },
@@ -43,8 +43,8 @@
       "has_conflict": false,
       "level": "none",
       "reason": "aligned",
-      "official_status": "operational",
-      "derived_severity": "stable",
+      "official_status": "degraded",
+      "derived_severity": "degraded",
       "source_ok": 3,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
@@ -52,31 +52,47 @@
   },
   "regions": {
     "eu": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "na": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     },
     "apac": {
-      "severity_key": "stable",
-      "severity_score": 0,
+      "severity_key": "degraded",
+      "severity_score": 5,
       "report_weight": 0.333
     }
   },
   "official": {
-    "summary": "OpenAI Statuspage API: All Systems Operational",
+    "summary": "OpenAI Statuspage API: Partial System Degradation",
     "updates": [
       {
-        "title": "OpenAI Statuspage API: All Systems Operational",
+        "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-11-17T09:51:02.265977Z",
+        "published_at": "2026-11-17T18:42:53.087317Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Indicator: none"
+        "meta": "Indicator: minor"
+      },
+      {
+        "title": "Costs API data is delayed",
+        "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D#01M7ND1NTVB4Y26B88Y6J3NX38",
+        "published_at": "2026-11-17T18:41:57Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We have identified the issue, it was due to an internal account, that jumped from 100 groups to 400+ groups, breaking rockset's ingestion. We have identified a simple fix for this and waiting for it to deploy, we will rerun the jobs for the"
+      },
+      {
+        "title": "Costs API data is delayed",
+        "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D#01M7N9VNR6XRH7WJ3E0VYN3EFD",
+        "published_at": "2026-11-17T17:46:15Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Investigating / Minor / Investigating / We have identified a delay in our Costs API. We are working to resolve the issue."
       },
       {
         "title": "Delayed Costs Data in the Compliance API",
@@ -133,34 +149,32 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / We’re seeing signs of recovery for the Microsoft 365 connector and are continuing to monitor the affected services to confirm recovery."
-      },
-      {
-        "title": "Delayed Costs Data in the Compliance API",
-        "url": "https://status.openai.com/incidents/01M7ATRS6BMZ61E4JDHJGM79Y0#01M7ATRS6BXTP5ZVKAXG9DB243",
-        "published_at": "2026-11-13T16:10:07Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Identified / Minor / Resolved / We have identified an issue causing delays in publishing Organization cost data through the Costs API. API and ChatGPT usage are not affected. We are working to restore normal data freshness."
-      },
-      {
-        "title": "Sites: Publishing failing",
-        "url": "https://status.openai.com/incidents/01M79GYA0GA772Y6D089AH5478#01M79QKTHYGWJCPGQ16F6DKNGK",
-        "published_at": "2026-11-13T05:55:44Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Resolved / Minor / Resolved / All affected services are operating normally again. We’re sorry for the disruption, and we appreciate your patience."
       }
     ],
-    "last_statement_at": "2026-11-17T09:51:02.265977Z"
+    "last_statement_at": "2026-11-17T18:42:53.087317Z"
   },
   "outage": {
     "source": "StatusGator",
     "source_type": "Downdetector-like",
     "url": "https://status.openai.com/",
-    "summary": "OpenAI Statuspage reports All Systems Operational. No active incidents are listed.",
-    "current_status": "operational",
-    "reports_24h": 127,
+    "summary": "OpenAI Statuspage reports an active incident: Costs API data is delayed.",
+    "current_status": "degraded",
+    "reports_24h": 271,
     "incidents": [
+      {
+        "title": "Costs API data is delayed",
+        "started_at": "2026-11-17T17:48:30Z",
+        "duration": "1m",
+        "acknowledgement": "warn icon Warn"
+      },
+      {
+        "title": "Costs API data is delayed",
+        "started_at": "2026-11-17T17:46:15Z",
+        "duration": "56m ongoing",
+        "acknowledgement": "Minor / Investigating",
+        "source": "OpenAI Statuspage API",
+        "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D"
+      },
       {
         "title": "Some tools and features are unavailable.",
         "started_at": "2026-11-16T21:17:00Z",
@@ -179,12 +193,6 @@
         "title": "Delayed Costs Data in the Compliance API",
         "started_at": "2026-11-14T00:21:51Z",
         "duration": "1d 23h 57m",
-        "acknowledgement": "warn icon Warn"
-      },
-      {
-        "title": "Delayed Costs Data in the Compliance API",
-        "started_at": "2026-11-13T16:12:05Z",
-        "duration": "8h 10m",
         "acknowledgement": "warn icon Warn"
       },
       {
@@ -210,233 +218,20 @@
         "acknowledgement": "Minor / Resolved",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M78GAT3AK9P9W8Z230KHFVE8"
-      },
-      {
-        "title": "GPT-image-2.5 and 2.6 Sunburst & Flare High error rate",
-        "started_at": "2026-11-12T08:52:35Z",
-        "duration": "32m",
-        "acknowledgement": "Minor / Resolved",
-        "source": "OpenAI Statuspage API",
-        "url": "https://status.openai.com/incidents/01M77FAXVFV338GY7G9VRENRS5"
       }
     ],
-    "top_reported_issues": [],
+    "top_reported_issues": [
+      {
+        "label": "Compliance API",
+        "count": 1
+      }
+    ],
     "top_reported_issues_meta": {
       "source": "OpenAI Statuspage API",
       "kind": "degraded-components",
-      "mode": "none"
+      "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-11-16T10:00:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T10:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T10:30:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T10:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T11:00:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T11:15:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T11:30:00Z",
-        "signal_value": 55.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T11:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T12:00:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T12:15:00Z",
-        "signal_value": 9.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T12:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T12:45:00Z",
-        "signal_value": 7.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T13:00:00Z",
-        "signal_value": 73.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T13:15:00Z",
-        "signal_value": 5.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T13:30:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T13:45:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T14:00:00Z",
-        "signal_value": 29.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T14:15:00Z",
-        "signal_value": 27.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T14:30:00Z",
-        "signal_value": 25.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T14:45:00Z",
-        "signal_value": 28.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T15:00:00Z",
-        "signal_value": 64.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T15:15:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T15:30:00Z",
-        "signal_value": 4.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T15:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T16:00:00Z",
-        "signal_value": 25.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T16:15:00Z",
-        "signal_value": 12.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T16:30:00Z",
-        "signal_value": 26.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T16:45:00Z",
-        "signal_value": 26.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T17:00:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T17:15:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T17:30:00Z",
-        "signal_value": 8.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T17:45:00Z",
-        "signal_value": 64.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T18:00:00Z",
-        "signal_value": 116.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T18:15:00Z",
-        "signal_value": 26.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T18:30:00Z",
-        "signal_value": 25.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-11-16T18:45:00Z",
         "signal_value": 6.0,
@@ -799,7 +594,217 @@
       },
       {
         "timestamp": "2026-11-17T09:45:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T10:00:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T10:15:00Z",
+        "signal_value": 45.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T10:30:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T10:45:00Z",
+        "signal_value": 39.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T11:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T11:15:00Z",
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T11:30:00Z",
+        "signal_value": 26.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T11:45:00Z",
+        "signal_value": 19.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T12:00:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T12:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T12:30:00Z",
+        "signal_value": 24.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T12:45:00Z",
         "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T13:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T13:15:00Z",
+        "signal_value": 46.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T13:30:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T13:45:00Z",
+        "signal_value": 26.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T14:00:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T14:15:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T14:30:00Z",
+        "signal_value": 29.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T14:45:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T15:00:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T15:15:00Z",
+        "signal_value": 35.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T15:30:00Z",
+        "signal_value": 22.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T15:45:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T16:00:00Z",
+        "signal_value": 12.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T16:15:00Z",
+        "signal_value": 4.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T16:30:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T16:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T17:00:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T17:15:00Z",
+        "signal_value": 74.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T17:30:00Z",
+        "signal_value": 50.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T17:45:00Z",
+        "signal_value": 66.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T18:00:00Z",
+        "signal_value": 7.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T18:15:00Z",
+        "signal_value": 43.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T18:30:00Z",
+        "signal_value": 12.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -810,118 +815,9 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-11-17T09:45:00Z"
+      "last_sample_at": "2026-11-17T18:30:00Z"
     },
-    "reports_24h_origin": "IsDown",
     "user_reports_24h": [
-      {
-        "label": "10:00",
-        "count": 2
-      },
-      {
-        "label": "10:20",
-        "count": 0
-      },
-      {
-        "label": "10:40",
-        "count": 2
-      },
-      {
-        "label": "11:00",
-        "count": 3
-      },
-      {
-        "label": "11:20",
-        "count": 1
-      },
-      {
-        "label": "11:40",
-        "count": 3
-      },
-      {
-        "label": "12:00",
-        "count": 0
-      },
-      {
-        "label": "12:20",
-        "count": 2
-      },
-      {
-        "label": "12:40",
-        "count": 0
-      },
-      {
-        "label": "13:00",
-        "count": 1
-      },
-      {
-        "label": "13:20",
-        "count": 3
-      },
-      {
-        "label": "13:40",
-        "count": 1
-      },
-      {
-        "label": "14:00",
-        "count": 2
-      },
-      {
-        "label": "14:20",
-        "count": 0
-      },
-      {
-        "label": "14:40",
-        "count": 3
-      },
-      {
-        "label": "15:00",
-        "count": 3
-      },
-      {
-        "label": "15:20",
-        "count": 1
-      },
-      {
-        "label": "15:40",
-        "count": 3
-      },
-      {
-        "label": "16:00",
-        "count": 0
-      },
-      {
-        "label": "16:20",
-        "count": 2
-      },
-      {
-        "label": "16:40",
-        "count": 0
-      },
-      {
-        "label": "17:00",
-        "count": 1
-      },
-      {
-        "label": "17:20",
-        "count": 3
-      },
-      {
-        "label": "17:40",
-        "count": 1
-      },
-      {
-        "label": "18:00",
-        "count": 2
-      },
-      {
-        "label": "18:20",
-        "count": 0
-      },
-      {
-        "label": "18:40",
-        "count": 2
-      },
       {
         "label": "19:00",
         "count": 4
@@ -1101,6 +997,114 @@
       {
         "label": "09:40",
         "count": 3
+      },
+      {
+        "label": "10:00",
+        "count": 3
+      },
+      {
+        "label": "10:20",
+        "count": 1
+      },
+      {
+        "label": "10:40",
+        "count": 3
+      },
+      {
+        "label": "11:00",
+        "count": 0
+      },
+      {
+        "label": "11:20",
+        "count": 2
+      },
+      {
+        "label": "11:40",
+        "count": 0
+      },
+      {
+        "label": "12:00",
+        "count": 1
+      },
+      {
+        "label": "12:20",
+        "count": 3
+      },
+      {
+        "label": "12:40",
+        "count": 1
+      },
+      {
+        "label": "13:00",
+        "count": 2
+      },
+      {
+        "label": "13:20",
+        "count": 0
+      },
+      {
+        "label": "13:40",
+        "count": 2
+      },
+      {
+        "label": "14:00",
+        "count": 3
+      },
+      {
+        "label": "14:20",
+        "count": 1
+      },
+      {
+        "label": "14:40",
+        "count": 3
+      },
+      {
+        "label": "15:00",
+        "count": 0
+      },
+      {
+        "label": "15:20",
+        "count": 2
+      },
+      {
+        "label": "15:40",
+        "count": 0
+      },
+      {
+        "label": "16:00",
+        "count": 1
+      },
+      {
+        "label": "16:20",
+        "count": 3
+      },
+      {
+        "label": "16:40",
+        "count": 1
+      },
+      {
+        "label": "17:00",
+        "count": 2
+      },
+      {
+        "label": "17:20",
+        "count": 0
+      },
+      {
+        "label": "17:40",
+        "count": 2
+      },
+      {
+        "label": "18:00",
+        "count": 3
+      },
+      {
+        "label": "18:20",
+        "count": 1
+      },
+      {
+        "label": "18:40",
+        "count": 3
       }
     ],
     "user_reports_24h_meta": {
@@ -1109,14 +1113,14 @@
       "window_hours": 24,
       "sample_count": 72,
       "interval_minutes": 20,
-      "last_reviewed_at": "2026-11-17T04:51:01-05:00"
+      "last_reviewed_at": "2026-11-17T12:42:52-06:00"
     },
     "secondary_sources": [
       {
         "source": "IsDown",
         "available": true,
-        "reports_24h": 127,
-        "last_reviewed_at": "2026-11-17T04:51:01-05:00"
+        "reports_24h": 129,
+        "last_reviewed_at": "2026-11-17T12:42:52-06:00"
       }
     ],
     "current_status_origin": "OpenAI Statuspage API",
@@ -1250,8 +1254,8 @@
       },
       {
         "name": "Compliance API",
-        "status": "operational",
-        "health": "operational",
+        "status": "degraded",
+        "health": "degraded_performance",
         "updated_at": "2026-10-16T20:01:40Z",
         "source": "OpenAI Statuspage API"
       },
@@ -1386,7 +1390,7 @@
     "top_reported_issues_provider": [
       {
         "label": "Service down",
-        "count": 90
+        "count": 92
       },
       {
         "label": "Error message",
@@ -1394,31 +1398,45 @@
       },
       {
         "label": "Other",
-        "count": 17
+        "count": 18
       },
       {
         "label": "Server not responding",
-        "count": 13
-      },
-      {
-        "label": "App not loading",
         "count": 11
       },
       {
-        "label": "Slow performance",
+        "label": "App not loading",
         "count": 10
       },
       {
         "label": "Connectivity issue",
-        "count": 7
+        "count": 9
       },
       {
-        "label": "Unable to download",
-        "count": 4
+        "label": "Slow performance",
+        "count": 8
+      },
+      {
+        "label": "Sign in problem",
+        "count": 6
       }
     ]
   },
   "reports": [
+    {
+      "title": "Costs API data is delayed",
+      "url": "https://status.openai.com/#2026-11-17T17:48:30Z",
+      "published_at": "2026-11-17T17:48:30Z",
+      "source": "StatusGator",
+      "meta": "warn icon Warn"
+    },
+    {
+      "title": "Costs API data is delayed",
+      "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D",
+      "published_at": "2026-11-17T17:46:15Z",
+      "source": "OpenAI Statuspage API",
+      "meta": "Minor / Investigating"
+    },
     {
       "title": "Some tools and features are unavailable.",
       "url": "https://status.openai.com/#2026-11-16T21:17:00Z",
@@ -1442,13 +1460,6 @@
     },
     {
       "title": "Delayed Costs Data in the Compliance API",
-      "url": "https://status.openai.com/#2026-11-13T16:12:05Z",
-      "published_at": "2026-11-13T16:12:05Z",
-      "source": "StatusGator",
-      "meta": "warn icon Warn"
-    },
-    {
-      "title": "Delayed Costs Data in the Compliance API",
       "url": "https://status.openai.com/incidents/01M7ATRS6BMZ61E4JDHJGM79Y0",
       "published_at": "2026-11-13T16:10:07Z",
       "source": "OpenAI Statuspage API",
@@ -1467,13 +1478,6 @@
       "published_at": "2026-11-12T18:29:14Z",
       "source": "OpenAI Statuspage API",
       "meta": "Minor / Resolved"
-    },
-    {
-      "title": "GPT-image-2.5 and 2.6 Sunburst & Flare High error rate",
-      "url": "https://status.openai.com/incidents/01M77FAXVFV338GY7G9VRENRS5",
-      "published_at": "2026-11-12T08:52:35Z",
-      "source": "OpenAI Statuspage API",
-      "meta": "Minor / Resolved"
     }
   ],
   "known_resources": [
@@ -1482,45 +1486,61 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-11-17T09:51:03.103594Z"
+      "published_at": "2026-11-17T18:42:53.604215Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-11-17T09:51:03.103594Z"
+      "published_at": "2026-11-17T18:42:53.604215Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-11-17T09:51:03.103594Z"
+      "published_at": "2026-11-17T18:42:53.604215Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-11-17T09:51:03.103594Z"
+      "published_at": "2026-11-17T18:42:53.604215Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-11-17T09:51:03.103594Z"
+      "published_at": "2026-11-17T18:42:53.604215Z"
     }
   ],
   "news": [
     {
-      "title": "OpenAI Statuspage API: All Systems Operational",
+      "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-11-17T09:51:02.265977Z",
+      "published_at": "2026-11-17T18:42:53.087317Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Indicator: none"
+      "meta": "Indicator: minor"
+    },
+    {
+      "title": "Costs API data is delayed",
+      "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D#01M7ND1NTVB4Y26B88Y6J3NX38",
+      "published_at": "2026-11-17T18:41:57Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We have identified the issue, it was due to an internal account, that jumped from 100 groups to 400+ groups, breaking rockset's ingestion. We have identified a simple fix for this and waiting for it to deploy, we will rerun the jobs for the"
+    },
+    {
+      "title": "Costs API data is delayed",
+      "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D#01M7N9VNR6XRH7WJ3E0VYN3EFD",
+      "published_at": "2026-11-17T17:46:15Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Investigating / Minor / Investigating / We have identified a delay in our Costs API. We are working to resolve the issue."
     },
     {
       "title": "Delayed Costs Data in the Compliance API",
@@ -1561,22 +1581,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Resolved / Minor / Resolved / All affected services are operating normally again. We’re sorry for the disruption, and we appreciate your patience."
-    },
-    {
-      "title": "Delayed Costs Data in the Compliance API",
-      "url": "https://status.openai.com/incidents/01M7ATRS6BMZ61E4JDHJGM79Y0#01M7B49WBWREW6JM1PAKAA1RZ0",
-      "published_at": "2026-11-13T18:56:44Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We’ve applied a mitigation and are monitoring the affected services to confirm recovery. Delays in cost data are still expected."
-    },
-    {
-      "title": "Elevated errors affecting the Microsoft 365 connector",
-      "url": "https://status.openai.com/incidents/01M78GAT3AK9P9W8Z230KHFVE8#01M7AVC7WK1E6J9FYT8G4E17RE",
-      "published_at": "2026-11-13T16:20:45Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Monitoring / Minor / Resolved / We’re seeing signs of recovery for the Microsoft 365 connector and are continuing to monitor the affected services to confirm recovery."
     }
   ],
   "social": [],
@@ -1592,11 +1596,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-11-17T09:51:01.091451Z",
+      "last_item_at": "2026-11-17T18:42:52.162692Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 373,
-      "fetched_at": "2026-11-17T09:51:01.091474Z",
+      "duration_ms": 285,
+      "fetched_at": "2026-11-17T18:42:52.162719Z",
       "cache_hit": false
     },
     {
@@ -1610,11 +1614,11 @@
       "ok": true,
       "error": null,
       "item_count": 72,
-      "last_item_at": "2026-11-17T04:51:01-05:00",
+      "last_item_at": "2026-11-17T12:42:52-06:00",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 1173,
-      "fetched_at": "2026-11-17T09:51:02.265505Z",
+      "duration_ms": 924,
+      "fetched_at": "2026-11-17T18:42:53.086761Z",
       "cache_hit": false
     },
     {
@@ -1628,17 +1632,17 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-11-17T09:51:02.265977Z",
+      "last_item_at": "2026-11-17T18:42:53.087317Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 836,
-      "fetched_at": "2026-11-17T09:51:03.102501Z",
+      "duration_ms": 515,
+      "fetched_at": "2026-11-17T18:42:53.602648Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-11-17T09:51:03.103594Z",
+    "generated_at": "2026-11-17T18:42:53.604215Z",
     "overview": {
       "confidence_score": 100.0,
       "confidence_tier": "high",
@@ -1660,7 +1664,7 @@
     },
     "decision": {
       "health": "ok",
-      "severity_key": "stable",
+      "severity_key": "degraded",
       "explanation": "All configured sources are healthy and recently refreshed."
     },
     "sources": [
@@ -1675,30 +1679,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 373,
+          "duration_ms": 285,
           "cache_hit": false,
-          "at": "2026-11-17T09:51:00Z"
+          "at": "2026-11-17T18:42:51Z"
         },
         "metrics_24h": {
-          "runs": 6,
-          "ok": 6,
+          "runs": 5,
+          "ok": 5,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 329.0
+          "avg_duration_ms": 341.0
         },
         "metrics_7d": {
-          "runs": 53,
-          "ok": 53,
+          "runs": 51,
+          "ok": 51,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 301.8
+          "avg_duration_ms": 302.3
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-17T09:51:00Z",
+        "last_success_at": "2026-11-17T18:42:51Z",
         "last_failure_at": null
       },
       {
@@ -1712,30 +1716,30 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 1173,
+          "duration_ms": 924,
           "cache_hit": false,
-          "at": "2026-11-17T09:51:00Z"
+          "at": "2026-11-17T18:42:51Z"
         },
         "metrics_24h": {
-          "runs": 6,
-          "ok": 6,
+          "runs": 5,
+          "ok": 5,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1037.0
+          "avg_duration_ms": 1044.8
         },
         "metrics_7d": {
-          "runs": 53,
-          "ok": 50,
+          "runs": 51,
+          "ok": 48,
           "stale": 3,
-          "success_rate": 94.3,
-          "stale_rate": 5.7,
+          "success_rate": 94.1,
+          "stale_rate": 5.9,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 974.5
+          "avg_duration_ms": 952.1
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-17T09:51:00Z",
+        "last_success_at": "2026-11-17T18:42:51Z",
         "last_failure_at": "2026-11-16T00:19:20Z"
       },
       {
@@ -1749,49 +1753,100 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 836,
+          "duration_ms": 515,
           "cache_hit": false,
-          "at": "2026-11-17T09:51:00Z"
+          "at": "2026-11-17T18:42:51Z"
         },
         "metrics_24h": {
-          "runs": 6,
-          "ok": 6,
+          "runs": 5,
+          "ok": 5,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 728.7
+          "avg_duration_ms": 688.4
         },
         "metrics_7d": {
-          "runs": 53,
-          "ok": 53,
+          "runs": 51,
+          "ok": 51,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 719.4
+          "avg_duration_ms": 712.8
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-17T09:51:00Z",
+        "last_success_at": "2026-11-17T18:42:51Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-11-17T09:51:03.103594Z",
+    "generated_at": "2026-11-17T18:42:53.604215Z",
     "incidents": {
-      "new": [],
+      "new": [
+        {
+          "id": "714eda41a8210e78",
+          "title": "Costs API data is delayed",
+          "started_at": "2026-11-17T17:48:30Z",
+          "duration": "1m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "e69293e0263928a2",
+          "title": "Costs API data is delayed",
+          "started_at": "2026-11-17T17:46:15Z",
+          "duration": "56m ongoing",
+          "acknowledgement": "Minor / Investigating",
+          "url": "https://status.openai.com/"
+        }
+      ],
       "updated": [],
-      "resolved": []
+      "resolved": [
+        {
+          "id": "2d3336de4a9e48d9",
+          "title": "Delayed Costs Data in the Compliance API",
+          "started_at": "2026-11-13T16:12:05Z",
+          "duration": "8h 10m",
+          "acknowledgement": "warn icon Warn",
+          "url": "https://status.openai.com/"
+        },
+        {
+          "id": "e3dc946a5a6512f2",
+          "title": "GPT-image-2.5 and 2.6 Sunburst & Flare High error rate",
+          "started_at": "2026-11-12T08:52:35Z",
+          "duration": "32m",
+          "acknowledgement": "Minor / Resolved",
+          "url": "https://status.openai.com/"
+        }
+      ]
     },
     "reports": {
-      "new": []
+      "new": [
+        {
+          "id": "d94fdf951b6639fe",
+          "title": "Costs API data is delayed",
+          "url": "https://status.openai.com/#2026-11-17T17:48:30Z",
+          "published_at": "2026-11-17T17:48:30Z",
+          "source": "StatusGator",
+          "meta": "warn icon Warn"
+        },
+        {
+          "id": "8223a9b10b567728",
+          "title": "Costs API data is delayed",
+          "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D",
+          "published_at": "2026-11-17T17:46:15Z",
+          "source": "OpenAI Statuspage API",
+          "meta": "Minor / Investigating"
+        }
+      ]
     },
     "summary": {
-      "new_incidents": 0,
+      "new_incidents": 2,
       "updated_incidents": 0,
-      "resolved_incidents": 0,
-      "new_reports": 0
+      "resolved_incidents": 2,
+      "new_reports": 2
     }
   }
 }
