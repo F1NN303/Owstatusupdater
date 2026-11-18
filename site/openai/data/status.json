@@ -1,31 +1,31 @@
 {
-  "generated_at": "2026-11-17T18:42:53.604215Z",
-  "health": "ok",
+  "generated_at": "2026-11-18T01:25:23.430145Z",
+  "health": "degraded",
   "analytics": {
     "severity_key": "degraded",
     "severity_score": 5,
-    "source_ok_count": 3,
+    "source_ok_count": 2,
     "source_total_count": 3,
     "model_version": "openai-1.2",
     "scoring_profile": "official_first_v1",
     "score_breakdown": {
       "reports": 0.0,
-      "incidents": 5.5,
-      "source_health": 0.0,
+      "incidents": 3.18,
+      "source_health": 0.35,
       "corroboration_bonus": 0.0,
-      "support_score": 0.407,
-      "profile_adjustment": 0.0
+      "support_score": 0.191,
+      "profile_adjustment": 1.82
     },
     "signal_metrics": {
-      "reports_24h": 271,
-      "recent_incidents_6h": 2,
-      "recent_incidents_24h": 3,
+      "reports_24h": 74,
+      "recent_incidents_6h": 0,
+      "recent_incidents_24h": 2,
       "cross_source": {
-        "report_score": 0.407,
+        "report_score": 0.191,
         "news_score": 0.0,
         "social_score": 0.0,
-        "combined_score": 0.407,
-        "report_hits_24h": 1
+        "combined_score": 0.191,
+        "report_hits_24h": 0
       }
     },
     "safeguards": {
@@ -36,7 +36,7 @@
       "false_positive_cap_applied": false,
       "recency_decay": true,
       "official_operational_cap_applied": false,
-      "official_active_incident_floor_applied": false,
+      "official_active_incident_floor_applied": true,
       "profile_unrecognized": false
     },
     "source_conflict": {
@@ -45,7 +45,7 @@
       "reason": "aligned",
       "official_status": "degraded",
       "derived_severity": "degraded",
-      "source_ok": 3,
+      "source_ok": 2,
       "source_total": 3,
       "summary": "Official and aggregate status signals are aligned."
     }
@@ -73,10 +73,18 @@
       {
         "title": "OpenAI Statuspage API: Partial System Degradation",
         "url": "https://status.openai.com/",
-        "published_at": "2026-11-17T18:42:53.087317Z",
+        "published_at": "2026-11-18T01:25:22.948684Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Indicator: minor"
+      },
+      {
+        "title": "Costs API data is delayed",
+        "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D#01M7NH58SV54X72PG2MG628MBV",
+        "published_at": "2026-11-17T19:53:49Z",
+        "source": "OpenAI Statuspage API",
+        "channel": "official-status-page",
+        "meta": "Monitoring / Minor / Monitoring / We've pushed a fix and are monitoring the recovery."
       },
       {
         "title": "Costs API data is delayed",
@@ -84,7 +92,7 @@
         "published_at": "2026-11-17T18:41:57Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / We have identified the issue, it was due to an internal account, that jumped from 100 groups to 400+ groups, breaking rockset's ingestion. We have identified a simple fix for this and waiting for it to deploy, we will rerun the jobs for the"
+        "meta": "Investigating / Minor / Monitoring / We have identified the issue and we are working towards a full recovery."
       },
       {
         "title": "Costs API data is delayed",
@@ -92,7 +100,7 @@
         "published_at": "2026-11-17T17:46:15Z",
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
-        "meta": "Investigating / Minor / Investigating / We have identified a delay in our Costs API. We are working to resolve the issue."
+        "meta": "Investigating / Minor / Monitoring / We have identified a delay in our Costs API. We are working to resolve the issue."
       },
       {
         "title": "Delayed Costs Data in the Compliance API",
@@ -141,17 +149,9 @@
         "source": "OpenAI Statuspage API",
         "channel": "official-status-page",
         "meta": "Monitoring / Minor / Resolved / We’ve applied a mitigation and are monitoring the affected services to confirm recovery. Delays in cost data are still expected."
-      },
-      {
-        "title": "Elevated errors affecting the Microsoft 365 connector",
-        "url": "https://status.openai.com/incidents/01M78GAT3AK9P9W8Z230KHFVE8#01M7AVC7WK1E6J9FYT8G4E17RE",
-        "published_at": "2026-11-13T16:20:45Z",
-        "source": "OpenAI Statuspage API",
-        "channel": "official-status-page",
-        "meta": "Monitoring / Minor / Resolved / We’re seeing signs of recovery for the Microsoft 365 connector and are continuing to monitor the affected services to confirm recovery."
       }
     ],
-    "last_statement_at": "2026-11-17T18:42:53.087317Z"
+    "last_statement_at": "2026-11-18T01:25:22.948684Z"
   },
   "outage": {
     "source": "StatusGator",
@@ -159,7 +159,7 @@
     "url": "https://status.openai.com/",
     "summary": "OpenAI Statuspage reports an active incident: Costs API data is delayed.",
     "current_status": "degraded",
-    "reports_24h": 271,
+    "reports_24h": 74,
     "incidents": [
       {
         "title": "Costs API data is delayed",
@@ -170,8 +170,8 @@
       {
         "title": "Costs API data is delayed",
         "started_at": "2026-11-17T17:46:15Z",
-        "duration": "56m ongoing",
-        "acknowledgement": "Minor / Investigating",
+        "duration": "7h 39m ongoing",
+        "acknowledgement": "Minor / Monitoring",
         "source": "OpenAI Statuspage API",
         "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D"
       },
@@ -232,168 +232,6 @@
       "mode": "active"
     },
     "service_health_24h": [
-      {
-        "timestamp": "2026-11-16T18:45:00Z",
-        "signal_value": 6.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T19:00:00Z",
-        "signal_value": 2.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T19:15:00Z",
-        "signal_value": 1.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T19:30:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T19:45:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T20:00:00Z",
-        "signal_value": 28.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T20:15:00Z",
-        "signal_value": 10.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T20:30:00Z",
-        "signal_value": 3.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T20:45:00Z",
-        "signal_value": 63.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T21:00:00Z",
-        "signal_value": 197.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-16T21:15:00Z",
-        "signal_value": 539.0,
-        "status_code": 2,
-        "status_label": "likely outage"
-      },
-      {
-        "timestamp": "2026-11-16T21:30:00Z",
-        "signal_value": 199.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-16T21:45:00Z",
-        "signal_value": 419.0,
-        "status_code": 2,
-        "status_label": "likely outage"
-      },
-      {
-        "timestamp": "2026-11-16T22:00:00Z",
-        "signal_value": 306.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-16T22:15:00Z",
-        "signal_value": 375.0,
-        "status_code": 2,
-        "status_label": "likely outage"
-      },
-      {
-        "timestamp": "2026-11-16T22:30:00Z",
-        "signal_value": 294.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-16T22:45:00Z",
-        "signal_value": 246.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-16T23:00:00Z",
-        "signal_value": 271.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-16T23:15:00Z",
-        "signal_value": 347.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-16T23:30:00Z",
-        "signal_value": 158.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-16T23:45:00Z",
-        "signal_value": 375.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-17T00:00:00Z",
-        "signal_value": 146.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-17T00:15:00Z",
-        "signal_value": 237.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-17T00:30:00Z",
-        "signal_value": 255.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-17T00:45:00Z",
-        "signal_value": 207.0,
-        "status_code": 1,
-        "status_label": "possible outage"
-      },
-      {
-        "timestamp": "2026-11-17T01:00:00Z",
-        "signal_value": 117.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
-      {
-        "timestamp": "2026-11-17T01:15:00Z",
-        "signal_value": 23.0,
-        "status_code": 0,
-        "status_label": "service up"
-      },
       {
         "timestamp": "2026-11-17T01:30:00Z",
         "signal_value": 44.0,
@@ -804,7 +642,169 @@
       },
       {
         "timestamp": "2026-11-17T18:30:00Z",
-        "signal_value": 12.0,
+        "signal_value": 13.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T18:45:00Z",
+        "signal_value": 24.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T19:00:00Z",
+        "signal_value": 49.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T19:15:00Z",
+        "signal_value": 36.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T19:30:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T19:45:00Z",
+        "signal_value": 28.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T20:00:00Z",
+        "signal_value": 18.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T20:15:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T20:30:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T20:45:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T21:00:00Z",
+        "signal_value": 24.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T21:15:00Z",
+        "signal_value": 93.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T21:30:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T21:45:00Z",
+        "signal_value": 8.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T22:00:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T22:15:00Z",
+        "signal_value": 36.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T22:30:00Z",
+        "signal_value": 10.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T22:45:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T23:00:00Z",
+        "signal_value": 34.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T23:15:00Z",
+        "signal_value": 5.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T23:30:00Z",
+        "signal_value": 6.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-17T23:45:00Z",
+        "signal_value": 3.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-18T00:00:00Z",
+        "signal_value": 11.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-18T00:15:00Z",
+        "signal_value": 26.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-18T00:30:00Z",
+        "signal_value": 25.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-18T00:45:00Z",
+        "signal_value": 2.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-18T01:00:00Z",
+        "signal_value": 9.0,
+        "status_code": 0,
+        "status_label": "service up"
+      },
+      {
+        "timestamp": "2026-11-18T01:15:00Z",
+        "signal_value": 2.0,
         "status_code": 0,
         "status_label": "service up"
       }
@@ -815,314 +815,8 @@
       "window_hours": 24,
       "sample_count": 96,
       "interval_minutes": 15,
-      "last_sample_at": "2026-11-17T18:30:00Z"
+      "last_sample_at": "2026-11-18T01:15:00Z"
     },
-    "user_reports_24h": [
-      {
-        "label": "19:00",
-        "count": 4
-      },
-      {
-        "label": "19:20",
-        "count": 1
-      },
-      {
-        "label": "19:40",
-        "count": 3
-      },
-      {
-        "label": "20:00",
-        "count": 3
-      },
-      {
-        "label": "20:20",
-        "count": 2
-      },
-      {
-        "label": "20:40",
-        "count": 3
-      },
-      {
-        "label": "21:00",
-        "count": 0
-      },
-      {
-        "label": "21:20",
-        "count": 2
-      },
-      {
-        "label": "21:40",
-        "count": 0
-      },
-      {
-        "label": "22:00",
-        "count": 3
-      },
-      {
-        "label": "22:20",
-        "count": 4
-      },
-      {
-        "label": "22:40",
-        "count": 2
-      },
-      {
-        "label": "23:00",
-        "count": 4
-      },
-      {
-        "label": "23:20",
-        "count": 2
-      },
-      {
-        "label": "23:40",
-        "count": 2
-      },
-      {
-        "label": "00:00",
-        "count": 2
-      },
-      {
-        "label": "00:20",
-        "count": 2
-      },
-      {
-        "label": "00:40",
-        "count": 2
-      },
-      {
-        "label": "01:00",
-        "count": 3
-      },
-      {
-        "label": "01:20",
-        "count": 2
-      },
-      {
-        "label": "01:40",
-        "count": 3
-      },
-      {
-        "label": "02:00",
-        "count": 1
-      },
-      {
-        "label": "02:20",
-        "count": 2
-      },
-      {
-        "label": "02:40",
-        "count": 0
-      },
-      {
-        "label": "03:00",
-        "count": 1
-      },
-      {
-        "label": "03:20",
-        "count": 3
-      },
-      {
-        "label": "03:40",
-        "count": 1
-      },
-      {
-        "label": "04:00",
-        "count": 2
-      },
-      {
-        "label": "04:20",
-        "count": 0
-      },
-      {
-        "label": "04:40",
-        "count": 2
-      },
-      {
-        "label": "05:00",
-        "count": 3
-      },
-      {
-        "label": "05:20",
-        "count": 1
-      },
-      {
-        "label": "05:40",
-        "count": 3
-      },
-      {
-        "label": "06:00",
-        "count": 0
-      },
-      {
-        "label": "06:20",
-        "count": 2
-      },
-      {
-        "label": "06:40",
-        "count": 0
-      },
-      {
-        "label": "07:00",
-        "count": 1
-      },
-      {
-        "label": "07:20",
-        "count": 3
-      },
-      {
-        "label": "07:40",
-        "count": 1
-      },
-      {
-        "label": "08:00",
-        "count": 2
-      },
-      {
-        "label": "08:20",
-        "count": 0
-      },
-      {
-        "label": "08:40",
-        "count": 2
-      },
-      {
-        "label": "09:00",
-        "count": 3
-      },
-      {
-        "label": "09:20",
-        "count": 1
-      },
-      {
-        "label": "09:40",
-        "count": 3
-      },
-      {
-        "label": "10:00",
-        "count": 3
-      },
-      {
-        "label": "10:20",
-        "count": 1
-      },
-      {
-        "label": "10:40",
-        "count": 3
-      },
-      {
-        "label": "11:00",
-        "count": 0
-      },
-      {
-        "label": "11:20",
-        "count": 2
-      },
-      {
-        "label": "11:40",
-        "count": 0
-      },
-      {
-        "label": "12:00",
-        "count": 1
-      },
-      {
-        "label": "12:20",
-        "count": 3
-      },
-      {
-        "label": "12:40",
-        "count": 1
-      },
-      {
-        "label": "13:00",
-        "count": 2
-      },
-      {
-        "label": "13:20",
-        "count": 0
-      },
-      {
-        "label": "13:40",
-        "count": 2
-      },
-      {
-        "label": "14:00",
-        "count": 3
-      },
-      {
-        "label": "14:20",
-        "count": 1
-      },
-      {
-        "label": "14:40",
-        "count": 3
-      },
-      {
-        "label": "15:00",
-        "count": 0
-      },
-      {
-        "label": "15:20",
-        "count": 2
-      },
-      {
-        "label": "15:40",
-        "count": 0
-      },
-      {
-        "label": "16:00",
-        "count": 1
-      },
-      {
-        "label": "16:20",
-        "count": 3
-      },
-      {
-        "label": "16:40",
-        "count": 1
-      },
-      {
-        "label": "17:00",
-        "count": 2
-      },
-      {
-        "label": "17:20",
-        "count": 0
-      },
-      {
-        "label": "17:40",
-        "count": 2
-      },
-      {
-        "label": "18:00",
-        "count": 3
-      },
-      {
-        "label": "18:20",
-        "count": 1
-      },
-      {
-        "label": "18:40",
-        "count": 3
-      }
-    ],
-    "user_reports_24h_meta": {
-      "source": "IsDown",
-      "kind": "user-reports-chart",
-      "window_hours": 24,
-      "sample_count": 72,
-      "interval_minutes": 20,
-      "last_reviewed_at": "2026-11-17T12:42:52-06:00"
-    },
-    "secondary_sources": [
-      {
-        "source": "IsDown",
-        "available": true,
-        "reports_24h": 129,
-        "last_reviewed_at": "2026-11-17T12:42:52-06:00"
-      }
-    ],
     "current_status_origin": "OpenAI Statuspage API",
     "summary_origin": "OpenAI Statuspage API",
     "components": [
@@ -1390,27 +1084,15 @@
     "top_reported_issues_provider": [
       {
         "label": "Service down",
-        "count": 92
+        "count": 17
       },
       {
         "label": "Error message",
-        "count": 75
-      },
-      {
-        "label": "Other",
-        "count": 18
-      },
-      {
-        "label": "Server not responding",
         "count": 11
       },
       {
-        "label": "App not loading",
-        "count": 10
-      },
-      {
         "label": "Connectivity issue",
-        "count": 9
+        "count": 8
       },
       {
         "label": "Slow performance",
@@ -1418,7 +1100,19 @@
       },
       {
         "label": "Sign in problem",
+        "count": 7
+      },
+      {
+        "label": "App not loading",
         "count": 6
+      },
+      {
+        "label": "Unable to download",
+        "count": 3
+      },
+      {
+        "label": "Server not responding",
+        "count": 2
       }
     ]
   },
@@ -1435,7 +1129,7 @@
       "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D",
       "published_at": "2026-11-17T17:46:15Z",
       "source": "OpenAI Statuspage API",
-      "meta": "Minor / Investigating"
+      "meta": "Minor / Monitoring"
     },
     {
       "title": "Some tools and features are unavailable.",
@@ -1486,45 +1180,53 @@
       "url": "https://status.openai.com/",
       "source": "Official",
       "meta": "Statuspage",
-      "published_at": "2026-11-17T18:42:53.604215Z"
+      "published_at": "2026-11-18T01:25:23.430145Z"
     },
     {
       "title": "OpenAI Status API (Statuspage v2)",
       "url": "https://status.openai.com/api/v2/status.json",
       "source": "Official",
       "meta": "JSON endpoint",
-      "published_at": "2026-11-17T18:42:53.604215Z"
+      "published_at": "2026-11-18T01:25:23.430145Z"
     },
     {
       "title": "OpenAI Status history RSS",
       "url": "https://status.openai.com/history.rss",
       "source": "Official",
       "meta": "RSS feed",
-      "published_at": "2026-11-17T18:42:53.604215Z"
+      "published_at": "2026-11-18T01:25:23.430145Z"
     },
     {
       "title": "Statuspage API overview (Atlassian)",
       "url": "https://support.atlassian.com/statuspage/docs/what-are-the-different-apis-under-statuspage/",
       "source": "Official",
       "meta": "Statuspage docs",
-      "published_at": "2026-11-17T18:42:53.604215Z"
+      "published_at": "2026-11-18T01:25:23.430145Z"
     },
     {
       "title": "OpenAI Help Center",
       "url": "https://help.openai.com/en/articles/6614161-how-can-i-contact-support",
       "source": "Official",
       "meta": "Support",
-      "published_at": "2026-11-17T18:42:53.604215Z"
+      "published_at": "2026-11-18T01:25:23.430145Z"
     }
   ],
   "news": [
     {
       "title": "OpenAI Statuspage API: Partial System Degradation",
       "url": "https://status.openai.com/",
-      "published_at": "2026-11-17T18:42:53.087317Z",
+      "published_at": "2026-11-18T01:25:22.948684Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Indicator: minor"
+    },
+    {
+      "title": "Costs API data is delayed",
+      "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D#01M7NH58SV54X72PG2MG628MBV",
+      "published_at": "2026-11-17T19:53:49Z",
+      "source": "OpenAI Statuspage API",
+      "channel": "official-status-page",
+      "meta": "Monitoring / Minor / Monitoring / We've pushed a fix and are monitoring the recovery."
     },
     {
       "title": "Costs API data is delayed",
@@ -1532,7 +1234,7 @@
       "published_at": "2026-11-17T18:41:57Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / We have identified the issue, it was due to an internal account, that jumped from 100 groups to 400+ groups, breaking rockset's ingestion. We have identified a simple fix for this and waiting for it to deploy, we will rerun the jobs for the"
+      "meta": "Investigating / Minor / Monitoring / We have identified the issue and we are working towards a full recovery."
     },
     {
       "title": "Costs API data is delayed",
@@ -1540,7 +1242,7 @@
       "published_at": "2026-11-17T17:46:15Z",
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
-      "meta": "Investigating / Minor / Investigating / We have identified a delay in our Costs API. We are working to resolve the issue."
+      "meta": "Investigating / Minor / Monitoring / We have identified a delay in our Costs API. We are working to resolve the issue."
     },
     {
       "title": "Delayed Costs Data in the Compliance API",
@@ -1573,14 +1275,6 @@
       "source": "OpenAI Statuspage API",
       "channel": "official-status-page",
       "meta": "Monitoring / None / Resolved / We are monitoring recovery from errors affecting ChatGPT billing, including checkout, and Ads invoice retrieval."
-    },
-    {
-      "title": "Elevated errors affecting the Microsoft 365 connector",
-      "url": "https://status.openai.com/incidents/01M78GAT3AK9P9W8Z230KHFVE8#01M7BPPH7DMYGFW8TCE71E5CDK",
-      "published_at": "2026-11-14T00:18:13Z",
-      "source": "OpenAI Statuspage API",
-      "channel": "official-status-page",
-      "meta": "Resolved / Minor / Resolved / All affected services are operating normally again. We’re sorry for the disruption, and we appreciate your patience."
     }
   ],
   "social": [],
@@ -1596,11 +1290,11 @@
       "ok": true,
       "error": null,
       "item_count": 8,
-      "last_item_at": "2026-11-17T18:42:52.162692Z",
+      "last_item_at": "2026-11-18T01:25:22.888704Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 285,
-      "fetched_at": "2026-11-17T18:42:52.162719Z",
+      "duration_ms": 455,
+      "fetched_at": "2026-11-18T01:25:22.888725Z",
       "cache_hit": false
     },
     {
@@ -1611,14 +1305,14 @@
       "role": "provider",
       "criticality": "supporting",
       "used_for_scoring": true,
-      "ok": true,
-      "error": null,
-      "item_count": 72,
-      "last_item_at": "2026-11-17T12:42:52-06:00",
-      "freshness": "fresh",
-      "age_minutes": 0,
-      "duration_ms": 924,
-      "fetched_at": "2026-11-17T18:42:53.086761Z",
+      "ok": false,
+      "error": "403 Client Error: Forbidden for url: https://isdown.app/status/chatgpt",
+      "item_count": 0,
+      "last_item_at": null,
+      "freshness": "unknown",
+      "age_minutes": null,
+      "duration_ms": 59,
+      "fetched_at": "2026-11-18T01:25:22.947924Z",
       "cache_hit": false
     },
     {
@@ -1632,40 +1326,43 @@
       "ok": true,
       "error": null,
       "item_count": 24,
-      "last_item_at": "2026-11-17T18:42:53.087317Z",
+      "last_item_at": "2026-11-18T01:25:22.948684Z",
       "freshness": "fresh",
       "age_minutes": 0,
-      "duration_ms": 515,
-      "fetched_at": "2026-11-17T18:42:53.602648Z",
+      "duration_ms": 480,
+      "fetched_at": "2026-11-18T01:25:23.429078Z",
       "cache_hit": false
     }
   ],
   "source_transparency": {
     "schema_version": 1,
-    "generated_at": "2026-11-17T18:42:53.604215Z",
+    "generated_at": "2026-11-18T01:25:23.430145Z",
     "overview": {
-      "confidence_score": 100.0,
+      "confidence_score": 87.0,
       "confidence_tier": "high",
-      "source_ok": 3,
+      "source_ok": 2,
       "source_total": 3,
       "required_ok": 1,
       "required_total": 1,
       "required_met": true,
-      "scoring_ok": 3,
+      "scoring_ok": 2,
       "scoring_total": 3,
       "scoring_met": true,
-      "degraded_reasons": [],
+      "degraded_reasons": [
+        "partial_source_failure",
+        "stale_source_data"
+      ],
       "ratios": {
         "required_ratio": 1.0,
-        "scoring_ratio": 1.0,
-        "recent_success_ratio": 1.0,
-        "freshness_ratio": 1.0
+        "scoring_ratio": 0.667,
+        "recent_success_ratio": 0.933,
+        "freshness_ratio": 0.667
       }
     },
     "decision": {
-      "health": "ok",
+      "health": "degraded",
       "severity_key": "degraded",
-      "explanation": "All configured sources are healthy and recently refreshed."
+      "explanation": "Reliability constraints detected: partial source failure, stale source data."
     },
     "sources": [
       {
@@ -1679,9 +1376,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 285,
+          "duration_ms": 455,
           "cache_hit": false,
-          "at": "2026-11-17T18:42:51Z"
+          "at": "2026-11-18T01:25:22Z"
         },
         "metrics_24h": {
           "runs": 5,
@@ -1690,19 +1387,19 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 341.0
+          "avg_duration_ms": 382.0
         },
         "metrics_7d": {
-          "runs": 51,
-          "ok": 51,
+          "runs": 49,
+          "ok": 49,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 302.3
+          "avg_duration_ms": 306.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-17T18:42:51Z",
+        "last_success_at": "2026-11-18T01:25:22Z",
         "last_failure_at": null
       },
       {
@@ -1714,33 +1411,33 @@
         "criticality": "supporting",
         "used_for_scoring": true,
         "latest": {
-          "ok": true,
-          "freshness": "fresh",
-          "duration_ms": 924,
+          "ok": false,
+          "freshness": "unknown",
+          "duration_ms": 59,
           "cache_hit": false,
-          "at": "2026-11-17T18:42:51Z"
+          "at": "2026-11-18T01:25:22Z"
         },
         "metrics_24h": {
           "runs": 5,
-          "ok": 5,
-          "stale": 0,
-          "success_rate": 100.0,
-          "stale_rate": 0.0,
+          "ok": 4,
+          "stale": 1,
+          "success_rate": 80.0,
+          "stale_rate": 20.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 1044.8
+          "avg_duration_ms": 841.4
         },
         "metrics_7d": {
-          "runs": 51,
-          "ok": 48,
-          "stale": 3,
-          "success_rate": 94.1,
-          "stale_rate": 5.9,
+          "runs": 49,
+          "ok": 45,
+          "stale": 4,
+          "success_rate": 91.8,
+          "stale_rate": 8.2,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 952.1
+          "avg_duration_ms": 928.8
         },
-        "consecutive_failures": 0,
+        "consecutive_failures": 1,
         "last_success_at": "2026-11-17T18:42:51Z",
-        "last_failure_at": "2026-11-16T00:19:20Z"
+        "last_failure_at": "2026-11-18T01:25:22Z"
       },
       {
         "source_id": "openai-statuspage-api",
@@ -1753,9 +1450,9 @@
         "latest": {
           "ok": true,
           "freshness": "fresh",
-          "duration_ms": 515,
+          "duration_ms": 480,
           "cache_hit": false,
-          "at": "2026-11-17T18:42:51Z"
+          "at": "2026-11-18T01:25:22Z"
         },
         "metrics_24h": {
           "runs": 5,
@@ -1764,89 +1461,47 @@
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 688.4
+          "avg_duration_ms": 636.0
         },
         "metrics_7d": {
-          "runs": 51,
-          "ok": 51,
+          "runs": 49,
+          "ok": 49,
           "stale": 0,
           "success_rate": 100.0,
           "stale_rate": 0.0,
           "cache_hit_rate": 0.0,
-          "avg_duration_ms": 712.8
+          "avg_duration_ms": 708.0
         },
         "consecutive_failures": 0,
-        "last_success_at": "2026-11-17T18:42:51Z",
+        "last_success_at": "2026-11-18T01:25:22Z",
         "last_failure_at": null
       }
     ]
   },
   "changes": {
-    "generated_at": "2026-11-17T18:42:53.604215Z",
+    "generated_at": "2026-11-18T01:25:23.430145Z",
     "incidents": {
-      "new": [
-        {
-          "id": "714eda41a8210e78",
-          "title": "Costs API data is delayed",
-          "started_at": "2026-11-17T17:48:30Z",
-          "duration": "1m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
+      "new": [],
+      "updated": [
         {
           "id": "e69293e0263928a2",
           "title": "Costs API data is delayed",
           "started_at": "2026-11-17T17:46:15Z",
-          "duration": "56m ongoing",
-          "acknowledgement": "Minor / Investigating",
+          "duration": "7h 39m ongoing",
+          "acknowledgement": "Minor / Monitoring",
           "url": "https://status.openai.com/"
         }
       ],
-      "updated": [],
-      "resolved": [
-        {
-          "id": "2d3336de4a9e48d9",
-          "title": "Delayed Costs Data in the Compliance API",
-          "started_at": "2026-11-13T16:12:05Z",
-          "duration": "8h 10m",
-          "acknowledgement": "warn icon Warn",
-          "url": "https://status.openai.com/"
-        },
-        {
-          "id": "e3dc946a5a6512f2",
-          "title": "GPT-image-2.5 and 2.6 Sunburst & Flare High error rate",
-          "started_at": "2026-11-12T08:52:35Z",
-          "duration": "32m",
-          "acknowledgement": "Minor / Resolved",
-          "url": "https://status.openai.com/"
-        }
-      ]
+      "resolved": []
     },
     "reports": {
-      "new": [
-        {
-          "id": "d94fdf951b6639fe",
-          "title": "Costs API data is delayed",
-          "url": "https://status.openai.com/#2026-11-17T17:48:30Z",
-          "published_at": "2026-11-17T17:48:30Z",
-          "source": "StatusGator",
-          "meta": "warn icon Warn"
-        },
-        {
-          "id": "8223a9b10b567728",
-          "title": "Costs API data is delayed",
-          "url": "https://status.openai.com/incidents/01M7N9VNR6X5SEC90M1YCDB36D",
-          "published_at": "2026-11-17T17:46:15Z",
-          "source": "OpenAI Statuspage API",
-          "meta": "Minor / Investigating"
-        }
-      ]
+      "new": []
     },
     "summary": {
-      "new_incidents": 2,
-      "updated_incidents": 0,
-      "resolved_incidents": 2,
-      "new_reports": 2
+      "new_incidents": 0,
+      "updated_incidents": 1,
+      "resolved_incidents": 0,
+      "new_reports": 0
     }
   }
 }
